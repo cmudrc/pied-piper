@@ -35,6 +35,14 @@ class Model():
         ### to be added
         return True
 
+    def save(self, model_name):
+        ### to be added
+        pass
+
+    def recall(self, model_name):
+        ### to be added
+        pass
+
 
 if __name__ == "__main__":
     n_1 = Node(
