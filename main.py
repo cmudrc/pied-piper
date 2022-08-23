@@ -15,7 +15,7 @@ class Node():
             ):
         self.name = str(name) # node's name
         self.location = location # a list in form of [x, y], representing the location of the node on the map
-        self.demand = demand # a dictionary in form of {water, energy, food}, representing the demand/source for each resource
+        self.demand = demand # a dictionary for {water, energy, food}, representing the demand/source for each resource
         self.neighboors_list = list() # a list of neighbouring nodes
 
     def __str__(self):
