@@ -1,6 +1,6 @@
 from other import *
 
-''' node represents city or resources '''
+''' node represents a major producer/user of resources, such as cities '''
 class Node():
     def __init__(
         self,
@@ -23,9 +23,12 @@ class Node():
 
 ''' main class '''
 class Model():
-    def __init__(self, nodes=list()):
+    def __init__(self):
+        self.nodes = list() # a list containing all nodes of the graph
+
+    def add_nodes(self, nodes=list()):
         if self.validate_neighbours:
-            self.nodes = nodes # a list containing all nodes of the graph
+            self.nodes = nodes
         else:
             ### an error must be raised
             print("no such neighbour")
