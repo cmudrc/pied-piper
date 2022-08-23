@@ -37,7 +37,7 @@ class Model():
 
 
 if __name__ == "__main__":
-    n = Node(
+    n_1 = Node(
         name = 'city_1',
         location = [0.1, 0.2],
         demand = {
@@ -46,4 +46,4 @@ if __name__ == "__main__":
             'food' : 2.5,
         }
         )
-    print(n)
+    print(n_1)
