@@ -3,16 +3,16 @@ from main import Entity
 ''' sample entities '''
 e_1 = Entity(
     name = 'city_1',
-    location = [0.1, 0.2],
+    location = [0.7, -0.5],
     source = {
         'water' : 0.5,
         'energy' : 2.5,
         'food' : 2.5
         },
     demand = {
-        'water' : 1,
+        'water' : 1.5,
         'energy' : 2,
-        'food' : 2.5
+        'food' : 3.5
         },
     deficiency_current = {
         'water' : 0,
@@ -30,9 +30,9 @@ e_1 = Entity(
         'food' : 0,
         },
     storage_max = {
-        'water' : 0,
-        'energy' : 0,
-        'food' : 0,
+        'water' : 10,
+        'energy' : 20,
+        'food' : 10,
         },
     neighbors = [
         'city_2'
@@ -68,9 +68,9 @@ e_2 = Entity(
         'food' : 0,
         },
     storage_max = {
-        'water' : 0,
-        'energy' : 0,
-        'food' : 0,
+        'water' : 15,
+        'energy' : 10,
+        'food' : 50,
         },
     neighbors = [
         'city_1'

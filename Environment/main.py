@@ -1,4 +1,6 @@
+from html import entities
 from graphics import *
+import numpy as np
 
 ''' An entity represents a major producer/user of resources, such as cities '''
 class Entity():
@@ -63,8 +65,10 @@ class Model():
     def __init__(self, name=None):
         self.name = name
         self.entities = list() # a list containing all Entitys of the graph
+        self.graph = None # matrix representation of the graph
         ''' variables for summations and totals '''
-        self.all_entities_names = list() # a list containing names of self.Entitys elements
+        self.all_resources_names = ['water', 'energy', 'food']
+        self.all_entities_names = list() # a list containing names of self.entities elements
         self.reset_totals()
 
     def add_entity(self, entity):
@@ -133,36 +137,62 @@ class Model():
         ''' calculates the total value for resources in the model for all entities '''
         self.reset_totals()
         for entity in self.entities:
-            ''' totals for water '''
-            self.total_source['water'] += entity.source['water']
-            self.total_demand['water'] += entity.demand['water']
-            self.total_deficiency_current['water'] += entity.deficiency_current['water']
-            self.total_deficiency_max['water'] += entity.deficiency_max['water']
-            self.total_storage_current['water'] += entity.storage_current['water']
-            self.total_storage_max['water'] += entity.storage_max['water']
-            ''' totals for energy '''
-            self.total_source['energy'] += entity.source['energy']
-            self.total_demand['energy'] += entity.demand['energy']
-            self.total_deficiency_current['energy'] += entity.deficiency_current['energy']
-            self.total_deficiency_max['energy'] += entity.deficiency_max['energy']
-            self.total_storage_current['energy'] += entity.storage_current['energy']
-            self.total_storage_max['energy'] += entity.storage_max['energy']
-            ''' totals for food '''
-            self.total_source['food'] += entity.source['food']
-            self.total_demand['food'] += entity.demand['food']
-            self.total_deficiency_current['food'] += entity.deficiency_current['food']
-            self.total_deficiency_max['food'] += entity.deficiency_max['food']
-            self.total_storage_current['food'] += entity.storage_current['food']
-            self.total_storage_max['food'] += entity.storage_max['food']
+            for resource in self.all_resources_names:
+                self.total_source[resource] += entity.source[resource]
+                self.total_demand[resource] += entity.demand[resource]
+                self.total_deficiency_current[resource] += entity.deficiency_current[resource]
+                self.total_deficiency_max[resource] += entity.deficiency_max[resource]
+                self.total_storage_current[resource] += entity.storage_current[resource]
+                self.total_storage_max[resource] += entity.storage_max[resource]
 
-    def show(self):
+    def to_matrix(self, directed=False):
+        ''' calculates the matrix representaion of graph '''
+        matrix = None
+        if directed:
+            matrix = np.zeros(
+                (
+                    len(self.all_resources_names),
+                    len(self.entities)*3,
+                    len(self.entities)*3
+                )
+            ) # each entity is devided into three nodes: source, demand, and storage
+            for id, resource in enumerate(self.all_resources_names):
+                for pk, entity in enumerate(self.entities):
+                    value = entity.source[resource] + entity.storage[resource] - entity.demand[resource]
+        else:
+            matrix = np.zeros(
+                (
+                    len(self.all_resources_names),
+                    len(self.entities),
+                    len(self.entities)
+                )
+            ) # each entity is devided into three nodes: source, demand, and storage
+            for id, resource in enumerate(self.all_resources_names):
+                for pk, entity in enumerate(self.entities):
+                    value = entity.source[resource] + entity.storage[resource] - entity.demand[resource] ####
+        return matrix
+
+    def show(self, directed=False):
         ''' shows graph representation of state '''
-        x = list()
-        y = list()
-        for entity in self.entities:
-            x.append(entity.location[0])
-            y.append(entity.location[1])
-        show_graph(x, y)    
+        if directed:
+            pass
+        else:
+            x = list()
+            y = list()
+            titles = list()
+            node_sizes = list()
+            for entity in self.entities:
+                x.append(entity.location[0])
+                y.append(entity.location[1])
+                titles.append(entity.name)
+                node_size = node_size_calculator(
+                    entity = entity,
+                    total_source = self.total_source,
+                    total_demand = self.total_demand,
+                    all_resources_names=self.all_resources_names
+                    )
+                node_sizes.append(node_size)
+            show_graph(x, y, titles=titles, node_sizes=node_sizes)
 
     def __str__(self):
         return self.name
