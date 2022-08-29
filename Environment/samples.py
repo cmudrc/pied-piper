@@ -1,4 +1,5 @@
 from main import Entity
+from graph import Node
 
 ''' sample entities '''
 e_1 = Entity(
@@ -76,3 +77,12 @@ e_2 = Entity(
         'city_1'
         ],
     )
+
+
+''' sample nodes '''
+n_1 = Node(name='node_1', neighbors={'node_2' : 1.5})
+n_2 = Node(name='node_2')
+n_3 = Node(name='node_3', neighbors={
+    'node_1' : 2,
+    'node_2' : 1,
+    })

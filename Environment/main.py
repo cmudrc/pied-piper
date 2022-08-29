@@ -1,6 +1,4 @@
-from html import entities
 from graphics import *
-import numpy as np
 
 ''' An entity represents a major producer/user of resources, such as cities '''
 class Entity():
@@ -64,7 +62,7 @@ class Entity():
 class Model():
     def __init__(self, name=None):
         self.name = name
-        self.entities = list() # a list containing all Entitys of the graph
+        self.entities = list() # a list containing all entities of the graph
         self.graph = None # matrix representation of the graph
         ''' variables for summations and totals '''
         self.all_resources_names = ['water', 'energy', 'food']
@@ -72,18 +70,18 @@ class Model():
         self.reset_totals()
 
     def add_entity(self, entity):
-        ''' adds single Entity '''
+        ''' adds a single entity '''
         self.entities.append(entity)
         self.all_entities_names.append(entity.name)
         self.calculate_totals()
 
-    def add_entities(self, entities=list()):
+    def add_entities(self, entities):
         ''' add entities in batch '''
         for entity in entities:
             self.add_entity(entity)
 
     def validate_entities(self):
-        ''' checks for the validity of Entitys connections '''
+        ''' checks for the validity of entities connections '''
         final_result = False
         result_list = list() # if all elements are True, the final result will be True
         for entity in self.entities:
@@ -169,7 +167,9 @@ class Model():
             ) # each entity is devided into three nodes: source, demand, and storage
             for id, resource in enumerate(self.all_resources_names):
                 for pk, entity in enumerate(self.entities):
-                    value = entity.source[resource] + entity.storage[resource] - entity.demand[resource] ####
+                    matrix[id][pk] = entity.source[resource]
+                    entity.storage[resource]
+                    entity.demand[resource]
         return matrix
 
     def show(self, directed=False):
