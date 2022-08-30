@@ -1,4 +1,4 @@
-from main import Entity
+from model import Entity
 from graph import Node
 
 ''' sample entities '''

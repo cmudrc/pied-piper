@@ -146,7 +146,7 @@ class Model():
     def to_matrix(self, directed=False):
         ''' calculates the matrix representaion of graph '''
         matrix = None
-        if directed:
+        '''if directed:
             matrix = np.zeros(
                 (
                     len(self.all_resources_names),
@@ -169,7 +169,7 @@ class Model():
                 for pk, entity in enumerate(self.entities):
                     matrix[id][pk] = entity.source[resource]
                     entity.storage[resource]
-                    entity.demand[resource]
+                    entity.demand[resource]'''
         return matrix
 
     def show(self, directed=False):
