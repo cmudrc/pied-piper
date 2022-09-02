@@ -1,6 +1,8 @@
 import numpy as np
 import json
 
+from graph import Node, Graph
+
 
 class Link():
     ''' represents a connection between two entities for a certain resource '''
@@ -114,6 +116,7 @@ class Model():
                 self.entities.append(entities)
 
         self.distance = None
+        self.all_resources_names = None
 
     def distance_matrix_calculate(self):
         ''' generates the distance matrix '''
@@ -137,6 +140,7 @@ class Model():
 
         ''' dynamic programming reutines '''
         self.distance_matrix_calculate()
+        self.find_all_resources_names()
 
         ''' running checkups '''
         final_result = True
@@ -250,7 +254,59 @@ class Model():
                 resources=resources_list
             )
             self.entities.append(e)
-            
+    
+    def find_all_resources_names(self):
+        all_resources_names = list()
+        for entity in self.entities:
+            for resource in entity.resources:
+                if resource.name not in all_resources_names:
+                    all_resources_names.append(resource.name)
+        self.all_resources_names = all_resources_names
+
+    def to_graph(self, resource_name):
+        g = Graph()
+        for entity in self.entities:
+            for resource in entity.resources:
+                if resource.name == resource_name:
+                    ''' nodes within the entity '''
+                    inner_node_source = Node(
+                        name=entity.name + '_' + 'source',
+                        type='source',
+                        neighbors={
+                            entity.name + '_' + 'demand': None,
+                            entity.name + '_' + 'storage': None
+                        }
+                    )
+                    g.add_node(inner_node_source)
+                    inner_node_demand = Node(
+                        name=entity.name + '_' + 'demand',
+                        type='demand'
+                    )
+                    g.add_node(inner_node_demand)
+                    inner_node_storage = Node(
+                        name=entity.name + '_' + 'storage',
+                        type='storage',
+                        neighbors={
+                            entity.name + '_' + 'demand': None
+                        }
+                    )
+                    g.add_node(inner_node_storage)
+
+        for entity in self.entities:
+            for resource in entity.resources:
+                if resource.name == resource_name:
+                    ''' nodes out of the entity '''
+                    for link in resource.connections:
+                        for node in g.nodes:
+                            if entity.name + '_' + 'source' == node.name: # same starting point   
+                                node.neighbors[link.end + '_' + 'demand'] = None # value to be saved in graph
+                                node.neighbors[link.end + '_' + 'storage'] = None
+                            elif entity.name + '_' + 'demand' == node.name:
+                                pass
+                            elif entity.name + '_' + 'storage' == node.name:
+                                node.neighbors[link.end + '_' + 'demand'] = None              
+        return g
+
     def update_step(self):
         pass
 
@@ -264,7 +320,5 @@ if __name__ == "__main__":
     m = Model(entities=[e_1, e_2])
     m.analyze()
     #print(m.validate_entities_connections())
-    j = m.to_json()
-    m.from_json(j)
-    h = m.to_json()
-    #print(j==h)
+    #print([node.name for node in m.to_graph('water').nodes])
+    print(m.to_graph('water').to_matrix())

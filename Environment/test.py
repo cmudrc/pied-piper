@@ -105,21 +105,30 @@ class TestModelClass(unittest.TestCase):
         h = m.to_json()
         self.assertEqual(j, h)
 
+
 class TestGraphClass(unittest.TestCase):
     ''' tests related to Graph class '''
-    from samples import n_1, n_2, n_3
+    def test_json_conversion(self):
+        ''' test to_json and from_json functionalities '''
+        from samples import n_1, n_2, n_3
 
-    g = n_1 + n_2
-    g = n_3 + g
-    m_1, i = g.to_matrix()
+        g = n_1 + n_2
+        g = n_3 + g
+        m_1, i = g.to_matrix()
 
-    g = Graph()
-    g.from_matrix(m_1, name=i['name'])
-    m_2, i = g.to_matrix()
+        g = Graph()
+        g.from_matrix(m_1, name=i['name'])
+        m_2, i = g.to_matrix()
 
-    np.testing.assert_allclose(m_1, m_2)
+        np.testing.assert_allclose(m_1, m_2)
 
+    def test_to_graph(self):
+        ''' test to_json and from_json functionalities '''
+        from samples import e_1, e_2
 
+        m = Model(entities=[e_1, e_2])
+        m.analyze()
+        m.to_graph('water').to_matrix()
 
 
 if __name__ == '__main__':
