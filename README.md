@@ -61,6 +61,25 @@ functions:
 - to_json(): Converts all information within the model into json
 - from_json(txt): Loads model information from json text
 
+### class Node():
+Represents nodes of a graph. This is a simple way to show different units within an entity (demand node, source node, storage node) and the relationship between all the nodes from all entities.
+
+Includes:
+- name: Name of the node. It has to be identical.
+- neighbors: A list containing name of other connected nodes
+
+### class Graph():
+Represents a mathematical directed graph. Instances of Node class can be added to the graph.
+
+Includes:
+- name: Name of the graph. Optional.
+- nodes: A list of instances of Node class, representing the nodes within the graph.
+
+functions:
+- validate_node_connections(): Checks for the validity of the connections between nodes of the graph.
+- to_matrix(): Converts the information about graph into matrix.
+- from_matrix(m): Loads the information about graph from matrix.
+
 ### Economic Model:
 At each timestep, the source node of each entity looks at all demands from all other demand sources. Satisfying demands from nearest entities is at priorety. Afterwards, it will try to fill nearest storages. Anything beyond their capacity will be wasted.
 
