@@ -175,9 +175,8 @@ class Model():
                 entity_dict = dict()
                 entity_dict['name'] = entity.name
                 entity_dict['location'] = entity.location
-                
+
                 resources_list = list()
-                
                 if entity.resources is None or len(entity.resources) == 0:
                     pass
                 else:
@@ -190,6 +189,7 @@ class Model():
                         resource_dict['deficiency_max'] = resource.deficiency_max
                         resource_dict['storage_current'] = resource.storage_current
                         resource_dict['storage_max'] = resource.storage_max
+
                         connections_list = list()
                         if resource.connections is None or len(resource.connections) == 0:
                             pass
@@ -202,18 +202,19 @@ class Model():
                                 link_dict['chance'] = link.chance
                                 link_dict['price_factor'] = link.price_factor
                                 connections_list.append(link_dict)
-                        resource_dict['connections'] = link_dict
+
+                        resource_dict['connections'] = connections_list
                         resources_list.append(resource_dict)
-                    #print(connections_dict)       
-                entity_dict['resources'] = resources_list 
+                    
+                entity_dict['resources'] = resources_list
                 entities_list.append(entity_dict)
-                #print(resources_dict)
+                
         result_dict = {
             "name": self.name,
             "entities": entities_list
         }
-        #return json.dumps(result_dict)
-        return result_dict
+        return json.dumps(result_dict)
+        #return result_dict
 
     def update_step(self):
         pass
@@ -224,9 +225,8 @@ class Model():
 
 if __name__ == "__main__":
     from samples import e_1, e_2
-    #print(e_1.resources[0].name)
+
     m = Model(entities=[e_1, e_2])
     m.analyze()
     #print(m.validate_entities_connections())
     print(m.to_json())
-    #m.to_json()
