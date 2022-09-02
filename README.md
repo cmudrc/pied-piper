@@ -9,12 +9,11 @@ Named after "Pied Piper of Hamelin," the title character of a legend from the to
 ## Introduction
 Whenever environments condition change for species, the living entities start to react to the new new condition. This projects aims at modeling the Alaskan communities that are heavily affected by the global warming. There are two distinct sides to this project: Environment, and Agents.
 
-## Environment:
+## Environment
 
-### classes:
+### model.py:
 
-#### model.py
-##### class Link():
+#### class Link():
 It represents a connection between two entities for a certain resource and its instances have to be added to instances of Resource class.
 
 Includes:
@@ -24,7 +23,7 @@ Includes:
 - chance: chance of working properly
 - price_factor: shows how hard it is to transfer this resource by this route
 
-##### class Resource():
+#### class Resource():
 It represents resources and has to be added to an instance of entity class.
 
 Includes:
@@ -40,7 +39,7 @@ Includes:
 functions:
 - is_alive(): If current deficiency for a certain resource surpasses the maximum deficiency, the entity will cease to exit. This function returns True/False.
 
-##### class Entity():
+#### class Entity():
 An entity represents a major producer/user/storer of resources, such as cities. It even can represent living creatures, but it is not in the scope of this project. An entity holds three important nodes: source, demand, storage. Instances of Resource class gets added to the entity.
 
 Includes:
@@ -48,7 +47,7 @@ Includes:
 - location: A list in form of [x, y].
 - resources: A list of resources that the elements are instances of Resource class.
 
-##### class Model():
+#### class Model():
 The main class for representing environment. It accepts instances of Entity class to represent the whole network of resources in that environment.
 
 Includes:
@@ -58,6 +57,8 @@ Includes:
 
 functions:
 - distance_matrix_calculate(): Generates the distance matrix.
+- analyze(): The pre-simulation step to do all the required tasks to start running, such as validate entities connections.
+- validate_entities_connections(): Checks for the validity of entities connections.
 
 
 #### graph.py

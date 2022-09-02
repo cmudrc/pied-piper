@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 
 class Link():
@@ -78,7 +79,8 @@ class Entity():
                 self.add_resource(new_resource=resource)
 
     def add_resource(self, new_resource):
-        new_resource.start = self.name
+        for link in new_resource.connections:
+            link.start = self.name
         self.resources.append(new_resource)
 
     def is_alive(self):
@@ -143,9 +145,6 @@ class Model():
 
         return final_result
 
-    def update_step(self):
-        pass
-
     def validate_entities_connections(self):
         ''' checks for the validity of entities connections '''
         final_result = True
@@ -166,9 +165,68 @@ class Model():
                         final_result = False
         return final_result
 
+    def to_json(self):
+        ''' converts all the information within the model to json '''
+        entities_list = list()
+        if self.entities is None or len(self.entities) == 0:
+            pass
+        else:
+            for entity in self.entities:
+                entity_dict = dict()
+                entity_dict['name'] = entity.name
+                entity_dict['location'] = entity.location
+                
+                resources_list = list()
+                
+                if entity.resources is None or len(entity.resources) == 0:
+                    pass
+                else:
+                    for resource in entity.resources:
+                        resource_dict = dict()
+                        resource_dict['name'] = resource.name
+                        resource_dict['source'] = resource.source
+                        resource_dict['demand'] = resource.demand
+                        resource_dict['deficiency_current'] = resource.deficiency_current
+                        resource_dict['deficiency_max'] = resource.deficiency_max
+                        resource_dict['storage_current'] = resource.storage_current
+                        resource_dict['storage_max'] = resource.storage_max
+                        connections_list = list()
+                        if resource.connections is None or len(resource.connections) == 0:
+                            pass
+                        else:
+                            for link in resource.connections:
+                                link_dict = dict()
+                                link_dict['start'] = link.start
+                                link_dict['end'] = link.end
+                                link_dict['active'] = link.active
+                                link_dict['chance'] = link.chance
+                                link_dict['price_factor'] = link.price_factor
+                                connections_list.append(link_dict)
+                        resource_dict['connections'] = link_dict
+                        resources_list.append(resource_dict)
+                    #print(connections_dict)       
+                entity_dict['resources'] = resources_list 
+                entities_list.append(entity_dict)
+                #print(resources_dict)
+        result_dict = {
+            "name": self.name,
+            "entities": entities_list
+        }
+        #return json.dumps(result_dict)
+        return result_dict
+
+    def update_step(self):
+        pass
+
+    def __str__(self):
+        return self.name
+
 
 if __name__ == "__main__":
-    from samples import e_1, e_2, e_3
-
-    m = Model(entities=[e_1, e_2, e_3])
-    print(m.validate_entities_connections())
+    from samples import e_1, e_2
+    #print(e_1.resources[0].name)
+    m = Model(entities=[e_1, e_2])
+    m.analyze()
+    #print(m.validate_entities_connections())
+    print(m.to_json())
+    #m.to_json()
