@@ -59,6 +59,8 @@ functions:
 - distance_matrix_calculate(): Generates the distance matrix.
 - analyze(): The pre-simulation step to do all the required tasks to start running, such as validate entities connections.
 - validate_entities_connections(): Checks for the validity of entities connections.
+- to_json(): Converts all information within the model into json
+- from_json(txt): Loads model information from json text
 
 
 #### graph.py
