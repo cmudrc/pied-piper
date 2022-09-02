@@ -46,8 +46,8 @@ class TestResources(unittest.TestCase):
         self.assertFalse(e_1.is_alive())
 
 
-class TestEntity(unittest.TestCase):
-    ''' tests related to Entity class '''
+class TestModel(unittest.TestCase):
+    ''' tests related to Model class '''
 
     def test_adding_true_neighbor_to_entities(self):
         ''' tests adding true neighbors to entities '''
@@ -93,6 +93,17 @@ class TestEntity(unittest.TestCase):
         m = Model(entities=[e_1, e_2])
         self.assertFalse(m.analyze())
 
+    def test_json_conversion(self):
+        ''' tests json conversion of model '''
+        from samples import e_1, e_2
+
+        m = Model(entities=[e_1, e_2])
+        m.analyze()
+        #print(m.validate_entities_connections())
+        j = m.to_json()
+        m.from_json(j)
+        h = m.to_json()
+        self.assertEqual(j, h)
 
 if __name__ == '__main__':
     unittest.main()

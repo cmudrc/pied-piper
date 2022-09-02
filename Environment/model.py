@@ -214,8 +214,43 @@ class Model():
             "entities": entities_list
         }
         return json.dumps(result_dict)
-        #return result_dict
 
+    def from_json(self, txt):
+        ''' loads all the model information from json '''
+        j = json.loads(txt)
+        self.name = j['name']
+        self.entities = list()
+        for entity in j['entities']:
+            resources_list = list()
+            for resource in entity['resources']:
+                links_list = list()
+                for link in resource['connections']:
+                    new_link = Link(
+                        start=link['start'],
+                        end=link['end'],
+                        active=link['active'],
+                        chance=link['chance'],
+                        price_factor=link['price_factor']
+                    )
+                    links_list.append(new_link)
+                r = Resource(
+                    name=resource['name'],
+                    source=resource['source'],
+                    demand=resource['demand'],
+                    deficiency_current=resource['deficiency_current'],
+                    deficiency_max=resource['deficiency_max'],
+                    storage_current=resource['storage_current'],
+                    storage_max=resource['storage_max'],
+                    connections=links_list
+                )
+                resources_list.append(r)
+            e = Entity(
+                name=entity['name'],
+                location=entity['location'],
+                resources=resources_list
+            )
+            self.entities.append(e)
+            
     def update_step(self):
         pass
 
@@ -229,4 +264,7 @@ if __name__ == "__main__":
     m = Model(entities=[e_1, e_2])
     m.analyze()
     #print(m.validate_entities_connections())
-    print(m.to_json())
+    j = m.to_json()
+    m.from_json(j)
+    h = m.to_json()
+    #print(j==h)
