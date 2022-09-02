@@ -7,7 +7,42 @@ PIPER Agent-Based Model
 Named after "Pied Piper of Hamelin," the title character of a legend from the town of Hamelin in Germany
 
 ## Introduction
-<NOT COMPLETE>
-Earth’s climate is always changing, and people who study Earth see that its climate is getting warmer. As we observe drastic changes to Arctic environments, such as snow and ice melt, human communities in the Arctic will also drastically change. One of the greatest challenges in Arctic communities which impacts all life in these regions is permafrost thaw. Permafrost can be up to 70 percent ice, the thawing of which results in damage to the built environment and, ultimately, the lives of people who are part of Arctic communities.
+Whenever environments condition change for species, the living entities start to react to the new new condition. This projects aims at modeling the Alaskan communities that are heavily affected by the global warming. There are two distinct sides to this project: Environment, and Agents.
 
-A socio-ecological system is “characterized by feedbacks, which occur between human values, perceptions, and behaviors and the biophysical components of the ecosystems in which people exist resulting in a resilient or vulnerable trajectory leading to sustainability or collapse.” Both the social and ecological components of these systems are interrelated. Agent-Based Modeling approach can be beneficial in gaining insight about this problem.
+## Environment:
+
+### classes:
+
+#### model.py
+class Link():
+It represents a connection between two entities for a certain resource and its instances have to be added to instances of Resource class.
+Includes:
+- start: starting entity's name
+- end: destination entity's name
+- active: state of the link as being active or not
+- chance: chance of working properly
+
+class Resource():
+It represents resources and has to be added to an instance of entity class.
+Includes:
+- name: resource name, such as 'water' or 'food'.
+- source: the amount of source in each timestep
+- demand: the amount of demand in each timestep
+- deficiency_current: current deficiency of resource
+- deficiency_max: maximum deficiency of resource that can be handled by the entity
+- storage_current: current amount of storage for the resource
+- storage_max: maximum amount of storage possible
+- connections: a list of instances of Link class, representing the connection between neighboring entities.
+
+class Entity():
+class Model():
+
+
+#### graph.py
+class Graph():
+class Node():
+
+### Economic Model:
+At each timestep, the source node of each entity looks at all demands from all other demand sources. Satisfying demands from nearest entities is at priorety. Afterwards, it will try to fill nearest storages. Anything beyond their capacity will be wasted.
+
+## Agent:
