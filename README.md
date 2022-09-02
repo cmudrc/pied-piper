@@ -64,4 +64,4 @@ functions:
 ### Economic Model:
 At each timestep, the source node of each entity looks at all demands from all other demand sources. Satisfying demands from nearest entities is at priorety. Afterwards, it will try to fill nearest storages. Anything beyond their capacity will be wasted.
 
-## 2. Agent:
+## 2. Agent

@@ -1,11 +1,12 @@
-from multiprocessing import connection
 import unittest
+
+import numpy as np
 
 from graph import Graph, Node
 from model import Link, Resource, Entity, Model
 
 
-class TestLink(unittest.TestCase):
+class TestLinkClass(unittest.TestCase):
     ''' tests related to Link class '''
 
     def test_adding_neighbor_to_entities(self):
@@ -16,7 +17,7 @@ class TestLink(unittest.TestCase):
         self.assertFalse(link.active)
 
 
-class TestResources(unittest.TestCase):
+class TestResourceClass(unittest.TestCase):
     ''' tests related to Resource class '''
 
     def test_adding_resource_to_entities(self):
@@ -46,7 +47,7 @@ class TestResources(unittest.TestCase):
         self.assertFalse(e_1.is_alive())
 
 
-class TestModel(unittest.TestCase):
+class TestModelClass(unittest.TestCase):
     ''' tests related to Model class '''
 
     def test_adding_true_neighbor_to_entities(self):
@@ -99,11 +100,27 @@ class TestModel(unittest.TestCase):
 
         m = Model(entities=[e_1, e_2])
         m.analyze()
-        #print(m.validate_entities_connections())
         j = m.to_json()
         m.from_json(j)
         h = m.to_json()
         self.assertEqual(j, h)
+
+class TestGraphClass(unittest.TestCase):
+    ''' tests related to Graph class '''
+    from samples import n_1, n_2, n_3
+
+    g = n_1 + n_2
+    g = n_3 + g
+    m_1, i = g.to_matrix()
+
+    g = Graph()
+    g.from_matrix(m_1, name=i['name'])
+    m_2, i = g.to_matrix()
+
+    np.testing.assert_allclose(m_1, m_2)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

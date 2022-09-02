@@ -1,11 +1,12 @@
-#from environment.model import Entity
+from environment.model import *
 from environment.samples import e_1, e_2
 
 class Simulation():
     def __init__(self, entities):
-        self.environment = None
-        for entity in entities:
-            self.environment += entity
+        self.environment = Model(
+            name='test',
+            entities=entities
+        )
         
     def run(self):
         pass

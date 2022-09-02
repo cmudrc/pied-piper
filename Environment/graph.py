@@ -1,16 +1,52 @@
 import numpy as np
 
-''' represents a directed graph '''
+
+class Node():
+    ''' represents nodes in the graph '''
+    def __init__(self, name=None, type=None, neighbors=None):
+        self.name = name
+        # indicating the type of node from the ('source', 'demand', 'storage'), useful when doing the simulation.
+        self.type = type
+        # self.neighbors is a dict containing all neighbors of the graph in form of {'name':value} pairs
+        if neighbors and isinstance(neighbors, dict):
+            self.neighbors = neighbors
+        else:
+            self.neighbors = dict()
+
+    def add_neighbor(self, neighbor, value=0):
+        self.neighbors[str(neighbor)] = value
+
+    def __str__(self):
+        return self.name
+
+    def __add__(self, other):
+        if isinstance(other, Graph):
+            other.add_node(self)
+            return other
+        elif isinstance(other, Node):
+            g = Graph()
+            g.add_node(self)
+            g.add_node(other)
+            return g
+        else:
+            # Error must be raised
+            print(
+                "input type not supported, input must be an instance of either Node or Graph")
+
+
 class Graph():
+    ''' represents a directed graph '''
+
     def __init__(self, name=None):
         self.name = name
-        self.nodes = list() # a list containing all nodes of the graph
-        self.all_nodes_names = list() # a list containing names of self.nodes elements
-    
+        self.nodes = list()  # a list containing all nodes of the graph
+        self.all_nodes_names = list()  # a list containing names of self.nodes elements
+
     def add_node(self, node):
         ''' adds a single node '''
         if node.name in self.all_nodes_names:
-            print('An error must be raised') # raises an error, duplicate names
+            # raises an error, duplicate names
+            print('An error must be raised')
         else:
             self.nodes.append(node)
             self.all_nodes_names.append(node.name)
@@ -23,7 +59,7 @@ class Graph():
     def validate_node_connections(self):
         ''' checks for the validity of nodes connections '''
         final_result = False
-        result_list = list() # if all elements are True, the final result will be True
+        result_list = list()  # if all elements are True, the final result will be True
         for node in self.nodes:
             for neighbor in list(node.neighbors.keys()):
                 if neighbor in self.all_nodes_names:
@@ -52,12 +88,14 @@ class Graph():
                 else:
                     result = False
                 return result
+
             def duplicate_names_check(node_names):
                 ''' checking the validity of the node names '''
                 result = False
                 if node_names:
                     visited = set()
-                    dup = [x for x in node_names if x in visited or (visited.add(x) or False)]
+                    dup = [x for x in node_names if x in visited or (
+                        visited.add(x) or False)]
                     if len(dup) == 0:
                         result = True
                 else:
@@ -73,8 +111,8 @@ class Graph():
 
         if validate_matrix_input(matrix, node_names=node_names):
             self.name = name
-            nodes = list() # reset
-            all_nodes_names = list() # reset
+            nodes = list()  # reset
+            all_nodes_names = list()  # reset
 
             def create_name(all_nodes_names):
                 default_name = 'node'
@@ -107,8 +145,9 @@ class Graph():
                     nodes.append(new_node)
                     all_nodes_names.append(str(new_node))
 
-            data = list() # temperary list for calculations
-            for id, x in np.ndenumerate(matrix): # for figuring out the connections between nodes
+            data = list()  # temperary list for calculations
+            # for figuring out the connections between nodes
+            for id, x in np.ndenumerate(matrix):
                 if not np.isclose(x, 0):
                     data.append([id[0], id[1], x])
             for element in data:
@@ -116,7 +155,7 @@ class Graph():
                 new_neighbor = all_nodes_names[element[1]]
                 value = element[2]
                 node.add_neighbor(new_neighbor, value)
-                
+
             self.nodes = nodes
             self.all_nodes_names = all_nodes_names
 
@@ -129,9 +168,9 @@ class Graph():
             for node in self.nodes:
                 node_names.append(node.name)
             info = {
-                'length' : len(self.nodes),
-                'name' : self.name,
-                'node names' : node_names,
+                'length': len(self.nodes),
+                'name': self.name,
+                'node names': node_names,
             }
             ''' the matrix representation of graph '''
             matrix = np.zeros([info["length"], info["length"]])
@@ -163,56 +202,18 @@ class Graph():
             self.add_node(other)
             result = self
         else:
-            print("input type not supported, input must be an instance of either Node or Graph") ### Error must be raised
+            # Error must be raised
+            print(
+                "input type not supported, input must be an instance of either Node or Graph")
             result = None
         return result
 
 
-''' represents nodes in the graph '''
-class Node():
-    def __init__(self, name=None, type=None, neighbors=None):
-        self.name = name
-        self.type = type # indicating the type of node from the ('source', 'demand', 'storage'), useful when doing the simulation.
-        if neighbors and isinstance(neighbors, dict): # self.neighbors is a dict containing all neighbors of the graph in form of {'name':value} pairs
-            self.neighbors = neighbors
-        else:
-            self.neighbors = dict()
-
-    def add_neighbor(self, neighbor, value=0):
-        self.neighbors[str(neighbor)] = value
-
-    def __str__(self):
-        return self.name
-
-    def __add__(self, other):
-        if isinstance(other, Graph):
-            other.add_node(self)
-            return other
-        elif isinstance(other, Node):
-            g = Graph()
-            g.add_node(self)
-            g.add_node(other)
-            return g
-        else:
-            print("input type not supported, input must be an instance of either Node or Graph") ### Error must be raised
-
-
 if __name__ == "__main__":
     from samples import n_1, n_2, n_3
-    
-    ''' method 1 '''
-    #g = Graph(name='test')
-    #g.add_node(n_1)
-    #g.add_node(n_2)
-    #g.add_node(n_3)
 
-    ''' method 2 '''
-    #g = Graph(name='test')
-    #g.add_nodes([n_1, n_2, n_3])
-
-    ''' method 3 '''
-    g = n_1 + n_2
-    g = n_3 + g
+    g = Graph(name='test')
+    g.add_nodes([n_1, n_2, n_3])
 
     ''' checking to_matrix function '''
     m, i = g.to_matrix()
