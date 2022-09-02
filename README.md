@@ -14,28 +14,50 @@ Whenever environments condition change for species, the living entities start to
 ### classes:
 
 #### model.py
-class Link():
+##### class Link():
 It represents a connection between two entities for a certain resource and its instances have to be added to instances of Resource class.
+
 Includes:
 - start: starting entity's name
 - end: destination entity's name
 - active: state of the link as being active or not
 - chance: chance of working properly
+- price_factor: shows how hard it is to transfer this resource by this route
 
-class Resource():
+##### class Resource():
 It represents resources and has to be added to an instance of entity class.
-Includes:
-- name: resource name, such as 'water' or 'food'.
-- source: the amount of source in each timestep
-- demand: the amount of demand in each timestep
-- deficiency_current: current deficiency of resource
-- deficiency_max: maximum deficiency of resource that can be handled by the entity
-- storage_current: current amount of storage for the resource
-- storage_max: maximum amount of storage possible
-- connections: a list of instances of Link class, representing the connection between neighboring entities.
 
-class Entity():
-class Model():
+Includes:
+- name: Resource name, such as 'water' or 'food'.
+- source: The amount of source in each timestep.
+- demand: The amount of demand in each timestep.
+- deficiency_current: Current deficiency of resource.
+- deficiency_max: Maximum deficiency of resource that can be handled by the entity.
+- storage_current: Current amount of storage for the resource.
+- storage_max: Maximum amount of storage possible.
+- connections: A list of instances of Link class, representing the connection between neighboring entities.
+
+functions:
+- is_alive(): If current deficiency for a certain resource surpasses the maximum deficiency, the entity will cease to exit. This function returns True/False.
+
+##### class Entity():
+An entity represents a major producer/user/storer of resources, such as cities. It even can represent living creatures, but it is not in the scope of this project. An entity holds three important nodes: source, demand, storage. Instances of Resource class gets added to the entity.
+
+Includes:
+- name: Entity's name, such as 'city_1'.
+- location: A list in form of [x, y].
+- resources: A list of resources that the elements are instances of Resource class.
+
+##### class Model():
+The main class for representing environment. It accepts instances of Entity class to represent the whole network of resources in that environment.
+
+Includes:
+- name: Environment's name, such 'region_1'.
+- entities: A list containing the instances of Entity class, representing all entities in the region.
+- distance: According to the dynamic programming methodology, this matrix is holding the physical distance values between nodes to faciliate the computations.
+
+functions:
+- distance_matrix_calculate(): Generates the distance matrix.
 
 
 #### graph.py

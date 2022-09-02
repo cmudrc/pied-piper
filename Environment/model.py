@@ -3,45 +3,55 @@ import numpy as np
 
 class Link():
     ''' represents a connection between two entities for a certain resource '''
+
     def __init__(
         self,
-        start = None,
-        end = None,
-        active = True,
-        chance = 1
+        start=None,
+        end=None,
+        active=True,
+        chance=1,
+        price_factor=1
     ):
-        self.start = start # the starting point
-        self.end = end # the end point
-        self.active = active # whether this connections is active, (True/False)
-        self.chance = chance # chance of working properly, (0 <= chance <= 1)
+        self.start = start  # the starting point
+        self.end = end  # the end point
+        # whether this connections is active, (True/False)
+        self.active = active
+        # chance of working properly, (0 <= chance <= 1)
+        self.chance = chance
+        # shows how hard it is to transfer this resource by this route
+        self.price_factor = price_factor
 
 
 class Resource():
     ''' represents resources, has to be added to an instance of entity class '''
+
     def __init__(
         self,
         name,
-        source = 0,
-        demand = 0,
-        deficiency_current = 0,
-        deficiency_max = 0,
-        storage_current = 0,
-        storage_max = 0,
-        connections = None
+        source=0,
+        demand=0,
+        deficiency_current=0,
+        deficiency_max=0,
+        storage_current=0,
+        storage_max=0,
+        connections=None
     ):
-        self.name = name # resource name
-        self.source = source # the amount of source in each timestep
-        self.demand = demand # the amount of demand in each timestep
-        self.deficiency_current = deficiency_current # current deficiency of resource
-        self.deficiency_max = deficiency_max # maximum deficiency of resource that can be handled by the entity
-        self.storage_current = storage_current # current amount of storage for the resource
-        self.storage_max = storage_max # maximum amount of storage possible
-        
-        self.connections = list() # list of instances of Connection class
+        self.name = name  # resource name
+        self.source = source  # the amount of source in each timestep
+        self.demand = demand  # the amount of demand in each timestep
+        # current deficiency of resource
+        self.deficiency_current = deficiency_current
+        # maximum deficiency of resource that can be handled by the entity
+        self.deficiency_max = deficiency_max
+        # current amount of storage for the resource
+        self.storage_current = storage_current
+        self.storage_max = storage_max  # maximum amount of storage possible
+
+        self.connections = list()  # list of instances of Connection class
         if connections is not None:
             for connection in connections:
                 self.connections.append(connection)
-        
+
     def is_alive(self):
         ''' checks whether the owner of this resource is still alive or not '''
         result = False
@@ -52,17 +62,18 @@ class Resource():
 
 class Entity():
     ''' An entity represents a major producer/user/storer of resources, such as cities '''
+
     def __init__(
         self,
         name,
-        location = [0, 0],
-        resources = None
-        ):
+        location=[0, 0],
+        resources=None
+    ):
         self.name = name
         self.location = location
         self.resources = list()
 
-        if resources is not None: # expects list instance
+        if resources is not None:  # expects list instance
             for resource in resources:
                 self.add_resource(new_resource=resource)
 
@@ -84,13 +95,14 @@ class Entity():
 
 class Model():
     ''' main class for representing environment '''
+
     def __init__(
         self,
-        name = None,
-        entities = None
-        ):
+        name=None,
+        entities=None
+    ):
         self.name = name
-        
+
         self.entities = list()
         if entities is not None:
             if isinstance(entities, list):
@@ -102,6 +114,7 @@ class Model():
         self.distance = None
 
     def distance_matrix_calculate(self):
+        ''' generates the distance matrix '''
         size = len(self.entities)
         distance_matrix = np.zeros((size, size))
         for i, entity_i in enumerate(self.entities):
@@ -113,7 +126,7 @@ class Model():
                 dist = np.sqrt(
                     np.power((x_1 - x_2), 2)
                     + np.power((y_1 - y_2), 2)
-                    )
+                )
                 distance_matrix[i, j] = dist
         self.distance = distance_matrix
 
@@ -124,40 +137,38 @@ class Model():
         self.distance_matrix_calculate()
 
         ''' running checkups '''
-        result = list()
-        final_result = False
-        if self.validate_entities_connections():
-            result.append(True)
-        if False not in result:
-            final_result = True
+        final_result = True
+        if not self.validate_entities_connections():
+            final_result = False
 
         return final_result
+
+    def update_step(self):
+        pass
 
     def validate_entities_connections(self):
         ''' checks for the validity of entities connections '''
-        final_result = False
-        result_list = list() # if all elements are True, the final result will be True
-
+        final_result = True
+        #result_list = list() # if all elements are True, the final result will be True
+        all_entity_names = [x.name for x in self.entities]
         for entity in self.entities:
             for resource in entity.resources:
-                for connection in resource.connections:
-                    if connection in [x.name for x in self.entities]:
-                        result_list.append(True)
-                    else:
+                for link in resource.connections:
+                    if link.end not in all_entity_names:
                         print(
-                            connection +
-                            " is not a valid neighbor for " +
-                            entity.name
+                            "for "
+                            + resource.name
+                            + ":\n"
+                            + link.end
+                            + " is not a valid neighbor for "
+                            + entity.name
                         )
-                    result_list.append(False)
-        if False not in result_list:
-            final_result = True
+                        final_result = False
         return final_result
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     from samples import e_1, e_2, e_3
 
     m = Model(entities=[e_1, e_2, e_3])
-    print(e_1.is_alive())
-
+    print(m.validate_entities_connections())
