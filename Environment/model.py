@@ -2,6 +2,7 @@ import numpy as np
 import json
 
 from graph import Node, Graph
+from economy import Order, Economy
 
 
 class Link():
@@ -13,7 +14,8 @@ class Link():
         end=None,
         active=True,
         chance=1,
-        price_factor=1
+        price_factor=1,
+        max_discharge=None
     ):
         self.start = start  # the starting point
         self.end = end  # the end point
@@ -23,6 +25,8 @@ class Link():
         self.chance = chance
         # shows how hard it is to transfer this resource by this route
         self.price_factor = price_factor
+        # maximum amount for discharge allowed in the link per timestep
+        self.max_discharge = max_discharge
 
 
 class Resource():
@@ -81,6 +85,7 @@ class Entity():
                 self.add_resource(new_resource=resource)
 
     def add_resource(self, new_resource):
+        ''' adds an instance of resource to the entity '''
         for link in new_resource.connections:
             link.start = self.name
         self.resources.append(new_resource)
@@ -209,10 +214,10 @@ class Model():
 
                         resource_dict['connections'] = connections_list
                         resources_list.append(resource_dict)
-                    
+
                 entity_dict['resources'] = resources_list
                 entities_list.append(entity_dict)
-                
+
         result_dict = {
             "name": self.name,
             "entities": entities_list
@@ -254,8 +259,9 @@ class Model():
                 resources=resources_list
             )
             self.entities.append(e)
-    
+
     def find_all_resources_names(self):
+        ''' list names for all resources '''
         all_resources_names = list()
         for entity in self.entities:
             for resource in entity.resources:
@@ -264,6 +270,7 @@ class Model():
         self.all_resources_names = all_resources_names
 
     def to_graph(self, resource_name):
+        ''' converts entites into source/demand/storage nodes '''
         g = Graph()
         for entity in self.entities:
             for resource in entity.resources:
@@ -298,17 +305,26 @@ class Model():
                     ''' nodes out of the entity '''
                     for link in resource.connections:
                         for node in g.nodes:
-                            if entity.name + '_' + 'source' == node.name: # same starting point   
-                                node.neighbors[link.end + '_' + 'demand'] = None # value to be saved in graph
-                                node.neighbors[link.end + '_' + 'storage'] = None
+                            if entity.name + '_' + 'source' == node.name:  # same starting point
+                                # value to be saved in graph
+                                node.neighbors[link.end +
+                                               '_' + 'demand'] = None
+                                node.neighbors[link.end +
+                                               '_' + 'storage'] = None
                             elif entity.name + '_' + 'demand' == node.name:
                                 pass
                             elif entity.name + '_' + 'storage' == node.name:
-                                node.neighbors[link.end + '_' + 'demand'] = None              
+                                node.neighbors[link.end +
+                                               '_' + 'demand'] = None
         return g
 
     def update_step(self):
-        pass
+
+        def list_all_demands_from_sources(self):
+            for entity in self.entities:
+                for resource in entity.resources:
+                    for link in resource.connections:
+                        pass
 
     def __str__(self):
         return self.name

@@ -21,6 +21,7 @@ Includes:
 - active: state of the link as being active or not
 - chance: chance of working properly
 - price_factor: shows how hard it is to transfer this resource by this route
+- max_discharge: maximum amount for discharge allowed in the link per timestep
 
 ### class Resource():
 It represents resources and has to be added to an instance of entity class.
