@@ -17,7 +17,12 @@ class Node():
         self.neighbors[str(neighbor)] = value
 
     def __str__(self):
-        return self.name
+        result = None
+        if self.type is not None:
+            result = self.name + '_' + self.type
+        else:
+            result = self.name
+        return result
 
     def __add__(self, other):
         if isinstance(other, Graph):
@@ -44,12 +49,12 @@ class Graph():
 
     def add_node(self, node):
         ''' adds a single node '''
-        if node.name in self.all_nodes_names:
+        if str(node) in self.all_nodes_names:
             # raises an error, duplicate names
             print('An error must be raised')
         else:
             self.nodes.append(node)
-            self.all_nodes_names.append(node.name)
+            self.all_nodes_names.append(str(node))
 
     def add_nodes(self, nodes):
         ''' add entities in batch '''
@@ -68,7 +73,7 @@ class Graph():
                     print(
                         neighbor +
                         " is not a valid neighbor for " +
-                        node.name
+                        str(node)
                     )
                     result_list.append(False)
         if False not in result_list:
@@ -92,7 +97,7 @@ class Graph():
             def duplicate_names_check(node_names):
                 ''' checking the validity of the node names '''
                 result = False
-                if node_names:
+                if node_names is not None:
                     visited = set()
                     dup = [x for x in node_names if x in visited or (
                         visited.add(x) or False)]
@@ -166,7 +171,7 @@ class Graph():
             ''' adding node names and other usable info to the info dictionary '''
             node_names = list()
             for node in self.nodes:
-                node_names.append(node.name)
+                node_names.append(str(node))
             info = {
                 'length': len(self.nodes),
                 'name': self.name,
@@ -184,7 +189,7 @@ class Graph():
         ''' finds neighboring node name in nodes_list, find its id '''
         result = None
         for id, node in enumerate(self.nodes):
-            if node.name == neighbor:
+            if str(node) == neighbor:
                 result = id
         return result
 
@@ -194,7 +199,7 @@ class Graph():
     def __add__(self, other):
         if isinstance(other, Graph):
             for node in other.nodes:
-                if node.name not in self.all_nodes_names:
+                if str(node) not in self.all_nodes_names:
                     self.add_node(node)
             result = self
 
