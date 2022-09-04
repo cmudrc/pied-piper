@@ -61,26 +61,24 @@ class Economy():
         transaction_list = list()
         for end_name in self.end_name_list:
             orders = all_orders[end_name]
-            scores = list()
+            scores_list = list()
             for order in orders: # sorting orders based on score
+                # if both source and demand is higher than 0
                 if self.info[order.start]['source'] > 0 and self.info[order.end]['demand'] > 0:
                     order.score = score_calculate(order.distance, order.price_factor)
-                    scores.append(order.score) # used for sorting
-                    orders = [x for _,x in sorted(zip(scores, orders), reverse=True)]
-            #print([order for order in orders])
-                    #print([(order.start, order.end, order.score, order.volume) for order in orders])
-            transaction_list.append(orders[0]) # best fit
-            #print(orders[0].start, orders[0].end)
-        #print([[x.start, x.end] for x in transaction_list])
+                    scores_list.append(order.score) # used for sorting
+            orders = [x for _,x in sorted(zip(scores_list, orders), reverse=True)]
+            if len(orders) > 0:
+                transaction_list.append(orders[0]) # best fit
         
         def make_transactions(transaction_list):
             if len(transaction_list) > 0:
                 for order in transaction_list:
-                    make_transaction(self, order=order)
+                    make_one_transaction(self, order=order)
             else:
                 print("Done")
 
-        def make_transaction(self, order):
+        def make_one_transaction(self, order):
             source = self.info[order.start]['source']
             demand = self.info[order.end]['demand']
             #print(self.info[order.start]['source'], self.info[order.end]['demand'])
@@ -106,7 +104,7 @@ class Economy():
 
 class Order():
     ''' used for placing an order '''
-    def __init__(self, start, end, distance, price_factor):
+    def __init__(self, start, end, distance, price_factor, max_volume = None):
         self.start = start # start-node name
         self.end = end # end-node name
         self.distance = distance # distance between two nodes
@@ -118,11 +116,11 @@ class Order():
 
 
 if __name__ == "__main__":
-    order_1 = Order(start='city_1', end='city_2', distance=1, price_factor=1.2)
-    order_2 = Order(start='city_1', end='city_1', distance=0.1, price_factor=1)
-    order_3 = Order(start='city_3', end='city_2', distance=2, price_factor=0.9)
-    order_4 = Order(start='city_4', end='city_2', distance=1.5, price_factor=1)
-    order_5 = Order(start='city_3', end='city_4', distance=1.5, price_factor=1)
+    order_1 = Order(start='city_1', end='city_2', distance=1, price_factor=1.2, max_volume = 3)
+    order_2 = Order(start='city_1', end='city_1', distance=0.1, price_factor=1, max_volume = 3)
+    order_3 = Order(start='city_3', end='city_2', distance=2, price_factor=0.9, max_volume = 3)
+    order_4 = Order(start='city_4', end='city_2', distance=1.5, price_factor=1, max_volume = 3)
+    order_5 = Order(start='city_3', end='city_4', distance=1.5, price_factor=1, max_volume = 3)
 
     info = {
         'city_1': {

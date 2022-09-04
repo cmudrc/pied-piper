@@ -319,7 +319,13 @@ class Model():
         return g
 
     def update_step(self):
-
+        eco = Economy()
+        eco.orders = list()
+        eco.info = dict()
+        # sources and demands added to economy
+        # results are readed and updated
+        # add storage units as sources and demands
+        # results are readed and updated
         def list_all_demands_from_sources(self):
             for entity in self.entities:
                 for resource in entity.resources:
