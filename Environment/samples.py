@@ -79,9 +79,23 @@ name = 'city_3'
 
 
 ''' sample nodes '''
-n_1 = Node(name='node_1', neighbors={'node_2' : 1.5})
-n_2 = Node(name='node_2')
-n_3 = Node(name='node_3', neighbors={
-    'node_1' : 2,
-    'node_2' : 1,
-    })
+n_1 = Node(name='node_1', type='storage', neighbors=[
+    {
+    'name' : 'node_2',
+    'type': 'source',
+    'value': 1.5
+    }
+    ])
+n_2 = Node(name='node_2', type='source')
+n_3 = Node(name='node_3', type='demand', neighbors=[
+    {
+    'name' : 'node_1',
+    'type': 'storage',
+    'value': 1
+    },
+    {
+    'name' : 'node_2',
+    'type': 'source',
+    'value': 1
+    }
+    ])
