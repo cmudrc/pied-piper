@@ -4,6 +4,8 @@ import json
 from graph import Node, Graph
 from economy import Order, Economy
 
+import networkx as nx
+
 
 class Link():
     ''' represents a connection between two entities for a certain resource '''
@@ -122,56 +124,67 @@ class Model():
 
         self.distance = None
         self.all_resources_names = None
+        self.all_types = ['source', 'demand', 'storage']
 
-    def distance_matrix_calculate(self):
-        ''' generates the distance matrix '''
-        size = len(self.entities)
-        distance_matrix = np.zeros((size, size))
-        for i, entity_i in enumerate(self.entities):
-            for j, entity_j in enumerate(self.entities):
-                x_1 = entity_i.location[0]
-                y_1 = entity_i.location[1]
-                x_2 = entity_j.location[0]
-                y_2 = entity_j.location[1]
-                dist = np.sqrt(
-                    np.power((x_1 - x_2), 2)
-                    + np.power((y_1 - y_2), 2)
-                )
-                distance_matrix[i, j] = dist
-        self.distance = distance_matrix
+
 
     def analyze(self):
         ''' it analyzes the model '''
+        def validate_entities_connections(self):
+            ''' checks for the validity of entities connections '''
+            final_result = True
+            #result_list = list() # if all elements are True, the final result will be True
+            all_entity_names = [x.name for x in self.entities]
+            for entity in self.entities:
+                for resource in entity.resources:
+                    for link in resource.connections:
+                        if link.end not in all_entity_names:
+                            print(
+                                "for "
+                                + resource.name
+                                + ":\n"
+                                + link.end
+                                + " is not a valid neighbor for "
+                                + entity.name
+                            )
+                            final_result = False
+            return final_result
+
+        def find_all_resources_names(self):
+            ''' list names for all resources '''
+            all_resources_names = list()
+            for entity in self.entities:
+                for resource in entity.resources:
+                    if resource.name not in all_resources_names:
+                        all_resources_names.append(resource.name)
+            self.all_resources_names = all_resources_names
+
+        def distance_matrix_calculate(self):
+            ''' generates the distance matrix '''
+            size = len(self.entities)
+            distance_matrix = np.zeros((size, size))
+            for i, entity_i in enumerate(self.entities):
+                for j, entity_j in enumerate(self.entities):
+                    x_1 = entity_i.location[0]
+                    y_1 = entity_i.location[1]
+                    x_2 = entity_j.location[0]
+                    y_2 = entity_j.location[1]
+                    dist = np.sqrt(
+                        np.power((x_1 - x_2), 2)
+                        + np.power((y_1 - y_2), 2)
+                    )
+                    distance_matrix[i, j] = dist
+            self.distance = distance_matrix
 
         ''' dynamic programming reutines '''
-        self.distance_matrix_calculate()
-        self.find_all_resources_names()
+        distance_matrix_calculate(self)
+        find_all_resources_names(self)
 
         ''' running checkups '''
         final_result = True
-        if not self.validate_entities_connections():
+        if not validate_entities_connections(self):
             final_result = False
 
-        return final_result
-
-    def validate_entities_connections(self):
-        ''' checks for the validity of entities connections '''
-        final_result = True
-        #result_list = list() # if all elements are True, the final result will be True
-        all_entity_names = [x.name for x in self.entities]
-        for entity in self.entities:
-            for resource in entity.resources:
-                for link in resource.connections:
-                    if link.end not in all_entity_names:
-                        print(
-                            "for "
-                            + resource.name
-                            + ":\n"
-                            + link.end
-                            + " is not a valid neighbor for "
-                            + entity.name
-                        )
-                        final_result = False
         return final_result
 
     def to_json(self):
@@ -260,68 +273,88 @@ class Model():
             )
             self.entities.append(e)
 
-    def find_all_resources_names(self):
-        ''' list names for all resources '''
-        all_resources_names = list()
-        for entity in self.entities:
-            for resource in entity.resources:
-                if resource.name not in all_resources_names:
-                    all_resources_names.append(resource.name)
-        self.all_resources_names = all_resources_names
-
     def to_graph(self, resource_name):
         ''' converts entites into source/demand/storage nodes '''
-        g = Graph()
+        def to_nametype(entity_name, type):
+            ''' ex: "city_1_storage" = to_nametype("city_1", "storage") '''
+            return entity_name + '_' + type
+
+        def from_nametype(self, nametype):
+            ''' ex: "city_1", "storage" = from_nametype("city_1_storage") '''
+            n = nametype.split('_')
+            if n[-1] in self.all_types:
+                n = n[:-1]
+                return ''.join(n)
+            else:
+                return nametype
+
+        G = nx.DiGraph(directed=True)
         for entity in self.entities:
             for resource in entity.resources:
                 if resource.name == resource_name:
                     ''' nodes within the entity '''
-                    inner_node_source = Node(
-                        name=entity.name + '_' + 'source',
-                        type='source',
-                        neighbors={
-                            entity.name + '_' + 'demand': None,
-                            entity.name + '_' + 'storage': None
-                        }
-                    )
-                    g.add_node(inner_node_source)
-                    inner_node_demand = Node(
-                        name=entity.name + '_' + 'demand',
-                        type='demand'
-                    )
-                    g.add_node(inner_node_demand)
-                    inner_node_storage = Node(
-                        name=entity.name + '_' + 'storage',
-                        type='storage',
-                        neighbors={
-                            entity.name + '_' + 'demand': None
-                        }
-                    )
-                    g.add_node(inner_node_storage)
+                    # source within entity
+                    start_name = to_nametype(entity.name, 'source')
+                    end_name = to_nametype(entity.name, 'demand')
+                    G.add_edge(start_name, end_name, object=dict())
+                    end_name = to_nametype(entity.name, 'storage')
+                    G.add_edge(start_name, end_name, object=dict())
+                    # demand within entity
+                    name = to_nametype(entity.name, 'demand')
+                    G.add_node(name)
+                    # storage within entity
+                    start_name = to_nametype(entity.name, 'storage')
+                    end_name = to_nametype(entity.name, 'demand')
+                    G.add_edge(start_name, end_name, object=dict())
 
         for entity in self.entities:
             for resource in entity.resources:
                 if resource.name == resource_name:
                     ''' nodes out of the entity '''
                     for link in resource.connections:
-                        for node in g.nodes:
-                            if entity.name + '_' + 'source' == node.name:  # same starting point
-                                # value to be saved in graph
-                                node.neighbors[link.end +
-                                               '_' + 'demand'] = None
-                                node.neighbors[link.end +
-                                               '_' + 'storage'] = None
-                            elif entity.name + '_' + 'demand' == node.name:
+                        for node in G.nodes:
+                            # source from outside of the entity
+                            # source nodes connects to both storage and demand nodes
+                            start_name = to_nametype(entity.name, 'source')
+                            if start_name == node:
+                                end_name = to_nametype(link.end, 'demand')
+                                G.add_edge(start_name, end_name, object=dict())
+                                end_name = to_nametype(link.end, 'storage')
+                                G.add_edge(start_name, end_name, object=dict())
+                            # demand from outside of the entity
+                            # demand nodes do not connect to any other nodes
+                            start_name = to_nametype(entity.name, 'demand')
+                            if start_name == node:
                                 pass
-                            elif entity.name + '_' + 'storage' == node.name:
-                                node.neighbors[link.end +
-                                               '_' + 'demand'] = None
-        return g
+                            # storage from outside of the entity
+                            # storage nodes only connects to demand nodes
+                            start_name = to_nametype(entity.name, 'storage')
+                            if start_name == node:
+                                end_name = to_nametype(link.end, 'demand')
+                                G.add_edge(start_name, end_name, object=dict())
+        return G
 
-    def update_step(self):
+    def show(self):
+        pass
+
+    def run_step(self, resource_name):
         eco = Economy()
         eco.orders = list()
         eco.info = dict()
+
+        G = self.to_graph(resource_name)
+        print(G.edges)
+        #for resource in self.all_resources_names:
+            #g = self.to_graph(resource_name=resource)
+            #print(g)
+            #for node in g.nodes:
+                #print(len(node.neighbors))
+                #for neighbor in node.neighbors:
+                #    print(node)
+                    #print(str(node) + ":" + neighbor['unique_name'])
+
+
+
         # sources and demands added to economy
         # results are readed and updated
         # add storage units as sources and demands
@@ -341,6 +374,5 @@ if __name__ == "__main__":
 
     m = Model(entities=[e_1, e_2])
     m.analyze()
-    #print(m.validate_entities_connections())
-    #print([node.name for node in m.to_graph('water').nodes])
-    print(m.to_graph('water').to_matrix())
+    #g = m.to_graph('water')
+    m.run_step('water')

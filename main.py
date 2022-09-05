@@ -1,4 +1,4 @@
-from environment.model import *
+from environment.model1 import *
 from environment.samples import e_1, e_2
 
 class Simulation():

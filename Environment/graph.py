@@ -4,21 +4,21 @@ class Node():
         # indicating the type of node from the ('source', 'demand', 'storage'), useful when doing the simulation.
         self.type = type
         # self.neighbors is a dict containing all neighbors of the graph in form of {'name':value} pairs
-        if neighbors and isinstance(neighbors, dict):
-            self.neighbors = neighbors
-        else:
-            self.neighbors = list()
+        self.neighbors = list()
+        if neighbors is not None and isinstance(neighbors, list):
+            for neighbor in neighbors:
+                self.add_neighbor(neighbor)
 
-    def add_neighbor(self, neighbor, value=0):
-        if neighbor.type is not None:
-            unique_name = neighbor.name + '_' + neighbor.type
+    def add_neighbor(self, neighbor):
+        if neighbor['type'] is not None:
+            unique_name = neighbor['name'] + '_' + neighbor['type']
         else:
-            unique_name = neighbor.name
+            unique_name = neighbor['name']
         self.neighbors.append(
             {
-                'value': value,
-                'name': neighbor.name,
-                'type': neighbor.type,
+                'value': neighbor['value'],
+                'name': neighbor['name'],
+                'type': neighbor['type'],
                 'unique_name': unique_name
             }
         )
@@ -87,6 +87,30 @@ class Graph():
             final_result = True
         return final_result
 
+    def show(self):
+        import networkx as nx
+        import pylab
+
+        G = nx.DiGraph(directed=True)
+        edges_list = list()
+        for node in self.nodes:
+            for neighbor in node.neighbors:
+                #print(neighbor)
+                ls = [str(node), neighbor['unique_name']]
+                edges_list.append(ls)
+            #print(edges_list)
+        G.add_edges_from(edges_list, weight=1)
+        options = {
+            'node_color': 'blue',
+            'node_size': 100,
+            'width': 3,
+            'arrowstyle': '-|>',
+            'arrowsize': 12,
+        }
+        nx.draw_networkx(G, arrows=True, **options)
+        pylab.show()
+
+
 
 if __name__ == "__main__":
     from samples import n_1, n_2, n_3
@@ -94,3 +118,6 @@ if __name__ == "__main__":
     g = Graph(name='test')
     g.add_nodes([n_1, n_2, n_3])
     g.validate_node_connections()
+    #for node in g.nodes:
+    #    print(node.neighbors)
+    g.show()

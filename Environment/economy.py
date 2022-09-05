@@ -10,11 +10,13 @@ class Economy():
             self.orders = orders
         self.info = info # stores the volume of source and demand for each point
 
-        self.start_name_list = None
-        self.end_name_list = None
+        self.start_name_list = None # a list of all starting points for orders
+        self.end_name_list = None # a list of all ending points for orders
+        self.all_orders_same_start = None # all orders starting from same point
+        self.all_orders_same_end = None # all orders ending in the same point
 
     def analyze(self):
-        ''' dynamic programming '''
+        ''' for dynamic programming reasons '''
         start_name_list = list()
         end_name_list = list()
         for order in self.orders:
@@ -75,6 +77,7 @@ class Economy():
             if len(transaction_list) > 0:
                 for order in transaction_list:
                     make_one_transaction(self, order=order)
+                print("Done")
             else:
                 print("Done")
 
