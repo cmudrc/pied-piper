@@ -77,9 +77,7 @@ class Economy():
             if len(transaction_list) > 0:
                 for order in transaction_list:
                     make_one_transaction(self, order=order)
-                print("Done")
-            else:
-                print("Done")
+                #print("Done")
 
         def make_one_transaction(self, order):
             source = self.info[order.start]['source']
@@ -124,6 +122,7 @@ if __name__ == "__main__":
     order_3 = Order(start='city_3', end='city_2', distance=2, price_factor=0.9, max_volume = 3)
     order_4 = Order(start='city_4', end='city_2', distance=1.5, price_factor=1, max_volume = 3)
     order_5 = Order(start='city_3', end='city_4', distance=1.5, price_factor=1, max_volume = 3)
+    order_5 = Order(start='city_1', end='city_4', distance=1, price_factor=1, max_volume = 3)
 
     info = {
         'city_1': {

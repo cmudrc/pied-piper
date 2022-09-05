@@ -1,9 +1,10 @@
-import numpy as np
 import json
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+import pylab
 
 from economy import Order, Economy
-
-import networkx as nx
 
 
 class Link():
@@ -121,11 +122,16 @@ class Model():
             else:
                 self.entities.append(entities)
 
-        self.distance = None
-        self.distance_header = None
-        self.all_resources_names = None
-        self.all_types = ['source', 'demand', 'storage']
+        self.graph = dict() # a dictionary of {resource_name: graph} pairs
+        self.detailed_graph = dict()
+        self.all_types = ['source', 'demand', 'storage'] # a list of all node types
 
+        ''' used for dynamic programming '''
+        self.distance = None # distance matrix
+        self.header_index_dict = None # matrix headers names
+        self.price_factor = None # price_factor matrix
+        self.max_discharge = None # max_discharge matrix
+        self.all_resources_names = None # a list of all resources names
 
     def analyze(self):
         ''' it analyzes the model '''
@@ -141,10 +147,10 @@ class Model():
             self.all_resources_names = all_resources_names
 
         def distance_matrix_calculate(self):
-            ''' generates the distance matrix '''
+            ''' generates the distance matrix and header_index_dict '''
             size = len(self.entities)
             distance_matrix = np.zeros((size, size))
-            distance_matrix_header = dict()
+            header_index_dict = dict()
             for i, entity_i in enumerate(self.entities):
                 for j, entity_j in enumerate(self.entities):
                     x_1 = entity_i.location[0]
@@ -156,18 +162,45 @@ class Model():
                         + np.power((y_1 - y_2), 2)
                     )
                     distance_matrix[i, j] = dist
-                distance_matrix_header[entity_i.name] = i
+                header_index_dict[entity_i.name] = i
             self.distance = distance_matrix # a matrix containing distance betnween nodes
-            self.distance_header = distance_matrix_header # a dictionary of {name of rows (and column) : index}
+            self.header_index_dict = header_index_dict # a dictionary of {name of rows (and column) : index}
+        
+        def price_factor_matrix_calculate(self):
+            ''' generates the price_factor matrix '''
+            size = len(self.entities)
+            price_factor = dict()
+            for index, entity in enumerate(self.entities):
+                for resource in entity.resources:
+                    price_factor_matrix = np.zeros((size, size))
+                    for link in resource.connections:
+                        end_index = self.header_index_dict[link.end]
+                        price_factor_matrix[index, end_index] = link.price_factor
+                    price_factor[resource.name] = price_factor_matrix
+            self.price_factor = price_factor
+
+        def max_discharge_matrix_calculate(self):
+            ''' generates the max_discharge matrix '''
+            size = len(self.entities)
+            max_discharge = dict()
+            for index, entity in enumerate(self.entities):
+                for resource in entity.resources:
+                    max_discharge_matrix = np.zeros((size, size))
+                    for link in resource.connections:
+                        end_index = self.header_index_dict[link.end]
+                        max_discharge_matrix[index, end_index] = link.max_discharge
+                    max_discharge[resource.name] = max_discharge_matrix
+            self.max_discharge = max_discharge         
 
         distance_matrix_calculate(self) # generates the distance matrix
         find_all_resources_names(self) # list names for all resources
+        price_factor_matrix_calculate(self)
+        max_discharge_matrix_calculate(self)
 
         ''' running checkups '''
         def validate_entities_connections(self):
             ''' checks for the validity of entities connections '''
             final_result = True
-            #result_list = list() # if all elements are True, the final result will be True
             all_entity_names = [x.name for x in self.entities]
             for entity in self.entities:
                 for resource in entity.resources:
@@ -277,62 +310,121 @@ class Model():
             self.entities.append(e)
 
     def to_graph(self, resource_name):
-        ''' converts entites into source/demand/storage nodes '''
-        def to_nametype(entity_name, type):
-            ''' ex: "city_1_storage" = to_nametype("city_1", "storage") '''
-            return entity_name + '_' + type
-
-        G = nx.DiGraph(directed=True)
+        ''' converts entities into nodes '''
+        H = nx.MultiDiGraph(directed=True)
         for entity in self.entities:
             for resource in entity.resources:
                 if resource.name == resource_name:
-                    ''' nodes within the entity '''
-                    # source within entity
-                    start_name = to_nametype(entity.name, 'source')
-                    end_name = to_nametype(entity.name, 'demand')
-                    G.add_edge(start_name, end_name, object=dict())
-                    end_name = to_nametype(entity.name, 'storage')
-                    G.add_edge(start_name, end_name, object=dict())
-                    # demand within entity
-                    name = to_nametype(entity.name, 'demand')
-                    G.add_node(name)
-                    # storage within entity
-                    start_name = to_nametype(entity.name, 'storage')
-                    end_name = to_nametype(entity.name, 'demand')
-                    G.add_edge(start_name, end_name, object=dict())
-
-        for entity in self.entities:
-            for resource in entity.resources:
-                if resource.name == resource_name:
-                    ''' nodes out of the entity '''
+                    items = {
+                        'location': entity.location,
+                        'name': entity.name,
+                        'source': resource.source,
+                        'demand': resource.demand,
+                        'deficiency_current': resource.deficiency_current,
+                        'deficiency_max': resource.deficiency_max,
+                        'storage_current': resource.storage_current,
+                        'storage_max': resource.storage_max
+                    }
+                    H.add_node(entity.name, **items)
                     for link in resource.connections:
-                        for node in G.nodes:
-                            # source from outside of the entity
-                            # source nodes connects to both storage and demand nodes
-                            start_name = to_nametype(entity.name, 'source')
-                            if start_name == node:
-                                end_name = to_nametype(link.end, 'demand')
-                                G.add_edge(start_name, end_name, object=dict())
-                                end_name = to_nametype(link.end, 'storage')
-                                G.add_edge(start_name, end_name, object=dict())
-                            # demand from outside of the entity
-                            # demand nodes do not connect to any other nodes
-                            start_name = to_nametype(entity.name, 'demand')
-                            if start_name == node:
-                                pass
-                            # storage from outside of the entity
-                            # storage nodes only connects to demand nodes
-                            start_name = to_nametype(entity.name, 'storage')
-                            if start_name == node:
-                                end_name = to_nametype(link.end, 'demand')
-                                G.add_edge(start_name, end_name, object=dict())
-        return G
+                        items = {
+                            'active': link.active,
+                            'chance': link.chance,
+                            'price_factor': link.price_factor,
+                            'max_discharge': link.max_discharge
+                        }
+                        H.add_edge(entity.name, link.end, **items)
+        self.graph[resource_name] = H
 
-    def show(self):
-        pass
+    def to_detailed_graph(self, resource_name):
+        ''' converts entites into source/demand/storage nodes '''
+        G = nx.DiGraph(directed=True)
+        H = self.graph[resource_name]
+        for node in H.nodes:
+            ''' adding the nodes '''
+            node_unique_name = self.to_nametype(node, 'source')
+            items = {
+                'name': node,
+                'type': 'source',
+                'location': H.nodes[node]['location']
+            }
+            G.add_node(node_unique_name, **items)
+            node_unique_name = self.to_nametype(node, 'demand')
+            items = {
+                'name': node,
+                'type': 'demand',
+                'location': H.nodes[node]['location']
+            }
+            G.add_node(node_unique_name, **items)
+            node_unique_name = self.to_nametype(node, 'storage')
+            items = {
+                'name': node,
+                'type': 'storage',
+                'location': H.nodes[node]['location']
+            }
+            G.add_node(node_unique_name, **items)
 
-    def run_step(self, resource_name):
-        def from_nametype(nametype):
+            ''' inner nodes connections within an entity '''
+            node_unique_name_start = self.to_nametype(node, 'storage')
+            node_unique_name_end = self.to_nametype(node, 'demand')
+            items = {
+
+            }
+            G.add_edge(node_unique_name_start, node_unique_name_end, **items)
+            node_unique_name_start = self.to_nametype(node, 'source')
+            node_unique_name_end = self.to_nametype(node, 'storage')
+            items = {
+
+            }
+            G.add_edge(node_unique_name_start, node_unique_name_end, **items)
+            node_unique_name_start = self.to_nametype(node, 'source')
+            node_unique_name_end = self.to_nametype(node, 'demand')
+            items = {
+
+            }
+            G.add_edge(node_unique_name_start, node_unique_name_end, **items)
+        
+        for edge in H.edges:
+            ''' adding edges between nodes of different entities '''
+            node_unique_name_start = self.to_nametype(edge[0], 'source')
+            node_unique_name_end = self.to_nametype(edge[1], 'demand')
+            items = {
+
+            }
+            G.add_edge(node_unique_name_start, node_unique_name_end, **items)
+            node_unique_name_start = self.to_nametype(edge[0], 'source')
+            node_unique_name_end = self.to_nametype(edge[1], 'storage')
+            items = {
+                
+            }
+            G.add_edge(node_unique_name_start, node_unique_name_end, **items)
+            node_unique_name_start = self.to_nametype(edge[0], 'storage')
+            node_unique_name_end = self.to_nametype(edge[1], 'demand')
+            items = {
+                
+            }
+            G.add_edge(node_unique_name_start, node_unique_name_end, **items)
+        self.detailed_graph[resource_name] = G
+
+    def show(self, resource_name, detailed=False):
+        options = {
+            'node_color': 'blue',
+            'node_size': 100,
+            'width': 3,
+            'arrowstyle': '-|>',
+            'arrowsize': 12,
+        }
+        if not detailed:
+            H = self.graph[resource_name]
+            pos = nx.spring_layout(H, seed=13649)
+            nx.draw_networkx(H, pos=pos, arrows=True, **options)
+        else:
+            G = self.detailed_graph[resource_name]
+            pos = nx.spring_layout(G, seed=13649)
+            nx.draw_networkx(G, pos=pos, arrows=True, **options)
+        pylab.show()
+
+    def from_nametype(self, nametype):
             ''' ex: "city_1", "storage" = from_nametype("city_1_storage") '''
             n = nametype.split('_')
             if n[-1] in self.all_types:
@@ -340,7 +432,12 @@ class Model():
                 return '_'.join(name), n[-1]
             else:
                 return nametype, None
-    
+
+    def to_nametype(self, entity_name, type):
+        ''' ex: "city_1_storage" = to_nametype("city_1", "storage") '''
+        return entity_name + '_' + type
+
+    def run_step(self, resource_name):
         eco = Economy()
         eco.orders = list()
         eco.info = dict()
@@ -351,38 +448,53 @@ class Model():
         def read_result_eco(self):
             pass
 
-        G = self.to_graph(resource_name)
-        print(G.edges)
+        self.to_graph(resource_name)
+        self.to_detailed_graph(resource_name)
+        self.show(resource_name, detailed=True)
+        #print(G.edges)
 
         # eco.info is updated
+        G = self.graph[resource_name]
         for node in G.nodes:
-            node_name, _ = from_nametype(node)
-            index = self.distance_header[node_name]
+            node_name, _ = self.from_nametype(node)
+            index = self.header_index_dict[node_name]
+            entity = self.entities[index]
+            for resource in entity.resources:
+                if resource.name == resource_name:
+                    source = resource.source
+                    demand = resource.demand
             eco.info[node_name] = {
-                'source': self.entities[index], #### 
-                'demand': self.entities[index] ####
+                'source': source,
+                'demand': demand
             }
+        print(eco.info)
 
-        # sources and demands added to economy
+        # step 1: only sources and demands added to economy and calculate the result
+        order_list = list()
         for edge in G.edges:
-            name_start, type_start = from_nametype(edge[0])
-            name_end, type_end = from_nametype(edge[1])
+            name_start, type_start = self.from_nametype(edge[0])
+            name_end, type_end = self.from_nametype(edge[1])
             if type_start == 'source' or type_start == 'demand':
                 if type_end == 'source' or type_end == 'demand':
-
-                    index_start = self.distance_header[name_start]
-                    index_end = self.distance_header[name_end]
-                    Order(
+                    index_start = self.header_index_dict[name_start]
+                    index_end = self.header_index_dict[name_end]
+                    price_factor_matrix = self.price_factor[resource_name]
+                    max_discharge_matrix = self.max_discharge[resource_name]
+                    order = Order(
                         start=edge[0],
                         end=edge[1],
                         distance=self.distance[index_start][index_end],
-                        price_factor=1, ####
-                        max_volume=1 ###
+                        price_factor=price_factor_matrix[index_start][index_end],
+                        max_volume=max_discharge_matrix[index_start][index_end]
                     )
+                    order_list.append(order)
+        eco.order = order_list
+        eco.run()
+        print(eco.info)   
         # results are readed and updated
-        # add storage units as sources and demands
+        # add storage units to remaining sources and demands
         for node in G.nodes:
-            _, type = from_nametype(node)
+            _, type = self.from_nametype(node)
             if type == 'storage':
                 pass
         # results are readed and updated
