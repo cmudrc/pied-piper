@@ -1,7 +1,6 @@
 import numpy as np
 import json
 
-from graph import Node, Graph
 from economy import Order, Economy
 
 import networkx as nx
@@ -123,13 +122,48 @@ class Model():
                 self.entities.append(entities)
 
         self.distance = None
+        self.distance_header = None
         self.all_resources_names = None
         self.all_types = ['source', 'demand', 'storage']
 
 
-
     def analyze(self):
         ''' it analyzes the model '''
+
+        ''' dynamic programming reutines '''
+        def find_all_resources_names(self):
+            ''' list names for all resources '''
+            all_resources_names = list()
+            for entity in self.entities:
+                for resource in entity.resources:
+                    if resource.name not in all_resources_names:
+                        all_resources_names.append(resource.name)
+            self.all_resources_names = all_resources_names
+
+        def distance_matrix_calculate(self):
+            ''' generates the distance matrix '''
+            size = len(self.entities)
+            distance_matrix = np.zeros((size, size))
+            distance_matrix_header = dict()
+            for i, entity_i in enumerate(self.entities):
+                for j, entity_j in enumerate(self.entities):
+                    x_1 = entity_i.location[0]
+                    y_1 = entity_i.location[1]
+                    x_2 = entity_j.location[0]
+                    y_2 = entity_j.location[1]
+                    dist = np.sqrt(
+                        np.power((x_1 - x_2), 2)
+                        + np.power((y_1 - y_2), 2)
+                    )
+                    distance_matrix[i, j] = dist
+                distance_matrix_header[entity_i.name] = i
+            self.distance = distance_matrix # a matrix containing distance betnween nodes
+            self.distance_header = distance_matrix_header # a dictionary of {name of rows (and column) : index}
+
+        distance_matrix_calculate(self) # generates the distance matrix
+        find_all_resources_names(self) # list names for all resources
+
+        ''' running checkups '''
         def validate_entities_connections(self):
             ''' checks for the validity of entities connections '''
             final_result = True
@@ -149,38 +183,7 @@ class Model():
                             )
                             final_result = False
             return final_result
-
-        def find_all_resources_names(self):
-            ''' list names for all resources '''
-            all_resources_names = list()
-            for entity in self.entities:
-                for resource in entity.resources:
-                    if resource.name not in all_resources_names:
-                        all_resources_names.append(resource.name)
-            self.all_resources_names = all_resources_names
-
-        def distance_matrix_calculate(self):
-            ''' generates the distance matrix '''
-            size = len(self.entities)
-            distance_matrix = np.zeros((size, size))
-            for i, entity_i in enumerate(self.entities):
-                for j, entity_j in enumerate(self.entities):
-                    x_1 = entity_i.location[0]
-                    y_1 = entity_i.location[1]
-                    x_2 = entity_j.location[0]
-                    y_2 = entity_j.location[1]
-                    dist = np.sqrt(
-                        np.power((x_1 - x_2), 2)
-                        + np.power((y_1 - y_2), 2)
-                    )
-                    distance_matrix[i, j] = dist
-            self.distance = distance_matrix
-
-        ''' dynamic programming reutines '''
-        distance_matrix_calculate(self)
-        find_all_resources_names(self)
-
-        ''' running checkups '''
+        
         final_result = True
         if not validate_entities_connections(self):
             final_result = False
@@ -279,15 +282,6 @@ class Model():
             ''' ex: "city_1_storage" = to_nametype("city_1", "storage") '''
             return entity_name + '_' + type
 
-        def from_nametype(self, nametype):
-            ''' ex: "city_1", "storage" = from_nametype("city_1_storage") '''
-            n = nametype.split('_')
-            if n[-1] in self.all_types:
-                n = n[:-1]
-                return ''.join(n)
-            else:
-                return nametype
-
         G = nx.DiGraph(directed=True)
         for entity in self.entities:
             for resource in entity.resources:
@@ -338,32 +332,60 @@ class Model():
         pass
 
     def run_step(self, resource_name):
+        def from_nametype(nametype):
+            ''' ex: "city_1", "storage" = from_nametype("city_1_storage") '''
+            n = nametype.split('_')
+            if n[-1] in self.all_types:
+                name = n[:-1]
+                return '_'.join(name), n[-1]
+            else:
+                return nametype, None
+    
         eco = Economy()
         eco.orders = list()
         eco.info = dict()
 
+        def update_eco(self):
+            pass
+
+        def read_result_eco(self):
+            pass
+
         G = self.to_graph(resource_name)
         print(G.edges)
-        #for resource in self.all_resources_names:
-            #g = self.to_graph(resource_name=resource)
-            #print(g)
-            #for node in g.nodes:
-                #print(len(node.neighbors))
-                #for neighbor in node.neighbors:
-                #    print(node)
-                    #print(str(node) + ":" + neighbor['unique_name'])
 
-
+        # eco.info is updated
+        for node in G.nodes:
+            node_name, _ = from_nametype(node)
+            index = self.distance_header[node_name]
+            eco.info[node_name] = {
+                'source': self.entities[index], #### 
+                'demand': self.entities[index] ####
+            }
 
         # sources and demands added to economy
+        for edge in G.edges:
+            name_start, type_start = from_nametype(edge[0])
+            name_end, type_end = from_nametype(edge[1])
+            if type_start == 'source' or type_start == 'demand':
+                if type_end == 'source' or type_end == 'demand':
+
+                    index_start = self.distance_header[name_start]
+                    index_end = self.distance_header[name_end]
+                    Order(
+                        start=edge[0],
+                        end=edge[1],
+                        distance=self.distance[index_start][index_end],
+                        price_factor=1, ####
+                        max_volume=1 ###
+                    )
         # results are readed and updated
         # add storage units as sources and demands
+        for node in G.nodes:
+            _, type = from_nametype(node)
+            if type == 'storage':
+                pass
         # results are readed and updated
-        def list_all_demands_from_sources(self):
-            for entity in self.entities:
-                for resource in entity.resources:
-                    for link in resource.connections:
-                        pass
 
     def __str__(self):
         return self.name

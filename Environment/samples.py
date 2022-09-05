@@ -1,5 +1,4 @@
 from model import Link, Resource, Entity
-from graph import Node, Graph
 
 
 ''' sample entities '''
@@ -76,26 +75,3 @@ resources=[r1_2, r2_2, r3_2]
 e_3 = Entity(
 name = 'city_3'
     )
-
-
-''' sample nodes '''
-n_1 = Node(name='node_1', type='storage', neighbors=[
-    {
-    'name' : 'node_2',
-    'type': 'source',
-    'value': 1.5
-    }
-    ])
-n_2 = Node(name='node_2', type='source')
-n_3 = Node(name='node_3', type='demand', neighbors=[
-    {
-    'name' : 'node_1',
-    'type': 'storage',
-    'value': 1
-    },
-    {
-    'name' : 'node_2',
-    'type': 'source',
-    'value': 1
-    }
-    ])
