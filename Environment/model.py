@@ -346,21 +346,25 @@ class Model():
             items = {
                 'name': node,
                 'type': 'source',
-                'location': H.nodes[node]['location']
+                'location': H.nodes[node]['location'],
+                'source': H.nodes[node]['source']
             }
             G.add_node(node_unique_name, **items)
             node_unique_name = self.to_nametype(node, 'demand')
             items = {
                 'name': node,
                 'type': 'demand',
-                'location': H.nodes[node]['location']
+                'location': H.nodes[node]['location'],
+                'demand': H.nodes[node]['demand']
             }
             G.add_node(node_unique_name, **items)
             node_unique_name = self.to_nametype(node, 'storage')
             items = {
                 'name': node,
                 'type': 'storage',
-                'location': H.nodes[node]['location']
+                'location': H.nodes[node]['location'],
+                'storage_current': H.nodes[node]['storage_current'],
+                'storage_max': H.nodes[node]['storage_max'],
             }
             G.add_node(node_unique_name, **items)
 
@@ -368,20 +372,17 @@ class Model():
             node_unique_name_start = self.to_nametype(node, 'storage')
             node_unique_name_end = self.to_nametype(node, 'demand')
             items = {
-
+                'active': True,
+                'chance': 1,
+                'price_factor': 1,
+                'max_discharge': None
             }
             G.add_edge(node_unique_name_start, node_unique_name_end, **items)
             node_unique_name_start = self.to_nametype(node, 'source')
             node_unique_name_end = self.to_nametype(node, 'storage')
-            items = {
-
-            }
             G.add_edge(node_unique_name_start, node_unique_name_end, **items)
             node_unique_name_start = self.to_nametype(node, 'source')
             node_unique_name_end = self.to_nametype(node, 'demand')
-            items = {
-
-            }
             G.add_edge(node_unique_name_start, node_unique_name_end, **items)
         
         for edge in H.edges:
@@ -389,19 +390,28 @@ class Model():
             node_unique_name_start = self.to_nametype(edge[0], 'source')
             node_unique_name_end = self.to_nametype(edge[1], 'demand')
             items = {
-
+                'active': H.edges[edge]['active'],
+                'chance': H.edges[edge]['chance'],
+                'price_factor': H.edges[edge]['price_factor'],
+                'max_discharge': H.edges[edge]['max_discharge']
             }
             G.add_edge(node_unique_name_start, node_unique_name_end, **items)
             node_unique_name_start = self.to_nametype(edge[0], 'source')
             node_unique_name_end = self.to_nametype(edge[1], 'storage')
             items = {
-                
+                'active': H.edges[edge]['active'],
+                'chance': H.edges[edge]['chance'],
+                'price_factor': H.edges[edge]['price_factor'],
+                'max_discharge': H.edges[edge]['max_discharge']                
             }
             G.add_edge(node_unique_name_start, node_unique_name_end, **items)
             node_unique_name_start = self.to_nametype(edge[0], 'storage')
             node_unique_name_end = self.to_nametype(edge[1], 'demand')
             items = {
-                
+                'active': H.edges[edge]['active'],
+                'chance': H.edges[edge]['chance'],
+                'price_factor': H.edges[edge]['price_factor'],
+                'max_discharge': H.edges[edge]['max_discharge']                
             }
             G.add_edge(node_unique_name_start, node_unique_name_end, **items)
         self.detailed_graph[resource_name] = G
