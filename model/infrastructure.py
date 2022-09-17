@@ -1,16 +1,7 @@
 import json
 from datetime import date
 
-''' importing from parent folder '''
-import os
-import sys
-import inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from core.structure import Structure
-
-
 
 
 class Infrastructure(Structure):
@@ -20,18 +11,10 @@ class Infrastructure(Structure):
 
     def __init__(
         self,
-        name=None,
-        type=None,
         start=None,
         end=None,
-        two_sided=True,
         resources=None,
-        cost=None,
-        active=True,
-        project_start_date=None,
-        coeff=0.01,
-        degree=2,
-        seed=None
+        **kwargs
     ):
         '''
         Create a new infrastructure
@@ -40,24 +23,13 @@ class Infrastructure(Structure):
             name: route name
             start: the starting point name
             end: the ending point name
-            two_sided: is the route usable from both sides True/False
             resources: a dictionary of {"resource name": max_discharge} pairs
             self.current_discharge: a dictionary like above, only with current_discharge value
-            * the rest from the Structure class
+            **kwargs: the variables for initializing the Structure class
         '''
-        super().__init__(
-            name=name,
-            active=active,
-            cost=cost,
-            project_start_date=project_start_date,
-            coeff=coeff,
-            degree=degree,
-            seed=seed
-        )
-        self.type = type
+        super().__init__(**kwargs)
         self.start = start
         self.end = end
-        self.two_sided = two_sided
         self.resources = resources
         self.current_discharge = None
 
@@ -108,15 +80,13 @@ if __name__ == "__main__":
 
     i = Infrastructure(
         name='sample road',
-        type='road',
         start='city_1',
         end='city_2',
-        two_sided=True,
         resources={
             'water': 5,
         },
-        cost=1000,
-        project_start_date=date(2000, 1, 1),
+        initial_cost=1000,
+        initiation_date=date(2000, 1, 1),
         coeff=0.01,
         degree=2,
         seed=208

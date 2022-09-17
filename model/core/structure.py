@@ -10,9 +10,9 @@ class Structure():
         self,
         name=None,
         active=True,
-        cost=None,
-        project_start_date=None,
-        coeff=0.01,
+        initial_cost=None,
+        initiation_date=None,
+        coeff=0,
         degree=2,
         seed=None
     ):
@@ -21,22 +21,22 @@ class Structure():
 
         Args:
             name: the structure name, a string
-            cost: the structure (initial) built cost, an int or float
-            active: if the infrastructure is active, True/False value
-            project_start_date: the built date, a datetime object
+            initial_cost: the structure (initial) built cost, an int or float
+            active: whether the infrastructure is active (manually set), True/False value
+            initiation_date: the built date, a datetime object
             coeff: used for calculating probability of working currect as a function of time
             degree: used for calculating probability of working currect as a function of time
             seed: used for repeatable random generation
         '''
         self.name = str(name)
         self.active = active
-        self.cost = cost
+        self.initial_cost = initial_cost
 
         ''' decay '''
-        if isinstance(project_start_date, date):
-            self.project_start_date = project_start_date
+        if isinstance(initiation_date, date):
+            self.initiation_date = initiation_date
         else:
-            self.project_start_date = None
+            self.initiation_date = None
         self.coeff = coeff
         self.degree = degree
 
@@ -81,7 +81,7 @@ class Structure():
         '''
         Probability of working currect as a function of time
         '''
-        start_date = self.project_start_date
+        start_date = self.initiation_date
         dt = date - start_date
         dt_years = dt.days / 365.25
         degree = self.degree
@@ -100,8 +100,8 @@ if __name__ == "__main__":
     s = Structure(
         name='sample infrastructure',
         active=True,
-        cost=1000,
-        project_start_date=date(2000, 1, 1),
+        initial_cost=1000,
+        initiation_date=date(2000, 1, 1),
         coeff=0.01,
         degree=2,
         seed=208
