@@ -224,7 +224,7 @@ if __name__ == "__main__":
         resources=[
             Resource(
                 name='food',
-                use=10,
+                use=8,
                 produce=10,
                 storage_current=0,
                 storage_max=30,
@@ -240,7 +240,7 @@ if __name__ == "__main__":
         resources=[
             Resource(
                 name='food',
-                use=10,
+                use=5,
                 produce=10,
                 storage_current=10,
                 storage_max=40,
