@@ -1,5 +1,5 @@
-from environment.model1 import *
-from environment.samples import e_1, e_2
+from model.model import Model
+
 
 class Simulation():
     def __init__(self, entities):
@@ -19,3 +19,7 @@ class Simulation():
 
     def save(self):
         pass
+
+
+if __name__ == "__main__":
+    pass

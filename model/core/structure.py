@@ -1,114 +1,109 @@
-from datetime import date
+from tools.statistics import Gaussian
 import random
 
 
 class Structure():
     '''
-    Represents a structure that decays over time
+    Represents a structure that degrades over time
+
     '''
+
     def __init__(
         self,
         name=None,
         active=True,
         initial_cost=None,
         initiation_date=None,
-        coeff=0,
-        degree=2,
+        distribution=None,
         seed=None
     ):
-        '''
-        Create a new structure
-
-        Args:
-            name: the structure name, a string
-            initial_cost: the structure (initial) built cost, an int or float
-            active: whether the infrastructure is active (manually set), True/False value
-            initiation_date: the built date, a datetime object
-            coeff: used for calculating probability of working currect as a function of time
-            degree: used for calculating probability of working currect as a function of time
-            seed: used for repeatable random generation
-        '''
-        self.name = str(name)
+        self.name = name
         self.active = active
         self.initial_cost = initial_cost
-
-        ''' decay '''
-        if isinstance(initiation_date, date):
-            self.initiation_date = initiation_date
-        else:
-            self.initiation_date = None
-        self.coeff = coeff
-        self.degree = degree
-
-        ''' seed for random '''
+        self.initiation_date = initiation_date
+        self.renovation_effect = None
         self.seed = seed
 
-    def is_survived(self, date):
-        '''
-        Checks if the structure survived based weighted random using self.probability_per_time() result.
-        It only tells if the instance survived the date or not, won't affect 'self.active'.
-        '''
-        sequence = [True, False]
-        probability = self.probability_per_time(date)
-        if self.active is True:  # if is (still) active
-            if self.seed is not None:
-                random.seed(self.seed)  # if has seed
-            result = random.choices(
-                sequence, weights=[probability, 1-probability], k=1)
-        else:
-            result = False
-        return result
+        if distribution is not None:
+            if distribution['type'] == 'gaussian':
+                self.distribution = Gaussian(
+                    mean=distribution['mean'],
+                    sigma=distribution['sigma']
+                )
 
-    def is_working(self, date):
+    def probability_of_working(self, start_date, end_date):
         '''
-        Checks if the structure survived based weighted random using self.probability_per_time() result.
-        If the instance cannot survive the date, the self.active will be affected
+        Probability of working in the desired duration of time
+        
+        Args:
+            start_date: start of duration of time, datetime object
+            end_date: end of duration of time, datetime object
         '''
-        sequence = [True, False]
-        probability = self.probability_per_time(date)
-        if self.active is True:  # if is (still) active
-            if self.seed is not None:
-                random.seed(self.seed)  # if has seed
-            result = random.choices(
-                sequence, weights=[probability, 1-probability], k=1)
-            if result is False:
-                self.active = False  # won't be active anymore
-        else:
-            result = False
-        return result
+        if self.distribution is not None:
+            t0 = self.initiation_date
+            t1 = start_date
+            t2 = end_date
 
-    def probability_per_time(self, date):
-        '''
-        Probability of working currect as a function of time
-        '''
-        start_date = self.initiation_date
-        dt = date - start_date
-        dt_years = dt.days / 365.25
-        degree = self.degree
-        coeff = self.coeff
-        P = 1 - (coeff * (dt_years ** degree))
-        #P = 1 - ((coeff * dt_years) ** degree)
-        if P < 0:
-            P = 0
+            Q = self.distribution.probability(
+                time_start=t1-t0,
+                time_end=t2-t0
+            )
+            P = 1 - Q
+        else:
+            P = 1
         return P
 
-    def __str__(self):
-        return self.name
+    def is_working(self, probability):
+        '''
+        Checks if the structure survived based on weighted random.
+        
+        Args:
+            probability: probability of working (or remaining alive) at each step
+        '''
+        sequence = [True, False]  # set of possible outcomes
+        if self.active is True:  # if is (still) active
+            if self.seed is not None:
+                random.seed(self.seed)  # if has seed
+            result = random.choices(
+                sequence,
+                weights=[probability, 1-probability],
+                k=1  # result length
+            )
+        else:
+            result = False
+        return result
+
+    def show_distribution(self):
+        '''
+        Shows the distribution
+
+        '''
+        self.distribution.show()
 
 
 if __name__ == "__main__":
+    from datetime import date, timedelta
+
+
     s = Structure(
         name='sample infrastructure',
         active=True,
         initial_cost=1000,
         initiation_date=date(2000, 1, 1),
-        coeff=0.01,
-        degree=2,
-        seed=208
+        distribution={
+            'type': 'gaussian',
+            'sigma': timedelta(days=20),
+            'mean': timedelta(days=100),
+        },
+        seed=None
     )
-    print('# Name: ', s)
-    for year in range(2000, 2011):
-        print('>>> year', year, ':')
-        print(' probability of working', ':',
-              s.probability_per_time(date(year, 1, 1)))
-        print(' is working?', ':', s.is_working(date(year, 1, 1)))
+
+    P = s.probability_of_working(
+        start_date=date(2000, 1, 1),
+        end_date=date(2000, 1, 1) + timedelta(days=100)
+    )
+    print(P)
+
+    print(s.is_working(P))
+
+    s.show_distribution()
