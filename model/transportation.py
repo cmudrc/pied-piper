@@ -46,6 +46,9 @@ class Transportation():
         t = self.how_long(pos, pos_destination)
         t.hours * self.fuel.use
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Foot(Transportation):
     def __init__(self):
@@ -55,6 +58,30 @@ class Foot(Transportation):
             fuel=Resource(
                 name='food',
                 use=1  # per hour
+            )
+        )
+
+
+class Sedan(Transportation):
+    def __init__(self):
+        super().__init__(
+            name='sedan',
+            speed=100,  # km/h
+            fuel=Resource(
+                name='energy',
+                use=5  # per hour
+            )
+        )
+
+
+class Truck(Transportation):
+    def __init__(self):
+        super().__init__(
+            name='truck',
+            speed=50,  # km/h
+            fuel=Resource(
+                name='energy',
+                use=5  # per hour
             )
         )
 
