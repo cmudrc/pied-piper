@@ -1,25 +1,85 @@
 from core.entity import Entity
 from transportation import Foot
+from resource import Resource
         
 
 class Agent(Entity):
-    def __init__(self, name, pos, vehicles=[]):
+    """
+    Representes an agent.
+
+    Args:
+        name: name
+        pos: position
+        transportations: a list of possible transportation methods
+
+    """
+    def __init__(self, name, pos, resources, transportations):
         super().__init__(
             name=name,
             pos=pos
         )
-        
-        self.vehicles = vehicles
-        self.transportation_calc()
-
-    def transportation_calc(self):
-        self.transportations = []
-        for vehicle in self.vehicles:
-            self.transportations.append(vehicle)
-        self.transportations.append(Foot()) # everyone at least walks
+        self.transportations = transportations
+        self.resources = resources
 
     def decide(self):
         pass
+
+
+class Human(Agent):
+    """
+    Representes a human as a sample.
+
+    Args:
+        name: name
+        pos: position
+        vehicles: a list of vehicles (in the future, public transport systems may be included)
+
+    """
+    def __init__(self, name, pos, vehicles):
+        transportations = []
+        transportations.append(Foot())
+        for vehicle in vehicles:
+            transportations.append(vehicle)
+
+        food = Resource(
+            name='food',
+            use=0.1, # kg/h
+            produce=0.5, # kg/h
+            storage_current=0, # kg
+            storage_max=10, # kg
+            deficiency_current=0, # kg
+            decificiency_max=10 # kg
+        )
+        water = Resource(
+            name='water',
+            use=0.1, # kg/h, liter/h
+            produce=0, # kg/h, liter/h
+            storage_current=10, # kg, liter
+            storage_max=10, # kg, liter
+            deficiency_current=0, # kg, liter
+            decificiency_max=10 # kg, liter
+        )
+        energy = Resource(
+            name='energy',
+            use=0.5, # W/h
+            produce=0.1, # W/h
+            storage_current=0, # W
+            storage_max=10, # W
+            deficiency_current=0, # W
+            decificiency_max=10 # W
+        )
+        resources = {
+            'food': food,
+            'water': water,
+            'energy': energy,
+        }
+        
+        super().__init__(
+            name=name,
+            pos=pos,
+            resources=resources,
+            transportations=transportations
+            )
 
 
 def generate_agent(count=1):
@@ -33,15 +93,15 @@ def generate_agent(count=1):
 
 
 if __name__ == "__main__":
-    from transportation import Truck
+    from transportation import Vehicle
 
 
-    a_1 = Agent(
+    a_1 = Human(
         name='person_1',
         pos=[0.3, 0.4],
-        vehicles=[Truck()]
+        vehicles=[Vehicle()]
     )
-    a_2 = Agent(
+    a_2 = Human(
         name='person_2',
         pos=[0, 0],
         vehicles=[]

@@ -62,23 +62,11 @@ class Foot(Transportation):
         )
 
 
-class Sedan(Transportation):
+class Vehicle(Transportation):
     def __init__(self):
         super().__init__(
-            name='sedan',
+            name='vehicle',
             speed=100,  # km/h
-            fuel=Resource(
-                name='energy',
-                use=5  # per hour
-            )
-        )
-
-
-class Truck(Transportation):
-    def __init__(self):
-        super().__init__(
-            name='truck',
-            speed=50,  # km/h
             fuel=Resource(
                 name='energy',
                 use=5  # per hour
