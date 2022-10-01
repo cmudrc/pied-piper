@@ -10,16 +10,19 @@ class Agent(Entity):
     Args:
         name: name
         pos: position
+        resources: a list containing all resources that the agent use, produce, or store
+        settlement: the name the settlement that agent resides
         transportations: a list of possible transportation methods
 
     """
-    def __init__(self, name, pos, resources, transportations):
+    def __init__(self, name, pos, resources, settlement, transportations):
         super().__init__(
             name=name,
             pos=pos
         )
         self.transportations = transportations
         self.resources = resources
+        self.settlement = settlement
 
     def decide(self):
         pass
@@ -35,7 +38,7 @@ class Human(Agent):
         vehicles: a list of vehicles (in the future, public transport systems may be included)
 
     """
-    def __init__(self, name, pos, vehicles):
+    def __init__(self, name, pos, vehicles=[]):
         transportations = []
         transportations.append(Foot())
         for vehicle in vehicles:
@@ -78,6 +81,7 @@ class Human(Agent):
             name=name,
             pos=pos,
             resources=resources,
+            settlement=None,
             transportations=transportations
             )
 

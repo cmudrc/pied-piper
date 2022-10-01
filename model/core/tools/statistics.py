@@ -23,20 +23,46 @@ class Gaussian():
         plt.show()
 
 
+class DiracDelta():
+    def __init__(self, main=timedelta(days=0)):
+        self.main = main
+
+    def probability(self, time_start, time_end):
+        probability = 0
+        if time_start <= self.main and time_end > self.main:
+            probability = 1
+        return probability
+
+    def show(self):
+        pass
+
+
 class Exponential():
     def __init__(self, coeff, degree):
         pass
 
 
 if __name__ == "__main__":
+    time_start=timedelta(days=0)
+    time_end=timedelta(days=70)
+
     g = Gaussian(
         mean=timedelta(days=70),
         sigma=timedelta(days=10)
     )
     print(
         g.probability(
-            time_start=timedelta(days=0),
-            time_end=timedelta(days=70)
+            time_start=time_start,
+            time_end=time_end
         )
     )
-    g.show()
+    
+    d = DiracDelta(
+        main=timedelta(days=35)
+    )
+    print(
+        d.probability(
+            time_start=time_start,
+            time_end=time_end
+        )
+    )
