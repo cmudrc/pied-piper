@@ -1,5 +1,5 @@
 from core.entity import Entity
-from core.tools.boundery import Circular
+from core.utils.boundery import Circular
 from agent import Agent
 
 

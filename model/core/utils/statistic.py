@@ -3,13 +3,20 @@ from datetime import timedelta
 import numpy as np
 import matplotlib.pyplot as plt
 
+try:
+    from utils.unit_manager import Unit
+except:    
+    from unit_manager import Unit
+
 
 class Gaussian():
-    def __init__(self, mean=timedelta(days=0), sigma=timedelta(days=1)):
-        self.mean = mean
-        self.sigma = sigma
+    def __init__(self, mean, sigma):
+        self.mean = timedelta(days=mean.to('day').val)
+        self.sigma = timedelta(days=sigma.to('day').val)
 
     def probability(self, time_start, time_end):
+        time_start = timedelta(days=time_start.to('day').val)
+        time_end = timedelta(days=time_end.to('day').val)
         point_start = (time_start - self.mean) / self.sigma
         point_end = (time_end - self.mean) / self.sigma
         probability = norm.cdf(point_end) - norm.cdf(point_start)
@@ -24,10 +31,12 @@ class Gaussian():
 
 
 class DiracDelta():
-    def __init__(self, main=timedelta(days=0)):
-        self.main = main
+    def __init__(self, main):
+        self.main = timedelta(days=main.to('day').val)
 
     def probability(self, time_start, time_end):
+        time_start = timedelta(days=time_start.to('day').val)
+        time_end = timedelta(days=time_end.to('day').val)
         probability = 0
         if time_start <= self.main and time_end > self.main:
             probability = 1
@@ -43,12 +52,12 @@ class Exponential():
 
 
 if __name__ == "__main__":
-    time_start=timedelta(days=0)
-    time_end=timedelta(days=70)
+    time_start=Unit(0, 'day')
+    time_end=Unit(70, 'day')
 
     g = Gaussian(
-        mean=timedelta(days=70),
-        sigma=timedelta(days=10)
+        mean=Unit(70, 'day'),
+        sigma=Unit(10, 'day')
     )
     print(
         g.probability(
@@ -58,7 +67,7 @@ if __name__ == "__main__":
     )
     
     d = DiracDelta(
-        main=timedelta(days=35)
+        main=Unit(35, 'day')
     )
     print(
         d.probability(

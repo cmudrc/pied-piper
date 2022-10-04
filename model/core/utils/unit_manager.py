@@ -1,3 +1,6 @@
+from datetime import date, timedelta
+
+
 all_units = {
     'weight': {
         'kg': 1,
@@ -40,15 +43,11 @@ class Unit():
         self.val = float(val)
         self.unit_name = unit_name
 
-    def is_type(self, other_unit_type):
-        other_type_numerator, other_type_denominator = self.unit_name_split(other_unit_type)
-        result = False
-        if other_type_denominator == self.type_denominator and \
-            other_type_denominator == self.type_denominator:
-            result = True
-        return result
-
     def unit_name_split(self, unit_name):
+        """
+        Splits the unit_name into numerator and denominator.
+        
+        """
         unit_name = unit_name.split('/')
         unit_name_numerator = unit_name[0]
         try:
@@ -58,6 +57,10 @@ class Unit():
         return unit_name_numerator, unit_name_denominator
 
     def type_finder(self, unit_name):
+        """
+        Looks for the type of unit in all_units dict.
+        
+        """
         unit_type = None
         for key in all_units:
             if unit_name in all_units[key]:
@@ -65,30 +68,32 @@ class Unit():
         return unit_type
 
     def scientific_notion(self):
+        """
+        Returns the scientific notion of val.
+        
+        """
         scientific_notion = "{:e}".format(self.val)
         return scientific_notion
 
     def conversion(self, other_unit):
+        """
+        Calculates the new val based on other_unit.
+
+        """
         val = None
         unit_name = None
         other_name_numerator, other_name_denominator = self.unit_name_split(other_unit)
         other_type_numerator = self.type_finder(other_name_numerator)
         other_type_denominator = self.type_finder(other_name_denominator)
-        #print(other_type_numerator, self.type_numerator)
-        #print(other_type_denominator, self.type_denominator)
         if other_type_numerator == self.type_numerator:
             coeff_other_numerator = all_units[other_type_numerator][other_name_numerator]
-            #print(coeff_other_numerator)
             coeff_self_numerator = all_units[self.type_numerator][self.name_numerator]
-            #print(coeff_self_numerator)
             coeff_numerator = coeff_other_numerator / coeff_self_numerator
             coeff_denominator = 1
             if other_type_denominator == self.type_denominator:
                 if other_type_denominator is not None and self.type_denominator is not None:
                     coeff_other_denominator = all_units[other_type_denominator][other_name_denominator]
-                    #print(coeff_other_denominator)
                     coeff_self_denominator = all_units[self.type_denominator][self.name_denominator]
-                    #print(coeff_self_denominator)
                     coeff_denominator = coeff_other_denominator / coeff_self_denominator
             else:
                 print("unit convertion type error in denominator")
@@ -125,35 +130,47 @@ class Unit():
         return str(self.val) + ' ' + self.unit_name
 
     def __add__(self, other):
-        if self.type_numerator == other.type_numerator:
-            if other.type_denominator == self.type_denominator:
-                other.convert(self.unit_name)
-            return Unit(self.val + other.val, self.unit_name)
+        """
+        Supports unit_1 + unit_2, and also Unit(val, <time>) + date()
+
+        """
+        if isinstance(other, Unit):
+            if self.type_numerator == other.type_numerator:
+                if other.type_denominator == self.type_denominator:
+                    other.convert(self.unit_name)
+                return Unit(self.val + other.val, self.unit_name)
+        elif isinstance(other, date) and self.type_numerator == 'time' and self.type_denominator is None:
+            return other + timedelta(days=self.to('day').val)
     
     def __sub__(self, other):
-        if self.type_numerator == other.type_numerator:
-            if other.type_denominator == self.type_denominator:
-                other.convert(self.unit_name)
-            return Unit(self.val - other.val, self.unit_name)
+        """
+        Supports unit_1 - unit_2, and also Unit(val, <time>) - date()
+
+        """
+        if isinstance(other, Unit):
+            if self.type_numerator == other.type_numerator:
+                if other.type_denominator == self.type_denominator:
+                    other.convert(self.unit_name)
+                return Unit(self.val - other.val, self.unit_name)
+        elif isinstance(other, date) and self.type_numerator == 'time' and self.type_denominator is None:
+            return other - timedelta(days=self.to('day').val)
 
     def __mul__(self, other):
+        """
+        Only supports scalar multipication.
+        
+        """
         return Unit(self.val * other, self.unit_name)
 
-    def __div__(self, other):
-        return Unit(self.val / other, self.unit_name)
+    def __floordiv__(self, other):
+        """
+        Only supports scalar float division.
+        
+        """
+        return Unit(self.val // other, self.unit_name)
 
 
 if __name__ == "__main__":
     v = Unit(2, 'km/hour')
-    v.convert('m')
+    v.convert('m/minute')
     print(v)
-
-    production_rate = Unit(5, 'ton/day')
-    production_rate.convert('kg/minute')
-    print(production_rate)
-    print(production_rate.is_type('weight/time'))
-    #u_2 = Unit(3, 'g/h')
-
-    #u = u_1 - u_2
-    #u.convert('g')
-    #print(u * 2)

@@ -1,5 +1,6 @@
-from tools.statistics import Gaussian
 import random
+
+from utils.statistic import Gaussian
 
 
 class DegradationProperty():
@@ -7,7 +8,6 @@ class DegradationProperty():
     Represents an object that degrades over time
 
     '''
-
     def __init__(
         self,
         name=None,
@@ -45,8 +45,8 @@ class DegradationProperty():
             t2 = end_date
 
             Q = self.distribution.probability(
-                time_start=t1-t0,
-                time_end=t2-t0
+                time_start=Unit((t1-t0).days, 'day'),
+                time_end=Unit((t2-t0).days, 'day')
             )
             P = 1 - Q
         else:
@@ -82,25 +82,26 @@ class DegradationProperty():
 
 
 if __name__ == "__main__":
-    from datetime import date, timedelta
+    from datetime import date
+    from utils.unit_manager import Unit
 
 
     s = DegradationProperty(
         name='sample structure',
         active=True,
         initial_cost=1000,
-        initiation_date=date(2000, 1, 1),
+        initiation_date=date(2000,1,1),
         distribution={
             'type': 'gaussian',
-            'sigma': timedelta(days=20),
-            'mean': timedelta(days=100),
+            'sigma': Unit(20,'day'),
+            'mean': Unit(100,'day'),
         },
         seed=None
     )
 
     P = s.probability_of_working(
         start_date=date(2000, 1, 1),
-        end_date=date(2000, 1, 1) + timedelta(days=100)
+        end_date=Unit(100, 'day')+date(2000, 1, 1)
     )
     print(P)
 
