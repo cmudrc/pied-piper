@@ -2,7 +2,7 @@ from tools.statistics import Gaussian
 import random
 
 
-class Structure():
+class DegradationProperty():
     '''
     Represents a structure that degrades over time
 
@@ -85,8 +85,8 @@ if __name__ == "__main__":
     from datetime import date, timedelta
 
 
-    s = Structure(
-        name='sample infrastructure',
+    s = DegradationProperty(
+        name='sample structure',
         active=True,
         initial_cost=1000,
         initiation_date=date(2000, 1, 1),

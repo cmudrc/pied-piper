@@ -41,7 +41,6 @@ class Transportation():
         t = L / self.speed  # hour
         return timedelta(hours=t)
 
-
     def how_much_fuel(self, pos, pos_destination):
         t = self.how_long(pos, pos_destination)
         t.hours * self.fuel.use

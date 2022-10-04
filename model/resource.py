@@ -1,3 +1,6 @@
+from core.tools.unit import Unit
+
+
 class Resource():
     """
     Representes a resource. Each resource has capability of using, producing and storing.
