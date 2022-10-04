@@ -1,9 +1,19 @@
 import numpy as np
 
 
-class Circular():
-    def __init__(self, center, radius):
+class Boundery:
+    def __init__(self, center):
         self.center = center
+
+    def is_in(self, other):
+        return False
+
+
+class Circular(Boundery):
+    def __init__(self, center, radius):
+        super().__init__(
+            center=center
+        )
         self.radius = radius
 
     def is_in(self, other):

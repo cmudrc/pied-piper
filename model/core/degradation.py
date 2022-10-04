@@ -1,6 +1,6 @@
 import random
 
-from utils.statistic import Gaussian
+from utils.statistic import Gaussian, DiracDelta
 
 
 class DegradationProperty():
@@ -13,6 +13,7 @@ class DegradationProperty():
         name=None,
         active=True,
         initial_cost=None,
+        renovation_cost=0,
         initiation_date=None,
         distribution=None,
         seed=None
@@ -20,8 +21,9 @@ class DegradationProperty():
         self.name = name
         self.active = active
         self.initial_cost = initial_cost
+        self.renovation_cost = renovation_cost
+        #self.renovation_effect = 
         self.initiation_date = initiation_date
-        self.renovation_effect = None
         self.seed = seed
 
         if distribution is not None:
@@ -29,6 +31,10 @@ class DegradationProperty():
                 self.distribution = Gaussian(
                     mean=distribution['mean'],
                     sigma=distribution['sigma']
+                )
+            elif distribution['type'] == 'dirac_delta':
+                self.distribution = DiracDelta(
+                    main=distribution['main']
                 )
 
     def probability_of_working(self, start_date, end_date):
@@ -74,10 +80,10 @@ class DegradationProperty():
         return result
 
     def show_distribution(self):
-        '''
+        """
         Shows the distribution
 
-        '''
+        """
         self.distribution.show()
 
 
