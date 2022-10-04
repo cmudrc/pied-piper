@@ -4,7 +4,7 @@ import random
 
 class DegradationProperty():
     '''
-    Represents a structure that degrades over time
+    Represents an object that degrades over time
 
     '''
 
