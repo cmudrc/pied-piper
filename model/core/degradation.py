@@ -13,7 +13,6 @@ class DegradationProperty():
         name=None,
         active=True,
         initial_cost=None,
-        renovation_cost=0,
         initiation_date=None,
         distribution=None,
         seed=None
@@ -21,8 +20,7 @@ class DegradationProperty():
         self.name = name
         self.active = active
         self.initial_cost = initial_cost
-        self.renovation_cost = renovation_cost
-        #self.renovation_effect = 
+        self.renovation_effect = None
         self.initiation_date = initiation_date
         self.seed = seed
 
@@ -36,6 +34,10 @@ class DegradationProperty():
                 self.distribution = DiracDelta(
                     main=distribution['main']
                 )
+    
+    def renovation_effect_calc(self, renovation_cost, current_date):
+        delta_t = (current_date - self.initiation_date)
+        return delta_t * (renovation_cost / self.initial_cost)
 
     def probability_of_working(self, start_date, end_date):
         '''

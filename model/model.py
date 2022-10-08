@@ -14,7 +14,9 @@ class Model():
         self.infrastructures = infrastructures
 
     def run_step(self):
-        #########
+        ### agens update internally
+        ### settlements update internally
+        ### agents look for other neighboring settlements source/demands to move
         self.current_step += 1
         self.current_date = self.step_size + self.current_date
 
