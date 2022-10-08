@@ -61,7 +61,7 @@ class StaticSource:
 
     def add(self, amount):
         self.current_amount += amount
-        if self.current_amount > self.max_amount:
+        if self.current_amount.to('kg').val > self.max_amount.to('kg').val:
             self.current_amount = self.max_amount.copy()
     
     def sub(self, amount):
@@ -78,7 +78,7 @@ class Deficiency(StaticSource):
         )
     
     def is_alive(self):
-        if self.current_amount > self.max_amount:
+        if self.current_amount.to('kg').val >= self.max_amount.to('kg').val:
             return False
         else:
             return True

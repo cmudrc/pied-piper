@@ -112,6 +112,34 @@ class TestUseProduceClass(unittest.TestCase):
         self.assertEqual(p.current_amount.to('ton/day').val, 0, msg="refill")
 
 
+class TestDeficiencyClass(unittest.TestCase):
+    def test_add(self):
+        d = Deficiency(
+            current_amount=Unit(1, 'kg'),
+            max_amount=Unit(5, 'kg')
+        )
+        d.add(Unit(1, 'kg'))
+        val = d.current_amount.to('kg').val
+        self.assertEqual(val, 2, msg='add')
+
+    def test_add_max(self):
+        d = Deficiency(
+            current_amount=Unit(1, 'kg'),
+            max_amount=Unit(5, 'kg')
+        )
+        d.add(Unit(5, 'kg'))
+        val = d.current_amount.to('kg').val
+        self.assertEqual(val, 5, msg='add')
+
+    def test_add_max_alive(self):
+        d = Deficiency(
+            current_amount=Unit(1, 'kg'),
+            max_amount=Unit(5, 'kg')
+        )
+        d.add(Unit(5, 'kg'))
+        self.assertFalse(d.is_alive(), msg='not alive')
+
+
 #################################### statistical_distribtuion.py ####################################
 
 from tools import Gaussian, DiracDelta

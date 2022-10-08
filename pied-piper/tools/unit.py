@@ -130,6 +130,9 @@ class Unit():
             self.unit_name = unit_name
             self.name_numerator, self.name_denominator = self.unit_name_split(unit_name)
 
+    def copy(self):
+        return Unit(self.val, self.unit_name)
+
     def __str__(self):
         return str(self.val) + ' ' + self.unit_name
 
