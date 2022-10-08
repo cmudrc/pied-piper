@@ -1,4 +1,4 @@
-from core.entity import Entity
+from tools import Entity
 from transportation import Foot
 from resource import Resource
         

@@ -4,12 +4,13 @@ import numpy as np
 class Boundery:
     """
     An enclosed area in space.
-
-    Args:
-        center: position of center of boundery in [x, y] form.
     """
 
     def __init__(self, center):
+        """
+        Args:
+            center: position of center of boundery in [x, y] form.
+        """
         self.center = center
 
     def is_in(self, other):
