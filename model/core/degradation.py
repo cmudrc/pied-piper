@@ -1,7 +1,7 @@
 import random
 
-from utils.unit_manager import Unit
 from utils.statistic import Gaussian, DiracDelta
+from utils.unit_manager import Unit
 
 
 class DegradationProperty:
@@ -18,14 +18,12 @@ class DegradationProperty:
     """
     def __init__(
         self,
-        name=None,
         active=True,
         initial_cost=None,
         initiation_date=None,
         distribution=None,
         seed=None
     ):
-        self.name = name
         self.active = active
         self.initial_cost = initial_cost
         self.renovation_effect = None
@@ -72,12 +70,13 @@ class DegradationProperty:
 
     def is_working(self, probability):
         """
-        Checks if the structure survived based on weighted random.
+        Checks if the structure survived based on weighted random and returns the result (True/False).
         
         Args:
             probability: probability of working (or remaining alive) at each step
         
         """
+        result = False
         sequence = [True, False]  # set of possible outcomes
         if self.active is True:  # if is (still) active
             if self.seed is not None:
@@ -87,9 +86,21 @@ class DegradationProperty:
                 weights=[probability, 1-probability],
                 k=1  # result length
             )
-        else:
-            result = False
         return result
+
+    def is_active(self, start_date, end_date):
+        """
+        Checks if the element is going to survive the desired duration of time or not.
+        Updates the self.active as result.
+
+        Args:
+            start_date: start of duration of time, datetime object
+            end_date: end of duration of time, datetime object
+        
+        """
+        probability = self.probability_of_working(start_date, end_date)
+        self.active = self.is_working(probability)
+        return self.active
 
     def show_distribution(self):
         """
@@ -105,7 +116,6 @@ if __name__ == "__main__":
 
 
     s = DegradationProperty(
-        name='sample structure',
         initiation_date=date(2000, 1, 1),
         distribution={
             'type': 'gaussian',
@@ -127,7 +137,6 @@ if __name__ == "__main__":
 
 
     d = DegradationProperty(
-        name='sample structure',
         initiation_date=date(2000, 1, 1),
         distribution={
             'type': 'dirac delta',
