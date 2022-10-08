@@ -35,12 +35,16 @@ class DiracDelta():
         self.main = timedelta(days=main.to('day').val)
 
     def probability(self, time_start, time_end):
-        time_start = timedelta(days=time_start.to('day').val)
-        time_end = timedelta(days=time_end.to('day').val)
-        probability = 0
-        if time_start <= self.main and time_end > self.main:
-            probability = 1
+        point_start = timedelta(days=time_start.to('day').val)
+        point_end = timedelta(days=time_end.to('day').val)
+        probability = self.CDF(point_end) - self.CDF(point_start)
         return probability
+
+    def CDF(self, point):
+        result = 0
+        if self.main <= point:
+            result = 1
+        return result
 
     def show(self):
         pass
@@ -53,10 +57,10 @@ class Exponential():
 
 if __name__ == "__main__":
     time_start=Unit(0, 'day')
-    time_end=Unit(70, 'day')
+    time_end=Unit(90, 'day')
 
     g = Gaussian(
-        mean=Unit(70, 'day'),
+        mean=Unit(100, 'day'),
         sigma=Unit(10, 'day')
     )
     print(
@@ -67,7 +71,7 @@ if __name__ == "__main__":
     )
     
     d = DiracDelta(
-        main=Unit(35, 'day')
+        main=Unit(100, 'day')
     )
     print(
         d.probability(
