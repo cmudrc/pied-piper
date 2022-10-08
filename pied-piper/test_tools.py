@@ -90,20 +90,26 @@ class TestEntityClass(unittest.TestCase):
         e_1 = Entity(pos=[0, 0])
         e_2 = Entity(pos=[0, 1])
         d = e_1.distance(e_2)
-        self.assertAlmostEqual(d, 1, places=5, msg="Distance")
+        self.assertAlmostEqual(d, 1, places=5, msg="distance")
 
 
 #################################### source.py ####################################
 
-from tools import Use, Produce, Storage, Deficiency
+from tools import Use, Produce
+from tools import Storage, Deficiency
 
 
-class TestUseClass(unittest.TestCase):
-    def test_entity_distance(self):
-        e_1 = Entity(pos=[0, 0])
-        e_2 = Entity(pos=[0, 1])
-        d = e_1.distance(e_2)
-        self.assertAlmostEqual(d, 1, places=5, msg="Distance")
+class TestUseProduceClass(unittest.TestCase):
+    def test_refill(self):
+        p = Produce(rate=Unit(5, 'ton/day'))
+        p.refill(delta_t=Unit(1, 'day'))
+        self.assertEqual(p.current_amount.to('ton/day').val, 5, msg="refill")
+
+    def test_sub(self):
+        p = Produce(rate=Unit(5, 'ton/day'))
+        p.refill(delta_t=Unit(1, 'day')) 
+        p.sub(Unit(10, 'ton'))
+        self.assertEqual(p.current_amount.to('ton/day').val, 0, msg="refill")
 
 
 #################################### statistical_distribtuion.py ####################################

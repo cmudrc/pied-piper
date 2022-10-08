@@ -6,20 +6,22 @@ from resource import Resource
 class Agent(Entity):
     """
     Representes an agent.
-
-    Args:
-        name: name
-        pos: position
-        resources: a list containing all resources that the agent use, produce, or store
-        settlement: the name the settlement that agent resides
-        transportations: a list of possible transportation methods
-
     """
+
     def __init__(self, name, pos, resources, settlement, transportations):
         super().__init__(
             name=name,
             pos=pos
         )
+        """
+        Args:
+            name: name
+            pos: position
+            resources: a list containing all resources that the agent use, produce, or store
+            settlement: the name the settlement that agent resides
+            transportations: a list of possible transportation methods
+        """
+
         self.transportations = transportations
         self.resources = resources
         self.settlement = settlement
@@ -31,14 +33,15 @@ class Agent(Entity):
 class Human(Agent):
     """
     Representes a human as a sample.
-
-    Args:
-        name: name
-        pos: position
-        vehicles: a list of vehicles (in the future, public transport systems may be included)
-
     """
+
     def __init__(self, name, pos, vehicles=[]):
+        """
+        Args:
+            name: name
+            pos: position
+            vehicles: a list of vehicles (in the future, public transport systems may be included)
+        """
         transportations = []
         transportations.append(Foot())
         for vehicle in vehicles:

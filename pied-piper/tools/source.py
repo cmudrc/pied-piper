@@ -1,3 +1,9 @@
+try:
+    from .unit import Unit
+except:
+    from unit import Unit
+
+
 class DynamicSource:
     """
     Resource production/use rate.
@@ -6,19 +12,22 @@ class DynamicSource:
     def __init__(self, rate=0):
         """
         Args:
-                rate: rate of production/use
+            rate: rate of production/use
         """
         
         self.rate = rate
         self.current_amount = None
         
     def refill(self, delta_t):
-        self.current_amount = self.rate * delta_t.days
+        rate = self.rate.to('kg/day')
+        t = delta_t.to('day')
+        amount = rate.val * t.val
+        self.current_amount = Unit(amount, 'kg')
 
     def sub(self, amount):
         self.current_amount -= amount
-        if self.current_amount < 0:
-            self.current_amount = 0
+        if self.current_amount.val < 0:
+            self.current_amount.val = 0
 
 
 class Use(DynamicSource):
@@ -81,3 +90,8 @@ class Storage(StaticSource):
             current_amount=current_amount,
             max_amount=max_amount
         )
+
+
+if __name__ == "__main__":
+    p = Produce(rate=Unit(5, 'ton/day'))
+    p.refill(delta_t=Unit(1, 'day'))
