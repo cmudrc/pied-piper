@@ -35,6 +35,10 @@ all_units = {
 
 
 class Unit():
+    """
+    A value with physical unit, could be converted into other supported units.
+    """
+    
     def __init__(self, val, unit_name):
         self.unit_name = unit_name
         self.name_numerator, self.name_denominator = self.unit_name_split(unit_name)
@@ -46,8 +50,8 @@ class Unit():
     def unit_name_split(self, unit_name):
         """
         Splits the unit_name into numerator and denominator.
-        
         """
+
         unit_name = unit_name.split('/')
         unit_name_numerator = unit_name[0]
         try:
@@ -59,8 +63,8 @@ class Unit():
     def type_finder(self, unit_name):
         """
         Looks for the type of unit in all_units dict.
-        
         """
+
         unit_type = None
         for key in all_units:
             if unit_name in all_units[key]:
@@ -69,17 +73,17 @@ class Unit():
 
     def scientific_notion(self):
         """
-        Returns the scientific notion of val.
-        
+        Returns the scientific notion of val.        
         """
+
         scientific_notion = "{:e}".format(self.val)
         return scientific_notion
 
     def conversion(self, other_unit):
         """
         Calculates the new val based on other_unit.
-
         """
+
         val = None
         unit_name = None
         other_name_numerator, other_name_denominator = self.unit_name_split(other_unit)
@@ -106,8 +110,8 @@ class Unit():
     def to(self, other_unit):
         """
         Returns a new converted instance and keeps this instance untouched.
-
         """
+
         val, unit_name = self.conversion(other_unit)
         if val is not None and unit_name is not None:
             result = Unit(val, unit_name)
@@ -118,8 +122,8 @@ class Unit():
     def convert(self, other_unit):
         """
         Changes the instance after conversion.
-
         """
+
         val, unit_name = self.conversion(other_unit)
         if val is not None and unit_name is not None:
             self.val = val
@@ -132,8 +136,8 @@ class Unit():
     def __add__(self, other):
         """
         Supports unit_1 + unit_2, and also Unit(val, <time>) + date()
-
         """
+
         if isinstance(other, Unit):
             if self.type_numerator == other.type_numerator:
                 if other.type_denominator == self.type_denominator:
@@ -145,8 +149,8 @@ class Unit():
     def __sub__(self, other):
         """
         Supports unit_1 - unit_2, and also Unit(val, <time>) - date()
-
         """
+
         if isinstance(other, Unit):
             if self.type_numerator == other.type_numerator:
                 if other.type_denominator == self.type_denominator:
@@ -158,15 +162,15 @@ class Unit():
     def __mul__(self, other):
         """
         Only supports scalar multipication.
-        
         """
+
         return Unit(self.val * other, self.unit_name)
 
     def __floordiv__(self, other):
         """
         Only supports scalar float division.
-        
         """
+        
         return Unit(self.val // other, self.unit_name)
 
 

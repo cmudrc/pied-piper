@@ -4,12 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 try:
-    from .unit_manager import Unit
+    from .unit import Unit
 except:
-    from unit_manager import Unit
+    from unit import Unit
 
 
 class Gaussian():
+    """
+    Gaussian distribution.
+    """
+
     def __init__(self, mean, sigma):
         self.mean = timedelta(days=mean.to('day').val)
         self.sigma = timedelta(days=sigma.to('day').val)
@@ -31,6 +35,10 @@ class Gaussian():
 
 
 class DiracDelta():
+    """
+    Dirac Delta distribution.
+    """
+    
     def __init__(self, main):
         self.main = timedelta(days=main.to('day').val)
 

@@ -2,6 +2,13 @@ import numpy as np
 
 
 class Boundery:
+    """
+    An enclosed area in space.
+
+    Args:
+        center: position of center of boundery in [x, y] form.
+    """
+
     def __init__(self, center):
         self.center = center
 
@@ -10,6 +17,10 @@ class Boundery:
 
 
 class Circular(Boundery):
+    """
+    A circular boundery in space.
+    """
+    
     def __init__(self, center, radius):
         super().__init__(
             center=center

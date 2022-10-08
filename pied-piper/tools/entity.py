@@ -3,19 +3,16 @@ import numpy as np
 
 class Entity:
     """
-    A super class for representing cities, remote factories, and even humans.
-    
+    A super class for representing cities, remote factories, and even humans.    
     """
+
     def __init__(self, name=None, pos=[0, 0]):
         """
-        Creates an entity
-
         Args:
             name: name of the entity, a string
             pos: position of the entity, a list of [x, y]
-            active: whether the entity is active, True/False
-
         """
+
         self.name = name
         self.pos = pos
 

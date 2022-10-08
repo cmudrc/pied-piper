@@ -3,7 +3,7 @@ import unittest
 
 #################################### boundery.py ####################################
 
-from boundery import Circular
+from tools import Circular
 
 
 class Other():
@@ -26,8 +26,8 @@ class TestCircularClass(unittest.TestCase):
 
 #################################### statistic.py ####################################
 
-from statistic import Gaussian, DiracDelta
-from unit_manager import Unit
+from tools import Gaussian, DiracDelta
+from tools import Unit
 
 
 class TestGaussianClass(unittest.TestCase):
@@ -78,7 +78,7 @@ class TestDiracDeltaClass(unittest.TestCase):
 
 from datetime import date
 
-from unit_manager import Unit
+from tools import Unit
 
 
 class TestUnitClass(unittest.TestCase):

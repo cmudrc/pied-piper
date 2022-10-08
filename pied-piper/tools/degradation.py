@@ -1,20 +1,21 @@
 import random
 
-from utils import Gaussian, DiracDelta
+try:
+    from .statistical_distribution import Gaussian, DiracDelta
+except:
+    from statistical_distribution import Gaussian, DiracDelta
 
+try:
+    from .unit import Unit
+except:
+    from unit import Unit
+    
 
 class DegradationProperty:
     """
     Represents degradation property of an object that degrades over time.
-
-    Args:
-        name: name
-        active: is the object still active?
-        initial_cost: cost of building the structure
-        distribution: a dictionary containing information about the districbution function of life expectency
-        seed: for repeatable results
-
     """
+
     def __init__(
         self,
         active=True,
@@ -23,6 +24,16 @@ class DegradationProperty:
         distribution=None,
         seed=None
     ):
+        """
+        Args:
+            name: name
+            active: is the object still active?
+            initial_cost: cost of building the structure
+            initiation_date: date in which it was built
+            distribution: a dictionary containing information about the districbution function of life expectency
+            seed: for repeatable results
+        """
+
         self.active = active
         self.initial_cost = initial_cost
         self.renovation_effect = None
@@ -111,7 +122,7 @@ class DegradationProperty:
 
 if __name__ == "__main__":
     from datetime import date
-    from utils.unit_manager import Unit
+    from unit import Unit
 
 
     s = DegradationProperty(
