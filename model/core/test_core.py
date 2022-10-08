@@ -19,7 +19,7 @@ class TestEntityClass(unittest.TestCase):
 from datetime import date
 
 from degradation import DegradationProperty
-from utils.unit_manager import Unit
+from utils import Unit
 
 
 class TestDegradationPropertyClass(unittest.TestCase):
