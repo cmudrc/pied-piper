@@ -1,2 +1,4 @@
-from utils.unit_manager import Unit
-from utils.statistic import Gaussian, DiracDelta
+from .utils.unit_manager import Unit
+
+from .degradation import DegradationProperty
+from .entity import Entity

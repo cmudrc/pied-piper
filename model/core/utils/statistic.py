@@ -3,7 +3,10 @@ from datetime import timedelta
 import numpy as np
 import matplotlib.pyplot as plt
 
-from unit_manager import Unit
+try:
+    from .unit_manager import Unit
+except:
+    from unit_manager import Unit
 
 
 class Gaussian():

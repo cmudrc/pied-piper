@@ -1,7 +1,6 @@
 import random
 
-from utils.statistic import Gaussian, DiracDelta
-from utils.unit_manager import Unit
+from utils import Gaussian, DiracDelta
 
 
 class DegradationProperty:
