@@ -14,10 +14,10 @@ class DynamicSource:
         Args:
             rate: rate of production/use
         """
-        
+
         self.rate = rate
         self.current_amount = None
-        
+
     def refill(self, delta_t):
         rate = self.rate.to('kg/day')
         t = delta_t.to('day')
@@ -34,6 +34,7 @@ class Use(DynamicSource):
     """
     A use node.
     """
+
     def __init__(self, rate=0):
         super().__init__(
             rate=rate
@@ -44,7 +45,7 @@ class Produce(DynamicSource):
     """
     A produce node.
     """
-    
+
     def __init__(self, rate=0):
         super().__init__(
             rate=rate
@@ -70,7 +71,7 @@ class StaticSource:
         self.current_amount += amount
         if self.current_amount.to('kg').val > self.max_amount.to('kg').val:
             self.current_amount = self.max_amount.copy()
-    
+
     def sub(self, amount):
         self.current_amount -= amount
         if self.current_amount.to('kg').val < 0:
@@ -81,13 +82,13 @@ class Deficiency(StaticSource):
     """
     Represent deficiency like a storage unit.
     """
-    
+
     def __init__(self, current_amount=0, max_amount=0):
         super().__init__(
             current_amount=current_amount,
             max_amount=max_amount
         )
-    
+
     def is_alive(self):
         if self.current_amount.to('kg').val >= self.max_amount.to('kg').val:
             return False
@@ -99,7 +100,7 @@ class Storage(StaticSource):
     """
     Simple storage unit.
     """
-    
+
     def __init__(self, current_amount=0, max_amount=0):
         super().__init__(
             current_amount=current_amount,
