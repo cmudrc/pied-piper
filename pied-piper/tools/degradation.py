@@ -150,17 +150,20 @@ if __name__ == "__main__":
         initiation_date=date(2000, 1, 1),
         distribution={
             'type': 'dirac delta',
-            'main': Unit(70,'day'),
+            'main': Unit(10,'day'),
         },
         seed=202
     )
 
-    P = d.probability_of_working(
+    #P = d.probability_of_working(
+    #    start_date=Unit(0, 'day')+date(2000, 1, 1),
+    #    end_date=Unit(15, 'day')+date(2000, 1, 1)
+    #)
+    activeness = d.is_active(
         start_date=Unit(0, 'day')+date(2000, 1, 1),
-        end_date=Unit(50, 'day')+date(2000, 1, 1)
+        end_date=Unit(5, 'day')+date(2000, 1, 1)
     )
-
-    print(P)
+    print(activeness)
 
     #print(s.is_working(P))
 

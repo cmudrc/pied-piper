@@ -140,6 +140,9 @@ class TestDeficiencyClass(unittest.TestCase):
         self.assertFalse(d.is_alive(), msg='not alive')
 
 
+
+
+
 #################################### statistical_distribtuion.py ####################################
 
 from tools import Gaussian, DiracDelta

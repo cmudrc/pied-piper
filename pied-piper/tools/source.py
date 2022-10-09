@@ -31,6 +31,9 @@ class DynamicSource:
 
 
 class Use(DynamicSource):
+    """
+    A use node.
+    """
     def __init__(self, rate=0):
         super().__init__(
             rate=rate
@@ -38,6 +41,10 @@ class Use(DynamicSource):
 
 
 class Produce(DynamicSource):
+    """
+    A produce node.
+    """
+    
     def __init__(self, rate=0):
         super().__init__(
             rate=rate
@@ -66,11 +73,15 @@ class StaticSource:
     
     def sub(self, amount):
         self.current_amount -= amount
-        if self.current_amount < 0:
-            self.current_amount = 0
+        if self.current_amount.to('kg').val < 0:
+            self.current_amount.val = 0
 
 
 class Deficiency(StaticSource):
+    """
+    Represent deficiency like a storage unit.
+    """
+    
     def __init__(self, current_amount=0, max_amount=0):
         super().__init__(
             current_amount=current_amount,
@@ -85,6 +96,10 @@ class Deficiency(StaticSource):
 
 
 class Storage(StaticSource):
+    """
+    Simple storage unit.
+    """
+    
     def __init__(self, current_amount=0, max_amount=0):
         super().__init__(
             current_amount=current_amount,
@@ -94,4 +109,5 @@ class Storage(StaticSource):
 
 if __name__ == "__main__":
     p = Produce(rate=Unit(5, 'ton/day'))
-    p.refill(delta_t=Unit(1, 'day'))
+    p.refill(delta_t=Unit(2, 'day'))
+    print(p.current_amount.to('ton/day'))
