@@ -96,6 +96,7 @@ class DegradationProperty:
                 weights=[probability, 1-probability],
                 k=1  # result length
             )
+            result = result[0]
         return result
 
     def is_active(self, start_date, end_date):

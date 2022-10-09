@@ -44,7 +44,6 @@ class Model():
             current_infrastructures = []
             for infrastructure in self.all_infrastructures:
                 activeness = infrastructure.is_active(start_date, end_date)
-                print(activeness)
                 if activeness is True:
                     current_infrastructures.append(infrastructure)
             self.current_infrastructures = current_infrastructures
