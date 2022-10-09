@@ -3,6 +3,29 @@ import numpy as np
 from tools import DegradationProperty
 
 
+class Production(DegradationProperty):
+    def __init__(
+        self,
+        name=None,
+        pos=None,
+        active=True,
+        initial_cost=None,
+        initiation_date=None,
+        distribution=None,
+        seed=None
+    ):
+        super().__init__(
+            active=active,
+            initial_cost=initial_cost,
+            initiation_date=initiation_date,
+            distribution=distribution,
+            seed=seed
+        )
+        self.name = name
+        self.pos = pos
+        
+
+
 class Road(DegradationProperty):
     def __init__(
         self,

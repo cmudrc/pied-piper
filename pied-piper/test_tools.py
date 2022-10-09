@@ -34,6 +34,10 @@ class TestCircularClass(unittest.TestCase):
 
 #################################### degradation.py ####################################
 
+from datetime import date
+from tools import Unit
+from tools import DegradationProperty
+
 
 class TestDegradationPropertyClass(unittest.TestCase):
     def test_gaussian_degradation(self):

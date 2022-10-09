@@ -11,10 +11,13 @@ class Model():
         self.step_size = step_size
         self.current_step = current_step
         self.current_date = current_date
+
         self.all_agents = agents
         self.current_agents = self.all_agents.copy()
+
         self.all_settlements = settlements
         self.current_settlements = self.all_settlements.copy()
+
         self.all_infrastructures = infrastructures
         self.current_infrastructures = self.all_infrastructures.copy()
 
@@ -48,15 +51,19 @@ class Model():
                     current_infrastructures.append(infrastructure)
             self.current_infrastructures = current_infrastructures
         else:
-            self.current_agents = []
+            current_agents = []
             for agent in self.all_agents:
-                if agent.is_active(start_date, end_date):
-                    self.current_agents.append(agent)
+                activeness = agent.is_active(start_date, end_date)
+                if activeness is True:
+                    current_agents.append(agent)
+            self.current_agents = current_agents
 
-            self.current_infrastructures = []
+            current_infrastructures = []
             for infrastructure in self.all_infrastructures:
-                if infrastructure.is_active(start_date, end_date):
-                    self.current_infrastructures.append(infrastructure)
+                activeness = infrastructure.is_active(start_date, end_date)
+                if activeness is True:
+                    current_infrastructures.append(infrastructure)
+            self.current_infrastructures = current_infrastructures
 
 
 if __name__ == "__main__":
@@ -64,13 +71,34 @@ if __name__ == "__main__":
 
     from tools import Unit
     from infrastructure import Road
+    from settlement import Settlement
+
 
     agents = []
-    settlements = []
+    settlements = [
+        Settlement(
+            name='home_1',
+            pos=[0, 0],
+            max_population=10,
+            boundery={
+                'type': 'circular',
+                'radius': 1
+            }
+        ),
+        Settlement(
+            name='home_2',
+            pos=[0, 2],
+            max_population=10,
+            boundery={
+                'type': 'circular',
+                'radius': 1
+            }
+        ),
+    ]
     infrastructures = [
         Road(
-            start_node='city_1',
-            end_node='city_2',
+            start_node='home_1',
+            end_node='home_2',
             double_sided=True,
             name='sample road',
             initiation_date=date(2000, 1, 1),
