@@ -1,3 +1,7 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+
 class Model():
     def __init__(
         self,
@@ -65,6 +69,23 @@ class Model():
                     current_infrastructures.append(infrastructure)
             self.current_infrastructures = current_infrastructures
 
+    def find_element(self, element_name, all_elements):
+        result = None
+        for el in all_elements:
+            if element_name == el.name:
+                result = el
+        return result
+
+    def to_graph(self):
+        G = nx.DiGraph()
+        pos = {}
+        for settlement in self.all_settlements:
+            G.add_node(settlement.name)
+            pos[settlement.name] = settlement.pos
+        for route in self.routes:
+            G.add_edge(route.start_node, route.end_node)
+        nx.draw(G, pos)
+        plt.show()
 
 if __name__ == "__main__":
     from datetime import date
@@ -118,7 +139,7 @@ if __name__ == "__main__":
         settlements=settlements,
         infrastructures=infrastructures,
     )
-
-    print(m.current_infrastructures)
-    m.run_step()
-    print(m.current_infrastructures)
+    m.to_graph()
+    #print(m.current_infrastructures)
+    #m.run_step()
+    #print(m.current_infrastructures)

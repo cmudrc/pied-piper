@@ -51,12 +51,7 @@ class Settlement(Entity):
                     radius=boundery['radius']
                 )
 
-    def find_element(self, element_name, all_elements):
-        result = None
-        for el in all_elements:
-            if element_name == el.name:
-                result = el
-        return result
+
 
     def all_sources(self, all_agents):
         result = {}

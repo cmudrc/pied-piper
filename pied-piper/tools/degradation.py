@@ -4,11 +4,6 @@ try:
     from .statistical_distribution import Gaussian, DiracDelta
 except:
     from statistical_distribution import Gaussian, DiracDelta
-
-try:
-    from .unit import Unit
-except:
-    from unit import Unit
     
 
 class DegradationProperty:
@@ -70,8 +65,8 @@ class DegradationProperty:
             t2 = end_date
 
             Q = self.distribution.probability(
-                time_start=Unit((t1-t0).days, 'day'),
-                time_end=Unit((t2-t0).days, 'day')
+                time_start=(t1-t0).total_seconds(),
+                time_end=(t2-t0).total_seconds()
             )
             P = 1 - Q
         else:
@@ -130,8 +125,8 @@ if __name__ == "__main__":
         initiation_date=date(2000, 1, 1),
         distribution={
             'type': 'gaussian',
-            'sigma': Unit(20,'day'),
-            'mean': Unit(100,'day'),
+            'sigma': Unit(20,'day').to('second').val,
+            'mean': Unit(100,'day').to('second').val,
         },
         seed=None
     )
@@ -151,7 +146,7 @@ if __name__ == "__main__":
         initiation_date=date(2000, 1, 1),
         distribution={
             'type': 'dirac delta',
-            'main': Unit(10,'day'),
+            'main': Unit(10,'day').to('second').val,
         },
         seed=202
     )

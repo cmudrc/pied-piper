@@ -2,9 +2,7 @@ from tools import Gaussian, DiracDelta
 from tools import Storage, Deficiency
 from tools import Use, Produce
 from tools import Entity
-from tools import Unit
-from tools import DegradationProperty
-from datetime import date
+
 import unittest
 
 
@@ -45,8 +43,8 @@ class TestDegradationPropertyClass(unittest.TestCase):
             initiation_date=date(2000, 1, 1),
             distribution={
                 'type': 'gaussian',
-                'sigma': Unit(20, 'day'),
-                'mean': Unit(100, 'day'),
+                'sigma': Unit(20, 'day').to('second').val,
+                'mean': Unit(100, 'day').to('second').val,
             },
             seed=202
         )
@@ -61,7 +59,7 @@ class TestDegradationPropertyClass(unittest.TestCase):
             initiation_date=date(2000, 1, 1),
             distribution={
                 'type': 'dirac delta',
-                'main': Unit(70, 'day'),
+                'main': Unit(70, 'day').to('second').val,
             },
             seed=202
         )
@@ -76,7 +74,7 @@ class TestDegradationPropertyClass(unittest.TestCase):
             initiation_date=date(2000, 1, 1),
             distribution={
                 'type': 'dirac delta',
-                'main': Unit(70, 'day'),
+                'main': Unit(70, 'day').to('second').val,
             },
             seed=202
         )
@@ -147,12 +145,12 @@ class TestDeficiencyClass(unittest.TestCase):
 
 class TestGaussianClass(unittest.TestCase):
     def test_normal_distribution(self):
-        time_start = Unit(0, 'day')
-        time_end = Unit(70, 'day')
+        time_start = Unit(0, 'day').to('second').val
+        time_end = Unit(70, 'day').to('second').val
 
         g = Gaussian(
             mean=time_end,
-            sigma=Unit(10, 'day')
+            sigma=Unit(10, 'day').to('second').val
         )
         p = g.probability(
             time_start=time_start,
@@ -163,11 +161,11 @@ class TestGaussianClass(unittest.TestCase):
 
 class TestDiracDeltaClass(unittest.TestCase):
     def test_dirac_distribution_0(self):
-        time_start = Unit(0, 'day')
-        time_end = Unit(70, 'day')
+        time_start = Unit(0, 'day').to('second').val
+        time_end = Unit(70, 'day').to('second').val
 
         d = DiracDelta(
-            main=Unit(35, 'day')
+            main=Unit(35, 'day').to('second').val
         )
         p = d.probability(
             time_start=time_start,
@@ -176,11 +174,11 @@ class TestDiracDeltaClass(unittest.TestCase):
         self.assertEqual(p, 1, msg="Should be equal")
 
     def test_dirac_distribution_1(self):
-        time_start = Unit(0, 'day')
-        time_end = Unit(30, 'day')
+        time_start = Unit(0, 'day').to('second').val
+        time_end = Unit(30, 'day').to('second').val
 
         d = DiracDelta(
-            main=Unit(35, 'day')
+            main=Unit(35, 'day').to('second').val
         )
         p = d.probability(
             time_start=time_start,
@@ -230,9 +228,9 @@ class TestUnitClass(unittest.TestCase):
         self.assertAlmostEqual(v_new.val, 2, places=10, msg="Should be equal")
 
     def test_div(self):
-        v = Unit(2, 'km/hour')
-        v_new = v // 2
-        self.assertAlmostEqual(v_new.val, 1, places=10, msg="Should be equal")
+        v = Unit(2.5, 'km/hour')
+        v_new = v / 2
+        self.assertAlmostEqual(v_new.val, 2.5/2, places=10, msg="Should be equal")
 
 
 if __name__ == '__main__':

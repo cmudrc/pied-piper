@@ -147,7 +147,7 @@ class Unit():
                     other.convert(self.unit_name)
                 return Unit(self.val + other.val, self.unit_name)
         elif isinstance(other, date) and self.type_numerator == 'time' and self.type_denominator is None:
-            return other + timedelta(days=self.to('day').val)
+            return other + timedelta(seconds=self.to('second').val)
     
     def __sub__(self, other):
         """
@@ -160,7 +160,7 @@ class Unit():
                     other.convert(self.unit_name)
                 return Unit(self.val - other.val, self.unit_name)
         elif isinstance(other, date) and self.type_numerator == 'time' and self.type_denominator is None:
-            return other - timedelta(days=self.to('day').val)
+            return other - timedelta(seconds=self.to('second').val)
 
     def __mul__(self, other):
         """
@@ -169,12 +169,12 @@ class Unit():
 
         return Unit(self.val * other, self.unit_name)
 
-    def __floordiv__(self, other):
+    def __truediv__(self, other):
         """
         Only supports scalar float division.
         """
         
-        return Unit(self.val // other, self.unit_name)
+        return Unit(self.val / other, self.unit_name)
 
 
 if __name__ == "__main__":

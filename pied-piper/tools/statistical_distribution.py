@@ -1,12 +1,6 @@
 from scipy.stats import norm
-from datetime import timedelta
 import numpy as np
 import matplotlib.pyplot as plt
-
-try:
-    from .unit import Unit
-except:
-    from unit import Unit
 
 
 class Gaussian():
@@ -15,14 +9,14 @@ class Gaussian():
     """
 
     def __init__(self, mean, sigma):
-        self.mean = timedelta(days=mean.to('day').val)
-        self.sigma = timedelta(days=sigma.to('day').val)
+        self.mean = mean
+        self.sigma = sigma
 
     def probability(self, time_start, time_end):
-        time_start = timedelta(days=time_start.to('day').val)
-        time_end = timedelta(days=time_end.to('day').val)
-        point_start = (time_start - self.mean) / self.sigma
-        point_end = (time_end - self.mean) / self.sigma
+        def normalize(value, mean, sigma):
+            return (value - mean) / sigma
+        point_start = normalize(time_start, self.mean, self.sigma)
+        point_end = normalize(time_end, self.mean, self.sigma)
         probability = norm.cdf(point_end) - norm.cdf(point_start)
         return probability
 
@@ -40,13 +34,10 @@ class DiracDelta():
     """
     
     def __init__(self, main):
-        self.main = timedelta(days=main.to('day').val)
+        self.main = main
 
     def probability(self, time_start, time_end):
-        point_start = timedelta(days=time_start.to('day').val)
-        point_end = timedelta(days=time_end.to('day').val)
-        probability = self.CDF(point_end) - self.CDF(point_start)
-        return probability
+        return self.CDF(time_end) - self.CDF(time_start)
 
     def CDF(self, point):
         result = 0
@@ -64,12 +55,15 @@ class Exponential():
 
 
 if __name__ == "__main__":
-    time_start=Unit(0, 'day')
-    time_end=Unit(90, 'day')
+    from unit import Unit
+
+
+    time_start=Unit(0, 'day').to('second').val
+    time_end=Unit(90, 'day').to('second').val
 
     g = Gaussian(
-        mean=Unit(100, 'day'),
-        sigma=Unit(10, 'day')
+        mean=Unit(100, 'day').to('second').val,
+        sigma=Unit(10, 'day').to('second').val
     )
     print(
         g.probability(
@@ -79,7 +73,7 @@ if __name__ == "__main__":
     )
     
     d = DiracDelta(
-        main=Unit(100, 'day')
+        main=Unit(100, 'day').to('second').val
     )
     print(
         d.probability(
