@@ -43,8 +43,8 @@ class TestDegradationPropertyClass(unittest.TestCase):
             initiation_date=date(2000, 1, 1),
             distribution={
                 'type': 'gaussian',
-                'sigma': Unit(20, 'day').to('second').val,
-                'mean': Unit(100, 'day').to('second').val,
+                'sigma': Unit(20, 'day').to_SI(),
+                'mean': Unit(100, 'day').to_SI(),
             },
             seed=202
         )
@@ -59,7 +59,7 @@ class TestDegradationPropertyClass(unittest.TestCase):
             initiation_date=date(2000, 1, 1),
             distribution={
                 'type': 'dirac delta',
-                'main': Unit(70, 'day').to('second').val,
+                'main': Unit(70, 'day').to_SI(),
             },
             seed=202
         )
@@ -74,7 +74,7 @@ class TestDegradationPropertyClass(unittest.TestCase):
             initiation_date=date(2000, 1, 1),
             distribution={
                 'type': 'dirac delta',
-                'main': Unit(70, 'day').to('second').val,
+                'main': Unit(70, 'day').to_SI(),
             },
             seed=202
         )
@@ -101,42 +101,42 @@ class TestEntityClass(unittest.TestCase):
 
 class TestUseProduceClass(unittest.TestCase):
     def test_refill(self):
-        p = Produce(rate=Unit(5, 'ton/day'))
-        p.refill(delta_t=Unit(1, 'day'))
-        self.assertEqual(p.current_amount.to('ton/day').val, 5, msg="refill")
+        p = Produce(rate=Unit(5, 'ton/day').to_SI())
+        p.refill(delta_t=Unit(1, 'day').to_SI())
+        self.assertEqual(p.current_amount, Unit(5, 'ton').to('kg').to_SI(), msg="refill")
 
     def test_sub(self):
-        p = Produce(rate=Unit(5, 'ton/day'))
-        p.refill(delta_t=Unit(1, 'day'))
-        p.sub(Unit(10, 'ton'))
-        self.assertEqual(p.current_amount.to('ton/day').val, 0, msg="refill")
+        p = Produce(rate=Unit(5, 'ton/day').to_SI())
+        p.refill(delta_t=Unit(1, 'day').to_SI())
+        p.sub(Unit(10, 'ton').to('kg').to_SI())
+        self.assertEqual(p.current_amount, 0, msg="refill")
 
 
 class TestDeficiencyClass(unittest.TestCase):
     def test_add(self):
         d = Deficiency(
-            current_amount=Unit(1, 'kg'),
-            max_amount=Unit(5, 'kg')
+            current_amount=Unit(1, 'kg').to_SI(),
+            max_amount=Unit(5, 'kg').to_SI()
         )
-        d.add(Unit(1, 'kg'))
-        val = d.current_amount.to('kg').val
+        d.add(Unit(1, 'kg').to_SI())
+        val = d.current_amount
         self.assertEqual(val, 2, msg='add')
 
     def test_add_max(self):
         d = Deficiency(
-            current_amount=Unit(1, 'kg'),
-            max_amount=Unit(5, 'kg')
+            current_amount=Unit(1, 'kg').to_SI(),
+            max_amount=Unit(5, 'kg').to_SI()
         )
-        d.add(Unit(5, 'kg'))
-        val = d.current_amount.to('kg').val
+        d.add(Unit(5, 'kg').to_SI())
+        val = d.current_amount
         self.assertEqual(val, 5, msg='add')
 
     def test_add_max_alive(self):
         d = Deficiency(
-            current_amount=Unit(1, 'kg'),
-            max_amount=Unit(5, 'kg')
+            current_amount=Unit(1, 'kg').to_SI(),
+            max_amount=Unit(5, 'kg').to_SI()
         )
-        d.add(Unit(5, 'kg'))
+        d.add(Unit(5, 'kg').to_SI())
         self.assertFalse(d.is_alive(), msg='not alive')
 
 
@@ -145,12 +145,12 @@ class TestDeficiencyClass(unittest.TestCase):
 
 class TestGaussianClass(unittest.TestCase):
     def test_normal_distribution(self):
-        time_start = Unit(0, 'day').to('second').val
-        time_end = Unit(70, 'day').to('second').val
+        time_start = Unit(0, 'day').to_SI()
+        time_end = Unit(70, 'day').to_SI()
 
         g = Gaussian(
             mean=time_end,
-            sigma=Unit(10, 'day').to('second').val
+            sigma=Unit(10, 'day').to_SI()
         )
         p = g.probability(
             time_start=time_start,
@@ -161,11 +161,11 @@ class TestGaussianClass(unittest.TestCase):
 
 class TestDiracDeltaClass(unittest.TestCase):
     def test_dirac_distribution_0(self):
-        time_start = Unit(0, 'day').to('second').val
-        time_end = Unit(70, 'day').to('second').val
+        time_start = Unit(0, 'day').to_SI()
+        time_end = Unit(70, 'day').to_SI()
 
         d = DiracDelta(
-            main=Unit(35, 'day').to('second').val
+            main=Unit(35, 'day').to_SI()
         )
         p = d.probability(
             time_start=time_start,
@@ -174,11 +174,11 @@ class TestDiracDeltaClass(unittest.TestCase):
         self.assertEqual(p, 1, msg="Should be equal")
 
     def test_dirac_distribution_1(self):
-        time_start = Unit(0, 'day').to('second').val
-        time_end = Unit(30, 'day').to('second').val
+        time_start = Unit(0, 'day').to_SI()
+        time_end = Unit(30, 'day').to_SI()
 
         d = DiracDelta(
-            main=Unit(35, 'day').to('second').val
+            main=Unit(35, 'day').to_SI()
         )
         p = d.probability(
             time_start=time_start,
@@ -231,6 +231,11 @@ class TestUnitClass(unittest.TestCase):
         v = Unit(2.5, 'km/hour')
         v_new = v / 2
         self.assertAlmostEqual(v_new.val, 2.5/2, places=10, msg="Should be equal")
+
+    def test_to_SI(self):
+        v = Unit(2.5, 'km/hour')
+        v_new = v.to_SI()
+        self.assertAlmostEqual(v_new, 0.7, places=1, msg="Should be equal")
 
 
 if __name__ == '__main__':

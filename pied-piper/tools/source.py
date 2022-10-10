@@ -1,7 +1,4 @@
-try:
-    from .unit import Unit
-except:
-    from unit import Unit
+from copy import deepcopy
 
 
 class DynamicSource:
@@ -19,15 +16,12 @@ class DynamicSource:
         self.current_amount = None
 
     def refill(self, delta_t):
-        rate = self.rate.to('kg/day')
-        t = delta_t.to('day')
-        amount = rate.val * t.val
-        self.current_amount = Unit(amount, 'kg')
+        self.current_amount = self.rate * delta_t
 
     def sub(self, amount):
         self.current_amount -= amount
-        if self.current_amount.val < 0:
-            self.current_amount.val = 0
+        if self.current_amount < 0:
+            self.current_amount = 0
 
 
 class Use(DynamicSource):
@@ -69,13 +63,13 @@ class StaticSource:
 
     def add(self, amount):
         self.current_amount += amount
-        if self.current_amount.to('kg').val > self.max_amount.to('kg').val:
-            self.current_amount = self.max_amount.copy()
+        if self.current_amount > self.max_amount:
+            self.current_amount = deepcopy(self.max_amount)
 
     def sub(self, amount):
         self.current_amount -= amount
-        if self.current_amount.to('kg').val < 0:
-            self.current_amount.val = 0
+        if self.current_amount < 0:
+            self.current_amount = 0
 
 
 class Deficiency(StaticSource):
@@ -90,7 +84,7 @@ class Deficiency(StaticSource):
         )
 
     def is_alive(self):
-        if self.current_amount.to('kg').val >= self.max_amount.to('kg').val:
+        if self.current_amount >= self.max_amount:
             return False
         else:
             return True
@@ -109,6 +103,10 @@ class Storage(StaticSource):
 
 
 if __name__ == "__main__":
-    p = Produce(rate=Unit(5, 'ton/day'))
-    p.refill(delta_t=Unit(2, 'day'))
-    print(p.current_amount.to('ton/day'))
+    from unit import Unit
+
+    rate = Unit(5, 'ton/day').to('kg/second').val
+    p = Produce(rate=rate)
+    delta_t=Unit(2, 'day').to('second').val
+    p.refill(delta_t=delta_t)
+    print(p.current_amount)

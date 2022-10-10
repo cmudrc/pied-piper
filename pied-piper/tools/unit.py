@@ -33,6 +33,14 @@ all_units = {
     },
 }
 
+SI_units = {
+    'weight': 'kg',
+    'volume': 'm3',
+    'area': 'm2',
+    'length': 'm',
+    'time': 'second',
+}
+
 
 class Unit():
     """
@@ -130,6 +138,23 @@ class Unit():
             self.unit_name = unit_name
             self.name_numerator, self.name_denominator = self.unit_name_split(unit_name)
 
+    def to_SI(self, object=False):
+        type_numerator_SI = SI_units[self.type_numerator]
+        if self.type_denominator is not None:
+            type_denominator_SI = SI_units[self.type_denominator]
+        else:
+            type_denominator_SI = None
+
+        type_SI = type_numerator_SI
+        if type_denominator_SI is not None:
+            type_SI += '/' + type_denominator_SI
+        result = self.to(type_SI)
+
+        if object is True:
+            return result
+        else:
+            return result.val
+
     def copy(self):
         return Unit(self.val, self.unit_name)
 
@@ -181,3 +206,4 @@ if __name__ == "__main__":
     v = Unit(2, 'km/hour')
     v.convert('m/minute')
     print(v)
+    print(Unit(35, 'day').to_SI())
