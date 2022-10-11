@@ -1,5 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from tools import dt
+
 
 
 class Model():
@@ -26,7 +28,7 @@ class Model():
         self.current_infrastructures = self.all_infrastructures.copy()
 
     def run_step(self):
-        next_date = self.step_size + self.current_date
+        next_date = dt(seconds=self.step_size) + self.current_date
         next_step = self.current_step + 1
         #print(self.current_date, next_date)
         self.update_elements_list(
@@ -132,7 +134,7 @@ if __name__ == "__main__":
     ]
 
     m = Model(
-        step_size=Unit(5, 'day'),
+        step_size=Unit(5, 'day').to_SI(),
         current_step=0,
         current_date=date(2000, 1, 1),
         agents=agents,

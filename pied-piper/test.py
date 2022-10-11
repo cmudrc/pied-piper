@@ -1,6 +1,5 @@
 from transportation import Foot
 from model import Model
-from difflib import unified_diff
 import unittest
 
 
@@ -55,13 +54,13 @@ class TestModelClass(unittest.TestCase):
                 initiation_date=date(2000, 1, 1),
                 distribution={
                     'type': 'dirac delta',
-                    'main': Unit(10, 'day'),
+                    'main': Unit(10, 'day').to_SI(),
                 },
                 seed=None
             )
         ]
         m = Model(
-            step_size=Unit(15, 'day'),
+            step_size=Unit(15, 'day').to_SI(),
             current_step=0,
             current_date=date(2000, 1, 1),
             infrastructures=infrastructures,
@@ -80,13 +79,13 @@ class TestModelClass(unittest.TestCase):
                 initiation_date=date(2000, 1, 1),
                 distribution={
                     'type': 'dirac delta',
-                    'main': Unit(10, 'day'),
+                    'main': Unit(10, 'day').to_SI(),
                 },
                 seed=None
             )
         ]
         m = Model(
-            step_size=Unit(5, 'day'),
+            step_size=Unit(5, 'day').to_SI(),
             current_step=0,
             current_date=date(2000, 1, 1),
             infrastructures=infrastructures,
@@ -101,17 +100,21 @@ class TestModelClass(unittest.TestCase):
 
 class TestTransportationClass(unittest.TestCase):
     def test_how_long(self):
-        transportation = Foot(speed=Unit(5, 'km/h'))
-        delta_t = transportation.how_long([0, 0], [1, 0])  # km
+        transportation = Foot(speed=Unit(5, 'km/hour').to_SI())
+        pos_start = [0, 0]
+        pos_end = [Unit(1, 'km').to_SI(), 0]
+        delta_t = transportation.how_long(pos_start, pos_end)
         dt_minutes = delta_t.seconds / 60
         self.assertEqual(dt_minutes, 12, msg="Should be equal")
 
     def test_how_much_fuel(self):
         transportation = Foot(
-            speed=Unit(5, 'km/h'),
-            fuel_rate=Unit(1, 'kg/h')  # food
+            speed=Unit(5, 'km/hour').to_SI(),
+            fuel_rate=Unit(1, 'kg/hour').to_SI()  # food
         )
-        delta_m = transportation.how_much_fuel([0, 0], [1, 0])  # km
+        pos_start = [0, 0]
+        pos_end = [Unit(1, 'km').to_SI(), 0]
+        delta_m = transportation.how_much_fuel(pos_start, pos_end)
         self.assertEqual(delta_m['food'], 0.2, msg="Should be equal")
 
 
