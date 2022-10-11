@@ -42,7 +42,7 @@ SI_units = {
 }
 
 
-class Unit():
+class Unit:
     """
     A value with physical unit, could be converted into other supported units.
     """
@@ -139,6 +139,13 @@ class Unit():
             self.name_numerator, self.name_denominator = self.unit_name_split(unit_name)
 
     def to_SI(self, object=False):
+        """
+        Convert to SI units.
+
+        Args:
+            object: whether return a Unit instance or only the value
+        """
+
         type_numerator_SI = SI_units[self.type_numerator]
         if self.type_denominator is not None:
             type_denominator_SI = SI_units[self.type_denominator]
