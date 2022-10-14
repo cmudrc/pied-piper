@@ -55,15 +55,12 @@ class Exponential():
 
 
 if __name__ == "__main__":
-    from unit import Unit
-
-
-    time_start=Unit(0, 'day').to('second').val
-    time_end=Unit(90, 'day').to('second').val
+    time_start=0
+    time_end=90
 
     g = Gaussian(
-        mean=Unit(100, 'day').to('second').val,
-        sigma=Unit(10, 'day').to('second').val
+        mean=100,
+        sigma=10
     )
     print(
         g.probability(
@@ -73,7 +70,7 @@ if __name__ == "__main__":
     )
     
     d = DiracDelta(
-        main=Unit(100, 'day').to('second').val
+        main=100
     )
     print(
         d.probability(

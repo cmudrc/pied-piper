@@ -1,4 +1,4 @@
-from tools import Gaussian, DiracDelta
+from tools.statistical_distribution import Gaussian, DiracDelta
 from tools import Storage, Deficiency
 from tools import Use, Produce
 from tools import Entity
@@ -8,7 +8,7 @@ import unittest
 
 #################################### boundery.py ####################################
 
-from tools import Circular
+from tools.boundery import Circular
 
 
 class Other():
