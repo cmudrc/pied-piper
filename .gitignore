@@ -3,3 +3,6 @@
 *.pyc
 __pycache__/
 venv/
+cheat sheet/
+.VSCodeCounter/
+settings.json
