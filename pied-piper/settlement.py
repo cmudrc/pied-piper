@@ -12,7 +12,6 @@ class Settlement(Entity):
         self,
         name=None,
         pos=[0, 0],
-        infrastructures=None,
         max_population=10,
         boundery=None,
         active=True,
@@ -25,9 +24,9 @@ class Settlement(Entity):
         Args:
             name: name
             pos: position in form of [x, y]
-            agents: a list of agents name within the settlement
             max_population: maximum number of agents within the settlement
             boundery: the boundery of the settlement
+            ** others from Entity class
         """
 
         super().__init__(
@@ -39,8 +38,8 @@ class Settlement(Entity):
             distribution=distribution,
             seed=seed
         )
-        self.agents = []
-        self.infrastructures = infrastructures
+        self.agents = [] # a list of agents names that are within the settlement
+        self.infrastructures = [] # a list of infrastructure names that are within the settlement
         self.max_population = max_population
 
         if boundery is not None:
@@ -51,6 +50,10 @@ class Settlement(Entity):
                 )
     
     def find_element(self, name, all_elements):
+        """
+        Find an element between a list of elements based on its name property
+        """
+
         result = None
         for element in all_elements:
             if element.name == name:
@@ -59,11 +62,19 @@ class Settlement(Entity):
         return result
 
     def add_agent(self, agent):
+        """
+        Add a single agent
+        """
+
         if isinstance(agent, Agent):
             agent.pos = self.pos
             self.agents.append(agent.name)
 
     def add_agents(self, agents: list):
+        """
+        Add a list of agents
+        """
+
         for agent in agents:
             self.add_agent(agent)
 
