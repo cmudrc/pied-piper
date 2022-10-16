@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from tools import dt
 
 
-
 class Model():
     def __init__(
         self,
@@ -95,9 +94,20 @@ if __name__ == "__main__":
     from tools import Unit
     from infrastructure import Road
     from settlement import Settlement
+    from agent import Agent
 
 
-    agents = []
+    agents = [
+        Agent(
+            name='John',
+            pos=[1, 1],
+            settlement='home_1'
+        ),
+        Agent(
+            name='Betty',
+            pos=[0.5, 0.5]
+        )
+    ]
     settlements = [
         Settlement(
             name='home_1',
@@ -141,7 +151,7 @@ if __name__ == "__main__":
         settlements=settlements,
         infrastructures=infrastructures,
     )
-    m.to_graph()
+    #m.to_graph()
     #print(m.current_infrastructures)
     #m.run_step()
     #print(m.current_infrastructures)

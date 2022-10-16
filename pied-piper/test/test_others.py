@@ -35,7 +35,7 @@ class TestRoadClass(unittest.TestCase):
         self.assertEqual(length, 1, msg="Should be equal")
 
 
-#################################### transportation.py ####################################
+#################################### infrastructure.py ####################################
 
 from datetime import date
 
