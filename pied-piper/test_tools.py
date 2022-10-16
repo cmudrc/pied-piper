@@ -1,6 +1,6 @@
 from tools.statistical_distribution import Gaussian, DiracDelta
-from tools import Storage, Deficiency
-from tools import Use, Produce
+from tools.source import Storage, Deficiency
+from tools.source import Use, Produce
 from tools import Entity
 
 import unittest

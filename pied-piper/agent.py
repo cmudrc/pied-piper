@@ -1,6 +1,6 @@
 from tools import Entity
 from transportation import Foot
-from resource import Resource
+#from resource import Resource
         
 
 class Agent(Entity):

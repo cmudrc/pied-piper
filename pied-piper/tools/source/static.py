@@ -1,51 +1,6 @@
 from copy import deepcopy
 
 
-class DynamicSource:
-    """
-    Resource production/use rate.
-    """
-
-    def __init__(self, rate=0):
-        """
-        Args:
-            rate: rate of production/use
-        """
-
-        self.rate = rate
-        self.current_amount = None
-
-    def refill(self, delta_t):
-        self.current_amount = self.rate * delta_t
-
-    def sub(self, amount):
-        self.current_amount -= amount
-        if self.current_amount < 0:
-            self.current_amount = 0
-
-
-class Use(DynamicSource):
-    """
-    A use node.
-    """
-
-    def __init__(self, rate=0):
-        super().__init__(
-            rate=rate
-        )
-
-
-class Produce(DynamicSource):
-    """
-    A produce node.
-    """
-
-    def __init__(self, rate=0):
-        super().__init__(
-            rate=rate
-        )
-
-
 class StaticSource:
     """
     Resource static storage.
@@ -66,10 +21,14 @@ class StaticSource:
         if self.current_amount > self.max_amount:
             self.current_amount = deepcopy(self.max_amount)
 
-    def sub(self, amount):
-        self.current_amount -= amount
-        if self.current_amount < 0:
+    def sub(self, amount: float):
+        if amount > self.current_amount:
+            amount -= self.current_amount
             self.current_amount = 0
+        else:
+            self.current_amount -= amount
+            amount = 0
+        return amount
 
 
 class Deficiency(StaticSource):
@@ -103,10 +62,10 @@ class Storage(StaticSource):
 
 
 if __name__ == "__main__":
-    from unit import Unit
-
-    rate = Unit(5, 'ton/day').to('kg/second').val
-    p = Produce(rate=rate)
-    delta_t=Unit(2, 'day').to('second').val
-    p.refill(delta_t=delta_t)
-    print(p.current_amount)
+    current_amount = 0
+    max_amount = 10
+    s = Storage(
+        current_amount=0,
+        max_amount=10
+    )
+    #print(p.current_amount)
