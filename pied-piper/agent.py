@@ -8,7 +8,7 @@ class Agent(Entity):
     Representes an agent.
     """
 
-    def __init__(self, name, pos, resources, settlement, transportations):
+    def __init__(self, name, pos, resources=None, settlement=None, transportations=None):
         super().__init__(
             name=name,
             pos=pos

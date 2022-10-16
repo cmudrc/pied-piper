@@ -13,7 +13,6 @@ class Settlement(Entity):
         name=None,
         pos=[0, 0],
         infrastructures=None,
-        agents=None,
         max_population=10,
         boundery=None,
         active=True,
@@ -40,7 +39,7 @@ class Settlement(Entity):
             distribution=distribution,
             seed=seed
         )
-        self.agents = agents
+        self.agents = []
         self.infrastructures = infrastructures
         self.max_population = max_population
 
@@ -50,8 +49,23 @@ class Settlement(Entity):
                     center=self.pos,
                     radius=boundery['radius']
                 )
+    
+    def find_element(self, name, all_elements):
+        result = None
+        for element in all_elements:
+            if element.name == name:
+                result = element
+                break
+        return result
 
+    def add_agent(self, agent):
+        if isinstance(agent, Agent):
+            agent.pos = self.pos
+            self.agents.append(agent.name)
 
+    def add_agents(self, agents: list):
+        for agent in agents:
+            self.add_agent(agent)
 
     def all_sources(self, all_agents):
         result = {}
