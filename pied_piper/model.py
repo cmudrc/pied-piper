@@ -1,7 +1,15 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from tools import dt
-from tools.boundery import Circular
+
+try:
+    from .tools import dt
+except:
+    from tools import dt
+
+try:
+    from .tools.boundery import Circular
+except:
+    from tools.boundery import Circular
 
 
 class Model():

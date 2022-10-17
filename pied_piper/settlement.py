@@ -1,7 +1,17 @@
-from tools import Entity
-from tools.boundery import Circular
-from agent import Agent
+try:
+    from .tools import Entity
+except:
+    from tools import Entity
 
+try:
+    from .tools.boundery import Circular
+except:
+    from tools.boundery import Circular
+
+try:
+    from .agent import Agent
+except:
+    from agent import Agent
 
 class Settlement(Entity):
     """

@@ -1,7 +1,12 @@
-from tools import Entity
-from tools import date
-from transportation import Foot
-#from resource import Resource
+try:
+    from .tools import Entity
+except:
+    from tools import Entity
+
+try:
+    from .tools import date
+except:
+    from tools import date
         
 
 class Agent(Entity):
@@ -30,7 +35,7 @@ class Agent(Entity):
     def decide(self):
         pass
 
-
+'''
 class Human(Agent):
     """
     Representes a human as a sample.
@@ -88,7 +93,7 @@ class Human(Agent):
             settlement=None,
             transportations=transportations
             )
-
+'''
 
 def generate_agent(count=1):
     result = list()
