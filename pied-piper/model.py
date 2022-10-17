@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from tools import dt
+from tools.boundery import Circular
 
 
 class Model():
@@ -80,12 +81,38 @@ class Model():
     def to_graph(self):
         G = nx.DiGraph()
         pos = {}
-        for settlement in self.all_settlements:
+        for settlement in self.all_settlements: #####
             G.add_node(settlement.name)
             pos[settlement.name] = settlement.pos
-        for route in self.routes:
-            G.add_edge(route.start_node, route.end_node)
+
+            if isinstance(settlement.boundery, Circular):
+                circle = plt.Circle(
+                    xy=settlement.pos,
+                    radius=settlement.boundery.radius,
+                    color='blue',
+                    fill=False,
+                    linestyle='--'
+                )
+                plt.gca().add_patch(circle)
+        
+            plt.text(
+                x=settlement.pos[0],
+                y=settlement.pos[1],
+                s=settlement.name,
+                multialignment='center'
+            )
+        #for route in self.routes:
+        #    G.add_edge(route.start_node, route.end_node)
         nx.draw(G, pos)
+
+        for agent in self.all_agents: ######
+            circle = plt.Circle(
+                xy=agent.pos,
+                radius=0.1,
+                color='red',
+                fill=True,
+            )
+            plt.gca().add_patch(circle)
         plt.show()
 
 if __name__ == "__main__":
@@ -120,11 +147,11 @@ if __name__ == "__main__":
         ),
         Settlement(
             name='home_2',
-            pos=[0, 2],
+            pos=[1, 1],
             max_population=10,
             boundery={
                 'type': 'circular',
-                'radius': 1
+                'radius': 0.5
             }
         ),
     ]
@@ -151,7 +178,7 @@ if __name__ == "__main__":
         settlements=settlements,
         infrastructures=infrastructures,
     )
-    #m.to_graph()
+    m.to_graph()
     #print(m.current_infrastructures)
     #m.run_step()
     #print(m.current_infrastructures)

@@ -1,4 +1,5 @@
 from tools import Entity
+from tools import date
 from transportation import Foot
 #from resource import Resource
         
@@ -8,7 +9,7 @@ class Agent(Entity):
     Representes an agent.
     """
 
-    def __init__(self, name, pos, resources=None, settlement=None, transportations=None):
+    def __init__(self, name, pos, birthday=date(2000, 1, 1), resources=None, settlement=None, transportations=None):
         super().__init__(
             name=name,
             pos=pos
@@ -21,7 +22,7 @@ class Agent(Entity):
             settlement: the name the settlement that agent resides
             transportations: a list of possible transportation methods
         """
-
+        self.birthday = birthday
         self.transportations = transportations
         self.resources = resources
         self.settlement = settlement
