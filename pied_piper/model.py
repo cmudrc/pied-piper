@@ -11,6 +11,8 @@ try:
 except:
     from tools.boundery import Circular
 
+from graphics import draw_agent
+
 
 class Model():
     def __init__(
@@ -18,6 +20,7 @@ class Model():
         step_size=None,
         current_step=0,
         current_date=None,
+        environment_size=None,
         agents=[],
         settlements=[],
         infrastructures=[]
@@ -25,6 +28,8 @@ class Model():
         self.step_size = step_size
         self.current_step = current_step
         self.current_date = current_date
+
+        self.environment_size = environment_size
 
         self.all_agents = agents
         self.current_agents = self.all_agents.copy()
@@ -87,11 +92,19 @@ class Model():
         return result
 
     def to_graph(self):
+        plt.gca().set_title('Date: ' + str(self.current_date), fontsize=10)
+        plt.gca().axis('equal')
+        plt.xlim([-self.environment_size[0]/2, self.environment_size[0]/2])
+        plt.ylim([-self.environment_size[1]/2, self.environment_size[1]/2])
+        
+
         G = nx.DiGraph()
         pos = {}
+        labels = {}
         for settlement in self.all_settlements: #####
             G.add_node(settlement.name)
             pos[settlement.name] = settlement.pos
+            labels[settlement.name] = settlement.name
 
             if isinstance(settlement.boundery, Circular):
                 circle = plt.Circle(
@@ -102,25 +115,29 @@ class Model():
                     linestyle='--'
                 )
                 plt.gca().add_patch(circle)
-        
-            plt.text(
-                x=settlement.pos[0],
-                y=settlement.pos[1],
-                s=settlement.name,
-                multialignment='center'
-            )
         #for route in self.routes:
         #    G.add_edge(route.start_node, route.end_node)
-        nx.draw(G, pos)
+        nx.draw_networkx_nodes(
+            G=G,
+            pos=pos,
+            node_color='black',
+            node_shape='.',
+            node_size=0
+        )
+        nx.draw_networkx_labels(
+            G=G,
+            pos=pos,
+            labels=labels,
+            font_size=18,
+            font_color="black",
+            horizontalalignment='center',
+            verticalalignment='center',
+            alpha=0.5
+        )
 
-        for agent in self.all_agents: ######
-            circle = plt.Circle(
-                xy=agent.pos,
-                radius=0.1,
-                color='red',
-                fill=True,
-            )
-            plt.gca().add_patch(circle)
+        for agent in self.all_agents:
+            draw_agent(agent)
+
         plt.show()
 
 if __name__ == "__main__":
@@ -182,6 +199,7 @@ if __name__ == "__main__":
         step_size=Unit(5, 'day').to_SI(),
         current_step=0,
         current_date=date(2000, 1, 1),
+        environment_size=[10, 10],
         agents=agents,
         settlements=settlements,
         infrastructures=infrastructures,
