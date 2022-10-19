@@ -14,7 +14,7 @@ class Transportation():
             storage_max=None
     ):
         self.name = name
-        self.speed = speed  # km/h
+        self.speed = speed
         self.fuel_rate = fuel_rate  # resource used for the transport
         self.storage_max = storage_max
 

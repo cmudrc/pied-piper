@@ -27,12 +27,12 @@ class TestRoadClass(unittest.TestCase):
             start_settlement='city_1',
             end_settlement='city_2'
         )
-        all_nodes = [
+        all_settlements = [
             City(name='city_1', pos=[0, 0]),
             City(name='city_2', pos=[0, 1]),
         ]
-        length = r.length_calc(all_nodes=all_nodes)
-        self.assertEqual(length, 1, msg="Should be equal")
+        r.update_length(all_settlements)
+        self.assertEqual(r.length, 1, msg="Should be equal")
 
 
 #################################### infrastructure.py ####################################

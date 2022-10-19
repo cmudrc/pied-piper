@@ -2,6 +2,7 @@ import unittest
 
 from settlement import Settlement
 from agent import Agent
+from tools import find_element
 
 
 class TestRoadClass(unittest.TestCase):
@@ -66,7 +67,7 @@ class TestRoadClass(unittest.TestCase):
             }
         )
         s.find_all_agents_by_pos(all_agents)
-        a = s.find_element(s.agents[0], all_agents)
+        a = find_element(s.agents[0], all_agents)
         self.assertEqual(a.settlement, 'home_1', msg='they both has to be the same')
 
     def test_find_agents_by_settlement(self):

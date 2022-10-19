@@ -5,5 +5,5 @@ from .entity import Entity
 from .unit import Unit
 from .search import find_element
 from .distance import euclidean_distance
-from datetime import date
+from datetime import datetime as date
 from datetime import timedelta as dt

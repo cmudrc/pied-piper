@@ -1,4 +1,4 @@
-def find_element(self, name, all_elements):
+def find_element(name, all_elements):
     """
     Find an element between a list of elements based on its name property
     """

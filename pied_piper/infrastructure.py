@@ -4,6 +4,7 @@ import numpy as np
 from agent import Agent
 from tools import DegradationProperty
 from tools import find_element, euclidean_distance
+from tools.source import Produce, Use, Storage
 
 
 class Production(DegradationProperty):
@@ -12,6 +13,7 @@ class Production(DegradationProperty):
         name=None,
         pos=None,
         access=None,
+        staff=None,
         active=True,
         initial_cost=None,
         initiation_date=None,
@@ -28,6 +30,7 @@ class Production(DegradationProperty):
         self.name = name
         self.pos = pos
         self.access = access
+        self.staff = staff
 
     def has_access(self, agent):
         """
@@ -87,18 +90,24 @@ class Road(DegradationProperty):
             'vehicle',
         ]
 
-    def update_length(self, all_nodes):
+    def update_length(self, all_settlements):
+        """
+        Provide length with euclidean distance if it is None
+        """
         if self.length is None:
-            self.length = self.distance_calc(all_nodes)
+            self.length = self.distance_calc(all_settlements)
 
-    def distance_calc(self, all_nodes):
+    def distance_calc(self, all_settlements):
+        """
+        Calculate euclidean distance between the start and end
+        """
         start_x, start_y = None, None
-        node = find_element(self.start_node)
+        node = find_element(self.start_settlement, all_settlements)
         start_x = node.pos[0]
         start_y = node.pos[1]
 
         end_x, end_y = None, None
-        node = find_element(self.end_node)
+        node = find_element(self.end_settlement, all_settlements)
         end_x = node.pos[0]
         end_y = node.pos[1]
 
@@ -117,12 +126,12 @@ if __name__ == "__main__":
             self.pos = pos
 
     r = Road(
-        start_node='city_1',
-        end_node='city_2'
+        start_settlement='city_1',
+        end_settlement='city_2'
     )
-    all_nodes = [
+    all_settlements = [
         City(name='city_1', pos=[0, 0]),
         City(name='city_2', pos=[0, 1]),
     ]
-    length = r.length_calc(all_nodes=all_nodes)
+    length = r.update_length(all_settlements)
     print(length)
