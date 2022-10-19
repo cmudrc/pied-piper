@@ -1,6 +1,9 @@
+from turtle import st
 import numpy as np
 
+from agent import Agent
 from tools import DegradationProperty
+from tools import find_element, euclidean_distance
 
 
 class Production(DegradationProperty):
@@ -8,6 +11,7 @@ class Production(DegradationProperty):
         self,
         name=None,
         pos=None,
+        access=None,
         active=True,
         initial_cost=None,
         initiation_date=None,
@@ -23,15 +27,41 @@ class Production(DegradationProperty):
         )
         self.name = name
         self.pos = pos
+        self.access = access
+
+    def has_access(self, agent):
+        """
+        Check the agent to see whether it has access to the source or not
+        
+        Args:
+            agent: either an Agent instance or agent's name
+        
+        Returns:
+            True/False
+        """
+        result = False
+        if self.access is None:
+            result = False
+        elif self.access == 'all':
+            result = True
+        elif isinstance(self.access, list):
+            if isinstance(agent, Agent):
+                if agent.name in self.access:
+                    result = True
+            elif isinstance(agent, str):
+                if agent in self.access:
+                    result = True
+        return result
         
 
 
 class Road(DegradationProperty):
     def __init__(
         self,
-        start_node,
-        end_node,
+        start_settlement,
+        end_settlement,
         double_sided=True,
+        length=None,
         name=None,
         active=True,
         initial_cost=None,
@@ -47,35 +77,32 @@ class Road(DegradationProperty):
             seed=seed
         )
         self.name = name
-        self.start_node = start_node
-        self.end_node = end_node
+        self.start_settlement = start_settlement
+        self.end_settlement = end_settlement
         self.double_sided = double_sided
-        self.length = None
+        self.length = length
+
         self.transportation_needs = [
             'foot',
             'vehicle',
         ]
 
-    def length_calc(self, all_nodes):
+    def update_length(self, all_nodes):
+        if self.length is None:
+            self.length = self.distance_calc(all_nodes)
+
+    def distance_calc(self, all_nodes):
         start_x, start_y = None, None
-        for node in all_nodes:
-            if node.name == self.start_node:
-                start_x = node.pos[0]
-                start_y = node.pos[1]
-                break
+        node = find_element(self.start_node)
+        start_x = node.pos[0]
+        start_y = node.pos[1]
+
         end_x, end_y = None, None
-        for node in all_nodes:
-            if node.name == self.end_node:
-                end_x = node.pos[0]
-                end_y = node.pos[1]
-                break
-        if start_x is not None and start_y is not None \
-            and end_x is not None and end_y is not None:
-            val_1 = np.power(end_x - start_x, 2)
-            val_2 = np.power(end_y - start_y, 2)
-            dist = np.power(val_1 + val_2, 0.5)
-        else:
-            dist = None
+        node = find_element(self.end_node)
+        end_x = node.pos[0]
+        end_y = node.pos[1]
+
+        dist = euclidean_distance(start_x, end_x, start_y, end_y)
         return dist
 
 

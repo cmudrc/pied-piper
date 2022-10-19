@@ -96,13 +96,15 @@ class DegradationProperty:
 
     def is_active(self, start_date, end_date):
         """
-        Checks if the element is going to survive the desired duration of time or not.
+        Check if the element is going to survive the desired duration of time or not.
         Updates the self.active as result.
 
         Args:
             start_date: start of duration of time, datetime object
             end_date: end of duration of time, datetime object
         
+        Returns:
+            self.active (True/False)
         """
         probability = self.probability_of_working(start_date, end_date)
         self.active = self.is_working(probability)

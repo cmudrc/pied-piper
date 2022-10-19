@@ -8,7 +8,6 @@ class DynamicSource:
         Args:
             rate: rate of production/use
         """
-
         self.rate = rate
         self.current_amount = None
 
@@ -23,9 +22,6 @@ class DynamicSource:
             self.current_amount -= amount
             amount = 0
         return amount
-        #self.current_amount -= amount
-        #if self.current_amount < 0:
-        #    self.current_amount = 0
 
 
 class Use(DynamicSource):

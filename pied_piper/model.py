@@ -96,7 +96,6 @@ class Model():
         plt.gca().axis('equal')
         plt.xlim([-self.environment_size[0]/2, self.environment_size[0]/2])
         plt.ylim([-self.environment_size[1]/2, self.environment_size[1]/2])
-        
 
         G = nx.DiGraph()
         pos = {}
@@ -139,6 +138,7 @@ class Model():
             draw_agent(agent)
 
         plt.show()
+
 
 if __name__ == "__main__":
     from datetime import date

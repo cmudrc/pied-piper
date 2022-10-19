@@ -24,8 +24,8 @@ class City:
 class TestRoadClass(unittest.TestCase):
     def test_road_length_calc(self):
         r = Road(
-            start_node='city_1',
-            end_node='city_2'
+            start_settlement='city_1',
+            end_settlement='city_2'
         )
         all_nodes = [
             City(name='city_1', pos=[0, 0]),
@@ -47,8 +47,8 @@ class TestModelClass(unittest.TestCase):
     def test_infrastructure_update_0(self):
         infrastructures = [
             Road(
-                start_node='city_1',
-                end_node='city_2',
+                start_settlement='city_1',
+                end_settlement='city_2',
                 double_sided=True,
                 name='sample road',
                 initiation_date=date(2000, 1, 1),
@@ -72,8 +72,8 @@ class TestModelClass(unittest.TestCase):
     def test_infrastructure_update_1(self):
         infrastructures = [
             Road(
-                start_node='city_1',
-                end_node='city_2',
+                start_settlement='city_1',
+                end_settlement='city_2',
                 double_sided=True,
                 name='sample road',
                 initiation_date=date(2000, 1, 1),
