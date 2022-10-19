@@ -42,6 +42,37 @@ class Circular(Boundery):
         y_1 = other.pos[1]
         return np.power(np.power(x_0 - x_1, 2) + np.power(y_0 - y_1, 2), 0.5)
 
+    def distance_from_boundery(self, other):
+        return self.distance_from_center - self.radius
+
+
+class Rectangular(Boundery):
+
+    def __init__(self, center, width, height, theta=0):
+        super().__init__(
+            center=center
+        )
+        self.width = width
+        self.height = height
+        self.theta = theta
+    
+    def is_in(self, other):
+        result = False
+        x_0 = self.center[0]
+        y_0 = self.center[1]
+        x_1 = other.pos[0]
+        y_1 = other.pos[1]
+        rot_mat = np.array([np.cos(self.theta), -np.sin(self.theta)], [np.sin(self.theta), np.cos(self.theta)])
+        pos_prime = np.array(x_1, y_1) * rot_mat
+        x_1 = pos_prime[0]
+        x_2 = pos_prime[1]
+        if (x_1 - x_0) <= self.width / 2 or \
+            (x_1 - x_0) >= -self.width / 2:
+            if (y_1 - y_0) <= self.height / 2 or \
+                (y_1 - y_0) >= -self.height / 2:
+                result = True
+        return result
+
 
 if __name__ == "__main__":
     class Other():

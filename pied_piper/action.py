@@ -45,7 +45,7 @@ class Action:
 
     def pos(self, date):
         """
-        Calculate the position in the requested date
+        Calculate the position on the requested date
         """
         result = None
         action_progress = self.action_progress(date)
@@ -59,6 +59,12 @@ class Action:
         return result
 
     def action_progress(self, date):
+        """
+        Calculate the action_progress on the requested date
+
+        Returns:
+            result: float in range 0 < ... < 1
+        """
         result = None
         end_date = self.when_reach()
         if date < self.start_date:
