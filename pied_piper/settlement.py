@@ -18,6 +18,11 @@ try:
 except:
     from tools import find_element
 
+try:
+    from .tools import entity_kwargs
+except:
+    from tools import entity_kwargs
+
 
 class Settlement(Entity):
     """
@@ -27,34 +32,22 @@ class Settlement(Entity):
 
     def __init__(
         self,
-        name=None,
-        pos=[0, 0],
         max_population=10,
         boundery=None,
         agents=None,
         infrastructure=None,
-        active=True,
-        initial_cost=None,
-        initiation_date=None,
-        distribution=None,
-        seed=None
+        **entity_kwargs
     ):
         """
         Args:
-            name: name
-            pos: position in form of [x, y]
             max_population: maximum number of agents within the settlement
             boundery: the boundery of the settlement
-            ** others from Entity class
+            agents: 
+            infrastructures: 
+            **entity_kwargs: kwargs for entity class
         """
         super().__init__(
-            name=name,
-            pos=pos,
-            active=active,
-            initial_cost=initial_cost,
-            initiation_date=initiation_date,
-            distribution=distribution,
-            seed=seed
+            **entity_kwargs
         )
         if agents is None:
             self.agents = []

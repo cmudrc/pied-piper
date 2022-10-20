@@ -50,6 +50,18 @@ class Entity(DegradationProperty):
         return euclidean_distance(x_0, y_0, x_1, y_1)
 
 
+""" for easier class inheritence """
+entity_kwargs = {
+    'name': None,
+    'pos': [0, 0],
+    'active': True,
+    'initial_cost': None,
+    'initiation_date': None,
+    'distribution': None,
+    'seed': None,
+}
+
+
 if __name__ == "__main__":
     e_1 = Entity(pos=[0, 0])
     e_2 = Entity(pos=[0, 1])

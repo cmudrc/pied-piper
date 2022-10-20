@@ -3,7 +3,7 @@ import numpy as np
 
 class Boundery:
     """
-    An enclosed area in space.
+    Define an enclosed area in space.
     """
 
     def __init__(self, center):
@@ -14,12 +14,31 @@ class Boundery:
         self.center = center
 
     def is_in(self, other):
+        """
+        Check the other to see whether it is located inside the boundery or not.
+        """
         return False
+
+    def distance_from_center(self, other):
+        x_0 = self.center[0]
+        y_0 = self.center[1]
+        x_1 = other.pos[0]
+        y_1 = other.pos[1]
+        return np.power(np.power(x_0 - x_1, 2) + np.power(y_0 - y_1, 2), 0.5)
+
+    def distance_from_boundery(self, other):
+        return None
+    
+    def distance(self, other, mode='center'):
+        if mode == 'center':
+            return self.distance_from_center(other)
+        elif mode == 'boundery':
+            return self.distance_from_boundery(other)
 
 
 class Circular(Boundery):
     """
-    A circular boundery in space.
+    Create a circular boundery in space.
     """
     
     def __init__(self, center, radius):
@@ -35,18 +54,14 @@ class Circular(Boundery):
             result = True
         return result
 
-    def distance_from_center(self, other):
-        x_0 = self.center[0]
-        y_0 = self.center[1]
-        x_1 = other.pos[0]
-        y_1 = other.pos[1]
-        return np.power(np.power(x_0 - x_1, 2) + np.power(y_0 - y_1, 2), 0.5)
-
     def distance_from_boundery(self, other):
         return self.distance_from_center - self.radius
 
 
 class Rectangular(Boundery):
+    """
+    Create a rectangular boundery in space.
+    """
 
     def __init__(self, center, width, height, theta=0):
         super().__init__(
@@ -64,18 +79,17 @@ class Rectangular(Boundery):
         y_1 = other.pos[1]
         rot_mat = np.array([[np.cos(self.theta), np.sin(self.theta)], [-np.sin(self.theta), np.cos(self.theta)]])
         pos_prime = np.matmul(rot_mat, np.array([x_1, y_1]))
-        #print(pos_prime)
         x_1 = pos_prime[0]
         y_1 = pos_prime[1]
-        #print((y_1 - y_0))
-        #print((y_1 - y_0) <= self.height / 2)
-        #print((y_1 - y_0) >= -self.height / 2)
         if (x_1 - x_0) <= self.width / 2 and \
             (x_1 - x_0) >= -self.width / 2:
             if (y_1 - y_0) <= self.height / 2 and \
                 (y_1 - y_0) >= -self.height / 2:
                 result = True
         return result
+
+    def distance_from_boundery(self, other):
+        return None
 
 
 if __name__ == "__main__":
