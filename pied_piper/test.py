@@ -14,7 +14,7 @@ def test(target:str='all'):
     
 
 if __name__ == "__main__":
-    target = 'unit'
+    target = 'boundery'
     #target = 'all'
     suite = test(target=target)
     runner = unittest.TextTestRunner()
