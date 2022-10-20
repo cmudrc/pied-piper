@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from numpy import pi
 
 
 all_units = {
@@ -31,6 +32,10 @@ all_units = {
         'day': 1,
         'week': 1/7,
     },
+    'angle': {
+        'rad': pi,
+        'degree': 180,
+    }
 }
 
 SI_units = {
@@ -39,6 +44,7 @@ SI_units = {
     'area': 'm2',
     'length': 'm',
     'time': 'second',
+    'angle': 'rad',
 }
 
 

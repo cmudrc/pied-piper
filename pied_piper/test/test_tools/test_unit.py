@@ -11,6 +11,11 @@ class TestUnitClass(unittest.TestCase):
         self.assertAlmostEqual(
             v.val, v_new.val, places=10, msg="test_conversion")
 
+    def test_conversion_angle(self):
+        v = Unit(1, 'rad')
+        v_new = v.to('degree')
+        self.assertAlmostEqual(v_new.val, 57.29578, places=5)
+
     def test_sum(self):
         v_1 = Unit(1, 'km/hour')
         v_2 = Unit(1, 'km/hour')

@@ -1,1 +1,1 @@
-from .boundery import Circular
+from .boundery import Circular, Rectangular
