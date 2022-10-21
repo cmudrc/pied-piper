@@ -31,6 +31,16 @@ class TestRectangularClass(unittest.TestCase):
         self.assertFalse(boundery.is_in(other))
 
     def test_rectangular_boundery_out(self):
-        other = Other(pos=[0.6, 0.6])
+        other = Other(pos=[0.7, 0.7])
         boundery = Rectangular(center=[0, 0], width=2, height=1, theta=0.5)
         self.assertTrue(boundery.is_in(other))
+
+    def test_distance_from_boundery_in(self):
+        other = Other(pos=[0.4, 0.4])
+        boundery = Rectangular(center=[0, 0], width=2, height=1, theta=0.1)
+        self.assertEqual(boundery.distance(other, mode='boundery'), 0)
+
+    def test_distance_from_boundery_out(self):
+        other = Other(pos=[0.7, 0.7])
+        boundery = Rectangular(center=[0, 0], width=2, height=1, theta=0.1)
+        self.assertAlmostEqual(boundery.distance(other, mode='boundery'), 0.2, places=4)
