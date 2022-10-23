@@ -3,7 +3,8 @@ import numpy as np
 
 from agent import Agent
 from tools import DegradationProperty
-from tools import find_element, euclidean_distance
+from tools import find_element
+from tools.path import euclidean_distance
 from tools.source import Produce, Use, Storage
 
 

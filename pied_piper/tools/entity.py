@@ -5,11 +5,6 @@ try:
 except:
     from degradation import DegradationProperty
 
-try:
-    from .distance import euclidean_distance
-except:
-    from distance import euclidean_distance
-
 
 class Entity(DegradationProperty):
     """
@@ -43,11 +38,7 @@ class Entity(DegradationProperty):
         self.pos = pos
 
     def distance(self, other):
-        x_0 = self.pos[0]
-        y_0 = self.pos[1]
-        x_1 = other.pos[0]
-        y_1 = other.pos[1]
-        return euclidean_distance(x_0, y_0, x_1, y_1)
+        return np.sum(np.square(np.array(self.pos) - np.array(other.pos)))
 
 
 """ for easier class inheritence """
