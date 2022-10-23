@@ -70,6 +70,12 @@ class Linear:
             result = 'in progress'
         return result
 
+    def __str__(self):
+        txt = ''
+        txt += 'from ' + str(self.pos_start)
+        txt += ' to ' + str(self.pos_end)
+        return txt
+
 
 if __name__ == "__main__":
     track = Linear([0, 0], [1, 1], length=3)

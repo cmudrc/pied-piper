@@ -1,20 +1,21 @@
 import unittest
 
-from tools.path import Path, Linear
+from tools.path import Path
 
 
 class TestLinearTrackClass(unittest.TestCase):
-    tracks = [
-        Linear(pos_start=[0, 0], pos_end=[0, 3]),
-        Linear(pos_start=[0, 3], pos_end=[4, 3])
-    ]
-    path = Path(tracks)
 
-    def test_add_next(self):
-        pass
+    path = Path()
+    path.add(pos=[0, 0])
+    path.add(pos=[0, 3])
+    path.add(pos=[4, 3])
 
     def test_total_length(self):
         self.assertEqual(self.path.total_length(), 7)
+
+    def test_total_length_1(self):
+        self.path.add(pos=[0, 0])
+        self.assertEqual(self.path.total_length(), 12)
 
     def test_pos_0(self):
         current_length = 0
