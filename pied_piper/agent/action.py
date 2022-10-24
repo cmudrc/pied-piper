@@ -1,5 +1,35 @@
 class Action:
 
+    def __init__(self, start_date):
+        self.start_date = start_date
+    
+    def progress(self, time):
+        """
+        Calculate the progress ratio in the desired time
+
+        Args:
+            time: a datetime object
+
+        Returns:
+            float value between 0 and 1
+        """
+        return None
+
+    def status(self, time):
+        result = None
+        prog = self.progress(time)
+        if prog is not None:
+            if prog == 0:
+                result = 'in queue'
+            elif prog == 1:
+                result = 'done'
+            else:
+                result = 'in progress'
+        return result
+
+
+class Move(Action):
+
     def __init__(
         self,
         start_date,
@@ -7,7 +37,9 @@ class Action:
         transportation,
         instant=False
     ):
-        self.start_date = start_date
+        super().__init__(
+            start_date
+        )
         '''
         self.start_point = start_point
         self.start_pos = None
@@ -30,15 +62,18 @@ class Action:
         """
         result = None
         if self.instant:
-            if self.start_date < time:
+            if self.start_date > time:
                 result = 0
             else:
                 result = 1
         else:
-            delta_t = time - self.start_date
-            speed = self.transportation.speed
-            current_length = speed * delta_t
-            result = self.path.progress(current_length)
+            if self.start_date > time:
+                result = 0
+            else:
+                delta_t = time - self.start_date
+                speed = self.transportation.speed
+                current_length = speed * delta_t.seconds
+                result = self.path.progress(current_length)
         return result
 
     def pos(self, time):
