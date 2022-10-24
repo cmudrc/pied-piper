@@ -11,13 +11,46 @@ class Path:
         self.tracks = []
         self.temp = None
 
+    def origin(self, mode='name'):
+        """
+        Return info about the origin point.
+        """
+        result = None
+        if len(self.tracks > 0):
+            if mode == 'name':
+                result = self.tracks[0].name
+            elif mode == 'pos':
+                result = self.tracks[0].pos
+        return result
+
+    def destination(self, mode='name'):
+        """
+        Return info about the destination point.
+        """
+        result = None
+        if len(self.tracks > 1):
+            if mode == 'name':
+                result = self.tracks[-1].name
+            elif mode == 'pos':
+                result = self.tracks[-1].pos
+        return result
+
     def total_length(self):
+        """
+        Length of all tracks within the path combined.
+        """
         result = 0
         for track in self.tracks:
             result = result + track.length
         return result
 
     def progress(self, current_length: float):
+        """
+        Calculate the progress
+
+        Returns:
+            float value between 0 and 1
+        """
         result = None
         result = current_length / self.total_length()
         if result > 1:
@@ -27,6 +60,9 @@ class Path:
         return result
 
     def find_active_track(self, current_length: float):
+        """
+        Find the track in tracks list that is active at the moment.
+        """
         current_length_input = deepcopy(current_length)
         result = None
         remainder_val = None
@@ -56,6 +92,9 @@ class Path:
         return result
 
     def add(self, pos, name=None, mode='linear', length=None):
+        """
+        Add a new track (and a new destination) to the path.
+        """
         pos_start, name_start = None, None
         if len(self.tracks) == 0:
             if self.temp is None:
