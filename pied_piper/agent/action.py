@@ -100,8 +100,13 @@ class Move(Action):
         """
         Total duration of the action.
         """
-        length = self.path.total_length()
-        return self.transportation.how_long(length)
+        result = None
+        if self.instant:
+            result = dt(seconds=0)
+        else:
+            length = self.path.total_length()
+            result = self.transportation.how_long(length)
+        return result
 
     def when_reach(self):
         """

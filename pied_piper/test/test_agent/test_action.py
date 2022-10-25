@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from agent import Move
 from tools import date, dt
@@ -32,8 +33,30 @@ class TestMoveClass(unittest.TestCase):
         time = self.m.start_date - dt(seconds=1)
         progress = self.m.progress(time)
         self.assertEqual(progress, 0)
+
+    def test_progress_instant_0(self):
+        m = deepcopy(self.m)
+        m.instant = True
+        time = m.start_date - dt(seconds=1)
+        progress = m.progress(time)
+        self.assertEqual(progress, 0)
+
+    def test_progress_instant_1(self):
+        m = deepcopy(self.m)
+        m.instant = True
+        time = m.start_date + dt(seconds=1)
+        progress = m.progress(time)
+        self.assertEqual(progress, 1)
     
     def test_action_duration(self):
-        duration = self.m.action_duration()
-        self.assertAlmostEqual(duration.seconds, 5, places=1)
+        m = deepcopy(self.m)
+        m.path.add(pos=[0, 0])
+        duration = m.action_duration()
+        self.assertAlmostEqual(duration.seconds, 8, places=1)
+
+    def test_action_duration_instant(self):
+        m = deepcopy(self.m)
+        m.instant = True
+        duration = m.action_duration()
+        self.assertAlmostEqual(duration.seconds, 0, places=1)
     
