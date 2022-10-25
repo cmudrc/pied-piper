@@ -1,8 +1,19 @@
 import numpy as np
 
-from resource import Use, Storage
-from tools import Unit
-from tools import dt
+try:
+    from .asset import Use, Storage
+except:
+    from asset import Use, Storage
+
+try:
+    from .tools import Unit
+except:
+    from tools import Unit
+
+try:
+    from .tools import dt
+except:
+    from tools import dt
 
 
 class Transportation():

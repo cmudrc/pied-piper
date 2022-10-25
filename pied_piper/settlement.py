@@ -4,9 +4,9 @@ except:
     from tools import Entity
 
 try:
-    from .tools.boundery import Circular
+    from .tools.boundery import Circular, Rectangular
 except:
-    from tools.boundery import Circular
+    from tools.boundery import Circular, Rectangular
 
 try:
     from .agent import Agent

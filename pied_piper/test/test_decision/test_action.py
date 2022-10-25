@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from agent import Move
+from decision import Move
 from tools import date, dt
 from tools.path import Path
 from transportation import Foot

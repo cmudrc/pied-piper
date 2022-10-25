@@ -1,7 +1,7 @@
 import unittest
 
-from resource import Storage, Deficiency
-from resource import Use, Produce
+from asset import Storage, Deficiency
+from asset import Use, Produce
 from tools import Unit
 
 

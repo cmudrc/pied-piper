@@ -1,4 +1,7 @@
-from tools import dt
+try:
+    from ..tools import dt
+except:
+    from tools import dt
 
 
 class Action:
@@ -149,7 +152,3 @@ class Queue:
 
     def add(self, action):
         self.actions.append(action)
-
-
-if __name__ == "__main__":
-    pass

@@ -5,7 +5,7 @@ from agent import Agent
 from tools import DegradationProperty
 from tools import find_element
 from tools.path import euclidean_distance
-from resource import Produce, Use, Storage
+from asset import Produce, Use, Storage
 
 
 class Production(DegradationProperty):

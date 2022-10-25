@@ -8,21 +8,37 @@ try:
 except:
     from tools import date
         
+try:
+    from .tools import entity_kwargs
+except:
+    from tools import entity_kwargs
+    
+try:
+    from .transportation import Foot
+except:
+    from transportation import Foot
+
 
 class Agent(Entity):
     """
     Representes an agent.
     """
 
-    def __init__(self, name, pos, birthday=date(2000, 1, 1), resources=None, settlement=None, transportations=None):
+    def __init__(
+        self,
+        birthday=date(2000, 1, 1),
+        resources=None,
+        settlement=None,
+        transportations=[Foot()],
+        **entity_kwargs
+    ):
+        entity_kwargs['initiation_date'] = birthday
         super().__init__(
-            name=name,
-            pos=pos
+            **entity_kwargs
         )
         """
         Args:
-            name: name
-            pos: position
+            birthday: datetime object
             resources: a list containing all resources that the agent use, produce, or store
             settlement: the name the settlement that agent resides
             transportations: a list of possible transportation methods
@@ -106,9 +122,18 @@ def generate_agent(count=1):
 
 
 if __name__ == "__main__":
-    from transportation import Vehicle
+    from resource import Resource
 
 
+    resources = [
+        Resource
+    ]
+    a = Agent(
+        birthday=date(2020, 1, 1),
+        resources=resources
+    )
+
+    '''
     a_1 = Human(
         name='person_1',
         pos=[0.3, 0.4],
@@ -119,5 +144,6 @@ if __name__ == "__main__":
         pos=[0, 0],
         vehicles=[]
     )
+    '''
     #print(a_1.distance(a_2))
     #print(a_2.transportations[0])

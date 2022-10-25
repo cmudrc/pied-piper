@@ -11,7 +11,7 @@ try:
 except:
     from tools.boundery import Circular
 
-from graphics import draw_agent
+#from graphics import draw_agent
 
 
 class Model():
@@ -135,7 +135,8 @@ class Model():
         )
 
         for agent in self.all_agents:
-            draw_agent(agent)
+            pass
+            #draw_agent(agent)
 
         plt.show()
 
