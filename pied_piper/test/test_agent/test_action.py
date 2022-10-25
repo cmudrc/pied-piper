@@ -3,8 +3,9 @@ from copy import deepcopy
 
 from agent import Move
 from tools import date, dt
-from transportation import Foot
 from tools.path import Path
+from transportation import Foot
+
 
 class TestMoveClass(unittest.TestCase):
     

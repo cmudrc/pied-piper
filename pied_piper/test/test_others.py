@@ -101,9 +101,8 @@ class TestModelClass(unittest.TestCase):
 class TestTransportationClass(unittest.TestCase):
     def test_how_long(self):
         transportation = Foot(speed=Unit(5, 'km/hour').to_SI())
-        pos_start = [0, 0]
-        pos_end = [Unit(1, 'km').to_SI(), 0]
-        delta_t = transportation.how_long(pos_start, pos_end)
+        length = 1000
+        delta_t = transportation.how_long(length)
         dt_minutes = delta_t.seconds / 60
         self.assertEqual(dt_minutes, 12, msg="Should be equal")
 
@@ -112,9 +111,8 @@ class TestTransportationClass(unittest.TestCase):
             speed=Unit(5, 'km/hour').to_SI(),
             fuel_rate=Unit(1, 'kg/hour').to_SI()  # food
         )
-        pos_start = [0, 0]
-        pos_end = [Unit(1, 'km').to_SI(), 0]
-        delta_m = transportation.how_much_fuel(pos_start, pos_end)
+        length = 1000
+        delta_m = transportation.how_much_fuel(length)
         self.assertEqual(delta_m['food'], 0.2, msg="Should be equal")
 
 

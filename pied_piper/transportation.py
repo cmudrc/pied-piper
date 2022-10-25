@@ -1,6 +1,6 @@
 import numpy as np
 
-from tools.source import Use, Storage
+from resource import Use, Storage
 from tools import Unit
 from tools import dt
 
@@ -25,17 +25,16 @@ class Transportation():
         d_time = length / self.speed
         return dt(seconds=d_time)
 
-    def how_much_fuel(self, pos, pos_destination):
+    def how_much_fuel(self, length):
         """
         How much fuel is needed for reaching the destination?
         """
-
-        t = self.how_long(pos, pos_destination)  # seconds
+        t = self.how_long(length)
         result = {}
         for fuel_name in self.fuel_rate:
             use = self.fuel_rate[fuel_name]
             #print(use.rate)
-            result[fuel_name] = (t.seconds) * use.rate  # kg
+            result[fuel_name] = (t.seconds) * use.rate
         return result
 
     def __str__(self):
@@ -75,9 +74,8 @@ class Vehicle(Transportation):
 if __name__ == "__main__":
     transportation = Foot()
     #print('transportation.name:', transportation.name)
-    pos_start = [0, 0]
-    pos_end = [1000, 0]
-    delta_t = transportation.how_long(pos_start, pos_end)
-    delta_m = transportation.how_much_fuel(pos_start, pos_end)
+    length = 1000
+    delta_t = transportation.how_long(length)
+    delta_m = transportation.how_much_fuel(length)
     print('delta_t:', delta_t)
     print('delta_m:', delta_m)

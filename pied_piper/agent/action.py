@@ -115,6 +115,14 @@ class Move(Action):
         delta_t = self.action_duration()
         return self.start_date + delta_t
 
+    def how_much_fuel(self, time):
+        ##########
+        self.total_fuel() * self.progress(time)
+
+    def total_fuel(self):
+        #########
+        pass
+
     def origin(self, mode='name'):
         """
         Return info about the origin point.
