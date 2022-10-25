@@ -1,8 +1,8 @@
 import numpy as np
-from datetime import timedelta
 
 from tools.source import Use, Storage
 from tools import Unit
+from tools import dt
 
 
 class Transportation():
@@ -18,34 +18,12 @@ class Transportation():
         self.fuel_rate = fuel_rate  # resource used for the transport
         self.storage_max = storage_max
 
-    def displacement(self, t, t_0, direction):
-        i = direction[0]
-        j = direction[1]
-        ''' normalizing i and j '''
-        L = np.power((np.power(i, 2) + np.power(j, 2)), 0.5)
-        i = i/L
-        j = j/L
-
-        displacement_total = (t - t_0) * self.speed
-        displacement_x = displacement_total * i
-        displacement_y = displacement_total * j
-        return [displacement_x, displacement_y]
-
-    def how_long(self, pos, pos_destination):
+    def how_long(self, length):
         """
-        How long does it take to reach the destination? (in hours)
+        Calculate how long does it take to move by length amount.
         """
-
-        x_0 = pos[0]
-        y_0 = pos[1]
-        x_1 = pos_destination[0]
-        y_1 = pos_destination[1]
-        delta_i = x_0 - x_1
-        delta_j = y_0 - y_1
-        L = np.power((np.power(delta_i, 2) + np.power(delta_j, 2)), 0.5)  # meters
-        t = L / self.speed  # seconds
-        #print("L, t, v:", L, t, self.speed)
-        return timedelta(seconds=t)
+        d_time = length / self.speed
+        return dt(seconds=d_time)
 
     def how_much_fuel(self, pos, pos_destination):
         """

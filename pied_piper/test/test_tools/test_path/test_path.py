@@ -9,7 +9,7 @@ class TestLinearTrackClass(unittest.TestCase):
     path.add(pos=[0, 0])
     path.add(pos=[0, 3])
     path.add(pos=[4, 3])
-
+    
     def test_total_length(self):
         self.assertEqual(self.path.total_length(), 7)
 

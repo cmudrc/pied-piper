@@ -1,3 +1,6 @@
+from tools import dt
+
+
 class Action:
 
     def __init__(self, start_date):
@@ -20,7 +23,7 @@ class Action:
         prog = self.progress(time)
         if prog is not None:
             if prog == 0:
-                result = 'in queue'
+                result = 'not started'
             elif prog == 1:
                 result = 'done'
             else:
@@ -93,6 +96,20 @@ class Move(Action):
             result = self.path.pos(current_length)
         return result
     
+    def action_duration(self):
+        """
+        Total duration of the action.
+        """
+        length = self.path.total_length()
+        return self.transportation.how_long(length)
+
+    def when_reach(self):
+        """
+        Calculate the date in which the destination will be reached.
+        """
+        delta_t = self.action_duration()
+        return self.start_date + delta_t
+
     def origin(self, mode='name'):
         """
         Return info about the origin point.

@@ -17,7 +17,7 @@ class TestMoveClass(unittest.TestCase):
         path=path,
         transportation=Foot()
     )
-
+    
     def test_progress_0(self):
         time = self.m.start_date + dt(seconds=100)
         progress = self.m.progress(time)
@@ -32,3 +32,8 @@ class TestMoveClass(unittest.TestCase):
         time = self.m.start_date - dt(seconds=1)
         progress = self.m.progress(time)
         self.assertEqual(progress, 0)
+    
+    def test_action_duration(self):
+        duration = self.m.action_duration()
+        self.assertAlmostEqual(duration.seconds, 5, places=1)
+    
