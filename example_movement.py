@@ -3,20 +3,41 @@ import matplotlib.pyplot as plt
 from pied_piper.tools.path import Path
 from pied_piper.decision import Move
 from pied_piper.transportation import Foot
-from pied_piper.tools import date
+from pied_piper.tools import date, dt
 
 
 path = Path()
+path.add(pos=[200, 200])
 path.add(pos=[0, 0])
 path.add(pos=[0, 300])
 path.add(pos=[400, 300])
+path.add(pos=[0, 0])
+path.add(pos=[200, 200])
+
+start_date = date(2020, 1, 1)
 
 move = Move(
-    start_date=date(2020, 1, 1),
+    start_date=start_date,
     path=path,
     transportation=Foot()
 )
 
-print(move.action_duration())
+action_duration = move.action_duration().seconds
+video_duration = 1  # seconds
+fps = 40
+total_frames = video_duration * fps
+step_size = action_duration / total_frames
 
-#plt.plot(x_list, y_list)
+for i in range(total_frames+1):
+    delta_t = i*step_size
+    time = start_date + dt(seconds=delta_t)
+    position = move.pos(time)
+    plt.clf()
+    plt.gca().set_title('Date: ' + str(time), fontsize=10)
+    #plt.gca().axis('equal')
+    plt.xlim(-100, 500)
+    plt.ylim(-100, 500)
+    plt.scatter(*position, color='black')
+    plt.pause(interval=1/fps)
+
+plt.show()

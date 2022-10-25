@@ -95,7 +95,7 @@ class Move(Action):
         else:
             delta_t = time - self.start_date
             speed = self.transportation.speed
-            current_length = speed * delta_t
+            current_length = speed * delta_t.seconds
             result = self.path.pos(current_length)
         return result
     
