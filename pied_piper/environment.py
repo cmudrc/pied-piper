@@ -31,7 +31,7 @@ if __name__ == "__main__":
         ),
     ]
 
-    asset = Asset(resources=resources)
+    asset = Asset(resources)
 
     env = Environment(
         x_lim=[-500, 500],

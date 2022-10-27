@@ -1,12 +1,12 @@
 try:
-    from .dynamic import Use, Produce
+    from .resource_dynamic import Use, Produce
 except:
-    from dynamic import Use, Produce
+    from resource_dynamic import Use, Produce
 
 try:
-    from .static import Storage, Deficiency
+    from .resource_static import Storage, Deficiency
 except:
-    from static import Storage, Deficiency
+    from resource_static import Storage, Deficiency
 
 
 class Resource:
@@ -50,23 +50,6 @@ class Resource:
     """
 
 
-class Asset:
-
-    def __init__(
-        self,
-        resources=None,
-    ):
-        self.resources = {}
-        if resources is not None:
-            for resource in resources:
-                self.add(resource)
-
-    def add_single(self, resource:Resource):
-        self.resources[resource.name] = resource
-
-    def add(self, *resources):
-        for resource in resources:
-            self.add_single(resource)
 
 
 if __name__ == "__main__":

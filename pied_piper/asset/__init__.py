@@ -1,3 +1,4 @@
-from .dynamic import Use, Produce
-from .static import Storage, Deficiency
-from .resource import Resource, Asset
+from .resource_dynamic import Use, Produce
+from .resource_static import Storage, Deficiency
+from .resource_combined import Resource
+from .asset import Asset
