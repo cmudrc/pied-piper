@@ -11,9 +11,9 @@ class DynamicSource:
         self.rate = rate
         self.current_amount = None
 
-    def refill(self, delta_t):
-        max_charge = self.rate * delta_t
-        self.current_amount = self.rate * delta_t
+    def refill(self, delta_t, mode='simple'):
+        if mode == 'simple':
+            self.current_amount = self.rate * delta_t
 
     def sub(self, amount:float):
         if amount > self.current_amount:
