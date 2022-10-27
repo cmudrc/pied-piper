@@ -7,6 +7,9 @@ class Environment:
         self.x_lim = x_lim
         self.y_lim = y_lim
         self.asset = asset
+    
+    def update(self, start_date, end_date):
+        pass
 
 
 if __name__ == "__main__":

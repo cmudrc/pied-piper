@@ -11,6 +11,8 @@ try:
 except:
     from tools.boundery import Circular
 
+from environment import Environment
+
 #from graphics import draw_agent
 
 
@@ -27,7 +29,42 @@ class ModelNew:
         self.step_size = step_size
         self.current_step = current_step
         self.current_date = current_date
-        
+
+        self.environment = environment
+        self.agents = agents
+
+    def update_elements(self, next_date):
+        """
+        Check activeness of all elements until the next_date
+        """
+        if self.current_date < next_date:
+            if self.current_step == 0:
+                pass
+            else:
+                start_date = self.current_date
+                end_date = next_date
+                self._update_agents(start_date, end_date)
+                self.environment.update(start_date, end_date)
+        else:
+            raise ValueError
+
+    def _update_agents(self, start_date, end_date):
+        bye_bye = []
+        for agent in self.agents:
+            previous_state = agent.active
+            activeness = agent.is_active(start_date, end_date)
+            if activeness is False:
+                agent.active = False
+            if activeness != previous_state:
+                bye_bye.append(agent.name)
+                print(agent.name + " died")
+        return bye_bye
+
+    def run_step(self):
+        next_date = dt(seconds=self.step_size) + self.current_date
+        next_step = self.current_step + 1
+        #print(self.current_date, next_date)
+        self.update_elements(next_date)
 
 
 class Model():
