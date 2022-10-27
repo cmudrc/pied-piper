@@ -14,6 +14,22 @@ except:
 #from graphics import draw_agent
 
 
+class ModelNew:
+
+    def __init__(
+        self,
+        step_size=None,
+        current_step=0,
+        current_date=None,
+        environment=[],
+        agents=[],
+    ):
+        self.step_size = step_size
+        self.current_step = current_step
+        self.current_date = current_date
+        
+
+
 class Model():
     def __init__(
         self,

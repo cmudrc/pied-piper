@@ -6,7 +6,7 @@ class StaticSource:
     Resource static storage.
     """
 
-    def __init__(self, current_amount=0, max_amount=0):
+    def __init__(self, current_amount=0, max_amount=None):
         """
         Args:
             current_amount: current amount
@@ -16,10 +16,19 @@ class StaticSource:
         self.current_amount = current_amount
         self.max_amount = max_amount
 
-    def add(self, amount):
-        self.current_amount += amount
-        if self.current_amount > self.max_amount:
-            self.current_amount = deepcopy(self.max_amount)
+    def add(self, amount: float):
+        if self.max_amount is None:
+            self.current_amount += amount
+            amount = 0
+        else:
+            gap = self.max_amount - self.current_amount
+            if gap > amount:
+                self.current_amount += amount
+                amount = 0
+            else:
+                self.current_amount = deepcopy(self.max_amount)
+                amount = amount - gap
+        return amount
 
     def sub(self, amount: float):
         if amount > self.current_amount:
@@ -62,10 +71,11 @@ class Storage(StaticSource):
 
 
 if __name__ == "__main__":
-    current_amount = 0
-    max_amount = 10
     s = Storage(
-        current_amount=0,
-        max_amount=10
+        current_amount=1,
+        max_amount=15
     )
+    remaining = s.add(20)
+    print(s.current_amount, remaining)
+
     #print(p.current_amount)

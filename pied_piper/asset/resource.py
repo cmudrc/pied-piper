@@ -32,16 +32,34 @@ class Resource:
         pass
 
     def add(self, amount:float):
-        self.use 
+        amount = self.use.sub(amount)
+        amount = self.storage.add(amount)
+        self.deficiency
+
+    def sub(self, amount:float):
+        amount = self.produce.sub(amount)
+        amount = self.storage.sub(amount)
+        return amount
+    
+
+    """
+            use:Use=Use(rate=0),
+        produce:Produce=Produce(rate=0),
+        storage:Storage=Storage(current_amount=0, max_amount=0),
+        deficiency:Deficiency=Deficiency(current_amount=0, max_amount=0)
+    """
 
 
 class Asset:
 
     def __init__(
         self,
-        resources:dict={},
+        resources=None,
     ):
-        self.resources = resources
+        self.resources = {}
+        if resources is not None:
+            for resource in resources:
+                self.add(resource)
 
     def add_single(self, resource:Resource):
         self.resources[resource.name] = resource

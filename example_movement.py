@@ -24,7 +24,7 @@ move = Move(
 
 action_duration = move.action_duration().seconds
 video_duration = 1  # seconds
-fps = 40
+fps = 20
 total_frames = video_duration * fps
 step_size = action_duration / total_frames
 
