@@ -30,16 +30,17 @@ class Resource:
         self.produce.refill(delta_t)
 
     def solve(self):
-        ##########
+        """
+        Solve inner nodes within a resource with each other.
+        """
         source = self.source()
-        demand = self.demand()
-        delta = source - demand
-        if delta > 0:
-            self.add(delta)
-        else:
-            self.sub(delta)
+        self.add(source)
+        self.sub(source)
 
     def add(self, amount:float):
+        """
+        Add a certain amount to the resource.
+        """
         if self.use is not None:
             amount = self.use.sub(amount)
         if self.deficiency is not None:
@@ -48,30 +49,44 @@ class Resource:
             amount = self.storage.add(amount)
         return amount
 
-    def source(self):
-        source = 0
-        if self.produce is not None:
-            source += self.produce.current_amount
-        if self.storage is not None:
-            source += self.storage.current_amount
-        return source
-        
-    def demand(self):
-        demand = 0
-        if self.use is not None:
-            demand += self.use.current_amount
-        if self.deficiency is not None:
-            demand = self.deficiency.current_amount
-        if self.storage is not None:
-            demand += self.storage.max_amount - self.storage.current_amount
-        return demand
-
     def sub(self, amount:float):
+        """
+        Subtract a certain amount from the resource.
+        """
         if self.produce is not None:
             amount = self.produce.sub(amount)
         if self.storage is not None:
             amount = self.storage.sub(amount)
         return amount
+
+    def source(self):
+        """
+        Calculate overall source.
+        """
+        source = 0
+        if self.produce is not None:
+            if self.produce.current_amount is not None:
+                source += self.produce.current_amount
+        if self.storage is not None:
+            if self.storage.current_amount is not None:
+                source += self.storage.current_amount
+        return source
+        
+    def demand(self):
+        """
+        Calculate overall demand.
+        """
+        demand = 0
+        if self.use is not None:
+            if self.use.current_amount is not None:
+                demand += self.use.current_amount
+        if self.deficiency is not None:
+            if self.deficiency.current_amount is not None:
+                demand = self.deficiency.current_amount
+        if self.storage is not None:
+            if self.storage.current_amount is not None:
+                demand += self.storage.max_amount - self.storage.current_amount
+        return demand
 
     def __str__(self):
         txt = ''
@@ -87,17 +102,36 @@ class Resource:
 
 
 if __name__ == "__main__":
+
     food = Resource(
         name='food',
-        use=Use(rate=5),
+        use=Use(rate=1),
         produce=Produce(rate=1),
         storage=Storage(current_amount=10, max_amount=20),
         deficiency=Deficiency(current_amount=5, max_amount=20)
     )
-    food.refill(10)
-    print(food)
+
+    ''' initial '''
+    print('initial')
     print('source:', food.source(), '/', 'demand:', food.demand())
+    print(food)
+
+    ''' refill '''
+    print('refill')
+    food.refill(10)
+    print('source:', food.source(), '/', 'demand:', food.demand())
+    print(food)
+
+    ''' solve '''
+    print('solve')
+    food.solve()
+    print('source:', food.source(), '/', 'demand:', food.demand())
+    print(food)
+
+    ''' add '''
+    print('add')
     amount = 70
     remaining = food.add(amount)
     print('amount:', amount, '/', 'remaining:', remaining, '\n')
+    print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
