@@ -14,7 +14,7 @@ def test(target:str='all'):
     
 
 if __name__ == "__main__":
-    target = 'asset'
+    target = 'resource'
     #target = 'all'
     suite = test(target)
     runner = unittest.TextTestRunner()

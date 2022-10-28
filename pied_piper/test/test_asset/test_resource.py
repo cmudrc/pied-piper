@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from asset import Storage, Deficiency
 from asset import Use, Produce
@@ -6,41 +7,49 @@ from tools import Unit
 
 
 class TestUseProduceClass(unittest.TestCase):
+    """
+    Use and Produce classes behave the same, so testing one is enough.
+    """
+
+    p = Produce(rate=Unit(5, 'ton/day').to_SI())
+    p.refill(delta_t=Unit(1, 'day').to_SI())
+
     def test_refill(self):
-        p = Produce(rate=Unit(5, 'ton/day').to_SI())
-        p.refill(delta_t=Unit(1, 'day').to_SI())
-        self.assertEqual(p.current_amount, Unit(5, 'ton').to('kg').to_SI(), msg="refill")
+        self.assertEqual(self.p.current_amount, Unit(5, 'ton').to('kg').to_SI(), msg="refill")
 
     def test_sub(self):
-        p = Produce(rate=Unit(5, 'ton/day').to_SI())
-        p.refill(delta_t=Unit(1, 'day').to_SI())
-        p.sub(Unit(10, 'ton').to('kg').to_SI())
-        self.assertEqual(p.current_amount, 0, msg="refill")
+        self.p.sub(Unit(10, 'ton').to('kg').to_SI())
+        self.assertEqual(self.p.current_amount, 0, msg="refill")
 
 
 class TestDeficiencyClass(unittest.TestCase):
+    """
+    Storage and Deficiency classes behave (almost) the same, so testing one is enough.
+    """
+
+    d = Deficiency(
+        current_amount=1,
+        max_amount=5
+    )
+    remaning = d.add(1)
+
     def test_add(self):
-        d = Deficiency(
-            current_amount=Unit(1, 'kg').to_SI(),
-            max_amount=Unit(5, 'kg').to_SI()
-        )
-        d.add(Unit(1, 'kg').to_SI())
-        val = d.current_amount
-        self.assertEqual(val, 2, msg='add')
+        self.assertEqual(self.d.current_amount, 2, msg='add')
+
+    def test_add_remaining(self):
+        self.assertEqual(self.remaning, 0)
 
     def test_add_max(self):
-        d = Deficiency(
-            current_amount=Unit(1, 'kg').to_SI(),
-            max_amount=Unit(5, 'kg').to_SI()
-        )
-        d.add(Unit(5, 'kg').to_SI())
-        val = d.current_amount
-        self.assertEqual(val, 5, msg='add')
+        d = deepcopy(self.d)
+        d.add(5)
+        self.assertEqual(d.current_amount, 5, msg='add')
+
+    def test_add_remaining(self):
+        d = deepcopy(self.d)
+        remaining = d.add(5)
+        self.assertEqual(remaining, 2, msg='remaining')
 
     def test_add_max_alive(self):
-        d = Deficiency(
-            current_amount=Unit(1, 'kg').to_SI(),
-            max_amount=Unit(5, 'kg').to_SI()
-        )
-        d.add(Unit(5, 'kg').to_SI())
+        d = deepcopy(self.d)
+        d.add(5)
         self.assertFalse(d.is_alive(), msg='not alive')
