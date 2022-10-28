@@ -1,17 +1,12 @@
 try:
-    from .resource_combined import Resource
+    from .resource import Resource
 except:
-    from resource_combined import Resource
+    from resource import Resource
 
 try:
-    from .resource_static import Storage, Deficiency
+    from .resource_nodes import Use, Produce, Storage, Deficiency
 except:
-    from resource_static import Storage, Deficiency
-
-try:
-    from .resource_dynamic import Use, Produce
-except:
-    from resource_dynamic import Use, Produce
+    from resource_nodes import Use, Produce, Storage, Deficiency
 
 
 class Asset:

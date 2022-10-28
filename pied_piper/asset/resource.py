@@ -1,12 +1,7 @@
 try:
-    from .resource_dynamic import Use, Produce
+    from .resource_nodes import Use, Produce, Storage, Deficiency
 except:
-    from resource_dynamic import Use, Produce
-
-try:
-    from .resource_static import Storage, Deficiency
-except:
-    from resource_static import Storage, Deficiency
+    from resource_nodes import Use, Produce, Storage, Deficiency
 
 
 class Resource:
