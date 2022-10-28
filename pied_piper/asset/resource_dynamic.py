@@ -16,6 +16,7 @@ class DynamicSource:
             self.current_amount = self.rate * delta_t
 
     def sub(self, amount:float):
+        if amount is None: amount = 0
         if amount > self.current_amount:
             amount -= self.current_amount
             self.current_amount = 0

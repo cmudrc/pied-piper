@@ -1,6 +1,17 @@
-from resource_combined import Resource
-from resource_static import Storage, Deficiency
-from resource_dynamic import Use, Produce
+try:
+    from .resource_combined import Resource
+except:
+    from resource_combined import Resource
+
+try:
+    from .resource_static import Storage, Deficiency
+except:
+    from resource_static import Storage, Deficiency
+
+try:
+    from .resource_dynamic import Use, Produce
+except:
+    from resource_dynamic import Use, Produce
 
 
 class Asset:
@@ -12,17 +23,38 @@ class Asset:
         self.resources = {}
         if resources is not None:
             for resource in resources:
-                self.add(resource)
+                self.add_single(resource)
 
     def add_single(self, resource:Resource):
         self.resources[resource.name] = resource
 
-    def add(self, *resources):
+    def add_resources(self, *resources):
         for resource in resources:
             self.add_single(resource)
 
+    def refill(self, delta_t):
+        for resource_name in self.resources.keys():
+            resource = self.resources[resource_name]
+            if resource.use is not None:
+                resource.use.refill(delta_t)
+            if resource.produce is not None:
+                resource.produce.refill(delta_t)
+
+    def add(self, resource_name, amount):
+        return self.resources[resource_name].add(amount)
+
+    def sub(self, resource_name, amount):
+        return self.resources[resource_name].sub(amount)
+
+    def source(self, resource_name):
+        return self.resources[resource_name].source()
+
+    def demand(self, resource_name):
+        return self.resources[resource_name].demand()    
+
 
 if __name__ == "__main__":
+
     food = Resource(
         name='food',
         use=Use(rate=5),
@@ -38,8 +70,8 @@ if __name__ == "__main__":
         deficiency=Deficiency(current_amount=0, max_amount=20)
     )
 
-    a = Asset()
-    a.add(food, water)
-    print(a.resources)
-    b = Asset([food, water])
-    print(b.resources)
+    #a = Asset()
+    #a.add_resources(food, water)
+    a = Asset([food, water])
+    print(a.source('water'), a.demand('water'))
+    print(a.source('food'), a.demand('food'))

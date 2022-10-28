@@ -17,6 +17,7 @@ class StaticSource:
         self.max_amount = max_amount
 
     def add(self, amount: float):
+        if amount is None: amount = 0
         if self.max_amount is None:
             self.current_amount += amount
             amount = 0
@@ -31,6 +32,7 @@ class StaticSource:
         return amount
 
     def sub(self, amount: float):
+        if amount is None: amount = 0
         if amount > self.current_amount:
             amount -= self.current_amount
             self.current_amount = 0

@@ -26,6 +26,9 @@ class Resource:
         self.deficiency = deficiency
 
     def refill(self, delta_t):
+        """
+        Refill the nodes that charge by flow (use and produce)
+        """
         self.use.refill(delta_t)
         self.produce.refill(delta_t)
 
@@ -112,24 +115,24 @@ if __name__ == "__main__":
     )
 
     ''' initial '''
-    print('initial')
+    print('>>> initial')
     print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
 
     ''' refill '''
-    print('refill')
+    print('>>> refill')
     food.refill(10)
     print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
 
     ''' solve '''
-    print('solve')
+    print('>>> solve')
     food.solve()
     print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
 
     ''' add '''
-    print('add')
+    print('>>> add')
     amount = 70
     remaining = food.add(amount)
     print('amount:', amount, '/', 'remaining:', remaining, '\n')
