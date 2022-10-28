@@ -1,37 +1,8 @@
+from datetime import timedelta as dt
 try:
-    from ..tools import dt
+    from .action import Action
 except:
-    from tools import dt
-
-
-class Action:
-
-    def __init__(self, start_date):
-        self.start_date = start_date
-    
-    def progress(self, time):
-        """
-        Calculate the progress ratio in the desired time
-
-        Args:
-            time: a datetime object
-
-        Returns:
-            float value between 0 and 1
-        """
-        return None
-
-    def status(self, time):
-        result = None
-        prog = self.progress(time)
-        if prog is not None:
-            if prog == 0:
-                result = 'not started'
-            elif prog == 1:
-                result = 'done'
-            else:
-                result = 'in progress'
-        return result
+    from action import Action
 
 
 class Move(Action):
@@ -44,7 +15,8 @@ class Move(Action):
         instant=False
     ):
         super().__init__(
-            start_date
+            start_date,
+            instant
         )
         '''
         self.start_point = start_point
@@ -54,7 +26,6 @@ class Move(Action):
         '''
         self.path = path
         self.transportation = transportation
-        self.instant = instant
 
     def progress(self, time):
         """
@@ -143,12 +114,3 @@ class Move(Action):
         txt += 'from ' + self.origin() + ' '
         txt += 'to ' + self.destination()
         return txt
-
-
-class Queue:
-
-    def __init__(self, actions:list=[]):
-        self.actions = actions
-
-    def add(self, action):
-        self.actions.append(action)
