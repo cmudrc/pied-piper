@@ -1,4 +1,4 @@
-from datetime import datetime as date
+from pied_piper.tools import dt, date
 
 
 class Action:
@@ -29,8 +29,14 @@ class Action:
         Returns:
             float value between 0 and 1
         """
-        duration = self.duration().total_seconds()
-        progress = (time - self.start_date).total_seconds() / duration
+        if self.instant is False:
+            duration = self.duration().total_seconds()
+            progress = (time - self.start_date).total_seconds() / duration
+        else:
+            if time >= self.start_date:
+                progress = 1
+            else:
+                progress = 0
         if progress > 1: progress = 1
         elif progress < 0: progress = 0
         return progress

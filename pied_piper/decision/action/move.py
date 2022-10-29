@@ -18,12 +18,16 @@ class Move(Action):
     ):
         self.path = path
         self.transportation = transportation
-        end_date = start_date + self.action_duration()
+        end_date = start_date + self.action_duration(instant)
         super().__init__(
             start_date,
             end_date,
             instant
         )
+
+    def add_path(self, pos, name=None, mode='linear', length=None):
+        self.path.add(pos, name, mode, length)
+        self.end_date = self.start_date + self.action_duration(self.instant)
 
     def pos(self, time: date):
         """
@@ -35,7 +39,7 @@ class Move(Action):
         result = self.path.pos(total_length * progress)
         return result
     
-    def action_duration(self):
+    def action_duration(self, instant):
         """
         Total duration of the action.
 
@@ -43,7 +47,7 @@ class Move(Action):
             dt object
         """
         result = None
-        if self.instant is True:
+        if instant is True:
             result = dt(seconds=0)
         else:
             length = self.path.total_length()
