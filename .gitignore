@@ -3,5 +3,6 @@
 *.pyc
 __pycache__/
 *.egg-info/
-cheat sheet/
+BASEMENT/
+tips & tricks/
 settings.json
