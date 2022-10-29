@@ -1,8 +1,8 @@
 import unittest
 
-from settlement import Settlement
-from agent import Agent
-from tools import find_element
+from pr.settlement import Settlement
+from pr.agent import Agent
+from pr.tools import find_element
 
 
 class TestRoadClass(unittest.TestCase):
@@ -140,4 +140,8 @@ class TestRoadClass(unittest.TestCase):
             }
         )
         s.add_agents(all_agents)
+
+
+if __name__ == "__main__":
+    unittest.main()
         

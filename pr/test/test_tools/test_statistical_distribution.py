@@ -1,7 +1,7 @@
 import unittest
 
-from tools.statistical_distribution import Gaussian, DiracDelta
-from tools import Unit
+from pr.tools.statistical_distribution import Gaussian, DiracDelta
+from pr.tools import Unit
 
 
 class TestGaussianClass(unittest.TestCase):
@@ -46,3 +46,7 @@ class TestDiracDeltaClass(unittest.TestCase):
             time_end=time_end
         )
         self.assertEqual(p, 0, msg="Should be equal")
+
+
+if __name__ == "__main__":
+    unittest.main()

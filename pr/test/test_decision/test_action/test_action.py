@@ -1,7 +1,7 @@
 import unittest
 
-from tools import date, dt
-from decision.action import Action
+from pr.tools import date, dt
+from pr.decision.action import Action
 
 
 class TestActionClass(unittest.TestCase):
@@ -65,3 +65,6 @@ class TestActionClass(unittest.TestCase):
         a = Action(start_date, end_date, instant=False)
         self.assertEqual(a.progress(a.start_date + dt(days=2)), 1)
         
+
+if __name__ == "__main__":
+    unittest.main()

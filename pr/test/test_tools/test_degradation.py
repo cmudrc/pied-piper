@@ -1,8 +1,7 @@
 import unittest
 
-from datetime import date
-from tools import Unit
-from tools import DegradationProperty
+from pr.tools import date, Unit
+from pr.tools import DegradationProperty
 
 
 class TestDegradationPropertyClass(unittest.TestCase):
@@ -51,3 +50,7 @@ class TestDegradationPropertyClass(unittest.TestCase):
             end_date=Unit(50, 'day')+date(2000, 1, 1)
         )
         self.assertEqual(p, 1, msg="dirac_degradation_1")
+
+
+if __name__ == "__main__":
+    unittest.main()

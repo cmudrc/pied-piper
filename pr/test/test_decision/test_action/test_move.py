@@ -1,10 +1,10 @@
 import unittest
 from copy import deepcopy
 
-from decision import Move
-from tools import date, dt
-from tools.path import Path
-from transportation import Foot
+from pr.decision import Move
+from pr.tools import date, dt
+from pr.tools.path import Path
+from pr.transportation import Foot
 
 
 class TestMoveClass(unittest.TestCase):
@@ -60,3 +60,7 @@ class TestMoveClass(unittest.TestCase):
         m.instant = True
         duration = m.duration()
         self.assertAlmostEqual(duration.seconds, 0, places=1)
+
+
+if __name__ == "__main__":
+    unittest.main()

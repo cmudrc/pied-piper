@@ -1,9 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from asset import Asset
-from asset import Resource
-from asset import Produce, Use, Deficiency, Storage
+from pr.asset import Asset
+from pr.asset import Resource
+from pr.asset import Produce, Use, Deficiency, Storage
 
 
 class TestAssetClass(unittest.TestCase):
@@ -55,3 +55,7 @@ class TestAssetClass(unittest.TestCase):
 
     def test_demand(self):
         self.assertEqual(self.a.demand('energy'), 10)
+
+
+if __name__ == "__main__":
+    unittest.main()

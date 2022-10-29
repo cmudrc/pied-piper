@@ -1,6 +1,6 @@
 import unittest
 
-from tools.boundery import Circular, Rectangular
+from pr.tools.boundery import Circular, Rectangular
 
 
 class Other():
@@ -44,3 +44,7 @@ class TestRectangularClass(unittest.TestCase):
         other = Other(pos=[0.7, 0.7])
         boundery = Rectangular(center=[0, 0], width=2, height=1, theta=0.1)
         self.assertAlmostEqual(boundery.distance(other, mode='boundery'), 0.2, places=4)
+
+
+if __name__ == "__main__":
+    unittest.main()

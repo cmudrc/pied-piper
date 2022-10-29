@@ -1,9 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from asset import Storage, Deficiency
-from asset import Use, Produce
-from tools import Unit
+from pr.asset import Storage, Deficiency
+from pr.asset import Use, Produce
+from pr.tools import Unit
 
 
 class TestUseProduceClass(unittest.TestCase):
@@ -53,3 +53,7 @@ class TestDeficiencyClass(unittest.TestCase):
         d = deepcopy(self.d)
         d.add(5)
         self.assertFalse(d.is_alive(), msg='not alive')
+
+
+if __name__ == "__main__":
+    unittest.main()

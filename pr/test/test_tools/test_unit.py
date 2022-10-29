@@ -1,6 +1,6 @@
 import unittest
 
-from tools import Unit, date
+from pr.tools import Unit, date
 
 
 class TestUnitClass(unittest.TestCase):
@@ -54,3 +54,7 @@ class TestUnitClass(unittest.TestCase):
         v = Unit(2.5, 'km/hour')
         v_new = v.to_SI()
         self.assertAlmostEqual(v_new, 0.7, places=1, msg="Should be equal")
+
+
+if __name__ == "__main__":
+    unittest.main()
