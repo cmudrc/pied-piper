@@ -11,7 +11,10 @@ try:
 except:
     from tools.boundery import Circular
 
-from environment import Environment
+#try:
+#    from .environment import Environment
+#except:
+#    from environment import Environment
 
 #from graphics import draw_agent
 

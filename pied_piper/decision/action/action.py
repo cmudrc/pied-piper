@@ -11,11 +11,12 @@ class Action:
             if instant is True: end_date = start_date
             else:
                 if end_date is not None:
-                    if start_date > end_date: raise ValueError
-                else:
+                    if start_date > end_date: # logically impossible
+                        raise ValueError
+                else: # no end_date, not instant
                     raise ValueError
         else:
-            raise ValueError
+            raise ValueError # start_date is a must
         return start_date, end_date, instant
     
     def progress(self, time: date):
@@ -35,7 +36,10 @@ class Action:
         return progress
 
     def duration(self):
-        return self.end_date - self.start_date
+        if self.instant is True:
+            return dt(seconds=0)
+        else:
+            return self.end_date - self.start_date
 
     def status(self, time: date):
         result = None

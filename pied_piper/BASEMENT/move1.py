@@ -1,6 +1,4 @@
 from datetime import timedelta as dt
-from datetime import datetime as date
-
 try:
     from .action import Action
 except:
@@ -16,34 +14,68 @@ class Move(Action):
         transportation,
         instant=False
     ):
-        self.path = path
-        self.transportation = transportation
-        end_date = start_date + self.action_duration()
         super().__init__(
             start_date,
-            end_date,
             instant
         )
+        '''
+        self.start_point = start_point
+        self.start_pos = None
+        self.end_point = end_point
+        self.end_pos = None
+        '''
+        self.path = path
+        self.transportation = transportation
 
-    def pos(self, time: date):
+    def progress(self, time):
+        """
+        Calculate the progress ratio in the desired time
+
+        Args:
+            time: a datetime object
+
+        Returns:
+            float value between 0 and 1
+        """
+        result = None
+        if self.instant:
+            if self.start_date > time:
+                result = 0
+            else:
+                result = 1
+        else:
+            if self.start_date > time:
+                result = 0
+            else:
+                delta_t = time - self.start_date
+                speed = self.transportation.speed
+                current_length = speed * delta_t.seconds
+                result = self.path.progress(current_length)
+        return result
+
+    def pos(self, time):
         """
         Calculate position based on time.
         """
         result = None
-        progress = self.progress(time)
-        total_length = self.path.total_length()
-        result = self.path.pos(total_length * progress)
+        if self.instant:
+            if self.start_date < time:
+                result = self.origin(mode='pos')
+            else:
+                result = self.destination(mode='pos')
+        else:
+            delta_t = time - self.start_date
+            speed = self.transportation.speed
+            current_length = speed * delta_t.seconds
+            result = self.path.pos(current_length)
         return result
     
     def action_duration(self):
         """
         Total duration of the action.
-
-        Returns:
-            dt object
         """
         result = None
-        if self.instant is True:
+        if self.instant:
             result = dt(seconds=0)
         else:
             length = self.path.total_length()
@@ -82,21 +114,3 @@ class Move(Action):
         txt += 'from ' + self.origin() + ' '
         txt += 'to ' + self.destination()
         return txt
-
-
-if __name__ == "__main__":
-    from pied_piper.tools.path import Path
-    from pied_piper.transportation import Foot
-
-
-    path = Path()
-    path.add(pos=[0, 0])
-    path.add(pos=[0, 3])
-    path.add(pos=[4, 3])
-
-    m = Move(
-        start_date=date(2020, 1, 1),
-        path=path,
-        transportation=Foot(),
-        instant=True
-    )
