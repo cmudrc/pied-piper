@@ -14,8 +14,8 @@ def test(target:str='all'):
     
 
 if __name__ == "__main__":
-    target = 'move'
-    #target = 'all'
+    #target = 'move'
+    target = 'all'
     suite = test(target)
     runner = unittest.TextTestRunner()
     runner.run(suite)

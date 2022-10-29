@@ -2,5 +2,6 @@
 *.pot
 *.pyc
 __pycache__/
+*.egg-info/
 cheat sheet/
 settings.json
