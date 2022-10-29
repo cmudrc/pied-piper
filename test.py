@@ -1,7 +1,7 @@
 import unittest
 
 
-def test(target:str='all'):
+def discover(target:str='all'):
     suite = None
     loader = unittest.TestLoader()
     TEST_DIR = 'test'
@@ -12,10 +12,11 @@ def test(target:str='all'):
         suite = loader.discover(TEST_DIR, pattern)
     return suite
     
-
-if __name__ == "__main__":
-    #target = 'move'
-    target = 'all'
-    suite = test(target)
+def test(target:str='all'):
+    suite = discover(target)
     runner = unittest.TextTestRunner()
     runner.run(suite)
+    
+
+if __name__ == "__main__":
+    test('all')
