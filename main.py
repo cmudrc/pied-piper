@@ -1,4 +1,4 @@
-import pied_piper as pr
+import pr
 
 
 model = pr.Model()

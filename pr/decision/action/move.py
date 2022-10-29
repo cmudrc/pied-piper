@@ -1,6 +1,5 @@
-from datetime import timedelta as dt
-from datetime import datetime as date
-
+from pr.tools import dt, date
+#from pr.decision.action import Action
 try:
     from .action import Action
 except:
@@ -89,8 +88,8 @@ class Move(Action):
 
 
 if __name__ == "__main__":
-    from pied_piper.tools.path import Path
-    from pied_piper.transportation import Foot
+    from pr.tools.path import Path
+    from pr.transportation import Foot
 
 
     path = Path()

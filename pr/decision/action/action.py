@@ -1,4 +1,4 @@
-from pied_piper.tools import dt, date
+from pr.tools import dt, date
 
 
 class Action:
@@ -62,7 +62,7 @@ class Action:
 
 if __name__ == "__main__":
 
-    from datetime import timedelta as dt
+    from pr.tools import dt
 
 
     start_date = date(2000, 1, 1)

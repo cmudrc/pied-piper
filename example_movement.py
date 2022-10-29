@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
-from pied_piper.tools.path import Path
-from pied_piper.decision import Move
-from pied_piper.transportation import Foot
-from pied_piper.tools import date, dt
+from pr.tools.path import Path
+from pr.decision import Move
+from pr.transportation import Foot
+from pr.tools import date, dt
 
 
 path = Path()
@@ -22,7 +22,7 @@ move = Move(
     transportation=Foot()
 )
 
-action_duration = move.action_duration().seconds
+action_duration = move.duration().total_seconds()
 video_duration = 1  # seconds
 fps = 20
 total_frames = video_duration * fps

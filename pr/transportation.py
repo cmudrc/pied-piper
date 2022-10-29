@@ -5,15 +5,7 @@ try:
 except:
     from asset import Use, Storage
 
-try:
-    from .tools import Unit
-except:
-    from tools import Unit
-
-try:
-    from .tools import dt
-except:
-    from tools import dt
+from tools import Unit, dt
 
 
 class Transportation():

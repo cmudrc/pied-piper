@@ -1,7 +1,4 @@
-try:
-    from .resource_nodes import Use, Produce, Storage, Deficiency
-except:
-    from resource_nodes import Use, Produce, Storage, Deficiency
+from pr.asset import Use, Produce, Storage, Deficiency
 
 
 class Resource:
