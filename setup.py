@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pied_piper',
-    version='1.0',
+    name='pr',
+    version='0.1',
     description='An Agent-Based Model Framework',
     author='',
     author_email='',
