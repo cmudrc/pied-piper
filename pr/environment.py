@@ -1,12 +1,16 @@
-from asset import Produce, Storage, Resource, Use, Asset
+#from asset import Produce, Storage, Resource, Use, Asset
+from pr import settlement
+from pr.asset import Produce, Storage, Resource, Use, Asset
 
 
 class Environment:
 
-    def __init__(self, x_lim, y_lim, asset):
+    def __init__(self, x_lim, y_lim, asset, settlements, links):
         self.x_lim = x_lim
         self.y_lim = y_lim
         self.asset = asset
+        self.settlements = settlements
+        self.links = links
     
     def update(self, start_date, end_date):
         pass
@@ -32,10 +36,14 @@ if __name__ == "__main__":
     ]
 
     asset = Asset(resources)
+    settlements = []
+    links = []
 
     env = Environment(
         x_lim=[-500, 500],
         y_lim=[-300, 300],
-        asset=asset
+        asset=asset,
+        settlements=settlements,
+        links=links
     )
 

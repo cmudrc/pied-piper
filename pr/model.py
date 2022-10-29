@@ -1,33 +1,26 @@
-import networkx as nx
-import matplotlib.pyplot as plt
+from pr.environment import Environment
 
-try:
-    from .tools import dt
-except:
-    from tools import dt
-
-try:
-    from .tools.boundery import Circular
-except:
-    from tools.boundery import Circular
+from pr.tools import dt
 
 #try:
-#    from .environment import Environment
+#    from .tools.boundery import Circular
 #except:
-#    from environment import Environment
+#    from tools.boundery import Circular
+#from pr.tools import boundery
+from pr.environment import Environment
 
 #from graphics import draw_agent
 
 
-class ModelNew:
+class Model:
 
     def __init__(
         self,
+        environment: Environment,
+        agents=[],
         step_size=None,
         current_step=0,
-        current_date=None,
-        environment=[],
-        agents=[],
+        current_date=None
     ):
         self.step_size = step_size
         self.current_step = current_step
@@ -69,141 +62,16 @@ class ModelNew:
         #print(self.current_date, next_date)
         self.update_elements(next_date)
 
+'''
 
-class Model():
-    def __init__(
-        self,
-        step_size=None,
-        current_step=0,
-        current_date=None,
-        environment_size=None,
-        agents=[],
-        settlements=[],
-        infrastructures=[]
-    ):
-        self.step_size = step_size
-        self.current_step = current_step
-        self.current_date = current_date
-
-        self.environment_size = environment_size
-
-        self.all_agents = agents
-        self.current_agents = self.all_agents.copy()
-
-        self.all_settlements = settlements
-        self.current_settlements = self.all_settlements.copy()
-
-        self.all_infrastructures = infrastructures
-        self.current_infrastructures = self.all_infrastructures.copy()
-
-    def run_step(self):
-        next_date = dt(seconds=self.step_size) + self.current_date
-        next_step = self.current_step + 1
-        #print(self.current_date, next_date)
-        self.update_elements_list(
-            start_date=self.current_date,
-            end_date=next_date
-        )
-        ### agens update internally
-        ### settlements update internally
-        ### agents look for other neighboring settlements source/demands to move
-        self.current_step = next_step
-        self.current_date = next_date
-
-    def update_elements_list(self, start_date, end_date):
-        if self.current_step == 0:
-            current_agents = []
-            for agent in self.all_agents:
-                activeness = agent.is_active(start_date, end_date)
-                if activeness is True:
-                    current_agents.append(agent)
-            self.current_agents = current_agents
-
-            current_infrastructures = []
-            for infrastructure in self.all_infrastructures:
-                activeness = infrastructure.is_active(start_date, end_date)
-                if activeness is True:
-                    current_infrastructures.append(infrastructure)
-            self.current_infrastructures = current_infrastructures
-        else:
-            current_agents = []
-            for agent in self.all_agents:
-                activeness = agent.is_active(start_date, end_date)
-                if activeness is True:
-                    current_agents.append(agent)
-            self.current_agents = current_agents
-
-            current_infrastructures = []
-            for infrastructure in self.all_infrastructures:
-                activeness = infrastructure.is_active(start_date, end_date)
-                if activeness is True:
-                    current_infrastructures.append(infrastructure)
-            self.current_infrastructures = current_infrastructures
-
-    def find_element(self, element_name, all_elements):
-        result = None
-        for el in all_elements:
-            if element_name == el.name:
-                result = el
-        return result
-
-    def to_graph(self):
-        plt.gca().set_title('Date: ' + str(self.current_date), fontsize=10)
-        plt.gca().axis('equal')
-        plt.xlim([-self.environment_size[0]/2, self.environment_size[0]/2])
-        plt.ylim([-self.environment_size[1]/2, self.environment_size[1]/2])
-
-        G = nx.DiGraph()
-        pos = {}
-        labels = {}
-        for settlement in self.all_settlements: #####
-            G.add_node(settlement.name)
-            pos[settlement.name] = settlement.pos
-            labels[settlement.name] = settlement.name
-
-            if isinstance(settlement.boundery, Circular):
-                circle = plt.Circle(
-                    xy=settlement.pos,
-                    radius=settlement.boundery.radius,
-                    color='blue',
-                    fill=False,
-                    linestyle='--'
-                )
-                plt.gca().add_patch(circle)
-        #for route in self.routes:
-        #    G.add_edge(route.start_node, route.end_node)
-        nx.draw_networkx_nodes(
-            G=G,
-            pos=pos,
-            node_color='black',
-            node_shape='.',
-            node_size=0
-        )
-        nx.draw_networkx_labels(
-            G=G,
-            pos=pos,
-            labels=labels,
-            font_size=18,
-            font_color="black",
-            horizontalalignment='center',
-            verticalalignment='center',
-            alpha=0.5
-        )
-
-        for agent in self.all_agents:
-            pass
-            #draw_agent(agent)
-
-        plt.show()
+    '''
 
 
 if __name__ == "__main__":
-    from datetime import date
-
-    from tools import Unit
-    from infrastructure import Road
-    from settlement import Settlement
-    from agent import Agent
+    from pr.tools import Unit, date
+    from pr.settlement import Settlement
+    from pr.agent import Agent
+    from pr.asset import Asset
 
 
     agents = [
@@ -237,6 +105,9 @@ if __name__ == "__main__":
             }
         ),
     ]
+    links = []
+    asset = Asset()
+    '''
     infrastructures = [
         Road(
             start_node='home_1',
@@ -251,17 +122,25 @@ if __name__ == "__main__":
             seed=None
         )
     ]
+    '''
+    
+    env = Environment(
+        x_lim=[-300, 450],
+        y_lim=[-250, 250],
+        asset=asset,
+        settlements=settlements,
+        links=links
+
+    )
 
     m = Model(
+        environment=env,
+        agents=agents,
         step_size=Unit(5, 'day').to_SI(),
         current_step=0,
         current_date=date(2000, 1, 1),
-        environment_size=[10, 10],
-        agents=agents,
-        settlements=settlements,
-        infrastructures=infrastructures,
     )
-    m.to_graph()
+    #m.to_graph()
     #print(m.current_infrastructures)
     #m.run_step()
     #print(m.current_infrastructures)
