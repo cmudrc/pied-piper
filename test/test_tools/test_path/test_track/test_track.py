@@ -1,6 +1,6 @@
 import unittest
 
-from tools.path import Linear
+from pr.tools.path import Linear
 
 
 class TestLinearTrackClass(unittest.TestCase):
@@ -16,3 +16,7 @@ class TestLinearTrackClass(unittest.TestCase):
     def test_status(self):
         progress = self.track.progress(current_length=1.5)
         self.assertEqual(self.track.status(progress=progress), 'in progress')
+
+
+if __name__ == "__main__":
+    unittest.main()

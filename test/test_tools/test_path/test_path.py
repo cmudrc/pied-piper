@@ -1,6 +1,6 @@
 import unittest
 
-from tools.path import Path
+from pr.tools.path import Path
 
 
 class TestLinearTrackClass(unittest.TestCase):
@@ -28,3 +28,7 @@ class TestLinearTrackClass(unittest.TestCase):
     def test_pos_2(self):
         current_length = 8
         self.assertListEqual(self.path.pos(current_length), [4, 3])
+
+
+if __name__ == "__main__":
+    unittest.main()
