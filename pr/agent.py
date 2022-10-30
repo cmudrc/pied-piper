@@ -1,22 +1,6 @@
-try:
-    from .tools import Entity
-except:
-    from tools import Entity
-
-try:
-    from .tools import date
-except:
-    from tools import date
-        
-try:
-    from .tools import entity_kwargs
-except:
-    from tools import entity_kwargs
-    
-try:
-    from .transportation import Foot
-except:
-    from transportation import Foot
+from pr.tools import date
+from pr.tools import Entity, entity_kwargs
+from pr.transportation import Foot
 
 
 class Agent(Entity):
@@ -27,7 +11,7 @@ class Agent(Entity):
     def __init__(
         self,
         birthday=date(2000, 1, 1),
-        resources=None,
+        asset=None,
         settlement=None,
         transportations=[Foot()],
         **entity_kwargs
@@ -45,7 +29,7 @@ class Agent(Entity):
         """
         self.birthday = birthday
         self.transportations = transportations
-        self.resources = resources
+        self.asset = asset
         self.settlement = settlement
 
     def decide(self):
@@ -122,7 +106,7 @@ def generate_agent(count=1):
 
 
 if __name__ == "__main__":
-    from resource import Resource
+    from pr.asset import Resource
 
 
     resources = [
@@ -130,7 +114,7 @@ if __name__ == "__main__":
     ]
     a = Agent(
         birthday=date(2020, 1, 1),
-        resources=resources
+        asset=None
     )
 
     '''
