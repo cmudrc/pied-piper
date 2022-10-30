@@ -1,9 +1,11 @@
 from pr.tools import dt, date
 #from pr.decision.action import Action
-try:
-    from .action import Action
-except:
-    from action import Action
+#try:
+#    from .action import Action
+#except:
+#    from action import Action
+#from pr.decision import action
+from pr.decision.action.action import Action
 
 
 class Move(Action):
@@ -88,7 +90,7 @@ class Move(Action):
 
 
 if __name__ == "__main__":
-    from pr.tools.path import Path
+    from pr.decision.action.move import Path
     from pr.transportation import Foot
 
 

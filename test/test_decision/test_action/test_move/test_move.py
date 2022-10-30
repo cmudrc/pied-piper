@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from pr.decision import Move
 from pr.tools import date, dt
-from pr.tools.path import Path
+from pr.decision.action.move import Path
 from pr.transportation import Foot
 
 

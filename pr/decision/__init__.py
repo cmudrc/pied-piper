@@ -1,2 +1,2 @@
 from .queue import Queue
-from .action import Move
+from .action import Action, Move

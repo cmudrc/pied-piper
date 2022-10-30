@@ -1,6 +1,6 @@
 import unittest
 
-from pr.tools.path import Path
+from pr.decision.action.move import Path
 
 
 class TestLinearTrackClass(unittest.TestCase):

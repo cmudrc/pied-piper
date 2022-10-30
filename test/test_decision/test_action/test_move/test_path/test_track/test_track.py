@@ -1,11 +1,11 @@
 import unittest
 
-from pr.tools.path import Linear
+from pr.decision.action.move import path
 
 
 class TestLinearTrackClass(unittest.TestCase):
 
-    track = Linear([0, 0], [1, 1], length=3)
+    track = path.Linear([0, 0], [1, 1], length=3)
 
     def test_pos(self):
         self.assertListEqual(self.track.pos(current_length=1.5), [0.5, 0.5])
