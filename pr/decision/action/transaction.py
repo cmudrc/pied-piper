@@ -19,9 +19,9 @@ class Transaction(Action):
 
     def __init__(
         self,
-        start_date,
-        end_date,
         package: Package,
+        start_date,
+        end_date=None,
         instant=True
     ):
         super().__init__(
@@ -39,24 +39,27 @@ class Transaction(Action):
         amount = self.current_amount(time)
         from_agent = find_element(self.package.from_name, all_elements=all_agents)
         to_agent = find_element(self.package.to_name, all_elements=all_agents)
-        print('before: ')
+        
+        #print('before: ')
         print(from_agent.asset.resources[self.package.resource_name])
         print(to_agent.asset.resources[self.package.resource_name])
         
-        print('sub from "from_name"')
-        from_remaining = from_agent.asset.resources[self.package.resource_name].sub(amount)
-        #amount_remaining = 
-        print('amount: ', amount, 'remaining: ', remaining)
+        #print('sub from "from_name"')
+        remaining = from_agent.asset.resources[self.package.resource_name].sub(amount)
+        #print('amount: ', amount, 'remaining: ', remaining)
+        #print(from_agent.asset.resources[self.package.resource_name])
+        #print(to_agent.asset.resources[self.package.resource_name])
         # the amount of possible subtraction
-        print('add to "to_name"')
+        print('###############')
+        #print('add to "to_name"')
         amount -= remaining
         remaining = to_agent.asset.resources[self.package.resource_name].add(amount)
-        print('amount: ', amount, 'remaining: ', remaining)
+        #print('amount: ', amount, 'remaining: ', remaining)
 
-        print('return to "from_name"')
-        amount -= remaining
+        #print('return to "from_name"')
+        amount = remaining
         remaining = from_agent.asset.resources[self.package.resource_name].add(remaining)
-        print('amount: ', amount, 'remaining: ', remaining)
+        #print('amount: ', amount, 'remaining: ', remaining)
 
         print(from_agent.asset.resources[self.package.resource_name])
         print(to_agent.asset.resources[self.package.resource_name])
@@ -68,7 +71,8 @@ if __name__ == "__main__":
     from pr.asset import Asset, Resource, Storage
     from pr.tools import date
 
-    a_1_asset = Asset(resources=[
+    a_1_asset = Asset()
+    a_1_asset.add_resources([
         Resource(
             name='food',
             storage=Storage(current_amount=5, max_amount=10))
@@ -77,13 +81,19 @@ if __name__ == "__main__":
     a_2_asset = Asset(resources=[
         Resource(
             name='food',
-            storage=Storage(current_amount=0, max_amount=20))
+            storage=Storage(current_amount=0, max_amount=10))
     ])
     a_2 = Agent(name='a_2', asset=a_2_asset)
     all_agents = [a_1, a_2,]
     
-    package = Package(from_name='a_1', to_name='a_2', resource_name='food', amount=10)
+    package = Package(from_name='a_1', to_name='a_2', resource_name='food', amount=5)
 
+    time = date(2020,1,2)
     transaction = Transaction(start_date=date(2020,1,1), end_date=date(2020,1,3), package=package, instant=False)
+    #print(transaction.current_amount(time))
     r = transaction.make(time=date(2020,1,2), all_agents=all_agents)
-    print(r)
+    print(print(a_1.asset))
+    transaction = Transaction(start_date=date(2020,1,1), package=package, instant=True)
+    #print(transaction.current_amount(time))
+    #r = transaction.make(time=date(2020,1,2), all_agents=all_agents)
+    #print(r)

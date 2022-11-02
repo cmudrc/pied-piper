@@ -26,18 +26,17 @@ class TestAssetClass(unittest.TestCase):
         use=Use(rate=1),
         storage=Storage(current_amount=5, max_amount=10)
     )
-    a = Asset()
-    a.add_resources(food, water, energy)
+    a = Asset([food, water, energy])
     a.refill(delta_t=5)
 
     def test_add_resource(self):
         a_1 = self.a
         a_2 = Asset([self.food, self.water, self.energy])
         a_2.refill(delta_t=5)
-        self.assertEqual(a_1.resources['energy'].use.current_amount, a_2.resources['energy'].use.current_amount)
+        self.assertEqual(a_1.resource('energy').use.current_amount, a_2.resource('energy').use.current_amount)
 
     def test_refill(self):
-        use_current_amount = self.a.resources['energy'].use.current_amount
+        use_current_amount = self.a.resource('energy').use.current_amount
         self.assertEqual(use_current_amount, 5)
 
     def test_add(self):
