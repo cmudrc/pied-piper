@@ -18,6 +18,7 @@ class StaticSource:
 
     def add(self, amount: float):
         if amount is None: amount = 0
+        if amount < 0: raise ValueError
         if self.max_amount is None:
             self.current_amount += amount
             amount = 0
@@ -33,6 +34,7 @@ class StaticSource:
 
     def sub(self, amount: float):
         if amount is None: amount = 0
+        if amount < 0: raise ValueError
         if amount > self.current_amount:
             amount -= self.current_amount
             self.current_amount = 0
@@ -41,13 +43,19 @@ class StaticSource:
             amount = 0
         return amount
 
+    def __str__(self):
+        txt = ''
+        txt += 'current: ' + str(self.current_amount) + ' '
+        txt += 'max: ' + str(self.max_amount)
+        return txt
+
 
 class Deficiency(StaticSource):
     """
     Represent deficiency like a storage unit.
     """
 
-    def __init__(self, current_amount=0, max_amount=0):
+    def __init__(self, max_amount, current_amount=0):
         super().__init__(
             current_amount=current_amount,
             max_amount=max_amount
@@ -65,7 +73,7 @@ class Storage(StaticSource):
     Simple storage unit.
     """
 
-    def __init__(self, current_amount=0, max_amount=0):
+    def __init__(self, current_amount=0, max_amount=None):
         super().__init__(
             current_amount=current_amount,
             max_amount=max_amount
@@ -77,7 +85,9 @@ if __name__ == "__main__":
         current_amount=1,
         max_amount=15
     )
-    remaining = s.add(20)
-    print(s.current_amount, remaining)
-
-    #print(p.current_amount)
+    print(s)
+    amount = 20
+    print('add: ', amount)
+    remaining = s.add(amount)
+    print('remaining: ', remaining)
+    print(s)

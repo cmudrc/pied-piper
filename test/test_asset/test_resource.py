@@ -29,10 +29,30 @@ class TestStorage(unittest.TestCase):
         max_amount=5
     )
 
-    def test_sub(self):
+    def test_sub_0_remaining(self):
+        storage = deepcopy(self.s)
+        remaining = storage.sub(1)
+        self.assertEqual(remaining, 0)
+    
+    def test_sub_0_current_amount(self):
+        storage = deepcopy(self.s)
+        storage.sub(1)
+        self.assertEqual(storage.current_amount, 0)
+
+    def test_sub_1_remaining(self):
         storage = deepcopy(self.s)
         remaining = storage.sub(2)
-        self.assertEqual(remaining, 0)
+        self.assertEqual(remaining, 1)
+
+    def test_sub_1_current_amount(self):
+        storage = deepcopy(self.s)
+        storage.sub(2)
+        self.assertEqual(storage.current_amount, 0)
+
+    def test_add_none(self):
+        storage = Storage(current_amount=2)
+        storage.add(1000)
+        self.assertEqual(storage.current_amount, 1002)
 
 
 class TestDeficiencyClass(unittest.TestCase):
