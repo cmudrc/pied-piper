@@ -38,6 +38,21 @@ class Asset:
         return resource.demand()    
 
     def __str__(self):
+        txt = ''
+        for resource in self.resources:
+            txt += '\n'
+            txt += ' # ' + resource.name + '\n'
+            txt += resource.__str__()
+        return txt
+
+    def to_dict(self):
+        dictionary = {}
+        for resource in self.resources:
+            dictionary[resource.name] = resource.to_dict()
+        return dictionary
+
+    def from_dict(self, dictionary:dict):
+        d = dictionary
         pass
 
 if __name__ == "__main__":
@@ -58,5 +73,4 @@ if __name__ == "__main__":
     )
 
     a = Asset([food, water])
-    print(a.source('water'), a.demand('water'))
-    print(a.source('food'), a.demand('food'))
+    print(a)

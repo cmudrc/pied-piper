@@ -25,6 +25,18 @@ class DynamicSource:
             amount = 0
         return amount
 
+    def to_dict(self):
+        dictionary = {
+            'rate': self.rate,
+            'current_amount': self.current_amount,
+        }
+        return dictionary
+
+    def from_dict(self, dictionary:dict):
+        d = dictionary
+        self.rate = d['rate']
+        self.current_amount = d['current_amount']
+
 
 class Use(DynamicSource):
     """

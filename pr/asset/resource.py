@@ -95,6 +95,23 @@ class Resource:
             txt += 'deficiency: ' + str(self.deficiency.current_amount) + '\n'
         return txt
 
+    def to_dict(self):
+        dictionary = {
+            'name': self.name,
+            'use': self.use.to_dict(),
+            'produce': self.produce.to_dict(),
+            'storage': self.storage.to_dict(),
+            'deficiency': self.deficiency.to_dict(),
+        }
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.use = Use().from_dict(d['use'])
+        self.produce = Produce().from_dict(d['produce'])
+        self.storage = Storage().from_dict(d['storage'])
+        self.deficiency = Deficiency().from_dict(d['deficiency'])
+
 
 if __name__ == "__main__":
 

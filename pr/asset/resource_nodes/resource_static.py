@@ -49,6 +49,18 @@ class StaticSource:
         txt += 'max: ' + str(self.max_amount)
         return txt
 
+    def to_dict(self):
+        dictionary = {
+            'current_amount': self.current_amount,
+            'max_amount': self.max_amount,
+        }
+        return dictionary
+
+    def from_dict(self, dictionary:dict):
+        d = dictionary
+        self.current_amount = d['current_amount']
+        self.max_amount = d['current_amount']
+
 
 class Deficiency(StaticSource):
     """
