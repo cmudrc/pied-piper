@@ -22,6 +22,19 @@ class TestUseProduceClass(unittest.TestCase):
         self.assertEqual(self.p.current_amount, 0, msg="refill")
 
 
+class TestStorage(unittest.TestCase):
+    
+    s = Storage(
+        current_amount=1,
+        max_amount=5
+    )
+
+    def test_sub(self):
+        storage = deepcopy(self.s)
+        remaining = storage.sub(2)
+        self.assertEqual(remaining, 0)
+
+
 class TestDeficiencyClass(unittest.TestCase):
     """
     Storage and Deficiency classes behave (almost) the same, so testing one is enough.
