@@ -1,27 +1,18 @@
-try:
-    from .tools import Entity
-except:
-    from tools import Entity
+from tools import Entity
+from tools.boundery import Circular, Rectangular
+from pr.agent import Agent
+from pr.tools import find_element
 
-try:
-    from .tools.boundery import Circular, Rectangular
-except:
-    from tools.boundery import Circular, Rectangular
 
-try:
-    from .agent import Agent
-except:
-    from agent import Agent
-
-try:
-    from .tools import find_element
-except:
-    from tools import find_element
-
-try:
-    from .tools import entity_kwargs
-except:
-    from tools import entity_kwargs
+entity_kwargs = {
+    'name': None,
+    'pos': [0, 0],
+    'active': True,
+    'initial_cost': None,
+    'initiation_date': None,
+    'distribution': None,
+    'seed': None,
+}
 
 
 class Settlement(Entity):
@@ -35,26 +26,27 @@ class Settlement(Entity):
         max_population=10,
         boundery=None,
         agents=None,
-        infrastructure=None,
+        asset=None,
         **entity_kwargs
     ):
         """
         Args:
             max_population: maximum number of agents within the settlement
             boundery: the boundery of the settlement
-            agents: 
-            infrastructures: 
+            agents: a list of agents names that are within the settlement
+            infrastructures: a list of infrastructure names that are within the settlement
             **entity_kwargs: kwargs for entity class
         """
         super().__init__(
             **entity_kwargs
         )
+
         if agents is None:
             self.agents = []
         else:
-            self.agents = agents  # a list of agents names that are within the settlement
-        # a list of infrastructure names that are within the settlement
-        self.infrastructures = infrastructure
+            self.agents = agents
+
+        self.asset = asset
         self.max_population = max_population
 
         if boundery is not None:
@@ -63,6 +55,8 @@ class Settlement(Entity):
                     center=self.pos,
                     radius=boundery['radius']
                 )
+            elif boundery['type'] == 'rectangular':
+                pass ############
 
     def add_agent(self, agent):
         """
@@ -100,6 +94,14 @@ class Settlement(Entity):
     def update(self, agents: list):
         self.find_all_agents_by_pos(agents)
         self.find_all_agents_by_settlement(agents)
+
+    def to_graph(self):
+        pass
+
+    def solve(self):
+        # gather all agents
+        # 
+        pass
 
 
 if __name__ == "__main__":
