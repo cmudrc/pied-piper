@@ -2,6 +2,8 @@ import numpy as np
 #import matplotlib.pyplot as plt
 from random import uniform, seed
 
+from pr.graphics.plt.boundery import circular_boundery_to_plt, rectangular_boundery_to_plt
+
 
 class Boundery:
     """
@@ -87,6 +89,22 @@ class Circular(Boundery):
                 break
         return list(result)
 
+    def to_dict(self):
+        dictionary = {
+            'type': 'circular',
+            'center': self.center,
+            'radius': self.radius,
+        }
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.center = d['center']
+        self.radius = d['radius']
+
+    def to_plt(self):
+        circular_boundery_to_plt(self.to_dict())
+
 
 class Rectangular(Boundery):
     """
@@ -150,19 +168,49 @@ class Rectangular(Boundery):
         result = np.matmul(rot_mat, np.array(pos))
         return list(result)
 
+    def to_dict(self):
+        dictionary = {
+            'type': 'rectangular',
+            'center': self.center,
+            'width': self.width,
+            'height': self.height,
+            'theta': self.theta,
+        }
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.center = d['center']
+        self.width = d['width']
+        self.height = d['height']
+        self.theta = d['theta']
+
+    def to_plt(self):
+        rectangular_boundery_to_plt(self.to_dict())
+
 
 if __name__ == "__main__":
     class Other():
         def __init__(self, pos):
             self.pos = pos
 
-
-    other = Other(pos=[1, 1])
-    boundery = Circular(center=[0, 0], radius=2)
+    #other = Other(pos=[1, 1])
+    #boundery = Circular(center=[0, 0], radius=2)
     #print(boundery.rand_pos())
     #print(boundery.is_in(other))
 
-    #other = Other(pos=[0.7, 0.7])
+    other = Other(pos=[0.7, 0.7])
     boundery = Rectangular(center=[0, 0], width=2, height=1, theta=0.3)
-    print(boundery.rand_pos())
+    #print(boundery.rand_pos())
     #print(boundery.is_in(other))
+
+
+
+    import matplotlib.pyplot as plt
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.xlim([-5, 5])
+    plt.ylim([-5, 5])
+    boundery.to_plt()
+    plt.show()

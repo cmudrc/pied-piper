@@ -1,5 +1,5 @@
-from tools import Entity
-from tools.boundery import Circular, Rectangular
+from pr.tools import Entity
+from pr.tools.boundery import Circular, Rectangular
 from pr.agent import Agent
 from pr.tools import find_element
 
