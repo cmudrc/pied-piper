@@ -10,7 +10,7 @@ style = {
     'alpha': 0.5,
 }
 
-def agent_to_plt(dictionary: dict):
+def agent_to_plt(dictionary: dict, ax=None):
     d = dictionary
     pos = d['pos']
     radius = 5
@@ -19,5 +19,8 @@ def agent_to_plt(dictionary: dict):
         radius,
         **style
     )
-    plt.gca().add_patch(circle)
+    if ax is None:
+        plt.gca().add_patch(circle)
+    else:
+        ax.add_patch(circle)
     

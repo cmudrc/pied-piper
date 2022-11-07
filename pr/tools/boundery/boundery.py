@@ -58,11 +58,11 @@ class Boundery:
         """
         pass
 
-    def to_plt(self):
+    def to_plt(self, ax=None):
         """
         Add the required elements to plt
         """
-        boundery_to_plt(self.to_dict())
+        boundery_to_plt(self.to_dict(), ax)
     
 
 class Circular(Boundery):
