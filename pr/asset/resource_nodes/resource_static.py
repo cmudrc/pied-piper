@@ -1,4 +1,5 @@
 from copy import deepcopy
+from pr.graphics.plt.resource import storage_to_plt, deficiency_to_plt
 
 
 class StaticSource:
@@ -79,6 +80,12 @@ class Deficiency(StaticSource):
         else:
             return True
 
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        deficiency_to_plt(self.to_dict(), ax)
+
 
 class Storage(StaticSource):
     """
@@ -91,12 +98,26 @@ class Storage(StaticSource):
             max_amount=max_amount
         )
 
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        storage_to_plt(self.to_dict(), ax)
+
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
     s = Storage(
         current_amount=1,
         max_amount=15
     )
+    s.to_plt()
+    plt.show()
+
     print(s)
     amount = 20
     print('add: ', amount)

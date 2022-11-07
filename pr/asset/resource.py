@@ -1,5 +1,7 @@
+import matplotlib.pyplot as plt
+
 from pr.asset import Use, Produce, Storage, Deficiency
-#from pr.graphics.plt.resource import resource_to_plt
+from pr.graphics.plt.resource import resource_to_plt
 
 
 class Resource:
@@ -117,8 +119,13 @@ class Resource:
         """
         Add the required elements to plt
         """
-        #resource_to_plt(self.to_dict(), ax)
-        pass
+        resource_to_plt(self.to_dict(), ax)
+
+    def show(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        self.to_plt()
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -130,12 +137,13 @@ if __name__ == "__main__":
         storage=Storage(current_amount=10, max_amount=20),
         deficiency=Deficiency(current_amount=5, max_amount=20)
     )
+    food.show()
 
     ''' initial '''
     print('>>> initial')
     print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
-
+    
     ''' refill '''
     print('>>> refill')
     food.refill(10)

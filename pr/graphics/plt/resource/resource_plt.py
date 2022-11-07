@@ -24,15 +24,15 @@ def storage_to_plt(dictionary: dict, ax=None):
     footer = ['storage']
     ax.bar(
         footer,
-        d['current_amount'],
-        style['width'],
-        color=style['color_good']
-    )
-    ax.bar(
-        footer,
         d['max_amount'],
         style['width'],
         color=style['color_bad']
+    )
+    ax.bar(
+        footer,
+        d['current_amount'],
+        style['width'],
+        color=style['color_good']
     )
 
 def deficiency_to_plt(dictionary: dict, ax=None):
@@ -42,15 +42,15 @@ def deficiency_to_plt(dictionary: dict, ax=None):
     footer = ['deficiency']
     ax.bar(
         footer,
-        d['current_amount'],
-        style['width'],
-        color=style['color_bad']
-    )
-    ax.bar(
-        footer,
         d['max_amount'],
         style['width'],
         color=style['color_good']
+    )
+    ax.bar(
+        footer,
+        d['current_amount'],
+        style['width'],
+        color=style['color_bad']
     )
 
 def resource_to_plt(dictionary: dict, ax=None):
@@ -62,6 +62,6 @@ def resource_to_plt(dictionary: dict, ax=None):
     if d['produce'] is not None:
         pass
     if d['storage'] is not None:
-        pass
+        storage_to_plt(d['storage'], ax)
     if d['deficiency'] is not None:
-        pass
+        deficiency_to_plt(d['deficiency'], ax)
