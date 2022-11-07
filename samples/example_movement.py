@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from pr.tools.path import Path
+from pr.decision.action.move import Path
 from pr.decision import Move
 from pr.transportation import Foot
 from pr.tools import date, dt

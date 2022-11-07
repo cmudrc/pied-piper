@@ -55,6 +55,7 @@ class Asset:
         d = dictionary
         pass
 
+
 if __name__ == "__main__":
 
     food = Resource(

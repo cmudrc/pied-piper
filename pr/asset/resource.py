@@ -124,7 +124,7 @@ class Resource:
     def show(self):
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        self.to_plt()
+        self.to_plt(ax)
         plt.show()
 
 
