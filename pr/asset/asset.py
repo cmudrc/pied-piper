@@ -53,7 +53,11 @@ class Asset:
 
     def from_dict(self, dictionary:dict):
         d = dictionary
-        pass
+        resources = []
+        for resource_name in d:
+            resource = Resource().from_dict(d[resource_name])
+            resources.append(resource)
+        self.resources = resources
 
 
 if __name__ == "__main__":

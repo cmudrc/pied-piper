@@ -110,6 +110,7 @@ class Resource:
 
     def from_dict(self, dictionary: dict):
         d = dictionary
+        self.name = d['name']
         self.use = Use().from_dict(d['use'])
         self.produce = Produce().from_dict(d['produce'])
         self.storage = Storage().from_dict(d['storage'])
@@ -124,6 +125,7 @@ class Resource:
     def show(self):
         fig = plt.figure()
         ax = fig.add_subplot(111)
+        plt.title(self.name)
         self.to_plt(ax)
         plt.show()
 
@@ -137,8 +139,7 @@ if __name__ == "__main__":
         storage=Storage(current_amount=10, max_amount=20),
         deficiency=Deficiency(current_amount=5, max_amount=20)
     )
-    food.show()
-
+    
     ''' initial '''
     print('>>> initial')
     print('source:', food.source(), '/', 'demand:', food.demand())
@@ -149,6 +150,8 @@ if __name__ == "__main__":
     food.refill(10)
     print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
+
+    food.show()
 
     ''' solve '''
     print('>>> solve')
