@@ -1,4 +1,5 @@
 from pr.asset import Use, Produce, Storage, Deficiency
+#from pr.graphics.plt.resource import resource_to_plt
 
 
 class Resource:
@@ -111,6 +112,13 @@ class Resource:
         self.produce = Produce().from_dict(d['produce'])
         self.storage = Storage().from_dict(d['storage'])
         self.deficiency = Deficiency().from_dict(d['deficiency'])
+
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        #resource_to_plt(self.to_dict(), ax)
+        pass
 
 
 if __name__ == "__main__":

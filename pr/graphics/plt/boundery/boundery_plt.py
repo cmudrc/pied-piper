@@ -13,36 +13,34 @@ style = {
 }
 
 def circular_boundery_to_plt(dictionary: dict, ax=None):
+    if ax is None:
+        ax = plt.gca()    
     d = dictionary
     center = d['center']
     radius = d['radius']
-    circle = Circle(
+    element = Circle(
         center,
         radius,
         **style
     )
-    if ax is None:
-        plt.gca().add_patch(circle)
-    else:
-        ax.add_patch(circle)
+    ax.add_patch(element)
 
 def rectangular_boundery_to_plt(dictionary: dict, ax=None):
+    if ax is None:
+        ax = plt.gca()
     d = dictionary
     center = d['center']
     width = d['width']
     height = d['height']
     theta = d['theta']
-    rectangle = Rectangle(
+    element = Rectangle(
         center,
         width,
         height,
         angle=Unit(theta, 'rad').to('degree').val,
         **style
     )
-    if ax is None:
-        plt.gca().add_patch(rectangle)
-    else:
-        ax.add_patch(rectangle)
+    ax.add_patch(element)
 
 def boundery_to_plt(dictionary: dict, ax=None):
     d = dictionary

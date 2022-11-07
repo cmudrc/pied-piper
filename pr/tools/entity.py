@@ -1,10 +1,10 @@
 import numpy as np
 
-try:
-    from .degradation import DegradationProperty
-except:
-    from degradation import DegradationProperty
-
+#try:
+#    from .degradation import DegradationProperty
+#except:
+#    from degradation import DegradationProperty
+from pr.tools.degradation import DegradationProperty
 
 class Entity(DegradationProperty):
     """
