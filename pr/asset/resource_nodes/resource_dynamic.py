@@ -1,3 +1,6 @@
+from pr.graphics.plt.resource import use_to_plt, produce_to_plt
+
+
 class DynamicSource:
     """
     Resource production/use rate.
@@ -15,8 +18,9 @@ class DynamicSource:
         if mode == 'simple':
             self.current_amount = self.rate * delta_t
 
-    def sub(self, amount:float):
-        if amount is None: amount = 0
+    def sub(self, amount: float):
+        if amount is None:
+            amount = 0
         if amount > self.current_amount:
             amount -= self.current_amount
             self.current_amount = 0
@@ -32,7 +36,7 @@ class DynamicSource:
         }
         return dictionary
 
-    def from_dict(self, dictionary:dict):
+    def from_dict(self, dictionary: dict):
         d = dictionary
         self.rate = d['rate']
         self.current_amount = d['current_amount']
@@ -48,6 +52,12 @@ class Use(DynamicSource):
             rate=rate
         )
 
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        use_to_plt(self.to_dict(), ax)
+
 
 class Produce(DynamicSource):
     """
@@ -58,6 +68,12 @@ class Produce(DynamicSource):
         super().__init__(
             rate=rate
         )
+
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        produce_to_plt(self.to_dict(), ax)
 
 
 if __name__ == "__main__":

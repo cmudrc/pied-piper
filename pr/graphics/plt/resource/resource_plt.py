@@ -7,6 +7,7 @@ style = {
     'color_negative': 'r',
 }
 
+
 def use_to_plt(dictionary: dict, ax=None):
     if ax is None:
         ax = plt.gca()
@@ -19,6 +20,7 @@ def use_to_plt(dictionary: dict, ax=None):
         color=style['color_negative']
     )
 
+
 def produce_to_plt(dictionary: dict, ax=None):
     if ax is None:
         ax = plt.gca()
@@ -30,6 +32,7 @@ def produce_to_plt(dictionary: dict, ax=None):
         style['width'],
         color=style['color_positive']
     )
+
 
 def storage_to_plt(dictionary: dict, ax=None):
     if ax is None:
@@ -50,6 +53,7 @@ def storage_to_plt(dictionary: dict, ax=None):
         color=style['color_positive']
     )
 
+
 def deficiency_to_plt(dictionary: dict, ax=None):
     if ax is None:
         ax = plt.gca()
@@ -68,6 +72,7 @@ def deficiency_to_plt(dictionary: dict, ax=None):
         style['width'],
         color=style['color_negative']
     )
+
 
 def resource_to_plt(dictionary: dict, ax=None):
     if ax is None:

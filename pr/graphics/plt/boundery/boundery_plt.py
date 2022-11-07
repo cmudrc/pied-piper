@@ -12,9 +12,10 @@ style = {
     'alpha': 0.5,
 }
 
+
 def circular_boundery_to_plt(dictionary: dict, ax=None):
     if ax is None:
-        ax = plt.gca()    
+        ax = plt.gca()
     d = dictionary
     center = d['center']
     radius = d['radius']
@@ -24,6 +25,7 @@ def circular_boundery_to_plt(dictionary: dict, ax=None):
         **style
     )
     ax.add_patch(element)
+
 
 def rectangular_boundery_to_plt(dictionary: dict, ax=None):
     if ax is None:
@@ -41,6 +43,7 @@ def rectangular_boundery_to_plt(dictionary: dict, ax=None):
         **style
     )
     ax.add_patch(element)
+
 
 def boundery_to_plt(dictionary: dict, ax=None):
     d = dictionary

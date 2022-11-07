@@ -7,9 +7,6 @@ from pr.tools import dt
 #except:
 #    from tools.boundery import Circular
 #from pr.tools import boundery
-from pr.environment import Environment
-
-#from graphics import draw_agent
 
 
 class Model:
@@ -62,16 +59,11 @@ class Model:
         #print(self.current_date, next_date)
         self.update_elements(next_date)
 
-'''
-
-    '''
-
 
 if __name__ == "__main__":
+    from pr import Agent, Settlement, Environment, Model
+    from pr.asset import Asset, Resource, Produce, Use, Storage, Deficiency
     from pr.tools import Unit, date
-    from pr.settlement import Settlement
-    from pr.agent import Agent
-    from pr.asset import Asset
 
 
     agents = [
