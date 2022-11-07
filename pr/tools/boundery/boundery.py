@@ -2,7 +2,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 from random import uniform, seed
 
-from pr.graphics.plt.boundery import circular_boundery_to_plt, rectangular_boundery_to_plt
+from pr.graphics.plt.boundery import boundery_to_plt
 
 
 class Boundery:
@@ -57,6 +57,12 @@ class Boundery:
         Add the boundery to plt graph
         """
         pass
+
+    def to_plt(self):
+        """
+        Add the required elements to plt
+        """
+        boundery_to_plt(self.to_dict())
     
 
 class Circular(Boundery):
@@ -101,9 +107,6 @@ class Circular(Boundery):
         d = dictionary
         self.center = d['center']
         self.radius = d['radius']
-
-    def to_plt(self):
-        circular_boundery_to_plt(self.to_dict())
 
 
 class Rectangular(Boundery):
@@ -185,25 +188,15 @@ class Rectangular(Boundery):
         self.height = d['height']
         self.theta = d['theta']
 
-    def to_plt(self):
-        rectangular_boundery_to_plt(self.to_dict())
-
 
 if __name__ == "__main__":
-    class Other():
-        def __init__(self, pos):
-            self.pos = pos
+    circular = Circular(center=[-2, -2], radius=1.5)
+    #print(circular.rand_pos())
+    #print(circular.is_in([-1, -1]))
 
-    #other = Other(pos=[1, 1])
-    #boundery = Circular(center=[0, 0], radius=2)
-    #print(boundery.rand_pos())
-    #print(boundery.is_in(other))
-
-    other = Other(pos=[0.7, 0.7])
-    boundery = Rectangular(center=[0, 0], width=2, height=1, theta=0.3)
-    #print(boundery.rand_pos())
-    #print(boundery.is_in(other))
-
+    rectangular = Rectangular(center=[0, 0], width=2, height=1, theta=0.3)
+    #print(rectangular.rand_pos())
+    #print(rectangular.is_in([0.7, 0.7]))
 
 
     import matplotlib.pyplot as plt
@@ -212,5 +205,6 @@ if __name__ == "__main__":
     ax = fig.add_subplot(111)
     plt.xlim([-5, 5])
     plt.ylim([-5, 5])
-    boundery.to_plt()
+    circular.to_plt()
+    rectangular.to_plt()
     plt.show()
