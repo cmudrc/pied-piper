@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 style = {
     'width': 0.25,
-    'color_good': 'b',
-    'color_bad': 'r',
+    'color_positive': 'b',
+    'color_negative': 'r',
 }
 
 def use_to_plt(dictionary: dict, ax=None):
@@ -16,7 +16,7 @@ def use_to_plt(dictionary: dict, ax=None):
         footer,
         d['current_amount'],
         style['width'],
-        color=style['color_bad']
+        color=style['color_negative']
     )
 
 def produce_to_plt(dictionary: dict, ax=None):
@@ -28,7 +28,7 @@ def produce_to_plt(dictionary: dict, ax=None):
         footer,
         d['current_amount'],
         style['width'],
-        color=style['color_good']
+        color=style['color_positive']
     )
 
 def storage_to_plt(dictionary: dict, ax=None):
@@ -40,14 +40,14 @@ def storage_to_plt(dictionary: dict, ax=None):
         footer,
         d['max_amount'],
         style['width'],
-        color=style['color_good'],
+        color=style['color_positive'],
         fill=False
     )
     ax.bar(
         footer,
         d['current_amount'],
         style['width'],
-        color=style['color_good']
+        color=style['color_positive']
     )
 
 def deficiency_to_plt(dictionary: dict, ax=None):
@@ -59,14 +59,14 @@ def deficiency_to_plt(dictionary: dict, ax=None):
         footer,
         d['max_amount'],
         style['width'],
-        color=style['color_bad'],
+        color=style['color_negative'],
         fill=False
     )
     ax.bar(
         footer,
         d['current_amount'],
         style['width'],
-        color=style['color_bad']
+        color=style['color_negative']
     )
 
 def resource_to_plt(dictionary: dict, ax=None):
