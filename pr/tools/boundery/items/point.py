@@ -25,6 +25,15 @@ class Point(Circular):
         d = dictionary
         self.center = d['center']
 
+    def show(self, active=True):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        plt.xlim([-1 + self.center[0], 1 + self.center[0]])
+        plt.ylim([-1 + self.center[1], 1 + self.center[1]])
+        self.to_plt(ax, active)
+        plt.show()
+
 
 if __name__ == "__main__":
     point = Point(center=[-2, -2])
