@@ -38,7 +38,7 @@ class Settlement(Entity):
         Args:
             max_population: maximum number of agents within the settlement
             boundery: the boundery of the settlement
-            agents: a list of agents' names that are associated with the settlement
+            members: a list of agents' names that are associated with the settlement
             asset: manages the settlement resources (apart from agent's resources)
             **entity_kwargs: kwargs for entity class
         """
@@ -113,43 +113,27 @@ class Settlement(Entity):
 
     def add_agent(self, agent):
         """
-        Add a single agent
+        Add a single agent to members and move it inside the settlement
         """
         self.register_agent(agent)
         self.tunnel_agent(agent)
 
     def add_agents(self, agents: list):
         """
-        Add a list of agents
+        Add a list of agents to members and move it inside the settlement
         """
         for agent in agents:
             self.add_agent(agent)
 
-    def find_all_agents_by_pos(self, agents: list):
+    def find_agents_inside(self, agents: list) -> list:
         """
         Find and add all agents within boundery based on their pos
         """
+        result = []
         for agent in agents:
             if self.boundery.is_in(agent):
-                self.add_agent(agent)
-
-    def find_all_agents_by_settlement(self, agents: list):
-        """
-        Find and add all agents having the settlement name based
-        """
-        for agent in agents:
-            if agent.settlement == self.name:
-                self.add_agent(agent)
-
-    def find_all_agents(self, agents: list):
-        """
-        Find and add all agents having the settlement name based
-        """
-        self.find_all_agents_by_pos(agents)
-        self.find_all_agents_by_settlement(agents)
-
-    def has(self, agent_name):
-        pass
+                result.append(agent.name)
+        return result
 
     def to_graph(self):
         pass
@@ -159,9 +143,8 @@ class Settlement(Entity):
         # 
         pass
 
-    def is_in(self, agent):
-        pass
-
+    def is_in(self, element):
+        return self.boundery.is_in(element)
 
     def to_dict(self):
         dictionary = {

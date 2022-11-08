@@ -10,6 +10,7 @@ def find_element(name: str, all_elements: list):
                 break
     return result
 
+
 def element_exists(name: str, all_elements: list):
     """
     Check whether an element exists in a list of elements based on its name property
@@ -22,6 +23,7 @@ def element_exists(name: str, all_elements: list):
                 result = True
                 break
     return result
+
 
 if __name__ == "__main__":
     from pr.agent import Agent
