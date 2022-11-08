@@ -21,7 +21,7 @@ class TestRoadClass(unittest.TestCase):
             }
         )
         s.add_agent(a)
-        self.assertListEqual(s.pos, a.pos, msg="position should be equal")
+        self.assertTrue(s.boundery.is_in(), a.pos, msg="position should be equal")
 
     def test_find_agents_by_pos_0(self):
         all_agents = [

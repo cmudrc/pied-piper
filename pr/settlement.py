@@ -106,6 +106,9 @@ class Settlement(Entity):
         self.find_all_agents_by_pos(agents)
         self.find_all_agents_by_settlement(agents)
 
+    def has(self, agent_name):
+        pass
+
     def to_graph(self):
         pass
 

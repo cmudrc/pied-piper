@@ -1,3 +1,3 @@
 from .unit import Unit
-from datetime import datetime as date
-from datetime import timedelta as dt
+from datetime import datetime as Date
+from datetime import timedelta as DT

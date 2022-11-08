@@ -1,4 +1,5 @@
-from datetime import date, timedelta
+from datetime import datetime as Date
+from datetime import timedelta as DT
 from numpy import pi
 
 
@@ -168,6 +169,17 @@ class Unit:
         else:
             return result.val
 
+    def to_DT(self):
+        """
+        Convert unit of time into a DT (datetime.timedelta) object
+        """
+        if self.type_numerator is 'time' and \
+            self.type_denominator is None:
+            result = DT(seconds=self.to('second').val)
+        else:
+            result = None
+        return result
+
     def copy(self):
         return Unit(self.val, self.unit_name)
 
@@ -184,8 +196,8 @@ class Unit:
                 if other.type_denominator == self.type_denominator:
                     other.convert(self.unit_name)
                 return Unit(self.val + other.val, self.unit_name)
-        elif isinstance(other, date) and self.type_numerator == 'time' and self.type_denominator is None:
-            return other + timedelta(seconds=self.to('second').val)
+        elif isinstance(other, Date) and self.type_numerator == 'time' and self.type_denominator is None:
+            return other + DT(seconds=self.to('second').val)
     
     def __sub__(self, other):
         """
@@ -197,8 +209,8 @@ class Unit:
                 if other.type_denominator == self.type_denominator:
                     other.convert(self.unit_name)
                 return Unit(self.val - other.val, self.unit_name)
-        elif isinstance(other, date) and self.type_numerator == 'time' and self.type_denominator is None:
-            return other - timedelta(seconds=self.to('second').val)
+        elif isinstance(other, Date) and self.type_numerator == 'time' and self.type_denominator is None:
+            return other - DT(seconds=self.to('second').val)
 
     def __mul__(self, other):
         """
