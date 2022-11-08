@@ -1,5 +1,5 @@
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from random import uniform, seed
 
 from pr.graphics.plt.boundery import boundery_to_plt
@@ -52,17 +52,11 @@ class Boundery:
         elif mode == 'boundery':
             return self._distance_from_boundery(other)
 
-    def add_patch(self, color='blue'):
-        """
-        Add the boundery to plt graph
-        """
-        pass
-
-    def to_plt(self, ax=None):
+    def to_plt(self, ax=None, active=True):
         """
         Add the required elements to plt
         """
-        boundery_to_plt(self.to_dict(), ax)
+        boundery_to_plt(self.to_dict(), ax, active)
     
 
 class Circular(Boundery):
@@ -107,6 +101,15 @@ class Circular(Boundery):
         d = dictionary
         self.center = d['center']
         self.radius = d['radius']
+
+    def show(self, active=True):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        plt.xlim([-2*self.radius + self.center[0], 2*self.radius + self.center[0]])
+        plt.ylim([-2*self.radius + self.center[1], 2*self.radius + self.center[1]])
+        self.to_plt(ax, active)
+        plt.show()
 
 
 class Rectangular(Boundery):
@@ -188,23 +191,35 @@ class Rectangular(Boundery):
         self.height = d['height']
         self.theta = d['theta']
 
+    def show(self, active=True):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        max_size = max(self.height, self.width)
+        max_size *= 1.5
+        plt.xlim([-max_size/2 + self.center[0], max_size/2 + self.center[0]])
+        plt.ylim([-max_size/2 + self.center[1], max_size/2 + self.center[1]])
+        self.to_plt(ax, active)
+        plt.show()
+
 
 if __name__ == "__main__":
     circular = Circular(center=[-2, -2], radius=1.5)
     #print(circular.rand_pos())
     #print(circular.is_in([-1, -1]))
+    #circular.show()
 
     rectangular = Rectangular(center=[0, 0], width=2, height=1, theta=0.3)
     #print(rectangular.rand_pos())
     #print(rectangular.is_in([0.7, 0.7]))
-
-
+    #rectangular.show()
+    '''
     import matplotlib.pyplot as plt
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     plt.xlim([-5, 5])
     plt.ylim([-5, 5])
-    circular.to_plt()
+    circular.to_plt(active=False)
     rectangular.to_plt()
-    plt.show()
+    plt.show()'''

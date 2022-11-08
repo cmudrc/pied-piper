@@ -1,7 +1,11 @@
+import matplotlib.pyplot as plt
+
 from pr.tools import Entity
 from pr.tools.boundery import Circular, Rectangular
 from pr.agent import Agent
 from pr.tools import find_element
+from pr.graphics.plt import settlement_to_plt
+from pr.asset import Asset
 
 
 entity_kwargs = {
@@ -25,8 +29,8 @@ class Settlement(Entity):
         self,
         max_population=10,
         boundery=None,
-        agents=None,
-        asset=None,
+        agents=[],
+        asset:Asset=None,
         **entity_kwargs
     ):
         """
@@ -40,15 +44,9 @@ class Settlement(Entity):
         super().__init__(
             **entity_kwargs
         )
-
-        if agents is None:
-            self.agents = []
-        else:
-            self.agents = agents
-
+        self.agents = agents
         self.asset = asset
         self.max_population = max_population
-
         if boundery is not None:
             if boundery['type'] == 'circular':
                 self.boundery = Circular(
@@ -56,7 +54,17 @@ class Settlement(Entity):
                     radius=boundery['radius']
                 )
             elif boundery['type'] == 'rectangular':
-                pass ############
+                self.boundery = Rectangular(
+                    center=self.pos,
+                    width=boundery['width'],
+                    height=boundery['height'],
+                    theta=boundery['theta']
+                )
+        else:
+            self.boundery = Circular(
+                center=self.pos,
+                radius=0
+            )
 
     def add_agent(self, agent):
         """
@@ -65,7 +73,7 @@ class Settlement(Entity):
         if isinstance(agent, Agent) and agent.name not in self.agents:
             agent.settlement = self.name
             if not self.boundery.is_in(agent):
-                agent.pos = self.pos
+                agent.pos = self.boundery.rand_pos()
             self.agents.append(agent.name)
 
     def add_agents(self, agents: list):
@@ -91,7 +99,10 @@ class Settlement(Entity):
             if agent.settlement == self.name:
                 self.add_agent(agent)
 
-    def update(self, agents: list):
+    def find_all_agents(self, agents: list):
+        """
+        Find and add all agents having the settlement name based
+        """
         self.find_all_agents_by_pos(agents)
         self.find_all_agents_by_settlement(agents)
 
@@ -102,6 +113,47 @@ class Settlement(Entity):
         # gather all agents
         # 
         pass
+
+    def to_dict(self):
+        dictionary = {
+            'name': self.name,
+            'pos': self.pos,
+            'active': self.active,
+            'initial_cost': self.initial_cost,
+            'initiation_date': self.initiation_date,
+            'distribution': None,
+            'seed': self.seed,
+            'max_population': self.max_population,
+            'boundery': self.boundery.to_dict(),
+            'agents': self.agents,
+            'asset': None,
+        }
+        if self.asset is not None:
+            dictionary['asset'] = self.asset.to_dict()
+        if self.distribution is not None:
+            dictionary['distribution'] = self.distribution.to_dict()
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        ############
+        d = dictionary
+        self.name = d['name']
+        self.pos = d['pos']
+        self.active = d['active']
+        self.initial_cost = d['initial_cost']
+        self.initiation_date = d['initiation_date']
+        self.distribution = d['distribution']
+        self.seed = d['seed']
+        self.max_population = d['max_population']
+        self.boundery = d['boundery']
+        self.agents = d['agents']
+        self.asset = d['asset']
+
+    def to_plt(self, ax=None, all_agents=None):
+        """
+        Add the required elements to plt
+        """
+        settlement_to_plt(self.to_dict(), ax, all_agents)
 
 
 if __name__ == "__main__":
@@ -129,4 +181,5 @@ if __name__ == "__main__":
     )
 
     s.add_agents(all_agents)
-    print(s.agents)
+    #print(s.agents)
+    s.show()

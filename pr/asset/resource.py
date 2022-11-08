@@ -8,7 +8,7 @@ class Resource:
 
     def __init__(
         self,
-        name:str,
+        name:str='',
         use:Use=None,
         produce:Produce=None,
         storage:Storage=None,

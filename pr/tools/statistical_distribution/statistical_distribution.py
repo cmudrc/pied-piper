@@ -27,6 +27,18 @@ class Gaussian():
         plt.plot(x_array, y_pdf)
         plt.show()
 
+    def to_dict(self):
+        dictionary = {
+            'mean': self.mean,
+            'sigma': self.sigma,
+        }
+        return dictionary
+    
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.mean = d['mean']
+        self.sigma = d['sigma']
+
 
 class DiracDelta():
     """
@@ -47,6 +59,16 @@ class DiracDelta():
 
     def show(self):
         pass
+
+    def to_dict(self):
+        dictionary = {
+            'main': self.main,
+        }
+        return dictionary
+    
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.main = d['main']
 
 
 class Exponential():
