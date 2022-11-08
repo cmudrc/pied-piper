@@ -70,11 +70,15 @@ class Settlement(Entity):
         """
         Add a single agent
         """
-        if isinstance(agent, Agent) and agent.name not in self.agents:
+        if isinstance(agent, Agent) and \
+            agent.name not in self.agents and \
+                len(self.agents) < self.max_population:
             agent.settlement = self.name
             if not self.boundery.is_in(agent):
                 agent.pos = self.boundery.rand_pos()
             self.agents.append(agent.name)
+        else:
+            raise ValueError
 
     def add_agents(self, agents: list):
         """

@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from pr.settlement import Settlement
 from pr.agent import Agent
@@ -6,22 +7,32 @@ from pr.tools import find_element
 
 
 class TestRoadClass(unittest.TestCase):
+
+    a_1 = Agent(
+        name='John',
+        pos=[1, 1]
+    )
+    a_2 = Agent(
+        name='Betty',
+        pos=[0.5, 0.5]
+    )
+    all_agents = [a_1, a_2]
+
+    s = Settlement(
+        name='home_1',
+        pos=[0, 0],
+        max_population=10,
+        boundery={
+            'type': 'circular',
+            'radius': 1
+        }
+    )
+
     def test_add_agent(self):
-        a = Agent(
-            name='John',
-            pos=[1, 1]
-        )
-        s = Settlement(
-            name='home_1',
-            pos=[0, 0],
-            max_population=10,
-            boundery={
-                'type': 'circular',
-                'radius': 1
-            }
-        )
+        s = deepcopy(self.s)
+        a = deepcopy(self.a_1)
         s.add_agent(a)
-        self.assertTrue(s.boundery.is_in(), a.pos, msg="position should be equal")
+        self.assertEqual(len(self.agents), 1)
 
     def test_find_agents_by_pos_0(self):
         all_agents = [
