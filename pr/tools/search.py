@@ -1,14 +1,27 @@
-def find_element(name, all_elements):
+def find_element(name: str, all_elements: list):
     """
     Find an element between a list of elements based on its name property
     """
     result = None
-    for element in all_elements:
-        if element.name == name:
-            result = element
-            break
+    if all_elements is not None:
+        for element in all_elements:
+            if element.name == name:
+                result = element
+                break
     return result
 
+def element_exists(name: str, all_elements: list):
+    """
+    Check whether an element exists in a list of elements based on its name property
+    """
+    result = None
+    if all_elements is not None:
+        result = False
+        for element in all_elements:
+            if element.name == name:
+                result = True
+                break
+    return result
 
 if __name__ == "__main__":
     from pr.agent import Agent

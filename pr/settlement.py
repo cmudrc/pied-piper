@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 
 from pr.tools import Entity
-from pr.tools.boundery import Circular, Rectangular
+from pr.tools.boundery import Circular, Rectangular, Point
 from pr.agent import Agent
-from pr.tools import find_element
+from pr.tools import find_element, element_exists
 from pr.graphics.plt import settlement_to_plt
 from pr.asset import Asset
 
@@ -29,7 +29,8 @@ class Settlement(Entity):
         self,
         max_population=10,
         boundery=None,
-        agents=[],
+        all_agents=None,
+        members=[],
         asset:Asset=None,
         **entity_kwargs
     ):
@@ -44,7 +45,8 @@ class Settlement(Entity):
         super().__init__(
             **entity_kwargs
         )
-        self.agents = agents
+        self.all_agents = all_agents
+        self.members = members
         self.asset = asset
         self.max_population = max_population
         if boundery is not None:
@@ -61,41 +63,60 @@ class Settlement(Entity):
                     theta=boundery['theta']
                 )
         else:
-            self.boundery = Circular(
-                center=self.pos,
-                radius=0
+            self.boundery = Point(
+                center=self.pos
             )
 
     def register_agent(self, agent):
         """
-        Add a new agent membership to the settlement
+        Assign a new agent membership to the settlement
         """
         if isinstance(agent, Agent):
             agent_name = agent.name
         elif isinstance(agent, str):
             agent_name = agent
-        self.agents.append(agent_name)
+        if not agent_name in self.members:
+            if len(self.members) < self.max_population:
+                self.members.append(agent_name)
+            else:
+                print('ERROR: "max_population" reached.')
+        else:
+            print('ERROR: agent already exists.')
 
-    def transfer_inside(self, agent):
+    def register_agents(self, agents: list):
+        """
+        Assign new agents memberships to the settlement in batch
+        """
+        for agent in agents:
+            self.register_agent(agent)
+
+    def tunnel_agent(self, agent):
+        """
+        Instantly transfer the agent into the settlement
+        """
         if isinstance(agent, Agent):
             agent_name = agent.name
         elif isinstance(agent, str):
             agent_name = agent
-        self.agents.append(agent_name)
+        agent = find_element(agent_name, self.all_agents)
+        if agent is not None:
+            agent.pos = self.boundery.rand_pos()
+        else:
+            print("Agent not found.")
+
+    def tunnel_agents(self, agents: list):
+        """
+        Instantly transfer a list of agents into the settlement
+        """
+        for agent in agents:
+            self.tunnel_agent(agent)
 
     def add_agent(self, agent):
         """
         Add a single agent
         """
-        if isinstance(agent, Agent) and \
-            agent.name not in self.agents and \
-                len(self.agents) < self.max_population:
-            agent.settlement = self.name
-            if not self.boundery.is_in(agent):
-                agent.pos = self.boundery.rand_pos()
-            self.agents.append(agent.name)
-        else:
-            raise ValueError
+        self.register_agent(agent)
+        self.tunnel_agent(agent)
 
     def add_agents(self, agents: list):
         """
@@ -153,7 +174,7 @@ class Settlement(Entity):
             'seed': self.seed,
             'max_population': self.max_population,
             'boundery': self.boundery.to_dict(),
-            'agents': self.agents,
+            'agents': self.members,
             'asset': None,
         }
         if self.asset is not None:
@@ -174,7 +195,7 @@ class Settlement(Entity):
         self.seed = d['seed']
         self.max_population = d['max_population']
         self.boundery = d['boundery']
-        self.agents = d['agents']
+        self.members = d['agents']
         self.asset = d['asset']
 
     def to_plt(self, ax=None, all_agents=None):
@@ -182,6 +203,9 @@ class Settlement(Entity):
         Add the required elements to plt
         """
         settlement_to_plt(self.to_dict(), ax, all_agents)
+
+    def show(self):
+        self.boundery.show()
 
 
 if __name__ == "__main__":
@@ -201,6 +225,7 @@ if __name__ == "__main__":
     s = Settlement(
         name='home_1',
         pos=[0, 0],
+        all_agents=all_agents,
         max_population=10,
         boundery={
             'type': 'circular',
@@ -208,6 +233,8 @@ if __name__ == "__main__":
         }
     )
 
-    s.add_agents(all_agents)
+    s.add_agent(all_agents[0])
+    print(s.members[0])
+    print(all_agents[0].pos)
     #print(s.agents)
-    s.show()
+    #s.show()
