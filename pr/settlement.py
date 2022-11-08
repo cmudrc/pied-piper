@@ -37,8 +37,8 @@ class Settlement(Entity):
         Args:
             max_population: maximum number of agents within the settlement
             boundery: the boundery of the settlement
-            agents: a list of agents names that are within the settlement
-            infrastructures: a list of infrastructure names that are within the settlement
+            agents: a list of agents' names that are associated with the settlement
+            asset: manages the settlement resources (apart from agent's resources)
             **entity_kwargs: kwargs for entity class
         """
         super().__init__(
@@ -65,6 +65,23 @@ class Settlement(Entity):
                 center=self.pos,
                 radius=0
             )
+
+    def register_agent(self, agent):
+        """
+        Add a new agent membership to the settlement
+        """
+        if isinstance(agent, Agent):
+            agent_name = agent.name
+        elif isinstance(agent, str):
+            agent_name = agent
+        self.agents.append(agent_name)
+
+    def transfer_inside(self, agent):
+        if isinstance(agent, Agent):
+            agent_name = agent.name
+        elif isinstance(agent, str):
+            agent_name = agent
+        self.agents.append(agent_name)
 
     def add_agent(self, agent):
         """
@@ -120,6 +137,10 @@ class Settlement(Entity):
         # gather all agents
         # 
         pass
+
+    def is_in(self, agent):
+        pass
+
 
     def to_dict(self):
         dictionary = {

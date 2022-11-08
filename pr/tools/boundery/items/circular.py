@@ -1,0 +1,62 @@
+from random import uniform
+import matplotlib.pyplot as plt
+
+from pr.tools.boundery.boundery import Boundery
+
+
+class Circular(Boundery):
+    """
+    Create a circular boundery in space.
+    """
+    
+    def __init__(self, center, radius):
+        super().__init__(
+            center=center
+        )
+        self.radius = radius
+
+    def is_in(self, other):
+        distance = self._distance_from_center(other)
+        result = False
+        if distance <= self.radius:
+            result = True
+        return result
+
+    def _distance_from_boundery(self, other):
+        return self._distance_from_center - self.radius
+
+    def rand_pos(self):
+        result = None
+        while True:
+            pos = [uniform(-self.radius, self.radius), uniform(-self.radius, self.radius)]
+            if self.is_in(pos):
+                result = pos
+                break
+        return list(result)
+
+    def to_dict(self):
+        dictionary = {
+            'type': 'circular',
+            'center': self.center,
+            'radius': self.radius,
+        }
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.center = d['center']
+        self.radius = d['radius']
+
+    def show(self, active=True):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        plt.xlim([-2*self.radius + self.center[0], 2*self.radius + self.center[0]])
+        plt.ylim([-2*self.radius + self.center[1], 2*self.radius + self.center[1]])
+        self.to_plt(ax, active)
+        plt.show()
+
+    
+if __name__ == "__main__":
+    circular = Circular(center=[-2, -2], radius=1.5)
+    circular.show()

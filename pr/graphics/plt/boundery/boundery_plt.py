@@ -40,6 +40,19 @@ def circular_boundery_to_plt(dictionary: dict, ax=None, active=True):
     ax.add_patch(element)
 
 
+def point_boundery_to_plt(dictionary: dict, ax=None, active=True):
+    if ax is None:
+        ax = plt.gca()
+    d = dictionary
+    center = d['center']
+    if active is True:
+        color = style_active['color']
+        ax.scatter(*center, c=color)
+    else:
+        color = style_inactive['color']
+        ax.scatter(*center, c=color)
+
+
 def rectangular_boundery_to_plt(dictionary: dict, ax=None, active=True):
     if ax is None:
         ax = plt.gca()
@@ -60,7 +73,6 @@ def rectangular_boundery_to_plt(dictionary: dict, ax=None, active=True):
             width,
             height,
             angle=Unit(theta, 'rad').to('degree').val,
-            #rotation_point='center',
             **style_active
         )
     else:
@@ -80,3 +92,5 @@ def boundery_to_plt(dictionary: dict, ax=None, active=True):
         circular_boundery_to_plt(d, ax, active)
     elif d['type'] == 'rectangular':
         rectangular_boundery_to_plt(d, ax, active)
+    elif d['type'] == 'point':
+        point_boundery_to_plt(d, ax, active)

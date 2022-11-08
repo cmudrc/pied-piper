@@ -35,25 +35,8 @@ class TestRoadClass(unittest.TestCase):
         self.assertEqual(len(self.agents), 1)
 
     def test_find_agents_by_pos_0(self):
-        all_agents = [
-            Agent(
-                name='John',
-                pos=[1, 1]
-            ),
-            Agent(
-                name='Betty',
-                pos=[0.5, 0.5]
-            )
-        ]
-        s = Settlement(
-            name='home_1',
-            pos=[0, 0],
-            max_population=10,
-            boundery={
-                'type': 'circular',
-                'radius': 1
-            }
-        )
+        all_agents = deepcopy(self.all_agents)
+        s = deepcopy(self.s)
         s.find_all_agents_by_pos(all_agents)
         self.assertListEqual(s.agents, ['Betty'], msg='only "Betty" remains')
 
