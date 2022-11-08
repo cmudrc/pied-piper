@@ -8,13 +8,16 @@ class Point(Circular):
     Create a infitesimal circular boundery in space
     """
     
-    def __init__(self, center):
+    def __init__(self, center: list):
         super().__init__(
             center=center,
             radius=0
         )
 
-    def to_dict(self):
+    def rand_pos(self) -> list:
+        return self.center
+
+    def to_dict(self) -> dict:
         dictionary = {
             'type': 'point',
             'center': self.center

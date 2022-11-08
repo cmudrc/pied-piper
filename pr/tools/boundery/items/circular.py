@@ -25,7 +25,7 @@ class Circular(Boundery):
     def _distance_from_boundery(self, other):
         return self._distance_from_center - self.radius
 
-    def rand_pos(self):
+    def rand_pos(self) -> list:
         result = None
         while True:
             pos = [uniform(-self.radius, self.radius), uniform(-self.radius, self.radius)]
@@ -34,7 +34,7 @@ class Circular(Boundery):
                 break
         return list(result)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         dictionary = {
             'type': 'circular',
             'center': self.center,

@@ -61,13 +61,13 @@ class Rectangular(Boundery):
             distance = distance_from_center - center_to_boundery
         return distance
 
-    def rand_pos(self):
+    def rand_pos(self) -> list:
         pos = [uniform(-self.width/2, self.width/2), uniform(-self.height/2, self.height/2)]
         rot_mat = np.array([[np.cos(self.theta), -np.sin(self.theta)], [np.sin(self.theta), np.cos(self.theta)]])
         result = np.matmul(rot_mat, np.array(pos))
         return list(result)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         dictionary = {
             'type': 'rectangular',
             'center': self.center,
