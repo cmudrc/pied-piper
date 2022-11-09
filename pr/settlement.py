@@ -122,8 +122,8 @@ class Settlement(Entity):
         """
         Add a list of agents to members and move it inside the settlement
         """
-        for agent in agents:
-            self.add_agent(agent)
+        self.register_agents(agents)
+        self.tunnel_agents(agents)
 
     def find_agents_inside(self, agents: list) -> list:
         """
