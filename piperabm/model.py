@@ -1,0 +1,138 @@
+from piperabm.environment import Environment
+
+from piperabm.unit import Unit
+
+#try:
+#    from .tools.boundery import Circular
+#except:
+#    from tools.boundery import Circular
+#from pr.tools import boundery
+
+
+class Model:
+
+    def __init__(
+        self,
+        environment: Environment,
+        agents=[],
+        step_size=None,
+        current_step=0,
+        current_date=None
+    ):
+        self.step_size = step_size
+        self.current_step = current_step
+        self.current_date = current_date
+
+        self.environment = environment
+        self.agents = agents
+
+    def update_elements(self, next_date):
+        """
+        Check activeness of all elements until the next_date
+        """
+        if self.current_date < next_date:
+            if self.current_step == 0:
+                pass
+            else:
+                start_date = self.current_date
+                end_date = next_date
+                self._update_agents(start_date, end_date)
+                self.environment.update(start_date, end_date)
+        else:
+            raise ValueError
+
+    def _update_agents(self, start_date, end_date):
+        bye_bye = []
+        for agent in self.agents:
+            previous_state = agent.active
+            activeness = agent.is_active(start_date, end_date)
+            if activeness is False:
+                agent.active = False
+            if activeness != previous_state:
+                bye_bye.append(agent.name)
+                print(agent.name + " died")
+        return bye_bye
+
+    def run_step(self):
+        next_date = dt(seconds=self.step_size) + self.current_date
+        next_step = self.current_step + 1
+        #print(self.current_date, next_date)
+        self.update_elements(next_date)
+
+
+if __name__ == "__main__":
+    from piperabm import Agent, Settlement, Environment, Model
+    from piperabm.asset import Asset, Resource, Produce, Use, Storage, Deficiency
+    from piperabm.unit import Unit, Date
+
+
+    agents = [
+        Agent(
+            name='John',
+            pos=[1, 1],
+            settlement='home_1'
+        ),
+        Agent(
+            name='Betty',
+            pos=[0.5, 0.5]
+        )
+    ]
+    settlements = [
+        Settlement(
+            name='home_1',
+            pos=[0, 0],
+            max_population=10,
+            boundery={
+                'type': 'circular',
+                'radius': 1
+            }
+        ),
+        Settlement(
+            name='home_2',
+            pos=[1, 1],
+            max_population=10,
+            boundery={
+                'type': 'circular',
+                'radius': 0.5
+            }
+        ),
+    ]
+    links = []
+    asset = Asset()
+    '''
+    infrastructures = [
+        Road(
+            start_node='home_1',
+            end_node='home_2',
+            double_sided=True,
+            name='sample road',
+            initiation_date=date(2000, 1, 1),
+            distribution={
+                'type': 'dirac delta',
+                'main': Unit(10, 'day'),
+            },
+            seed=None
+        )
+    ]
+    '''
+    
+    env = Environment(
+        x_lim=[-300, 450],
+        y_lim=[-250, 250],
+        asset=asset,
+        settlements=settlements,
+        links=links
+
+    )
+
+    m = Model(
+        environment=env,
+        agents=agents,
+        step_size=Unit(5, 'day').to_SI(),
+        current_step=0,
+        current_date=Date(2000, 1, 1),
+    )
+    #m.to_graph()
+    #print(m.current_infrastructures)
+    #m.run_step()
+    #print(m.current_infrastructures)

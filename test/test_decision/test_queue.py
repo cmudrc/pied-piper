@@ -1,6 +1,6 @@
 import unittest
 
-from pr.decision import Move
+from piperabm.decision import Move
 
 
 class TestQueueClass(unittest.TestCase):

@@ -1,16 +1,15 @@
 import matplotlib.pyplot as plt
 from copy import deepcopy
 
-from pr.asset import Resource
-from pr.asset import Use, Produce, Storage, Deficiency
+import piperabm as pa
 
 
-food = Resource(
+food = pa.asset.Resource(
     name='food',
-    use=Use(rate=1),
-    produce=Produce(rate=0.7),
-    storage=Storage(current_amount=10, max_amount=20),
-    deficiency=Deficiency(current_amount=5, max_amount=20)
+    use=pa.asset.Use(rate=1),
+    produce=pa.asset.Produce(rate=0.7),
+    storage=pa.asset.Storage(current_amount=10, max_amount=20),
+    deficiency=pa.asset.Deficiency(current_amount=5, max_amount=20)
 )
 food.refill(10)
 

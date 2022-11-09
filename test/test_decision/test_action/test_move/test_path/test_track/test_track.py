@@ -1,6 +1,6 @@
 import unittest
 
-from pr.decision.action.move import path
+from piperabm import path
 
 
 class TestLinearTrackClass(unittest.TestCase):

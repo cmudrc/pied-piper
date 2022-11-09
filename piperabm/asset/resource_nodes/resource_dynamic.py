@@ -1,0 +1,88 @@
+from piperabm.graphics.plt.resource import use_to_plt, produce_to_plt
+
+
+class DynamicSource:
+    """
+    Resource production/use rate.
+    """
+
+    def __init__(self, rate=0):
+        """
+        Args:
+            rate: rate of production/use
+        """
+        self.rate = rate
+        self.current_amount = None
+
+    def refill(self, delta_t, mode='simple'):
+        if mode == 'simple':
+            self.current_amount = self.rate * delta_t
+
+    def sub(self, amount: float):
+        if amount is None:
+            amount = 0
+        if amount > self.current_amount:
+            amount -= self.current_amount
+            self.current_amount = 0
+        else:
+            self.current_amount -= amount
+            amount = 0
+        return amount
+
+    def to_dict(self):
+        dictionary = {
+            'rate': self.rate,
+            'current_amount': self.current_amount,
+        }
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        self.rate = d['rate']
+        self.current_amount = d['current_amount']
+
+
+class Use(DynamicSource):
+    """
+    A use node.
+    """
+
+    def __init__(self, rate=0):
+        super().__init__(
+            rate=rate
+        )
+
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        use_to_plt(self.to_dict(), ax)
+
+
+class Produce(DynamicSource):
+    """
+    A produce node.
+    """
+
+    def __init__(self, rate=0):
+        super().__init__(
+            rate=rate
+        )
+
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        produce_to_plt(self.to_dict(), ax)
+
+
+if __name__ == "__main__":
+    p = Produce(rate=5)
+    p.refill(delta_t=2)
+    print('self.current_amount: ', p.current_amount)
+
+    amount = 9
+    print('>>> sub amount: ', amount)
+    remaining_amount = p.sub(amount=amount)
+    print('remaining amount: ', remaining_amount)
+    print('self.current_amount: ', p.current_amount)

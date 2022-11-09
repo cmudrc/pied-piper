@@ -1,12 +1,12 @@
 import unittest
 from copy import deepcopy
 
-from pr.settlement import Settlement
-from pr.agent import Agent
-from pr.tools import find_element
+from piperabm.settlement import Settlement
+from piperabm.agent import Agent
+from piperabm.search import find_element
 
 
-class TestRoadClass(unittest.TestCase):
+class TestSettlementClass(unittest.TestCase):
 
     a_1 = Agent(
         name='John',
@@ -28,12 +28,29 @@ class TestRoadClass(unittest.TestCase):
         }
     )
 
+    def test_register_agent(self):
+        s = deepcopy(self.s)
+        a_1 = deepcopy(self.a_1)
+        s.all_agents = self.all_agents
+        s.register_agent(a_1)
+        self.assertEqual(len(s.members), 1)
+        self.assertEqual(s.members[0], a_1.name)
+        self.assertFalse(s.is_in(a_1))
+
+    def test_tunnel_agent(self):
+        s = deepcopy(self.s)
+        a_1 = deepcopy(self.a_1)
+        s.all_agents = self.all_agents
+        s.tunnel_agent(a_1)
+        self.assertEqual(len(s.members), 0)
+        self.assertTrue(s.is_in(a_1.pos))
+    '''
     def test_add_agent(self):
         s = deepcopy(self.s)
         a = deepcopy(self.a_1)
         s.add_agent(a)
         self.assertEqual(len(self.agents), 1)
-
+    
     def test_find_agents_by_pos_0(self):
         all_agents = deepcopy(self.all_agents)
         s = deepcopy(self.s)
@@ -134,7 +151,7 @@ class TestRoadClass(unittest.TestCase):
             }
         )
         s.add_agents(all_agents)
-
+    '''
 
 if __name__ == "__main__":
     unittest.main()

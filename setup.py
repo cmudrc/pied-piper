@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 
+
 setup(
-    name='pr',
+    name='piperabm',
     version='0.1',
     description='An Agent-Based Model Framework',
     author='',

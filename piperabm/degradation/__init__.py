@@ -1,0 +1,1 @@
+from .degradation_property import DegradationProperty

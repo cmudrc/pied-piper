@@ -1,10 +1,10 @@
 import unittest
 from copy import deepcopy
 
-from pr.decision import Move
-from pr.tools import date, dt
-from pr.decision.action.move import Path
-from pr.transportation import Foot
+from piperabm.decision import Move
+from piperabm.unit import Date, DT
+from piperabm.path import Path
+from piperabm.transportation import Foot
 
 
 class TestMoveClass(unittest.TestCase):
@@ -15,37 +15,37 @@ class TestMoveClass(unittest.TestCase):
     path.add(pos=[4, 3])
 
     m = Move(
-        start_date=date(2020, 1, 1),
+        start_date=Date(2020, 1, 1),
         path=path,
         transportation=Foot()
     )
     
     def test_progress_0(self):
-        time = self.m.start_date + dt(seconds=100)
+        time = self.m.start_date + DT(seconds=100)
         progress = self.m.progress(time)
         self.assertEqual(progress, 1)
     
     def test_progress_1(self):
-        time = self.m.start_date + dt(seconds=1)
+        time = self.m.start_date + DT(seconds=1)
         progress = self.m.progress(time)
         self.assertAlmostEqual(progress, 0.2, places=1)
     
     def test_progress_2(self):
-        time = self.m.start_date - dt(seconds=1)
+        time = self.m.start_date - DT(seconds=1)
         progress = self.m.progress(time)
         self.assertEqual(progress, 0)
     
     def test_progress_instant_0(self):
         m = deepcopy(self.m)
         m.instant = True
-        time = m.start_date - dt(seconds=1)
+        time = m.start_date - DT(seconds=1)
         progress = m.progress(time)
         self.assertEqual(progress, 0)
     
     def test_progress_instant_1(self):
         m = deepcopy(self.m)
         m.instant = True
-        time = m.start_date + dt(seconds=1)
+        time = m.start_date + DT(seconds=1)
         progress = m.progress(time)
         self.assertEqual(progress, 1)
     

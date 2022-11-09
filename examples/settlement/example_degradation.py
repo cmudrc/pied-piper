@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
-from pr import Settlement, Agent
-from pr import Model
-from pr.tools import date, dt
+from piperabm import Settlement, Agent
+from piperabm import Model
+from piperabm.unit import Date, DT
 
 '''
 s_1 = Settlement(
@@ -41,14 +41,14 @@ s = Settlement(
         'theta': 0.3
     },
     active=True,
-    initiation_date=date(2000, 1, 1),
+    initiation_date=Date(2000, 1, 1),
     distribution={
         'type': 'dirac delta',
-        'main': dt(days=5)
+        'main': DT(days=5)
     }
 )
 
-from pr.graphics.plt.settlement import settlement_to_plt
+from piperabm.graphics.plt.settlement import settlement_to_plt
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
