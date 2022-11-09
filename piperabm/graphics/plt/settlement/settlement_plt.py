@@ -13,7 +13,7 @@ def settlement_to_plt(dictionary: dict, ax=None, all_agents=None):
     if d['boundery'] is not None:
         boundery_to_plt(d['boundery'], ax, d['active'])
     
-    #if all_agents is not None:
-    #    for agent_name in d['agents']:
-    #        agent = find_element(agent_name, all_agents)
-    #        agent_to_plt(agent.to_dict(), ax)
+    if all_agents is not None:
+        for agent_name in d['agents']:
+            agent = find_element(agent_name, all_agents)
+            agent_to_plt(agent.to_dict(), ax)

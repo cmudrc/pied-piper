@@ -87,14 +87,20 @@ class Rectangular(Boundery):
         self.height = d['height']
         self.theta = d['theta']
 
+    def xylim(self):
+        max_size = max(self.height, self.width)
+        max_size *= 1.5
+        xlim = [-max_size/2 + self.center[0], max_size/2 + self.center[0]]
+        ylim = [-max_size/2 + self.center[1], max_size/2 + self.center[1]]
+        return xlim, ylim
+
     def show(self, active=True):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         plt.axis('equal')
-        max_size = max(self.height, self.width)
-        max_size *= 1.5
-        plt.xlim([-max_size/2 + self.center[0], max_size/2 + self.center[0]])
-        plt.ylim([-max_size/2 + self.center[1], max_size/2 + self.center[1]])
+        xlim, ylim = self.xylim()
+        plt.xlim(xlim)
+        plt.ylim(ylim)
         self.to_plt(ax, active)
         plt.show()
 

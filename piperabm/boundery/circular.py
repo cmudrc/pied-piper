@@ -50,12 +50,18 @@ class Circular(Boundery):
         self.center = d['center']
         self.radius = d['radius']
 
+    def xylim(self):
+        xlim = [-2*self.radius + self.center[0], 2*self.radius + self.center[0]]
+        ylim = [-2*self.radius + self.center[1], 2*self.radius + self.center[1]]
+        return xlim, ylim
+
     def show(self, active=True):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         plt.axis('equal')
-        plt.xlim([-2*self.radius + self.center[0], 2*self.radius + self.center[0]])
-        plt.ylim([-2*self.radius + self.center[1], 2*self.radius + self.center[1]])
+        xlim, ylim = self.xylim()
+        plt.xlim(xlim)
+        plt.ylim(ylim)
         self.to_plt(ax, active)
         plt.show()
 

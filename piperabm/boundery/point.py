@@ -31,12 +31,18 @@ class Point(Circular):
         d = dictionary
         self.center = d['center']
 
+    def xylim(self):
+        xlim = [-1 + self.center[0], 1 + self.center[0]]
+        ylim = [-1 + self.center[1], 1 + self.center[1]]
+        return xlim, ylim
+
     def show(self, active=True):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         plt.axis('equal')
-        plt.xlim([-1 + self.center[0], 1 + self.center[0]])
-        plt.ylim([-1 + self.center[1], 1 + self.center[1]])
+        xlim, ylim = self.xylim()
+        plt.xlim(xlim)
+        plt.ylim(ylim)
         self.to_plt(ax, active)
         plt.show()
 

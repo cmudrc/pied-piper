@@ -31,26 +31,38 @@ class TestSettlementClass(unittest.TestCase):
     def test_register_agent(self):
         s = deepcopy(self.s)
         a_1 = deepcopy(self.a_1)
-        s.all_agents = self.all_agents
-        s.register_agent(a_1)
+        a_2 = deepcopy(self.a_2)
+        s.all_agents = [a_1, a_2]
+        self.assertEqual(len(s.find_agents_inside()), 1)
+        s.register_agent(a_1.name)
+        self.assertEqual(len(s.find_agents_inside()), 1)
         self.assertEqual(len(s.members), 1)
         self.assertEqual(s.members[0], a_1.name)
-        self.assertFalse(s.is_in(a_1))
+        self.assertFalse(s.is_in(a_1.pos))
 
     def test_tunnel_agent(self):
         s = deepcopy(self.s)
         a_1 = deepcopy(self.a_1)
-        s.all_agents = self.all_agents
-        s.tunnel_agent(a_1)
+        a_2 = deepcopy(self.a_2)
+        s.all_agents = [a_1, a_2]
+        self.assertEqual(len(s.find_agents_inside()), 1)
+        s.tunnel_agent(a_1.name)
+        self.assertEqual(len(s.find_agents_inside()), 2)
         self.assertEqual(len(s.members), 0)
-        self.assertTrue(s.is_in(a_1.pos))
-    '''
+    
     def test_add_agent(self):
         s = deepcopy(self.s)
-        a = deepcopy(self.a_1)
-        s.add_agent(a)
-        self.assertEqual(len(self.agents), 1)
-    
+        a_1 = deepcopy(self.a_1)
+        a_2 = deepcopy(self.a_2)
+        s.all_agents = [a_1, a_2]
+        self.assertEqual(len(s.find_agents_inside()), 1)
+        s.add_agent(a_1.name)
+        self.assertEqual(len(s.find_agents_inside()), 2)
+        self.assertEqual(len(s.members), 1)
+        self.assertEqual(s.members[0], a_1.name)
+        self.assertTrue(s.is_in(a_1.pos))
+
+    '''
     def test_find_agents_by_pos_0(self):
         all_agents = deepcopy(self.all_agents)
         s = deepcopy(self.s)

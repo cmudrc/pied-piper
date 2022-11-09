@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import networkx as nx
+
 from piperabm.boundery import Circular, Point, Rectangular
 from piperabm.degradation import DegradationProperty
 from piperabm.agent import Agent
@@ -94,7 +97,8 @@ class Settlement(DegradationProperty):
             self.agent_name_exists_in_model(agent_name):
             if len(self.members) < self.max_population:
                 self.members.append(agent_name)
-                agent
+                agent = find_element(agent_name, self.all_agents)
+                agent.settlement = self.name
             else:
                 print('ERROR: "max_population" reached.')
         else:
@@ -143,12 +147,12 @@ class Settlement(DegradationProperty):
         self.register_agents(agents)
         self.tunnel_agents(agents)
 
-    def find_agents_inside(self, agents: list) -> list:
+    def find_agents_inside(self) -> list:
         """
         Find and add all agents within boundery based on their pos
         """
         result = []
-        for agent in agents:
+        for agent in self.all_agents:
             if self.boundery.is_in(agent):
                 result.append(agent.name)
         return result
@@ -199,14 +203,21 @@ class Settlement(DegradationProperty):
         self.members = d['agents']
         self.asset = d['asset']
 
-    def to_plt(self, ax=None, all_agents=None):
+    def to_plt(self, ax=None):
         """
         Add the required elements to plt
         """
-        settlement_to_plt(self.to_dict(), ax, all_agents)
+        settlement_to_plt(self.to_dict(), ax, self.all_agents)
 
     def show(self):
-        self.boundery.show()
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        xlim, ylim = self.boundery.xylim()
+        plt.xlim(xlim)
+        plt.ylim(ylim)
+        self.to_plt(ax)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -240,4 +251,5 @@ if __name__ == "__main__":
     #print(s.members[0])
     print(s.is_in(all_agents[0]))
     #print(s.agents)
+    print(s.distribution)
     #s.show()
