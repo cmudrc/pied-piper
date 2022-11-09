@@ -17,15 +17,16 @@ class Rectangular(Boundery):
         super().__init__(
             center=center
         )
-        self.width = width # (x_max - x_min)
-        self.height = height # (y_max - y_min)
+        self.width = width  # (x_max - x_min)
+        self.height = height  # (y_max - y_min)
         self.theta = theta
-    
+
     def is_in(self, other):
         result = False
         x_0 = self.center[0]
         y_0 = self.center[1]
-        rot_mat = np.array([[np.cos(self.theta), np.sin(self.theta)], [-np.sin(self.theta), np.cos(self.theta)]])
+        rot_mat = np.array([[np.cos(self.theta), np.sin(
+            self.theta)], [-np.sin(self.theta), np.cos(self.theta)]])
         if isinstance(other, list):
             other_pos = other
         else:
@@ -34,9 +35,9 @@ class Rectangular(Boundery):
         x_1 = pos_prime[0]
         y_1 = pos_prime[1]
         if (x_1 - x_0) <= self.width / 2 and \
-            (x_1 - x_0) >= -self.width / 2:
+                (x_1 - x_0) >= -self.width / 2:
             if (y_1 - y_0) <= self.height / 2 and \
-                (y_1 - y_0) >= -self.height / 2:
+                    (y_1 - y_0) >= -self.height / 2:
                 result = True
         return result
 
@@ -46,7 +47,8 @@ class Rectangular(Boundery):
             distance_from_center = self._distance_from_center(other)
             x_0 = self.center[0]
             y_0 = self.center[1]
-            rot_mat = np.array([[np.cos(self.theta), np.sin(self.theta)], [-np.sin(self.theta), np.cos(self.theta)]])
+            rot_mat = np.array([[np.cos(self.theta), np.sin(
+                self.theta)], [-np.sin(self.theta), np.cos(self.theta)]])
             if isinstance(other, list):
                 other_pos = other
             else:
@@ -65,8 +67,10 @@ class Rectangular(Boundery):
         return distance
 
     def rand_pos(self) -> list:
-        pos = [uniform(-self.width/2, self.width/2), uniform(-self.height/2, self.height/2)]
-        rot_mat = np.array([[np.cos(self.theta), -np.sin(self.theta)], [np.sin(self.theta), np.cos(self.theta)]])
+        pos = [uniform(-self.width/2, self.width/2),
+               uniform(-self.height/2, self.height/2)]
+        rot_mat = np.array([[np.cos(self.theta), -np.sin(self.theta)],
+                           [np.sin(self.theta), np.cos(self.theta)]])
         result = np.matmul(rot_mat, np.array(pos))
         return list(result)
 

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class Gaussian():
+class Gaussian:
     """
     Gaussian distribution.
     """
@@ -27,7 +27,7 @@ class Gaussian():
         plt.plot(x_array, y_pdf)
         plt.show()
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         dictionary = {
             'mean': self.mean,
             'sigma': self.sigma,
@@ -40,42 +40,6 @@ class Gaussian():
         self.sigma = d['sigma']
 
 
-class DiracDelta():
-    """
-    Dirac Delta distribution.
-    """
-    
-    def __init__(self, main):
-        self.main = main
-
-    def probability(self, time_start, time_end):
-        return self.CDF(time_end) - self.CDF(time_start)
-
-    def CDF(self, point):
-        result = 0
-        if self.main <= point:
-            result = 1
-        return result
-
-    def show(self):
-        pass
-
-    def to_dict(self):
-        dictionary = {
-            'main': self.main,
-        }
-        return dictionary
-    
-    def from_dict(self, dictionary: dict):
-        d = dictionary
-        self.main = d['main']
-
-
-class Exponential():
-    def __init__(self, coeff, degree):
-        pass
-
-
 if __name__ == "__main__":
     time_start=0
     time_end=90
@@ -86,16 +50,6 @@ if __name__ == "__main__":
     )
     print(
         g.probability(
-            time_start=time_start,
-            time_end=time_end
-        )
-    )
-    
-    d = DiracDelta(
-        main=100
-    )
-    print(
-        d.probability(
             time_start=time_start,
             time_end=time_end
         )

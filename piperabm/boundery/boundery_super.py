@@ -40,7 +40,7 @@ class Boundery:
         Calculate the distance from boundery.
         """
         return None
-    
+
     def distance(self, other, mode='center'):
         """
         Calculate the distance.
@@ -55,7 +55,7 @@ class Boundery:
         Add the required elements to plt
         """
         boundery_to_plt(self.to_dict(), ax, active)
-    
+
 
 if __name__ == "__main__":
     pass

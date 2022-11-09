@@ -1,9 +1,9 @@
 import random
 
 try:
-    from .statistical_distribution import Gaussian, DiracDelta
+    from .distributions import Gaussian, DiracDelta
 except:
-    from statistical_distribution import Gaussian, DiracDelta
+    from distributions import Gaussian, DiracDelta
     
 
 class DegradationProperty:

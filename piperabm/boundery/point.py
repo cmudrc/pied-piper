@@ -10,7 +10,7 @@ class Point(Circular):
     """
     Create a infitesimal circular boundery in space
     """
-    
+
     def __init__(self, center: list):
         super().__init__(
             center=center,

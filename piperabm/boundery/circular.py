@@ -11,7 +11,7 @@ class Circular(Boundery):
     """
     Create a circular boundery in space.
     """
-    
+
     def __init__(self, center, radius):
         super().__init__(
             center=center
@@ -31,7 +31,8 @@ class Circular(Boundery):
     def rand_pos(self) -> list:
         result = None
         while True:
-            pos = [uniform(-self.radius, self.radius), uniform(-self.radius, self.radius)]
+            pos = [uniform(-self.radius, self.radius),
+                   uniform(-self.radius, self.radius)]
             if self.is_in(pos):
                 result = pos
                 break
@@ -51,8 +52,10 @@ class Circular(Boundery):
         self.radius = d['radius']
 
     def xylim(self):
-        xlim = [-2*self.radius + self.center[0], 2*self.radius + self.center[0]]
-        ylim = [-2*self.radius + self.center[1], 2*self.radius + self.center[1]]
+        xlim = [-2*self.radius + self.center[0],
+                2*self.radius + self.center[0]]
+        ylim = [-2*self.radius + self.center[1],
+                2*self.radius + self.center[1]]
         return xlim, ylim
 
     def show(self, active=True):
@@ -65,7 +68,7 @@ class Circular(Boundery):
         self.to_plt(ax, active)
         plt.show()
 
-    
+
 if __name__ == "__main__":
     circular = Circular(center=[-2, -2], radius=1.5)
     circular.show()

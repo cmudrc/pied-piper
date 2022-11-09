@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.degradation.statistical_distribution import Gaussian, DiracDelta
+from piperabm.degradation.distributions import Gaussian, DiracDelta
 from piperabm.unit import Unit
 
 
