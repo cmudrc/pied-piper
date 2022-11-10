@@ -4,8 +4,10 @@ from piperabm.search import find_element
 
 class Access:
 
-    def __init__(self, mode='all', all_agents=None):
+    def __init__(self, mode='all', name=None, all_agents=None):
         self.mode = mode
+        self.name = name
+        self.all_agents = all_agents
 
     def has_access(self, agent) -> bool:
         result = None
@@ -18,3 +20,9 @@ class Access:
             result = True
         elif self.mode == 'none':
             result = False
+        elif self.mode == 'members only':
+            if agent.settlement == self.name:
+                result = True
+            else:
+                result = False
+        return result

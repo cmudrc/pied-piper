@@ -55,6 +55,10 @@ class Settlement(DegradationProperty):
         self.members = members
         self.asset = asset
         self.max_population = max_population
+        self.add_boundery(boundery_dict=boundery)
+
+    def add_boundery(self, boundery_dict: dict):
+        boundery = boundery_dict
         if boundery is not None:
             if boundery['type'] == 'circular':
                 self.boundery = Circular(
@@ -245,11 +249,8 @@ if __name__ == "__main__":
         }
     )
 
-    #s.add_agent(all_agents[0])
-    print(s.is_in(all_agents[0]))
-    s.tunnel_agent(all_agents[0].name)
-    #print(s.members[0])
-    print(s.is_in(all_agents[0]))
-    #print(s.agents)
+    #print(s.is_in(all_agents[0]))
+    #s.tunnel_agent(all_agents[0].name)
+    #print(s.is_in(all_agents[0]))
     print(s.distribution)
     #s.show()
