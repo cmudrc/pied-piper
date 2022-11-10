@@ -5,14 +5,15 @@ from piperabm import Unit
 
 
 class TestDiracDeltaClass(unittest.TestCase):
+
+    d = DiracDelta(
+        main=Unit(35, 'day').to_SI()
+    )
+
     def test_dirac_distribution_0(self):
         time_start = Unit(0, 'day').to_SI()
         time_end = Unit(70, 'day').to_SI()
-
-        d = DiracDelta(
-            main=Unit(35, 'day').to_SI()
-        )
-        p = d.probability(
+        p = self.d.probability(
             time_start=time_start,
             time_end=time_end
         )
@@ -21,11 +22,7 @@ class TestDiracDeltaClass(unittest.TestCase):
     def test_dirac_distribution_1(self):
         time_start = Unit(0, 'day').to_SI()
         time_end = Unit(30, 'day').to_SI()
-
-        d = DiracDelta(
-            main=Unit(35, 'day').to_SI()
-        )
-        p = d.probability(
+        p = self.d.probability(
             time_start=time_start,
             time_end=time_end
         )

@@ -24,6 +24,7 @@ class DiracDelta():
 
     def to_dict(self) -> dict:
         dictionary = {
+            'type': 'dirac delta',
             'main': self.main,
         }
         return dictionary

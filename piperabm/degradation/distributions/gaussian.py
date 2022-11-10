@@ -29,6 +29,7 @@ class Gaussian:
 
     def to_dict(self) -> dict:
         dictionary = {
+            'type': 'gaussian',
             'mean': self.mean,
             'sigma': self.sigma,
         }

@@ -5,6 +5,7 @@ from piperabm import Unit
 
 
 class TestGaussianClass(unittest.TestCase):
+    
     def test_normal_distribution(self):
         time_start = Unit(0, 'day').to_SI()
         time_end = Unit(70, 'day').to_SI()

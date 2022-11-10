@@ -1,9 +1,9 @@
 import random
 
 try:
-    from .distributions import Gaussian, DiracDelta
+    from .distributions import Gaussian, DiracDelta, Eternal
 except:
-    from distributions import Gaussian, DiracDelta
+    from distributions import Gaussian, DiracDelta, Eternal
     
 
 class DegradationProperty:
@@ -33,8 +33,11 @@ class DegradationProperty:
         self.initial_cost = initial_cost
         self.renovation_effect = None
         self.initiation_date = initiation_date
+        self.add_distribution(distribution)
         self.seed = seed
 
+    def add_distribution(self, distribution_dict: dict):
+        distribution = distribution_dict
         if distribution is not None:
             if distribution['type'] == 'gaussian':
                 self.distribution = Gaussian(
@@ -45,6 +48,8 @@ class DegradationProperty:
                 self.distribution = DiracDelta(
                     main=distribution['main']
                 )
+        else:
+            self.distribution = Eternal()
     
     def renovation_effect_calc(self, renovation_cost, current_date):
         delta_t = (current_date - self.initiation_date)
