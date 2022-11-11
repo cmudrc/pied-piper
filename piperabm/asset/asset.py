@@ -77,6 +77,7 @@ class Asset:
         fig = plt.figure()
         for k in range(Tot):
             ax = fig.add_subplot(Rows, Cols, Position[k])
+            ax.set_title(self.resources[k].name)
             self.resources[k].to_plt(ax)
         plt.show()
 

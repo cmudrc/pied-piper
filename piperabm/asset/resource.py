@@ -101,11 +101,15 @@ class Resource:
     def to_dict(self):
         dictionary = {
             'name': self.name,
-            'use': self.use.to_dict(),
-            'produce': self.produce.to_dict(),
-            'storage': self.storage.to_dict(),
-            'deficiency': self.deficiency.to_dict(),
         }
+        if self.use is not None: dictionary['use'] = self.use.to_dict(),
+        else: dictionary['use'] = None
+        if self.produce is not None: dictionary['produce'] = self.produce.to_dict(),
+        else: dictionary['produce'] = None
+        if self.storage is not None: dictionary['storage'] = self.storage.to_dict(),
+        else: dictionary['storage'] = None
+        if self.deficiency is not None: dictionary['deficiency'] = self.deficiency.to_dict(),
+        else: dictionary['deficiency'] = None
         return dictionary
 
     def from_dict(self, dictionary: dict):
