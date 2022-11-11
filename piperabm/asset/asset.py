@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from piperabm.asset import Resource
 from piperabm.asset import Use, Produce, Storage, Deficiency
 from piperabm.search import find_element
@@ -58,6 +60,25 @@ class Asset:
             resource = Resource().from_dict(d[resource_name])
             resources.append(resource)
         self.resources = resources
+
+    def show(self):
+        # Subplots are organized in a Rows x Cols Grid
+        # Tot and Cols are known
+        Tot = len(self.resources)
+        Cols = Tot
+        # Compute Rows required
+        Rows = Tot // Cols 
+        #     EDIT for correct number of rows:
+        #     If one additional row is necessary -> add one:
+        if Tot % Cols != 0:
+            Rows += 1
+        # Create a Position index
+        Position = range(1,Tot + 1)
+        fig = plt.figure()
+        for k in range(Tot):
+            ax = fig.add_subplot(Rows, Cols, Position[k])
+            self.resources[k].to_plt(ax)
+        plt.show()
 
 
 if __name__ == "__main__":
