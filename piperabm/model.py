@@ -1,6 +1,6 @@
 from piperabm.environment import Environment
 
-from piperabm.unit import Unit
+from piperabm.unit import Unit, DT
 
 #try:
 #    from .tools.boundery import Circular
@@ -32,6 +32,8 @@ class Model:
         """
         if self.current_date < next_date:
             if self.current_step == 0:
+                # find the oldest element
+                # update elements until current_date
                 pass
             else:
                 start_date = self.current_date
@@ -54,7 +56,7 @@ class Model:
         return bye_bye
 
     def run_step(self):
-        next_date = dt(seconds=self.step_size) + self.current_date
+        next_date = DT(seconds=self.step_size) + self.current_date
         next_step = self.current_step + 1
         #print(self.current_date, next_date)
         self.update_elements(next_date)
@@ -100,7 +102,7 @@ if __name__ == "__main__":
     links = []
     asset = Asset()
     '''
-    infrastructures = [
+    links = [
         Road(
             start_node='home_1',
             end_node='home_2',

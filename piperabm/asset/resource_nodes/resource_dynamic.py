@@ -12,11 +12,13 @@ class DynamicSource:
             rate: rate of production/use
         """
         self.rate = rate
-        self.current_amount = None
+        self.current_amount = 0
 
-    def refill(self, delta_t, mode='simple'):
-        if mode == 'simple':
-            self.current_amount = self.rate * delta_t
+    def refill(self, delta_t, mode='independent'):
+        max_amount = self.rate * delta_t
+        refill_amount = max_amount - self.current_amount
+        if mode == 'independent':
+            self.current_amount += refill_amount
 
     def sub(self, amount: float):
         if amount is None:
