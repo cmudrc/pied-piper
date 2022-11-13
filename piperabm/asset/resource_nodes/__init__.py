@@ -1,2 +1,2 @@
-from .resource_dynamic import Use, Produce
-from .resource_static import Storage, Deficiency
+from .dynamic_node import Use, Produce
+from .static_node import Storage, Deficiency

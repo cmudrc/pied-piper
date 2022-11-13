@@ -3,7 +3,7 @@ from copy import deepcopy
 from piperabm.graphics.plt.resource import storage_to_plt, deficiency_to_plt
 
 
-class StaticSource:
+class StaticNode:
     """
     Resource static storage.
     """
@@ -68,7 +68,7 @@ class StaticSource:
         self.max_amount = d['current_amount']
 
 
-class Deficiency(StaticSource):
+class Deficiency(StaticNode):
     """
     Represent deficiency like a storage unit.
     """
@@ -92,7 +92,7 @@ class Deficiency(StaticSource):
         deficiency_to_plt(self.to_dict(), ax)
 
 
-class Storage(StaticSource):
+class Storage(StaticNode):
     """
     Simple storage unit.
     """
