@@ -1,7 +1,7 @@
 from piperabm.graphics.plt.resource import use_to_plt, produce_to_plt
 
 
-class DynamicNode:
+class FlowNode:
     """
     Resource production/use rate.
     """
@@ -44,7 +44,7 @@ class DynamicNode:
         self.current_amount = d['current_amount']
 
 
-class Use(DynamicNode):
+class Use(FlowNode):
     """
     A use node.
     """
@@ -61,7 +61,7 @@ class Use(DynamicNode):
         use_to_plt(self.to_dict(), ax)
 
 
-class Produce(DynamicNode):
+class Produce(FlowNode):
     """
     A produce node.
     """
