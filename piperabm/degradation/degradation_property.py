@@ -51,10 +51,12 @@ class DegradationProperty:
         else:
             self.distribution = Eternal()
     
+    '''
     def renovation_effect_calc(self, renovation_cost, current_date):
         delta_t = (current_date - self.initiation_date)
         return delta_t * (renovation_cost / self.initial_cost)
-
+    '''
+    
     def probability_of_working(self, start_date, end_date):
         """
         Probability of remaining active during the desired duration of time.

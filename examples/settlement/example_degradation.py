@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 from piperabm import Settlement, Agent
-from piperabm import Model
+#from piperabm import Model
 from piperabm.unit import Date, DT
 
 '''

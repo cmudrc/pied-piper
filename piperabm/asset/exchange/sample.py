@@ -1,4 +1,7 @@
-from piperabm.asset import Exchange
+try:
+    from .exchange import Exchange
+except:
+    from exchange import Exchange
 
 
 exchange = Exchange()

@@ -72,6 +72,10 @@ class Settlement(DegradationProperty):
                     height=boundery['height'],
                     theta=boundery['theta']
                 )
+            else:
+                self.boundery = Point(
+                    center=self.pos
+                )
         else:
             self.boundery = Point(
                 center=self.pos
@@ -189,23 +193,27 @@ class Settlement(DegradationProperty):
         if self.asset is not None:
             dictionary['asset'] = self.asset.to_dict()
         if self.distribution is not None:
-            dictionary['distribution'] = self.distribution.to_dict()
+            pass
+            #dictionary['distribution'] = self.distribution.to_dict()
         return dictionary
 
     def from_dict(self, dictionary: dict):
-        ############
         d = dictionary
         self.name = d['name']
         self.pos = d['pos']
         self.active = d['active']
         self.initial_cost = d['initial_cost']
         self.initiation_date = d['initiation_date']
-        self.distribution = d['distribution']
+        self.distribution = d['distribution'] ############
         self.seed = d['seed']
         self.max_population = d['max_population']
-        self.boundery = d['boundery']
+        self.add_boundery(d['boundery'])
         self.members = d['agents']
-        self.asset = d['asset']
+        
+        self.asset = None
+        asset_dict = d['asset']
+        if asset_dict is not None:
+            self.asset = Asset().from_dict(asset_dict)
 
     def to_plt(self, ax=None):
         """
@@ -252,5 +260,11 @@ if __name__ == "__main__":
     #print(s.is_in(all_agents[0]))
     #s.tunnel_agent(all_agents[0].name)
     #print(s.is_in(all_agents[0]))
-    print(s.distribution)
+    dictionary = s.to_dict()
+    #print(dictionary)
+    s_new = Settlement()
+    dictionary = s_new.from_dict(dictionary)
+    dictionary_new = s_new.to_dict()
+    print(dictionary_new)
+
     #s.show()

@@ -32,17 +32,15 @@ class Model:
         """
         if self.current_date < next_date:
             if self.current_step == 0:
-                # find the oldest element
-                # update elements until current_date
-                pass
+                start_date = self.environment.find_oldest_element(self.environment.settlements)
             else:
                 start_date = self.current_date
-                end_date = next_date
-                self._update_agents(start_date, end_date)
-                self.environment.update(start_date, end_date)
+            end_date = next_date
+            self.environment.update_elements(start_date, end_date)
         else:
             raise ValueError
 
+    '''
     def _update_agents(self, start_date, end_date):
         bye_bye = []
         for agent in self.agents:
@@ -54,6 +52,7 @@ class Model:
                 bye_bye.append(agent.name)
                 print(agent.name + " died")
         return bye_bye
+    '''
 
     def run_step(self):
         next_date = DT(seconds=self.step_size) + self.current_date
@@ -86,17 +85,32 @@ if __name__ == "__main__":
             max_population=10,
             boundery={
                 'type': 'circular',
-                'radius': 1
-            }
+                'radius': 50
+            },
+            initiation_date=Date(2000, 1, 1),
+            distribution={
+                'type': 'dirac delta',
+                'main': Unit(5, 'day').to_SI(),
+            },
+            seed=None
         ),
         Settlement(
             name='home_2',
-            pos=[1, 1],
+            pos=[100, 100],
+            max_population=10,
+            initiation_date=Date(1999, 12, 29),
+        ),
+        Settlement(
+            name='home_3',
+            pos=[200, -100],
             max_population=10,
             boundery={
-                'type': 'circular',
-                'radius': 0.5
-            }
+                'type': 'rectangular',
+                'height': 100,
+                'width': 200,
+                'theta': 0.3
+            },
+            initiation_date=Date(1999, 12, 29),
         ),
     ]
     links = []
@@ -124,7 +138,6 @@ if __name__ == "__main__":
         asset=asset,
         settlements=settlements,
         links=links
-
     )
 
     m = Model(
@@ -135,6 +148,9 @@ if __name__ == "__main__":
         current_date=Date(2000, 1, 1),
     )
     #m.to_graph()
-    #print(m.current_infrastructures)
-    #m.run_step()
+    #m.environment.show()
+    #print(m.environment.settlements[0].active)
+    m.run_step()
+    m.environment.show()
+    #print(m.environment.settlements[0].active)
     #print(m.current_infrastructures)
