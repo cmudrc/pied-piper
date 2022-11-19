@@ -4,7 +4,7 @@ import networkx as nx
 from piperabm.boundery import Circular, Point, Rectangular
 from piperabm.degradation import DegradationProperty
 from piperabm.agent import Agent
-from piperabm.search import find_element, element_exists
+from piperabm.search import find_element
 from piperabm.graphics.plt import settlement_to_plt
 from piperabm.asset import Asset
 
@@ -180,32 +180,21 @@ class Settlement(DegradationProperty):
         dictionary = {
             'name': self.name,
             'pos': self.pos,
-            'active': self.active,
-            'initial_cost': self.initial_cost,
-            'initiation_date': self.initiation_date,
-            'distribution': None,
-            'seed': self.seed,
             'max_population': self.max_population,
             'boundery': self.boundery.to_dict(),
             'agents': self.members,
             'asset': None,
         }
+        dictionary = {**dictionary, **self.degradation_to_dict()}
         if self.asset is not None:
             dictionary['asset'] = self.asset.to_dict()
-        if self.distribution is not None:
-            pass
-            #dictionary['distribution'] = self.distribution.to_dict()
         return dictionary
 
     def from_dict(self, dictionary: dict):
         d = dictionary
+        self.degradation_from_dict(dictionary)
         self.name = d['name']
         self.pos = d['pos']
-        self.active = d['active']
-        self.initial_cost = d['initial_cost']
-        self.initiation_date = d['initiation_date']
-        self.distribution = d['distribution'] ############
-        self.seed = d['seed']
         self.max_population = d['max_population']
         self.add_boundery(d['boundery'])
         self.members = d['agents']
@@ -261,9 +250,9 @@ if __name__ == "__main__":
     #s.tunnel_agent(all_agents[0].name)
     #print(s.is_in(all_agents[0]))
     dictionary = s.to_dict()
-    #print(dictionary)
+    print(dictionary)
     s_new = Settlement()
-    dictionary = s_new.from_dict(dictionary)
+    s_new.from_dict(dictionary)
     dictionary_new = s_new.to_dict()
     print(dictionary_new)
 

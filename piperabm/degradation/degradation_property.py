@@ -36,6 +36,24 @@ class DegradationProperty:
         self.add_distribution(distribution)
         self.seed = seed
 
+    def degradation_to_dict(self) -> dict:
+        dictionary = {
+            'active': self.active,
+            'initial_cost': self.initial_cost,
+            'initiation_date': self.initiation_date,
+            'distribution': self.distribution.to_dict(),
+            'seed': self.seed
+        }
+        return dictionary
+
+    def degradation_from_dict(self, dictionary: dict):
+        d = dictionary
+        self.active = d['active']
+        self.initial_cost = d['initial_cost']
+        self.initiation_date = d['initiation_date']
+        self.add_distribution(d['distribution'])
+        self.seed = d['seed']
+
     def add_distribution(self, distribution_dict: dict):
         distribution = distribution_dict
         if distribution is not None:
@@ -48,6 +66,8 @@ class DegradationProperty:
                 self.distribution = DiracDelta(
                     main=distribution['main']
                 )
+            else:
+                self.distribution = Eternal()
         else:
             self.distribution = Eternal()
     
