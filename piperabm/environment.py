@@ -61,7 +61,8 @@ class Environment:
         settlements_list = d['settlements']
         self.settlements = []
         for settlement_dict in settlements_list:
-            s = Settlement().from_dict(settlement_dict)
+            s = Settlement()
+            s.from_dict(settlement_dict)
             self.settlements.append(s)
 
     def to_plt(self, ax=None):
@@ -71,7 +72,7 @@ class Environment:
         for settlement in self.settlements:
             settlement_to_plt(settlement.to_dict(), ax)
 
-    def show(self, active=True):
+    def show(self):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         plt.axis('equal')
@@ -83,6 +84,7 @@ class Environment:
 
 if __name__ == "__main__":
     from piperabm.asset import Produce, Storage, Resource, Use, Asset
+    
     resources = [
         Resource(
             name='water',

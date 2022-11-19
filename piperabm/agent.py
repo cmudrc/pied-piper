@@ -11,6 +11,7 @@ class Agent:
         self,
         name=None,
         pos=[0, 0],
+        active=True,
         asset=None,
         settlement=None,
         transportations=[Foot()],
@@ -24,12 +25,24 @@ class Agent:
         """
         self.name = name
         self.pos = pos
+        self.active = active
         self.transportations = transportations
         self.asset = asset
         self.settlement = settlement
 
     def decide(self):
         pass
+
+    def to_dict(self) -> dict:
+        dictionary = {
+            'name': self.name,
+            'pos': self.pos,
+            'active': self.active,
+            'asset': None
+        }
+        if self.asset is not None:
+            dictionary['asset'] = self.asset.to_dict()
+        return dictionary
 
 '''
 class Human(Agent):
@@ -99,7 +112,21 @@ def generate_agent(count=1):
             pos=[0, 0]
         ))
     return result
+'''
 
+
+def from_dict(self, dictionary: dict):
+    d = dictionary
+    self.x_lim = d['center']
+    self.y_lim = d['radius']
+    self.asset = Asset().from_dict(d['asset'])
+    settlements_list = d['settlements']
+    self.settlements = []
+    for settlement_dict in settlements_list:
+        s = Settlement()
+        s.from_dict(settlement_dict)
+        self.settlements.append(s)
+'''
 
 if __name__ == "__main__":
     from piperabm.asset import Resource

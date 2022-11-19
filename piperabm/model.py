@@ -1,12 +1,8 @@
+import matplotlib.pyplot as plt
+
 from piperabm.environment import Environment
-
 from piperabm.unit import Unit, DT
-
-#try:
-#    from .tools.boundery import Circular
-#except:
-#    from tools.boundery import Circular
-#from pr.tools import boundery
+from piperabm.graphics.plt import agent_to_plt
 
 
 class Model:
@@ -59,6 +55,23 @@ class Model:
         next_step = self.current_step + 1
         #print(self.current_date, next_date)
         self.update_elements(next_date)
+
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        self.environment.to_plt(ax)
+        for agent in self.agents:
+            agent_to_plt(agent.to_dict(), ax)
+
+    def show(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        plt.xlim(self.environment.x_lim)
+        plt.ylim(self.environment.y_lim)
+        self.to_plt(ax)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -151,6 +164,6 @@ if __name__ == "__main__":
     #m.environment.show()
     #print(m.environment.settlements[0].active)
     m.run_step()
-    m.environment.show()
+    m.show()
     #print(m.environment.settlements[0].active)
     #print(m.current_infrastructures)
