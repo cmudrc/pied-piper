@@ -3,7 +3,7 @@ import unittest
 from piperabm.path import Path
 
 
-class TestLinearTrackClass(unittest.TestCase):
+class TestPathClass(unittest.TestCase):
 
     path = Path()
     path.add(pos=[0, 0])
