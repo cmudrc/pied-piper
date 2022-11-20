@@ -62,7 +62,7 @@ class TestSettlementClass(unittest.TestCase):
         self.assertEqual(s.members[0], a_1.name)
         self.assertTrue(s.is_in(a_1.pos))
 
-    def test_to_from_dict(self):
+    def test_dict_conversion(self):
         s = deepcopy(self.s)
         dictionary = s.to_dict()
         s_new = Settlement()

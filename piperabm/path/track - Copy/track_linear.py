@@ -76,6 +76,16 @@ class Linear:
         txt += ' to ' + str(self.pos_end)
         return txt
 
+    def to_dict(self) -> dict:
+        dictionary = {
+            'pos_start': self.active,
+            'pos_end': self.initial_cost,
+            'initiation_date': self.initiation_date,
+            'distribution': self.distribution.to_dict(),
+            'seed': self.seed
+        }
+        return dictionary
+
 
 if __name__ == "__main__":
     track = Linear([0, 0], [1, 1], length=3)
