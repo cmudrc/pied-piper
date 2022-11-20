@@ -14,7 +14,7 @@ class TestLinearTrackClass(unittest.TestCase):
 
     def test_pos_1(self):
         """
-        Set difficulty of track to 2 (default=1)
+        Set track difficulty to 2 (default=1)
         """
         track = deepcopy(self.track)
         track.difficulty = 2
@@ -27,7 +27,7 @@ class TestLinearTrackClass(unittest.TestCase):
 
     def test_progress_1(self):
         """
-        Set difficulty of track to 2 (default=1)
+        Set track difficulty to 2 (default=1)
         """
         track = deepcopy(self.track)
         track.difficulty = 2
