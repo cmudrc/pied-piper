@@ -2,8 +2,13 @@ import numpy as np
 
 from piperabm.path import euclidean_distance
 
+try:
+    from .track import Track
+except:
+    from track import Track
 
-class Linear:
+
+class Linear(Track):
     def __init__(
         self,
         pos_start=None,
@@ -11,6 +16,7 @@ class Linear:
         length=None,
         difficulty=1
     ):
+        super().__init__()
         self.add_pos(pos_start, pos_end)
         self.add_length(length)
         self.difficulty = difficulty
@@ -110,5 +116,4 @@ class Linear:
 
 if __name__ == "__main__":
     track = Linear([0, 0], [1, 1], length=3, difficulty=2)
-    #print(track.distance, track.length)
     print(track.pos(current_length=1.5))

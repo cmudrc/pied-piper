@@ -1,2 +1,2 @@
 from .degradation_property import DegradationProperty
-#from distributions import *
+from .kwargs import degradation_kwargs
