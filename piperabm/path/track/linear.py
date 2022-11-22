@@ -106,19 +106,18 @@ class Linear(Track):
             'length': self.length,
             'difficulty': self.difficulty
         }
+        dictionary = {**dictionary, **self.degradation_to_dict()}
         return dictionary
 
     def from_dict(self, dictionary: dict):
         d = dictionary
+        self.degradation_from_dict(dictionary)
         self.add_pos(d['pos_start'], d['pos_end'])
         self.add_length(d['length'])
         self.difficulty = d['difficulty']
-
-    def to_plt(self, ax=None):
-        pass
-        #track_to_plt(self.to_dict(), ax, self.all_agents)
 
 
 if __name__ == "__main__":
     track = Linear([0, 0], [1, 1], length=3, difficulty=2)
     print(track.pos(current_length=1.5))
+    track.show()

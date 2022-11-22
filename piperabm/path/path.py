@@ -1,9 +1,11 @@
+import matplotlib.pyplot as plt
 from copy import deepcopy
 
 try:
     from .track import Linear
 except:
     from track import Linear
+from piperabm.graphics.plt.path import path_to_plt
 
 
 class Path:
@@ -120,12 +122,48 @@ class Path:
         tracks_list = d['tracks']
         for track_dict in tracks_list:
             if track_dict['type'] == 'linear':
-                print(track_dict)
                 track = Linear()
                 track.from_dict(track_dict)
                 tracks.append(track)
         self.tracks = tracks
         self.temp = d['temp']
+
+    def to_plt(self, ax=None):
+        """
+        Add the required elements to plt
+        """
+        path_to_plt(self.to_dict(), ax)
+
+    def xylim(self):
+        x_min, x_max = 0, 0
+        y_min, y_max = 0, 0
+        for track in self.tracks:
+            x_s = track.pos_start[0]
+            y_s = track.pos_start[1]
+            if x_s < x_min: x_min = x_s
+            elif x_s > x_max: x_max = x_s
+            if y_s < y_min: y_min = y_s
+            elif y_s > y_max: y_max = y_s
+            x_e = track.pos_end[0]
+            y_e = track.pos_end[1]
+            if x_e < x_min: x_min = x_e
+            elif x_e > x_max: x_max = x_e
+            if y_e < y_min: y_min = y_e
+            elif y_e > y_max: y_max = y_e
+        offset_x = (x_max - x_min) / 8
+        offset_y = (y_max - y_min) / 8
+        xlim, ylim = [x_min-offset_x, x_max+offset_x], [y_min-offset_y, y_max+offset_y]
+        return xlim, ylim
+
+    def show(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.axis('equal')
+        xlim, ylim = self.xylim()
+        plt.xlim(xlim)
+        plt.ylim(ylim)
+        self.to_plt(ax)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -133,12 +171,6 @@ if __name__ == "__main__":
     p.add(pos=[0, 0])
     p.add(pos=[0, 3], difficulty=2)
     p.add(pos=[4, 3])
-    #print(p.total_length())
-
-    dictionary = p.to_dict()
-    print(dictionary)
-    p_new = Path()
-    p_new.from_dict(dictionary)
-    #print(p_new.tracks)
-    dictionary_new = p_new.to_dict()
-    print(dictionary_new)
+    print(p.total_length())
+    print(p.pos(8))
+    #p.show()

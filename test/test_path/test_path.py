@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.path import Path
 
@@ -14,8 +15,12 @@ class TestPathClass(unittest.TestCase):
         self.assertEqual(self.path.total_length(), 7)
 
     def test_total_length_1(self):
-        self.path.add(pos=[0, 0])
-        self.assertEqual(self.path.total_length(), 12)
+        """
+        Add a new track and then test total_length() method
+        """
+        path = deepcopy(self.path)
+        path.add(pos=[0, 0], length=6)
+        self.assertEqual(path.total_length(), 13)
 
     def test_pos_0(self):
         current_length = 0
