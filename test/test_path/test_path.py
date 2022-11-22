@@ -29,6 +29,16 @@ class TestPathClass(unittest.TestCase):
         current_length = 8
         self.assertListEqual(self.path.pos(current_length), [4, 3])
 
+    def test_dict_conversion(self):
+        """
+        Test to_dict and from_dict methods
+        """
+        dictionary = self.path.to_dict()
+        path_new = Path()
+        path_new.from_dict(dictionary)
+        dictionary_new = path_new.to_dict()
+        self.assertDictEqual(dictionary, dictionary_new)
+
 
 if __name__ == "__main__":
     unittest.main()

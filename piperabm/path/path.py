@@ -7,33 +7,38 @@ except:
 
 
 class Path:
-    def __init__(self):
-        self.tracks = []
+    def __init__(
+        self,
+        tracks=[]
+    ):
+        self.tracks = tracks
         self.temp = None
 
-    def origin(self, mode='name'):
+    def add(self, pos, length=None, difficulty=1):
         """
-        Return info about the origin point.
+        Add a new track to the path.
         """
-        result = None
-        if len(self.tracks > 0):
-            if mode == 'name':
-                result = self.tracks[0].name
-            elif mode == 'pos':
-                result = self.tracks[0].pos
-        return result
-
-    def destination(self, mode='name'):
-        """
-        Return info about the destination point.
-        """
-        result = None
-        if len(self.tracks > 1):
-            if mode == 'name':
-                result = self.tracks[-1].name
-            elif mode == 'pos':
-                result = self.tracks[-1].pos
-        return result
+        track = None
+        if len(self.tracks) > 0:
+            track = Linear(
+                pos_start=self.tracks[-1].pos_end,
+                pos_end=pos,
+                length=length,
+                difficulty=difficulty
+            )
+        else:
+            if self.temp is None:
+                self.temp = pos
+            else:
+                track = Linear(
+                    pos_start=deepcopy(self.temp),
+                    pos_end=pos,
+                    length=length,
+                    difficulty=difficulty
+                )
+                self.temp = None
+        if track is not None:
+            self.tracks.append(track)
 
     def total_length(self):
         """
@@ -91,37 +96,6 @@ class Path:
             result = track.pos(current_length=remainder_val)
         return result
 
-    def add(self, pos, name=None, mode='linear', length=None):
-        """
-        Add a new track (and a new destination) to the path.
-        """
-        pos_start, name_start = None, None
-        if len(self.tracks) == 0:
-            if self.temp is None:
-                self.temp = [pos, name]
-            else:
-                pos_start = self.temp[0]
-                name_start = self.temp[1]
-        else:
-            pos_start = self.tracks[-1].pos_end
-            name_start = self.tracks[-1].name_end
-
-        new = None
-        if pos_start is not None:
-            if mode == 'linear':
-                new = Linear(
-                    pos_start=pos_start,
-                    pos_end=pos,
-                    name_start=name_start,
-                    name_end=name,
-                    length=length
-                )
-            else:
-                pass
-
-        if new is not None:
-            self.tracks.append(new)
-
     def __str__(self):
         txt = ''
         for track in self.tracks:
@@ -129,10 +103,42 @@ class Path:
             txt += '\n'
         return txt
 
+    def to_dict(self) -> dict:
+        tracks_list = []
+        for track in self.tracks:
+            track_dict = track.to_dict()
+            tracks_list.append(track_dict)
+        dictionary = {
+            'temp': self.temp,
+            'tracks': tracks_list
+        }
+        return dictionary
+
+    def from_dict(self, dictionary: dict):
+        d = dictionary
+        tracks = []
+        tracks_list = d['tracks']
+        for track_dict in tracks_list:
+            if track_dict['type'] == 'linear':
+                print(track_dict)
+                track = Linear()
+                track.from_dict(track_dict)
+                tracks.append(track)
+        self.tracks = tracks
+        self.temp = d['temp']
+
 
 if __name__ == "__main__":
     p = Path()
     p.add(pos=[0, 0])
-    p.add(pos=[0, 3])
+    p.add(pos=[0, 3], difficulty=2)
     p.add(pos=[4, 3])
-    print(p.total_length())
+    #print(p.total_length())
+
+    dictionary = p.to_dict()
+    print(dictionary)
+    p_new = Path()
+    p_new.from_dict(dictionary)
+    #print(p_new.tracks)
+    dictionary_new = p_new.to_dict()
+    print(dictionary_new)

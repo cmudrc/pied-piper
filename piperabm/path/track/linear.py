@@ -100,6 +100,7 @@ class Linear(Track):
 
     def to_dict(self) -> dict:
         dictionary = {
+            'type': 'linear',
             'pos_start': self.pos_start,
             'pos_end': self.pos_end,
             'length': self.length,
@@ -112,6 +113,10 @@ class Linear(Track):
         self.add_pos(d['pos_start'], d['pos_end'])
         self.add_length(d['length'])
         self.difficulty = d['difficulty']
+
+    def to_plt(self, ax=None):
+        pass
+        #track_to_plt(self.to_dict(), ax, self.all_agents)
 
 
 if __name__ == "__main__":
