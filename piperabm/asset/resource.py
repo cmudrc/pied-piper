@@ -34,18 +34,20 @@ class Resource:
         Solve inner nodes within a resource with each other.
         """
         source = self.source()
-        demand = self.use.current_amount + self.deficiency.current_amount
-        if source < demand:
-            self.sub(source)
-            self.add(source)
-        else:
-            self.sub(demand)
-            self.add(demand)
+        demand = self.demand()
+        amount = min([source, demand])
+        remaining = self.sub(amount)
+        if remaining > 0:
+            print("Error in solving internally")
+        remaining = self.add(amount)
+        if remaining > 0:
+            print("Error in solving internally")
+
 
     def finalize(self):
         if self.deficiency is not None:
             if self.use is not None:
-                self.deficiency.current_amount += self.use.current_amount
+                self.deficiency.add(self.use.current_amount)
         if self.use is not None:
             self.use.current_amount = 0
         if self.produce is not None:
@@ -102,7 +104,7 @@ class Resource:
                 demand += self.use.current_amount
         if self.deficiency is not None:
             if self.deficiency.current_amount is not None:
-                demand = self.deficiency.current_amount
+                demand += self.deficiency.current_amount
         if self.storage is not None:
             if self.storage.current_amount is not None:
                 demand += self.storage.max_amount - self.storage.current_amount

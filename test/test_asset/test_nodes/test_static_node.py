@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.asset import Storage, Deficiency
 
 
-class TestStorage(unittest.TestCase):
+class TestStorageClass(unittest.TestCase):
     
     s = Storage(
         current_amount=1,
