@@ -11,7 +11,7 @@ class Model:
         self,
         environment: Environment,
         agents=[],
-        step_size=None,
+        step_size: DT=None,
         current_step=0,
         current_date=None
     ):
@@ -22,13 +22,14 @@ class Model:
         self.environment = environment
         self.agents = agents
 
-    def update_elements(self, next_date):
+    def update_environment(self, next_date):
         """
-        Check activeness of all elements until the next_date
+        Check activeness of all elements in the environment until the next_date
         """
         if self.current_date < next_date:
             if self.current_step == 0:
                 start_date = self.environment.find_oldest_element(self.environment.settlements)
+                if start_date is None: start_date = self.current_date
             else:
                 start_date = self.current_date
             end_date = next_date
@@ -36,25 +37,31 @@ class Model:
         else:
             raise ValueError
 
-    '''
-    def _update_agents(self, start_date, end_date):
-        bye_bye = []
+    def update_agents(self, next_date):
+        # Prepare:
         for agent in self.agents:
-            previous_state = agent.active
-            activeness = agent.is_active(start_date, end_date)
-            if activeness is False:
-                agent.active = False
-            if activeness != previous_state:
-                bye_bye.append(agent.name)
-                print(agent.name + " died")
-        return bye_bye
-    '''
+            if agent.asset is not None and agent.active:
+                agent.asset.refill(next_date - self.current_date)
+        # Phase I: Internal
+        for agent in self.agents:
+            if agent.asset is not None and agent.active:
+                agent.solve()
+        # Phase II: Within Settlement
+        # Phase III: Explore and Exploit
+        # Finalize:
+        for agent in self.agents:
+            agent.finalize()
 
     def run_step(self):
-        next_date = DT(seconds=self.step_size) + self.current_date
-        next_step = self.current_step + 1
+        next_date = self.step_size + self.current_date
         #print(self.current_date, next_date)
-        self.update_elements(next_date)
+        self.update_environment(next_date)
+        self.update_agents(next_date)
+        self.current_step += 1
+
+    def run(self, steps=1):
+        for i in range(steps):
+            self.run_step()
 
     def to_plt(self, ax=None):
         """

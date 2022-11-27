@@ -1,3 +1,4 @@
+from piperabm.unit import DT
 from piperabm.graphics.plt.resource import use_to_plt, produce_to_plt
 
 
@@ -15,7 +16,9 @@ class FlowNode:
         self.current_amount = 0
 
     def refill(self, delta_t, mode='independent'):
-        max_amount = self.rate * delta_t
+        if not isinstance(delta_t, DT):
+            delta_t = DT(seconds=delta_t)
+        max_amount = self.rate * delta_t.total_seconds()
         refill_amount = max_amount - self.current_amount
         if mode == 'independent':
             self.current_amount += refill_amount

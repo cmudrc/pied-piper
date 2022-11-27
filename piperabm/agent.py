@@ -30,6 +30,29 @@ class Agent:
         self.asset = asset
         self.settlement = settlement
 
+    def solve(self):
+        """
+        Phase I in update sequence
+        """
+        if self.asset is not None:
+            self.asset.solve()
+
+    def prepare(self, delta_t):
+        """
+        Prepare agent for the next step
+        """
+        if self.asset is not None:
+            self.asset.refill(delta_t)
+
+    def finalize(self):
+        """
+        Finalize the step
+        """
+        if self.asset is not None:
+            self.asset.finalize()
+            if not self.asset.is_alive():
+                self.active = False
+
     def decide(self):
         pass
 

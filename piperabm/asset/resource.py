@@ -24,16 +24,38 @@ class Resource:
         """
         Refill the nodes that charge by flow (use and produce)
         """
-        self.use.refill(delta_t)
-        self.produce.refill(delta_t)
+        if self.use is not None:
+            self.use.refill(delta_t)
+        if self.produce is not None:
+            self.produce.refill(delta_t)
 
     def solve(self):
         """
         Solve inner nodes within a resource with each other.
         """
         source = self.source()
-        self.add(source)
-        self.sub(source)
+        demand = self.use.current_amount + self.deficiency.current_amount
+        if source < demand:
+            self.sub(source)
+            self.add(source)
+        else:
+            self.sub(demand)
+            self.add(demand)
+
+    def finalize(self):
+        if self.deficiency is not None:
+            if self.use is not None:
+                self.deficiency.current_amount += self.use.current_amount
+        if self.use is not None:
+            self.use.current_amount = 0
+        if self.produce is not None:
+            self.produce.current_amount = 0
+
+    def is_alive(self):
+        result = True
+        if self.deficiency is not None:
+            result = self.deficiency.is_alive()
+        return result
 
     def add(self, amount:float):
         """

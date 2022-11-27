@@ -27,11 +27,13 @@ class Environment:
         return result
 
     def find_oldest_element(self, elements):
-        oldest_date = elements[0].initiation_date
-        for element in elements:
-            date = element.initiation_date
-            if date < oldest_date:
-                oldest_date = date
+        oldest_date = None
+        if len(elements) > 0:
+            oldest_date = elements[0].initiation_date
+            for element in elements:
+                date = element.initiation_date
+                if date < oldest_date:
+                    oldest_date = date
         return oldest_date
 
     def will_work(self, element, start_date, end_date, update:bool=True):

@@ -31,6 +31,24 @@ class Asset:
         resource = self.resource(resource_name)
         return resource.sub(amount)
 
+    def solve(self):
+        """
+        Allocate resources internally
+        """
+        for resource in self.resources:
+            resource.solve()
+
+    def finalize(self):
+        for resource in self.resources:
+            resource.finalize()
+
+    def is_alive(self):
+        results = []
+        for resource in self.resources:
+            results.append(resource.is_alive())
+        if False in results: return False
+        else: return True
+            
     def source(self, resource_name):
         resource = self.resource(resource_name)
         return resource.source()
