@@ -11,16 +11,22 @@ class Model:
         self,
         environment: Environment,
         agents=[],
-        step_size: DT=None,
+        step_size=None,
         current_step=0,
         current_date=None
     ):
-        self.step_size = step_size
+        self.add_step_size(step_size)
         self.current_step = current_step
         self.current_date = current_date
 
         self.environment = environment
         self.agents = agents
+
+    def add_step_size(self, step_size):
+        if isinstance(step_size, DT):
+            self.step_size = step_size
+        elif isinstance(step_size, (float, int)):
+            self.step_size = DT(seconds=step_size)
 
     def update_environment(self, next_date):
         """

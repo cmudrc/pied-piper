@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-from piperabm import Settlement, Environment
+from piperabm import Settlement, Environment, Model
 from piperabm.boundery import Circular, Rectangular
 from piperabm.degradation import DiracDelta, Gaussian
 from piperabm.unit import Date, DT
@@ -28,6 +28,11 @@ env = Environment(
     x_lim=[-150,150],
     y_lim=[-100,100],
     settlements=[s_1, s_2, s_3]
+)
+
+m = Model(
+    environment=env,
+    step_size=
 )
 '''
 i = 1
