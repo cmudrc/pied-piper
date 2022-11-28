@@ -28,7 +28,7 @@ class Settlement(DegradationProperty):
         self,
         name=None,
         pos=[0, 0],
-        max_population=10,
+        max_population=None,
         boundery=None,
         all_agents=None,
         members=[],
@@ -55,31 +55,41 @@ class Settlement(DegradationProperty):
         self.members = members
         self.asset = asset
         self.max_population = max_population
-        self.add_boundery(boundery_dict=boundery)
+        self.add_boundery(boundery)
 
-    def add_boundery(self, boundery_dict: dict):
+    def _add_boundery_from_dict(self, boundery_dict: dict):
         boundery = boundery_dict
-        if boundery is not None:
-            if boundery['type'] == 'circular':
-                self.boundery = Circular(
-                    center=self.pos,
-                    radius=boundery['radius']
-                )
-            elif boundery['type'] == 'rectangular':
-                self.boundery = Rectangular(
-                    center=self.pos,
-                    width=boundery['width'],
-                    height=boundery['height'],
-                    theta=boundery['theta']
-                )
-            else:
-                self.boundery = Point(
-                    center=self.pos
-                )
-        else:
-            self.boundery = Point(
-                center=self.pos
+        if boundery['type'] == 'circular':
+            self.boundery = Circular(
+                radius=boundery['radius']
             )
+            self.boundery.center = self.pos
+        elif boundery['type'] == 'rectangular':
+            self.boundery = Rectangular(
+                width=boundery['width'],
+                height=boundery['height'],
+                theta=boundery['theta']
+            )
+            self.boundery.center = self.pos
+        else:
+            self.boundery = Point()
+            self.boundery.center = self.pos
+
+    def add_boundery(self, boundery):
+        if isinstance(boundery, dict):
+            self._add_boundery_from_dict(boundery_dict=boundery)
+        elif isinstance(boundery,
+            (
+                Point,
+                Circular,
+                Rectangular
+            )
+        ):
+            self.boundery = boundery
+            self.boundery.center = self.pos
+        elif boundery is None:
+            self.boundery = Point()
+            self.boundery.center = self.pos
 
     def agent_name_exists_in_model(self, agent_name: str) -> bool:
         if self.all_agents is not None:
@@ -239,21 +249,14 @@ if __name__ == "__main__":
         name='home_1',
         pos=[0, 0],
         all_agents=all_agents,
-        max_population=10,
         boundery={
             'type': 'circular',
             'radius': 1
         }
     )
 
-    #print(s.is_in(all_agents[0]))
-    #s.tunnel_agent(all_agents[0].name)
-    #print(s.is_in(all_agents[0]))
-    dictionary = s.to_dict()
-    print(dictionary)
-    s_new = Settlement()
-    s_new.from_dict(dictionary)
-    dictionary_new = s_new.to_dict()
-    print(dictionary_new)
-
-    #s.show()
+    print(s.is_in(all_agents[0]))
+    s.tunnel_agent(all_agents[0].name)
+    print(s.is_in(all_agents[0]))
+    
+    s.show()

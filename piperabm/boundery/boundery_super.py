@@ -8,12 +8,8 @@ class Boundery:
     Define an enclosed area in space.
     """
 
-    def __init__(self, center):
-        """
-        Args:
-            center: position of center of boundery in [x, y] form.
-        """
-        self.center = center
+    def __init__(self):
+        self.center = None # position of center of boundery in [x, y] form
 
     def is_in(self, other):
         """

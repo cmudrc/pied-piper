@@ -13,10 +13,8 @@ class Rectangular(Boundery):
     Create a rectangular boundery in space.
     """
 
-    def __init__(self, center, width, height, theta=0):
-        super().__init__(
-            center=center
-        )
+    def __init__(self, width, height, theta=0):
+        super().__init__()
         self.width = width  # (x_max - x_min)
         self.height = height  # (y_max - y_min)
         self.theta = theta

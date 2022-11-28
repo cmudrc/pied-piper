@@ -12,10 +12,8 @@ class Circular(Boundery):
     Create a circular boundery in space.
     """
 
-    def __init__(self, center, radius):
-        super().__init__(
-            center=center
-        )
+    def __init__(self, radius):
+        super().__init__()
         self.radius = radius
 
     def is_in(self, other):

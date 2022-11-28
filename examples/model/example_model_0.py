@@ -12,8 +12,8 @@ env = Environment(
 ### Setup Agent
 food = Resource(
     name='food',
-    use=Use(rate=0.1),
-    produce=Produce(rate=0.2),
+    use=Use(rate=0.2),
+    produce=Produce(rate=0.1),
     storage=Storage(current_amount=5, max_amount=10),
     deficiency=Deficiency(current_amount=0, max_amount=10)
 )
