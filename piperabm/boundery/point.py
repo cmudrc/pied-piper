@@ -47,5 +47,6 @@ class Point(Circular):
 
 
 if __name__ == "__main__":
-    point = Point(center=[-2, -2])
+    point = Point()
+    point.center = [-2, -2]
     point.show()

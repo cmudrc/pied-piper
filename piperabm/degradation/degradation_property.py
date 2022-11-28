@@ -65,6 +65,8 @@ class DegradationProperty:
             self.distribution = DiracDelta(
                 main=distribution['main']
             )
+        elif distribution['type'] == 'eternal':
+            self.distribution = Eternal()
         else:
             self.distribution = Eternal()
 
@@ -97,18 +99,18 @@ class DegradationProperty:
             end_date: end of duration of time, datetime object
         
         """
-        if self.distribution is not None:
-            t0 = self.initiation_date
-            t1 = start_date
-            t2 = end_date
-
-            Q = self.distribution.probability(
-                time_start=(t1-t0).total_seconds(),
-                time_end=(t2-t0).total_seconds()
-            )
-            P = 1 - Q
+        t1 = start_date
+        t2 = end_date
+        if isinstance(self.distribution, Eternal):
+            t0 = t1
         else:
-            P = 1
+            t0 = self.initiation_date
+
+        Q = self.distribution.probability(
+            time_start=(t1-t0).total_seconds(),
+            time_end=(t2-t0).total_seconds()
+        )
+        P = 1 - Q
         return P
 
     def is_working(self, probability):

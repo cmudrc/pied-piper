@@ -68,5 +68,6 @@ class Circular(Boundery):
 
 
 if __name__ == "__main__":
-    circular = Circular(center=[-2, -2], radius=1.5)
+    circular = Circular(radius=1.5)
+    circular.center = [-2, -2]
     circular.show()

@@ -17,7 +17,8 @@ class Environment:
     def update_elements(self, start_date, end_date):
         active_settlements = self.filter_active_elements(self.settlements)
         for settlement in active_settlements:
-            self.will_work(settlement, start_date, end_date, update=True)
+            result = self.will_work(settlement, start_date, end_date, update=True)
+            #print(result)
 
     def filter_active_elements(self, elements):
         result = []
@@ -28,12 +29,14 @@ class Environment:
 
     def find_oldest_element(self, elements):
         oldest_date = None
-        if len(elements) > 0:
-            oldest_date = elements[0].initiation_date
+        if len(elements) > 0:  
             for element in elements:
                 date = element.initiation_date
-                if date < oldest_date:
-                    oldest_date = date
+                if date is not None:
+                    if oldest_date is None: oldest_date = date
+                    else:
+                        if date < oldest_date:
+                            oldest_date = date
         return oldest_date
 
     def will_work(self, element, start_date, end_date, update:bool=True):

@@ -108,5 +108,6 @@ class Rectangular(Boundery):
 
 
 if __name__ == "__main__":
-    rectangular = Rectangular(center=[0, 0], width=2, height=1, theta=0.3)
+    rectangular = Rectangular(width=2, height=1, theta=0.3)
+    rectangular.center = [0, 0]
     rectangular.show()

@@ -64,6 +64,7 @@ class Model:
         self.update_environment(next_date)
         self.update_agents(next_date)
         self.current_step += 1
+        self.current_date = next_date
 
     def run(self, steps=1):
         for i in range(steps):
