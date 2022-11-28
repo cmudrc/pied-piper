@@ -27,7 +27,7 @@ s_2 = Settlement(
 env = Environment(
     x_lim=[-150,150],
     y_lim=[-100,100],
-    settlements=[s_0, s_1]
+    settlements=[s_0, s_1, s_2]
 )
 
 m = Model(
@@ -42,7 +42,7 @@ while 10 > i:
     plt.gca().set_title("days passed: " + str(i))
     plt.xlim(m.environment.x_lim)
     plt.ylim(m.environment.y_lim)
-    m.run()
+    #m.run()
     #print(m.environment.settlements[1].active)
     #print(m.environment.settlements[2].boundery.center)
     m.to_plt()

@@ -60,13 +60,15 @@ def rectangular_boundery_to_plt(dictionary: dict, ax=None, active=True):
     width = d['width']
     height = d['height']
     theta = d['theta']
-    center = d['center']
+    center_x = d['center'][0]
+    center_y = d['center'][1]
     dist = euclidean_distance(height/2, width/2, 0, 0)
     phi = np.arctan(height/width)
     delta_x = dist * np.cos(theta + phi)
     delta_y = dist * np.sin(theta + phi)
-    center[0] -= delta_x
-    center[1] -= delta_y
+    center = [0, 0]
+    center[0] = center_x - delta_x
+    center[1] = center_y - delta_y
     if active is True:
         element = Rectangle(
             center,
