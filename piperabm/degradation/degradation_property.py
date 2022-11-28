@@ -54,21 +54,32 @@ class DegradationProperty:
         self.add_distribution(d['distribution'])
         self.seed = d['seed']
 
-    def add_distribution(self, distribution_dict: dict):
+    def _add_distribution_from_dict(self, distribution_dict: dict):
         distribution = distribution_dict
-        if distribution is not None:
-            if distribution['type'] == 'gaussian':
-                self.distribution = Gaussian(
-                    mean=distribution['mean'],
-                    sigma=distribution['sigma']
-                )
-            elif distribution['type'] == 'dirac delta':
-                self.distribution = DiracDelta(
-                    main=distribution['main']
-                )
-            else:
-                self.distribution = Eternal()
+        if distribution['type'] == 'gaussian':
+            self.distribution = Gaussian(
+                mean=distribution['mean'],
+                sigma=distribution['sigma']
+            )
+        elif distribution['type'] == 'dirac delta':
+            self.distribution = DiracDelta(
+                main=distribution['main']
+            )
         else:
+            self.distribution = Eternal()
+
+    def add_distribution(self, distribution):
+        if isinstance(distribution, dict):
+            self._add_distribution_from_dict(distribution_dict=distribution)
+        elif isinstance(distribution, 
+            (
+                Gaussian,
+                DiracDelta,
+                Eternal
+            )
+        ):
+            self.distribution = distribution
+        elif distribution is None:
             self.distribution = Eternal()
     
     '''

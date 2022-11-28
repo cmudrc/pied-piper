@@ -1,0 +1,43 @@
+import matplotlib.pyplot as plt
+
+
+from piperabm import Settlement, Environment
+from piperabm.boundery import Circular, Rectangular
+from piperabm.degradation import DiracDelta, Gaussian
+from piperabm.unit import Date, DT
+
+
+s_1 = Settlement(
+    name='home_1',
+    pos=[-50, 50],
+)
+s_2 = Settlement(
+    name='home_2',
+    pos=[50, 40],
+    boundery=Circular(radius=30),
+    initiation_date=Date(2020,1,1),
+    distribution=DiracDelta(DT(days=10).total_seconds)
+)
+s_3 = Settlement(
+    name='home_3',
+    pos=[0, -30],
+    boundery=Rectangular(width=70, height=40, theta=0.3)
+)
+
+env = Environment(
+    x_lim=[-150,150],
+    y_lim=[-100,100],
+    settlements=[s_1, s_2, s_3]
+)
+'''
+i = 1
+while food.source() > 0:
+    plt.clf()
+    plt.gca().set_title("total subtracted: " + str(i))
+    food.sub(1)
+    food.to_plt()
+    plt.pause(interval=0.1)
+    i += 1
+
+plt.show()
+'''
