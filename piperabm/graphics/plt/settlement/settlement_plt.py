@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 from piperabm.graphics.plt.boundery import boundery_to_plt
 from piperabm.graphics.plt.agent import agent_to_plt
-from piperabm.search import find_element
+from piperabm.tools import find_element
 
 
 def settlement_to_plt(dictionary: dict, ax=None, all_agents=None):

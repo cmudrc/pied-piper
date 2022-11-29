@@ -2,7 +2,7 @@ from gettext import find
 import unittest
 
 from piperabm.agent import Agent
-from piperabm.search import find_element
+from piperabm.tools import find_element
 
 
 class TestFindElementFunc(unittest.TestCase):

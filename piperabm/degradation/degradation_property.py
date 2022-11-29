@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 try:
     from .distributions import Gaussian, DiracDelta, Eternal
@@ -123,15 +123,15 @@ class DegradationProperty:
         """
         result = False
         sequence = [True, False]  # set of possible outcomes
+        weights = [probability, 1-probability]
         if self.active is True:  # if is (still) active
-            if self.seed is not None:
-                random.seed(self.seed)  # if has seed
-            result = random.choices(
-                sequence,
-                weights=[probability, 1-probability],
-                k=1  # result length
+            if self.seed is not None: np.random.seed(self.seed)  # if has seed
+            index = np.random.choice(
+                2, # np.arange(1)
+                1, # return one element
+                p=weights
             )
-            result = result[0]
+            result = sequence[int(index)]
         return result
 
     def is_active(self, start_date, end_date):

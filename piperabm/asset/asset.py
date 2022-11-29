@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 from piperabm.asset import Resource
 from piperabm.asset import Use, Produce, Storage, Deficiency
-from piperabm.search import find_element
+from piperabm.tools import find_element
 
 
 class Asset:

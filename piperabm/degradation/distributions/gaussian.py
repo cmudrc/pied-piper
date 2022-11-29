@@ -17,8 +17,12 @@ class Gaussian:
             return (value - mean) / sigma
         point_start = normalize(time_start, self.mean, self.sigma)
         point_end = normalize(time_end, self.mean, self.sigma)
-        probability = norm.cdf(point_end) - norm.cdf(point_start)
+        probability = self.CDF(point_end) - self.CDF(point_start)
+        print(probability)
         return probability
+
+    def CDF(self, point):
+        return norm.cdf(point)
 
     def show(self):
         x_array_normalized = np.arange(-5, 5, 0.1)

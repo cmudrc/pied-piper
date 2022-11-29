@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.settlement import Settlement
 from piperabm.agent import Agent
-from piperabm.search import find_element
+from piperabm.tools import find_element
 
 
 class TestSettlementClass(unittest.TestCase):
