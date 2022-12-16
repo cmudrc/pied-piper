@@ -14,6 +14,7 @@ class DegradationProperty:
     def __init__(
         self,
         active=True,
+        coeff=1,
         initial_cost=None,
         initiation_date=None,
         distribution=None,
@@ -21,8 +22,8 @@ class DegradationProperty:
     ):
         """
         Args:
-            name: name
             active: is the object still active?
+            coeff: coefficient for *Q* (probability of not working), useful for link class instances
             initial_cost: cost of building the structure
             initiation_date: date in which it was built
             distribution: a dictionary containing information about the districbution function of life expectency
@@ -30,6 +31,7 @@ class DegradationProperty:
         """
 
         self.active = active
+        self.coeff = coeff
         self.initial_cost = initial_cost
         self.renovation_effect = None
         self.initiation_date = initiation_date
@@ -110,12 +112,14 @@ class DegradationProperty:
             time_start=(t1-t0).total_seconds(),
             time_end=(t2-t0).total_seconds()
         )
+        Q *= self.coeff
+        if Q > 1: Q = 1
         P = 1 - Q
         return P
 
     def is_working(self, probability):
         """
-        Checks if the structure survived based on weighted random and returns the result (True/False).
+        Check if the structure survived based on weighted random and returns the result (True/False).
         
         Args:
             probability: probability of working (or remaining alive) at each step
@@ -125,7 +129,7 @@ class DegradationProperty:
         sequence = [True, False]  # set of possible outcomes
         weights = [probability, 1-probability]
         if self.active is True:  # if is (still) active
-            if self.seed is not None: np.random.seed(self.seed)  # if has seed
+            #if self.seed is not None: np.random.seed(self.seed)  # if has seed
             index = np.random.choice(
                 2, # np.arange(1)
                 1, # return one element
@@ -134,7 +138,7 @@ class DegradationProperty:
             result = sequence[int(index)]
         return result
 
-    def is_active(self, start_date, end_date):
+    def is_active(self, start_date, end_date, update=False):
         """
         Check if the element is going to survive the desired duration of time or not.
         Updates the self.active as result.
@@ -147,8 +151,10 @@ class DegradationProperty:
             self.active (True/False)
         """
         probability = self.probability_of_working(start_date, end_date)
-        self.active = self.is_working(probability)
-        return self.active
+        active = self.is_working(probability)
+        if update is True:
+            self.active = active
+        return active
 
     def show_distribution(self):
         """

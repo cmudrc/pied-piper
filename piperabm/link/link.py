@@ -14,7 +14,6 @@ class Link:
         self.origin = origin
         self.destination = destination
         self.path = path
-    
 
 
 if __name__ == "__main__":

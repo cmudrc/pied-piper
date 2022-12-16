@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 
 from piperabm.settlement import Settlement
+from piperabm.link import Cross, Track
 from piperabm.asset import Asset
+from piperabm.tools import find_element, euclidean_distance
 from piperabm.graphics.plt.settlement import settlement_to_plt
 
 
@@ -13,7 +15,71 @@ class Environment:
         self.asset = asset
         self.settlements = settlements
         self.links = links
-    
+        self.crosses = []
+
+    def add_settlement(self, settlement:Settlement):
+        """
+        Add new settlement to the environment
+        """
+        self.settlements.append(settlement)
+
+    def add_link(self, start, end, length=None, difficulty=1):
+        """
+        Add new link to the environment
+        """
+        start_name = self.find_node(start)
+        end_name = self.find_node(end)
+        link = Track(start_name, end_name)
+        """ update *length* """
+        ## find start_pos
+        start_element = find_element(start_name, self.settlements)
+        if start_element is None:
+            start_element = find_element(start_name, self.crosses)
+        start_pos = start_element.boundery.center
+        ## find end_pos
+        end_element = find_element(end_name, self.settlements)
+        if end_element is None:
+            end_element = find_element(end_name, self.crosses)
+        end_pos = end_element.boundery.center
+        ## update #length*
+        distance = euclidean_distance(*start_pos, *end_pos)
+        if length is None:
+            length = distance
+        else:
+            if length < distance:
+                raise ValueError
+        link.length = length
+        link.difficulty = difficulty
+        self.links.append(link)
+        
+    def find_node(self, point):
+        """
+        Find the settlement/cross instance that contains *point* within
+        if no settlement/cross was found, a new cross instance would be generated
+        """
+        result = None
+        # input based on settlement/cross name
+        if isinstance(point, str):
+            for settlement in self.settlements:
+                if settlement.name == point:
+                    result = settlement
+            for cross in self.crosses:
+                if cross.name == point:
+                    result = cross
+        # input based on position
+        elif isinstance(point, list) and len(point) == 2:
+            for settlement in self.settlements:
+                if settlement.is_in(point):
+                    result = settlement
+            for cross in self.crosses:
+                if cross.is_in(point):
+                    result = cross
+            # if node not found, create it:
+            if result is None:
+                result = Cross(pos=point, all_cross=self.crosses)
+                self.crosses.append(result)
+        return result.name
+
     def update_elements(self, start_date, end_date):
         active_settlements = self.filter_active_elements(self.settlements)
         for settlement in active_settlements:
@@ -28,6 +94,9 @@ class Environment:
         return result
 
     def find_oldest_element(self, elements):
+        """
+        Find the oldest initiation_date of the elements
+        """
         oldest_date = None
         if len(elements) > 0:  
             for element in elements:
@@ -109,7 +178,13 @@ if __name__ == "__main__":
     ]
 
     asset = Asset(resources)
-    settlements = []
+    settlements = [
+        Settlement(
+            name='s_1',
+            pos=[0,0],
+            boundery=None
+        ),
+    ]
     links = []
 
     env = Environment(
@@ -120,3 +195,8 @@ if __name__ == "__main__":
         links=links
     )
 
+    env.add_link(start=[0,0], end=[20,20], length=30)
+    env.add_link(start=[20.5,20], end=[30,30])
+
+    for cross in env.crosses:
+        print(cross.boundery.center)
