@@ -1,48 +1,36 @@
-def name_gen(all_names:list, default_name='element') -> str:
+def name_gen(all_elements:list, default_name='element') -> str:
 
-    def split(name:str):
+    all_names = []
+    for element in all_elements:
+        if isinstance(element, str):
+            all_names.append(element)
+        else:
+            all_names.append(element.name)
+
+    def find_index(name:str):
         name_parts = name.split('_')
-        main_part = name_parts[:-1]
         index = name_parts[-1]
-        main = ''
-        for part in main_part:
-            main += part + '_'
-        return main[:-1], index
+        return int(index)
 
-    prefixes = {}
-    if all_names is None or len(all_names) == 0:
-        prefixes[default_name] = []
+    indexes = []
     for name in all_names:
-        main, index = split(name)
-        if main not in prefixes: prefixes[main] = [index]
-        else: prefixes[main].append(index)
-    
-    def find_popular_prefix(prefixes):
-        popular_prefix = None
-        popular_prefix_length = -1
-        for prefix in prefixes:
-            if len(prefixes[prefix]) > popular_prefix_length:
-                popular_prefix_length = len(prefixes[prefix])
-                popular_prefix = prefix
-        return popular_prefix
-    
-    prefix = find_popular_prefix(prefixes)
-    indexes = prefixes[prefix]
+        index = find_index(name)
+        indexes.append(index)
     
     i = 0
     while i <= len(indexes) + 1:
-        if str(i) not in indexes:
-            index = i
+        if i not in indexes:
+            new_index = i
             break
         i += 1
-    
-    return prefix + '_' + str(index)
-        
+    name = default_name + '_' + str(new_index)
+    return name
+
 
 if __name__ == "__main__":
-    all_names = ['a_0', 'a_1', 'a_2', 'b_2']
+    all_names = ['cross_1']
     #all_names = []
     for i in range(3):
-        new_name = name_gen(all_names)
+        new_name = name_gen(all_names, default_name='cross')
         all_names.append(new_name)
     print(all_names)
