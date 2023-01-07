@@ -4,4 +4,4 @@ from .settlement import Settlement
 from .agent import Agent
 from .asset import Asset, Resource, Use, Produce, Storage, Deficiency
 from .unit import Unit, Date
-from .boundery import Boundery, Point, Circular, Rectangular
+from .boundary import Boundary, Point, Circular, Rectangular

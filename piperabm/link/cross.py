@@ -1,4 +1,4 @@
-from piperabm.boundery import Circular
+from piperabm.boundary import Circular
 from piperabm.tools import name_gen
 
 

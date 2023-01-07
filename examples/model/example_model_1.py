@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 
 from piperabm import Settlement, Environment, Model
-from piperabm.boundery import Circular, Rectangular
+from piperabm.boundary import Circular, Rectangular
 from piperabm.degradation import DiracDelta, Gaussian
 from piperabm.unit import Date, Unit
 

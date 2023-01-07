@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.boundery import Circular, Rectangular
+from piperabm.boundary import Circular, Rectangular
 
 
 class Other():

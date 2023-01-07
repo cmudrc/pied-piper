@@ -1,5 +1,5 @@
 from piperabm import Settlement, Environment
-from piperabm.boundery import Circular, Rectangular
+from piperabm.boundary import Circular, Rectangular
 
 
 s_1 = Settlement(

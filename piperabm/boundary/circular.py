@@ -2,12 +2,12 @@ from random import uniform
 import matplotlib.pyplot as plt
 
 try:
-    from .boundery_super import Boundery
+    from .boundary_super import Boundary
 except:
-    from boundery_super import Boundery
+    from boundary_super import Boundary
 
 
-class Circular(Boundery):
+class Circular(Boundary):
     """
     Create a circular boundery in space.
     """

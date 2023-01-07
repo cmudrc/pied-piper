@@ -3,7 +3,7 @@ import numpy as np
 from piperabm.graphics.plt.boundery import boundery_to_plt
 
 
-class Boundery:
+class Boundary:
     """
     Define an enclosed area in space.
     """

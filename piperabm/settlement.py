@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from piperabm.boundery import Circular, Point, Rectangular
+from piperabm.boundary import Circular, Point, Rectangular
 from piperabm.degradation import DegradationProperty
 from piperabm.agent import Agent
 from piperabm.tools import find_element

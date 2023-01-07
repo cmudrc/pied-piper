@@ -3,12 +3,12 @@ from random import uniform
 import matplotlib.pyplot as plt
 
 try:
-    from .boundery_super import Boundery
+    from .boundary_super import Boundary
 except:
-    from boundery_super import Boundery
+    from boundary_super import Boundary
 
 
-class Rectangular(Boundery):
+class Rectangular(Boundary):
     """
     Create a rectangular boundery in space.
     """
