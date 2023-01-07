@@ -82,6 +82,61 @@ class Links:
         )
         self.index_dict[index] = 'c'
 
+    def add_link(
+        self,
+        start,
+        end,
+        double_sided=True
+    ):
+        """
+        Add a link between *start* and *end*
+            start: starting point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
+            end: ending point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
+            double_sided: whether it is two way connection or not (True/False)
+        """
+        start_index = self.find_node(start)
+        end_index = self.find_node(end)
+
+    def _find_node_by_name(self, name:str):
+        """
+        Find and return settlement node index by its name property
+        """
+        result = None
+        for node_index in self.index_dict.keys():
+            if self.index_dict[node_index] == 's':
+                if self.G.nodes[node_index]['name'] == name:
+                    result = node_index
+        return result
+
+    def _find_node_by_index(self, index:int):
+        """
+        Find and return node index (Check if it exists)
+        """
+        result = None
+        if index in self.index_dict.keys():
+            result = index
+        return result
+
+    def _find_node_by_pos(self, pos:list):
+        result = None
+        for node_index in self.G.nodes():
+            boundary = self.G.nodes[node_index]['boundary']
+            if boundary.is_in(pos):
+                result = node_index
+                break
+        return result
+
+
+    def find_node(self, input):
+        result = None
+        if isinstance(input, str):
+            result = self._find_node_by_name(input)
+        elif isinstance(input, int):
+            result = self._find_node_by_index(input)
+        elif isinstance(input, list):
+            result = self._find_node_by_pos(input)
+        return result
+
 
 if __name__ == "__main__":
     from piperabm.boundary import Circular
@@ -95,4 +150,6 @@ if __name__ == "__main__":
         initiation_date=Date(2020, 1, 1),
         degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
     )
-    print(L.G.nodes[0]['boundary'])
+    print(L.find_node("John's Home"))
+    print(L.find_node([1, 1]))
+    print(L.find_node(0))
