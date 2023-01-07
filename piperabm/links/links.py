@@ -81,6 +81,7 @@ class Links:
             boundary=boundary
         )
         self.index_dict[index] = 'c'
+        return index
 
     def add_link(
         self,
@@ -94,10 +95,25 @@ class Links:
             end: ending point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             double_sided: whether it is two way connection or not (True/False)
         """
+        create_node = True
         start_index = self.find_node(start)
+        if start_index is None:
+            if isinstance(start, list): start_index = self.add_cross(start)
+            else: create_node = False
         end_index = self.find_node(end)
+        if end_index is None:
+            if isinstance(end, list): end_index = self.add_cross(end)
+            else: create_node = False
 
-    def _find_node_by_name(self, name:str):
+        if create_node is True:
+            self.G.add_edge(start_index, end_index)
+            if double_sided:
+                self.G.add_edge(end_index, start_index)
+        else:
+            txt = 'link creation failed.'
+            print(txt)
+
+    def find_node_by_name(self, name:str):
         """
         Find and return settlement node index by its name property
         """
@@ -106,18 +122,26 @@ class Links:
             if self.index_dict[node_index] == 's':
                 if self.G.nodes[node_index]['name'] == name:
                     result = node_index
+        if result is None:
+            txt = name
+            txt += ' not found.'
+            print(txt)
         return result
 
-    def _find_node_by_index(self, index:int):
+    def find_node_by_index(self, index:int):
         """
         Find and return node index (Check if it exists)
         """
         result = None
         if index in self.index_dict.keys():
             result = index
+        if result is None:
+            txt = str(index)
+            txt += ' not found.'
+            print(txt)
         return result
 
-    def _find_node_by_pos(self, pos:list):
+    def find_node_by_pos(self, pos:list):
         result = None
         for node_index in self.G.nodes():
             boundary = self.G.nodes[node_index]['boundary']
@@ -126,15 +150,14 @@ class Links:
                 break
         return result
 
-
     def find_node(self, input):
         result = None
         if isinstance(input, str):
-            result = self._find_node_by_name(input)
+            result = self.find_node_by_name(input)
         elif isinstance(input, int):
-            result = self._find_node_by_index(input)
+            result = self.find_node_by_index(input)
         elif isinstance(input, list):
-            result = self._find_node_by_pos(input)
+            result = self.find_node_by_pos(input)
         return result
 
 
@@ -150,6 +173,18 @@ if __name__ == "__main__":
         initiation_date=Date(2020, 1, 1),
         degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
     )
-    print(L.find_node("John's Home"))
-    print(L.find_node([1, 1]))
-    print(L.find_node(0))
+    L.add_settlement(
+        name="Peter's Home",
+        pos=[20, 20],
+        boundary=Circular(radius=10),
+        initiation_date=Date(2020, 1, 1),
+        degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
+    )
+    #print(L.find_node("John's Home"))
+    #print(L.find_node([2, 2]))
+    #print(L.find_node(0))
+    
+    #L.add_link("John's Home", "Peter's Home")
+    #L.add_link([2, 2], [22, 22])
+    #L.add_link(0, 1)
+    print(L.G.edges())
