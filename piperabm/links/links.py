@@ -184,12 +184,34 @@ class Links:
 
     def show(self):
         #nx.draw(self.G)
-        pos_list = []
+        pos_dict = {}
         node_list = []
-        for node_index in self.index_dict.keys():
-            if self.index_dict[node_index] == 's':
-                pass
-        nx.draw_networkx_nodes(self.G,)
+        label_dict = {}
+        for index in self.index_dict.keys():
+            if self.index_dict[index] == 's':
+                node_list.append(index)
+                pos = self.G.nodes[index]['boundary'].center
+                pos_dict[index] = pos
+                name = self.G.nodes[index]['name']
+                label_dict[index] = name
+        nx.draw_networkx_nodes(
+            self.G,
+            pos=pos_dict,
+            nodelist=node_list
+            )
+        nx.draw_networkx_labels(
+            self.G,
+            pos=pos_dict,
+            labels=label_dict
+        )
+        for index in self.G.nodes():
+            pos = self.G.nodes[index]['boundary'].center
+            pos_dict[index] = pos
+        nx.draw_networkx_edges(
+            self.G,
+            pos=pos_dict,
+            node_size=0
+        )
         plt.show()
 
 
@@ -217,8 +239,8 @@ if __name__ == "__main__":
     #print(L.find_node(0))
 
     #L.add_link("John's Home", "Peter's Home")
-    L.add_link("John's Home", [-20, -20])
-    L.add_link([-20.3, -20.3], "Peter's Home")
+    L.add_link("John's Home", [20, 0])
+    L.add_link([20.3, 0.3], "Peter's Home")
     #L.add_link([2, 2], [22, 22])
     #L.add_link(0, 1)
     #print(L.G.edges())
