@@ -36,10 +36,10 @@ class Links:
         self,
         name='',
         pos=[0, 0],
-        boundary=None,
+        boundary=Point(),
         active=True,
-        initiation_date=None,
-        degradation_dist=None
+        initiation_date=Date.today(),
+        degradation_dist=Eternal()
     ):
         """
         Add a new settlement
@@ -51,13 +51,7 @@ class Links:
             degradation_dist: the distribution for degradation of the settlement
         """
         index = self.find_next_index()
-        if boundary is None:
-            boundary = Point()
         boundary.center = pos
-        if degradation_dist is None:
-            degradation_dist = Eternal()
-        if initiation_date is None:
-            initiation_date = Date.today()
         self.G.add_node(
             index,
             name=name,
@@ -99,6 +93,8 @@ class Links:
     ):
         """
         Add a link between *start* and *end*
+
+        Args:
             start: starting point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             end: ending point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             double_sided: whether it is two way connection or not (True/False)
@@ -115,10 +111,12 @@ class Links:
         if end_index is None:
             if isinstance(end, list): end_index = self.add_cross(pos=end)
             else: create_node = False
-        if length is None:
-            start_pos = self.G.nodes[start_index]['boundary'].center
-            end_pos = self.G.nodes[end_index]['boundary'].center
-            length = euclidean_distance(*start_pos, *end_pos)
+        
+        start_pos = self.G.nodes[start_index]['boundary'].center
+        end_pos = self.G.nodes[end_index]['boundary'].center
+        euclidean_length = euclidean_distance(*start_pos, *end_pos)
+        if length is None or length < euclidean_length:
+            length = euclidean_length
 
         if create_node is True:
             self.G.add_edge(
@@ -142,7 +140,7 @@ class Links:
             txt = 'link creation failed.'
             print(txt)
 
-    def find_node_by_name(self, name:str):
+    def _find_node_by_name(self, name:str):
         """
         Find and return settlement node index by its name property
         """
@@ -155,7 +153,7 @@ class Links:
             print(txt)
         return result
 
-    def find_node_by_index(self, index:int):
+    def _find_node_by_index(self, index:int):
         """
         Find and return node index (Check if it exists)
         """
@@ -167,7 +165,7 @@ class Links:
             print(txt)
         return result
 
-    def find_node_by_pos(self, pos:list):
+    def _find_node_by_pos(self, pos:list):
         """
         Find and return node index by its position
         """
@@ -186,11 +184,11 @@ class Links:
         """
         result = None
         if isinstance(input, str):
-            result = self.find_node_by_name(input)
+            result = self._find_node_by_name(input)
         elif isinstance(input, int):
-            result = self.find_node_by_index(input)
+            result = self._find_node_by_index(input)
         elif isinstance(input, list):
-            result = self.find_node_by_pos(input)
+            result = self._find_node_by_pos(input)
         return result
 
     def show(self):

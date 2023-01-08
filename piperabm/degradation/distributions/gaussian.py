@@ -13,15 +13,15 @@ class Gaussian:
         self.sigma = sigma
 
     def probability(self, time_start, time_end):
-        def normalize(value, mean, sigma):
-            return (value - mean) / sigma
-        point_start = normalize(time_start, self.mean, self.sigma)
-        point_end = normalize(time_end, self.mean, self.sigma)
-        probability = self.CDF(point_end) - self.CDF(point_start)
-        print(probability)
+        probability_numerator = self.CDF(time_end) - self.CDF(time_start)
+        probability_denominator = 1 - self.CDF(time_start)
+        probability = probability_numerator / probability_denominator
         return probability
 
-    def CDF(self, point):
+    def CDF(self, time):
+        def normalize(value, mean, sigma):
+            return (value - mean) / sigma
+        point = normalize(time, self.mean, self.sigma)
         return norm.cdf(point)
 
     def show(self):
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     g = Gaussian(
         mean=100,
-        sigma=10
+        sigma=20
     )
     print(
         g.probability(
