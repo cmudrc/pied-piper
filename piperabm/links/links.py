@@ -235,6 +235,16 @@ class Links:
         plt.show()
 
 
+class Path:
+    def __init__(self):
+        self.G = nx.MultiDiGraph()
+
+    def import_links(self, links):
+        for node_index in links.G.nodes():
+            if links.index_dict[node_index] == 's':
+                self.G.add_node(links.G.nodes[node_index])
+
+
 if __name__ == "__main__":
     from piperabm.boundary import Circular
     from piperabm.degradation import DiracDelta
@@ -265,3 +275,6 @@ if __name__ == "__main__":
     #L.add_link(0, 1)
     #print(L.G.edges())
     L.show()
+    #P = Path()
+    #P.import_links(L)
+    #print(P.G)
