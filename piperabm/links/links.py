@@ -1,9 +1,11 @@
 import networkx as nx
 from datetime import datetime as Date
+import matplotlib.pyplot as plt
 
 from piperabm.boundary import Point
 from piperabm.degradation import Eternal
 from piperabm.unit import Unit
+from piperabm.tools import euclidean_distance
 
 
 class Links:
@@ -87,13 +89,19 @@ class Links:
         self,
         start,
         end,
-        double_sided=True
+        double_sided=True,
+        length=None,
+        difficulty=1,
+        slope_ratio=1
     ):
         """
         Add a link between *start* and *end*
             start: starting point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             end: ending point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             double_sided: whether it is two way connection or not (True/False)
+            length: the length of the link, eucledian distance is used as default
+            difficulty: difficulty of the link (unrelated to slope), default is 1
+            slope_ratio: difficulty of the link due to slope, default is 1
         """
         create_node = True
         start_index = self.find_node(start)
@@ -104,11 +112,27 @@ class Links:
         if end_index is None:
             if isinstance(end, list): end_index = self.add_cross(end)
             else: create_node = False
+        if length is None:
+            start_pos = self.G.nodes[start_index]['boundary'].center
+            end_pos = self.G.nodes[end_index]['boundary'].center
+            length = euclidean_distance(*start_pos, *end_pos)
 
         if create_node is True:
-            self.G.add_edge(start_index, end_index)
+            self.G.add_edge(
+                start_index,
+                end_index,
+                length=length,
+                difficulty=difficulty,
+                slope_ratio=slope_ratio
+                )
             if double_sided:
-                self.G.add_edge(end_index, start_index)
+                self.G.add_edge(
+                    end_index,
+                    start_index,
+                    length=length,
+                    difficulty=difficulty,
+                    slope_ratio=1/slope_ratio
+                    )
         else:
             txt = 'link creation failed.'
             print(txt)
@@ -123,8 +147,7 @@ class Links:
                 if self.G.nodes[node_index]['name'] == name:
                     result = node_index
         if result is None:
-            txt = name
-            txt += ' not found.'
+            txt = name + ' not found.'
             print(txt)
         return result
 
@@ -136,8 +159,7 @@ class Links:
         if index in self.index_dict.keys():
             result = index
         if result is None:
-            txt = str(index)
-            txt += ' not found.'
+            txt = 'node_index ' + str(index) + ' not found.'
             print(txt)
         return result
 
@@ -159,6 +181,16 @@ class Links:
         elif isinstance(input, list):
             result = self.find_node_by_pos(input)
         return result
+
+    def show(self):
+        #nx.draw(self.G)
+        pos_list = []
+        node_list = []
+        for node_index in self.index_dict.keys():
+            if self.index_dict[node_index] == 's':
+                pass
+        nx.draw_networkx_nodes(self.G,)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -183,8 +215,11 @@ if __name__ == "__main__":
     #print(L.find_node("John's Home"))
     #print(L.find_node([2, 2]))
     #print(L.find_node(0))
-    
+
     #L.add_link("John's Home", "Peter's Home")
+    L.add_link("John's Home", [-20, -20])
+    L.add_link([-20.3, -20.3], "Peter's Home")
     #L.add_link([2, 2], [22, 22])
     #L.add_link(0, 1)
-    print(L.G.edges())
+    #print(L.G.edges())
+    L.show()

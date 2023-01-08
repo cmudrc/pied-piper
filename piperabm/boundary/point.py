@@ -13,7 +13,7 @@ class Point(Circular):
 
     def __init__(self):
         super().__init__(
-            radius=0
+            radius=1
         )
 
     def rand_pos(self) -> list:
