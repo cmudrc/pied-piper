@@ -92,6 +92,7 @@ class Links:
         start,
         end,
         double_sided=True,
+        active=True,
         length=None,
         difficulty=1,
         slope_ratio=1
@@ -123,6 +124,7 @@ class Links:
             self.G.add_edge(
                 start_index,
                 end_index,
+                active=active,
                 length=length,
                 difficulty=difficulty,
                 slope_ratio=slope_ratio
@@ -131,6 +133,7 @@ class Links:
                 self.G.add_edge(
                     end_index,
                     start_index,
+                    active=active,
                     length=length,
                     difficulty=difficulty,
                     slope_ratio=1/slope_ratio
@@ -165,6 +168,9 @@ class Links:
         return result
 
     def find_node_by_pos(self, pos:list):
+        """
+        Find and return node index by its position
+        """
         result = None
         for index in self.G.nodes():
             node = self.G.nodes[index]
@@ -175,6 +181,9 @@ class Links:
         return result
 
     def find_node(self, input):
+        """
+        Find and return node index based on input (name, position, or index)
+        """
         result = None
         if isinstance(input, str):
             result = self.find_node_by_name(input)
@@ -191,6 +200,11 @@ class Links:
         label_dict = {}
         node_size_s = 300
         node_size_c = 0
+        edge_list = []
+        edge_color = []
+        edge_color_active = 'b'
+        edge_color_inactive = 'r'
+
         for index in self.G.nodes():
             node = self.G.nodes[index]
             node_list.append(index)
@@ -203,14 +217,22 @@ class Links:
                 node_size.append(node_size_s)
             elif node_type == 'c':
                 node_size.append(node_size_c)
-        print(pos_dict)
+        
+        for start, end, data in self.G.edges(data=True):
+            edge_list.append([start, end])
+            if data['active'] is True:
+                edge_color.append(edge_color_active)
+            elif data['active'] is False:
+                edge_color.append(edge_color_inactive)
         
         nx.draw_networkx(
             self.G,
             pos=pos_dict,
             nodelist=node_list,
             node_size=node_size,
-            labels=label_dict
+            labels=label_dict,
+            edgelist=edge_list,
+            edge_color=edge_color
         )
         plt.show()
 
