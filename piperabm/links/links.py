@@ -70,6 +70,7 @@ class Links:
 
     def add_cross(
         self,
+        name='',
         pos=[0, 0]
     ):
         """
@@ -80,6 +81,7 @@ class Links:
         boundary.center = pos
         self.G.add_node(
             index,
+            name=name,
             boundary=boundary
         )
         self.index_dict[index] = 'c'
@@ -106,11 +108,11 @@ class Links:
         create_node = True
         start_index = self.find_node(start)
         if start_index is None:
-            if isinstance(start, list): start_index = self.add_cross(start)
+            if isinstance(start, list): start_index = self.add_cross(pos=start)
             else: create_node = False
         end_index = self.find_node(end)
         if end_index is None:
-            if isinstance(end, list): end_index = self.add_cross(end)
+            if isinstance(end, list): end_index = self.add_cross(pos=end)
             else: create_node = False
         if length is None:
             start_pos = self.G.nodes[start_index]['boundary'].center
@@ -142,10 +144,9 @@ class Links:
         Find and return settlement node index by its name property
         """
         result = None
-        for node_index in self.index_dict.keys():
-            if self.index_dict[node_index] == 's':
-                if self.G.nodes[node_index]['name'] == name:
-                    result = node_index
+        for index in self.G.nodes():
+            if self.G.nodes[index]['name'] == name and len(name) > 0:
+                result = index
         if result is None:
             txt = name + ' not found.'
             print(txt)
@@ -165,10 +166,11 @@ class Links:
 
     def find_node_by_pos(self, pos:list):
         result = None
-        for node_index in self.G.nodes():
-            boundary = self.G.nodes[node_index]['boundary']
+        for index in self.G.nodes():
+            node = self.G.nodes[index]
+            boundary = node['boundary']
             if boundary.is_in(pos):
-                result = node_index
+                result = index
                 break
         return result
 
@@ -183,34 +185,32 @@ class Links:
         return result
 
     def show(self):
-        #nx.draw(self.G)
         pos_dict = {}
         node_list = []
+        node_size = []
         label_dict = {}
-        for index in self.index_dict.keys():
-            if self.index_dict[index] == 's':
-                node_list.append(index)
-                pos = self.G.nodes[index]['boundary'].center
-                pos_dict[index] = pos
-                name = self.G.nodes[index]['name']
-                label_dict[index] = name
-        nx.draw_networkx_nodes(
-            self.G,
-            pos=pos_dict,
-            nodelist=node_list
-            )
-        nx.draw_networkx_labels(
-            self.G,
-            pos=pos_dict,
-            labels=label_dict
-        )
+        node_size_s = 300
+        node_size_c = 0
         for index in self.G.nodes():
-            pos = self.G.nodes[index]['boundary'].center
+            node = self.G.nodes[index]
+            node_list.append(index)
+            pos = node['boundary'].center
             pos_dict[index] = pos
-        nx.draw_networkx_edges(
+            label = node['name']
+            label_dict[index] = label
+            node_type = self.index_dict[index]
+            if node_type == 's':
+                node_size.append(node_size_s)
+            elif node_type == 'c':
+                node_size.append(node_size_c)
+        print(pos_dict)
+        
+        nx.draw_networkx(
             self.G,
             pos=pos_dict,
-            node_size=0
+            nodelist=node_list,
+            node_size=node_size,
+            labels=label_dict
         )
         plt.show()
 
@@ -222,15 +222,15 @@ if __name__ == "__main__":
     L = Links()
     L.add_settlement(
         name="John's Home",
-        pos=[0, 0],
-        boundary=Circular(radius=10),
+        pos=[-2, -2],
+        boundary=Circular(radius=5),
         initiation_date=Date(2020, 1, 1),
         degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
     )
     L.add_settlement(
         name="Peter's Home",
         pos=[20, 20],
-        boundary=Circular(radius=10),
+        boundary=Circular(radius=5),
         initiation_date=Date(2020, 1, 1),
         degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
     )
