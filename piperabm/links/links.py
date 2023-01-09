@@ -375,7 +375,19 @@ class Path:
                         self.G.add_edge(index, other, path=path, length=length)
     
     def show(self):
-        nx.draw(self.G)
+        pos_dict = {}
+        label_dict = {}
+        for index in self.G.nodes():
+            node = self.G.nodes[index]
+            pos = node['pos']
+            pos_dict[index] = pos
+            label = node['name']
+            label_dict[index] = label
+        nx.draw_networkx(
+            self.G,
+            pos=pos_dict,
+            labels=label_dict
+        )
         plt.show()
 
 
