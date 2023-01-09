@@ -164,7 +164,6 @@ class Links:
         Q *= coeff
         if Q > 1: Q = 1
         elif Q < 0: Q = 1
-        print(Q)
         return 1 - Q
 
     def is_working(self, probability):
@@ -214,9 +213,10 @@ class Links:
                     coeff = 1
                 else:
                     coeff = length / unit_length
-                print(initiation_date, start_date, end_date)
                 active = self.is_active(initiation_date, distribution, start_date, end_date, coeff)
-                data['active'] = active # update
+                if active is False:
+                    data['active'] = False
+                    self.G.edges[end, start]['active'] = False # the corresponding edge in other direction
 
     def _find_node_by_name(self, name:str):
         """
@@ -312,15 +312,8 @@ class Links:
         )
         plt.show()
 
-
-class Path:
-    def __init__(self):
-        self.G = nx.MultiDiGraph()
-
-    def import_links(self, links):
-        for node_index in links.G.nodes():
-            if links.index_dict[node_index] == 's':
-                self.G.add_node(links.G.nodes[node_index])
+    def to_path(self):
+        pass
 
 
 if __name__ == "__main__":
