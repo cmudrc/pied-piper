@@ -318,6 +318,7 @@ class Links:
 
 class Path:
     def __init__(self, links):
+        self.G = nx.DiGraph()
         self.to_path(links)
 
     def to_path(self, links):
@@ -340,11 +341,26 @@ class Path:
                         break
             return path_active
 
+        def calculate_path_length(path, links):
+            """
+            Calculate the equivalent length of path
+            """
+            total_length = 0
+            for i, _ in enumerate(path):
+                if i > 0:
+                    start = path[i-1]
+                    end = path[i]
+                    length = links.G[start][end]['length']
+                    difficulty = links.G[start][end]['difficulty']
+                    slope_ratio = links.G[start][end]['slope_ratio']
+                    adjusted_length = length * difficulty * slope_ratio
+                    total_length += adjusted_length
+            return total_length
+
         settlement_list = []
         for index in links.index_dict:
             if links.index_dict[index] == 's':
                 settlement_list.append(index)
-        self.G = nx.DiGraph()
         for index in settlement_list:
             node = links.G.nodes[index]
             name = node['name']
@@ -355,7 +371,8 @@ class Path:
                     path = nx.shortest_path(links.G, source=index, target=other)
                     path_active = check_path_active(path, links)
                     if path_active is True:
-                        self.G.add_edge(index, other, path=path)
+                        length = calculate_path_length(path, links)
+                        self.G.add_edge(index, other, path=path, length=length)
     
     def show(self):
         nx.draw(self.G)
@@ -418,6 +435,6 @@ if __name__ == "__main__":
         current_date += DT(days=1)
         i = i+1
 
-    P = Path(L)
-    P.show()
+    #P = Path(L)
+    #P.show()
     #L.show()
