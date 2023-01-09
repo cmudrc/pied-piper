@@ -270,6 +270,9 @@ class Links:
         return result
 
     def show(self):
+        """
+        Show current state of links graph
+        """
         pos_dict = {}
         node_list = []
         node_size = []
@@ -312,8 +315,51 @@ class Links:
         )
         plt.show()
 
-    def to_path(self):
-        pass
+
+class Path:
+    def __init__(self, links):
+        self.to_path(links)
+
+    def to_path(self, links):
+        """
+        Convert links (current) information to path as a graph
+        """
+
+        def check_path_active(path, links):
+            """
+            Check all links within a path to see if they are all active
+            """
+            path_active = True
+            for i, _ in enumerate(path):
+                if i > 0:
+                    start = path[i-1]
+                    end = path[i]
+                    active = links.G[start][end]['active']
+                    if active is False:
+                        path_active = False
+                        break
+            return path_active
+
+        settlement_list = []
+        for index in links.index_dict:
+            if links.index_dict[index] == 's':
+                settlement_list.append(index)
+        self.G = nx.DiGraph()
+        for index in settlement_list:
+            node = links.G.nodes[index]
+            name = node['name']
+            pos = node['boundary'].center
+            self.G.add_node(index, name=name, pos=pos)
+            for other in settlement_list:
+                if other != index and nx.has_path(links.G, source=index, target=other):
+                    path = nx.shortest_path(links.G, source=index, target=other)
+                    path_active = check_path_active(path, links)
+                    if path_active is True:
+                        self.G.add_edge(index, other, path=path)
+    
+    def show(self):
+        nx.draw(self.G)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -360,6 +406,8 @@ if __name__ == "__main__":
     #P.import_links(L)
     #print(P.G)
 
+    P = Path(L)
+    P.show()
     
     i = 0
     current_date = Date(2020, 1, 1)
@@ -369,5 +417,7 @@ if __name__ == "__main__":
         L.update_all_edges(start_date, end_date, unit_length=10)
         current_date += DT(days=1)
         i = i+1
-    
-    L.show()
+
+    P = Path(L)
+    P.show()
+    #L.show()
