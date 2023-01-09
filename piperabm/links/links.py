@@ -1,10 +1,10 @@
 import networkx as nx
-from datetime import datetime as Date
+import numpy as np
 import matplotlib.pyplot as plt
 
 from piperabm.boundary import Point
 from piperabm.degradation import Eternal
-from piperabm.unit import Unit
+from piperabm.unit import Unit, DT, Date
 from piperabm.tools import euclidean_distance
 
 
@@ -16,7 +16,7 @@ class Links:
         """
             index_dict: {index:type} pairs, types: s => settlement, c => cross
         """
-        self.G = nx.MultiDiGraph()
+        self.G = nx.DiGraph()
         self.index_dict = {}
 
     def find_next_index(self):
@@ -56,9 +56,9 @@ class Links:
             index,
             name=name,
             active=active,
-            boundary=boundary,
             initiation_date=initiation_date,
-            degradation_dist=degradation_dist
+            degradation_dist=degradation_dist,
+            boundary=boundary
         )
         self.index_dict[index] = 's'
 
@@ -87,6 +87,8 @@ class Links:
         end,
         double_sided=True,
         active=True,
+        initiation_date=Date.today(),
+        degradation_dist=Eternal(),
         length=None,
         difficulty=1,
         slope_ratio=1
@@ -98,6 +100,9 @@ class Links:
             start: starting point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             end: ending point in the form of either index (as int), name (as str), or pos (as a [x,y] list)
             double_sided: whether it is two way connection or not (True/False)
+            active: is it still active? (True/False)
+            initiation_date: the built date of settlement
+            degradation_dist: the distribution for degradation of the settlement
             length: the length of the link, eucledian distance is used as default
             difficulty: difficulty of the link (unrelated to slope), default is 1
             slope_ratio: difficulty of the link due to slope, default is 1
@@ -123,6 +128,8 @@ class Links:
                 start_index,
                 end_index,
                 active=active,
+                initiation_date=initiation_date,
+                degradation_dist=degradation_dist,
                 length=length,
                 difficulty=difficulty,
                 slope_ratio=slope_ratio
@@ -132,6 +139,8 @@ class Links:
                     end_index,
                     start_index,
                     active=active,
+                    initiation_date=initiation_date,
+                    degradation_dist=degradation_dist,
                     length=length,
                     difficulty=difficulty,
                     slope_ratio=1/slope_ratio
@@ -139,6 +148,75 @@ class Links:
         else:
             txt = 'link creation failed.'
             print(txt)
+
+    def probability_of_working(self, initiation_date, distribution, start_date, end_date, coeff=1):
+        """
+        Probability of remaining active during the desired duration of time.
+        
+        Args:
+            start_date: start of duration of time, datetime object
+            end_date: end of duration of time, datetime object
+        
+        """
+        time_start = (start_date - initiation_date).total_seconds()
+        time_end = (end_date - initiation_date).total_seconds()
+        Q = distribution.probability(time_start, time_end)
+        Q *= coeff
+        if Q > 1: Q = 1
+        elif Q < 0: Q = 1
+        print(Q)
+        return 1 - Q
+
+    def is_working(self, probability):
+        """
+        Check if the structure survived based on weighted random and returns the result (True/False).
+        
+        Args:
+            probability: probability of working (or remaining alive) at each step
+        
+        """
+        if probability > 1: probability = 1
+        elif probability < 0: probability = 0
+        sequence = [True, False]  # set of possible outcomes
+        weights = [probability, 1-probability]
+        index = np.random.choice(
+            2, # np.arange(1)
+            1, # return one element
+            p=weights
+        )
+        return sequence[int(index)]
+
+    def is_active(self, initiation_date, distribution, start_date, end_date, coeff=1):
+        """
+        Check if the element is going to survive the desired duration of time or not.
+
+        Args:
+            start_date: start of duration of time, datetime object
+            end_date: end of duration of time, datetime object
+        
+        Returns:
+            active (True/False)
+        """
+        probability = self.probability_of_working(initiation_date, distribution, start_date, end_date, coeff)
+        active = self.is_working(probability)
+        return active
+
+    def update_all_edges(self, start_date, end_date, unit_length=None):
+        """
+        Check all elements whether they are active in the duration of time or not.
+        """
+        for start, end, data in self.G.edges(data=True):
+            if data['active'] is True:
+                distribution = data['degradation_dist']
+                initiation_date = data['initiation_date']
+                length = data['length']
+                if isinstance(distribution, (Eternal, DiracDelta)):
+                    coeff = 1
+                else:
+                    coeff = length / unit_length
+                print(initiation_date, start_date, end_date)
+                active = self.is_active(initiation_date, distribution, start_date, end_date, coeff)
+                data['active'] = active # update
 
     def _find_node_by_name(self, name:str):
         """
@@ -269,12 +347,34 @@ if __name__ == "__main__":
     #print(L.find_node(0))
 
     #L.add_link("John's Home", "Peter's Home")
-    L.add_link("John's Home", [20, 0])
-    L.add_link([20.3, 0.3], "Peter's Home")
+    L.add_link(
+        "John's Home",
+        [20, 0],
+        initiation_date=Date(2020, 1, 1),
+        degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
+        )
+    L.add_link(
+        [20.3, 0.3],
+        "Peter's Home",
+        initiation_date=Date(2020, 1, 1),
+        degradation_dist=DiracDelta(main=Unit(10,'day').to('second').val)
+        )
     #L.add_link([2, 2], [22, 22])
     #L.add_link(0, 1)
     #print(L.G.edges())
-    L.show()
+    #L.show()
     #P = Path()
     #P.import_links(L)
     #print(P.G)
+
+    
+    i = 0
+    current_date = Date(2020, 1, 1)
+    while i < 20:
+        start_date = current_date
+        end_date = current_date + DT(days=3)
+        L.update_all_edges(start_date, end_date, unit_length=10)
+        current_date += DT(days=1)
+        i = i+1
+    
+    L.show()
