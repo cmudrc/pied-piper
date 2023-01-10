@@ -50,17 +50,26 @@ class Links:
             initiation_date: the built date of settlement
             degradation_dist: the distribution for degradation of the settlement
         """
-        index = self.find_next_index()
-        boundary.center = pos
-        self.G.add_node(
-            index,
-            name=name,
-            active=active,
-            initiation_date=initiation_date,
-            degradation_dist=degradation_dist,
-            boundary=boundary
-        )
-        self.index_dict[index] = 's'
+        create_node = True
+        if self.find_node(pos, report=False) is not None:
+            create_node = False
+        if self.find_node(name, report=False) is not None:
+            create_node = False
+        
+        if create_node is True:
+            index = self.find_next_index()
+            boundary.center = pos
+            self.G.add_node(
+                index,
+                name=name,
+                active=active,
+                initiation_date=initiation_date,
+                degradation_dist=degradation_dist,
+                boundary=boundary
+            )
+            self.index_dict[index] = 's'
+        else:
+            print('Duplicate settlement data, settlement not created')
 
     def add_cross(
         self,
@@ -70,16 +79,26 @@ class Links:
         """
         Add a new cross point
         """
-        index = self.find_next_index()
-        boundary = Point()
-        boundary.center = pos
-        self.G.add_node(
-            index,
-            name=name,
-            boundary=boundary
-        )
-        self.index_dict[index] = 'c'
-        return index
+        create_node = True
+        if self.find_node(pos, report=False) is not None:
+            create_node = False
+        if self.find_node(name, report=False) is not None:
+            create_node = False
+        
+        if create_node is True:
+            index = self.find_next_index()
+            boundary = Point()
+            boundary.center = pos
+            self.G.add_node(
+                index,
+                name=name,
+                boundary=boundary
+            )
+            self.index_dict[index] = 'c'
+            return index
+        else:
+            print('Duplicate settlement data, settlement not created')
+            return None
 
     def add_link(
         self,
@@ -218,7 +237,7 @@ class Links:
                     data['active'] = False
                     self.G.edges[end, start]['active'] = False # the corresponding edge in other direction
 
-    def _find_node_by_name(self, name:str):
+    def _find_node_by_name(self, name:str, report=True):
         """
         Find and return settlement node index by its name property
         """
@@ -226,24 +245,24 @@ class Links:
         for index in self.G.nodes():
             if self.G.nodes[index]['name'] == name and len(name) > 0:
                 result = index
-        if result is None:
+        if result is None and report is True:
             txt = name + ' not found.'
             print(txt)
         return result
 
-    def _find_node_by_index(self, index:int):
+    def _find_node_by_index(self, index:int, report=True):
         """
         Find and return node index (Check if it exists)
         """
         result = None
         if index in self.index_dict.keys():
             result = index
-        if result is None:
+        if result is None and report is True:
             txt = 'node_index ' + str(index) + ' not found.'
             print(txt)
         return result
 
-    def _find_node_by_pos(self, pos:list):
+    def _find_node_by_pos(self, pos:list, report=True):
         """
         Find and return node index by its position
         """
@@ -254,19 +273,22 @@ class Links:
             if boundary.is_in(pos):
                 result = index
                 break
+        if result is None and report is True:
+            txt = 'node position ' + str(pos) + ' not found.'
+            print(txt)
         return result
 
-    def find_node(self, input):
+    def find_node(self, input, report=True):
         """
         Find and return node index based on input (name, position, or index)
         """
         result = None
         if isinstance(input, str):
-            result = self._find_node_by_name(input)
+            result = self._find_node_by_name(input, report=report)
         elif isinstance(input, int):
-            result = self._find_node_by_index(input)
+            result = self._find_node_by_index(input, report=report)
         elif isinstance(input, list):
-            result = self._find_node_by_pos(input)
+            result = self._find_node_by_pos(input, report=report)
         return result
 
     def show(self):
@@ -317,7 +339,7 @@ class Links:
 
 
 class Path:
-    def __init__(self, links):
+    def __init__(self, links:Links):
         self.G = nx.DiGraph()
         self.to_path(links)
 
@@ -326,7 +348,7 @@ class Path:
         Convert links (current) information to path as a graph
         """
 
-        def check_path_active(path, links):
+        def check_path_active(path, links:Links):
             """
             Check all links within a path to see if they are all active
             """
@@ -341,7 +363,7 @@ class Path:
                         break
             return path_active
 
-        def calculate_path_length(path, links):
+        def calculate_path_length(path, links:Links):
             """
             Calculate the equivalent length of path
             """
@@ -447,6 +469,6 @@ if __name__ == "__main__":
         current_date += DT(days=1)
         i = i+1
 
-    #P = Path(L)
-    #P.show()
+    P = Path(L)
+    P.show()
     #L.show()
