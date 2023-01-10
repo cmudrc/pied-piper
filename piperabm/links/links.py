@@ -127,11 +127,11 @@ class Links:
             slope_ratio: difficulty of the link due to slope, default is 1
         """
         create_node = True
-        start_index = self.find_node(start)
+        start_index = self.find_node(start, report=False)
         if start_index is None:
             if isinstance(start, list): start_index = self.add_cross(pos=start)
             else: create_node = False
-        end_index = self.find_node(end)
+        end_index = self.find_node(end, report=False)
         if end_index is None:
             if isinstance(end, list): end_index = self.add_cross(pos=end)
             else: create_node = False
@@ -242,9 +242,10 @@ class Links:
         Find and return settlement node index by its name property
         """
         result = None
-        for index in self.G.nodes():
-            if self.G.nodes[index]['name'] == name and len(name) > 0:
-                result = index
+        if len(name) > 0:
+            for index in self.G.nodes():
+                if self.G.nodes[index]['name'] == name:
+                    result = index
         if result is None and report is True:
             txt = name + ' not found.'
             print(txt)
@@ -437,6 +438,7 @@ if __name__ == "__main__":
     #print(L.find_node(0))
 
     #L.add_link("John's Home", "Peter's Home")
+    
     L.add_link(
         "John's Home",
         [20, 0],
