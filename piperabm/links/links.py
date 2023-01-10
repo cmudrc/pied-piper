@@ -136,13 +136,12 @@ class Links:
             if isinstance(end, list): end_index = self.add_cross(pos=end)
             else: create_node = False
         
-        start_pos = self.G.nodes[start_index]['boundary'].center
-        end_pos = self.G.nodes[end_index]['boundary'].center
-        euclidean_length = euclidean_distance(*start_pos, *end_pos)
-        if length is None or length < euclidean_length:
-            length = euclidean_length
-
         if create_node is True:
+            start_pos = self.G.nodes[start_index]['boundary'].center
+            end_pos = self.G.nodes[end_index]['boundary'].center
+            euclidean_length = euclidean_distance(*start_pos, *end_pos)
+            if length is None or length < euclidean_length:
+                length = euclidean_length
             self.G.add_edge(
                 start_index,
                 end_index,
