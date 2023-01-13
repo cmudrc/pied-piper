@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from piperabm.boundary import Point
-from piperabm.degradation import Eternal
+from piperabm.degradation import Eternal, DiracDelta
 from piperabm.unit import Unit, DT, Date
 from piperabm.tools import euclidean_distance
 
@@ -416,6 +416,7 @@ class Path:
 if __name__ == "__main__":
     from piperabm.boundary import Circular
     from piperabm.degradation import DiracDelta
+    from piperabm.unit import Date, DT
 
     L = Links()
     L.add_settlement(
@@ -454,9 +455,6 @@ if __name__ == "__main__":
     #L.add_link(0, 1)
     #print(L.G.edges())
     #L.show()
-    #P = Path()
-    #P.import_links(L)
-    #print(P.G)
 
     P = Path(L)
     P.show()
