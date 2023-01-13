@@ -1,10 +1,9 @@
 import networkx as nx
-from links import Path, Links
 
 
 class Society:
-    def __init__(self, L:Links):
-        self.L = L
+    def __init__(self, env):
+        self.L = env
         self.G = nx.Graph()
         self.index_list = []
 

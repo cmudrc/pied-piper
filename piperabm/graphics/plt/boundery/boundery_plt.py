@@ -4,7 +4,7 @@ import numpy as np
 from copy import deepcopy
 
 from piperabm.unit import Unit
-from piperabm.path import euclidean_distance
+from piperabm.tools import euclidean_distance
 
 
 style_active = {
