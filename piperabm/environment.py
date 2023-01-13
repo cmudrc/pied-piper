@@ -8,22 +8,24 @@ from piperabm.unit import Unit, DT, Date
 from piperabm.tools import euclidean_distance
 
 
-
 class Environment(DegradationProperty):
     """
     Manage settlements and their connecting links
     """
 
-    def __init__(self):
+    def __init__(self, links_unit_length=None):
         """
-            node_types: node indexes gathered as list inside a dictionary based on their type
+            unit_length: unit_length for the degradation distribution
         """
         super().__init__()
         self.G = nx.Graph()
+        '''node_types is node indexes gathered as list inside a dictionary based on their type'''
         self.node_types = {
             'settlement': [],
             'cross': [],
+            'market': [],
         }
+        self.links_unit_length = links_unit_length
 
     def all_index(self):
         """
@@ -68,11 +70,11 @@ class Environment(DegradationProperty):
     ):
         """
         Add a new settlement
-            name: name of settlement, optional
+            name: name of the settlement, optional
             pos: position of the settlement, [x, y]
-            boundary: shape of settlement
+            boundary: shape of the settlement
             active: is it cuurently active? (True/False)
-            initiation_date: the built date of settlement
+            initiation_date: the built date of the settlement
             degradation_dist: the distribution for degradation of the settlement
         """
         create_node = True
@@ -94,7 +96,7 @@ class Environment(DegradationProperty):
             )
             self.node_types['settlement'].append(index)
         else:
-            print('duplicate settlement node data, node not created')
+            print('duplicate node data, settlement node not created')
 
     def add_cross(
         self,
@@ -124,8 +126,47 @@ class Environment(DegradationProperty):
             self.node_types['cross'].append(index)
             return index
         else:
-            print('duplicate cross node data, node not created')
+            print('duplicate node data, cross node not created')
             return None
+
+    def add_market(
+        self,
+        name='',
+        pos=[0, 0],
+        boundary=Point(),
+        active=True,
+        initiation_date=Date.today(),
+        degradation_dist=Eternal()
+    ):
+        """
+        Add a new market
+            name: name of the market, optional
+            pos: position of the market, [x, y]
+            boundary: shape of the market
+            active: is it cuurently active? (True/False)
+            initiation_date: the built date of the market
+            degradation_dist: the distribution for degradation of the market
+        """
+        create_node = True
+        if self.find_node(pos, report=False) is not None:
+            create_node = False
+        if self.find_node(name, report=False) is not None:
+            create_node = False
+
+        if create_node is True:
+            index = self.find_next_index()
+            boundary.center = pos
+            self.G.add_node(
+                index,
+                name=name,
+                active=active,
+                initiation_date=initiation_date,
+                degradation_dist=degradation_dist,
+                boundary=boundary
+            )
+            self.node_types['market'].append(index)
+        else:
+            print('duplicate node data, market node not created')
 
     def add_link(
         self,
@@ -181,22 +222,24 @@ class Environment(DegradationProperty):
         else:
             print('link creation failed.')
 
-    def _update_all_edges(self, start_date, end_date, unit_length):
+    def _update_all_edges(self, start_date, end_date):
         """
         Check all edges to see whether they are active in the duration of time or not
             start_date: starting date of the time duration
             end_date: ending date of the time duration
-            unit_length: unit_length for the degradation distribution
         """
         for start, end, data in self.G.edges(data=True):
             if data['active'] is True:
                 distribution = data['degradation_dist']
                 initiation_date = data['initiation_date']
                 length = data['length']
-                if isinstance(distribution, (Eternal, DiracDelta)):
+                if self.links_unit_length is None:
                     coeff = 1
                 else:
-                    coeff = length / unit_length
+                    if isinstance(distribution, (Eternal, DiracDelta)):
+                        coeff = 1
+                    else:
+                        coeff = length / self.links_unit_length
                 active = self.is_active(
                     initiation_date, distribution, start_date, end_date, coeff)
                 if active is False:
@@ -210,11 +253,11 @@ class Environment(DegradationProperty):
         """
         settlement_nodes = self.node_types['settlement']
 
-    def update_elements(self, start_date, end_date, unit_length):
+    def update_elements(self, start_date, end_date):
         """
         Update all elements during the *start_date* until *end_date*
         """
-        self._update_all_edges(start_date, end_date, unit_length)
+        self._update_all_edges(start_date, end_date)
         self._update_all_nodes(start_date, end_date)
 
     def _find_node_by_name(self, name: str, report=True):
@@ -272,6 +315,19 @@ class Environment(DegradationProperty):
             result = self._find_node_by_pos(input, report=report)
         return result
 
+    def find_oldest_element(self):
+        oldest_date = None
+        for key in self.node_types:
+            if key != 'cross':
+                for index in self.node_types[key]:
+                    node = self.G.nodes[index]
+                    initiation_date = node['initiation_date']
+                    if oldest_date is None:
+                        oldest_date = initiation_date
+                    elif initiation_date < oldest_date:
+                        oldest_date = initiation_date
+        return oldest_date
+
     def random_settlement(self):
         settlement_list = self.node_types['settlement']
         rnd = np.random.choice(settlement_list, size=1)
@@ -280,16 +336,20 @@ class Environment(DegradationProperty):
     def to_path(self):
         return Path(env=self)
 
-    def show(self):
+    def to_plt(self, ax=None):
         """
-        Show current state of Environment graph
+        Add elements to plt
         """
+        if ax is None:
+            ax = plt.gca()
+
         pos_dict = {}
         node_list = []
         node_size = []
         label_dict = {}
-        node_size_s = 300
-        node_size_c = 0
+        node_size_s = 300  # settlement
+        node_size_c = 0  # cross
+        node_size_m = 500  # market
         edge_list = []
         edge_color = []
         edge_color_active = 'b'
@@ -307,6 +367,8 @@ class Environment(DegradationProperty):
                 node_size.append(node_size_s)
             elif node_type == 'cross':
                 node_size.append(node_size_c)
+            elif node_type == 'market':
+                node_size.append(node_size_m)
 
         for start, end, data in self.G.edges(data=True):
             edge_list.append([start, end])
@@ -324,6 +386,12 @@ class Environment(DegradationProperty):
             edgelist=edge_list,
             edge_color=edge_color
         )
+
+    def show(self):
+        """
+        Show current state of Environment graph
+        """
+        self.to_plt()
         plt.show()
 
 
@@ -403,7 +471,6 @@ if __name__ == "__main__":
     from piperabm.degradation import DiracDelta
     from piperabm.unit import Date, DT
 
-
     env = Environment()
     env.add_settlement(
         name="John's Home",
@@ -450,7 +517,7 @@ if __name__ == "__main__":
     while i < 20:
         start_date = current_date
         end_date = current_date + DT(days=3)
-        env.update_elements(start_date, end_date, unit_length=10)
+        env.update_elements(start_date, end_date)
         current_date += DT(days=1)
         i = i+1
 
