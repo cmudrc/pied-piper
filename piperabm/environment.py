@@ -16,24 +16,22 @@ class Environment(DegradationProperty):
 
     def __init__(self, G=None, log=None, links_unit_length=None):
         """
+            G: create instance from another graph
+            log: logging instance
             unit_length: unit_length for the degradation distribution
         """
         super().__init__()
-
         if G is None:
             self.G = nx.Graph()
         else:
             self.G = G
-
         '''node_types is node indexes gathered as list inside a dictionary based on their type'''
         self.node_types = {
             'settlement': [],
             'cross': [],
             'market': [],
         }
-
         self.links_unit_length = links_unit_length
-
         if log is None:
             self.log = Log()
         else:
@@ -234,6 +232,7 @@ class Environment(DegradationProperty):
         else:
             print('link creation failed.')
 
+    '''
     def filter_elements(self, date):
         """
         Filter all elements that are created by that date
@@ -247,6 +246,7 @@ class Environment(DegradationProperty):
                 G_current.add_edge(start, end, **data)
         env_current = Environment(G_current)
         return env_current
+    '''
 
     def _update_all_edges(self, start_date, end_date):
         """
@@ -257,7 +257,6 @@ class Environment(DegradationProperty):
         for start, end, data in self.G.edges(data=True):
             if data['active'] is True:
                 distribution = data['degradation_dist']
-                initiation_date = data['initiation_date']
                 length = data['length']
                 if self.links_unit_length is None:
                     coeff = 1
@@ -266,12 +265,26 @@ class Environment(DegradationProperty):
                         coeff = 1
                     else:
                         coeff = length / self.links_unit_length
-                active = self.is_active(
-                    initiation_date, distribution, start_date, end_date, coeff)
+                initiation_date = data['initiation_date']
+                if initiation_date < end_date:
+                    if initiation_date > start_date:
+                        active = self.is_active(
+                            initiation_date,
+                            distribution,
+                            initiation_date,
+                            end_date,
+                            coeff)
+                    else:
+                        active = self.is_active(
+                            initiation_date, distribution, start_date, end_date, coeff)
+                else:
+                    active = True
                 if active is False:
                     data['active'] = False
-                    txt = str(start_date.strftime('%Y-%m-%d')) + ' -> ' + str(end_date.strftime('%Y-%m-%d'))
-                    txt += ': link ' + str(start) + '-' + str(end) + ' degradaded.'
+                    txt = str(start_date.strftime('%Y-%m-%d')) + \
+                        ' -> ' + str(end_date.strftime('%Y-%m-%d'))
+                    txt += ': link ' + str(start) + '-' + \
+                        str(end) + ' degradaded.'
                     self.log.add(txt)
 
     def _update_all_nodes(self, start_date, end_date):
@@ -280,7 +293,29 @@ class Environment(DegradationProperty):
             start_date: starting date of the time duration
             end_date: ending date of the time duration
         """
-        settlement_nodes = self.node_types['settlement']
+        for index in self.G.nodes():
+            if index in self.node_types['settlement'] or index in self.node_types['market']:
+                node = self.G.nodes[index]
+                distribution = node['degradation_dist']
+                initiation_date = node['initiation_date']
+                if initiation_date < end_date:
+                    if initiation_date > start_date:
+                        active = self.is_active(
+                            initiation_date,
+                            distribution,
+                            initiation_date,
+                            end_date)
+                    else:
+                        active = self.is_active(
+                            initiation_date, distribution, start_date, end_date)
+                else:
+                    active = True
+                if active is False:
+                    node['active'] = False
+                    txt = str(start_date.strftime('%Y-%m-%d')) + \
+                        ' -> ' + str(end_date.strftime('%Y-%m-%d'))
+                    txt += ': node ' + str(index) + ' degradaded.'
+                    self.log.add(txt)
 
     def update_elements(self, start_date, end_date):
         """
@@ -362,7 +397,7 @@ class Environment(DegradationProperty):
         rnd = np.random.choice(settlement_list, size=1)
         return rnd[0]
 
-    def to_path(self):
+    def to_path(self, date=None):
         return Path(env=self)
 
     def to_plt(self, ax=None, date=None):
@@ -590,8 +625,8 @@ if __name__ == "__main__":
         initiation_date=Date(2020, 1, 2),
         degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
     )
-    env.show(date=Date(2020, 1, 2))
-    #env.show(date=Date(2020, 1, 1))
+    env.show(date=Date(2020, 1, 1))
+    # env.show(date=Date(2020, 1, 1))
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)
     # print(L.G.edges())
