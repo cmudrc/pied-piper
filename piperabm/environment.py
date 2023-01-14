@@ -246,7 +246,9 @@ class Environment(DegradationProperty):
                     initiation_date, distribution, start_date, end_date, coeff)
                 if active is False:
                     data['active'] = False
-                    self.log.add('link from ' + str(start) + ' to ' + str(end) + ' degradaded.')
+                    txt = str(start_date.strftime('%Y-%m-%d')) + ' -> ' + str(end_date.strftime('%Y-%m-%d'))
+                    txt += ': link ' + str(start) + '-' + str(end) + ' degradaded.'
+                    self.log.add(txt)
 
     def _update_all_nodes(self, start_date, end_date):
         """

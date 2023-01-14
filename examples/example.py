@@ -58,6 +58,5 @@ m = Model(
 )
 m.show()
 m.run_step()
-m.run_step()
 m.show()
 
