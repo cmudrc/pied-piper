@@ -375,6 +375,7 @@ class Environment(DegradationProperty):
         pos_dict = {}
         node_list = []
         node_size_list = []
+        node_color_list = []
         label_dict = {}
         node_size_dict = {
             'settlement': 300,
@@ -388,38 +389,25 @@ class Environment(DegradationProperty):
         edge_list = []
         edge_color_list = []
 
-        def node_exists(type_name:str):
+        def node_exists(node, date):
             """
             Check if node exists in the stated date
             """
-            for index in self.nodes[type_name]:
-                node = self.G.node[index]
-                exists = False
-                if date is not None:
-                    if node['initiation_date'] <= date:
-                        exists = True
-                    else:
-                        exists = False
+            exists = False
+            if date is not None:
+                if node['initiation_date'] <= date:
+                    exists = True
+                else:
+                    exists = False
             else:
                 exists = True
             return exists
 
-        for index in self.G.nodes():
-            node = self.G.nodes[index]
-            node_list.append(index)
-            pos = node['boundary'].center
-            pos_dict[index] = pos
-            label = node['name']
-            label_dict[index] = label
-            node_type = self.node_type(index)
-            if node_type == 'settlement':
-                node_size_list.append(node_size_dict['settlement'])
-            elif node_type == 'cross':
-                node_size_list.append(node_size_dict['cross'])
-            elif node_type == 'market':
-                node_size_list.append(node_size_dict['market'])
-
-        for start, end, data in self.G.edges(data=True):
+        def edge_exists(data, date):
+            """
+            Check if edge exists in the stated date
+            """
+            exists = False
             if date is not None:
                 if data['initiation_date'] <= date:
                     exists = True
@@ -427,8 +415,48 @@ class Environment(DegradationProperty):
                     exists = False
             else:
                 exists = True
+            return exists
 
-            if exists is True:
+        for index in self.node_types['settlement']:
+            node = self.G.nodes[index]
+            if node_exists(node, date):
+                node_list.append(index)
+                pos = node['boundary'].center
+                pos_dict[index] = pos
+                label = node['name']
+                label_dict[index] = label
+                if node['active'] is True:
+                    node_color_list.append(color_dict['active'])
+                elif node['active'] is False:
+                    node_color_list.append(color_dict['inactive'])
+                node_size_list.append(node_size_dict['settlement'])
+
+        for index in self.node_types['cross']:
+            node = self.G.nodes[index]
+            node_list.append(index)
+            pos = node['boundary'].center
+            pos_dict[index] = pos
+            label = node['name']
+            label_dict[index] = label
+            node_color_list.append(color_dict['active'])
+            node_size_list.append(node_size_dict['cross'])
+
+        for index in self.node_types['market']:
+            node = self.G.nodes[index]
+            if node_exists(node, date):
+                node_list.append(index)
+                pos = node['boundary'].center
+                pos_dict[index] = pos
+                label = node['name']
+                label_dict[index] = label
+                if node['active'] is True:
+                    node_color_list.append(color_dict['active'])
+                elif node['active'] is False:
+                    node_color_list.append(color_dict['inactive'])
+                node_size_list.append(node_size_dict['market'])
+
+        for start, end, data in self.G.edges(data=True):
+            if edge_exists(data, date):
                 edge_list.append([start, end])
                 if data['active'] is True:
                     edge_color_list.append(color_dict['active'])
@@ -562,7 +590,7 @@ if __name__ == "__main__":
         initiation_date=Date(2020, 1, 2),
         degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
     )
-    env.show()
+    env.show(date=Date(2020, 1, 2))
     #env.show(date=Date(2020, 1, 1))
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)
