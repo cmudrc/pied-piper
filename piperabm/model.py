@@ -42,3 +42,32 @@ class Model:
             start_date = self.current_date
             end_date = start_date + self.step_size
             self.env.update_elements(start_date, end_date)
+            ####
+            self.current_step += 1
+            self.current_date = end_date
+
+    def run(self, n=1, show=True):
+        """
+        Run model for n steps further
+        """
+        for i in range(n):
+            self.run_step()
+            self.env.to_plt()
+            plt.clf()
+            plt.gca().set_title(self.current_date)
+            plt.pause(interval=0.1)
+            #plt.xlim(m.environment.x_lim)
+            #plt.ylim(m.environment.y_lim)
+        plt.show()
+    
+    def to_plt(self, ax=None):
+        """
+        Add elements to plt
+        """
+        if ax is None:
+            ax = plt.gca()
+        self.env.to_plt(ax)
+    
+    def show(self):
+        self.to_plt()
+        plt.show()

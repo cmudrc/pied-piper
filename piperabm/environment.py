@@ -6,6 +6,7 @@ from piperabm.boundary import Point
 from piperabm.degradation import DegradationProperty, Eternal, DiracDelta
 from piperabm.unit import Unit, DT, Date
 from piperabm.tools import euclidean_distance
+from piperabm.log import Log
 
 
 class Environment(DegradationProperty):
@@ -26,6 +27,7 @@ class Environment(DegradationProperty):
             'market': [],
         }
         self.links_unit_length = links_unit_length
+        self.log = Log()
 
     def all_index(self):
         """
@@ -244,6 +246,7 @@ class Environment(DegradationProperty):
                     initiation_date, distribution, start_date, end_date, coeff)
                 if active is False:
                     data['active'] = False
+                    self.log.add('link from ' + str(start) + ' to ' + str(end) + ' degradaded.')
 
     def _update_all_nodes(self, start_date, end_date):
         """
