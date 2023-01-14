@@ -43,8 +43,10 @@ class Model:
             end_date = start_date + self.step_size
             self.env.update_elements(start_date, end_date)
             ####
-            self.current_step += 1
             self.current_date = end_date
+        self.current_step += 1
+        
+        print(self.current_step, self.current_date)
 
     def run(self, n=1, show=True):
         """

@@ -35,13 +35,13 @@ env.add_link(start=[0.5, 0.5], end=[80, 60])
 env.add_link(start=[80, 60], end=[200, 20])
 env.add_link(start=[0, 0], end="Settlement 3")
 env.add_link(start=[0, 0], end="Market")
+'''
+start_date = Date.today()-DT(days=3)
+end_date = start_date + DT(days=10)
+env.update_elements(start_date, end_date)
 
-#start_date = Date.today()-DT(days=3)
-#end_date = start_date + DT(days=10)
-#env.update_elements(start_date, end_date)
-
-#env.show()
-
+env.show()
+'''
 # P = Path(L)
 # P.show()
 
@@ -58,4 +58,6 @@ m = Model(
 )
 m.show()
 m.run_step()
+m.run_step()
 m.show()
+
