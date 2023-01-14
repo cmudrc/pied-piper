@@ -224,6 +224,19 @@ class Environment(DegradationProperty):
         else:
             print('link creation failed.')
 
+    def filter_elements(self, date):
+        """
+        Filter all elements that are created by that date
+        """
+        G_current = nx.Graph()
+        for index, data in self.G.nodes(date=True):
+            if data['initiation_date'] <= date:
+                G_current.add_node(index, **data)
+        for start, end, data in self.G.edges(data=True):
+            if data['initiation_date'] <= date:
+                G_current.add_edge(start, end, **data)
+        return G_current
+
     def _update_all_edges(self, start_date, end_date):
         """
         Check all edges to see whether they are active in the duration of time or not

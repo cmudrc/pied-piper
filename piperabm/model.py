@@ -53,14 +53,15 @@ class Model:
         """
         for i in range(n):
             self.run_step()
-            self.env.to_plt()
+            '''
             plt.clf()
             plt.gca().set_title(self.current_date)
+            self.env.to_plt()
             plt.pause(interval=0.1)
             #plt.xlim(m.environment.x_lim)
             #plt.ylim(m.environment.y_lim)
         plt.show()
-    
+        '''
     def to_plt(self, ax=None):
         """
         Add elements to plt
@@ -71,4 +72,5 @@ class Model:
     
     def show(self):
         self.to_plt()
+        plt.gca().set_title(self.current_date)
         plt.show()

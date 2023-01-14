@@ -57,6 +57,6 @@ m = Model(
     current_date=Date.today()-DT(days=3)
 )
 m.show()
-m.run_step()
+m.run(2)
 m.show()
 
