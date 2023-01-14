@@ -14,20 +14,30 @@ class Environment(DegradationProperty):
     Manage settlements and their connecting links
     """
 
-    def __init__(self, links_unit_length=None):
+    def __init__(self, G=None, log=None, links_unit_length=None):
         """
             unit_length: unit_length for the degradation distribution
         """
         super().__init__()
-        self.G = nx.Graph()
+
+        if G is None:
+            self.G = nx.Graph()
+        else:
+            self.G = G
+
         '''node_types is node indexes gathered as list inside a dictionary based on their type'''
         self.node_types = {
             'settlement': [],
             'cross': [],
             'market': [],
         }
+
         self.links_unit_length = links_unit_length
-        self.log = Log()
+
+        if log is None:
+            self.log = Log()
+        else:
+            self.log = log
 
     def all_index(self):
         """
@@ -235,7 +245,8 @@ class Environment(DegradationProperty):
         for start, end, data in self.G.edges(data=True):
             if data['initiation_date'] <= date:
                 G_current.add_edge(start, end, **data)
-        return G_current
+        env_current = Environment(G_current)
+        return env_current
 
     def _update_all_edges(self, start_date, end_date):
         """
@@ -354,7 +365,7 @@ class Environment(DegradationProperty):
     def to_path(self):
         return Path(env=self)
 
-    def to_plt(self, ax=None):
+    def to_plt(self, ax=None, date=None):
         """
         Add elements to plt
         """
@@ -363,15 +374,35 @@ class Environment(DegradationProperty):
 
         pos_dict = {}
         node_list = []
-        node_size = []
+        node_size_list = []
         label_dict = {}
-        node_size_s = 300  # settlement
-        node_size_c = 0  # cross
-        node_size_m = 500  # market
+        node_size_dict = {
+            'settlement': 300,
+            'cross': 0,
+            'market': 500,
+        }
+        color_dict = {
+            'active': 'b',
+            'inactive': 'r',
+        }
         edge_list = []
-        edge_color = []
-        edge_color_active = 'b'
-        edge_color_inactive = 'r'
+        edge_color_list = []
+
+        def node_exists(type_name:str):
+            """
+            Check if node exists in the stated date
+            """
+            for index in self.nodes[type_name]:
+                node = self.G.node[index]
+                exists = False
+                if date is not None:
+                    if node['initiation_date'] <= date:
+                        exists = True
+                    else:
+                        exists = False
+            else:
+                exists = True
+            return exists
 
         for index in self.G.nodes():
             node = self.G.nodes[index]
@@ -382,34 +413,43 @@ class Environment(DegradationProperty):
             label_dict[index] = label
             node_type = self.node_type(index)
             if node_type == 'settlement':
-                node_size.append(node_size_s)
+                node_size_list.append(node_size_dict['settlement'])
             elif node_type == 'cross':
-                node_size.append(node_size_c)
+                node_size_list.append(node_size_dict['cross'])
             elif node_type == 'market':
-                node_size.append(node_size_m)
+                node_size_list.append(node_size_dict['market'])
 
         for start, end, data in self.G.edges(data=True):
-            edge_list.append([start, end])
-            if data['active'] is True:
-                edge_color.append(edge_color_active)
-            elif data['active'] is False:
-                edge_color.append(edge_color_inactive)
+            if date is not None:
+                if data['initiation_date'] <= date:
+                    exists = True
+                else:
+                    exists = False
+            else:
+                exists = True
+
+            if exists is True:
+                edge_list.append([start, end])
+                if data['active'] is True:
+                    edge_color_list.append(color_dict['active'])
+                elif data['active'] is False:
+                    edge_color_list.append(color_dict['inactive'])
 
         nx.draw_networkx(
             self.G,
             pos=pos_dict,
             nodelist=node_list,
-            node_size=node_size,
+            node_size=node_size_list,
             labels=label_dict,
             edgelist=edge_list,
-            edge_color=edge_color
+            edge_color=edge_color_list
         )
 
-    def show(self):
+    def show(self, date=None):
         """
         Show current state of Environment graph
         """
-        self.to_plt()
+        self.to_plt(date=date)
         plt.show()
 
 
@@ -501,7 +541,7 @@ if __name__ == "__main__":
         name="Peter's Home",
         pos=[20, 20],
         boundary=Circular(radius=5),
-        initiation_date=Date(2020, 1, 1),
+        initiation_date=Date(2020, 1, 2),
         degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
     )
     # print(L.find_node("John's Home"))
@@ -519,9 +559,11 @@ if __name__ == "__main__":
     env.add_link(
         [20.3, 0.3],
         "Peter's Home",
-        initiation_date=Date(2020, 1, 1),
+        initiation_date=Date(2020, 1, 2),
         degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
     )
+    env.show()
+    #env.show(date=Date(2020, 1, 1))
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)
     # print(L.G.edges())
@@ -530,6 +572,7 @@ if __name__ == "__main__":
     # P = Path(L)
     # P.show()
 
+    '''
     i = 0
     current_date = Date(2020, 1, 1)
     while i < 20:
@@ -542,3 +585,4 @@ if __name__ == "__main__":
     P = env.to_path()
     P.show()
     # L.show()
+    '''
