@@ -53,10 +53,13 @@ env.show()
 
 m = Model(
     environment=env,
-    step_size=DT(days=10),
-    current_date=Date.today()-DT(days=3)
+    step_size=DT(days=5),
+    current_date=Date.today()-DT(days=5)
 )
 m.show()
-m.run(2)
+m.run()
 m.show()
+m.run()
+m.show()
+m.run()
 

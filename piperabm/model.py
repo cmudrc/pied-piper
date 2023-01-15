@@ -26,6 +26,8 @@ class Model:
             self.step_size = step_size
         elif isinstance(step_size, (float, int)):
             self.step_size = DT(seconds=step_size)
+        else:
+            raise ValueError
 
     def burnout(self):
         """
@@ -41,11 +43,13 @@ class Model:
         start_date = self.current_date
         end_date = start_date + self.step_size
         self.env.update_elements(start_date, end_date)
+        path = self.env.to_path(start_date, end_date)
+        #path.show()
         ####
         self.current_date = end_date
         self.current_step += 1
         
-        print(self.current_step, self.current_date)
+        #print(self.current_step, self.current_date)
 
     def run(self, n=1, show=True):
         """
@@ -68,7 +72,9 @@ class Model:
         """
         if ax is None:
             ax = plt.gca()
-        self.env.to_plt(ax)
+        start_date = self.current_date - self.step_size
+        end_date = self.current_date
+        self.env.to_plt(ax, start_date, end_date)
     
     def show(self):
         self.to_plt()
