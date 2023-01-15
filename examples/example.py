@@ -1,5 +1,5 @@
 from piperabm import Model, Environment
-from piperabm.boundary import Point, Circular, Rectangular
+from piperabm.boundary import Circular, Rectangular
 from piperabm.degradation import DiracDelta
 from piperabm.unit import Date, DT
 
