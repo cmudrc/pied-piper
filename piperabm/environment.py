@@ -324,7 +324,7 @@ class Environment(DegradationProperty):
                     active = self.is_active(**kwargs)
                 else:
                     active = True
-                    
+
                 if active is False:
                     node['active'] = False
                     txt = str(start_date.strftime('%Y-%m-%d')) + \
@@ -412,10 +412,10 @@ class Environment(DegradationProperty):
         rnd = np.random.choice(settlement_list, size=1)
         return rnd[0]
 
-    def to_path(self, date=None):
-        return Path(env=self)
+    def to_path(self, start_date=None, end_date=None):
+        return Path(env=self, start_date=start_date, end_date=end_date)
 
-    def to_plt(self, ax=None, date=None):
+    def to_plt(self, ax=None, start_date=None, end_date=None):
         """
         Add elements to plt
         """
@@ -439,37 +439,23 @@ class Environment(DegradationProperty):
         edge_list = []
         edge_color_list = []
 
-        def node_exists(node, date):
+        def node_exists(node, start_date=None, end_date=None):
             """
             Check if node exists in the stated date
             """
-            exists = False
-            if date is not None:
-                if node['initiation_date'] <= date:
-                    exists = True
-                else:
-                    exists = False
-            else:
-                exists = True
-            return exists
+            initiation_date = node['initiation_date']
+            return check_existance(initiation_date, start_date, end_date)
 
-        def edge_exists(data, date):
+        def edge_exists(data, start_date=None, end_date=None):
             """
             Check if edge exists in the stated date
             """
-            exists = False
-            if date is not None:
-                if data['initiation_date'] <= date:
-                    exists = True
-                else:
-                    exists = False
-            else:
-                exists = True
-            return exists
+            initiation_date = data['initiation_date']
+            return check_existance(initiation_date, start_date, end_date)
 
         for index in self.node_types['settlement']:
             node = self.G.nodes[index]
-            if node_exists(node, date):
+            if node_exists(node, start_date, end_date):
                 node_list.append(index)
                 pos = node['boundary'].center
                 pos_dict[index] = pos
@@ -493,7 +479,7 @@ class Environment(DegradationProperty):
 
         for index in self.node_types['market']:
             node = self.G.nodes[index]
-            if node_exists(node, date):
+            if node_exists(node, start_date, end_date):
                 node_list.append(index)
                 pos = node['boundary'].center
                 pos_dict[index] = pos
@@ -506,7 +492,7 @@ class Environment(DegradationProperty):
                 node_size_list.append(node_size_dict['market'])
 
         for start, end, data in self.G.edges(data=True):
-            if edge_exists(data, date):
+            if edge_exists(data, start_date, end_date):
                 edge_list.append([start, end])
                 if data['active'] is True:
                     edge_color_list.append(color_dict['active'])
@@ -523,27 +509,42 @@ class Environment(DegradationProperty):
             edge_color=edge_color_list
         )
 
-    def show(self, date=None):
+    def show(self, start_date, end_date):
         """
         Show current state of Environment graph
         """
-        self.to_plt(date=date)
+        self.to_plt(start_date=start_date, end_date=end_date)
         plt.show()
+
+    def __str__(self):
+        return str(self.G)
+
+
+def check_existance(initiation_date, start_date, end_date):
+    """
+    Check element existance based on its initiation_date
+    """
+    exists = False
+    if start_date is None or end_date is None:
+        exists = True
+    else:
+        if initiation_date < end_date:
+            exists = True
+        else:
+            exists = False
+    return exists
 
 
 class Path:
-    def __init__(self, env: Environment):
+    def __init__(self, env: Environment, start_date=None, end_date=None):
         self.G = nx.DiGraph()
-        self.to_path(env)
+        self.to_path(env, start_date, end_date)
 
-    def to_path(self, env: Environment):
-        """
-        Convert environment (current) information to path as a graph
-        """
+    def to_path(self, env: Environment, start_date=None, end_date=None):
 
         def check_path_active(path, env: Environment):
             """
-            Check all environment within a path to see if they are all active
+            Check all links within a path to see if they are all active
             """
             path_active = True
             for i, _ in enumerate(path):
@@ -569,21 +570,47 @@ class Path:
                     difficulty = env.G[start][end]['difficulty']
                     adjusted_length = length * difficulty
                     total_length += adjusted_length
-            return total_length
+            return total_length   
 
-        settlement_list = env.node_types['settlement']
-        for index in settlement_list:
+        def node_exists(node, start_date, end_date):
+            """
+            Check whether the node has been already initiated
+            """
+            initiation_date = node['initiation_date']
+            return check_existance(initiation_date, start_date, end_date)
+
+        def check_path_exists(path, env: Environment, start_date, end_date):
+            """
+            Check all links within a path to see if they all exist
+            """
+            path_exists = True
+            for i, _ in enumerate(path):
+                if i > 0:
+                    start = path[i-1]
+                    end = path[i]
+                    initiation_date = env.G[start][end]['initiation_date']
+                    exists = check_existance(initiation_date, start_date, end_date)
+                    if exists is False:
+                        path_exists = False
+                        break
+            return path_exists
+
+        index_list = env.node_types['settlement']
+        index_list += env.node_types['market']
+        for index in index_list:
             node = env.G.nodes[index]
-            name = node['name']
-            pos = node['boundary'].center
-            self.G.add_node(index, name=name, pos=pos)
-            for other in settlement_list:
-                if other != index and nx.has_path(env.G, source=index, target=other):
-                    path = nx.shortest_path(env.G, source=index, target=other)
-                    path_active = check_path_active(path, env)
-                    if path_active is True:
-                        length = calculate_path_length(path, env)
-                        self.G.add_edge(index, other, path=path, length=length)
+            if node_exists(node, start_date, end_date):
+                name = node['name']
+                pos = node['boundary'].center
+                self.G.add_node(index, name=name, pos=pos)
+                for other in index_list:
+                    if other != index and nx.has_path(env.G, source=index, target=other):
+                        path = nx.shortest_path(env.G, source=index, target=other)
+                        path_active = check_path_active(path, env)
+                        path_exists = check_path_exists(path, env, start_date, end_date)
+                        if path_active is True and path_exists is True:
+                            length = calculate_path_length(path, env)
+                            self.G.add_edge(index, other, path=path, length=length)
 
     def show(self):
         pos_dict = {}
@@ -600,6 +627,9 @@ class Path:
             labels=label_dict
         )
         plt.show()
+
+    def __str__(self):
+        return str(self.G)
 
 
 if __name__ == "__main__":
@@ -619,7 +649,7 @@ if __name__ == "__main__":
         name="Peter's Home",
         pos=[20, 20],
         boundary=Circular(radius=5),
-        initiation_date=Date(2020, 1, 2),
+        initiation_date=Date(2020, 1, 3),
         degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
     )
     # print(L.find_node("John's Home"))
@@ -637,11 +667,11 @@ if __name__ == "__main__":
     env.add_link(
         [20.3, 0.3],
         "Peter's Home",
-        initiation_date=Date(2020, 1, 2),
+        initiation_date=Date(2020, 1, 3),
         degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
     )
-    env.show(date=Date(2020, 1, 1))
-    # env.show(date=Date(2020, 1, 1))
+    #print(env.G.nodes(data=True))
+    env.show(start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)
     # print(L.G.edges())
