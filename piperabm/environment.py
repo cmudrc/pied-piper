@@ -232,22 +232,6 @@ class Environment(DegradationProperty):
         else:
             print('link creation failed.')
 
-    '''
-    def filter_elements(self, date):
-        """
-        Filter all elements that are created by that date
-        """
-        G_current = nx.Graph()
-        for index, data in self.G.nodes(date=True):
-            if data['initiation_date'] <= date:
-                G_current.add_node(index, **data)
-        for start, end, data in self.G.edges(data=True):
-            if data['initiation_date'] <= date:
-                G_current.add_edge(start, end, **data)
-        env_current = Environment(G_current)
-        return env_current
-    '''
-
     def _update_all_edges(self, start_date, end_date):
         """
         Check all edges to see whether they are active in the duration of time or not
@@ -283,7 +267,7 @@ class Environment(DegradationProperty):
                             'end_date': end_date,
                             'coeff': coeff,
                         }
-                    acive = self.is_active(**kwargs)
+                    active = self.is_active(**kwargs)
                 else:
                     active = True
 
@@ -358,7 +342,8 @@ class Environment(DegradationProperty):
         Find and return node index (Check if it exists)
         """
         result = None
-        if index in self.node_types.keys():
+        index_list = self.all_index()
+        if index in index_list:
             result = index
         if result is None and report is True:
             txt = 'node_index ' + str(index) + ' not found.'
@@ -599,7 +584,8 @@ class Path:
         index_list += env.node_types['market']
         for index in index_list:
             node = env.G.nodes[index]
-            if node_exists(node, start_date, end_date):
+            active = node['active']
+            if node_exists(node, start_date, end_date) and active is True:
                 name = node['name']
                 pos = node['boundary'].center
                 self.G.add_node(index, name=name, pos=pos)
@@ -637,40 +623,37 @@ if __name__ == "__main__":
     from piperabm.degradation import DiracDelta
     from piperabm.unit import Date, DT
 
+
     env = Environment()
+
     env.add_settlement(
         name="John's Home",
         pos=[-2, -2],
         boundary=Circular(radius=5),
         initiation_date=Date(2020, 1, 1),
-        degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
+        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
     env.add_settlement(
         name="Peter's Home",
         pos=[20, 20],
         boundary=Circular(radius=5),
         initiation_date=Date(2020, 1, 3),
-        degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
+        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-    # print(L.find_node("John's Home"))
-    # print(L.find_node([2, 2]))
-    # print(L.find_node(0))
-
-    # L.add_link("John's Home", "Peter's Home")
 
     env.add_link(
         "John's Home",
         [20, 0],
         initiation_date=Date(2020, 1, 1),
-        degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
+        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
     env.add_link(
         [20.3, 0.3],
         "Peter's Home",
         initiation_date=Date(2020, 1, 3),
-        degradation_dist=DiracDelta(main=Unit(10, 'day').to('second').val)
+        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-    #print(env.G.nodes(data=True))
+
     env.show(start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)
