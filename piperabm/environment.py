@@ -268,17 +268,25 @@ class Environment(DegradationProperty):
                 initiation_date = data['initiation_date']
                 if initiation_date < end_date:
                     if initiation_date > start_date:
-                        active = self.is_active(
-                            initiation_date,
-                            distribution,
-                            initiation_date,
-                            end_date,
-                            coeff)
+                        kwargs = {
+                            'initiation_date': initiation_date,
+                            'distribution': distribution,
+                            'start_date': initiation_date,
+                            'end_date': end_date,
+                            'coeff': coeff,
+                        }
                     else:
-                        active = self.is_active(
-                            initiation_date, distribution, start_date, end_date, coeff)
+                        kwargs = {
+                            'initiation_date': initiation_date,
+                            'distribution': distribution,
+                            'start_date': start_date,
+                            'end_date': end_date,
+                            'coeff': coeff,
+                        }
+                    acive = self.is_active(**kwargs)
                 else:
                     active = True
+
                 if active is False:
                     data['active'] = False
                     txt = str(start_date.strftime('%Y-%m-%d')) + \
@@ -300,16 +308,23 @@ class Environment(DegradationProperty):
                 initiation_date = node['initiation_date']
                 if initiation_date < end_date:
                     if initiation_date > start_date:
-                        active = self.is_active(
-                            initiation_date,
-                            distribution,
-                            initiation_date,
-                            end_date)
+                        kwargs = {
+                            'initiation_date': initiation_date,
+                            'distribution': distribution,
+                            'start_date': initiation_date,
+                            'end_date': end_date,
+                        }
                     else:
-                        active = self.is_active(
-                            initiation_date, distribution, start_date, end_date)
+                        kwargs = {
+                            'initiation_date': initiation_date,
+                            'distribution': distribution,
+                            'start_date': start_date,
+                            'end_date': end_date,
+                        }
+                    active = self.is_active(**kwargs)
                 else:
                     active = True
+                    
                 if active is False:
                     node['active'] = False
                     txt = str(start_date.strftime('%Y-%m-%d')) + \
