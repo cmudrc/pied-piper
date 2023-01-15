@@ -1,18 +1,18 @@
 import unittest
 
 from piperabm.degradation.distributions import DiracDelta
-from piperabm import Unit
+from piperabm.unit import DT
 
 
 class TestDiracDeltaClass(unittest.TestCase):
 
     d = DiracDelta(
-        main=Unit(35, 'day').to_SI()
+        main=DT(days=35).total_seconds()
     )
 
     def test_dirac_distribution_0(self):
-        time_start = Unit(0, 'day').to_SI()
-        time_end = Unit(70, 'day').to_SI()
+        time_start = DT(days=0).total_seconds()
+        time_end = DT(days=70).total_seconds()
         p = self.d.probability(
             time_start=time_start,
             time_end=time_end
@@ -20,8 +20,8 @@ class TestDiracDeltaClass(unittest.TestCase):
         self.assertEqual(p, 1, msg="Should be equal")
 
     def test_dirac_distribution_1(self):
-        time_start = Unit(0, 'day').to_SI()
-        time_end = Unit(30, 'day').to_SI()
+        time_start = DT(days=0).total_seconds()
+        time_end = DT(days=30).total_seconds()
         p = self.d.probability(
             time_start=time_start,
             time_end=time_end

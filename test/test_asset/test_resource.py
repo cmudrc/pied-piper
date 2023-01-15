@@ -3,7 +3,6 @@ from copy import deepcopy
 
 from piperabm.asset import Storage, Deficiency, Use, Produce
 from piperabm.asset import Resource
-from piperabm.unit import Unit
 
 
 class TestResourceClass(unittest.TestCase):
