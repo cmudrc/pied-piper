@@ -25,15 +25,27 @@ society = Society(env)
 
 ## Add sample person
 from piperabm.actions import Queue, Move, Walk
+
+## Create a sample action queue
 queue = Queue()
-move = move(
+move = Move(
+    start_date=Date.today(),
+    start_pos=[-50, 0],
+    end_pos=[50, 0],
+    adjusted_length=100,
+    transportation=Walk()
+)
 queue.add(move)
 society.add_agent(
-    name="Person"
+    name="Person",
+    queue=queue
 )
 
+''' Create model '''
 m = Model(
     environment=env,
     society=society,
-    step_size=DT(days=1)
+    step_size=DT(hours=1)
 )
+m.run()
+print(m.society.G.nodes[0])

@@ -8,18 +8,28 @@ class Move:
         self.end_pos = end_pos
         self.adjusted_length = adjusted_length
         self.transportation = transportation
+        self.duration = self.calculate_duration()
         self.end_date  = self.calculate_end_date()
 
     def calculate_end_date(self):
         """
         Calculate end_date based on given data
         """
-        travel_duration = self.adjusted_length / self.transportation.speed
-        end_date = self.start_date + DT(seconds=travel_duration)
-        return end_date
+        duration = self.calculate_duration()
+        return self.start_date + duration
 
-    def how_much_fuel(self, progress):
-        pass
+    def calculate_duration(self):
+        duration = DT(
+            seconds=self.adjusted_length/self.transportation.speed
+        )
+        return duration
+
+    def how_much_fuel(self, start_date: Date, end_date: Date):
+        start_progress = self.progress(start_date)
+        end_progress = self.progress(end_date)
+        progress = end_progress - start_progress
+        duration = self.duration.total_seconds() * progress # in seconds
+        return self.transportation.fuel_consumption(duration)
 
     def is_current_action(self, date: Date):
         """
@@ -65,5 +75,6 @@ if __name__ == "__main__":
         transportation=Walk()
     )
 
-    date = Date(2020, 1, 1) + DT(hours=1)
-    print(m.progress(date))
+    start_date = Date(2020, 1, 1)
+    end_date = Date(2020, 1, 1) + DT(hours=1)
+    print(m.how_much_fuel(start_date, end_date))

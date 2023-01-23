@@ -41,8 +41,19 @@ class Society:
             queue=queue
             )
 
-    def update_agents(self, start_date, end_date):
-        pass
+    def update_elements(self, start_date, end_date):
+        self._update_all_nodes(start_date, end_date)
+
+    def _update_all_nodes(self, start_date, end_date):
+        """
+        Update all agents
+            start_date: starting date of the time duration
+            end_date: ending date of the time duration
+        """
+        for index in self.G.nodes():
+            node = self.G.nodes[index]
+            queue = node['queue']
+            ########
 
     def add_agents(self, n):
         for _ in range(n):
