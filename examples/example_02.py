@@ -20,5 +20,20 @@ env.add_link(start="Settlement", end="Market")
 ## Preview sample environemnt
 #env.show(start_date=Date.today(), end_date=Date.today()+DT(days=1))
 
+''' Create society '''
 society = Society(env)
-society.add_agent()
+
+## Add sample person
+from piperabm.actions import Queue, Move, Walk
+queue = Queue()
+move = move(
+queue.add(move)
+society.add_agent(
+    name="Person"
+)
+
+m = Model(
+    environment=env,
+    society=society,
+    step_size=DT(days=1)
+)

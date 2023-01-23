@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 
 from piperabm.environment import Environment
+from piperabm.agents import Society
 from piperabm.unit import DT, Date
 
 
@@ -9,14 +10,16 @@ class Model:
     def __init__(
         self,
         environment: Environment,
+        society: Society,
         step_size=None,
         current_step=0,
         current_date=Date.today()
     ):
+        self.env = environment
+        self.society = society
         self.add_step_size(step_size)
         self.current_step = current_step
         self.current_date = current_date
-        self.env = environment
 
     def add_step_size(self, step_size):
         """

@@ -24,17 +24,21 @@ class Society:
             new_index = 0
         return new_index
 
-    def add_agent(self):
+    def add_agent(self, name='', settlement=None, queue=Queue()):
         index = self.find_next_index()
         self.index_list.append(index)
-        settlement_index = self.env.random_settlement()
+        if settlement is None:
+            settlement_index = self.env.random_settlement()
+        else:
+            settlement_index = self.env.find_node(settlement)
         settlement_node = self.env.G.nodes[settlement_index]
         pos = settlement_node['boundary'].center
         self.G.add_node(
             index,
+            name=name,
             settlement=settlement_index,
             pos=pos,
-            queue=Queue()
+            queue=queue
             )
 
     def update_agents(self, start_date, end_date):

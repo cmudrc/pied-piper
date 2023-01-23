@@ -18,14 +18,18 @@ class Move:
         end_date = self.start_date + DT(seconds=travel_duration)
         return end_date
 
+    def how_much_fuel(self, progress):
+        pass
+
     def is_current_action(self, date: Date):
         """
         Assess whether the action is in the progress
         """
-        if date > self.start_date and date < self.end_date:
+        progress = self.progress(date)
+        if progress < 1 and progress > 0:
             current = True
         else:
-            current = False
+            current = True
         return current
 
     def pos(self, date: Date):
@@ -38,4 +42,28 @@ class Move:
         return [x, y]
 
     def progress(self, date: Date):
-        return (date - self.start_date).total_seconds() / (self.end_date - self.start_date).total_seconds() 
+        result = None
+        if date > self.start_date and date < self.end_date:
+            result = (date - self.start_date).total_seconds() / (self.end_date - self.start_date).total_seconds()
+        else:
+            if date <= self.start_date:
+                result = 0
+            if date >= self.end_date:
+                result = 1
+        return result
+
+    
+if __name__ == "__main__":
+    from piperabm.actions import Move, Walk
+
+
+    m = Move(
+        start_date=Date(2020, 1, 1),
+        start_pos=[0, 0],
+        end_pos=[10000, 10000],
+        adjusted_length=20000,
+        transportation=Walk()
+    )
+
+    date = Date(2020, 1, 1) + DT(hours=1)
+    print(m.progress(date))
