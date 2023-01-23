@@ -32,7 +32,10 @@ class Move:
         """
         Calculate pos in the date between *self.start_date* and *self.end_date*
         """
-        progress = (date - self.start_date).total_seconds() / (self.end_date - self.start_date).total_seconds() 
+        progress = self.progress(date)
         x = self.start_pos[0] + ((self.end_pos[0] - self.start_pos[0]) * progress)
         y = self.start_pos[1] + ((self.end_pos[1] - self.start_pos[1]) * progress)
         return [x, y]
+
+    def progress(self, date: Date):
+        return (date - self.start_date).total_seconds() / (self.end_date - self.start_date).total_seconds() 

@@ -1,5 +1,10 @@
 from piperabm.unit import Date
 
+try:
+    from .action import Move
+except:
+    from action import Move
+
 
 class Queue:
     def __init__(self):

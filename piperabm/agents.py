@@ -2,6 +2,7 @@ import networkx as nx
 from piperabm import Environment
 
 from piperabm.unit import DT, Date
+from piperabm.actions import Queue, Move
 from piperabm.tools import euclidean_distance
 
 
@@ -66,24 +67,9 @@ class Society:
         return real_length_list
 
 
-class Transporation:
-    def __init__(self, speed, fuel_consumption=None):
-        self.speed = speed
-        self.fuel_consumption = fuel_consumption
-
-
-class Walk(Transporation):
-    def __init__(self):
-        super().__init__(
-            speed=Unit(1, 'm/second').to_SI(),
-            fuel_consumption=None
-            )
-
-
 if __name__ == "__main__":
     from piperabm.unit import Unit, Date
-    from piperabm.actions import Move
-
+    from piperabm.actions import Move, Walk
 
     m = Move(
         start_date=Date(2020, 1, 1),
