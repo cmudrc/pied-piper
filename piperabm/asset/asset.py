@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 
 from piperabm.asset import Resource
 from piperabm.asset import Use, Produce, Storage, Deficiency
-from piperabm.tools import find_element
 
 
 class Asset:
@@ -21,7 +20,12 @@ class Asset:
                 resource.produce.refill(delta_t)
     
     def resource(self, resource_name):
-        return find_element(resource_name, self.resources)
+        result = None
+        for resource in self.resources:
+            if resource.name == resource_name:
+                result = resource
+                break
+        return result
 
     def add(self, resource_name, amount):
         resource = self.resource(resource_name)

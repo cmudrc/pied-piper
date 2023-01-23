@@ -29,7 +29,7 @@ class Resource:
         if self.produce is not None:
             self.produce.refill(delta_t)
 
-    def solve(self):
+    def allocate_internal(self):
         """
         Solve inner nodes within a resource with each other.
         """
@@ -45,6 +45,9 @@ class Resource:
 
 
     def finalize(self):
+        """
+        Finalize the calculation in the end of step
+        """
         if self.deficiency is not None:
             if self.use is not None:
                 self.deficiency.add(self.use.current_amount)
@@ -54,6 +57,9 @@ class Resource:
             self.produce.current_amount = 0
 
     def is_alive(self):
+        """
+        Check whether the resource is alive
+        """
         result = True
         if self.deficiency is not None:
             result = self.deficiency.is_alive()
@@ -61,7 +67,7 @@ class Resource:
 
     def add(self, amount:float):
         """
-        Add a certain amount to the resource.
+        Add a certain amount to the resource and return remaining
         """
         if self.use is not None:
             amount = self.use.sub(amount)
@@ -73,7 +79,7 @@ class Resource:
 
     def sub(self, amount:float):
         """
-        Subtract a certain amount from the resource.
+        Subtract a certain amount from the resource and return remaining
         """
         if self.produce is not None:
             amount = self.produce.sub(amount)
@@ -83,7 +89,7 @@ class Resource:
 
     def source(self):
         """
-        Calculate overall source.
+        Calculate total value for source
         """
         source = 0
         if self.produce is not None:
@@ -96,7 +102,7 @@ class Resource:
         
     def demand(self):
         """
-        Calculate overall demand.
+        Calculate value for demand
         """
         demand = 0
         if self.use is not None:
@@ -184,7 +190,7 @@ if __name__ == "__main__":
 
     ''' solve '''
     print('>>> solve')
-    food.solve()
+    food.allocate_internal()
     print('source:', food.source(), '/', 'demand:', food.demand())
     print(food)
 
