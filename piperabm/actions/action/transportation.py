@@ -16,6 +16,10 @@ class Transporation:
         return consumption
         
 
+class Idel:
+    pass
+
+
 class Walk(Transporation):
     def __init__(self):
         super().__init__(
@@ -25,3 +29,8 @@ class Walk(Transporation):
                 'water': 0.02,
             }
             )
+
+
+if __name__ == "__main__":
+    w = Walk()
+    print(w.fuel_consumption(100))

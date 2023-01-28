@@ -46,6 +46,8 @@ class Model:
         start_date = self.current_date
         end_date = start_date + self.step_size
         self.env.update_elements(start_date, end_date)
+        self.society.update_elements(start_date, end_date)
+
         path = self.env.to_path(start_date, end_date)
         #path.show()
         ####
@@ -77,7 +79,9 @@ class Model:
             ax = plt.gca()
         start_date = self.current_date - self.step_size
         end_date = self.current_date
-        self.env.to_plt(ax, start_date, end_date)
+        args = (ax, start_date, end_date)
+        self.env.to_plt(*args)
+        self.society.to_plt(ax)
     
     def show(self):
         self.to_plt()

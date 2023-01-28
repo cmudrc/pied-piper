@@ -78,3 +78,4 @@ if __name__ == "__main__":
     start_date = Date(2020, 1, 1)
     end_date = Date(2020, 1, 1) + DT(hours=1)
     print(m.how_much_fuel(start_date, end_date))
+    print(m.pos(date=start_date), m.pos(date=end_date))

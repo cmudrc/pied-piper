@@ -7,12 +7,12 @@ env = Environment(links_unit_length=10)
 ## Add a sample settlement
 env.add_settlement(
     name="Settlement",
-    pos=[-50, 0]
+    pos=[-500, 0],
 )
 ## Add a sample market
 env.add_market(
     name="Market",
-    pos=[50, 0]
+    pos=[500, 0]
 )
 ## Add a connecting link between elements
 env.add_link(start="Settlement", end="Market")
@@ -30,11 +30,12 @@ from piperabm.actions import Queue, Move, Walk
 queue = Queue()
 move = Move(
     start_date=Date.today(),
-    start_pos=[-50, 0],
-    end_pos=[50, 0],
+    start_pos=[-500, 0],
+    end_pos=[500, 0],
     adjusted_length=100,
     transportation=Walk()
 )
+print(move.start_date, move.end_date)
 queue.add(move)
 society.add_agent(
     name="Person",
@@ -45,7 +46,9 @@ society.add_agent(
 m = Model(
     environment=env,
     society=society,
-    step_size=DT(hours=1)
+    step_size=DT(seconds=10)
 )
-m.run()
-print(m.society.G.nodes[0])
+#for i in range(10):
+#    m.run(n=10)
+#    print(m.society.G.nodes[0])
+#    m.show()

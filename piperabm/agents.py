@@ -1,6 +1,7 @@
 import networkx as nx
-from piperabm import Environment
+import matplotlib.pyplot as plt
 
+from piperabm import Environment
 from piperabm.unit import DT, Date
 from piperabm.actions import Queue, Move
 from piperabm.tools import euclidean_distance
@@ -38,6 +39,7 @@ class Society:
             name=name,
             settlement=settlement_index,
             pos=pos,
+            active=True,
             queue=queue
             )
 
@@ -53,7 +55,9 @@ class Society:
         for index in self.G.nodes():
             node = self.G.nodes[index]
             queue = node['queue']
-            ########
+            result, action_type = queue.execute(end_date)
+            if action_type == "pos":
+                node['pos'] = result
 
     def add_agents(self, n):
         for _ in range(n):
@@ -81,6 +85,49 @@ class Society:
             real_length_list.append(length)
         return real_length_list
 
+    def to_plt(self, ax=None):
+        """
+        Add elements to plt
+        """
+        if ax is None:
+            ax = plt.gca()
+        pos_dict = {}
+        node_list = []
+        node_size_list = []
+        node_color_list = []
+        label_dict = {}
+        node_size = 200
+        color_dict = {
+            'active': 'green',
+            'inactive': 'black',
+        }
+
+        for index in self.index_list:
+            node = self.G.nodes[index]
+            node_list.append(index)
+            pos = node['pos']
+            pos_dict[index] = pos
+            node_size_list.append(node_size)
+            label_dict[index] = node['name']
+            if node['active'] == True:
+                node_color_list.append(color_dict['active'])
+            else:
+                node_color_list.append(color_dict['inactive'])
+
+        nx.draw_networkx(
+            self.G,
+            pos=pos_dict,
+            nodelist=node_list,
+            node_size=node_size_list,
+            labels=label_dict
+        )
+
+    def show(self, start_date, end_date):
+        """
+        Show current state of Environment graph
+        """
+        self.to_plt(start_date=start_date, end_date=end_date)
+        plt.show()
 
 if __name__ == "__main__":
     from piperabm.unit import Unit, Date

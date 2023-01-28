@@ -17,7 +17,7 @@ class Queue:
         current_i = None
         result = None
         for i, action in enumerate(self.action_list):
-            if action.is_current(date) is True:
+            if action.is_current_action(date) is True:
                 current_i = i
                 if isinstance(action, Move):
                     result = action.pos(date), "pos"
