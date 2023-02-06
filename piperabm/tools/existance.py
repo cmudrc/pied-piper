@@ -1,6 +1,6 @@
 def check_existance(initiation_date, start_date, end_date):
     """
-    Check element existance based on its initiation_date
+    Check element existance between #start_date* and *end_date* based on its initiation_date
     """
     exists = False
     if start_date is None or end_date is None:

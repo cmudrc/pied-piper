@@ -30,9 +30,8 @@ from piperabm.actions import Queue, Move, Walk
 queue = Queue()
 move = Move(
     start_date=Date.today(),
-    start_pos=[-500, 0],
-    end_pos=[500, 0],
-    adjusted_length=100,
+    start_pos=[-1800, 0],
+    end_pos=[1800, 0],
     transportation=Walk()
 )
 print(move.start_date, move.end_date)
@@ -46,9 +45,11 @@ society.add_agent(
 m = Model(
     environment=env,
     society=society,
-    step_size=DT(seconds=10)
+    step_size=DT(seconds=360)
 )
-#for i in range(10):
-#    m.run(n=10)
-#    print(m.society.G.nodes[0])
+
+agent = m.society.G.nodes[0]
+for i in range(10):
+    m.run()
+    print(agent['pos'])
 #    m.show()

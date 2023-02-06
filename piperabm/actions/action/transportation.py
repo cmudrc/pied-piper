@@ -17,7 +17,14 @@ class Transporation:
         
 
 class Idel:
-    pass
+    def __init__(self):
+        super().__init__(
+            speed=0,
+            fuel_rate={
+                'food': Unit(1.5, 'kg/day').to_SI(),
+                'water': Unit(3, 'kg/day').to_SI(),
+            }
+            )
 
 
 class Walk(Transporation):

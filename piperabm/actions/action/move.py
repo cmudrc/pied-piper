@@ -1,12 +1,16 @@
 from piperabm.unit import Date, DT
+from piperabm.tools import euclidean_distance
 
 
 class Move:
-    def __init__(self, start_date: Date, start_pos, end_pos, adjusted_length, transportation):
+    def __init__(self, start_date: Date, start_pos, end_pos, transportation, adjusted_length=None):
         self.start_date = start_date
         self.start_pos = start_pos
         self.end_pos = end_pos
-        self.adjusted_length = adjusted_length
+        if adjusted_length is None:
+            self.adjusted_length = euclidean_distance(*start_pos, *end_pos)
+        else:
+            self.adjusted_length = adjusted_length
         self.transportation = transportation
         self.duration = self.calculate_duration()
         self.end_date  = self.calculate_end_date()
@@ -66,16 +70,14 @@ class Move:
 if __name__ == "__main__":
     from piperabm.actions import Move, Walk
 
-
+    start_date=Date.today()
     m = Move(
-        start_date=Date(2020, 1, 1),
-        start_pos=[0, 0],
-        end_pos=[10000, 10000],
-        adjusted_length=20000,
+        start_date=start_date,
+        start_pos=[-1800, 0],
+        end_pos=[1800, 0],
         transportation=Walk()
     )
 
-    start_date = Date(2020, 1, 1)
-    end_date = Date(2020, 1, 1) + DT(hours=1)
+    end_date = start_date + DT(hours=1)
     print(m.how_much_fuel(start_date, end_date))
     print(m.pos(date=start_date), m.pos(date=end_date))

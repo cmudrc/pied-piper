@@ -21,5 +21,5 @@ class Queue:
                 current_i = i
                 if isinstance(action, Move):
                     result = action.pos(date), "pos"
-        self.action_list = self.action_list[i:]
+        self.action_list = self.action_list[current_i:]
         return result

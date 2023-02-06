@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 from piperabm import Environment
 from piperabm.unit import DT, Date
+from piperabm.asset import Asset, Resource
 from piperabm.actions import Queue, Move
-from piperabm.tools import euclidean_distance
 
 
 class Society:
@@ -25,7 +25,10 @@ class Society:
             new_index = 0
         return new_index
 
-    def add_agent(self, name='', settlement=None, queue=Queue()):
+    def add_agent(self, name='', settlement=None, queue=Queue(), asset=None):
+        """
+        Add a new agent to the society
+        """
         index = self.find_next_index()
         self.index_list.append(index)
         if settlement is None:
@@ -40,10 +43,14 @@ class Society:
             settlement=settlement_index,
             pos=pos,
             active=True,
-            queue=queue
+            queue=queue,
+            asset=asset
             )
 
     def update_elements(self, start_date, end_date):
+        """
+        Update all elements
+        """
         self._update_all_nodes(start_date, end_date)
 
     def _update_all_nodes(self, start_date, end_date):
