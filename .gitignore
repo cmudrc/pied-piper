@@ -6,3 +6,4 @@ __pycache__/
 BASEMENT/
 tips & tricks/
 settings.json
+.DS_Store
