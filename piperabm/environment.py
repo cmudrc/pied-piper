@@ -511,7 +511,9 @@ class Path:
         self.to_path(env, start_date, end_date)
 
     def to_path(self, env: Environment, start_date=None, end_date=None):
-
+        """
+        Create path graph from environment graph
+        """
         def check_path_active(path, env: Environment):
             """
             Check all links within a path to see if they are all active

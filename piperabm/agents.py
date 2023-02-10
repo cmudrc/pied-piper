@@ -92,6 +92,16 @@ class Society:
             real_length_list.append(length)
         return real_length_list
 
+    def possible_routes(self, agent, start_date, end_date):
+        """
+        Calculate possible routes between *start_date* and *end_date* for the agent
+        """
+        agent_index = agent #### find agent
+        node_index = None #### find agent's node
+        path_graph = self.env.to_path(start_date, end_date)
+        edges = path_graph.G.out_edges(node_index)
+        return edges
+        
     def to_plt(self, ax=None):
         """
         Add elements to plt

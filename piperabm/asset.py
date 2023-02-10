@@ -32,17 +32,24 @@ class Asset:
         """
         resource = self.find(name)
         if resource is not None:
-            remaining = resource.add(amount)
+            if amount >= 0:
+                remaining = resource.add(amount)
+            else:
+                remaining = -resource.sub(-amount)
         return remaining
 
-    def sub(self, name:str, amount:float):
-        """
-        Add a certain amount to the resource and return remaining
-        """
-        resource = self.find(name)
-        if resource is not None:
-            remaining = resource.sub(amount)
+    def add_batch(self, batch: dict):
+        remaining = {}
+        for key in batch:
+            remaining[key] = self.add(name=key, amount=batch[key])
         return remaining
+
+    def show(self):
+        result = {}
+        if len(self.resources) > 0:
+            for resource in self.resources:
+                result = {**result, **resource.show()} 
+        return result
 
 
 class Resource:
@@ -90,11 +97,18 @@ class Resource:
             self.current_amount = 0
         return remaining
 
+    def show(self):
+        return {self.name: self.current_amount,}
+
 
 if __name__ == "__main__":
-    food = Resource('food', 5, 10)
+    r1 = Resource('food', 5, 10)
+    r2 = Resource('water', 2, 4)
     a = Asset()
-    a.add_resource(food)
-
-    r = a.sub('food', 6)
-    print(food.current_amount, r)
+    a.add_resource(r1)
+    a.add_resource(r2)
+    print(a.show())
+    batch = {'food': 7, 'water': -3}
+    remaining = a.add_batch(batch)
+    print("remaining: :", remaining)
+    print(a.show())

@@ -14,6 +14,7 @@ class Move:
         self.transportation = transportation
         self.duration = self.calculate_duration()
         self.end_date  = self.calculate_end_date()
+        self.fuel_consumption = self.calculate_fuel_consumption()
 
     def calculate_end_date(self):
         """
@@ -27,6 +28,12 @@ class Move:
             seconds=self.adjusted_length/self.transportation.speed
         )
         return duration
+
+    def calculate_fuel_consumption(self):
+        result = {}
+        for key in self.transportation.fuel_rate:
+            result[key] = self.transportation.fuel_rate[key] * self.duration
+        return result
 
     def how_much_fuel(self, start_date: Date, end_date: Date):
         start_progress = self.progress(start_date)
@@ -45,6 +52,12 @@ class Move:
         else:
             current = True
         return current
+
+    def is_done(self, date: Date):
+        if self.end_date > date:
+            return True
+        else:
+            return False
 
     def pos(self, date: Date):
         """
