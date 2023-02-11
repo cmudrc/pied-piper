@@ -87,6 +87,31 @@ class Path:
                             length = calculate_path_length(path, env)
                             self.G.add_edge(index, other, path=path, length=length)
 
+    def from_node_perspective(self, node):
+        return self.G.out_edges(node)
+
+    def path_to_pos(self, path: list):
+        """
+        Convert edge path data to a list of pos
+        """
+        pos_list = []
+        for index in path:
+            node = self.env.G.nodes[index]
+            pos = node['boundary'].center
+            pos_list.append(pos)
+        return pos_list
+
+    def path_real_length_list(self, path: list):
+        """
+        Convert edge path data to a list of real length
+        """
+        real_length_list = []
+        for index in path:
+            node = self.env.G.nodes[index]
+            length = node['length']
+            real_length_list.append(length)
+        return real_length_list
+
     def show(self):
         pos_dict = {}
         label_dict = {}

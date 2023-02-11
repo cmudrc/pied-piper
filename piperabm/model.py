@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 from piperabm.environment import Environment
-from piperabm.agents import Society
+from piperabm.society import Society
 from piperabm.unit import DT, Date
 
 
