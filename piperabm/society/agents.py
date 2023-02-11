@@ -5,6 +5,8 @@ from piperabm.unit import DT, Date
 from piperabm.asset import Asset, Resource
 from piperabm.actions import Queue, Move
 
+try: from .search import Search
+except: from search import Search
 try: from .add import Add
 except: from add import Add
 try: from .index import Index
@@ -13,9 +15,11 @@ try: from .graphics import Graphics
 except: from graphics import Graphics
 try: from .update import Update
 except: from update import Update
+try: from .decision import Decision
+except: from decision import Decision
 
 
-class Society(Add, Index, Graphics, Update):
+class Society(Add, Index, Graphics, Update, Search, Decision):
 
     def __init__(self, env: Environment):
         self.env = env

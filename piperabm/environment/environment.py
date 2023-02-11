@@ -18,7 +18,7 @@ try: from .graphics import Graphics
 except: from graphics import Graphics
 
 
-class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Graphics):
+class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Graphics, Update):
     """
     Manage settlements and their connecting links
     """
@@ -87,8 +87,9 @@ if __name__ == "__main__":
 
     #env.show(start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
     from path import Path
-    p = Path(env, start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
-    p.show()
+    p = Path(env, start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 4))
+    print(p.from_node_perspective(1))
+    #p.show()
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)
     # print(L.G.edges())

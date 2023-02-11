@@ -48,8 +48,8 @@ m = Model(
     step_size=DT(seconds=360)
 )
 
-agent = m.society.G.nodes[0]
-for i in range(10):
-    m.run()
-    print(agent['pos'])
+#agent = m.society.G.nodes[0]
+#for i in range(10):
+#    m.run()
+#    print(agent['pos'])
 #    m.show()
