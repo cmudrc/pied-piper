@@ -1,20 +1,27 @@
-import numpy as np
-
-from piperabm.asset import Use, Storage
+from piperabm.resource import DeltaResource
 from piperabm.unit import Unit, DT
 
 
 class Transportation():
     def __init__(
             self,
-            name=None,
-            speed=0,
+            name: str = None,
+            speed: float = 0,
             fuel_rate=None,
             storage_max=None
     ):
         self.name = name
         self.speed = speed
-        self.fuel_rate = fuel_rate  # resource used for the transport
+        if fuel_rate is None:
+            fuel_rate = {
+                'food': 0,
+                'water': 0,
+                'energy': 0,
+            }
+        if isinstance(fuel_rate, dict):
+            self.fuel_rate = DeltaResource(batch=fuel_rate)
+        elif isinstance(fuel_rate, DeltaResource):
+            self.fuel_rate = fuel_rate  # resource used for the transport
         self.storage_max = storage_max
 
     def how_long(self, length):
@@ -26,14 +33,10 @@ class Transportation():
 
     def how_much_fuel(self, length):
         """
-        How much fuel is needed for reaching the destination?
+        Calculate the amount of required fuel
         """
         t = self.how_long(length)
-        result = {}
-        for fuel_name in self.fuel_rate:
-            use = self.fuel_rate[fuel_name]
-            #print(use.rate)
-            result[fuel_name] = (t.seconds) * use.rate
+        result = self.fuel_rate * t.total_seconds()
         return result
 
     def __str__(self):
@@ -41,32 +44,30 @@ class Transportation():
 
 
 class Foot(Transportation):
-    def __init__(
-        self,
-        speed=Unit(5, 'km/hour').to_SI(),
-        fuel_rate=Unit(1, 'kg/hour').to_SI(),
-        storage_max=Unit(20, 'kg').to_SI()
-    ):
+    def __init__(self):
         super().__init__(
             name='foot',
-            speed=speed,
-            fuel_rate={'food': Use(rate=fuel_rate),},
-            storage_max=storage_max
+            speed=Unit(5, 'km/hour').to_SI(),
+            fuel_rate={
+                'food': Unit(2, 'kg/day').to_SI(),
+                'water': Unit(1, 'kg/day').to_SI(),
+                'energy': Unit(0, 'kg/day').to_SI(),
+            },
+            storage_max=Unit(20, 'kg').to_SI()
         )
 
 
 class Vehicle(Transportation):
-    def __init__(
-        self,
-        speed=Unit(100, 'km/hour').to_SI(),
-        fuel_rate=Unit(1, 'kg/hour').to_SI(),
-        storage_max=Unit(200, 'kg').to_SI()
-    ):
+    def __init__(self):
         super().__init__(
             name='vehicle',
-            speed=speed,
-            fuel_rate={'energy': Use(rate=fuel_rate), },
-            storage_max=storage_max
+            speed=Unit(100, 'km/hour').to_SI(),
+            fuel_rate={
+                'food': Unit(0, 'kg/day').to_SI(),
+                'water': Unit(0, 'kg/day').to_SI(),
+                'energy': Unit(1, 'kg/day').to_SI(),
+            },
+            storage_max=Unit(200, 'kg').to_SI()
         )
 
 
@@ -75,6 +76,6 @@ if __name__ == "__main__":
     #print('transportation.name:', transportation.name)
     length = 1000
     delta_t = transportation.how_long(length)
-    delta_m = transportation.how_much_fuel(length)
+    delta_f = transportation.how_much_fuel(length)
     print('delta_t:', delta_t)
-    print('delta_m:', delta_m)
+    print('delta_f:', delta_f)
