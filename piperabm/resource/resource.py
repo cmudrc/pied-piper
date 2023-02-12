@@ -2,6 +2,8 @@ from copy import deepcopy
 
 try: from .add import add_function
 except: from add import add_function
+try: from .sub import sub_function
+except: from sub import sub_function
 
 
 class Resource:
@@ -49,10 +51,22 @@ class Resource:
         
     def add_amount(self, name: str, amount: float=0):
         """
-        Add amount(+/-) to the already existing resource
+        Add amount to the already existing resource
         """
         if self.resource_exists(name) is True:
             new_current_amount, remaining = add_function(amount, self.current_resource[name], self.max_resource[name])
+            self.current_resource[name] = new_current_amount
+        else:
+            print("resource name not defined")
+            raise ValueError
+        return remaining
+
+    def sub_amount(self, name: str, amount: float=0):
+        """
+        Subtract amount from the already existing resource
+        """
+        if self.resource_exists(name) is True:
+            new_current_amount, remaining = sub_function(amount, self.current_resource[name])
             self.current_resource[name] = new_current_amount
         else:
             print("resource name not defined")
@@ -79,11 +93,18 @@ class Resource:
             for name in self._aggregate_keys(other):
                 if self.resource_exists(name) is True:
                     if name in other.batch:
-                        new_current_amount, remaining = add_function(
-                            amount=other.batch[name],
-                            current_amount=self.current_resource[name],
-                            max_amount=self.max_resource[name]
-                        )
+                        amount = other.batch[name]
+                        if amount > 0:
+                            new_current_amount, remaining = add_function(
+                                amount=other.batch[name],
+                                current_amount=self.current_resource[name],
+                                max_amount=self.max_resource[name]
+                            )
+                        else:
+                            new_current_amount, remaining = sub_function(
+                                amount=-amount,
+                                current_amount=self.current_resource[name]
+                            )
                     else:
                         new_current_amount, remaining = add_function(
                             amount=0,
@@ -91,11 +112,18 @@ class Resource:
                             max_amount=self.max_resource[name]
                         )
                 else:
-                    new_current_amount, remaining = add_function(
-                        amount=other.batch[name],
-                        current_amount=0,
-                        max_amount=None
-                    )
+                    amount = other.batch[name]
+                    if amount > 0:
+                        new_current_amount, remaining = add_function(
+                            amount=amount,
+                            current_amount=0,
+                            max_amount=None
+                        )
+                    else:
+                        new_current_amount, remaining = sub_function(
+                            amount=-amount,
+                            current_amount=0
+                        )
                 new_remaining_dict[name] = remaining
                 new_current_amount_dict[name] = new_current_amount
             result = Resource(
@@ -115,23 +143,36 @@ class Resource:
             for name in self._aggregate_keys(other):
                 if self.resource_exists(name) is True:
                     if name in other.batch:
-                        new_current_amount, remaining = add_function(
-                            amount=-other.batch[name],
-                            current_amount=self.current_resource[name],
-                            max_amount=self.max_resource[name]
+                        amount = other.batch[name]
+                        if amount > 0:
+                            new_current_amount, remaining = sub_function(
+                                amount=amount,
+                                current_amount=self.current_resource[name]
+                            )
+                        else:
+                            new_current_amount, remaining = add_function(
+                                amount=-amount,
+                                current_amount=self.current_resource[name],
+                                max_amount=self.max_resource[name]
+                            )
+                    else:
+                        new_current_amount, remaining = sub_function(
+                            amount=0,
+                            current_amount=self.current_resource[name]
+                        )
+                else:
+                    amount = other.batch[name]
+                    if amount > 0:
+                        new_current_amount, remaining = sub_function(
+                            amount=amount,
+                            current_amount=0
                         )
                     else:
                         new_current_amount, remaining = add_function(
-                            amount=0,
-                            current_amount=self.current_resource[name],
-                            max_amount=self.max_resource[name]
-                        )
-                else:
-                    new_current_amount, remaining = add_function(
-                        amount=-other.batch[name],
-                        current_amount=0,
-                        max_amount=None
-                    )
+                            amount=-amount,
+                            current_amount=0,
+                            max_amount=None
+                        )                      
                 new_remaining_dict[name] = remaining
                 new_current_amount_dict[name] = new_current_amount
             result = Resource(
@@ -269,5 +310,6 @@ if __name__ == "__main__":
     
     print(r1)
     print(dr)
-    print(r1-dr)
-    print(dr)
+    r, remaining = r1-dr
+    print(r)
+    print(remaining)

@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.transportation import Foot
 
 
-class TestExistanecFunction(unittest.TestCase):
+class TestTransportaionClass(unittest.TestCase):
     
     def test_how_long(self):
         transportation = Foot()

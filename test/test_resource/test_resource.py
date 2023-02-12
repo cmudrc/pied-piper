@@ -110,9 +110,9 @@ class TestResourceClass(unittest.TestCase):
         r = deepcopy(self.r)
         remaining = r.add_amount(
             name='food',
-            amount=-10
+            amount=10
         )
-        self.assertEqual(r.amount('food'), 0)
+        self.assertEqual(r.amount('food'), 10)
         self.assertEqual(remaining, 5)
 
     def test_resource_sub_0(self):
@@ -176,6 +176,78 @@ class TestResourceClass(unittest.TestCase):
         )
         self.assertEqual(r.amount('food'), 7)
         self.assertEqual(remaining, 0)
+
+    def test_resource_sub_amount_0(self):
+        """
+        Test add_amount function
+        """
+        r = deepcopy(self.r)
+        remaining = r.sub_amount(
+            name='food',
+            amount=2
+        )
+        self.assertEqual(r.amount('food'), 3)
+        self.assertEqual(remaining, 0)
+
+    def test_resource_sub_amount_1(self):
+        """
+        Test add_amount function
+        """
+        r = deepcopy(self.r)
+        remaining = r.sub_amount(
+            name='food',
+            amount=8
+        )
+        self.assertEqual(r.amount('food'), 0)
+        self.assertEqual(remaining, 3)
+
+    def test_resource_sub_amount_2(self):
+        """
+        Test add_amount function
+        """
+        r = deepcopy(self.r)
+        remaining = r.sub_amount(
+            name='food',
+            amount=10
+        )
+        self.assertEqual(r.amount('food'), 0)
+        self.assertEqual(remaining, 5)
+
+    def test_mixed_case(self):
+        r = Resource(
+            current_resource={
+                'food': 5,
+                'water': 2,
+            },
+            max_resource={
+                'food': 10,
+                'water': 10,
+            }
+        )
+        dr1 = DeltaResource({
+            'water': 2,
+        })
+        dr2 = DeltaResource({
+            'food': 6,
+        })
+        dr = dr2-dr1
+        expected_result = {
+            'food': 6,
+            'water': -2,
+        }
+        self.assertDictEqual(dr.batch, expected_result)
+        result, remaining = r-dr
+        expected_result = {
+            'food': 0,
+            'water': 4,
+        }
+        self.assertDictEqual(result.current_resource, expected_result)
+        expected_result = {
+            'food': 1,
+            'water': 0,
+        }
+        self.assertDictEqual(remaining.batch, expected_result)
+
 
     def test_amount(self):
         r = deepcopy(self.r)

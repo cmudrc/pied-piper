@@ -41,7 +41,7 @@ class TestAddFunction(unittest.TestCase):
         self.assertEqual(new_current_amount, 0)
         self.assertEqual(remaining, -1)
 
-    def test_add_5(self):
+    def test_add_4(self):
         new_current_amount, remaining = add_function(
             amount=-6,
             current_amount=5,
