@@ -1,14 +1,28 @@
 from piperabm.actions import Queue
+from piperabm.resource import Resource
 
 
 class Add:
-    
-    def add(self, name='', settlement=None, queue=Queue(), asset=None):
+
+    def add(self, name='', settlement=None, queue=Queue(), resource=None):
         """
         Add a new agent to the society
         """
         index = self.find_next_index()
         self.index_list.append(index)
+        if resource is None:
+            resource = Resource(
+                current_resource={
+                    'food': 0,
+                    'water': 0,
+                    'energy': 0
+                },
+                max_resource={
+                    'food': None,
+                    'water': None,
+                    'energy': None
+                }
+            )
         if settlement is None:
             settlement_index = self.env.random_settlement()
         else:
@@ -22,7 +36,7 @@ class Add:
             pos=pos,
             active=True,
             queue=queue,
-            asset=asset
+            resource=resource
             )
 
     def add_agents(self, n):

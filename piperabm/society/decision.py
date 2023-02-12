@@ -27,7 +27,7 @@ class Decision:
             data = self.env.G[link[0]][link[1]]
             adjusted_length = self.env.adjusted_length(*link)
             adjusted_length_list.append(adjusted_length)
-            #required_resource = 
+            required_resource = agent.transportation.how_much_fuel(adjusted_length)
             #current_resource = 
             required_resource_list.append(required_resource)
             current_resource_list.append(current_resource)
