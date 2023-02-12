@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from piperabm.asset import Use, Produce, Storage, Deficiency
+from piperabm.resource import Use, Produce, Storage, Deficiency
 from piperabm.graphics.plt.resource import resource_to_plt
 
 

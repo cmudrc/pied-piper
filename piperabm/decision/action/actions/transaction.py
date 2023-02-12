@@ -64,7 +64,7 @@ class Transaction(Action):
 
 if __name__ == "__main__":
     from piperabm.agent import Agent
-    from piperabm.asset import Asset, Resource, Storage
+    from piperabm.resource import Asset, Resource, Storage
     from piperabm.unit import Date
 
     a_1_asset = Asset()

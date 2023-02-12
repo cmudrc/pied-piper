@@ -1,5 +1,5 @@
-from piperabm.asset import Use, Produce, Storage, Deficiency
-from piperabm.asset import Resource, Asset
+from piperabm.resource import Use, Produce, Storage, Deficiency
+from piperabm.resource import Resource, Asset
 from piperabm.unit import Date, DT
 from piperabm import Environment, Model, Agent
 

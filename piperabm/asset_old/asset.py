@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
-from piperabm.asset import Resource
-from piperabm.asset import Use, Produce, Storage, Deficiency
+from piperabm.resource import Resource
+from piperabm.resource import Use, Produce, Storage, Deficiency
 
 
 class Asset:

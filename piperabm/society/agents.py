@@ -2,7 +2,7 @@ import networkx as nx
 
 from piperabm import Environment
 from piperabm.unit import DT, Date
-from piperabm.asset import Asset, Resource
+#from piperabm.resource import Asset, Resource
 from piperabm.actions import Queue, Move
 
 try: from .search import Search

@@ -42,6 +42,15 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
             self.log = log
         super().__init__()
 
+    def adjusted_length(self, start_node, end_node):
+        edge = self.G[start_node][end_node]
+        difficulty = edge['difficulty']
+        current_axels = edge['current_axels']
+        total_axels = edge['total_axels']
+        pd = self.progressive_degradation_factor(current_axels, total_axels)
+        length = edge['length']
+        return difficulty * pd * length
+
     def to_path(self, start_date=None, end_date=None):
         return Path(env=self, start_date=start_date, end_date=end_date)
 
