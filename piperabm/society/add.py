@@ -1,10 +1,19 @@
 from piperabm.actions import Queue
-from piperabm.resource import Resource
+from piperabm.resource import Resource, DeltaResource
+from piperabm.unit import Unit
 
 
 class Add:
 
-    def add(self, name='', settlement=None, queue=Queue(), resource=None):
+    def add(
+        self,
+        name: str = '',
+        settlement=None,
+        queue=Queue(),
+        resource=None,
+        idle_fuel_rate=None,
+        wealth=0
+        ):
         """
         Add a new agent to the society
         """
@@ -23,6 +32,14 @@ class Add:
                     'energy': None
                 }
             )
+        if idle_fuel_rate is None:
+            idle_fuel_rate = DeltaResource(
+                {
+                    'food': Unit(2, 'kg/day').to_SI(),
+                    'water': Unit(4, 'kg/day').to_SI(),
+                    'energy': 0
+                }
+            )
         if settlement is None:
             settlement_index = self.env.random_settlement()
         else:
@@ -36,7 +53,9 @@ class Add:
             pos=pos,
             active=True,
             queue=queue,
-            resource=resource
+            resource=resource,
+            idle_fuel_rate=idle_fuel_rate,
+            wealth=wealth
             )
 
     def add_agents(self, n):
