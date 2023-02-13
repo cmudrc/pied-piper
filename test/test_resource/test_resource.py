@@ -257,6 +257,20 @@ class TestResourceClass(unittest.TestCase):
         }
         self.assertDictEqual(remaining.batch, expected_result)
 
+    def test_true_div_0(self):
+        """
+        Test __truediv__
+        """
+        r = deepcopy(self.r)
+        dr = DeltaResource({
+            'food': 2,
+        })
+        result = r / dr
+        expected_result = {
+            'food': 2.5,
+        }
+        self.assertDictEqual(result, expected_result)
+
     def test_amount(self):
         r = deepcopy(self.r)
         self.assertEqual(r.amount('food'), r.current_resource['food'])

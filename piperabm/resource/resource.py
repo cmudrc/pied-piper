@@ -207,6 +207,36 @@ class Resource:
             raise ValueError
         return result, result_remaining
 
+    def __truediv__(self, other):
+        result = {}
+        if isinstance(other, DeltaResource):
+            for name in other.batch:
+                if name in self._aggregate_keys():
+                    result[name] = self.current_resource[name] / other.batch[name]
+        elif isinstance(other, Resource):
+            for name in other.current_amount:
+                if name in self._aggregate_keys():
+                    result[name] = self.current_resource[name] / other.current_resource[name]
+        elif isinstance(other, (float, int)):
+            for name in self._aggregate_keys():
+                result[name] = self.current_resource[name] / other
+        elif isinstance(other, dict):
+            for name in self._aggregate_keys():
+                if name in other:
+                    result[name] = self.current_resource[name] / other[name]
+        return result
+
+    def __mul__(self, other):
+        result = {}
+        if isinstance(other, (float, int)):
+            for name in self._aggregate_keys():
+                result[name] = self.current_resource[name] * other
+        elif isinstance(other, dict):
+            for name in self._aggregate_keys():
+                if name in other:
+                    result[name] = self.current_resource[name] * other[name]
+        return result
+
     def __str__(self):
         return str(self.current_resource)
 
