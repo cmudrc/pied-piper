@@ -15,8 +15,10 @@ class TestTransportaionClass(unittest.TestCase):
     def test_how_much_fuel(self):
         transportation = Foot()
         length = 1000
-        delta_f = transportation.how_much_fuel(length)
-        print('delta_f:', delta_f)
+        result = transportation.how_much_fuel(length)
+        self.assertAlmostEqual(result.batch['food'], 0.01666666666)
+        self.assertAlmostEqual(result.batch['water'], 0.00833333333)
+        self.assertAlmostEqual(result.batch['energy'], 0)
 
 
 if __name__ == "__main__":

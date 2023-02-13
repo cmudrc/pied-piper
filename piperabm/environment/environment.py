@@ -16,6 +16,8 @@ try: from .update import Update
 except: from update import Update
 try: from .graphics import Graphics
 except: from graphics import Graphics
+try: from .path import Path
+except: from path import Path
 
 
 class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Graphics, Update):

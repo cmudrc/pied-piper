@@ -1,9 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.asset import Asset
-from piperabm.asset import Resource
-from piperabm.asset import Produce, Use, Deficiency, Storage
+from piperabm.resource import Asset
+from piperabm.resource import Resource
+from piperabm.resource import Produce, Use, Deficiency, Storage
 
 
 class TestAssetClass(unittest.TestCase):

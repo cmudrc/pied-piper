@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.asset import Storage, Deficiency
+from piperabm.resource import Storage, Deficiency
 
 
 class TestStorageClass(unittest.TestCase):

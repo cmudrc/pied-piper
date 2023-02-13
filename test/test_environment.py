@@ -1,7 +1,8 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment import check_existance, Environment
+from piperabm.environment import Environment
+from piperabm.tools import check_existance
 from piperabm.unit import Date, DT
 from piperabm.degradation import DiracDelta
 from piperabm.boundary import Circular

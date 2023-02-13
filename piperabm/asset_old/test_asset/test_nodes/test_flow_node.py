@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.asset import Use, Produce
+from piperabm.resource import Use, Produce
 
 
 class TestProduceClass(unittest.TestCase):
