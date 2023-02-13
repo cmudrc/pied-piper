@@ -13,7 +13,7 @@ class Add:
         resource=None,
         idle_fuel_rate=None,
         wealth=0
-        ):
+    ):
         """
         Add a new agent to the society
         """
@@ -56,26 +56,15 @@ class Add:
             resource=resource,
             idle_fuel_rate=idle_fuel_rate,
             wealth=wealth
-            )
+        )
 
     def add_agents(self, n):
         for _ in range(n):
-            resource = Resource(
-                current_resource={
-                    'food': 20,
-                    'water': 20,
-                    'energy': 20,
-                },
-                max_resource={
-                    'food': 100,
-                    'water': 100,
-                    'energy': 100,
-                }
-            )
-            name = ''
-            settlement = None # default
-            idle_fuel_rate = None # default
-            wealth = 1000
+            resource = resource_generator()
+            name = name_generator()
+            settlement = None  # default
+            idle_fuel_rate = None  # default
+            wealth = wealth_generator()
             self.add(
                 name=name,
                 settlement=settlement,
@@ -84,3 +73,29 @@ class Add:
                 idle_fuel_rate=idle_fuel_rate,
                 wealth=wealth
             )
+
+
+def name_generator():
+    result = ''
+    return result
+
+
+def wealth_generator():
+    result = 1000
+    return result
+
+
+def resource_generator():
+    result = Resource(
+        current_resource={
+            'food': 20,
+            'water': 20,
+            'energy': 20,
+        },
+        max_resource={
+            'food': 100,
+            'water': 100,
+            'energy': 100,
+        }
+    )
+    return result

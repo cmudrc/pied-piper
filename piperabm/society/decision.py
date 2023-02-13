@@ -11,7 +11,7 @@ class Decision:
         possible_routes = self.possible_routes(agent, start_date, end_date)
         scores = []
         for route in possible_routes:
-            score = self.calculate_score(agent, route)
+            score = self.calculate_route_score(agent, route, start_date, end_date)
             scores.append(score)
         max_index = scores.index(max(scores))
         return possible_routes[max_index]
