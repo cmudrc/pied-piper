@@ -116,6 +116,9 @@ class TestResourceClass(unittest.TestCase):
         self.assertEqual(remaining, 5)
 
     def test_resource_sub_0(self):
+        """
+        DeltaResource with 1 entry
+        """
         r = deepcopy(self.r)
         dr = DeltaResource({
             'food': 2,
@@ -133,6 +136,9 @@ class TestResourceClass(unittest.TestCase):
         self.assertDictEqual(remaining.batch, expected_result)
 
     def test_resource_sub_1(self):
+        """
+        DeltaResource with 2 entries
+        """
         r = deepcopy(self.r)
         dr = DeltaResource({
             'food': 2,
@@ -151,6 +157,9 @@ class TestResourceClass(unittest.TestCase):
         self.assertDictEqual(remaining.batch, expected_result)
 
     def test_resource_sub_2(self):
+        """
+        Subtract more than capacity
+        """
         r = deepcopy(self.r)
         dr = DeltaResource({
             'food': 10,
@@ -248,10 +257,18 @@ class TestResourceClass(unittest.TestCase):
         }
         self.assertDictEqual(remaining.batch, expected_result)
 
-
     def test_amount(self):
         r = deepcopy(self.r)
         self.assertEqual(r.amount('food'), r.current_resource['food'])
+
+    def test_demand(self):
+        r = deepcopy(self.r)
+        result = r.demand()
+        expected_result = {
+            'food': 5,
+            'water': 2,
+        }
+        self.assertDictEqual(result.batch, expected_result)
 
 
 class TestDeltaResourceClass(unittest.TestCase):

@@ -4,6 +4,8 @@ try: from .add import add_function
 except: from add import add_function
 try: from .sub import sub_function
 except: from sub import sub_function
+try: from .exchange import Exchange
+except: from exchange import Exchange
 
 
 class Resource:
@@ -35,6 +37,18 @@ class Resource:
         Amount of a certain resource
         """
         return self.current_resource[name]
+
+    def demand(self):
+        """
+        Calculate demand
+        """
+        result = {}
+        for name in self._aggregate_keys():
+            if self.max_resource[name] is None:
+                pass
+            else:
+                result[name] = self.max_resource[name] - self.current_resource[name]
+        return DeltaResource(batch=result)
 
     def add_new(self, name: str, current_amount: float=0, max_amount: float=None):
         """
@@ -73,17 +87,24 @@ class Resource:
             raise ValueError
         return remaining
 
-    def _aggregate_keys(self, other):
+    def _aggregate_keys(self, other=None):
         """
         Combine all resource names from both self and other
         """
         result = []
         for name in self.current_resource:
             if name not in result: result.append(name)
-        if isinstance(other, DeltaResource):
-            for name in other.batch:
-                if name not in result: result.append(name)
+        if other is not None:
+            if isinstance(other, DeltaResource):
+                for name in other.batch:
+                    if name not in result: result.append(name)
         return result
+
+    def value(self, exchange_rate: Exchange):
+        return value(
+            resource_dict=self.current_resource,
+            exchange_rate=exchange_rate
+        )
 
     def __add__(self, other):
         if isinstance(other, DeltaResource):
@@ -201,6 +222,12 @@ class DeltaResource:
                 break
         return result
 
+    def value(self, exchange_rate: Exchange):
+        return value(
+            resource_dict=self.batch,
+            exchange_rate=exchange_rate
+        )
+
     def __add__(self, other):
         result = None
         if isinstance(other, DeltaResource):
@@ -284,6 +311,18 @@ class DeltaResource:
 
     def __str__(self):
         return str(self.batch)
+
+
+def value(resource_dict: dict, exchange_rate: Exchange):
+    result = {}
+    for name in resource_dict:
+        er = exchange_rate.rate(
+            source=name,
+            target='wealth'
+        )
+        amount = resource_dict[name]
+        result[name] = er * amount
+    return DeltaResource(result)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,9 @@ import networkx as nx
 
 
 class Exchange:
-
+    """
+    Save exchange rates and calculate (target = rate * source)
+    """
     def __init__(self):
         self.G = nx.DiGraph()
 

@@ -36,8 +36,7 @@ class Transportation():
         Calculate the amount of required fuel
         """
         t = self.how_long(length)
-        result = self.fuel_rate * t.total_seconds()
-        return result
+        return self.fuel_rate * t.total_seconds()
 
     def __str__(self):
         return str(self.name)
