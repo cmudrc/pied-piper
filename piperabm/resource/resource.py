@@ -9,7 +9,9 @@ except: from exchange import Exchange
 
 
 class Resource:
-
+    """
+    Represent (storage for) resources
+    """
     def __init__(self, current_resource: dict={}, max_resource: dict={}):
         if len(current_resource) != len(max_resource):
             print("the length of *current_resource* must be equal to the length of *max_resource*")
@@ -210,7 +212,9 @@ class Resource:
 
 
 class DeltaResource:
-
+    """
+    Respresent a delta between two resources
+    """
     def __init__(self, batch: dict={}):
         self.batch = batch # {name: amount,} pairs
 
@@ -314,6 +318,9 @@ class DeltaResource:
 
 
 def value(resource_dict: dict, exchange_rate: Exchange):
+    """
+    Calculate the value of resources in unit of currency
+    """
     result = {}
     for name in resource_dict:
         er = exchange_rate.rate(
