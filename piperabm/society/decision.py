@@ -25,16 +25,19 @@ class Decision:
         path = data['path']
         adjusted_length_list = []
         resource_factor_list = []
-        current_resource = agent.resource.current_resouce
+        required_time_list = []
+        current_resource = agent.resource.current_resource
         for link in path:
             data = self.env.G[link[0]][link[1]]
             adjusted_length = self.env.adjusted_length(*link)
-            adjusted_length_list.append(adjusted_length)
+            adjusted_length_list.append(adjusted_length) # length
+            required_time = agent.transportation.how_long(adjusted_length).total_seconds()
+            required_time_list.append(required_time) # time
             required_resource = agent.transportation.how_much_fuel(adjusted_length)
-            resource_factor = required_resource / current_resource
-            resource_factor_list.append(resource_factor)
-            
-        distance_factor = sum(adjusted_length)
+            resource_factor_dict = required_resource / current_resource
+            resource_factor = max(list(resource_factor_dict.values()))
+            resource_factor_list.append(resource_factor) # resource
+        time_factor = sum(required_time_list)
         resource_factor = sum(resource_factor_list)
-        score = 1 / (distance_factor * resource_factor)
+        score = 1 / (time_factor * resource_factor)
         return score

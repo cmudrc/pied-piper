@@ -14,3 +14,8 @@ class Index:
         else:
             new_index = 0
         return new_index
+
+    def agent_info(self, agent, property):
+        index = self.find_agent(agent)
+        node = self.G.nodes[index]
+        return node[property]

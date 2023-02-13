@@ -60,4 +60,27 @@ class Add:
 
     def add_agents(self, n):
         for _ in range(n):
-            self.add_agent()
+            resource = Resource(
+                current_resource={
+                    'food': 20,
+                    'water': 20,
+                    'energy': 20,
+                },
+                max_resource={
+                    'food': 100,
+                    'water': 100,
+                    'energy': 100,
+                }
+            )
+            name = ''
+            settlement = None # default
+            idle_fuel_rate = None # default
+            wealth = 1000
+            self.add(
+                name=name,
+                settlement=settlement,
+                queue=Queue(),
+                resource=resource,
+                idle_fuel_rate=idle_fuel_rate,
+                wealth=wealth
+            )

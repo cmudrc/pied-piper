@@ -2,7 +2,7 @@ import networkx as nx
 
 from piperabm import Environment
 from piperabm.unit import DT, Date
-#from piperabm.resource import Asset, Resource
+#from piperabm.resource import Resource
 from piperabm.actions import Queue, Move
 
 try: from .search import Search
@@ -28,7 +28,7 @@ class Society(Add, Index, Graphics, Update, Search, Decision):
 
 
 if __name__ == "__main__":
-    from piperabm.unit import Unit, Date
+    from piperabm.unit import Date
     from piperabm.actions import Move, Walk
 
     m = Move(

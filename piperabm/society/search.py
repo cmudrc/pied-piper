@@ -30,7 +30,7 @@ class Search:
         """
         result = None
         if isinstance(input, str):
-            result = self._find_node_by_name(input, report=report)
+            result = self._find_agent_by_name(input, report=report)
         elif isinstance(input, int):
-            result = self._find_node_by_index(input, report=report)
+            result = self._find_agent_by_index(input, report=report)
         return result
