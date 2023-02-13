@@ -10,6 +10,12 @@ class Index:
             'market': [],
         }
 
+    def all_settlements(self):
+        """
+        Create a list of all settlement indexes
+        """
+        return self.node_types['settlement']
+
     def all_index(self):
         """
         Aggregate all lists of nodes in self.node_types

@@ -19,3 +19,14 @@ class Index:
         index = self.find_agent(agent)
         node = self.G.nodes[index]
         return node[property]
+
+    def all_agents_from(self, settlement):
+        """
+        Create a list of agent indexes that are from *settlement*
+        """
+        result = []
+        for index in self.index_list:
+            agent_settlement = self.agent_info(index, 'settlement')
+            if agent_settlement == settlement:
+                result.append(index)
+        return result

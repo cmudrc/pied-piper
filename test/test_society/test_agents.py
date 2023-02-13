@@ -32,6 +32,13 @@ class TestAddFunction(unittest.TestCase):
         soc.agent_info(0, 'idle_fuel_rate') # test function
         soc.agent_info(0, 'wealth') # test function
 
+    def test_all_agents_from(self):
+        soc = deepcopy(self.soc)
+        settlements = self.env.all_settlements()
+        soc.all_agents_from(settlement=settlements[0])
+        soc.all_agents_from(settlement=settlements[1])
+        soc.all_agents_from(settlement=settlements[2])
+
 
 if __name__ == "__main__":
     unittest.main()

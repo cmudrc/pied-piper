@@ -184,7 +184,7 @@ class TestEnvironmentClass(unittest.TestCase):
         edges_count = path.G.number_of_edges()
         self.assertEqual(edges_count, 0)
 
-    def test_9(self):
+    def test_10(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
         end_date = Date(2020, 1, 14)
@@ -194,6 +194,10 @@ class TestEnvironmentClass(unittest.TestCase):
         self.assertEqual(nodes_count, 0)
         edges_count = path.G.number_of_edges()
         self.assertEqual(edges_count, 0)
+
+    def test_all_settlements(self):
+        settlements = self.env.all_settlements()
+        self.assertEqual(len(settlements), 2)
 
 
 if __name__ == "__main__":
