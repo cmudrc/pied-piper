@@ -25,6 +25,14 @@ class Resource:
         self.current_resource = current_resource # {name: amount,}
         self.max_resource = max_resource # {name: amount,}
 
+    def to_delta_resource(self):
+        """
+        Convert current_resource into a DeltaResource object
+        """
+        return DeltaResource(
+            batch=deepcopy(self.current_resource)
+        )
+
     def resource_exists(self, name: str):
         """
         Check if the resource name exists
@@ -155,6 +163,8 @@ class Resource:
                 )
             result_remaining = DeltaResource(new_remaining_dict)
         else:
+            txt = "ERROR: " + str(type(other)) + " type not acceptible."
+            print(txt)
             raise ValueError
         return result, result_remaining
 

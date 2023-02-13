@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from piperabm.actions import Queue
 from piperabm.resource import Resource, DeltaResource
 from piperabm.unit import Unit
@@ -50,6 +52,7 @@ class Add:
             index,
             name=name,
             settlement=settlement_index,
+            current_settlement=deepcopy(settlement_index),
             pos=pos,
             active=True,
             queue=queue,

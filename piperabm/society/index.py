@@ -1,3 +1,6 @@
+from piperabm.resource import DeltaResource
+
+
 class Index:
     
     def __init__(self):
@@ -30,3 +33,32 @@ class Index:
             if agent_settlement == settlement:
                 result.append(index)
         return result
+
+    def all_resource_from(self, settlement):
+        result = DeltaResource(
+            {
+                'food': 0,
+                'water': 0,
+                'energy': 0,
+            }
+        )
+        agents_from_settlement = self.all_agents_from(settlement)
+        for agent in agents_from_settlement:
+            agent_resource = self.agent_info(agent, 'resource')
+            agent_resource = agent_resource.to_delta_resource()
+            result = result + agent_resource
+        return result
+
+    def all_demand_from(self, settlement):
+        result = DeltaResource(
+            {
+                'food': 0,
+                'water': 0,
+                'energy': 0,
+            }
+        )
+        agents_from_settlement = self.all_agents_from(settlement)
+        for agent in agents_from_settlement:
+            agent_resource = self.agent_info(agent, 'resource')
+            demand = agent_resource.demand()
+            result = result + demand
