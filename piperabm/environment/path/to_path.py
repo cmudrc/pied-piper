@@ -1,14 +1,9 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 
 from piperabm.tools import check_existance
 
 
-class Path:
-    def __init__(self, env, start_date=None, end_date=None):
-        self.env = env
-        self.G = nx.DiGraph()
-        self.to_path(start_date, end_date)
+class ToPath:
 
     def to_path(self, start_date=None, end_date=None):
         """
@@ -86,48 +81,3 @@ class Path:
                         if path_active is True and path_exists is True:
                             length = calculate_path_length(path, env)
                             self.G.add_edge(index, other, path=path, length=length)
-
-    def from_node_perspective(self, node):
-        return self.G.out_edges(node)
-
-    def path_to_pos(self, path: list):
-        """
-        Convert edge path data to a list of pos
-        """
-        pos_list = []
-        for index in path:
-            node = self.env.G.nodes[index]
-            pos = node['boundary'].center
-            pos_list.append(pos)
-        return pos_list
-
-    def path_real_length_list(self, path: list):
-        """
-        Convert edge path data to a list of real length
-        """
-        real_length_list = []
-        for index in path:
-            node = self.env.G.nodes[index]
-            length = node['length']
-            real_length_list.append(length)
-        return real_length_list
-
-    def show(self):
-        pos_dict = {}
-        label_dict = {}
-        for index in self.G.nodes():
-            node = self.G.nodes[index]
-            pos = node['pos']
-            pos_dict[index] = pos
-            label = node['name']
-            label_dict[index] = label
-        nx.draw_networkx(
-            self.G,
-            pos=pos_dict,
-            labels=label_dict
-        )
-        plt.show()
-
-    def __str__(self):
-        return str(self.G)
-
