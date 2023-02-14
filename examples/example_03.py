@@ -1,4 +1,4 @@
-from piperabm import Environment
+from piperabm import Environment, Society
 from piperabm.unit import Date, DT
 
 env = Environment(links_unit_length=10)
@@ -12,4 +12,10 @@ env.add_link(start=[0, 0], end="Settlement 3")
 
 start_date = Date.today()
 end_date = start_date + DT(days=1)
-env.show(start_date, end_date)
+#env.show(start_date, end_date)
+
+soc = Society(env)
+soc.add_agents(5)
+
+agents = soc.all_agents()
+r = soc.select_best_route(agents[0], start_date, end_date)

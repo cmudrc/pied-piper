@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from piperabm.actions import Queue
 from piperabm.resource import Resource, DeltaResource
+from piperabm.transportation import Foot
 from piperabm.unit import Unit
 
 
@@ -11,6 +12,7 @@ class Add:
         self,
         name: str = '',
         settlement=None,
+        transportation=None,
         queue=Queue(),
         resource=None,
         idle_fuel_rate=None,
@@ -46,6 +48,8 @@ class Add:
             settlement_index = self.env.random_settlement()
         else:
             settlement_index = self.env.find_node(settlement)
+        if transportation is None:
+            transportation = Foot()
         settlement_node = self.env.G.nodes[settlement_index]
         pos = settlement_node['boundary'].center
         self.G.add_node(
@@ -55,6 +59,7 @@ class Add:
             current_settlement=deepcopy(settlement_index),
             pos=pos,
             active=True,
+            transportation=transportation,
             queue=queue,
             resource=resource,
             idle_fuel_rate=idle_fuel_rate,

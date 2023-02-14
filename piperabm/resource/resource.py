@@ -108,6 +108,9 @@ class Resource:
             if isinstance(other, DeltaResource):
                 for name in other.batch:
                     if name not in result: result.append(name)
+            elif isinstance(other, Resource):
+                for name in other.current_resource:
+                    if name not in result: result.append(name)
         return result
 
     def value(self, exchange_rate: Exchange):
@@ -272,6 +275,22 @@ class DeltaResource:
             exchange_rate=exchange_rate
         )
 
+    def _aggregate_keys(self, other=None):
+        """
+        Combine all resource names from both self and other
+        """
+        result = []
+        for name in self.batch:
+            if name not in result: result.append(name)
+        if other is not None:
+            if isinstance(other, DeltaResource):
+                for name in other.batch:
+                    if name not in result: result.append(name)
+            elif isinstance(other, Resource):
+                for name in other.current_resource:
+                    if name not in result: result.append(name)
+        return result
+
     def __add__(self, other):
         result = None
         if isinstance(other, DeltaResource):
@@ -343,6 +362,18 @@ class DeltaResource:
             for name in new_batch:
                 new_batch[name] = new_batch[name] * other
             result = DeltaResource(new_batch)
+        elif isinstance(other, Resource):
+            result = {}
+            for name in other.current_amount:
+                if name in self._aggregate_keys():
+                    result[name] = self.current_resource[name] / other.current_resource[name]
+            result = DeltaResource(new_batch)
+        elif isinstance(other, DeltaResource):
+            result = {}
+            for name in other.batch:
+                if name in self._aggregate_keys():
+                    result[name] = self.current_resource[name] / other.batch[name]
+            result = DeltaResource(new_batch)
         return result
 
     def __truediv__(self, other):
@@ -350,6 +381,20 @@ class DeltaResource:
             new_batch = deepcopy(self.batch)
             for name in new_batch:
                 new_batch[name] = new_batch[name] / other
+            result = DeltaResource(new_batch)
+        elif isinstance(other, Resource):
+            new_batch = {}
+            for name in other.current_resource:
+                if name in self._aggregate_keys():
+                    if self.batch[name] > 0:
+                        new_batch[name] = self.batch[name] / other.current_resource[name]
+            result = DeltaResource(new_batch)
+        elif isinstance(other, DeltaResource):
+            new_batch = {}
+            for name in other.batch:
+                if name in self._aggregate_keys():
+                    if self.batch[name] > 0:
+                        new_batch[name] = self.batch[name] / other.batch[name]
             result = DeltaResource(new_batch)
         return result
 

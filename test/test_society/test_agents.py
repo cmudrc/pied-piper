@@ -87,7 +87,8 @@ class TestAddFunction(unittest.TestCase):
         agents = soc.all_agents()
         start_date = Date.today() + DT(days=1)
         end_date = start_date + DT(days=1)
-        soc.select_best_route(agents[0], start_date, end_date)
+        route = soc.select_best_route(agents[0], start_date, end_date)
+        self.assertEqual(len(route), 2)
 
 
 if __name__ == "__main__":
