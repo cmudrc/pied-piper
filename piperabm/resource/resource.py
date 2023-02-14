@@ -1,6 +1,5 @@
 from copy import deepcopy
 
-from piperabm.economy import Exchange
 try: from .add import add_function
 except: from add import add_function
 try: from .sub import sub_function
@@ -119,7 +118,7 @@ class Resource:
                     if name not in result: result.append(name)
         return result
 
-    def value(self, exchange_rate: Exchange):
+    def value(self, exchange_rate):
         return value(
             resource_dict=self.current_resource,
             exchange_rate=exchange_rate
@@ -275,7 +274,7 @@ class DeltaResource:
                 break
         return result
 
-    def value(self, exchange_rate: Exchange):
+    def value(self, exchange_rate):
         return value(
             resource_dict=self.batch,
             exchange_rate=exchange_rate
@@ -408,7 +407,7 @@ class DeltaResource:
         return str(self.batch)
 
 
-def value(resource_dict: dict, exchange_rate: Exchange):
+def value(resource_dict: dict, exchange_rate):
     """
     Calculate the value of resources in unit of currency
     """
