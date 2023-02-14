@@ -39,12 +39,29 @@ class TestAddFunction(unittest.TestCase):
         soc.all_agents_from(settlements[1])
         soc.all_agents_from(settlements[2])
 
-    def test_all_resources_from(self):
+    def test_all_agents_in(self):
         soc = deepcopy(self.soc)
         settlements = self.env.all_settlements()
-        soc.all_resource_from(settlements[0])
-        soc.all_resource_from(settlements[1])
-        soc.all_resource_from(settlements[2])
+        soc.all_agents_in(settlements[0])
+        soc.all_agents_in(settlements[1])
+        soc.all_agents_in(settlements[2])
+
+    def test_all_agents_available(self):
+        soc = deepcopy(self.soc)
+        settlements = self.env.all_settlements()
+        soc.all_agents_available(settlements[0])
+        soc.all_agents_available(settlements[1])
+        soc.all_agents_available(settlements[2])
+
+    def test_all_resources_from(self):
+        soc = deepcopy(self.soc)
+        agents = soc.all_agents()
+        soc.all_resource_from(agents)
+    
+    def test_all_demand_from(self):
+        soc = deepcopy(self.soc)
+        agents = soc.all_agents()
+        soc.all_demand_from(agents)
 
 
 if __name__ == "__main__":
