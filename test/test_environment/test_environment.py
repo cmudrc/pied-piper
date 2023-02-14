@@ -8,7 +8,7 @@ from piperabm.degradation import DiracDelta
 from piperabm.boundary import Circular
 
 
-class TestExistanecFunction(unittest.TestCase):
+class TestExistanceFunction(unittest.TestCase):
 
     start_date = Date(2020, 1, 2)
     end_date = Date(2020, 1, 4)
@@ -207,11 +207,26 @@ class TestEnvironmentClass(unittest.TestCase):
             )
         expected_result = Date(2020, 1, 4)
         self.assertEqual(info.year, expected_result.year)
+        self.assertEqual(info.month, expected_result.month)
+        self.assertEqual(info.day, expected_result.day)
 
     def test_node_type(self):
         env = deepcopy(self.env)
         node_type = env.node_type(1)
         self.assertEqual(node_type, 'settlement')
+
+    def test_link_info(self):
+        env = deepcopy(self.env)
+        info = env.link_info(
+            start="John's Home",
+            end=[20, 0],
+            property="initiation_date"
+        )
+        expected_result = Date(2020, 1, 2)
+        self.assertEqual(info.year, expected_result.year)
+        self.assertEqual(info.month, expected_result.month)
+        self.assertEqual(info.day, expected_result.day)
+
 
 if __name__ == "__main__":
     unittest.main()
