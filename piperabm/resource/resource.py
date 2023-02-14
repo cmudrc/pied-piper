@@ -59,6 +59,13 @@ class Resource:
                 result[name] = self.max_resource[name] - self.current_resource[name]
         return DeltaResource(batch=result)
 
+    def source(self):
+        """
+        Calculate source
+        """
+        result = deepcopy(self.current_resource)
+        return DeltaResource(batch=result)
+
     def add_new(self, name: str, current_amount: float=0, max_amount: float=None):
         """
         Add a new resource to the class
