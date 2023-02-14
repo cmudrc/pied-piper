@@ -2,6 +2,6 @@ from test import Test
 
 
 test = Test()
-#target = 'boundery'
+#target = 'environment'
 target = 'all'
 test.run(target)
