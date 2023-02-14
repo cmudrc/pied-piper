@@ -37,5 +37,17 @@ class Path(ToPath, Graphics):
             real_length_list.append(length)
         return real_length_list
 
+    def route_info(self, start, end, property):
+        """
+        Return *property* of edge between *start* and *end*
+        """
+        start = self.env.find_node(start)
+        end = self.env.find_node(end)
+        if start is not None and end is not None:
+            result = self.G[start][end][property]
+        else:
+            result = None
+        return result
+
     def __str__(self):
         return str(self.G)

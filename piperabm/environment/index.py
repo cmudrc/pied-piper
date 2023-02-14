@@ -54,7 +54,7 @@ class Index:
         """
         settlement_list = self.node_types['settlement']
         rnd = np.random.choice(settlement_list, size=1)
-        return rnd[0]
+        return int(rnd[0])
 
     def link_info(self, start, end, property):
         """
@@ -62,7 +62,11 @@ class Index:
         """
         start = self.find_node(start)
         end = self.find_node(end)
-        return self.G[start][end][property]
+        if start is not None and end is not None:
+            result = self.G[start][end][property]
+        else:
+            result = None
+        return result
 
     def settlement_info(self, node, property):
         """
@@ -71,7 +75,7 @@ class Index:
         result = None
         node_index = self.find_node(node)
         node_type = self.node_type(node_index)
-        if node_type == 'settlement':
+        if node_index is not None and node_type == 'settlement':
             node = self.G.nodes[node_index]
             result = node[property]
         return result

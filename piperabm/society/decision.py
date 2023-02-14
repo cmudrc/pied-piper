@@ -9,7 +9,9 @@ class Decision:
         return list(path.from_node_perspective(settlement_index))
 
     def select_best_route(self, agent, start_date, end_date):
-        
+        """
+        Select best possible route based on their scores
+        """
         possible_routes = self.possible_routes(agent, start_date, end_date)
         scores = []
         for route in possible_routes:
@@ -22,25 +24,54 @@ class Decision:
         """
         Calculate route score for an agent
         """
+        def score(resource_factor, time_factor, fuel_factor):
+            """
+            Calculate the score based on the factors
+            """
+            return resource_factor / (time_factor * fuel_factor)
+
+        def time_factor(agent, path):
+            """
+            Calculate duration of the trip
+            """
+            required_time_list = []
+            for link in path:
+                adjusted_length = path.env.adjusted_length(*link)
+                transportation = self.agent_info(agent, 'transportation')
+                required_time = transportation.how_long(adjusted_length).total_seconds()
+                required_time_list.append(required_time)
+            return sum(required_time_list)
+
+        def resource_factor(agent, destination):
+            """
+            Ratio of all resource available in destination to agent's current resource
+            """
+            resource = self.agent_info(agent, 'resource')
+            current_resource = resource.current_resource
+            agents = self.all_agents_available(destination)
+            all_resource = self.all_resource_from(agents)
+            ratio_dict = all_resource / current_resource
+            return min(list(ratio_dict.values()))
+
+        def fuel_factor(agent, path):
+            """
+            Ratio of required fuel until destination to agent's current resource
+            """
+            fuel_factor_list = []
+            resource = self.agent_info(agent, 'resource')
+            current_resource = resource.current_resource
+            transportation = self.agent_info(agent, 'transportation')
+            for link in path:
+                adjusted_length = path.env.adjusted_length(*link)
+                required_fuel = transportation.how_much_fuel(adjusted_length)
+                fuel_factor_dict = required_fuel / current_resource
+                fuel_factor = max(list(fuel_factor_dict.values()))
+                fuel_factor_list.append(fuel_factor)
+            return sum(fuel_factor_list)
+
         path_graph = self.env.to_path(start_date, end_date)
-        data = path_graph.G[route[0]][route[1]]
-        path = data['path']
-        adjusted_length_list = []
-        fuel_factor_list = []
-        required_time_list = []
-        current_resource = agent.resource.current_resource
-        for link in path:
-            data = self.env.G[link[0]][link[1]]
-            adjusted_length = self.env.adjusted_length(*link)
-            adjusted_length_list.append(adjusted_length) # length
-            required_time = agent.transportation.how_long(adjusted_length).total_seconds()
-            required_time_list.append(required_time) # time
-            required_resource = agent.transportation.how_much_fuel(adjusted_length)
-            fuel_factor_dict = required_resource / current_resource
-            fuel_factor = max(list(fuel_factor_dict.values()))
-            fuel_factor_list.append(fuel_factor) # resource
-        resource_factor = None ########
-        time_factor = sum(required_time_list)
-        fuel_factor = sum(fuel_factor_list)
-        score = resource_factor / (time_factor * fuel_factor)
-        return score
+        path = path_graph.route_info(*route, 'path')
+        tf = time_factor(agent, path)
+        rf = resource_factor(agent, route)
+        ff = fuel_factor(agent, path)
+        return score(resource_factor=rf, time_factor=tf, fuel_factor=ff)

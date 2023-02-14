@@ -158,6 +158,17 @@ class TestEnvironmentClass(unittest.TestCase):
         edges_count = path.G.number_of_edges()
         self.assertEqual(edges_count, 0)
 
+    def test_route_info(self):
+        env = deepcopy(self.env)
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 7)
+        env.update_elements(start_date, end_date)
+        path = env.to_path(start_date, end_date)
+        all_settlements = env.all_settlements()
+        route = path.route_info(all_settlements[0], all_settlements[1], 'path')
+        expected_result = [0, 2, 1]
+        self.assertListEqual(route, expected_result)
+
     def test_all_settlements(self):
         settlements = self.env.all_settlements()
         self.assertEqual(len(settlements), 2)
