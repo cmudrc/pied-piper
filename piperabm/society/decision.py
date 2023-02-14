@@ -24,7 +24,7 @@ class Decision:
         data = path_graph.G[route[0]][route[1]]
         path = data['path']
         adjusted_length_list = []
-        resource_factor_list = []
+        fuel_factor_list = []
         required_time_list = []
         current_resource = agent.resource.current_resource
         for link in path:
@@ -34,10 +34,11 @@ class Decision:
             required_time = agent.transportation.how_long(adjusted_length).total_seconds()
             required_time_list.append(required_time) # time
             required_resource = agent.transportation.how_much_fuel(adjusted_length)
-            resource_factor_dict = required_resource / current_resource
-            resource_factor = max(list(resource_factor_dict.values()))
-            resource_factor_list.append(resource_factor) # resource
+            fuel_factor_dict = required_resource / current_resource
+            fuel_factor = max(list(fuel_factor_dict.values()))
+            fuel_factor_list.append(fuel_factor) # resource
+        resource_factor = None ########
         time_factor = sum(required_time_list)
-        resource_factor = sum(resource_factor_list)
-        score = 1 / (time_factor * resource_factor)
+        fuel_factor = sum(fuel_factor_list)
+        score = resource_factor / (time_factor * fuel_factor)
         return score

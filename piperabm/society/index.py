@@ -20,9 +20,8 @@ class Index:
 
     def agent_info(self, agent, property):
         index = self.find_agent(agent)
-        node = self.G.nodes[index]
-        return node[property]
-
+        return self.G.nodes[index][property]
+        
     def all_agents_from(self, settlement):
         """
         Create a list of agent indexes that are from *settlement*

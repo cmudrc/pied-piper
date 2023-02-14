@@ -199,6 +199,19 @@ class TestEnvironmentClass(unittest.TestCase):
         settlements = self.env.all_settlements()
         self.assertEqual(len(settlements), 2)
 
+    def test_settlement_info(self):
+        env = deepcopy(self.env)
+        info = env.settlement_info(
+            node="Peter's Home",
+            property="initiation_date"
+            )
+        expected_result = Date(2020, 1, 4)
+        self.assertEqual(info.year, expected_result.year)
+
+    def test_node_type(self):
+        env = deepcopy(self.env)
+        node_type = env.node_type(1)
+        self.assertEqual(node_type, 'settlement')
 
 if __name__ == "__main__":
     unittest.main()

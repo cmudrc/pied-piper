@@ -49,6 +49,29 @@ class Index:
         return new_index
 
     def random_settlement(self):
+        """
+        Generate random settlement index
+        """
         settlement_list = self.node_types['settlement']
         rnd = np.random.choice(settlement_list, size=1)
         return rnd[0]
+
+    def link_info(self, start, end, property):
+        """
+        Return *property* of edge between *start* and *end*
+        """
+        start = self.find_node(start)
+        end = self.find_node(end)
+        return self.G[start][end][property]
+
+    def settlement_info(self, node, property):
+        """
+        Return *property* of *node*
+        """
+        result = None
+        node_index = self.find_node(node)
+        node_type = self.node_type(node_index)
+        if node_type == 'settlement':
+            node = self.G.nodes[node_index]
+            result = node[property]
+        return result
