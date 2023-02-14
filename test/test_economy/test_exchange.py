@@ -1,7 +1,8 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import Resource, DeltaResource, Exchange
+from piperabm.resource import Resource, DeltaResource
+from piperabm.economy import Exchange
 
 
 class TestExchangeClass(unittest.TestCase):
@@ -50,6 +51,7 @@ class TestExchangeClass(unittest.TestCase):
             'water': 16,
         }
         self.assertDictEqual(result.batch, expected_result)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -25,11 +25,10 @@ class Index:
         return self.index_list
 
     def agent_info(self, agent, property):
+        result = None
         index = self.find_agent(agent)
         if index is not None:
             result = self.G.nodes[index][property]
-        else:
-            result = None
         return result
         
     def all_agents_from(self, settlement):

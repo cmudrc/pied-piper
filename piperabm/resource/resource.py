@@ -1,11 +1,10 @@
 from copy import deepcopy
 
+from piperabm.economy import Exchange
 try: from .add import add_function
 except: from add import add_function
 try: from .sub import sub_function
 except: from sub import sub_function
-try: from .exchange import Exchange
-except: from exchange import Exchange
 
 
 class Resource:
