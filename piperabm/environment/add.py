@@ -10,10 +10,10 @@ class Add:
         self,
         name='',
         pos=[0, 0],
-        boundary=Point(),
+        boundary=None,
         active=True,
         initiation_date=Date.today(),
-        degradation_dist=Eternal()
+        degradation_dist=None
     ):
         """
         Add a new settlement
@@ -32,6 +32,10 @@ class Add:
 
         if create_node is True:
             index = self.find_next_index()
+            if degradation_dist is None:
+                degradation_dist = Eternal()
+            if boundary is None:
+                boundary = Point()
             boundary.center = pos
             self.G.add_node(
                 index,
