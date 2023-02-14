@@ -4,3 +4,6 @@ class Transaction:
         self.agent = agent
         self.wallet = wallet
         self.resource = resource
+
+    def demand(self):
+        return self.resource.demand()
