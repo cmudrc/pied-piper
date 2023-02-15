@@ -37,7 +37,7 @@ class Accessibility:
             currents.append(val)
         return currents
     
-    def efficiency(self):
+    def calculate(self):
         currents = self.accessibility_current()
         current = DeltaResource(
             {

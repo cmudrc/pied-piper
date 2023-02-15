@@ -60,10 +60,10 @@ class TestAccessibilityClass(unittest.TestCase):
     max_resources = r1_d_max + r2_d_max
     accessibility.add(current_resources, max_resources, duration)
 
-    def test_efficiency(self):
+    def test_calculate(self):
         acc = deepcopy(self.accessibility)
         efficiency = acc.efficiency()
-        #print(efficiency)
+        print(efficiency)
         expected_result = {
             'food': 0.5,
             'water': 0.405,
@@ -75,7 +75,7 @@ class TestAccessibilityClass(unittest.TestCase):
         acc = deepcopy(self.accessibility)
         #acc.to_plt('food')
         acc.show('energy')
-        
+
 
 if __name__ == "__main__":
     unittest.main()
