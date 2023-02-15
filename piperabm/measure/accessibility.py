@@ -67,7 +67,7 @@ class Accessibility:
         def create_x():
             result = []
             for i, _ in enumerate(self.durations_list):
-                val = sum(self.durations_list[:i]) + self.durations_list[0]
+                val = sum(self.durations_list[1:i+1])
                 result.append(val)
             return result
 

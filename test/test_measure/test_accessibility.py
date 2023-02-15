@@ -62,7 +62,7 @@ class TestAccessibilityClass(unittest.TestCase):
 
     def test_calculate(self):
         acc = deepcopy(self.accessibility)
-        efficiency = acc.efficiency()
+        efficiency = acc.calculate()
         print(efficiency)
         expected_result = {
             'food': 0.5,
