@@ -79,10 +79,11 @@ class Economy:
                 agent_source = self.agents_source(agent)
                 others_demand = self.agents_demand(others)
                 others_source = self.agents_source(others)
-                delta = others_source - agent_demand
-                val = delta.value(self.exchange)
-                #agent_source - others_demand
-                score = None
+                metric_buyer = others_source - agent_demand
+                metric_seller = others_demand - agent_source
+                val_buyer = metric_buyer.value(self.exchange)
+                val_seller = metric_seller.value(self.exchange)
+                score = val_buyer - val_seller
                 transaction = self.find_transaction(agent)
                 transaction.score = score
 
@@ -90,4 +91,5 @@ class Economy:
             """
             Sort transactions based on their scores
             """
-            pass
+            priority_score()
+            # sort based on score
