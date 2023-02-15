@@ -73,8 +73,8 @@ class TestAccessibilityClass(unittest.TestCase):
 
     def test_show(self):
         acc = deepcopy(self.accessibility)
-        #acc.to_plt('food')
-        acc.show('energy')
+        acc.to_plt('water')
+        #acc.show('water')
 
 
 if __name__ == "__main__":

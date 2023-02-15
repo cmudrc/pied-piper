@@ -90,7 +90,7 @@ class Accessibility:
                     result_ideal[name].append(ideal)
             return result_current, result_ideal
 
-        title = resource_name + ' ' + "accessibility over time"
+        title = resource_name + ' ' + "accessibility vs. time"
         plt.title(title)
         plt.xlabel('Time')
         plt.ylabel('Accessibity')

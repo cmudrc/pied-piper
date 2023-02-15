@@ -38,7 +38,7 @@ class TravelLength:
                 result.append(val)
             return result
             
-        title = "travel length over time"
+        title = "travel length vs. time"
         plt.title(title)
         plt.xlabel('Time')
         plt.ylabel('Travel Length')
