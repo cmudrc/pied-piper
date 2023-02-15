@@ -60,11 +60,16 @@ class TestAddFunction(unittest.TestCase):
         soc.all_agents_available(settlements[1])
         soc.all_agents_available(settlements[2])
 
-    def test_all_resources_from(self):
+    def test_all_resource_from(self):
         soc = deepcopy(self.soc)
         agents = soc.all_agents()
         soc.all_resource_from(agents)
     
+    def test_all_max_resource_from(self):
+        soc = deepcopy(self.soc)
+        agents = soc.all_agents()
+        soc.all_max_resource_from(agents)
+
     def test_all_demand_from(self):
         soc = deepcopy(self.soc)
         agents = soc.all_agents()

@@ -68,9 +68,30 @@ class Index:
                 result.append(index)
         return result
 
+    def all_max_resource_from(self, agents):
+        """
+        Calculate all max_resource for a list of agents
+        """
+        if isinstance(agents, int):
+            agents = [agents]
+        result = DeltaResource(
+            {
+                'food': 0,
+                'water': 0,
+                'energy': 0,
+            }
+        )
+        for agent in agents:
+            agent_resource = self.agent_info(agent, 'resource')
+            max_resource = agent_resource.max_resource
+            max_resource = DeltaResource(batch=max_resource)
+            result = result + max_resource
+        return result
+
+
     def all_resource_from(self, agents):
         """
-        Calculate all resource from list of agents
+        Calculate all resource for a list of agents
         """
         if isinstance(agents, int):
             agents = [agents]

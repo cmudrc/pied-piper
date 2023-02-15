@@ -63,6 +63,6 @@ class ProgressiveDegradation:
     """
     Represent degradation property of an element that degrades over time due to usage.
     """
-    def progressive_degradation_factor(self, current_axels, total_axels):
-        factor = 1 + (5 * current_axels/total_axels)
+    def progressive_degradation_factor(self, current_axels, max_axels):
+        factor = 1 + (5 * current_axels/max_axels)
         return factor

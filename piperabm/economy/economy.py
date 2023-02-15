@@ -56,6 +56,17 @@ class Economy:
         return result
 
     def solve(self):
+        def transaction(source, demand):
+            if source > demand:
+                remaining = source - demand
+                source = remaining
+                demand = 0
+            else:
+                remaining = demand - source
+                source = 0
+                demand = remaining
+            return source, demand
+                
         def priority_score():
             """
             Calculate the score to sort agents based on priority
@@ -67,8 +78,9 @@ class Economy:
                 agent_source = self.agents_source(agent)
                 others_demand = self.agents_demand(others)
                 others_source = self.agents_source(others)
-                others_source - agent_demand
-                agent_source - others_demand
+                delta = others_source - agent_demand
+                val = delta.value(self.exchange)
+                #agent_source - others_demand
                 score = None
                 transaction = self.find_transaction(agent)
                 transaction.score = score
