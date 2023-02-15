@@ -4,7 +4,7 @@
 __pycache__/
 *.egg-info/
 BASEMENT/
-tips/
+guide/
 .VSCodeCounter/
 settings.json
 .DS_Store
