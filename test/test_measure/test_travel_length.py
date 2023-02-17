@@ -15,7 +15,7 @@ class TestTravelLengthClass(unittest.TestCase):
 
     def test_show(self):
         self.tl.to_plt()
-        self.tl.show()
+        #self.tl.show()
 
 
 if __name__ == "__main__":
