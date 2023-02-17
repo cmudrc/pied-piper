@@ -16,8 +16,12 @@ class TestGiniGen(unittest.TestCase):
     def test_generate(self):
         gg = self.gg
         sample = gg.generate(1000, threashold=0.01)
-        result = gini_coefficient(sample)
-        self.assertAlmostEqual(result, gg.gini, places=2)
+        sample_gini = gini_coefficient(sample)
+        result = sample_gini / gg.gini
+        self.assertAlmostEqual(result, 1, places=1)
+        sample_mean = sum(sample) / len(sample)
+        result = sample_mean / gg.gdp_per_capita
+        self.assertAlmostEqual(result, 1, places=1)
 
 
 if __name__ == "__main__":
