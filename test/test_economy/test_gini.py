@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.tools import GiniGen, gini_coefficient
+from piperabm.economy import GiniGen, gini_coefficient
 
 
 class TestGiniGen(unittest.TestCase):
