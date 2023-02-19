@@ -74,7 +74,7 @@ if __name__ == "__main__":
     income = [100, 300, 500, 700, 900, 300, 500, 700, 500]
     gini = gini_coefficient(income)
     gdp_per_capita = sum(income) / len(income)
-    g = GiniGen(
+    g = GiniGenerator(
         gini_index=gini,
         gdp_per_capita=gdp_per_capita
     )

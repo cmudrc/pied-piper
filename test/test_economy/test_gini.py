@@ -6,6 +6,7 @@ from piperabm.economy import GiniGenerator, gini_coefficient
 class TestGiniGen(unittest.TestCase):
 
     income = [100, 300, 500, 700, 900, 300, 500, 700, 500]
+    
     gini = gini_coefficient(income)
     gdp_per_capita = sum(income) / len(income)
     gg = GiniGenerator(
