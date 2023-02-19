@@ -59,6 +59,9 @@ class GiniGenerator:
     def check_gini(self, x):
         return gini_coefficient(x)
 
+    def mean(self, sample):
+        return sum(sample) / len(sample)
+
     def __str__(self):
         txt = ''
         txt += 'mean: ' + str(self.mu) + '\n'
@@ -71,12 +74,21 @@ class GiniGenerator:
 
 
 if __name__ == "__main__":
+
     income = [100, 300, 500, 700, 900, 300, 500, 700, 500]
+
     gini = gini_coefficient(income)
+    gini = 0.5
     gdp_per_capita = sum(income) / len(income)
     g = GiniGenerator(
         gini_index=gini,
         gdp_per_capita=gdp_per_capita
     )
     sample = g.generate(1000)
-    g.show(sample)
+
+    #g.show(income)
+    #g.show(sample)
+    print(">>> input: ")
+    print(" " + "gini: " + str(gini) + ", " + "gdp_per_capita: " + str(gdp_per_capita))
+    print(">>> sample: ")
+    print(" " + "gini: " + str(gini_coefficient(sample)) + ", " + "gdp_per_capita: " + str(sum(sample) / len(sample)))
