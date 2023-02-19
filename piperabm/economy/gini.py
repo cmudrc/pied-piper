@@ -17,7 +17,7 @@ def gini_coefficient(x):
     return diffsum / (len(x)**2 * np.mean(x))
 
 
-class GiniGen:
+class GiniGenerator:
     
     def __init__(self, gini_index: float, gdp_per_capita: float):
         if gini_index >= 0 and gini_index <= 1:
