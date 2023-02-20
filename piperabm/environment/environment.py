@@ -56,9 +56,9 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         length = edge['length']
         return difficulty * pd * length
 
-    def size(self):
+    def xy_lim(self):
         """
-        Resturn size of environment based on elemets pos
+        Resturn x and y limits of environment based on elemets pos
         """
         x_min, x_max = None, None
         y_min, y_max = None, None
@@ -79,6 +79,16 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         x_lim = [x_min, x_max]
         return x_lim, y_lim
 
+    def size(self):
+        """
+        Return size of environment
+        """
+        x_lim, y_lim = self.xy_lim()
+        x_size = x_lim[1] - x_lim[0]
+        y_size = y_lim[1] - y_lim[0]
+        size = [x_size, y_size]
+        return size
+        
     def to_path(self, start_date=None, end_date=None):
         return Path(env=self, start_date=start_date, end_date=end_date)
 
