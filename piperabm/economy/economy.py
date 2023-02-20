@@ -1,6 +1,5 @@
 from copy import deepcopy
 
-from piperabm.resource import DeltaResource
 try:
     from .player import Player
 except:
@@ -13,95 +12,6 @@ except:
 
 class Economy:
 
-    def __init__(self, players, society, exchange: Exchange):
-        if isinstance(players, list):
-            self.players = players
-        elif isinstance(players, Player):
-            self.players = [players]
-        self.society = society
-        self.exchange = exchange
-
-    def all_agents(self):
-        result = []
-        for player in self.players:
-            agent = player.agent
-            if agent not in result:
-                result.append(agent)
-        return result
-
-    def find_transaction(self, agent):
-        result = None
-        for transaction in self.transactions:
-            if transaction.agent == agent:
-                result = transaction
-        return result
-
-    def agents_demand(self, agents):
-        if not isinstance(agents, list):
-            agents = [agents]
-        result = DeltaResource(
-            {'food': 0, 'water': 0, 'energy': 0, }
-        )
-        for agent in agents:
-            transaction = self.find_transaction(agent)
-            demand = transaction.demand()
-            result = result + demand
-        return result
-
-    def agents_source(self, agents):
-        if not isinstance(agents, list):
-            agents = [agents]
-        result = DeltaResource(
-            {'food': 0, 'water': 0, 'energy': 0, }
-        )
-        for agent in agents:
-            transaction = self.find_transaction(agent)
-            source = transaction.source()
-            result = result + source
-        return result
-
-    def transaction(self, source, demand):
-        if source > demand:
-            remaining = source - demand
-            source = remaining
-            demand = 0
-        else:
-            remaining = demand - source
-            source = 0
-            demand = remaining
-        return source, demand
-
-    def solve(self):
-
-        def priority_score():
-            """
-            Calculate the score to sort agents based on priority
-            """
-            for agent in self.all_agents():
-                others = deepcopy(self.all_agents())
-                others.remove(agent)
-                agent_demand = self.agents_demand(agent)
-                agent_source = self.agents_source(agent)
-                others_demand = self.agents_demand(others)
-                others_source = self.agents_source(others)
-                metric_buyer = others_source - agent_demand
-                metric_seller = others_demand - agent_source
-                val_buyer = metric_buyer.value(self.exchange)
-                val_seller = metric_seller.value(self.exchange)
-                score = val_buyer - val_seller
-                transaction = self.find_transaction(agent)
-                transaction.score = score
-
-        def sort_transactions():
-            """
-            Sort transactions based on their scores
-            """
-            priority_score()
-            # sort based on score
-
-
-class Econ:
-
     def __init__(self, exchange):
         self.players = []
         self.exchange = exchange
@@ -111,6 +21,75 @@ class Econ:
             players = [players]
         for player in players:
             self.players.append(player)
+
+    def find_player(self, index):
+        for player in self.players:
+            if player.index == index:
+                return player
+
+    def total_demand(self, resource=None):
+        result = None
+        if resource is None:
+            pass
+        else:
+            ls = []
+            for player in self.players:
+                demand = player.demand[resource]
+                ls.append(demand)
+            result = sum(ls)
+        return result
+
+    def total_source(self, resource=None):
+        ls = []
+        for player in self.players:
+            source = player.source[resource]
+            ls.append(source)
+        result = sum(ls)
+        return result
+
+    def all_resources(self):
+        result = []
+        for player in self.players:
+            for name in player.source:
+                if name not in result: result.append(name)
+            for name in player.demand:
+                if name not in result: result.append(name)
+        return result
+
+    def solve(self):
+        """
+        Solve the resource allocation problem for the pool of players
+        """
+        for player in self.players:
+
+            for resource in self.all_resources():
+
+                t_s = self.total_source(resource)
+                t_d = self.total_demand(resource)
+                diff = t_s - t_d
+
+                player_source = player.source[resource]
+                player_new_source = (player_source / t_s) * abs(diff)
+                player.new_source[resource] = player_new_source
+
+                player_demand = player.demand[resource]
+                player_demand_max = player.wallet / self.exchange.rate(resource, 'wealth')
+                if player_demand > player_demand_max:
+                    player_demand = player_demand_max
+                player_new_demand = (player_demand / t_d) * abs(diff)
+                player.new_demand[resource] = player_new_demand
+                
+                delta_source = player_source - player_new_source
+                player_new_wallet = player.wallet + (delta_source * self.exchange.rate(resource, 'wealth'))
+                delta_demand = player_demand - player_new_demand
+                player_new_wallet = player_new_wallet - (delta_demand * self.exchange.rate(resource, 'wealth'))
+                player.new_wallet = player_new_wallet
+
+    def __str__(self):
+        txt = ''
+        for player in self.players:
+            txt += player.__str__() + '\n'
+        return txt
 
 
 if __name__ == "__main__":
@@ -156,5 +135,9 @@ if __name__ == "__main__":
     exchange.add('food', 'wealth', 10)
     exchange.add('water', 'wealth', 2)
 
-    econ = Econ(exchange)
+    econ = Economy(exchange)
     econ.add([p1, p2, p3])
+    econ.solve()
+
+    for player in econ.players:
+        print(player)

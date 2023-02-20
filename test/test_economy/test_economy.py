@@ -1,50 +1,95 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import Resource, DeltaResource
-from piperabm.economy import Exchange, Transaction, Economy
+from piperabm.economy import Player, Economy, Exchange
+
+
+class TestEconomyClass1(unittest.TestCase):
+
+    p1 = Player(
+        1,
+        source={
+            'food': 4,
+        },
+        demand={
+            'food': 6,
+        },
+        wallet=10
+    )
+    p2 = Player(
+        2,
+        source={
+            'food': 2,
+        },
+        demand={
+            'food': 8,
+        },
+        wallet=20
+        )
+
+    exchange = Exchange()
+    exchange.add('food', 'wealth', 5)
+
+    econ = Economy(exchange)
+    econ.add([p1, p2])
+
+    def test_solve(self):
+        econ = deepcopy(self.econ)
+        econ.solve()
+        print(econ)
 
 
 class TestEconomyClass(unittest.TestCase):
 
-    t0 = Transaction(
-        agent=0,
-        wallet=100,
-        resource=Resource(
-            current_resource={
-                'food': 2,
-                'water': 5,
-            },
-            max_resource={
-                'food': 10,
-                'water': 10,
-            }
-        )
+    p1 = Player(
+        1,
+        source={
+            'food': 4,
+            'water': 5,
+        },
+        demand={
+            'food': 6,
+            'water': 5,
+        },
+        wallet=10
     )
-    t1 = Transaction(
-        agent=1,
-        wallet=200,
-        resource=Resource(
-            current_resource={
-                'food': 18,
-                'water': 10,
-            },
-            max_resource={
-                'food': 20,
-                'water': 20,
-            }
+    p2 = Player(
+        2,
+        source={
+            'food': 2,
+            'water': 5,
+        },
+        demand={
+            'food': 8,
+            'water': 5,
+        },
+        wallet=20
         )
-    )
-    transactions = [t0, t1]
+    p3 = Player(
+        3,
+        source={
+            'food': 5,
+            'water': 5,
+        },
+        demand={
+            'food': 5,
+            'water': 5,
+        },
+        wallet=20
+        )
+
     exchange = Exchange()
     exchange.add('food', 'wealth', 10)
     exchange.add('water', 'wealth', 2)
-    exchange.add('energy', 'wealth', 5)
-    eco = Economy(transactions, exchange)
 
-    def test_economy(self):
-        eco = deepcopy(self.eco)
-        eco.solve()
+    econ = Economy(exchange)
+    econ.add([p1, p2, p3])
+
+    def test_solve(self):
+        econ = deepcopy(self.econ)
+        econ.solve()
+        #print(econ)
+
 
 
 if __name__ == "__main__":

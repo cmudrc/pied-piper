@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 class Player:
 
     def __init__(self, agent, source, demand, wallet):
@@ -5,13 +8,35 @@ class Player:
         self.source = source
         self.demand = demand
         self.wallet = wallet
+        # will be calculated:
+        self.new_source = deepcopy(source)
+        self.new_demand = deepcopy(demand)
+        self.new_wallet = deepcopy(wallet)
 
-    def sell(self, volume, cost):
-        self.source -= volume
-        self.demand += volume
-        self.wallet += cost
+    '''
+    def sell(self, resource, volume, cost):
+        self.new_source[resource] -= volume
+        self.new_demand[resource] += volume
+        self.new_wallet += cost
 
-    def buy(self, volume, cost):
-        self.source += volume
-        self.demand -= volume
-        self.wallet -= cost
+    def buy(self, resource, volume, cost):
+        self.new_source[resource] += volume
+        self.new_demand[resource] -= volume
+        self.new_wallet -= cost
+    '''
+
+    def __str__(self):
+        txt_info = ">>> index: " + str(self.index)
+        txt_start = "## start: "
+        txt_start += str({
+            "source": self.source,
+            "demand": self.demand,
+            "wallet": self.wallet
+        })
+        txt_end = "## end: "
+        txt_end += str({
+            "source": self.new_source,
+            "demand": self.new_demand,
+            "wallet": self.new_wallet
+        })
+        return txt_info + '\n' + txt_start + '\n' + txt_end
