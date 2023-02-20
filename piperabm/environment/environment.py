@@ -45,6 +45,9 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         super().__init__()
 
     def adjusted_length(self, start_node, end_node):
+        """
+        Calculate adjusted_length between *start_node* and *end_node*
+        """
         edge = self.G[start_node][end_node]
         difficulty = edge['difficulty']
         current_axels = edge['current_axels']
@@ -52,6 +55,29 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         pd = self.progressive_degradation_factor(current_axels, total_axels)
         length = edge['length']
         return difficulty * pd * length
+
+    def size(self):
+        """
+        Resturn size of environment based on elemets pos
+        """
+        x_min, x_max = None, None
+        y_min, y_max = None, None
+        for index in self.all_index():
+            boundary = self.node_info(index, 'boundary')
+            pos = boundary.center
+            x = pos[0]
+            y = pos[1]
+            if x_max is None: x_max = x
+            elif x > x_max: x_max = x
+            if x_min is None: x_min = x
+            elif x < x_min: x_min = x
+            if y_max is None: y_max = y
+            elif y > y_max: y_max = y
+            if y_min is None: y_min = y
+            elif y < y_min: y_min = y
+        y_lim = [y_min, y_max]
+        x_lim = [x_min, x_max]
+        return x_lim, y_lim
 
     def to_path(self, start_date=None, end_date=None):
         return Path(env=self, start_date=start_date, end_date=end_date)

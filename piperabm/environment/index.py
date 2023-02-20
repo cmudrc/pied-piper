@@ -70,7 +70,7 @@ class Index:
 
     def settlement_info(self, node, property):
         """
-        Return *property* of *node*
+        Return *property* of settlement *node*
         """
         result = None
         node_index = self.find_node(node)
@@ -79,3 +79,10 @@ class Index:
             node = self.G.nodes[node_index]
             result = node[property]
         return result
+
+    def node_info(self, node_index, property):
+        """
+        Return *property* of all types of nodes
+        """
+        node = self.G.nodes[node_index]
+        return node[property]

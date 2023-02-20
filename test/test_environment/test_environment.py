@@ -189,6 +189,15 @@ class TestEnvironmentClass(unittest.TestCase):
         node_type = env.node_type(1)
         self.assertEqual(node_type, 'settlement')
 
+    def test_node_info(self):
+        env = deepcopy(self.env)
+        info = env.node_info(
+            node_index=0,
+            property="boundary"
+        )
+        expected_result = [-2, -2]
+        self.assertListEqual(info.center, expected_result)
+
     def test_link_info(self):
         env = deepcopy(self.env)
         info = env.link_info(
@@ -200,6 +209,14 @@ class TestEnvironmentClass(unittest.TestCase):
         self.assertEqual(info.year, expected_result.year)
         self.assertEqual(info.month, expected_result.month)
         self.assertEqual(info.day, expected_result.day)
+
+    def test_size(self):
+        env = deepcopy(self.env)
+        x_lim, y_lim = env.size()
+        expected_result = [-2, 20]
+        self.assertListEqual(x_lim, expected_result)
+        expected_result = [-2, 20]
+        self.assertListEqual(y_lim, expected_result)
 
 
 if __name__ == "__main__":
