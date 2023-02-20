@@ -1,4 +1,4 @@
 from .economy import Economy
-from .transaction import Transaction
+from .player import Player
 from .exchange import Exchange
 from .gini import GiniGenerator, gini_coefficient
