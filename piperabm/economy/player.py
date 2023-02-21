@@ -39,6 +39,27 @@ class Player:
         result["wallet"] = delta_wallet
         return result
 
+    def actual_demand(self, exchange_rate):
+        """
+        When the agent does not have enough money, they can't have a demand more than a certain point
+        """
+        player_demand = deepcopy(self.demand)
+        for name in self.demand:
+            player_demand_max = self.wallet / exchange_rate.rate(name, 'wealth')
+            if player_demand[name] > player_demand_max:
+                player_demand[name] = player_demand_max
+        return player_demand
+
+    def value(self, exchange_rate):
+        result = self.wallet
+        #result += value(self.current, exchange_rate)
+        return result
+
+    def new_value(self, exchange_rate):
+        result = self.wallet
+        #result += value(self.new_current, exchange_rate)
+        return result
+
     def __str__(self):
         txt_info = ">>> index: " + str(self.index)
         txt_start = "## start: "
