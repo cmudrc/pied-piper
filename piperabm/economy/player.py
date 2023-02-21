@@ -24,6 +24,20 @@ class Player:
         self.new_demand[resource] -= volume
         self.new_wallet -= cost
     '''
+    def delta(self):
+        result = {}
+        delta_source = {}
+        for name in self.source:
+            delta_source[name] = self.new_source[name] - self.source[name]
+        result["source"] = delta_source
+        delta_demand = {}
+        for name in self.demand:
+            delta_demand[name] = self.new_demand[name] - self.demand[name]
+        result["demand"] = delta_demand
+        delta_wallet = {}
+        delta_wallet = self.new_wallet - self.wallet
+        result["wallet"] = delta_wallet
+        return result
 
     def __str__(self):
         txt_info = ">>> index: " + str(self.index)

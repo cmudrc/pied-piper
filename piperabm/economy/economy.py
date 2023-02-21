@@ -27,6 +27,13 @@ class Economy:
             if player.index == index:
                 return player
 
+    def size(self):
+        """
+        Calculate pool total value
+        """
+        result = 0
+        return result
+
     def total_demand(self, resource=None):
         result = None
         if resource is None:
