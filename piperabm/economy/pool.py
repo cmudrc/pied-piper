@@ -61,10 +61,10 @@ class Pool:
         """
         size_source = 0
         for bid in self.source_bids:
-            size_source += bid.amount
+            size_source += bid.new_amount
         size_demand = 0
         for bid in self.demand_bids:
-            size_demand += bid.amount
+            size_demand += bid.new_amount
         return size_source, size_demand
 
     def _find_demand_bid(self, agent):
@@ -110,6 +110,18 @@ class Pool:
                 txt_demand += bid.__str__() + '\n'
         return txt_source + '\n' + txt_demand
 
+    def __eq__(self, other):
+        result = True
+        for bid_s in self.source_bids:
+            for bid_o in other.source_bids:
+                if not bid_s == bid_o:
+                    result = False
+        for bid_s in self.demand_bids:
+            for bid_o in other.demand_bids:
+                if not bid_s == bid_o:
+                    result = False
+        return result
+
 
 class Bid:
 
@@ -125,6 +137,11 @@ class Bid:
         txt = '>>> agent: ' + str(self.agent) + ' amount: ' + str(self.amount) + ' new_amount: ' + str(self.new_amount)
         return txt
 
+    def __eq__(self, other):
+        result = False
+        if self.agent == other.agent and self.new_amount == other.new_amount:
+            result = True
+        return result
 
 if __name__ == "__main__":
     '''

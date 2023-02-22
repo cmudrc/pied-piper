@@ -43,7 +43,7 @@ class Player:
         """
         When the agent does not have enough money, they can't have a demand more than a certain point
         """
-        player_demand = deepcopy(self.demand)
+        player_demand = deepcopy(self.new_demand)
         for name in self.demand:
             player_demand_max = self.wallet / exchange_rate.rate(name, 'wealth')
             if player_demand[name] > player_demand_max:

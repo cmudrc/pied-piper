@@ -47,7 +47,7 @@ class Economy:
         else:
             ls = []
             for player in self.players:
-                demand = player.demand[resource]
+                demand = player.new_demand[resource]
                 ls.append(demand)
             result = sum(ls)
         return result
@@ -67,7 +67,7 @@ class Economy:
     def total_source(self, resource=None):
         ls = []
         for player in self.players:
-            source = player.source[resource]
+            source = player.new_source[resource]
             ls.append(source)
         result = sum(ls)
         return result
@@ -75,9 +75,9 @@ class Economy:
     def all_resources(self):
         result = []
         for player in self.players:
-            for name in player.source:
+            for name in player.new_source:
                 if name not in result: result.append(name)
-            for name in player.demand:
+            for name in player.new_demand:
                 if name not in result: result.append(name)
         return result
 
@@ -86,6 +86,9 @@ class Economy:
         Solve the resource allocation problem for the pool of players
         """
         def create_pools():
+            """
+            Create a dictionary in form of {resource: Pool()} of current state
+            """
             pools = {}
             for resource in self.all_resources():
                 p = Pool()
@@ -93,7 +96,7 @@ class Economy:
                     t_s = self.total_source(resource)
                     #t_d = self.total_demand(resource)
                     t_d_a = self.total_actual_demand(resource)
-                    player_source = player.source[resource]
+                    player_source = player.new_source[resource]
                     player_actual_demand = player.actual_demand(self.exchange)
                     player_demand = player_actual_demand[resource]
                     others_source = t_s - player_source
@@ -117,13 +120,12 @@ class Economy:
                 pool = pools[resource_name]
                 size_source, size_demand = pool.size()
                 pools_score[resource_name] = size_source + size_demand
-                sorted_pools = sorted(pools_score)
+                sorted_pools = sorted(pools_score.items(), key=lambda x:x[1], reverse=True)
+                sorted_pools = list(list(zip(*sorted_pools))[0])
+            print(sorted_pools)
             return sorted_pools
         
-        pools = create_pools()
-        sorted_pools = sort_pools(pools)
-
-        for resource in sorted_pools:
+        def solve_single(pools, resource):
             p = pools[resource]
             p.solve()
             #print(p)
@@ -135,7 +137,41 @@ class Economy:
                     player.new_source[resource] = bid.new_amount
                 else:
                     player.new_demand[resource] = bid.new_amount
-                player.new_wallet = player.wallet + delta_wallet
+                player.new_wallet = player.new_wallet + delta_wallet
+                #print(player.index, player.new_source[resource], player.new_demand[resource])
+
+        #for resource in sorted_pools:
+        #    solve_single(pools, resource)
+        #for i in range(len(self.all_resources())):
+        #    pass
+        
+        def check_stagnation(previous_pools, current_pools):
+            result = True
+            for resource_name in previous_pools:
+                if previous_pools[resource_name] != current_pools[resource_name]:
+                    result = False
+            print(result)
+            return result
+
+        def solve_step():
+            pools = create_pools()
+            sorted_pools = sort_pools(pools)
+            resource = sorted_pools[0]
+            solve_single(pools, resource)
+            return pools
+
+        #previous_pools = solve_step()
+        #current_pools = solve_step()
+        solve_step()
+        solve_step()
+        solve_step()
+        #while not check_stagnation(previous_pools, current_pools):
+        #    previous_pools = deepcopy(current_pools)
+        #    current_pools = solve_step()
+        
+        
+        
+
                 
 
 
@@ -165,7 +201,7 @@ if __name__ == "__main__":
         2,
         source={
             'food': 8,
-            'water': 5,
+            'water': 10,
         },
         demand={
             'food': 8,
