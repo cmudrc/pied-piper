@@ -77,13 +77,16 @@ class Pool:
 
     def find_bid(self, agent):
         result = None
+        bid_type = None
         bid = self._find_source_bid(agent)
         if bid is not None:
             result = bid
+            bid_type = "source"
         bid = self._find_demand_bid(agent)
         if bid is not None:
             result = bid
-        return result
+            bid_type = "demand"
+        return result, bid_type
 
     def find_biggest(self, bids):
         result = None
@@ -114,6 +117,9 @@ class Bid:
         self.agent = agent
         self.amount = amount
         self.new_amount = deepcopy(amount)
+
+    def delta_wallet(self, exchange_rate):
+        return (self.new_amount - self.amount) * exchange_rate
 
     def __str__(self):
         txt = '>>> agent: ' + str(self.agent) + ' amount: ' + str(self.amount) + ' new_amount: ' + str(self.new_amount)

@@ -85,39 +85,58 @@ class Economy:
         """
         Solve the resource allocation problem for the pool of players
         """
-        pools = {}
-        for resource in self.all_resources():
-            p = Pool()
+        def create_pools():
+            pools = {}
+            for resource in self.all_resources():
+                p = Pool()
+                for player in self.players:
+                    t_s = self.total_source(resource)
+                    #t_d = self.total_demand(resource)
+                    t_d_a = self.total_actual_demand(resource)
+                    player_source = player.source[resource]
+                    player_actual_demand = player.actual_demand(self.exchange)
+                    player_demand = player_actual_demand[resource]
+                    others_source = t_s - player_source
+                    others_demand = t_d_a - player_demand
+                    seller_score = others_demand * player_source
+                    buyer_score = others_source * player_demand
+                    if seller_score >= buyer_score:
+                        #mode = 'seller'
+                        bid = Bid(agent=player.index, amount=player_source)
+                        p.add_source(bid)
+                    else:
+                        #mode = 'buyer'
+                        bid = Bid(agent=player.index, amount=player_demand)
+                        p.add_demand(bid)
+                pools[resource] = p
+            return pools
+
+        def sort_pools(pools):
+            pools_score = {}
+            for resource_name in pools:
+                pool = pools[resource_name]
+                size_source, size_demand = pool.size()
+                pools_score[resource_name] = size_source + size_demand
+                sorted_pools = sorted(pools_score)
+            return sorted_pools
+        
+        pools = create_pools()
+        sorted_pools = sort_pools(pools)
+
+        for resource in sorted_pools:
+            p = pools[resource]
+            p.solve()
+            #print(p)
             for player in self.players:
-                t_s = self.total_source(resource)
-                #t_d = self.total_demand(resource)
-                t_d_a = self.total_actual_demand(resource)
-                player_source = player.source[resource]
-                player_actual_demand = player.actual_demand(self.exchange)
-                player_demand = player_actual_demand[resource]
-                others_source = t_s - player_source
-                others_demand = t_d_a - player_demand
-                seller_score = others_demand * player_source
-                buyer_score = others_source * player_demand
-                if seller_score >= buyer_score:
-                    #mode = 'seller'
-                    bid = Bid(agent=player.index, amount=player_source)
-                    p.add_source(bid)
+                bid, bid_type = p.find_bid(player.index)
+                delta_wallet = bid.delta_wallet(self.exchange.rate(resource, 'wealth'))
+                if bid_type == "source":
+                    delta_wallet = -delta_wallet
+                    player.new_source[resource] = bid.new_amount
                 else:
-                    #mode = 'buyer'
-                    bid = Bid(agent=player.index, amount=player_demand)
-                    p.add_demand(bid)
-            pools[resource] = p
-        pools_score = {}
-        for resource_name in pools:
-            pool = pools[resource_name]
-            size_source, size_demand = pool.size()
-            pools_score[resource_name] = size_source + size_demand
-            sorted_pools = sorted(pools_score)
-        for pool in sorted_pools:
-            pools[pool].solve()
-            print(pool)
-            print(pools[pool])
+                    player.new_demand[resource] = bid.new_amount
+                player.new_wallet = player.wallet + delta_wallet
+                
 
 
     def __str__(self):
@@ -174,7 +193,7 @@ if __name__ == "__main__":
     econ = Economy(exchange)
     econ.add([p1, p2, p3])
     econ.solve()
-    #print(econ)
+    print(econ)
 
     #for player in econ.players:
     #    print(player)
