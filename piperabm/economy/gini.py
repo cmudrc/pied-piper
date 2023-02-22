@@ -10,7 +10,8 @@ def gini_coefficient(x):
     """
     Compute Gini coefficient of array of values
     """
-    x = np.array(x)
+    if isinstance(x, list):
+        x = np.array(x)
     diffsum = 0
     for i, xi in enumerate(x[:-1], 1):
         diffsum += np.sum(np.abs(xi - x[i:]))
@@ -68,7 +69,7 @@ class GiniGenerator:
         txt += 'sigma: ' + str(self.sigma)
         return txt
 
-    def show(self, sample):
+    def show(sel, sample):
         plt.hist(sample)
         plt.show()
 

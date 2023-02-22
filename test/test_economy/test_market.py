@@ -1,10 +1,10 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.economy import Player, Economy, Exchange
+from piperabm.economy import Player, Market, Exchange
 
 
-class TestEconomyClass1(unittest.TestCase):
+class TestMarketClass1(unittest.TestCase):
 
     p1 = Player(
         1,
@@ -30,7 +30,7 @@ class TestEconomyClass1(unittest.TestCase):
     exchange = Exchange()
     exchange.add('food', 'wealth', 5)
 
-    econ = Economy(exchange)
+    econ = Market(exchange)
     econ.add([p1, p2])
 
     def test_solve(self):
@@ -39,7 +39,7 @@ class TestEconomyClass1(unittest.TestCase):
         #print(econ)
 
 
-class TestEconomyClass(unittest.TestCase):
+class TestMarketClass(unittest.TestCase):
 
     p1 = Player(
         1,
@@ -82,7 +82,7 @@ class TestEconomyClass(unittest.TestCase):
     exchange.add('food', 'wealth', 10)
     exchange.add('water', 'wealth', 2)
 
-    econ = Economy(exchange)
+    econ = Market(exchange)
     econ.add([p1, p2, p3])
 
     def test_solve(self):

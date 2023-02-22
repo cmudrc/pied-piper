@@ -14,7 +14,7 @@ except:
     from exchange import Exchange
 
 
-class Economy:
+class Market:
 
     def __init__(self, exchange):
         self.players = []
@@ -226,7 +226,7 @@ if __name__ == "__main__":
     exchange.add('food', 'wealth', 10)
     exchange.add('water', 'wealth', 2)
 
-    econ = Economy(exchange)
+    econ = Market(exchange)
     econ.add([p1, p2, p3])
     econ.solve()
     print(econ)
