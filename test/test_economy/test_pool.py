@@ -25,7 +25,8 @@ class TestPoolClass(unittest.TestCase):
     def test_find(self):
         p = deepcopy(self.p)
         agent_index = 2
-        bid = p.find_bid(agent_index)
+        bid, type = p.find_bid(agent_index)
+        self.assertEqual(type, 'source')
         self.assertEqual(bid.agent, agent_index)
 
     def test_solve_step(self):

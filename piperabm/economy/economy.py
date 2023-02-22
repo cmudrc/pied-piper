@@ -122,7 +122,7 @@ class Economy:
                 pools_score[resource_name] = size_source + size_demand
                 sorted_pools = sorted(pools_score.items(), key=lambda x:x[1], reverse=True)
                 sorted_pools = list(list(zip(*sorted_pools))[0])
-            print(sorted_pools)
+            #print(sorted_pools)
             return sorted_pools
         
         def solve_single(pools, resource):

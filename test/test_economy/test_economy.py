@@ -36,7 +36,7 @@ class TestEconomyClass1(unittest.TestCase):
     def test_solve(self):
         econ = deepcopy(self.econ)
         econ.solve()
-        print(econ)
+        #print(econ)
 
 
 class TestEconomyClass(unittest.TestCase):
