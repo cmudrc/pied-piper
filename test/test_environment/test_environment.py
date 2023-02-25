@@ -7,7 +7,7 @@ from piperabm.degradation import DiracDelta
 from piperabm.boundary import Circular
 
 
-class TestEnvironmentClass(unittest.TestCase):
+class TestEnvironmentClass1(unittest.TestCase):
 
     env = Environment()
 
@@ -223,6 +223,49 @@ class TestEnvironmentClass(unittest.TestCase):
         size = env.size()
         expected_result = [22, 22]
         self.assertListEqual(size, expected_result)
+
+class TestEnvironmentClass2(unittest.TestCase):
+
+    env = Environment(links_unit_length=10)
+
+    env.add_settlement(
+        name="Settlement 1",
+        pos=[-60, 40]
+    )
+    env.add_settlement(
+        name="Settlement 2",
+        pos=[200, 20],
+        boundary=Circular(radius=5)
+    )
+    env.add_settlement(
+        name="Settlement 3",
+        pos=[100, -180],
+        boundary=Circular(radius=5)
+    )
+    env.add_market(
+        name="Market",
+        pos=[70, -30]
+    )
+
+    env.add_link(
+        start="Settlement 1",
+        end=[0, 0],
+        initiation_date=Date.today()-DT(days=3),
+        degradation_dist=DiracDelta(main=DT(days=5).total_seconds())
+    )
+    env.add_link(start=[0.5, 0.5], end=[80, 60])
+    env.add_link(start=[80, 60], end=[200, 20])
+    env.add_link(start=[0, 0], end="Settlement 3")
+    env.add_link(start=[0, 0], end="Market")
+
+    #env.show(Date.today(), Date.today()+DT(hours=1))
+
+    def test_filter_nodes(self):
+        env = deepcopy(self.env)
+        nodes_list = env.node_types['cross']
+        result = env.filter_nodes(nodes_list, n=2)
+        expected_result = [4]
+        self.assertListEqual(result, expected_result)
 
 
 if __name__ == "__main__":
