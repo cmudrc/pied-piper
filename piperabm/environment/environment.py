@@ -64,7 +64,7 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         """
         x_min, x_max = None, None
         y_min, y_max = None, None
-        for index in self.all_index():
+        for index in self.all_nodes():
             boundary = self.node_info(index, 'boundary')
             pos = boundary.center
             x = pos[0]

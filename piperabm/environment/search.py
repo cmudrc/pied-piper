@@ -19,7 +19,7 @@ class Search:
         Find and return node index (Check if it exists)
         """
         result = None
-        index_list = self.all_index()
+        index_list = self.all_nodes()
         if index in index_list:
             result = index
         if result is None and report is True:
