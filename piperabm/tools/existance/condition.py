@@ -126,7 +126,7 @@ conditions = [
             ),
             Condition(
                 symbol='-[ ]||--',
-                result=False,
+                result=True,
                 item_start_vs_time_start='<',
                 item_start_vs_time_end='<',
                 item_end_vs_time_start='=',
