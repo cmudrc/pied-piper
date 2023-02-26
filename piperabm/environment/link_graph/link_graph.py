@@ -49,6 +49,21 @@ class LinkGraph(ToGraph, Graphics):
             result = None
         return result
 
+    ######
+    def all_nodes(self, node_type='all'):
+        result = []
+        nodes_list = list(self.G)
+        if node_type == 'all':
+            result = nodes_list
+        else:
+            for node in nodes_list:
+                if self.env.node_type(node) == node_type:
+                    result.append(node)
+        return result
+
+    def xy_lim(self):
+        pass
+
     def __str__(self):
         return str(self.G)
 
@@ -89,6 +104,9 @@ if __name__ == "__main__":
     )
 
     start_date = Date(2020, 1, 2)
-    end_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 15)
+    env.update_elements(start_date, end_date)
+    print(env.node_info(1, 'active'))
     link_graph = LinkGraph(env, start_date, end_date)
-    link_graph.show()
+    #link_graph.show()
+    print(link_graph.G)

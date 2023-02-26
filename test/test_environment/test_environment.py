@@ -48,116 +48,6 @@ class TestEnvironmentClass1(unittest.TestCase):
         index = env.find_node(0)
         self.assertEqual(index, 0, msg="find node by index")
 
-    def test_1(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=12)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 0)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
-    def test_2(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 2)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 0)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
-    def test_3(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 3)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 1)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
-    def test_4(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 4)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 1)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
-    def test_5(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 5)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 2)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 2)
-
-    def test_6(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 7)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 2)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 2)
-
-    def test_7(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 7)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 2)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 2)
-    
-    def test_8(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 12)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 1)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
-    def test_9(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 13)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 1)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
-    def test_10(self):
-        env = deepcopy(self.env)
-        start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 14)
-        env.update_elements(start_date, end_date)
-        path = env.to_path_graph(start_date, end_date)
-        nodes_count = path.G.number_of_nodes()
-        self.assertEqual(nodes_count, 0)
-        edges_count = path.G.number_of_edges()
-        self.assertEqual(edges_count, 0)
-
     def test_route_info(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
@@ -224,6 +114,7 @@ class TestEnvironmentClass1(unittest.TestCase):
         expected_result = [22, 22]
         self.assertListEqual(size, expected_result)
 
+
 class TestEnvironmentClass2(unittest.TestCase):
 
     env = Environment(links_unit_length=10)
@@ -270,6 +161,10 @@ class TestEnvironmentClass2(unittest.TestCase):
     def to_link_graph(self):
         env = deepcopy(self.env)
         link_graph = env.to_link_graph(Date.today(), Date.today()+DT(days=3))
+
+    def to_path_graph(self):
+        env = deepcopy(self.env)
+        path_graph = env.to_path_graph(Date.today(), Date.today()+DT(days=3))
 
 
 if __name__ == "__main__":

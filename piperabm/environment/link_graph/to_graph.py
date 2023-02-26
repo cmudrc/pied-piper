@@ -44,7 +44,10 @@ class ToGraph:
             result = False
             active = self.env.edge_info(index, other_index, 'active')
             initiation_date = self.env.edge_info(
-                index, other_index, 'initiation_date')
+                index,
+                other_index,
+                'initiation_date'
+            )
             exists = ee.check(
                 item_start=initiation_date,
                 item_end=None,
@@ -81,7 +84,7 @@ class ToGraph:
                     start = deepcopy(end)
                     end = deepcopy(temp)
                 return start, end
-                
+
             if end_date is None:
                 if start_date is not None:
                     end_date = start_date

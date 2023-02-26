@@ -85,9 +85,9 @@ class ElementExists:
 if __name__ == "__main__":
     ee = ElementExists()
     result = ee.check(
-        item_start=1,
+        item_start=2,
         item_end=None,
-        time_start=4,
-        time_end=None
+        time_start=5,
+        time_end=12
     )
     print(result)
