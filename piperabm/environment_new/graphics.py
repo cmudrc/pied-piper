@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from piperabm.tools import check_existance
+from piperabm.tools import ElementExists
 
 
 class Graphics:
-
+    pass
+    '''
     def to_plt(self, ax=None, start_date=None, end_date=None):
         """
         Add elements to plt
@@ -106,3 +107,4 @@ class Graphics:
         """
         self.to_plt(start_date=start_date, end_date=end_date)
         plt.show()
+    '''

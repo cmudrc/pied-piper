@@ -64,22 +64,13 @@ class ToGraph:
             return path_exists
 
         env = self.env
-        index_list = env.node_types['settlement']
-        #cross_list = env.
-        #index_list += cross_list
-        #index_list += env.node_types['market']
+        index_list = env.all_nodes()
         for index in index_list:
-            node = env.G.nodes[index]
-            active = node['active']
-            if node_exists(node, start_date, end_date) and active is True:
-                name = node['name']
-                pos = node['boundary'].center
+            active = env.node_info(index, 'active')
+            if node_exists(index, start_date, end_date) and active is True: #####
+                name = env.node_info(index, 'name')
+                boundary = env.node_info(index, 'boundary')
+                pos = boundary.center
                 self.G.add_node(index, name=name, pos=pos)
-                for other in index_list:
-                    if other != index and nx.has_path(env.G, source=index, target=other):
-                        path = nx.shortest_path(env.G, source=index, target=other)
-                        path_active = check_path_active(path, env)
-                        path_exists = check_path_exists(path, env, start_date, end_date)
-                        if path_active is True and path_exists is True:
-                            length = calculate_path_length(path, env)
-                            self.G.add_edge(index, other, path=path, length=length)
+                for other_index in index_list:
+                    pass ########

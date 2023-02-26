@@ -1,3 +1,3 @@
 from .distance import euclidean_distance
-from .existance import check_existance
+from .existance import ElementExists
 from .kde import KDE
