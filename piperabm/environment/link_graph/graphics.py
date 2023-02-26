@@ -1,13 +1,12 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from piperabm.tools import ElementExists
-
 
 class Graphics:
     """
-    Add graphical representation to the LinkGraph class
+    Add graphical representation
     """
+
     def to_plt(self, ax=None):
         """
         Add elements to plt

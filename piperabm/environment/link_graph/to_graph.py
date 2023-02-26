@@ -1,10 +1,14 @@
 import networkx as nx
+from copy import deepcopy
 
 from piperabm.tools import ElementExists
 
 
 class ToGraph:
-    
+    """
+    Create graph
+    """
+
     def to_graph(self, start_date=None, end_date=None):
         """
         Create path graph from environment graph
@@ -14,7 +18,7 @@ class ToGraph:
 
         def node_exists(index, start_date, end_date):
             """
-            Check whether the node has been already initiated
+            Check whether the node exists between *start_date* and *end_date*
             """
             result = False
             node_type = self.env.node_type(index)
@@ -34,9 +38,13 @@ class ToGraph:
             return result
 
         def edge_exists(index, other_index, start_date, end_date):
+            """
+            Check whether the edge exists between *start_date* and *end_date*
+            """
             result = False
             active = self.env.edge_info(index, other_index, 'active')
-            initiation_date = self.env.edge_info(index, other_index, 'initiation_date')
+            initiation_date = self.env.edge_info(
+                index, other_index, 'initiation_date')
             exists = ee.check(
                 item_start=initiation_date,
                 item_end=None,
@@ -48,23 +56,38 @@ class ToGraph:
             return result
 
         def add_node(index):
+            """
+            Add node to the graph
+            """
             name = self.env.node_info(index, 'name')
             boundary = self.env.node_info(index, 'boundary')
             pos = boundary.center
             self.G.add_node(index, name=name, pos=pos)
 
         def add_edge(index, other_index):
+            """
+            Add edge to the graph
+            """
             self.G.add_edge(index, other_index)
 
         def refine_input(start_date, end_date):
+            """
+            Refine inputs
+            """
+            def swap(start, end):
+                temp = None
+                if start > end:
+                    temp = deepcopy(start)
+                    start = deepcopy(end)
+                    end = deepcopy(temp)
+                return start, end
+                
             if end_date is None:
-                if start_date is None:
-                    pass
-                else:
+                if start_date is not None:
                     end_date = start_date
-            return start_date, end_date
+            return swap(start_date, end_date)
 
-        start_date, end_date = refine_input(start_date, end_date) 
+        start_date, end_date = refine_input(start_date, end_date)
         env = self.env
         index_list = env.all_nodes()
         for index in index_list:
@@ -73,8 +96,5 @@ class ToGraph:
                 for other_index in index_list:
                     if node_exists(other_index, start_date, end_date) and other_index != index:
                         if env.G.has_edge(index, other_index):
-                            initiation_date = env.edge_info(index, other_index, 'initiation_date')
-                            active = env.edge_info(index, other_index, 'active')
-                            if edge_exists(index, other_index, start_date, end_date) and active is True:
+                            if edge_exists(index, other_index, start_date, end_date):
                                 add_edge(index, other_index)
-    

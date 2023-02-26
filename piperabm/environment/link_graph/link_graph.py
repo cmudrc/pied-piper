@@ -88,7 +88,7 @@ if __name__ == "__main__":
         degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
 
-    start_date = Date(2020, 1, 4)
-    end_date = Date(2020, 1, 6)
+    start_date = Date(2020, 1, 2)
+    end_date = Date(2020, 1, 5)
     link_graph = LinkGraph(env, start_date, end_date)
-    #link_graph.show()
+    link_graph.show()
