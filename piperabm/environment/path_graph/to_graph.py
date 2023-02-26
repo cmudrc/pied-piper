@@ -1,6 +1,6 @@
 import networkx as nx
 
-from piperabm.tools import check_existance
+from piperabm.tools import ElementExists
 
 
 class ToGraph:
@@ -9,6 +9,9 @@ class ToGraph:
         """
         Create path graph from environment graph
         """
+
+        ee = ElementExists()
+
         def check_path_active(path, env):
             """
             Check all links within a path to see if they are all active
@@ -45,7 +48,13 @@ class ToGraph:
             Check whether the node has been already initiated
             """
             initiation_date = node['initiation_date']
-            return check_existance(initiation_date, start_date, end_date)
+            exists = ee.check(
+                item_start=initiation_date,
+                item_end=None,
+                time_start=start_date,
+                time_end=end_date
+            )
+            return exists
 
         def check_path_exists(path, env, start_date, end_date):
             """
@@ -57,7 +66,12 @@ class ToGraph:
                     start = path[i-1]
                     end = path[i]
                     initiation_date = env.G[start][end]['initiation_date']
-                    exists = check_existance(initiation_date, start_date, end_date)
+                    exists = ee.check(
+                        item_start=initiation_date,
+                        item_end=None,
+                        time_start=start_date,
+                        time_end=end_date
+                    )
                     if exists is False:
                         path_exists = False
                         break

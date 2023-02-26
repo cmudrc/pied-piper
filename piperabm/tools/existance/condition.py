@@ -19,6 +19,9 @@ class Condition:
         self.ie_vs_ts = item_end_vs_time_start
         self.ie_vs_te = item_end_vs_time_end
 
+    def __str__(self):
+        return self.symbol
+
 
 conditions = [
     Condition(

@@ -9,37 +9,8 @@ class ToGraph:
         """
         Create path graph from environment graph
         """
-        ee = ElementExists()
-        def check_path_active(path, env):
-            """
-            Check all links within a path to see if they are all active
-            """
-            path_active = True
-            for i, _ in enumerate(path):
-                if i > 0:
-                    start = path[i-1]
-                    end = path[i]
-                    active = env.G[start][end]['active']
-                    if active is False:
-                        path_active = False
-                        break
-            return path_active
 
-        def calculate_path_length(path, env):
-            """
-            Calculate the equivalent length of path
-            """
-            total_length = 0
-            for i, _ in enumerate(path):
-                if i > 0:
-                    start = path[i-1]
-                    end = path[i]
-                    length = env.G[start][end]['length']
-                    difficulty = env.G[start][end]['difficulty']
-                    #progressive_deg_coeff = env.G[start][end]['####']
-                    adjusted_length = length * difficulty
-                    total_length += adjusted_length
-            return total_length   
+        ee = ElementExists()
 
         def node_exists(index, start_date, end_date):
             """
@@ -60,8 +31,8 @@ class ToGraph:
 
         def edge_exists(index, other_index, start_date, end_date):
             result = False
-            active = None
-            initiation_date = None
+            active = self.edge_info(index, other_index, 'active')
+            initiation_date = self.edge_info(index, other_index, 'initiation_date')
             exists = ee.check(
                 item_start=initiation_date,
                 item_end=None,
@@ -72,29 +43,24 @@ class ToGraph:
                 result = True
             return result
 
-
         def add_node(index):
             name = self.env.node_info(index, 'name')
             boundary = self.env.node_info(index, 'boundary')
             pos = boundary.center
             self.G.add_node(index, name=name, pos=pos)
 
-        def edge_exists(initiation_date, start_date, end_date):
-            """
-            Check all links within a path to see if they all exist
-            """
-            path_exists = True
-            for i, _ in enumerate(path):
-                if i > 0:
-                    start = path[i-1]
-                    end = path[i]
-                    initiation_date = env.G[start][end]['initiation_date']
-                    exists = check_existance(initiation_date, start_date, end_date)
-                    if exists is False:
-                        path_exists = False
-                        break
-            return path_exists
+        def add_edge(index, other_index):
+            self.G.add_edge(index, other_index)
 
+        def refine_input(start_date, end_date):
+            if end_date is None:
+                if start_date is None:
+                    pass
+                else:
+                    end_date = start_date
+            return start_date, end_date
+
+        start_date, end_date = refine_input(start_date, end_date) 
         env = self.env
         index_list = env.all_nodes()
         for index in index_list:
@@ -106,5 +72,5 @@ class ToGraph:
                             initiation_date = env.node_info(index, 'initiation_date')
                             active = env.node_info(index, 'active')
                             if edge_exists((initiation_date, start_date, end_date)) and active is True:
-                                self.G.add_edge(index, other_index)
+                                add_edge(index, other_index)
     

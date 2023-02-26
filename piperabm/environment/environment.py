@@ -16,8 +16,10 @@ try: from .update import Update
 except: from update import Update
 try: from .graphics import Graphics
 except: from graphics import Graphics
-try: from .path import Path
-except: from path import Path
+try: from .path_graph import PathGraph
+except: from path_graph import PathGraph
+try: from .link_graph import LinkGraph
+except: from link_graph import LinkGraph
 
 
 class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Graphics, Update):
@@ -89,8 +91,17 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         size = [x_size, y_size]
         return size
         
-    def to_path(self, start_date=None, end_date=None):
-        return Path(env=self, start_date=start_date, end_date=end_date)
+    def to_path_graph(self, start_date=None, end_date=None):
+        """
+        Convert the environment to "path_graph" object
+        """
+        return PathGraph(env=self, start_date=start_date, end_date=end_date)
+    
+    def to_link_graph(self, start_date=None, end_date=None):
+        """
+        Convert the environment to "link_graph" object
+        """
+        return LinkGraph(env=self, start_date=start_date, end_date=end_date)
 
     def __str__(self):
         return str(self.G)
@@ -133,9 +144,9 @@ if __name__ == "__main__":
     )
 
     #env.show(start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
-    from path import Path
-    p = Path(env, start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 4))
-    print(p.from_node_perspective(1))
+    #from path import Path
+    #p = Path(env, start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 4))
+    #print(p.from_node_perspective(1))
     #p.show()
     # L.add_link([2, 2], [22, 22])
     # L.add_link(0, 1)

@@ -10,19 +10,16 @@ class Index:
             'market': [],
         }
 
-    def all_settlements(self):
-        """
-        Create a list of all settlement indexes
-        """
-        return self.node_types['settlement']
-
-    def all_index(self):
+    def all_nodes(self, type='all'):
         """
         Aggregate all lists of nodes in self.node_types
         """
         all_index = []
-        for key in self.node_types:
-            all_index += self.node_types[key]
+        if type == 'all':
+            for key in self.node_types:
+                all_index += self.node_types[key]
+        else:
+            all_index = self.node_types[type]
         return all_index
 
     def node_type(self, index):
@@ -40,7 +37,7 @@ class Index:
         """
         Check all indexes in self.node_types dictionary and suggest a new index
         """
-        all = self.all_index()
+        all = self.all_nodes()
         if len(all) > 0:
             max_index = max(all)
             new_index = max_index + 1
@@ -48,13 +45,19 @@ class Index:
             new_index = 0
         return new_index
 
+    def random_node(self, nodes_list: list):
+        """
+        Generate random index from *nodes_list*
+        """
+        rnd = np.random.choice(nodes_list, size=1)
+        return int(rnd[0])
+
     def random_settlement(self):
         """
-        Generate random settlement index
+        Generate a random index from settlements
         """
         settlement_list = self.node_types['settlement']
-        rnd = np.random.choice(settlement_list, size=1)
-        return int(rnd[0])
+        return self.random_node(settlement_list)
 
     def link_info(self, start, end, property):
         """
