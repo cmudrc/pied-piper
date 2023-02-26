@@ -198,9 +198,9 @@ class TestEnvironmentClass1(unittest.TestCase):
         expected_result = [-2, -2]
         self.assertListEqual(info.center, expected_result)
 
-    def test_link_info(self):
+    def test_edge_info(self):
         env = deepcopy(self.env)
-        info = env.link_info(
+        info = env.edge_info(
             start="John's Home",
             end=[20, 0],
             property="initiation_date"
@@ -266,6 +266,10 @@ class TestEnvironmentClass2(unittest.TestCase):
         result = env.filter_nodes(nodes_list, n=2)
         expected_result = [4]
         self.assertListEqual(result, expected_result)
+
+    def to_link_graph(self):
+        env = deepcopy(self.env)
+        link_graph = env.to_link_graph(Date.today(), Date.today()+DT(days=3))
 
 
 if __name__ == "__main__":

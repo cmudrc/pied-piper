@@ -17,7 +17,11 @@ class ToGraph:
             Check whether the node has been already initiated
             """
             result = False
-            active = self.env.node_info(index, 'active')
+            node_type = self.env.node_type(index)
+            if node_type == 'cross':
+                active = True
+            else:
+                active = self.env.node_info(index, 'active')
             initiation_date = self.env.node_info(index, 'initiation_date')
             exists = ee.check(
                 item_start=initiation_date,
@@ -31,8 +35,8 @@ class ToGraph:
 
         def edge_exists(index, other_index, start_date, end_date):
             result = False
-            active = self.edge_info(index, other_index, 'active')
-            initiation_date = self.edge_info(index, other_index, 'initiation_date')
+            active = self.env.edge_info(index, other_index, 'active')
+            initiation_date = self.env.edge_info(index, other_index, 'initiation_date')
             exists = ee.check(
                 item_start=initiation_date,
                 item_end=None,
@@ -67,10 +71,10 @@ class ToGraph:
             if node_exists(index, start_date, end_date):
                 add_node(index)
                 for other_index in index_list:
-                    if other_index != index:
+                    if node_exists(other_index, start_date, end_date) and other_index != index:
                         if env.G.has_edge(index, other_index):
-                            initiation_date = env.node_info(index, 'initiation_date')
-                            active = env.node_info(index, 'active')
-                            if edge_exists((initiation_date, start_date, end_date)) and active is True:
+                            initiation_date = env.edge_info(index, other_index, 'initiation_date')
+                            active = env.edge_info(index, other_index, 'active')
+                            if edge_exists(index, other_index, start_date, end_date) and active is True:
                                 add_edge(index, other_index)
     

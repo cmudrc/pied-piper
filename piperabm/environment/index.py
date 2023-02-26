@@ -59,16 +59,16 @@ class Index:
         settlement_list = self.node_types['settlement']
         return self.random_node(settlement_list)
 
-    def link_info(self, start, end, property):
+    def edge_info(self, start, end, property):
         """
         Return *property* of edge between *start* and *end*
         """
+        result = None
         start = self.find_node(start)
         end = self.find_node(end)
         if start is not None and end is not None:
-            result = self.G[start][end][property]
-        else:
-            result = None
+            if self.G.has_edge(start, end):
+                result = self.G[start][end][property]
         return result
 
     def settlement_info(self, node, property):

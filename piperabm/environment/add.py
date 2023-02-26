@@ -52,7 +52,8 @@ class Add:
     def add_cross(
         self,
         name='',
-        pos=[0, 0]
+        pos=[0, 0],
+        initiation_date=Date.today()
     ):
         """
         Add a new cross point
@@ -72,7 +73,8 @@ class Add:
             self.G.add_node(
                 index,
                 name=name,
-                boundary=boundary
+                boundary=boundary,
+                initiation_date=initiation_date
             )
             self.node_types['cross'].append(index)
             return index
@@ -147,13 +149,13 @@ class Add:
         start_index = self.find_node(start, report=False)
         if start_index is None:
             if isinstance(start, list):
-                start_index = self.add_cross(pos=start)
+                start_index = self.add_cross(pos=start, initiation_date=initiation_date)
             else:
                 create_node = False
         end_index = self.find_node(end, report=False)
         if end_index is None:
             if isinstance(end, list):
-                end_index = self.add_cross(pos=end)
+                end_index = self.add_cross(pos=end, initiation_date=initiation_date)
             else:
                 create_node = False
 
