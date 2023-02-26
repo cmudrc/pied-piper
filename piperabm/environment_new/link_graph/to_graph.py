@@ -4,11 +4,12 @@ from piperabm.tools import ElementExists
 
 
 class ToGraph:
-
+    
     def to_graph(self, start_date=None, end_date=None):
         """
         Create path graph from environment graph
         """
+        ee = ElementExists()
         def check_path_active(path, env):
             """
             Check all links within a path to see if they are all active
@@ -40,14 +41,45 @@ class ToGraph:
                     total_length += adjusted_length
             return total_length   
 
-        def node_exists(node, start_date, end_date):
+        def node_exists(index, start_date, end_date):
             """
             Check whether the node has been already initiated
             """
-            initiation_date = node['initiation_date']
-            return check_existance(initiation_date, start_date, end_date)
+            result = False
+            active = self.env.node_info(index, 'active')
+            initiation_date = self.env.node_info(index, 'initiation_date')
+            exists = ee.check(
+                item_start=initiation_date,
+                item_end=None,
+                time_start=start_date,
+                time_end=end_date
+            )
+            if exists is True and active is True:
+                result = True
+            return result
 
-        def check_path_exists(path, env, start_date, end_date):
+        def edge_exists(index, other_index, start_date, end_date):
+            result = False
+            active = None
+            initiation_date = None
+            exists = ee.check(
+                item_start=initiation_date,
+                item_end=None,
+                time_start=start_date,
+                time_end=end_date
+            )
+            if exists is True and active is True:
+                result = True
+            return result
+
+
+        def add_node(index):
+            name = self.env.node_info(index, 'name')
+            boundary = self.env.node_info(index, 'boundary')
+            pos = boundary.center
+            self.G.add_node(index, name=name, pos=pos)
+
+        def edge_exists(initiation_date, start_date, end_date):
             """
             Check all links within a path to see if they all exist
             """
@@ -66,11 +98,13 @@ class ToGraph:
         env = self.env
         index_list = env.all_nodes()
         for index in index_list:
-            active = env.node_info(index, 'active')
-            if node_exists(index, start_date, end_date) and active is True: #####
-                name = env.node_info(index, 'name')
-                boundary = env.node_info(index, 'boundary')
-                pos = boundary.center
-                self.G.add_node(index, name=name, pos=pos)
+            if node_exists(index, start_date, end_date):
+                add_node(index)
                 for other_index in index_list:
-                    pass ########
+                    if other_index != index:
+                        if env.G.has_edge(index, other_index):
+                            initiation_date = env.node_info(index, 'initiation_date')
+                            active = env.node_info(index, 'active')
+                            if edge_exists((initiation_date, start_date, end_date)) and active is True:
+                                self.G.add_edge(index, other_index)
+    

@@ -140,5 +140,33 @@ conditions = [
         item_start_vs_time_end='=',
         item_end_vs_time_start='>',
         item_end_vs_time_end='>',
+    ),
+    Condition(
+        symbol='--|[]|-',
+        result=True,
+        item_start_vs_time_start='=',
+        item_start_vs_time_end='=',
+        item_end_vs_time_start='=',
+        item_end_vs_time_end='=',
+    ),
+    Condition(
+        symbol='--[|]-|-',
+        result=True,
+        item_start_vs_time_start='=',
+        item_start_vs_time_end='<',
+        item_end_vs_time_start='=',
+        item_end_vs_time_end='<',
+    ),
+    Condition(
+        symbol='--|-[|]-',
+        result=False,
+        item_start_vs_time_start='>',
+        item_start_vs_time_end='=',
+        item_end_vs_time_start='>',
+        item_end_vs_time_end='=',
     )
 ]
+
+
+if __name__ == "__main__":
+    print(len(conditions))
