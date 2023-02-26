@@ -430,7 +430,7 @@ class TestElementExistsClass_3(unittest.TestCase):
             time_start=self.time_start,
             time_end=self.time_end
             )
-        self.assertTrue(result)
+        self.assertFalse(result)
 
     def test_2(self):
         """
@@ -445,7 +445,7 @@ class TestElementExistsClass_3(unittest.TestCase):
             time_start=self.time_start,
             time_end=self.time_end
             )
-        self.assertTrue(result)
+        self.assertFalse(result)
 
 
 if __name__ == "__main__":

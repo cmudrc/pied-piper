@@ -123,5 +123,21 @@ conditions = [
                 item_start_vs_time_end='<',
                 item_end_vs_time_start='>',
                 item_end_vs_time_end='>',
+            ),
+            Condition(
+                symbol='-[ ]||--',
+                result=False,
+                item_start_vs_time_start='<',
+                item_start_vs_time_end='<',
+                item_end_vs_time_start='=',
+                item_end_vs_time_end='=',
+            ),
+            Condition(
+                symbol='--||[ ]-',
+                result=False,
+                item_start_vs_time_start='=',
+                item_start_vs_time_end='=',
+                item_end_vs_time_start='>',
+                item_end_vs_time_end='>',
             )
         ]
