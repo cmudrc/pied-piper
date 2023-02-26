@@ -1,11 +1,14 @@
-try: from .condition import conditions
-except: from condition import conditions
+try:
+    from .condition import conditions
+except:
+    from condition import conditions
 
 
 class ElementExists:
     """
     Checks existance of an item in a certain duration of time
     """
+
     def __init__(self):
         self.conditions = conditions
 
@@ -63,8 +66,8 @@ if __name__ == "__main__":
     ee = ElementExists()
     result = ee.check(
         item_start=1,
-        item_end=5,
+        item_end=None,
         time_start=4,
-        time_end=7
+        time_end=None
     )
     print(result)
