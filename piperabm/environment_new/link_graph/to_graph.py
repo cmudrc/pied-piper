@@ -1,6 +1,6 @@
 import networkx as nx
 
-from piperabm.tools import check_existance
+from piperabm.tools import ElementExists
 
 
 class ToGraph:
