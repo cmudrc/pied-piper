@@ -33,3 +33,12 @@ env.add_link(
     initiation_date=Date(2020, 1, 4),
     degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
 )
+
+if __name__ == "__main__":
+    from piperabm.unit import Date
+
+    start_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 10)
+    env.update_elements(start_date, end_date)
+    link_graph = env.to_link_graph(start_date, end_date)
+    link_graph.show()

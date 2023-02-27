@@ -72,10 +72,8 @@ if __name__ == "__main__":
     from piperabm.unit import Date
     from piperabm.environment.sample import env_0 as env
 
-    start_date = Date(2020, 1, 2)
-    end_date = Date(2020, 1, 15)
+    start_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 10)
     env.update_elements(start_date, end_date)
-    print(env.node_info(1, 'active'))
     link_graph = LinkGraph(env, start_date, end_date)
-    # link_graph.show()
-    print(link_graph.G)
+    link_graph.show()
