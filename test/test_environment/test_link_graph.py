@@ -1,41 +1,37 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment import Environment
+from piperabm.environment.sample import env_0
 from piperabm.unit import Date, DT
-from piperabm.degradation import DiracDelta
-from piperabm.boundary import Circular
 
 
-class TestEnvironmentClass1(unittest.TestCase):
+class TestLinkGraph(unittest.TestCase):
 
-    env = Environment(links_unit_length=10)
+    env = env_0
 
-    env.add_settlement(
-        name="John's Home",
-        pos=[-2, -2],
-        initiation_date=Date(2020, 1, 2),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
-    env.add_settlement(
-        name="Peter's Home",
-        pos=[20, 20],
-        initiation_date=Date(2020, 1, 4),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
-
-    env.add_link(
-        "John's Home",
-        [20, 0],
-        initiation_date=Date(2020, 1, 2),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
-    env.add_link(
-        [20.3, 0.3],
-        "Peter's Home",
-        initiation_date=Date(2020, 1, 4),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
+    def test_to_link_graph(self):
+        """
+        Similar to the natural flow of program during simulation
+        """
+        env = deepcopy(self.env)
+        nodes_count_dict = {} # {day: nodes_count}
+        edges_count_dict = {} # {day: edges_count}
+        start_date = Date(2020, 1, 1)
+        delta = DT(days=1)
+        end_date = start_date + delta
+        for i in range(15):
+            env.update_elements(start_date, end_date)
+            link_graph = env.to_link_graph(start_date, end_date)
+            nodes_count_dict[i] = link_graph.G.number_of_nodes()
+            edges_count_dict[i] = link_graph.G.number_of_edges()
+            start_date += delta
+            end_date += delta
+        expected_result = {0: 0, 1: 2, 2: 2, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3, 10: 2, 11: 2, 12: 0, 13: 0, 14: 0}
+        #print(nodes_count_dict)
+        self.assertDictEqual(nodes_count_dict, expected_result)
+        expected_result = {0: 0, 1: 1, 2: 1, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 1, 11: 1, 12: 0, 13: 0, 14: 0}
+        #print(edges_count_dict)
+        self.assertDictEqual(edges_count_dict, expected_result)
 
     def test_to_link_graph_1(self):
         env = deepcopy(self.env)
@@ -122,7 +118,7 @@ class TestEnvironmentClass1(unittest.TestCase):
         
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
-        self.assertEqual(nodes_count, 1) # cross remains!
+        self.assertEqual(nodes_count, 0)
         edges_count = link_graph.G.number_of_edges()
         self.assertEqual(edges_count, 0)
 
@@ -133,7 +129,7 @@ class TestEnvironmentClass1(unittest.TestCase):
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
-        self.assertEqual(nodes_count, 1)
+        self.assertEqual(nodes_count, 0)
         edges_count = link_graph.G.number_of_edges()
         self.assertEqual(edges_count, 0)
 

@@ -90,6 +90,9 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         y_size = y_lim[1] - y_lim[0]
         size = [x_size, y_size]
         return size
+
+    def node_degree(self, index):
+        return self.G.degree[index]
         
     def to_path_graph(self, start_date=None, end_date=None):
         """

@@ -101,3 +101,7 @@ class ToGraph:
                         if env.G.has_edge(index, other_index):
                             if edge_exists(index, other_index, start_date, end_date):
                                 add_edge(index, other_index)
+        for node in self.all_nodes("cross"):
+            if self.node_degree(node) == 0:
+                self.G.remove_node(node)
+

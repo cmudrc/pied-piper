@@ -1,9 +1,13 @@
 import networkx as nx
 
-try: from .to_graph import ToGraph
-except: from to_graph import ToGraph
-try: from .graphics import Graphics
-except: from graphics import Graphics
+try:
+    from .to_graph import ToGraph
+except:
+    from to_graph import ToGraph
+try:
+    from .graphics import Graphics
+except:
+    from graphics import Graphics
 
 
 class LinkGraph(ToGraph, Graphics):
@@ -61,6 +65,9 @@ class LinkGraph(ToGraph, Graphics):
                     result.append(node)
         return result
 
+    def node_degree(self, index):
+        return self.G.degree[index]
+
     def xy_lim(self):
         pass
 
@@ -69,44 +76,13 @@ class LinkGraph(ToGraph, Graphics):
 
 
 if __name__ == "__main__":
-
-    from piperabm import Environment
-    from piperabm.unit import Date, DT
-    from piperabm.degradation import DiracDelta
-
-
-    env = Environment(links_unit_length=10)
-
-    env.add_settlement(
-        name="John's Home",
-        pos=[-2, -2],
-        initiation_date=Date(2020, 1, 2),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
-    env.add_settlement(
-        name="Peter's Home",
-        pos=[20, 20],
-        initiation_date=Date(2020, 1, 4),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
-
-    env.add_link(
-        "John's Home",
-        [20, 0],
-        initiation_date=Date(2020, 1, 2),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
-    env.add_link(
-        [20.3, 0.3],
-        "Peter's Home",
-        initiation_date=Date(2020, 1, 4),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
-    )
+    from piperabm.unit import Date
+    from piperabm.environment.sample import env_0 as env
 
     start_date = Date(2020, 1, 2)
     end_date = Date(2020, 1, 15)
     env.update_elements(start_date, end_date)
     print(env.node_info(1, 'active'))
     link_graph = LinkGraph(env, start_date, end_date)
-    #link_graph.show()
+    # link_graph.show()
     print(link_graph.G)
