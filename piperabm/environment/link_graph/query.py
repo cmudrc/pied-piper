@@ -17,7 +17,7 @@ class Query:
             all_index = nodes_list
         else:
             for node in nodes_list:
-                if type == self.env.node_type(node):
+                if type == self.env.node_info(node, 'type'):
                     all_index.append(node)
         return all_index
 
@@ -38,27 +38,22 @@ class Query:
         """
         Return *property* of *node*
         """
-        node_index = self.env.find_node(node)
-        node = self.env.G.nodes[node_index]
-        return node[property]
+        return self.env.node_info(node, property)
 
     def edge_info(self, start, end, property):
         """
         Return *property* of edge between *start* and *end*
         """
-        result = None
-        start_index = self.env.find_node(start)
-        end_index = self.env.find_node(end)
-        if start_index is not None and end_index is not None:
-            if self.G.has_edge(start_index, end_index):
-                result = self.G[start_index][end_index][property]
-        return result
+        return self.env.edge_info(start, end, property)
+
+    def find_node(self, node):
+        return self.env.find_node(node)
 
     def node_degree(self, node):
         """
         Return number of edges connecting to the node
         """
-        index = self.env.find_node(node)
+        index = self.find_node(node)
         return self.G.degree[index]
 
     def xy_lim(self):

@@ -38,7 +38,7 @@ class Graphics:
             label = self.env.node_info(index, 'name')
             label_dict[index] = label
             node_color_list.append(color)
-            node_type = self.env.node_type(index)
+            node_type = self.env.node_info(index, 'type')
             if node_type == 'settlement':
                 node_size_list.append(node_size_dict['settlement'])
             elif node_type == 'cross':

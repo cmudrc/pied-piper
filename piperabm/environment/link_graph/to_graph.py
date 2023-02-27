@@ -22,7 +22,7 @@ class ToGraph:
             Check whether the node exists between *start_date* and *end_date*
             """
             result = False
-            node_type = self.env.node_type(index)
+            node_type = self.env.node_info(index, 'type')
             if node_type == 'cross':
                 active = True
             else:

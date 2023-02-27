@@ -19,17 +19,6 @@ class Query:
             all_index = self.node_types[type]
         return all_index
 
-    def node_type(self, index):
-        """
-        Find node type based on its index
-        """
-        result = None
-        for key in self.node_types:
-            if index in self.node_types[key]:
-                result = key
-                break
-        return result
-
     def random_node(self, nodes_list: list):
         """
         Generate random index from *nodes_list*
@@ -48,9 +37,26 @@ class Query:
         """
         Return *property* of *node*
         """
+
+        def node_type(index):
+            """
+            Find node type based on its index
+            """
+            result = None
+            for key in self.node_types:
+                if index in self.node_types[key]:
+                    result = key
+                    break
+            return result
+
+        result = None
         node_index = self.find_node(node)
-        node = self.G.nodes[node_index]
-        return node[property]
+        if property == 'type':
+            result = node_type(node_index)
+        else:
+            node = self.G.nodes[node_index]
+            result = node[property]
+        return result
 
     def edge_info(self, start, end, property):
         """

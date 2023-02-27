@@ -30,7 +30,7 @@ class Query:
         if node is None:
             result = self.G.edges()
         else:
-            node_index = self.env.find_node(node)
+            node_index = self.find_node(node)
             result = self.G.out_edges(node_index)
         return result
 
@@ -38,7 +38,7 @@ class Query:
         """
         Return *property* of *node*
         """
-        node_index = self.env.find_node(node)
+        node_index = self.find_node(node)
         node = self.env.G.nodes[node_index]
         return node[property]
 
@@ -47,10 +47,13 @@ class Query:
         Return *property* of edge between *start* and *end*
         """
         result = None
-        start_index = self.env.find_node(start)
-        end_index = self.env.find_node(end)
+        start_index = self.find_node(start)
+        end_index = self.find_node(end)
         if start_index is not None and end_index is not None:
             if self.G.has_edge(start_index, end_index):
                 result = self.G[start_index][end_index][property]
         return result
+
+    def find_node(self, node):
+        return self.env.find_node(node)
 
