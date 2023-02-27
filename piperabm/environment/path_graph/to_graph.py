@@ -1,97 +1,34 @@
 import networkx as nx
 
-from piperabm.tools import ElementExists
-
 
 class ToGraph:
 
-    def to_graph(self, start_date=None, end_date=None):
+    def to_graph(self, links_graph):
         """
         Create path graph from environment graph
         """
 
-        ee = ElementExists()
+        def add_node(index):
+            """
+            Add node to the graph
+            """
+            name = self.env.node_info(index, 'name')
+            boundary = self.env.node_info(index, 'boundary')
+            pos = boundary.center
+            self.G.add_node(index, name=name, pos=pos)
 
-        def check_path_active(path, env):
+        def add_edge(index, other_index):
             """
-            Check all links within a path to see if they are all active
+            Add edge to the graph
             """
-            path_active = True
-            for i, _ in enumerate(path):
-                if i > 0:
-                    start = path[i-1]
-                    end = path[i]
-                    active = env.G[start][end]['active']
-                    if active is False:
-                        path_active = False
-                        break
-            return path_active
+            path = nx.shortest_path(self.env.G, source=index, target=other_index)
+            length = self.calculate_path_length(path)
+            self.G.add_edge(index, other_index, path=path, length=length)        
 
-        def calculate_path_length(path, env):
-            """
-            Calculate the equivalent length of path
-            """
-            total_length = 0
-            for i, _ in enumerate(path):
-                if i > 0:
-                    start = path[i-1]
-                    end = path[i]
-                    length = env.G[start][end]['length']
-                    difficulty = env.G[start][end]['difficulty']
-                    #progressive_deg_coeff = env.G[start][end]['####']
-                    adjusted_length = length * difficulty
-                    total_length += adjusted_length
-            return total_length   
-
-        def node_exists(node, start_date, end_date):
-            """
-            Check whether the node has been already initiated
-            """
-            initiation_date = node['initiation_date']
-            exists = ee.check(
-                item_start=initiation_date,
-                item_end=None,
-                time_start=start_date,
-                time_end=end_date
-            )
-            return exists
-
-        def check_path_exists(path, env, start_date, end_date):
-            """
-            Check all links within a path to see if they all exist
-            """
-            path_exists = True
-            for i, _ in enumerate(path):
-                if i > 0:
-                    start = path[i-1]
-                    end = path[i]
-                    initiation_date = env.G[start][end]['initiation_date']
-                    exists = ee.check(
-                        item_start=initiation_date,
-                        item_end=None,
-                        time_start=start_date,
-                        time_end=end_date
-                    )
-                    if exists is False:
-                        path_exists = False
-                        break
-            return path_exists
-
-        env = self.env
-        index_list = env.node_types['settlement']
-        index_list += env.node_types['market']
+        index_list = links_graph.all_nodes(type='settlement')
+        index_list += links_graph.all_nodes(type='market')
         for index in index_list:
-            node = env.G.nodes[index]
-            active = node['active']
-            if node_exists(node, start_date, end_date) and active is True:
-                name = node['name']
-                pos = node['boundary'].center
-                self.G.add_node(index, name=name, pos=pos)
-                for other in index_list:
-                    if other != index and nx.has_path(env.G, source=index, target=other):
-                        path = nx.shortest_path(env.G, source=index, target=other)
-                        path_active = check_path_active(path, env)
-                        path_exists = check_path_exists(path, env, start_date, end_date)
-                        if path_active is True and path_exists is True:
-                            length = calculate_path_length(path, env)
-                            self.G.add_edge(index, other, path=path, length=length)
+            add_node(index)
+            for other_index in index_list:
+                if other_index != index and nx.has_path(self.env.G, source=index, target=other_index):
+                    add_edge(index, other_index)

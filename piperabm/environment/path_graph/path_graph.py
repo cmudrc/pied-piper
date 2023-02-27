@@ -2,15 +2,17 @@ import networkx as nx
 
 try: from .to_graph import ToGraph
 except: from to_graph import ToGraph
+try: from .query import Query
+except: from query import Query
 try: from .graphics import Graphics
 except: from graphics import Graphics
 
 
-class PathGraph(ToGraph, Graphics):
-    def __init__(self, env, start_date=None, end_date=None):
-        self.env = env
+class PathGraph(ToGraph, Query, Graphics):
+    def __init__(self, links_graph):
+        self.env = links_graph.env
         self.G = nx.DiGraph()
-        self.to_graph(start_date, end_date)
+        self.to_graph(links_graph)
 
     def from_node_perspective(self, node):
         return self.G.out_edges(node)
@@ -49,5 +51,35 @@ class PathGraph(ToGraph, Graphics):
             result = None
         return result
 
+    def calculate_path_length(self, path):
+        """
+        Calculate the equivalent length of path
+        """
+        total_length = 0
+        for i, _ in enumerate(path):
+            if i > 0:
+                start = path[i-1]
+                end = path[i]
+                length = self.env.G[start][end]['length']
+                #length = self.edge_info(start, end, 'length')
+                difficulty = self.env.G[start][end]['difficulty']
+                #progressive_deg_coeff = env.G[start][end]['####']
+                adjusted_length = length * difficulty
+                total_length += adjusted_length
+        return total_length
+
     def __str__(self):
         return str(self.G)
+
+
+if __name__ == "__main__":
+    from piperabm.unit import Date
+    from piperabm.environment.sample import env_0 as env
+    from piperabm.environment.link_graph import LinkGraph
+
+    start_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 10)
+    env.update_elements(start_date, end_date)
+    link_graph = LinkGraph(env, start_date, end_date)
+    path_graph = PathGraph(link_graph)
+    path_graph.show()
