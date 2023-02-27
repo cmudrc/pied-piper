@@ -2,6 +2,10 @@ from piperabm.environment import Environment
 
 
 class CityGenerator:
+    """
+    Generate new city
+    """
+
     def __init__(self, env_list=[]):
         self.env_list = env_list
 

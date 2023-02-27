@@ -2,6 +2,10 @@ import numpy as np
 
 
 class Query:
+    """
+    Contains methods for LinkGraph class
+    Create a wrap-up for accessing graph data
+    """
 
     def all_nodes(self, type='all'):
         """
@@ -18,6 +22,10 @@ class Query:
         return all_index
 
     def all_edges(self, node=None):
+        """
+        Return a list of all edges if *node* is None, and if *node* is provided,
+        return a list of edges that connect to the *node*
+        """
         result = None
         if node in None:
             result = self.G.edges()
@@ -45,7 +53,11 @@ class Query:
                 result = self.G[start_index][end_index][property]
         return result
 
-    def node_degree(self, index):
+    def node_degree(self, node):
+        """
+        Return number of edges connecting to the node
+        """
+        index = self.env.find_node(node)
         return self.G.degree[index]
 
     def xy_lim(self):

@@ -6,7 +6,8 @@ from piperabm.tools import ElementExists
 
 class ToGraph:
     """
-    Create graph
+    Contains methods for LinkGraph class
+    Create graph from input
     """
 
     def to_graph(self, start_date=None, end_date=None):

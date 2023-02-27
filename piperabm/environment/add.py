@@ -5,6 +5,10 @@ from piperabm.degradation import Eternal
 
 
 class Add:
+    """
+    Contains methods for Environment class
+    Add new elements to the environment
+    """
 
     def add_settlement(
         self,

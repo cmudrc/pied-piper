@@ -5,6 +5,9 @@ from piperabm.tools import ElementExists
 
 
 class Graphics:
+    """
+    Contains methods for Environment class
+    """
     pass
     '''
     def to_plt(self, ax=None, start_date=None, end_date=None):

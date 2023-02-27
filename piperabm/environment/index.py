@@ -2,6 +2,11 @@ import numpy as np
 
 
 class Index:
+    """
+    Contains methods for Environment class
+    Manage nodes index
+    """
+
     def __init__(self):
         '''node_types is node indexes gathered as list inside a dictionary based on their type'''
         self.node_types = {

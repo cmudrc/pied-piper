@@ -2,6 +2,9 @@ from piperabm.degradation import Eternal, DiracDelta
 
 
 class Update:
+    """
+    Contains methods for Environment class
+    """
 
     def _update_all_edges(self, start_date, end_date):
         """
