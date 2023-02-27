@@ -60,47 +60,12 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         length = edge['length']
         return difficulty * pd * length
 
-    def xy_lim(self):
-        """
-        Resturn x and y limits of environment based on elemets pos
-        """
-        x_min, x_max = None, None
-        y_min, y_max = None, None
-        for index in self.all_nodes():
-            boundary = self.node_info(index, 'boundary')
-            pos = boundary.center
-            x = pos[0]
-            y = pos[1]
-            if x_max is None: x_max = x
-            elif x > x_max: x_max = x
-            if x_min is None: x_min = x
-            elif x < x_min: x_min = x
-            if y_max is None: y_max = y
-            elif y > y_max: y_max = y
-            if y_min is None: y_min = y
-            elif y < y_min: y_min = y
-        y_lim = [y_min, y_max]
-        x_lim = [x_min, x_max]
-        return x_lim, y_lim
-
-    def size(self):
-        """
-        Return size of environment
-        """
-        x_lim, y_lim = self.xy_lim()
-        x_size = x_lim[1] - x_lim[0]
-        y_size = y_lim[1] - y_lim[0]
-        size = [x_size, y_size]
-        return size
-
-    def node_degree(self, index):
-        return self.G.degree[index]
-        
     def to_path_graph(self, start_date=None, end_date=None):
         """
         Convert the environment to "path_graph" object
         """
-        return PathGraph(env=self, start_date=start_date, end_date=end_date)
+        link_graph = self.to_link_graph(start_date, end_date)
+        return PathGraph(link_graph)
     
     def to_link_graph(self, start_date=None, end_date=None):
         """

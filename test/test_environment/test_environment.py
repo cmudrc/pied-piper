@@ -70,20 +70,6 @@ class TestEnvironmentClass1(unittest.TestCase):
         self.assertEqual(info.month, expected_result.month)
         self.assertEqual(info.day, expected_result.day)
 
-    def test_xylim(self):
-        env = deepcopy(self.env)
-        x_lim, y_lim = env.xy_lim()
-        expected_result = [-2, 20]
-        self.assertListEqual(x_lim, expected_result)
-        expected_result = [-2, 20]
-        self.assertListEqual(y_lim, expected_result)
-
-    def test_size(self):
-        env = deepcopy(self.env)
-        size = env.size()
-        expected_result = [22, 22]
-        self.assertListEqual(size, expected_result)
-
 
 class TestEnvironmentClass2(unittest.TestCase):
 

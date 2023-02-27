@@ -8,13 +8,13 @@ class Query:
         Aggregate all lists of nodes in self.node_types
         """
         all_index = []
-        for node in self.G.nodes():
-            if type == 'all':
-                all_index += node
-            else:
-                node_type = self.node_types[node]
-                if type == node_type:
-                    all_index += node
+        nodes_list = list(self.G)
+        if type == 'all':
+            all_index = nodes_list
+        else:
+            for node in nodes_list:
+                if type == self.env.node_type(node):
+                    all_index.append(node)
         return all_index
 
     def all_edges(self, node=None):

@@ -157,6 +157,36 @@ class TestLinkGraph(unittest.TestCase):
         self.assertListEqual(settlement_nodes, [0])
         self.assertListEqual(cross_nodes, [2])
 
+    def test_xylim(self):
+        env = deepcopy(self.env)
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 10)
+        env.update_elements(start_date, end_date)
+        link_graph = env.to_link_graph(start_date, end_date)
+        x_lim, y_lim = link_graph.xy_lim()
+        expected_result = [-2, 20]
+        self.assertListEqual(x_lim, expected_result)
+        expected_result = [-2, 20]
+        self.assertListEqual(y_lim, expected_result)
+
+    def test_size(self):
+        env = deepcopy(self.env)
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 10)
+        env.update_elements(start_date, end_date)
+        link_graph = env.to_link_graph(start_date, end_date)
+        size = link_graph.size()
+        expected_result = [22, 22]
+        self.assertListEqual(size, expected_result)
+
+    def test_to_path(self):
+        env = deepcopy(self.env)
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 10)
+        env.update_elements(start_date, end_date)
+        link_graph = env.to_link_graph(start_date, end_date)
+        link_graph.to_path_graph()
+
 
 if __name__ == "__main__":
     unittest.main()
