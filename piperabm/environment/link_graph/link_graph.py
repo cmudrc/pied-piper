@@ -1,13 +1,9 @@
 import networkx as nx
 
-try:
-    from .to_graph import ToGraph
-except:
-    from to_graph import ToGraph
-try:
-    from .graphics import Graphics
-except:
-    from graphics import Graphics
+try: from .to_graph import ToGraph
+except: from to_graph import ToGraph
+try: from .graphics import Graphics
+except: from graphics import Graphics
 
 
 class LinkGraph(ToGraph, Graphics):
