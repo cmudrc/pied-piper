@@ -12,6 +12,8 @@ try: from .add import Add
 except: from add import Add
 try: from .index import Index
 except: from index import Index
+try: from .query import Query
+except: from query import Query
 try: from .update import Update
 except: from update import Update
 try: from .graphics import Graphics
@@ -22,7 +24,7 @@ try: from .link_graph import LinkGraph
 except: from link_graph import LinkGraph
 
 
-class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Graphics, Update):
+class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Query, Graphics, Update):
     """
     Manage settlements and their connecting links
     """

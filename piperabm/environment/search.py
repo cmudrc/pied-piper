@@ -55,16 +55,3 @@ class Search:
         elif isinstance(input, list):
             result = self._find_node_by_pos(input, report=report)
         return result
-
-    def find_oldest_element(self):
-        oldest_date = None
-        for key in self.node_types:
-            if key != 'cross':
-                for index in self.node_types[key]:
-                    node = self.G.nodes[index]
-                    initiation_date = node['initiation_date']
-                    if oldest_date is None:
-                        oldest_date = initiation_date
-                    elif initiation_date < oldest_date:
-                        oldest_date = initiation_date
-        return oldest_date

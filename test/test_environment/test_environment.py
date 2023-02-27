@@ -35,7 +35,7 @@ class TestEnvironmentClass1(unittest.TestCase):
 
     def test_settlement_info(self):
         env = deepcopy(self.env)
-        info = env.settlement_info(
+        info = env.node_info(
             node="Peter's Home",
             property="initiation_date"
             )
@@ -52,7 +52,7 @@ class TestEnvironmentClass1(unittest.TestCase):
     def test_node_info(self):
         env = deepcopy(self.env)
         info = env.node_info(
-            node_index=0,
+            node=0,
             property="boundary"
         )
         expected_result = [-2, -2]
@@ -90,13 +90,6 @@ class TestEnvironmentClass2(unittest.TestCase):
     env = env_1
 
     #env.show(Date.today(), Date.today()+DT(hours=1))
-
-    def test_filter_nodes(self):
-        env = deepcopy(self.env)
-        nodes_list = env.node_types['cross']
-        result = env.filter_nodes(nodes_list, n=2)
-        expected_result = [4]
-        self.assertListEqual(result, expected_result)
 
     def to_link_graph(self):
         env = deepcopy(self.env)
