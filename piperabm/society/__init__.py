@@ -1,1 +1,1 @@
-from .agents import Society
+from .society import Society
