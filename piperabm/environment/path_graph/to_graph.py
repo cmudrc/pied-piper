@@ -1,5 +1,8 @@
 import networkx as nx
 
+try: from .path import Path
+except: from path import Path
+
 
 class ToGraph:
 
@@ -22,8 +25,13 @@ class ToGraph:
             Add edge to the graph
             """
             path = nx.shortest_path(self.env.G, source=index, target=other_index)
-            length = self.calculate_path_length(path)
-            self.G.add_edge(index, other_index, path=path, length=length)        
+            r = Path(path, self.env)
+            #print(r)
+            self.G.add_edge(index, other_index, path=r)
+            #length = self.calculate_path_length(path)
+            #self.G.add_edge(index, other_index, path=path, length=length)
+            
+                    
 
         index_list = links_graph.all_nodes(type='settlement')
         index_list += links_graph.all_nodes(type='market')
