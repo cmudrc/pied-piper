@@ -56,7 +56,7 @@ class TestPathClass(unittest.TestCase):
         expected_result = 1
         self.assertEqual(index, expected_result)
 
-    def test_pos(self): #######
+    def test_pos(self):
         transportation = Walk()
         pos = self.path.pos(0, transportation)
         expected_result = [-2, -2]
@@ -65,6 +65,9 @@ class TestPathClass(unittest.TestCase):
         pos = self.path.pos(duration, transportation)
         expected_result = [20, 20]
         self.assertListEqual(pos, expected_result)
+        pos = self.path.pos(15.9054, transportation)
+        expected_result = [20, 0]
+        self.assertAlmostEqual(pos[1], expected_result[1], places=3)
 
 
 if __name__ == "__main__":

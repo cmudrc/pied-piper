@@ -53,7 +53,7 @@ class Track:
             theta = np.arctan(m)
         displacement = current_length * np.array([np.cos(theta), np.sin(theta)])
         return list(pos_0 + displacement)
-
+ 
     def __str__(self):
         txt = '"track" from '
         txt += str(self.start_pos)

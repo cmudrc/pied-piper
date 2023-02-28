@@ -56,12 +56,19 @@ class Path:
 
     def find_active_track(self, delta_time, transportation):
         active_track = None
-        val = delta_time
-        for track_index, track in enumerate(self.tracks):
-            val -= track.duration(transportation)
-            if val < 0:
-                active_track = track
-                break
+        if delta_time <= 0:
+            active_track = self.tracks[0]
+            track_index = 0
+        elif delta_time >= self.duration(transportation):
+            active_track = self.tracks[-1]
+            track_index = len(self.tracks) - 1
+        else:
+            val = delta_time
+            for track_index, track in enumerate(self.tracks):
+                val -= track.duration(transportation)
+                if val <= 0:
+                    active_track = track
+                    break
         return active_track, track_index
 
     def pos(self, delta_time, transportation):
