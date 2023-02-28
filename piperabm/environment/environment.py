@@ -29,23 +29,16 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
     Manage settlements and their connecting links
     """
 
-    def __init__(self, G=None, log=None, links_unit_length=None):
+    def __init__(self, G=None, links_unit_length=None):
         """
             G: create instance from another graph
             log: logging instance
             unit_length: unit_length for the degradation distribution
         """
-        if G is None:
-            self.G = nx.Graph()
-        else:
-            self.G = G
-        
+        if G is None: self.G = nx.Graph()
+        else: self.G = G
         self.links_unit_length = links_unit_length
-        
-        if log is None:
-            self.log = Log()
-        else:
-            self.log = log
+        self.log = Log()
         super().__init__()
 
     def adjusted_length(self, start_node, end_node):

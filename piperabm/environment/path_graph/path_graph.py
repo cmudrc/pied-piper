@@ -51,22 +51,6 @@ class PathGraph(ToGraph, Query, Graphics):
             result = None
         return result
     '''
-    def calculate_path_length(self, path):
-        """
-        Calculate the equivalent length of path
-        """
-        total_length = 0
-        for i, _ in enumerate(path):
-            if i > 0:
-                start = path[i-1]
-                end = path[i]
-                length = self.env.G[start][end]['length']
-                #length = self.edge_info(start, end, 'length')
-                difficulty = self.env.G[start][end]['difficulty']
-                #progressive_deg_coeff = env.G[start][end]['####']
-                adjusted_length = length * difficulty
-                total_length += adjusted_length
-        return total_length
     
     def __str__(self):
         return str(self.G)

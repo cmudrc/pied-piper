@@ -35,10 +35,10 @@ class Decision:
             Calculate duration of the trip
             """
             required_time_list = []
-            for i, _ in enumerate(path):
+            for i, _ in enumerate(path.path):
                 if i > 0:
-                    _from = path[i-1]
-                    _to = path[i]
+                    _from = path.path[i-1]
+                    _to = path.path[i]
                     adjusted_length = self.env.adjusted_length(_from, _to)
                     transportation = self.agent_info(agent, 'transportation')
                     required_time = transportation.how_long(adjusted_length).total_seconds()
@@ -67,10 +67,10 @@ class Decision:
             fuel_factor_list = []
             resource = self.agent_info(agent, 'resource')
             transportation = self.agent_info(agent, 'transportation')
-            for i, _ in enumerate(path):
+            for i, _ in enumerate(path.path):
                 if i > 0:
-                    _from = path[i-1]
-                    _to = path[i]
+                    _from = path.path[i-1]
+                    _to = path.path[i]
                     adjusted_length = self.env.adjusted_length(_from, _to)
                     required_fuel = transportation.how_much_fuel(adjusted_length)
                     fuel_factor_delta = required_fuel / resource

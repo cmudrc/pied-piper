@@ -60,12 +60,11 @@ class Model(Graphics):
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
 
-        path = self.env.to_path(start_date, end_date)
+        #path_graph = self.env.to_path_graph(start_date, end_date)
         #path.show()
         ####
         self.current_date = end_date
         self.current_step += 1
-        
         #print(self.current_step, self.current_date)
 
     def run(self, n=1, log=True):
