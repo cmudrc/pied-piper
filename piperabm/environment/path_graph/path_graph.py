@@ -16,7 +16,7 @@ class PathGraph(ToGraph, Query, Graphics):
 
     def from_node_perspective(self, node):
         return self.G.out_edges(node)
-
+    '''
     def path_to_pos(self, path: list):
         """
         Convert edge path data to a list of pos
@@ -50,7 +50,7 @@ class PathGraph(ToGraph, Query, Graphics):
         else:
             result = None
         return result
-
+    '''
     def calculate_path_length(self, path):
         """
         Calculate the equivalent length of path
@@ -67,7 +67,7 @@ class PathGraph(ToGraph, Query, Graphics):
                 adjusted_length = length * difficulty
                 total_length += adjusted_length
         return total_length
-
+    
     def __str__(self):
         return str(self.G)
 

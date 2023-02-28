@@ -5,7 +5,7 @@ class Decision:
         A list of possible routes in path graph
         """
         settlement_index = self.agent_info(agent, 'settlement')
-        path = self.env.to_path(start_date, end_date)
+        path = self.env.to_path_graph(start_date, end_date)
         return list(path.from_node_perspective(settlement_index))
 
     def select_best_route(self, agent, start_date, end_date):
@@ -78,8 +78,8 @@ class Decision:
                     fuel_factor_list.append(fuel_factor)
             return sum(fuel_factor_list)
 
-        path_graph = self.env.to_path(start_date, end_date)
-        path = path_graph.route_info(*route, 'path')
+        path_graph = self.env.to_path_graph(start_date, end_date)
+        path = path_graph.edge_info(*route, 'path')
         tf = time_factor(agent, path)
         rf = resource_factor(agent, route[1])
         ff = fuel_factor(agent, path)

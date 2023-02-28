@@ -38,9 +38,7 @@ class Query:
         """
         Return *property* of *node*
         """
-        node_index = self.find_node(node)
-        node = self.env.G.nodes[node_index]
-        return node[property]
+        return self.env.node_info(node, property)
 
     def edge_info(self, start, end, property):
         """
@@ -56,4 +54,11 @@ class Query:
 
     def find_node(self, node):
         return self.env.find_node(node)
+
+    def node_degree(self, node):
+        """
+        Return number of edges connecting to the node
+        """
+        index = self.find_node(node)
+        return self.G.degree[index]
 
