@@ -1,19 +1,19 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.transportation import Foot
+from piperabm.transportation import Walk
 
 
 class TestTransportaionClass(unittest.TestCase):
     
     def test_how_long(self):
-        transportation = Foot()
+        transportation = Walk()
         length = 1000
         delta_t = transportation.how_long(length)
         self.assertEqual(delta_t.total_seconds(), 12*60)
 
     def test_how_much_fuel(self):
-        transportation = Foot()
+        transportation = Walk()
         length = 1000
         result = transportation.how_much_fuel(length)
         self.assertAlmostEqual(result.batch['food'], 0.01666666666)

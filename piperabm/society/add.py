@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from piperabm.actions import Queue
 from piperabm.resource import Resource, DeltaResource
-from piperabm.transportation import Foot
+from piperabm.transportation import Walk
 from piperabm.unit import Unit
 
 
@@ -44,12 +44,9 @@ class Add:
                     'energy': 0
                 }
             )
-        if settlement is None:
-            settlement_index = self.env.random_settlement()
-        else:
-            settlement_index = self.env.find_node(settlement)
-        if transportation is None:
-            transportation = Foot()
+        if settlement is None: settlement_index = self.env.random_settlement()
+        else: settlement_index = self.env.find_node(settlement)
+        if transportation is None: transportation = Walk()
         settlement_node = self.env.G.nodes[settlement_index]
         pos = settlement_node['boundary'].center
         self.G.add_node(

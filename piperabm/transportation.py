@@ -42,7 +42,7 @@ class Transportation():
         return str(self.name)
 
 
-class Foot(Transportation):
+class Walk(Transportation):
     def __init__(self):
         super().__init__(
             name='foot',
@@ -71,7 +71,7 @@ class Vehicle(Transportation):
 
 
 if __name__ == "__main__":
-    transportation = Foot()
+    transportation = Walk()
     #print('transportation.name:', transportation.name)
     length = 1000
     delta_t = transportation.how_long(length)

@@ -43,8 +43,14 @@ class Track:
         pos_0 = np.array(self.start_pos)
         delta_x = self.end_pos[0] - self.start_pos[0]
         delta_y = self.end_pos[1] - self.start_pos[1]
-        m = delta_y / delta_x
-        theta = np.arctan(m)
+        if delta_x == 0:
+            if delta_y > 0:
+                theta = np.pi / 2
+            else:
+                theta = 3 * np.pi / 2
+        else:
+            m = delta_y / delta_x
+            theta = np.arctan(m)
         displacement = current_length * np.array([np.cos(theta), np.sin(theta)])
         return list(pos_0 + displacement)
 

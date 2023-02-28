@@ -26,9 +26,10 @@ class TestEnvironmentClass1(unittest.TestCase):
         path_graph = env.to_path_graph(start_date, end_date)
         all_settlements = env.all_nodes('settlement')
         path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
-        #print(path)
         expected_result = [0, 2, 1]
         self.assertListEqual(path.path, expected_result)
+        self.assertEqual(0, path.start_pos())
+        self.assertEqual(1, path.end_pos())
 
     def test_path(self): ###########
         env = deepcopy(self.env)
@@ -38,9 +39,8 @@ class TestEnvironmentClass1(unittest.TestCase):
         path_graph = env.to_path_graph(start_date, end_date)
         all_settlements = env.all_nodes('settlement')
         path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
-        #print(path)
-        expected_result = [0, 2, 1]
-        self.assertListEqual(path.path, expected_result)
+        #result = path.path
+        #self.assertListEqual(result, expected_result)
 
     def test_all_settlements(self):
         settlements = self.env.all_nodes('settlement')
