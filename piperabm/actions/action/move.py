@@ -3,33 +3,16 @@ from piperabm.tools import euclidean_distance
 
 
 class Move:
-    def __init__(self, start_date: Date, start_pos, end_pos, transportation, adjusted_length=None):
+
+    def __init__(self, start_date: Date, path, transportation):
         self.start_date = start_date
-        self.start_pos = start_pos
-        self.end_pos = end_pos
-        if adjusted_length is None:
-            self.adjusted_length = euclidean_distance(*start_pos, *end_pos)
-        else:
-            self.adjusted_length = adjusted_length
+        self.path = path
         self.transportation = transportation
-        self.duration = self.calculate_duration()
-        self.end_date  = self.calculate_end_date()
-        self.fuel_consumption = self.calculate_fuel_consumption()
+        self.duration = self.path.duration(self.transportation)
+        self.end_date  = self.start_date + self.duration
+        self.fuel_consumption = self.total_fuel_consumption()
 
-    def calculate_end_date(self):
-        """
-        Calculate end_date based on given data
-        """
-        duration = self.calculate_duration()
-        return self.start_date + duration
-
-    def calculate_duration(self):
-        duration = DT(
-            seconds=self.adjusted_length/self.transportation.speed
-        )
-        return duration
-
-    def calculate_fuel_consumption(self):
+    def total_fuel_consumption(self):
         result = {}
         for key in self.transportation.fuel_rate:
             result[key] = self.transportation.fuel_rate[key] * self.duration
@@ -54,30 +37,20 @@ class Move:
         return current
 
     def is_done(self, date: Date):
-        if self.end_date > date:
-            return True
-        else:
-            return False
+        result = False
+        if self.progress(date) == 1:
+            result = True
+        return result
 
     def pos(self, date: Date):
         """
-        Calculate pos in the date between *self.start_date* and *self.end_date*
+        Calculate pos in the *date*
         """
-        progress = self.progress(date)
-        x = self.start_pos[0] + ((self.end_pos[0] - self.start_pos[0]) * progress)
-        y = self.start_pos[1] + ((self.end_pos[1] - self.start_pos[1]) * progress)
-        return [x, y]
+        return self.path(date - self.start_date, self.transportation)
 
     def progress(self, date: Date):
-        result = None
-        if date > self.start_date and date < self.end_date:
-            result = (date - self.start_date).total_seconds() / (self.end_date - self.start_date).total_seconds()
-        else:
-            if date <= self.start_date:
-                result = 0
-            if date >= self.end_date:
-                result = 1
-        return result
+        delta_time = date - self.start_date
+        return self.path.progress(delta_time, self.transportation)
 
     
 if __name__ == "__main__":

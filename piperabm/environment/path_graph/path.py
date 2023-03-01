@@ -44,6 +44,7 @@ class Path:
 
     def progress(self, delta_time, transportation):
         progress = None
+        delta_time = self.refine_delta_time(delta_time)
         duration = self.duration(transportation)
         result = delta_time / duration
         if result < 0:
@@ -56,6 +57,7 @@ class Path:
 
     def find_active_track(self, delta_time, transportation):
         active_track = None
+        delta_time = self.refine_delta_time(delta_time)
         if delta_time <= 0:
             active_track = self.tracks[0]
             track_index = 0
@@ -73,6 +75,7 @@ class Path:
 
     def pos(self, delta_time, transportation):
         track, index = self.find_active_track(delta_time, transportation)
+        delta_time = self.refine_delta_time(delta_time)
         delta_time_0 = 0
         for i in range(index):
             delta_time_0 += self.tracks[i].duration(transportation)

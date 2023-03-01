@@ -30,6 +30,13 @@ class Index:
         if index is not None:
             result = self.G.nodes[index][property]
         return result
+    
+    def set_agent_info(self, agent, property, val):
+        index = self.find_agent(agent)
+        if index is not None:
+            self.G.nodes[index][property] = val
+        else:
+            print("ERROR: agent info not updated")
         
     def all_agents_from(self, settlement):
         """

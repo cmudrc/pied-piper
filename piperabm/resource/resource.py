@@ -1,9 +1,7 @@
 from copy import deepcopy
 
-try: from .add import add_function
-except: from add import add_function
-try: from .sub import sub_function
-except: from sub import sub_function
+try: from .arithmetics import add, sub, mul, truediv
+except: from arithmetics import add, sub, mul, truediv
 
 
 class Resource:
@@ -125,135 +123,67 @@ class Resource:
         )
 
     def __add__(self, other):
+        result = None
+        remaining = None
+        main_dict = self.current_resource
+        main_max_dict = self.max_resource
         if isinstance(other, DeltaResource):
-            new_current_amount_dict = {}
-            new_max_amount_dict = deepcopy(self.max_resource)
-            new_remaining_dict = {}
-            for name in self._aggregate_keys(other):
-                if self.resource_exists(name) is True:
-                    if name in other.batch:
-                        amount = other.batch[name]
-                        if amount > 0:
-                            new_current_amount, remaining = add_function(
-                                amount=other.batch[name],
-                                current_amount=self.current_resource[name],
-                                max_amount=self.max_resource[name]
-                            )
-                        else:
-                            new_current_amount, remaining = sub_function(
-                                amount=-amount,
-                                current_amount=self.current_resource[name]
-                            )
-                    else:
-                        new_current_amount, remaining = add_function(
-                            amount=0,
-                            current_amount=self.current_resource[name],
-                            max_amount=self.max_resource[name]
-                        )
-                else:
-                    amount = other.batch[name]
-                    if amount > 0:
-                        new_current_amount, remaining = add_function(
-                            amount=amount,
-                            current_amount=0,
-                            max_amount=None
-                        )
-                    else:
-                        new_current_amount, remaining = sub_function(
-                            amount=-amount,
-                            current_amount=0
-                        )
-                new_remaining_dict[name] = remaining
-                new_current_amount_dict[name] = new_current_amount
-            result = Resource(
-                current_resource=new_current_amount_dict,
-                max_resource=new_max_amount_dict
-                )
-            result_remaining = DeltaResource(new_remaining_dict)
-        else:
-            txt = "ERROR: " + str(type(other)) + " type not acceptible."
-            print(txt)
-            raise ValueError
-        return result, result_remaining
+            other_dict = other.batch
+            max_dict = main_max_dict
+        elif isinstance(other, Resource):
+            other_dict = other.current_resource
+            max_dict, _ = add(main_max_dict, other.max_resource)
+        elif isinstance(other, dict):
+            other_dict = other
+            max_dict = main_max_dict
+        result, remaining = add(main_dict, other_dict, max_dict)
+        return Resource(result, max_dict), DeltaResource(remaining)
 
     def __sub__(self, other):
+        result = None
+        remaining = None
+        main_dict = self.current_resource
         if isinstance(other, DeltaResource):
-            new_current_amount_dict = {}
-            new_max_amount_dict = deepcopy(self.max_resource)
-            new_remaining_dict = {}
-            for name in self._aggregate_keys(other):
-                if self.resource_exists(name) is True:
-                    if name in other.batch:
-                        amount = other.batch[name]
-                        if amount > 0:
-                            new_current_amount, remaining = sub_function(
-                                amount=amount,
-                                current_amount=self.current_resource[name]
-                            )
-                        else:
-                            new_current_amount, remaining = add_function(
-                                amount=-amount,
-                                current_amount=self.current_resource[name],
-                                max_amount=self.max_resource[name]
-                            )
-                    else:
-                        new_current_amount, remaining = sub_function(
-                            amount=0,
-                            current_amount=self.current_resource[name]
-                        )
-                else:
-                    amount = other.batch[name]
-                    if amount > 0:
-                        new_current_amount, remaining = sub_function(
-                            amount=amount,
-                            current_amount=0
-                        )
-                    else:
-                        new_current_amount, remaining = add_function(
-                            amount=-amount,
-                            current_amount=0,
-                            max_amount=None
-                        )                      
-                new_remaining_dict[name] = remaining
-                new_current_amount_dict[name] = new_current_amount
-            result = Resource(
-                current_resource=new_current_amount_dict,
-                max_resource=new_max_amount_dict
-                )
-            result_remaining = DeltaResource(new_remaining_dict)
-        else:
-            raise ValueError
-        return result, result_remaining
+            other_dict = other.batch
+        elif isinstance(other, Resource):
+            other_dict = other.current_resource
+        elif isinstance(other, dict):
+            other_dict = other
+        result, remaining = sub(main_dict, other_dict)
+        return Resource(result, self.max_resource), DeltaResource(remaining)
 
     def __truediv__(self, other):
-        result = {}
-        if isinstance(other, DeltaResource):
-            for name in other.batch:
-                if name in self._aggregate_keys():
-                    result[name] = self.current_resource[name] / other.batch[name]
-        elif isinstance(other, Resource):
-            for name in other.current_amount:
-                if name in self._aggregate_keys():
-                    result[name] = self.current_resource[name] / other.current_resource[name]
-        elif isinstance(other, (float, int)):
-            for name in self._aggregate_keys():
-                result[name] = self.current_resource[name] / other
+        result = None
+        main_dict = self.current_resource
+        if isinstance(other, (float, int)):
+            other = other
         elif isinstance(other, dict):
-            for name in self._aggregate_keys():
-                if name in other:
-                    result[name] = self.current_resource[name] / other[name]
-        return result
+            other = other
+        elif isinstance(other, Resource):
+            other = other.current_resource
+        elif isinstance(other, DeltaResource):
+            other = other.batch
+        result = truediv(main_dict, other)
+        return Resource(result)
 
     def __mul__(self, other):
-        result = {}
+        result = None
+        main_dict = self.batch
+        main_max_dict = self.max_resource
         if isinstance(other, (float, int)):
-            for name in self._aggregate_keys():
-                result[name] = self.current_resource[name] * other
+            other = other
+            max_dict = main_max_dict
         elif isinstance(other, dict):
-            for name in self._aggregate_keys():
-                if name in other:
-                    result[name] = self.current_resource[name] * other[name]
-        return result
+            other = other
+            max_dict = main_max_dict
+        elif isinstance(other, Resource):
+            other = other.current_resource
+            max_dict = mul(main_max_dict, other.max_resource)
+        elif isinstance(other, DeltaResource):
+            other = other.batch
+            max_dict = main_max_dict
+        result = mul(main_dict, other, max_dict)
+        return DeltaResource(result)
 
     def __str__(self):
         return str(self.current_resource)
@@ -280,132 +210,65 @@ class DeltaResource:
             exchange_rate=exchange_rate
         )
 
-    def _aggregate_keys(self, other=None):
-        """
-        Combine all resource names from both self and other
-        """
-        result = []
-        for name in self.batch:
-            if name not in result: result.append(name)
-        if other is not None:
-            if isinstance(other, DeltaResource):
-                for name in other.batch:
-                    if name not in result: result.append(name)
-            elif isinstance(other, Resource):
-                for name in other.current_resource:
-                    if name not in result: result.append(name)
-        return result
-
     def __add__(self, other):
         result = None
+        remaining = None
+        main_dict = self.batch
         if isinstance(other, DeltaResource):
-            result_dict = {}
-            for key in self.batch:
-                if key in other.batch:
-                    result_dict[key] = self.batch[key] + other.batch[key]
-                else:
-                    result_dict[key] = self.batch[key]
-            for key in other.batch:
-                if key not in self.batch:
-                    result_dict[key] = other.batch[key]
-            result = DeltaResource(result_dict)
+            other_dict = other.batch
+            max_dict = None
         elif isinstance(other, Resource):
-            new_current_amount_dict = {}
-            new_max_amount_dict = other.max_resource
-            new_remaining_dict = {}
-            for name in self.batch:
-                if other.resource_exists(name) is True:
-                    new_current_amount, remaining = add_function(
-                        amount=self.batch[name],
-                        current_amount=other.current_resource[name],
-                        max_amount=other.max_resource[name]
-                        )
-                    new_remaining_dict[name] = remaining
-                    new_current_amount_dict[name] = new_current_amount
-            result = Resource(
-                current_resource=new_current_amount_dict,
-                max_resource=new_max_amount_dict
-                )
-            self.batch = new_remaining_dict
-        return result
+            other_dict = other.current_resource
+            max_dict = None
+        elif isinstance(other, dict):
+            other_dict = other
+            max_dict = None
+        result, remaining = add(main_dict, other_dict, max_dict)
+        return DeltaResource(result), DeltaResource(remaining)
 
     def __sub__(self, other):
+        result = None
+        remaining = None
+        main_dict = self.batch
         if isinstance(other, DeltaResource):
-            result_dict = {}
-            for key in self.batch:
-                if key in other.batch:
-                    result_dict[key] = self.batch[key] - other.batch[key]
-                else:
-                    result_dict[key] = self.batch[key]
-            for key in other.batch:
-                if key not in self.batch:
-                    result_dict[key] = -other.batch[key]
-            result = DeltaResource(result_dict)
+            other_dict = other.batch
         elif isinstance(other, Resource):
-            new_current_amount_dict = {}
-            new_max_amount_dict = other.max_resource
-            new_remaining_dict = {}
-            for name in self.batch:
-                if other.resource_exists(name) is True:
-                    new_current_amount, remaining = add_function(
-                        amount=self.batch[name],
-                        current_amount=-other.current_resource[name],
-                        max_amount=other.max_resource[name]
-                        )
-                    new_remaining_dict[name] = remaining
-                    new_current_amount_dict[name] = new_current_amount
-            result = Resource(
-                current_resource=new_current_amount_dict,
-                max_resource=new_max_amount_dict
-                )
-            self.batch = new_remaining_dict
-        return result
+            other_dict = other.current_resource
+        elif isinstance(other, dict):
+            other_dict = other
+        result, remaining = sub(main_dict, other_dict)
+        return DeltaResource(result), DeltaResource(remaining)
 
     def __mul__(self, other):
+        result = None
+        main_dict = self.batch
         if isinstance(other, (float, int)):
-            new_batch = deepcopy(self.batch)
-            for name in new_batch:
-                new_batch[name] = new_batch[name] * other
-            result = DeltaResource(new_batch)
+            other = other
+        elif isinstance(other, dict):
+            other = other
         elif isinstance(other, Resource):
-            result = {}
-            for name in other.current_amount:
-                if name in self._aggregate_keys():
-                    result[name] = self.current_resource[name] / other.current_resource[name]
-            result = DeltaResource(new_batch)
+            other = other.current_resource
         elif isinstance(other, DeltaResource):
-            result = {}
-            for name in other.batch:
-                if name in self._aggregate_keys():
-                    result[name] = self.current_resource[name] / other.batch[name]
-            result = DeltaResource(new_batch)
-        return result
+            other = other.batch
+        result = mul(main_dict, other)
+        return DeltaResource(result)
 
     def __truediv__(self, other):
+        result = None
+        main_dict = self.batch
         if isinstance(other, (float, int)):
-            new_batch = deepcopy(self.batch)
-            for name in new_batch:
-                new_batch[name] = new_batch[name] / other
-            result = DeltaResource(new_batch)
+            other = other
+        elif isinstance(other, dict):
+            other = other
         elif isinstance(other, Resource):
-            new_batch = {}
-            for name in other.current_resource:
-                if name in self._aggregate_keys():
-                    if self.batch[name] > 0:
-                        new_batch[name] = self.batch[name] / other.current_resource[name]
-            result = DeltaResource(new_batch)
+            other = other.current_resource
         elif isinstance(other, DeltaResource):
-            new_batch = {}
-            for name in other.batch:
-                if name in self._aggregate_keys():
-                    if self.batch[name] > 0:
-                        new_batch[name] = self.batch[name] / other.batch[name]
-            result = DeltaResource(new_batch)
-        return result
+            other = other.batch
+        result = truediv(main_dict, other)
+        return DeltaResource(result)
 
     def __str__(self):
         return str(self.batch)
-
 
 def value(resource_dict: dict, exchange_rate):
     """
@@ -436,16 +299,16 @@ if __name__ == "__main__":
     )
 
     dr1 = DeltaResource({
-        #'food': 4,
+        'food': 4,
         'water': 2,
     })
     dr2 = DeltaResource({
         'food': 6,
     })
-    dr = dr2-dr1
+    dr, remaining = dr2-dr1
     
-    print(r1)
-    print(dr)
+    #print(r1)
+    #print(dr)
     r, remaining = r1-dr
     print(r)
     print(remaining)

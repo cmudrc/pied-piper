@@ -15,3 +15,8 @@ def add_function(amount: float, current_amount: float, max_amount: float=None):
             remaining = new_current_amount - max_amount
             new_current_amount = deepcopy(max_amount)
     return new_current_amount, remaining
+
+
+if __name__ == "__main__":
+    result, remaining = add_function(5, 6, 10)
+    print(result, remaining)

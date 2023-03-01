@@ -60,7 +60,8 @@ class Add:
             queue=queue,
             resource=resource,
             idle_fuel_rate=idle_fuel_rate,
-            wealth=wealth
+            wealth=wealth,
+            ready_for_trade=False
         )
 
     def add_agents(self, n):

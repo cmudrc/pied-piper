@@ -38,6 +38,7 @@ class Track:
         return progress
 
     def pos(self, delta_time, transportation):
+        delta_time = self.refine_delta_time(delta_time)
         progress = self.progress(delta_time, transportation)
         current_length = progress * euclidean_distance(*self.start_pos, *self.end_pos)
         pos_0 = np.array(self.start_pos)

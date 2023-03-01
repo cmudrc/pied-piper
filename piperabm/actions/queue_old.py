@@ -1,7 +1,9 @@
 from piperabm.unit import Date
 
-try: from .action import Move
-except: from action import Move
+try:
+    from .action import Move
+except:
+    from action import Move
 
 
 class Queue:
@@ -9,15 +11,40 @@ class Queue:
         self.action_list = []
 
     def add(self, action):
-        """
-        Add new *action* to *self.action_list*
-        """
         self.action_list.append(action)
 
+    
+    def execute(self, date: Date):
+        result = {
+            'pos': None,
+            'delta_resource': None,
+            }
+        '''
+        current_i = None
+        result = None
+        for i, action in enumerate(self.action_list):
+            if action.is_current_action(date) is True:
+                current_i = i
+                if isinstance(action, Move):
+                    result['pos'] = action.pos(date)
+            elif action.is_done(date) is True:
+                fuel = action.fuel_consumptio
+        '''
+        result['pos'] = self.pos(date)    
+        result['delta_resource'] = self.fuel_consumption(date)
+        current_i = self.current_action(date)
+        self.action_list = self.action_list[current_i:]
+        return result
+    
+    
+    def current_action(self, date: Date):
+        current_i = None
+        for i, action in enumerate(self.action_list):
+            if action.is_current_action(date) is True:
+                current_i = i
+        return current_i
+
     def pos(self, date: Date):
-        """
-        Return position of agent in *date*
-        """
         pos = None
         for action in self.action_list:
             if isinstance(action, Move):
@@ -27,37 +54,6 @@ class Queue:
                     pos = action.pos(date)
         return pos
     
-    def how_much_fuel(self, start_date: Date, end_date: Date):
-        pass
-    
-    def is_empty(self):
-        return len(self.action_list)
-
-    def is_done(self, date: Date):
-        """
-        Check if all the actions are completed
-        """
-        result = None
-        if self.is_empty():
-            result = True
-        else:
-            result_list = []
-            for action in self.action_list:
-                status = action.is_done(date)
-                result_list.append(status)
-            if False in result_list:
-                result = False
-            else:
-                result = True
-        return result
-
-    def reset(self):
-        """
-        Reset *self.action_list*
-        """
-        self.action_list = []
-    
-
     def fuel_consumption(self, date: Date):
 
         def add(input_1: dict, input_2: dict):
