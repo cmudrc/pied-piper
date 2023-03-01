@@ -48,20 +48,13 @@ class Resource:
         """
         Calculate demand
         """
-        result = {}
-        for name in self._aggregate_keys():
-            if self.max_resource[name] is None:
-                pass
-            else:
-                result[name] = self.max_resource[name] - self.current_resource[name]
-        return DeltaResource(batch=result)
+        return DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
 
     def source(self):
         """
         Calculate source
         """
-        result = deepcopy(self.current_resource)
-        return DeltaResource(batch=result)
+        return DeltaResource(self.current_resource)
 
     def add_new(self, name: str, current_amount: float=0, max_amount: float=None):
         """
@@ -75,7 +68,8 @@ class Resource:
             print("item already exists")
             raise ValueError
         return result
-        
+    
+    '''
     def add_amount(self, name: str, amount: float=0):
         """
         Add amount to the already existing resource
@@ -99,6 +93,7 @@ class Resource:
             print("resource name not defined")
             raise ValueError
         return remaining
+    
 
     def _aggregate_keys(self, other=None):
         """
@@ -115,6 +110,7 @@ class Resource:
                 for name in other.current_resource:
                     if name not in result: result.append(name)
         return result
+    '''
 
     def value(self, exchange_rate):
         return value(
@@ -270,9 +266,10 @@ class DeltaResource:
     def __str__(self):
         return str(self.batch)
 
+
 def value(resource_dict: dict, exchange_rate):
     """
-    Calculate the value of resources in unit of currency
+    Calculate the value of each resource in unit of currency
     """
     result = {}
     for name in resource_dict:
@@ -282,7 +279,18 @@ def value(resource_dict: dict, exchange_rate):
         )
         amount = resource_dict[name]
         result[name] = er * amount
-    return DeltaResource(result)
+    return result
+
+
+def total_value(resource_dict: dict, exchange_rate):
+    """
+    Calculate the total value of resources in unit of currency
+    """
+    value_dict = value(resource_dict, exchange_rate)
+    total_value = 0
+    for key in value_dict:
+        total_value += value_dict[key]
+    return total_value
 
 
 if __name__ == "__main__":
