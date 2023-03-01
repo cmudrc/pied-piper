@@ -1,5 +1,6 @@
-try: from .functions import sub_function, compare_keys
-except: from functions import sub_function, compare_keys
+from piperabm.tools.custom_arithmetics import sub_function
+try: from .compare_keys import compare_keys
+except: from compare_keys import compare_keys
 
 
 def sub(main: dict, other, min=None):

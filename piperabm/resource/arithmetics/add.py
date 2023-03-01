@@ -1,5 +1,6 @@
-try: from .functions import add_function, compare_keys
-except: from functions import add_function, compare_keys
+from piperabm.tools.custom_arithmetics import add_function
+try: from .compare_keys import compare_keys
+except: from compare_keys import compare_keys
 
 
 def add(main: dict, other, max=None):

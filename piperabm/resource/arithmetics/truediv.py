@@ -1,5 +1,5 @@
-try: from .functions import compare_keys
-except: from functions import compare_keys
+try: from .compare_keys import compare_keys
+except: from compare_keys import compare_keys
 
 
 def truediv(main: dict, other):

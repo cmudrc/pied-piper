@@ -1,5 +1,6 @@
-try: from .functions import mul_function, compare_keys
-except: from functions import mul_function, compare_keys
+from piperabm.tools.custom_arithmetics import mul_function
+try: from .compare_keys import compare_keys
+except: from compare_keys import compare_keys
 
 
 def mul(main: dict, other, max=None):
@@ -14,7 +15,7 @@ def mul(main: dict, other, max=None):
         for key in shared_keys:
             if max is None: max_amount = None
             else: max_amount = max[key]
-            result[key] = mul_function(main[key], other[key], max_amount)
+            result[key], _ = mul_function(main[key], other[key], max_amount)
     return result
 
 
