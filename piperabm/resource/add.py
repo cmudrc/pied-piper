@@ -5,11 +5,9 @@ def add_function(amount: float, current_amount: float, max_amount: float=None):
     """
     Calculate the final amount when adding to the resource
     """
-    if amount < 0 or current_amount < 0:
-        raise ValueError
+    if amount < 0 or current_amount < 0: raise ValueError
     if max_amount is not None:
-        if max_amount < 0:
-            raise ValueError
+        if max_amount < 0: raise ValueError
     new_current_amount = current_amount + amount
     remaining = 0
     if max_amount is not None:
