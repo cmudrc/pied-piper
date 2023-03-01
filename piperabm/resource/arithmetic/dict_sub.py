@@ -1,34 +1,36 @@
-from piperabm.tools.custom_arithmetics import add_function
-try: from .compare_keys import compare_keys
-except: from compare_keys import compare_keys
+from piperabm.tools.custom_arithmetics import sub_function
+try: from .dict_compare import compare_keys
+except: from dict_compare import compare_keys
 
 
-def add(main: dict, other, max=None):
+def sub(main: dict, other, min=None):
     result = {}
     remaining = {}
     if isinstance(other, dict):
         shared_keys, uncommon_keys = compare_keys(main, other)
         for key in shared_keys:
-            if max is None: max_amount = None
-            else: max_amount = max[key]
-            result[key], remaining[key] = add_function(
+            if min is None:
+                min_amount = 0
+            else:
+                min_amount = min[key]
+            result[key], remaining[key] = sub_function(
                 amount=other[key],
                 current_amount=main[key],
-                max_amount=max_amount
+                min_amount=min_amount
             )
         for key in uncommon_keys['main']:
             result[key] = main[key]
             remaining[key] = 0
         for key in uncommon_keys['other']:
-            result[key] = other[key]
-            remaining[key] = 0
+            result[key] = 0
+            remaining[key] = other[key]
     return result, remaining
 
 
 if __name__ == "__main__":
     main = {'a': 1, 'b': 2}
     other = {'b': 2, 'c': 3}
-    max = {'b': 3}
-    result, remaining = add(main, other, max)
+    min = {'b': 1}
+    result, remaining = sub(main, other, min)
     #result = truediv(main, 2)
     print(result, remaining)

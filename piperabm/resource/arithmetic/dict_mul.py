@@ -1,6 +1,6 @@
 from piperabm.tools.custom_arithmetics import mul_function
-try: from .compare_keys import compare_keys
-except: from compare_keys import compare_keys
+try: from .dict_compare import compare_keys
+except: from dict_compare import compare_keys
 
 
 def mul(main: dict, other, max=None):

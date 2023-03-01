@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-try: from .arithmetics import add, sub, mul, truediv
-except: from arithmetics import add, sub, mul, truediv
+try: from .arithmetic import add, sub, mul, truediv
+except: from arithmetic import add, sub, mul, truediv
 
 
 class Resource:
