@@ -9,8 +9,12 @@ from piperabm.environment.sample import env_0
 class TestMoveClass(unittest.TestCase):
 
     env = env_0
-    path_graph = env.to_path_graph(Date(2020, 1, 5), Date(2020, 1, 7))
-    path = path_graph.edge_info(0, 1, 'path')
+    start_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 7)
+    env.update_elements(start_date, end_date)
+    path_graph = env.to_path_graph(start_date, end_date)
+    all_settlements = env.all_nodes('settlement')
+    path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
 
     m = Move(
         start_date=Date(2020, 1, 1),
@@ -18,11 +22,11 @@ class TestMoveClass(unittest.TestCase):
         transportation=Walk()
     )
 
-    def test_move_end_date(self):
+    def test_end_date(self):
         m = deepcopy(self.m)
         self.assertEqual(m.end_date.hour, 5, msg="it must take 5 hours.")
 
-    def test_move_progress_0(self):
+    def test_progress_0(self):
         m = deepcopy(self.m)
         date = Date(2020, 1, 1)
         self.assertEqual(m.progress(date), 0)

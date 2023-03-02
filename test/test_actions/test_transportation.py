@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.transportation import Walk
+from piperabm.actions import Walk
 
 
 class TestTransportaionClass(unittest.TestCase):

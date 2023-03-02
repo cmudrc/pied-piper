@@ -9,7 +9,7 @@ class Move:
         self.path = path
         self.transportation = transportation
         self.duration = self.path.duration(self.transportation)
-        self.end_date  = self.start_date + self.duration
+        self.end_date  = self.start_date + DT(seconds=self.duration)
         self.fuel_consumption = self.total_fuel_consumption()
 
     def total_fuel_consumption(self):
@@ -46,7 +46,7 @@ class Move:
         """
         Calculate pos in the *date*
         """
-        return self.path(date - self.start_date, self.transportation)
+        return self.path.pos(date - self.start_date, self.transportation)
 
     def progress(self, date: Date):
         delta_time = date - self.start_date
@@ -56,11 +56,11 @@ class Move:
 if __name__ == "__main__":
     from piperabm.actions import Move, Walk
 
+    path=None
     start_date=Date.today()
     m = Move(
         start_date=start_date,
-        start_pos=[-1800, 0],
-        end_pos=[1800, 0],
+        path=path,
         transportation=Walk()
     )
 

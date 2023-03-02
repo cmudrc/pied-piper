@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from piperabm.actions import Queue
 from piperabm.resource import Resource, DeltaResource
-from piperabm.transportation import Walk
+from piperabm.actions.action.transportation import Walk
 from piperabm.unit import Unit
 
 
