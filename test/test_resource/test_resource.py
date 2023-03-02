@@ -239,16 +239,21 @@ class TestResourceClass(unittest.TestCase):
         dr2 = DeltaResource({
             'food': 6,
         })
-        dr = dr2-dr1
+        dr, remaining = dr2-dr1
         expected_result = {
             'food': 6,
-            'water': -2,
+            'water': 0,
         }
         self.assertDictEqual(dr.batch, expected_result)
+        expected_result = {
+            'food': 0,
+            'water': 2,
+        }
+        self.assertDictEqual(remaining.batch, expected_result)
         result, remaining = r-dr
         expected_result = {
             'food': 0,
-            'water': 4,
+            'water': 2,
         }
         self.assertDictEqual(result.current_resource, expected_result)
         expected_result = {
@@ -257,7 +262,7 @@ class TestResourceClass(unittest.TestCase):
         }
         self.assertDictEqual(remaining.batch, expected_result)
 
-    def test_true_div_0(self):
+    def test_truediv_0(self):
         """
         Test __truediv__
         """
@@ -297,24 +302,34 @@ class TestDeltaResourceClass(unittest.TestCase):
         dr2 = DeltaResource({
             'food': 6,
         })
-        dr = dr1 + dr2
+        dr, remaining = dr1 + dr2
         expected_result = {
             'food': 11,
             'water': 8,
         }
         self.assertDictEqual(dr.batch, expected_result)
+        expected_result = {
+            'food': 0,
+            'water': 0,
+        }
+        self.assertDictEqual(remaining.batch, expected_result)
 
     def test_delta_resource_1(self):
         dr1 = deepcopy(self.dr1)
         dr2 = DeltaResource({
             'food': 6,
         })
-        dr = dr1 - dr2
+        dr, remaining = dr1 - dr2
         expected_result = {
-            'food': -1,
+            'food': 0,
             'water': 8,
         }
         self.assertDictEqual(dr.batch, expected_result)
+        expected_result = {
+            'food': 1,
+            'water': 0,
+        }
+        self.assertDictEqual(remaining.batch, expected_result)
 
     def test_delta_resource_2(self):
         dr1 = deepcopy(self.dr1)

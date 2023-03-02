@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 from piperabm.tools.custom_arithmetic.dictionary import add, sub, mul, truediv
+from piperabm.tools.custom_arithmetic.storage import add_function, sub_function
 
 
 class Resource:
@@ -47,7 +48,8 @@ class Resource:
         """
         Calculate demand
         """
-        return DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
+        result, remaining = DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
+        return result
 
     def source(self):
         """
@@ -68,7 +70,7 @@ class Resource:
             raise ValueError
         return result
     
-    '''
+    
     def add_amount(self, name: str, amount: float=0):
         """
         Add amount to the already existing resource
@@ -93,7 +95,7 @@ class Resource:
             raise ValueError
         return remaining
     
-
+    '''
     def _aggregate_keys(self, other=None):
         """
         Combine all resource names from both self and other
@@ -159,7 +161,7 @@ class Resource:
         elif isinstance(other, DeltaResource):
             other = other.batch
         result = truediv(main_dict, other)
-        return Resource(result)
+        return result
 
     def __mul__(self, other):
         result = None
