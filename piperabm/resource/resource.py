@@ -1,7 +1,6 @@
 from copy import deepcopy
 
-try: from .arithmetic import add, sub, mul, truediv
-except: from arithmetic import add, sub, mul, truediv
+from piperabm.tools.custom_arithmetic.dictionary import add, sub, mul, truediv
 
 
 class Resource:

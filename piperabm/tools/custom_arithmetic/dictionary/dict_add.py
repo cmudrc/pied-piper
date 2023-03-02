@@ -1,4 +1,4 @@
-from piperabm.tools.custom_arithmetics import add_function
+from piperabm.tools.custom_arithmetic.storage import add_function
 try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 
