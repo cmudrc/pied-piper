@@ -41,7 +41,7 @@ class TestExchangeClass(unittest.TestCase):
             'food': 50,
             'water': 16,
         }
-        self.assertDictEqual(result.batch, expected_result)
+        self.assertDictEqual(result, expected_result)
 
     def test_delta_resource_value(self):
         dr = deepcopy(self.dr)
@@ -50,7 +50,7 @@ class TestExchangeClass(unittest.TestCase):
             'food': 50,
             'water': 16,
         }
-        self.assertDictEqual(result.batch, expected_result)
+        self.assertDictEqual(result, expected_result)
 
 
 if __name__ == "__main__":
