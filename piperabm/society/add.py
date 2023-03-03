@@ -4,6 +4,7 @@ from piperabm.actions import Queue
 from piperabm.resource import Resource, DeltaResource
 from piperabm.actions.action.transportation import Walk
 from piperabm.unit import Unit
+from piperabm.economy import GiniGenerator
 
 
 class Add:
@@ -85,9 +86,9 @@ def name_generator():
     return result
 
 def wealth_generator(gini, mean):
-    pass
-    result = 1000
-    return result
+    gg = GiniGenerator(gini, mean)
+    sample = gg.generate()
+    return sample[0]
 
 def resource_generator():
     result = Resource(

@@ -40,7 +40,7 @@ class GiniGenerator:
         val_2 = (sigma ** 2) / 2
         return val_1 - val_2
 
-    def generate(self, n: int, threashold=0.5):
+    def generate(self, n: int=1, threashold=0.5):
         """
         Generate a random array of size n which gini index is equal to *gini*
         """
