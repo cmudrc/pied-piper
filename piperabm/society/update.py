@@ -15,7 +15,12 @@ class Update:
             start_date: starting date of the time duration
             end_date: ending date of the time duration
         """
+        queue = self.agent_info(index, 'queue')
         # reduce idle energy expenditure
+        for index in self.all_agents():
+            if queue.is_done(start_date, end_date):
+                pass
+
         duration = end_date - start_date
         for index in self.all_agents():
             resource = self.agent_info(index, 'resource')

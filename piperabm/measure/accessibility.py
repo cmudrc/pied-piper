@@ -5,16 +5,21 @@ from piperabm.resource import DeltaResource
 
 
 class Accessibility:
+
     def __init__(self):
         self.total_current_resource_list = []
         self.total_max_resource_list = []
         self.duration_list = []
 
-    def read(self, society):
+    def read(self, society, start_date, end_date):
         """
         Read all the required parameters from society
         """
-        pass
+        agents = society.all_agents()
+        total_current_resource = society.all_resource_from(agents)
+        total_max_resource = society.all_max_resource_from(agents)
+        duration = end_date - start_date
+        self.add(total_current_resource, total_max_resource, duration)
 
     def add(self, total_current_resource, total_max_resource, duration):
         """

@@ -97,7 +97,6 @@ class Index:
             result, _ = result + max_resource
         return result
 
-
     def all_resource_from(self, agents):
         """
         Calculate all resource for a list of agents

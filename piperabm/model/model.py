@@ -5,9 +5,11 @@ from piperabm.log import Log
 
 try: from .graphics import Graphics
 except: from graphics import Graphics
+try: from .plugins import Plugins
+except: from plugins import Plugins
 
 
-class Model(Graphics):
+class Model(Graphics, Plugins):
 
     def __init__(
         self,
@@ -60,6 +62,7 @@ class Model(Graphics):
         end_date = start_date + self.step_size
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
+        self.plugins_add_data(self.society, start_date, end_date)
         self.current_date = end_date
         self.current_step += 1
 

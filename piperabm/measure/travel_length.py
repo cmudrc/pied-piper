@@ -7,6 +7,14 @@ class TravelLength:
         self.length_list = []
         self.duration_list = []
 
+    def read(self, society, start_date, end_date):
+        """
+        Read all the required parameters from society
+        """
+        length = None #############
+        duration = end_date - start_date
+        self.add(length, duration)
+
     def add(self, length, duration):
         self.length_list.append(length)
         self.duration_list.append(duration)
