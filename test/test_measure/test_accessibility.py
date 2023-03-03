@@ -68,11 +68,11 @@ class TestAccessibilityClass(unittest.TestCase):
     accessibility.add(current_resources, max_resources, duration)
     #print(current_resources, max_resources, duration)
 
-    #acc.show('water')
+    #accessibility.show('water')
 
     def test_calculate(self):
         acc = deepcopy(self.accessibility)
-        efficiency = acc.calculate()
+        efficiency = acc.efficiency()
         expected_result = {
             'food': 0.5,
             'water': 0.405,

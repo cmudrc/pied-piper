@@ -6,40 +6,46 @@ from piperabm.resource import DeltaResource
 
 class Accessibility:
     def __init__(self):
-        self.current_resources_list = []
-        self.max_resources_list = []
-        self.durations_list = []
+        self.total_current_resource_list = []
+        self.total_max_resource_list = []
+        self.duration_list = []
 
-    def add(self, current_resources, max_resources, duration):
+    def read(self, society):
+        """
+        Read all the required parameters from society
+        """
+        pass
+
+    def add(self, total_current_resource, total_max_resource, duration):
         """
         
         Args:
             current_resources: sum of all agents current_resource
             max_resources: sum of all agents max_resource
         """
-        if isinstance(current_resources, dict):
-            current_resources = DeltaResource(dict)
-        self.max_resources_list.append(max_resources)
-        self.current_resources_list.append(current_resources)
+        if isinstance(total_current_resource, dict):
+            total_current_resource = DeltaResource(total_current_resource)
+        self.total_max_resource_list.append(total_max_resource)
+        self.total_current_resource_list.append(total_current_resource)
         if isinstance(duration, DT):
             duration = duration.total_seconds()
-        self.durations_list.append(duration)
+        self.duration_list.append(duration)
 
     def accessibility_ideal(self):
         ideals = []
-        for i, _ in enumerate(self.durations_list):
-            val = self.max_resources_list[i] * self.durations_list[i]
+        for i, _ in enumerate(self.duration_list):
+            val = self.total_max_resource_list[i] * self.duration_list[i]
             ideals.append(val)
         return ideals
 
     def accessibility_current(self):
         currents = []
-        for i, _ in enumerate(self.durations_list):
-            val = self.current_resources_list[i] * self.durations_list[i]
+        for i, _ in enumerate(self.duration_list):
+            val = self.total_current_resource_list[i] * self.duration_list[i]
             currents.append(val)
         return currents
     
-    def calculate(self):
+    def efficiency(self):
         currents = self.accessibility_current()
         result_real = DeltaResource(
             {
@@ -48,9 +54,8 @@ class Accessibility:
                 'energy': 0
             }
         )
-        print(currents)
-        for currents in self.current_resources_list:
-            result_real, _ += currents
+        for current in self.total_current_resource_list:
+            result_real, _ = result_real + current
         ideals = self.accessibility_ideal()
         result_ideal = DeltaResource(
             {
@@ -59,9 +64,16 @@ class Accessibility:
                 'energy': 0
             }
         )
-        for ideals in self.max_resources_list:
-            result_ideal += ideals
+        for ideals in self.total_max_resource_list:
+            result_ideal, _ = result_ideal + ideals
         return result_real / result_ideal
+    
+    def overall_efficiency(self):
+        efficiency = self.efficiency()
+        overall = 1
+        for key in efficiency:
+            overall *= efficiency[key]
+        return overall ** (1 / len(efficiency))
 
     def to_plt(self, resource_name):
         """
@@ -69,8 +81,8 @@ class Accessibility:
         """
         def create_x():
             result = []
-            for i, _ in enumerate(self.durations_list):
-                val = sum(self.durations_list[1:i+1])
+            for i, _ in enumerate(self.duration_list):
+                val = sum(self.duration_list[1:i+1])
                 result.append(val)
             return result
 
@@ -85,11 +97,11 @@ class Accessibility:
                 'water': [],
                 'energy': [],
             }
-            for i, _ in enumerate(self.durations_list):
+            for i, _ in enumerate(self.duration_list):
                 for name in result_current:
-                    current = self.current_resources_list[i].batch[name]
+                    current = self.total_current_resource_list[i].batch[name]
                     result_current[name].append(current)
-                    ideal = self.max_resources_list[i].batch[name]
+                    ideal = self.total_max_resource_list[i].batch[name]
                     result_ideal[name].append(ideal)
             return result_current, result_ideal
 

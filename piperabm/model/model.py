@@ -53,19 +53,15 @@ class Model(Graphics):
         """
         Run a single step
         """
+        #print(self.current_step, self.current_date)
         if self.current_step == 0:
             self.burnout()
         start_date = self.current_date
         end_date = start_date + self.step_size
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
-
-        #path_graph = self.env.to_path_graph(start_date, end_date)
-        #path.show()
-        ####
         self.current_date = end_date
         self.current_step += 1
-        #print(self.current_step, self.current_date)
 
     def run(self, n=1, log=True):
         """

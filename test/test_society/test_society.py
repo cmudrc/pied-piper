@@ -38,7 +38,15 @@ class TestAddFunction(unittest.TestCase):
         soc.agent_info(0, 'resource') # test function
         soc.agent_info(0, 'idle_fuel_rate') # test function
         soc.agent_info(0, 'wealth') # test function
-
+    
+    def test_set_agent_info(self):
+        soc = deepcopy(self.soc)
+        settlement_previous = soc.agent_info(0, 'settlement')
+        new_settlment = settlement_previous + 100
+        soc.set_agent_info(0, 'settlement', new_settlment)
+        settlement = soc.agent_info(0, 'settlement')
+        self.assertEqual(new_settlment, settlement)
+        
     def test_all_agents_from(self):
         soc = deepcopy(self.soc)
         settlements = self.env.all_nodes("settlement")

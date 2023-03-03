@@ -16,9 +16,18 @@ class Update:
             end_date: ending date of the time duration
         """
         # reduce idle energy expenditure
+        duration = end_date - start_date
+        for index in self.all_agents():
+            resource = self.agent_info(index, 'resource')
+            fuel_rate = self.agent_info(index, 'idle_fuel_rate')
+            new_resource = resource - (fuel_rate * duration)
+            self.set_agent_info(index, 'resource', new_resource)
 
         # calculate new position
         # reduce movement energy expenditure
+        for index in self.all_agents():
+            new_pos = None####
+            self.set_agent_info(index, 'pos', new_pos)
         # mark agents who are ready for participating in trade
         for index in self.all_agents():
             queue = self.agent_info(index, 'queue')

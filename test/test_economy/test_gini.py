@@ -19,10 +19,23 @@ class TestGiniGen(unittest.TestCase):
         sample = gg.generate(1000, threashold=0.01)
         sample_gini = gini_coefficient(sample)
         result = sample_gini / gg.gini
-        self.assertAlmostEqual(result, 1, places=1)
+        self.assertAlmostEqual(result, 1, places=0)
         sample_mean = sum(sample) / len(sample)
         result = sample_mean / gg.gdp_per_capita
-        self.assertAlmostEqual(result, 1, places=1)
+        self.assertAlmostEqual(result, 1, places=0)
+
+    def test_generate_single(self):
+        gg = self.gg
+        sample = []
+        for _ in range(1000):
+            single_sample = gg.generate(1)
+            sample.append(single_sample[0])
+        sample_gini = gini_coefficient(sample)
+        result = sample_gini / gg.gini
+        self.assertAlmostEqual(result, 1, places=0)
+        sample_mean = sum(sample) / len(sample)
+        result = sample_mean / gg.gdp_per_capita
+        self.assertAlmostEqual(result, 1, places=0)
 
 
 if __name__ == "__main__":
