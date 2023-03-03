@@ -22,7 +22,8 @@ class TestGiniGen(unittest.TestCase):
         self.assertAlmostEqual(result, 1, places=0)
         sample_mean = sum(sample) / len(sample)
         result = sample_mean / gg.gdp_per_capita
-        self.assertAlmostEqual(result, 1, places=0)
+        result = 1 - result
+        self.assertAlmostEqual(result, 0, places=1)
 
     def test_generate_single(self):
         gg = self.gg
@@ -35,7 +36,8 @@ class TestGiniGen(unittest.TestCase):
         self.assertAlmostEqual(result, 1, places=0)
         sample_mean = sum(sample) / len(sample)
         result = sample_mean / gg.gdp_per_capita
-        self.assertAlmostEqual(result, 1, places=0)
+        result = 1 - result
+        self.assertAlmostEqual(result, 0, places=1)
 
 
 if __name__ == "__main__":
