@@ -94,7 +94,7 @@ class Index:
             agent_resource = self.agent_info(agent, 'resource')
             max_resource = agent_resource.max_resource
             max_resource = DeltaResource(batch=max_resource)
-            result = result + max_resource
+            result, _ = result + max_resource
         return result
 
 
@@ -114,7 +114,7 @@ class Index:
         for agent in agents:
             agent_resource = self.agent_info(agent, 'resource')
             agent_resource = agent_resource.to_delta_resource()
-            result = result + agent_resource
+            result, _ = result + agent_resource
         return result
 
     def all_demand_from(self, agents):
@@ -133,5 +133,5 @@ class Index:
         for agent in agents:
             agent_resource = self.agent_info(agent, 'resource')
             demand = agent_resource.demand()
-            result = result + demand
+            result, _ = result + demand
         return result

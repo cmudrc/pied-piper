@@ -70,7 +70,7 @@ class Add:
             name = name_generator()
             settlement = None  # default
             idle_fuel_rate = None  # default
-            wealth = wealth_generator()
+            wealth = wealth_generator(gini=0.3, mean=1000)
             self.add(
                 name=name,
                 settlement=settlement,
@@ -80,16 +80,14 @@ class Add:
                 wealth=wealth
             )
 
-
 def name_generator():
     result = ''
     return result
 
-
-def wealth_generator():
+def wealth_generator(gini, mean):
+    pass
     result = 1000
     return result
-
 
 def resource_generator():
     result = Resource(
