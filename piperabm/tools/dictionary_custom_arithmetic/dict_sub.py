@@ -3,7 +3,7 @@ try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 
 
-def sub(main: dict, other, min=None):
+def dict_sub(main: dict, other, min=None):
     result = {}
     remaining = {}
     if isinstance(other, dict):
@@ -31,6 +31,6 @@ if __name__ == "__main__":
     main = {'a': 1, 'b': 2}
     other = {'b': 2, 'c': 3}
     min = {'b': 1}
-    result, remaining = sub(main, other, min)
+    result, remaining = dict_sub(main, other, min)
     #result = truediv(main, 2)
     print(result, remaining)

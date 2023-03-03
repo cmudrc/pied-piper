@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from piperabm.tools.dictionary_custom_arithmetic import add, sub, mul, truediv, compare_keys
+from piperabm.tools.dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
 from piperabm.tools.storage_custom_arithmetic import add_function, sub_function
 
 
@@ -140,11 +140,11 @@ class Resource:
             max_dict = main_max_dict
         elif isinstance(other, Resource):
             other_dict = other.current_resource
-            max_dict, _ = add(main_max_dict, other.max_resource)
+            max_dict, _ = dict_add(main_max_dict, other.max_resource)
         elif isinstance(other, dict):
             other_dict = other
             max_dict = main_max_dict
-        result, remaining = add(main_dict, other_dict, max_dict)
+        result, remaining = dict_add(main_dict, other_dict, max_dict)
         return Resource(result, max_dict), DeltaResource(remaining)
 
     def __sub__(self, other):
@@ -157,7 +157,7 @@ class Resource:
             other_dict = other.current_resource
         elif isinstance(other, dict):
             other_dict = other
-        result, remaining = sub(main_dict, other_dict)
+        result, remaining = dict_sub(main_dict, other_dict)
         return Resource(result, self.max_resource), DeltaResource(remaining)
 
     def __truediv__(self, other):
@@ -171,7 +171,7 @@ class Resource:
             other = other.current_resource
         elif isinstance(other, DeltaResource):
             other = other.batch
-        result = truediv(main_dict, other)
+        result = dict_truediv(main_dict, other)
         return result
 
     def __mul__(self, other):
@@ -186,11 +186,11 @@ class Resource:
             max_dict = main_max_dict
         elif isinstance(other, Resource):
             other = other.current_resource
-            max_dict = mul(main_max_dict, other.max_resource)
+            max_dict = dict_mul(main_max_dict, other.max_resource)
         elif isinstance(other, DeltaResource):
             other = other.batch
             max_dict = main_max_dict
-        result = mul(main_dict, other, max_dict)
+        result = dict_mul(main_dict, other, max_dict)
         return DeltaResource(result)
 
     def __str__(self):
@@ -234,7 +234,7 @@ class DeltaResource:
         elif isinstance(other, dict):
             other_dict = other
             max_dict = None
-        result, remaining = add(main_dict, other_dict, max_dict)
+        result, remaining = dict_add(main_dict, other_dict, max_dict)
         return DeltaResource(result), DeltaResource(remaining)
 
     def __sub__(self, other):
@@ -247,7 +247,7 @@ class DeltaResource:
             other_dict = other.current_resource
         elif isinstance(other, dict):
             other_dict = other
-        result, remaining = sub(main_dict, other_dict)
+        result, remaining = dict_sub(main_dict, other_dict)
         return DeltaResource(result), DeltaResource(remaining)
 
     def __mul__(self, other):
@@ -261,7 +261,7 @@ class DeltaResource:
             other = other.current_resource
         elif isinstance(other, DeltaResource):
             other = other.batch
-        result = mul(main_dict, other)
+        result = dict_mul(main_dict, other)
         return DeltaResource(result)
 
     def __truediv__(self, other):
@@ -275,7 +275,7 @@ class DeltaResource:
             other = other.current_resource
         elif isinstance(other, DeltaResource):
             other = other.batch
-        result = truediv(main_dict, other)
+        result = dict_truediv(main_dict, other)
         return DeltaResource(result)
 
     def __str__(self):

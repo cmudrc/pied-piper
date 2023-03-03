@@ -3,7 +3,7 @@ try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 
 
-def add(main: dict, other, max=None):
+def dict_add(main: dict, other, max=None):
     result = {}
     remaining = {}
     if isinstance(other, dict):
@@ -29,6 +29,6 @@ if __name__ == "__main__":
     main = {'a': 1, 'b': 2}
     other = {'b': 2, 'c': 3}
     max = {'b': 3}
-    result, remaining = add(main, other, max)
+    result, remaining = dict_add(main, other, max)
     #result = truediv(main, 2)
     print(result, remaining)

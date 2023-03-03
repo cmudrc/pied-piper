@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.tools.dictionary_custom_arithmetic import mul
+from piperabm.tools.dictionary_custom_arithmetic import dict_mul
 
 
 class TestSubDictFunction(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestSubDictFunction(unittest.TestCase):
             'b': 2,
         }
         other = 2
-        result = mul(main, other)
+        result = dict_mul(main, other)
         expected_result = {
             'a': 2,
             'b': 4,
@@ -28,7 +28,7 @@ class TestSubDictFunction(unittest.TestCase):
             'b': 3,
             'c': 4,
         }
-        result = mul(main, other)
+        result = dict_mul(main, other)
         expected_result = {
             'a': 1,
             'b': 6,

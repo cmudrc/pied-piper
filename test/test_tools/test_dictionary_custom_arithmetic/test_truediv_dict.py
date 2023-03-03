@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.tools.dictionary_custom_arithmetic import truediv
+from piperabm.tools.dictionary_custom_arithmetic import dict_truediv
 
 
 class TestSubDictFunction(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestSubDictFunction(unittest.TestCase):
             'b': 2,
         }
         other = 2
-        result = truediv(main, other)
+        result = dict_truediv(main, other)
         expected_result = {
             'a': 0.5,
             'b': 1,
@@ -28,7 +28,7 @@ class TestSubDictFunction(unittest.TestCase):
             'b': 2,
             'c': 4,
         }
-        result = truediv(main, other)
+        result = dict_truediv(main, other)
         expected_result = {
             'b': 1,
             'c': 0

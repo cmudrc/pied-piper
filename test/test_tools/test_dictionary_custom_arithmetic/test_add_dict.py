@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.tools.custom_storage_arithmetic import add
+from piperabm.tools.dictionary_custom_arithmetic import dict_add
 
 
 class TestAddDictFunction(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestAddDictFunction(unittest.TestCase):
             'b': 3,
             'c': 4,
         }
-        result, remaining = add(main, other)
+        result, remaining = dict_add(main, other)
         expected_result = {
             'a': 1,
             'b': 5,
@@ -41,7 +41,7 @@ class TestAddDictFunction(unittest.TestCase):
         max = {
             'b': 4
         }
-        result, remaining = add(main, other, max)
+        result, remaining = dict_add(main, other, max)
         expected_result = {
             'a': 1,
             'b': 4,

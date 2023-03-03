@@ -2,7 +2,7 @@ try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 
 
-def truediv(main: dict, other):
+def dict_truediv(main: dict, other):
     result = {}
     if isinstance(other, (int, float)):
         for key in main:
@@ -19,6 +19,6 @@ def truediv(main: dict, other):
 if __name__ == "__main__":
     main = {'a': 1, 'b': 2}
     other = {'b': 2, 'c': 2}
-    result = truediv(main, other)
+    result = dict_truediv(main, other)
     #result = truediv(main, 2)
     print(result)

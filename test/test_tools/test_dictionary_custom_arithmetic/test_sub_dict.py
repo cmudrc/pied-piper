@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.tools.dictionary_custom_arithmetic import sub
+from piperabm.tools.dictionary_custom_arithmetic import dict_sub
 
 
 class TestSubDictFunction(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestSubDictFunction(unittest.TestCase):
             'b': 3,
             'c': 4,
         }
-        result, remaining = sub(main, other)
+        result, remaining = dict_sub(main, other)
         expected_result = {
             'a': 1,
             'b': 0,

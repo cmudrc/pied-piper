@@ -3,7 +3,7 @@ try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 
 
-def mul(main: dict, other, max=None):
+def dict_mul(main: dict, other, max=None):
     result = {}
     if isinstance(other, (int, float)):
         for key in main:
@@ -22,6 +22,6 @@ def mul(main: dict, other, max=None):
 if __name__ == "__main__":
     main = {'a': 1, 'b': 2}
     other = {'b': 2}
-    result = mul(main, other)
+    result = dict_mul(main, other)
     #result = truediv(main, 2)
     print(result)
