@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.tools.custom_arithmetic.dictionary import compare_common_vals, compare_vals, compare_keys
+from piperabm.tools.dictionary_custom_arithmetic import compare_common_vals, compare_vals, compare_keys
 
 
 class TestCompareKeysFunction(unittest.TestCase):

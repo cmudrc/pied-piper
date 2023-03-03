@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.tools.custom_arithmetic.storage import add_function
+from piperabm.tools.storage_custom_arithmetic import add_function
 
 
 class TestAddFunction(unittest.TestCase):

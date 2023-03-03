@@ -1,4 +1,4 @@
-from piperabm.tools.custom_arithmetic.storage import is_equal_function
+from piperabm.tools.storage_custom_arithmetic import is_equal_function
 
 
 def find_zeros_index(main: dict, other: dict):

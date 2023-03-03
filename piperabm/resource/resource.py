@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from piperabm.tools.custom_arithmetic.dictionary import add, sub, mul, truediv, compare_keys
-from piperabm.tools.custom_arithmetic.storage import add_function, sub_function
+from piperabm.tools.dictionary_custom_arithmetic import add, sub, mul, truediv, compare_keys
+from piperabm.tools.storage_custom_arithmetic import add_function, sub_function
 
 
 class Resource:
