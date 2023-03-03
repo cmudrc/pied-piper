@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from piperabm.tools.custom_arithmetic.dictionary import add, sub, mul, truediv
+from piperabm.tools.custom_arithmetic.dictionary import add, sub, mul, truediv, compare_keys
 from piperabm.tools.custom_arithmetic.storage import add_function, sub_function
 
 
@@ -9,6 +9,17 @@ class Resource:
     Represent (storage for) resources
     """
     def __init__(self, current_resource: dict={}, max_resource: dict={}):
+        self.current_resource, self.max_resource = self.refine_inputs(current_resource, max_resource)
+
+    def refine_inputs(self, current_resource: dict={}, max_resource: dict={}): #############
+        shared_keys, uncommon_keys = compare_keys(main=current_resource, other=max_resource)
+        if len(uncommon_keys['other']) == 0:
+            if len(uncommon_keys['main']) > 0:
+                for key in uncommon_keys['main']:
+                    max_resource[key] = None
+        else:
+            raise ValueError
+        #print(shared_keys, uncommon_keys)
         if len(current_resource) != len(max_resource):
             print("the length of *current_resource* must be equal to the length of *max_resource*")
             #print("length of *current_resource* is ", len(current_resource))
@@ -16,10 +27,10 @@ class Resource:
             raise ValueError
         if len(current_resource) != 0 or len(max_resource) != 0:
             for key in current_resource:
-                if current_resource[key] > max_resource[key]:
-                    raise ValueError
-        self.current_resource = current_resource # {name: amount,}
-        self.max_resource = max_resource # {name: amount,}
+                if max_resource[key] is not None:
+                    if current_resource[key] > max_resource[key]:
+                        raise ValueError
+        return current_resource, max_resource
 
     def to_delta_resource(self):
         """
@@ -192,6 +203,9 @@ class DeltaResource:
     """
     def __init__(self, batch: dict={}):
         self.batch = batch # {name: amount,} pairs
+
+    def __call__(self, name: str):
+        return self.batch[name]
 
     def is_empty(self):
         result = True

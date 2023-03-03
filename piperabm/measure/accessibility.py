@@ -17,6 +17,8 @@ class Accessibility:
             current_resources: sum of all agents current_resource
             max_resources: sum of all agents max_resource
         """
+        if isinstance(current_resources, dict):
+            current_resources = DeltaResource(dict)
         self.max_resources_list.append(max_resources)
         self.current_resources_list.append(current_resources)
         if isinstance(duration, DT):
@@ -39,17 +41,18 @@ class Accessibility:
     
     def calculate(self):
         currents = self.accessibility_current()
-        current = DeltaResource(
+        result_real = DeltaResource(
             {
                 'food': 0,
                 'water': 0,
                 'energy': 0
             }
         )
+        print(currents)
         for currents in self.current_resources_list:
-            current += currents
+            result_real, _ += currents
         ideals = self.accessibility_ideal()
-        ideal = DeltaResource(
+        result_ideal = DeltaResource(
             {
                 'food': 0,
                 'water': 0,
@@ -57,8 +60,8 @@ class Accessibility:
             }
         )
         for ideals in self.max_resources_list:
-            ideal += ideals
-        return current / ideal
+            result_ideal += ideals
+        return result_real / result_ideal
 
     def to_plt(self, resource_name):
         """

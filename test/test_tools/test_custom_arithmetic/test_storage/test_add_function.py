@@ -37,6 +37,53 @@ class TestAddFunction(unittest.TestCase):
         self.assertEqual(result, 10)
         self.assertEqual(remaining, 1)
 
+    def test_3(self):
+        """
+        With None
+        """
+        result, remaining = add_function(
+            amount=None,
+            current_amount=6,
+            max_amount=10
+        )
+        self.assertEqual(result, None)
+        self.assertEqual(remaining, 0)
+
+    def test_4(self):
+        """
+        With None
+        """
+        result, remaining = add_function(
+            amount=5,
+            current_amount=None,
+            max_amount=10
+        )
+        self.assertEqual(result, None)
+        self.assertEqual(remaining, 0)
+
+    def test_5(self):
+        """
+        With None
+        """
+        result, remaining = add_function(
+            amount=5,
+            current_amount=6,
+            max_amount=None
+        )
+        self.assertEqual(result, 11)
+        self.assertEqual(remaining, 0)
+
+    def test_6(self):
+        """
+        With None
+        """
+        result, remaining = add_function(
+            amount=None,
+            current_amount=None,
+            max_amount=None
+        )
+        self.assertEqual(result, None)
+        self.assertEqual(remaining, 0)
 
 if __name__ == "__main__":
     unittest.main()

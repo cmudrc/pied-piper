@@ -13,17 +13,16 @@ class Move:
         self.fuel_consumption = self.total_fuel_consumption()
 
     def total_fuel_consumption(self):
-        result = {}
-        for key in self.transportation.fuel_rate:
-            result[key] = self.transportation.fuel_rate[key] * self.duration
+        result = self.transportation.fuel_rate * self.duration
         return result
 
     def how_much_fuel(self, start_date: Date, end_date: Date):
         start_progress = self.progress(start_date)
         end_progress = self.progress(end_date)
-        progress = end_progress - start_progress
-        duration = self.duration.total_seconds() * progress # in seconds
-        return self.transportation.fuel_consumption(duration)
+        delta_progress = end_progress - start_progress
+        delta_time = self.duration * delta_progress # in seconds
+        travel_length = self.path.travel_length(delta_time, self.transportation)
+        return self.transportation.how_much_fuel(travel_length)
 
     def is_current_action(self, date: Date):
         """

@@ -17,7 +17,7 @@ class TestResourceClass(unittest.TestCase):
         }
     )
 
-    def test_resource_add_0(self):
+    def test_resource_add_delta_resource_0(self):
         """
         DeltaResource with 1 entry
         """
@@ -37,7 +37,7 @@ class TestResourceClass(unittest.TestCase):
         }
         self.assertDictEqual(remaining.batch, expected_result)
 
-    def test_resource_add_1(self):
+    def test_resource_add_delta_resource_1(self):
         """
         DeltaResource with 2 entries
         """
@@ -58,7 +58,7 @@ class TestResourceClass(unittest.TestCase):
         }
         self.assertDictEqual(remaining.batch, expected_result)
 
-    def test_resource_add_2(self):
+    def test_resource_add_delta_resource_2(self):
         """
         Add more than capacity
         """
@@ -76,6 +76,26 @@ class TestResourceClass(unittest.TestCase):
         expected_result = {
             'food': 0,
             'water': 1
+        }
+        self.assertDictEqual(remaining.batch, expected_result)
+
+    def test_resource_add_resource_0(self):
+        """
+        DeltaResource with 1 entry
+        """
+        r1 = deepcopy(self.r)
+        r2 = Resource({
+            'food': 2,
+        })
+        r, remaining = r1 + r2
+        expected_result = {
+            'food': 7,
+            'water': 8
+        }
+        self.assertDictEqual(r.current_resource, expected_result)
+        expected_result = {
+            'food': 0,
+            'water': 0
         }
         self.assertDictEqual(remaining.batch, expected_result)
 

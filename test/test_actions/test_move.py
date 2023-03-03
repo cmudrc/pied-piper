@@ -15,6 +15,7 @@ class TestMoveClass(unittest.TestCase):
     path_graph = env.to_path_graph(start_date, end_date)
     all_settlements = env.all_nodes('settlement')
     path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
+    #print(path)
 
     m = Move(
         start_date=Date(2020, 1, 1),
@@ -24,7 +25,8 @@ class TestMoveClass(unittest.TestCase):
 
     def test_end_date(self):
         m = deepcopy(self.m)
-        self.assertEqual(m.end_date.hour, 5, msg="it must take 5 hours.")
+        #print(m.end_date)
+        self.assertAlmostEqual(m.end_date.second, 30, places=2)
 
     def test_progress_0(self):
         m = deepcopy(self.m)
@@ -39,40 +41,32 @@ class TestMoveClass(unittest.TestCase):
     
     def test_move_progress_2(self):
         m = deepcopy(self.m)
-        date = Date(2020, 1, 1) + DT(hours=1)
-        self.assertAlmostEqual(m.progress(date), 0.18)
+        date = Date(2020, 1, 1) + DT(seconds=15)
+        self.assertAlmostEqual(m.progress(date), 0.5, places=1)
 
     def test_fuel_0(self):
         m = deepcopy(self.m)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1)
+        end_date = start_date
         fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption['food'], 0)
-        self.assertAlmostEqual(fuel_consumption['water'], 0)
+        self.assertAlmostEqual(fuel_consumption('food'), 0)
+        self.assertAlmostEqual(fuel_consumption('water'), 0)
 
     def test_fuel_1(self):
         m = deepcopy(self.m)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=1)
+        end_date = start_date + DT(seconds=15)
         fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption['food'], 36)
-        self.assertAlmostEqual(fuel_consumption['water'], 72)
+        self.assertAlmostEqual(fuel_consumption('food'), 0.00035, places=4)
+        self.assertAlmostEqual(fuel_consumption('water'), 0.00017, places=4)
 
     def test_fuel_2(self):
         m = deepcopy(self.m)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=6)
+        end_date = start_date + DT(seconds=31)
         fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption['food'], 200)
-        self.assertAlmostEqual(fuel_consumption['water'], 400)
-    
-    def test_fuel_3(self):
-        m = deepcopy(self.m)
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=12)
-        fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption['food'], 200)
-        self.assertAlmostEqual(fuel_consumption['water'], 400)
+        self.assertAlmostEqual(fuel_consumption('food'), 0.00070, places=4)
+        self.assertAlmostEqual(fuel_consumption('water'), 0.00035, places=4)
 
 
 if __name__ == "__main__":

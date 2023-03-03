@@ -41,6 +41,9 @@ class Path:
         for track in self.tracks:
             duration += track.duration(transportation)
         return duration
+    
+    def travel_length(self, delta_time, transportation):
+        return self.adjusted_length() * self.progress(delta_time, transportation)
 
     def progress(self, delta_time, transportation):
         progress = None
