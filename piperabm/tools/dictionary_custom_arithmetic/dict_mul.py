@@ -16,6 +16,10 @@ def dict_mul(main: dict, other, max=None):
             if max is None: max_amount = None
             else: max_amount = max[key]
             result[key], _ = mul_function(main[key], other[key], max_amount)
+        for key in uncommon_keys['main']:
+            result[key] = main[key]
+        for key in uncommon_keys['other']:
+            result[key] = 0
     return result
 
 
