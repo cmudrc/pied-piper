@@ -34,6 +34,7 @@ class ToGraph:
                 time_start=start_date,
                 time_end=end_date
             )
+            #print(index, exists)
             if exists is True and active is True:
                 result = True
             return result
@@ -59,14 +60,11 @@ class ToGraph:
                 result = True
             return result
 
-        def add_node(index):
+        def add_node(index, currently_active=True):
             """
             Add node to the graph
             """
-            name = self.env.node_info(index, 'name')
-            boundary = self.env.node_info(index, 'boundary')
-            pos = boundary.center
-            self.G.add_node(index, name=name, pos=pos)
+            self.G.add_node(index, currently_active=currently_active)
 
         def add_edge(index, other_index):
             """
@@ -94,15 +92,25 @@ class ToGraph:
         start_date, end_date = refine_input(start_date, end_date)
         env = self.env
         index_list = env.all_nodes()
+
         for index in index_list:
-            if node_exists(index, start_date, end_date):
+            main_node_exists = node_exists(index, start_date, end_date)
+            if main_node_exists:
                 add_node(index)
-                for other_index in index_list:
-                    if node_exists(other_index, start_date, end_date) and other_index != index:
-                        if env.G.has_edge(index, other_index):
-                            if edge_exists(index, other_index, start_date, end_date):
-                                add_edge(index, other_index)
+        
+        for index in index_list:
+            for other_index in index_list:
+                if other_index != index and env.G.has_edge(index, other_index):
+                    if edge_exists(index, other_index, start_date, end_date):
+                        #print('edge', index, other_index)
+                        if index not in self.all_nodes():
+                            #print('node', index)
+                            add_node(index, currently_active=False)
+                        if other_index not in self.all_nodes():
+                            add_node(index, currently_active=False)
+                        add_edge(index, other_index)
+        
         for node in self.all_nodes("cross"):
             if self.node_degree(node) == 0:
                 self.G.remove_node(node)
-
+        

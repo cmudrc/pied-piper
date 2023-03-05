@@ -17,6 +17,7 @@ class Graphics:
 
         node_size_dict = {
             'settlement': 300,
+            'settlement_currently_inactive': 0,
             'cross': 0,
             'market': 500,
         }
@@ -30,21 +31,29 @@ class Graphics:
         edge_list = []
         edge_color_list = []
 
-        for index in self.env.all_nodes():
+        #print(self.all_nodes())
+
+        for index in self.all_nodes():
             node_list.append(index)
-            boundary = self.env.node_info(index, 'boundary')
-            pos = boundary.center
-            pos_dict[index] = pos
-            label = self.env.node_info(index, 'name')
-            label_dict[index] = label
             node_color_list.append(color)
-            node_type = self.env.node_info(index, 'type')
+            pos = self.node_info(index, 'pos')
+            pos_dict[index] = pos
+            label = self.node_info(index, 'name')
+            node_type = self.node_info(index, 'type')
             if node_type == 'settlement':
-                node_size_list.append(node_size_dict['settlement'])
+                if self.node_info(index, 'currently_active'):
+                    node_size = node_size_dict['settlement']
+                    label_dict[index] = label
+                else:
+                    node_size = node_size_dict['settlement_currently_inactive']
+                    label_dict[index] = ''
             elif node_type == 'cross':
-                node_size_list.append(node_size_dict['cross'])
+                node_size = node_size_dict['cross']
+                label_dict[index] = label
             elif node_type == 'market':
-                node_size_list.append(node_size_dict['market'])
+                node_size = node_size_dict['market']
+                label_dict[index] = label
+            node_size_list.append(node_size)
 
         for start, end in self.G.edges(data=False):
             edge_list.append([start, end])

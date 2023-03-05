@@ -1,6 +1,8 @@
 import networkx as nx
 
 from piperabm.environment.path_graph import PathGraph
+from piperabm.tools import ElementExists
+
 try: from .to_graph import ToGraph
 except: from to_graph import ToGraph
 try: from .query import Query
@@ -24,7 +26,7 @@ class LinkGraph(ToGraph, Query, Graphics):
         Convert the environment to PathGraph object
         """
         return PathGraph(self)
-
+    
     def __str__(self):
         return str(self.G)
 

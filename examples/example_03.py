@@ -19,3 +19,4 @@ soc.add_agents(5)
 
 agents = soc.all_agents()
 r = soc.select_best_route(agents[0], start_date, end_date)
+print(r)

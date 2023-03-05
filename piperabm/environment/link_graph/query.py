@@ -17,7 +17,7 @@ class Query:
             all_index = nodes_list
         else:
             for node in nodes_list:
-                if type == self.env.node_info(node, 'type'):
+                if type == self.node_info(node, 'type'):
                     all_index.append(node)
         return all_index
 
@@ -38,7 +38,15 @@ class Query:
         """
         Return *property* of *node*
         """
-        return self.env.node_info(node, property)
+        private_property = ['currently_active']
+        if property in private_property:
+            ## when property is saved in this level of graph, not top-level
+            node_index = self.find_node(node)
+            node = self.G.nodes[node_index]
+            result = node[property]
+        else:
+            result = self.env.node_info(node, property)
+        return result
 
     def edge_info(self, start, end, property):
         """

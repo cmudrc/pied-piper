@@ -56,6 +56,8 @@ class Query:
         elif property == 'pos':
             node = self.G.nodes[node_index]
             result = node['boundary'].center
+        elif property == 'index':
+            result = node_index
         else:
             node = self.G.nodes[node_index]
             result = node[property]
