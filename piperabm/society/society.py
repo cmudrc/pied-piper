@@ -26,6 +26,9 @@ class Society(Add, Index, Graphics, Update, Search, Decision):
         self.G = nx.Graph()
         super().__init__()
 
+    def __str__(self):
+        return str(self.G)
+
 
 if __name__ == "__main__":
     from piperabm.unit import Date

@@ -14,13 +14,13 @@ env.add_link(start=[0, 0], end="Settlement 3", initiation_date=Date(2020, 1, 1))
 start_date = Date(2020, 1, 1)
 end_date = start_date + DT(hours=12)
 #env.show(start_date, end_date)
-path_graph = env.to_path_graph(start_date, end_date)
-path_graph.show()
+#path_graph = env.to_path_graph(start_date, end_date)
+#path_graph.show()
 
 ''' Society '''
-#soc = Society(env)
-#soc.add_agents(5)
-
+soc = Society(env)
+soc.add_agents(n=5, gini=0.3, mean=1000)
+print(soc)
 #agents = soc.all_agents()
 #r = soc.select_best_route(agents[0], start_date, end_date)
 #print(r)

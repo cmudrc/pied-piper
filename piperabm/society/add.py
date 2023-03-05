@@ -37,14 +37,7 @@ class Add:
                     'energy': None
                 }
             )
-        if idle_fuel_rate is None:
-            idle_fuel_rate = DeltaResource(
-                {
-                    'food': Unit(2, 'kg/day').to_SI(),
-                    'water': Unit(4, 'kg/day').to_SI(),
-                    'energy': 0
-                }
-            )
+        if idle_fuel_rate is None: idle_fuel_rate = human_idle_fuel_rate
         if settlement is None: settlement_index = self.env.random_settlement()
         else: settlement_index = self.env.find_node(settlement)
         if transportation is None: transportation = Walk()
@@ -65,13 +58,13 @@ class Add:
             ready_for_trade=False
         )
 
-    def add_agents(self, n):
+    def add_agents(self, n, gini, mean):
         for _ in range(n):
             resource = resource_generator()
             name = name_generator()
             settlement = None  # default
             idle_fuel_rate = None  # default
-            wealth = wealth_generator(gini=0.3, mean=1000)
+            wealth = wealth_generator(gini, mean)
             self.add(
                 name=name,
                 settlement=settlement,
@@ -80,6 +73,14 @@ class Add:
                 idle_fuel_rate=idle_fuel_rate,
                 wealth=wealth
             )
+
+human_idle_fuel_rate = DeltaResource(
+    {
+        'food': Unit(2, 'kg/day').to_SI(),
+        'water': Unit(4, 'kg/day').to_SI(),
+        'energy': 0
+    }
+)
 
 def name_generator():
     result = ''
