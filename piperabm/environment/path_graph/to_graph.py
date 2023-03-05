@@ -26,15 +26,13 @@ class ToGraph:
             """
             path = nx.shortest_path(self.env.G, source=index, target=other_index)
             r = Path(path, self.env)
-            #print(r)
             self.G.add_edge(index, other_index, path=r)
-            #length = self.calculate_path_length(path)
-            #self.G.add_edge(index, other_index, path=path, length=length)
-            
-                    
 
         index_list = links_graph.all_nodes(type='settlement')
         index_list += links_graph.all_nodes(type='market')
+        for index in index_list:
+            if links_graph.node_info(index, 'currently_active') is False:
+                index_list.remove(index)
         for index in index_list:
             add_node(index)
             for other_index in index_list:
