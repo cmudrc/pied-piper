@@ -47,7 +47,7 @@ class Model(Graphics, Plugins):
         """
         Burnout phase for initiating the model
         """
-        start_date = self.env.find_oldest_element()
+        start_date = self.env.oldest_date()
         end_date = self.current_date
         self.env.update_elements(start_date, end_date)
 

@@ -3,6 +3,7 @@ from piperabm.unit import Unit, DT
 
 
 class Transportation:
+
     def __init__(
             self,
             name: str = None,
@@ -47,6 +48,7 @@ class Transportation:
 
 
 class Walk(Transportation):
+
     def __init__(self):
         super().__init__(
             name='foot',
@@ -61,6 +63,7 @@ class Walk(Transportation):
 
 
 class Vehicle(Transportation):
+    
     def __init__(self):
         super().__init__(
             name='vehicle',

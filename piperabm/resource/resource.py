@@ -132,6 +132,16 @@ class Resource:
             resource_dict=self.current_resource,
             exchange_rate=exchange_rate
         )
+    
+    def has_zero(self):
+        """
+        Check whether any resources are empty
+        """
+        result = False
+        for key in self.current_resource:
+            if self.current_resource[key] == 0:
+                result = True
+        return result
 
     def __add__(self, other):
         result = None
@@ -230,6 +240,14 @@ class DeltaResource:
             resource_dict=self.batch,
             exchange_rate=exchange_rate
         )
+    
+    def is_bigger_than(self, other):
+        result = True
+        for key in self.batch[key]:
+            if self.batch[key] < other.batch[key]:
+                result = False
+                break
+        return result
 
     def __add__(self, other):
         result = None

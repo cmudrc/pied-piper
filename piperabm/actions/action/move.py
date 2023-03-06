@@ -11,6 +11,7 @@ class Move:
         self.duration = self.path.duration(self.transportation)
         self.end_date  = self.start_date + DT(seconds=self.duration)
         self.fuel_consumption = self.total_fuel_consumption()
+        self.done = False
 
     def total_fuel_consumption(self):
         result = self.transportation.fuel_rate * self.duration
@@ -23,6 +24,13 @@ class Move:
         delta_time = self.duration * delta_progress # in seconds
         travel_length = self.path.travel_length(delta_time, self.transportation)
         return self.transportation.how_much_fuel(travel_length)
+    
+    def is_possible(self, current_resource, start_date: Date, end_date: Date):
+        result = True
+        fuel_consumption = self.how_much_fuel(start_date, end_date)
+        if fuel_consumption.is_bigger_than(current_resource):
+            result = False
+        return result
 
     def is_current_action(self, date: Date):
         """

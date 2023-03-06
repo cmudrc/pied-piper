@@ -2,6 +2,8 @@ from piperabm.unit import Date
 
 try: from .action import Move
 except: from action import Move
+try: from .action import Trade
+except: from action import Trade
 
 
 class Queue:
@@ -14,24 +16,46 @@ class Queue:
         """
         self.action_list.append(action)
 
-    def pos(self, date: Date):
+    def pos(self, start_date: Date=None, end_date: Date=None):
         """
         Return position of agent in *date*
         """
+        if end_date is None: raise ValueError
+        actions = self.find_actions('move')
+        move = actions[0]
         pos = None
-        for action in self.action_list:
-            if isinstance(action, Move):
-                if action.end_date <= date:
-                    pos = action.end_pos
-                elif action.is_current_action(date) is True:
-                    pos = action.pos(date)
+        pos = move.pos(end_date) # *pos* at *end_date*
         return pos
     
+    def find_actions(self, type='all'):
+        result = []
+        for action in self.action_list:
+            if isinstance(action, Move):
+                if type == 'move' or type == 'all':
+                    result.append(action)
+            elif isinstance(action, Trade):
+                if type == 'trade' or type == 'all':
+                    result.append(action)
+        return result
+
     def how_much_fuel(self, start_date: Date, end_date: Date):
-        pass
+        actions = self.find_actions('move')
+        move = actions[0]
+        return move.how_much_fuel(start_date, end_date)
     
     def is_empty(self):
-        return len(self.action_list)
+        result = False
+        if len(self.action_list) == 0:
+            result = True
+        return result
+
+    def done(self):
+        result = True
+        for action in self.action_list:
+            if action.done is False:
+                result = False
+                break
+        return result
 
     def is_done(self, date: Date):
         """

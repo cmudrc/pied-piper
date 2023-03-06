@@ -18,11 +18,18 @@ class Index:
             new_index = 0
         return new_index
 
-    def all_agents(self):
+    def all_agents(self, type='all'):
         """
         Return a list of all agents' indexes
         """
-        return self.index_list
+        result = []
+        if type == 'all':
+            result = self.index_list
+        elif type == 'active':
+            for index in self.index_list:
+                if self.agent_info(index, 'active') is True:
+                    result.append(index)
+        return result
 
     def agent_info(self, agent, property):
         result = None

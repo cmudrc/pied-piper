@@ -33,6 +33,7 @@ average_resource = Resource(
     }
 )
 soc.add_agents(n=5, average_resource=average_resource)
+
 #agents = soc.all_agents()
 #r = soc.select_best_route(agents[0], start_date, end_date)
 #print(r)
@@ -44,3 +45,4 @@ m = Model(
     step_size=DT(hours=12),
     current_date=Date(2020, 1, 1)
 )
+m.run()
