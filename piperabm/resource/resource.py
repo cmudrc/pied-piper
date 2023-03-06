@@ -59,7 +59,7 @@ class Resource:
         """
         Calculate demand
         """
-        result, remaining = DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
+        result, _ = DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
         return result
 
     def source(self):

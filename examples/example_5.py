@@ -1,4 +1,5 @@
 from piperabm import Environment, Society, Model
+from piperabm.economy import Exchange
 from piperabm.resource import Resource
 from piperabm.unit import Date, DT
 
@@ -19,7 +20,13 @@ env.add_link(start=[0, 0], end="Settlement 3", initiation_date=Date(2020, 1, 1))
 #path_graph.show()
 
 ''' Society '''
-soc = Society(env, gini=0.3, average_income=1000)
+gini = 0.3
+average_income = 1000
+exchange_rate = Exchange()
+exchange_rate.add('food', 'wealth', 10)
+exchange_rate.add('water', 'wealth', 2)
+exchange_rate.add('energy', 'wealth', 4)
+soc = Society(env, gini=gini, average_income=average_income, exchange_rate=exchange_rate)
 average_resource = Resource(
     current_resource={
         'food': 20,

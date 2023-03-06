@@ -1,15 +1,10 @@
 from piperabm.unit import Date
+from piperabm.economy import Market, Player
 
 
 class Update:
 
     def update_elements(self, start_date: Date, end_date: Date):
-        """
-        Update all elements
-        """
-        self._update_all_agents(start_date, end_date)
-
-    def _update_all_agents(self, start_date: Date, end_date: Date):
         """
         Update all agents
             start_date: starting date of the time duration
@@ -40,21 +35,33 @@ class Update:
             ## new pos
             new_pos = current_action.pos(start_date, end_date)
             self.set_agent_info(index, 'pos', new_pos)
-            ## action is done
-            current_action.done = True
             if new_resource.has_zero():
                 self.set_agent_info(index, 'active', False) ## dead
 
         ## mark agents who are ready for participating in trade
+        participants = []
         for index in self.all_agents():
             queue = self.agent_info(index, 'queue')
-            
-            
-            ready_for_trade = queue.is_done(end_date)
-            if ready_for_trade:
-                self.set_agent_info(index, 'ready_for_trade', ready_for_trade)
-                queue.reset()
+            trade = queue.find_actions('trade')
+            if trade.done is False:
+                participants.append(index)
+
         ## do the trade for each settlement
+        markets = {} # {market_index: market instance}
+        for index in self.env.all_nodes('settlement'):
+            market = Market(self.exchange)
+            player_index_list = self.all_agents_from(index, participants)
+            players_list = []
+            for player_index in player_index_list:
+                resource = self.agent_info(player_index, 'resource')
+                source = resource.source()
+                demand = resource.demand()
+                wallet = self.agent_info(player_index, 'wealth')
+                player = Player(player_index, source, demand, wallet)
+                players_list.append(player)
+            market.add(players_list)
+            markets[index] = market
+        
 
         ## finalize
         for index in self.all_agents(type='active'):

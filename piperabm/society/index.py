@@ -47,12 +47,16 @@ class Index:
         else:
             print("ERROR: agent info not updated")
         
-    def all_agents_from(self, settlement):
+    def all_agents_from(self, settlement, agents_list=None):
         """
         Create a list of agent indexes that are from *settlement*
         """
         result = []
-        for index in self.index_list:
+        if agents_list is None:
+            index_list = self.index_list
+        else:
+            index_list = agents_list
+        for index in index_list:
             agent_settlement = self.agent_info(index, 'settlement')
             if agent_settlement == settlement:
                 result.append(index)
