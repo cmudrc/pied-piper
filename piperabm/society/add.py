@@ -14,10 +14,11 @@ class Add:
         name: str = '',
         settlement=None,
         transportation=None,
-        queue=Queue(),
+        queue=None,
         resource=None,
         idle_fuel_rate=None,
-        wealth=0
+        wealth=0,
+        wealth_factor=1
     ):
         """
         Add a new agent to the society
@@ -41,8 +42,10 @@ class Add:
         if settlement is None: settlement_index = self.env.random_settlement()
         else: settlement_index = self.env.find_node(settlement)
         if transportation is None: transportation = Walk()
+        if queue is None: queue = Queue()
         settlement_node = self.env.G.nodes[settlement_index]
         pos = settlement_node['boundary'].center
+        
         self.G.add_node(
             index,
             name=name,
@@ -54,24 +57,28 @@ class Add:
             queue=queue,
             resource=resource,
             idle_fuel_rate=idle_fuel_rate,
+            wealth_factor=wealth_factor,
             wealth=wealth,
             ready_for_trade=False
         )
 
-    def add_agents(self, n, gini, mean):
+    def add_agents(self, n, average_resource):
         for _ in range(n):
-            resource = resource_generator()
             name = name_generator()
             settlement = None  # default
             idle_fuel_rate = None  # default
-            wealth = wealth_generator(gini, mean)
+            queue = None # default
+            wealth_factor = calculate_wealth_factor(self.gini)
+            wealth = wealth_generator(wealth_factor, self.average_income)
+            resource = resource_generator(wealth_factor, average_resource)
             self.add(
                 name=name,
                 settlement=settlement,
-                queue=Queue(),
+                queue=queue,
                 resource=resource,
                 idle_fuel_rate=idle_fuel_rate,
-                wealth=wealth
+                wealth=wealth,
+                wealth_factor=wealth_factor
             )
 
 human_idle_fuel_rate = DeltaResource(
@@ -86,22 +93,33 @@ def name_generator():
     result = ''
     return result
 
-def wealth_generator(gini, mean):
-    gg = GiniGenerator(gini, mean)
+def calculate_wealth_factor(gini):
+    gg = GiniGenerator(gini, 1)
     sample = gg.generate()
     return sample[0]
 
-def resource_generator():
-    result = Resource(
+def wealth_generator(wealth_factor, average_income):
+    return wealth_factor * average_income
+
+def resource_generator(wealth_factor, average_resource):
+    return average_resource * wealth_factor
+
+
+if __name__ == "__main__":
+    average_resource = Resource(
         current_resource={
             'food': 20,
-            'water': 20,
-            'energy': 20,
+            'water': 40,
+            'energy': 60,
         },
         max_resource={
             'food': 100,
-            'water': 100,
-            'energy': 100,
+            'water': 200,
+            'energy': 300,
         }
     )
-    return result
+    result = resource_generator(2, average_resource)
+    #result = average_resource * 2
+    print(result)
+
+

@@ -1,4 +1,5 @@
 from piperabm import Environment, Society, Model
+from piperabm.resource import Resource
 from piperabm.unit import Date, DT
 
 ''' Environmet '''
@@ -11,19 +12,35 @@ env.add_link(start=[0.1, 0.1], end=[80, 60], initiation_date=Date(2020, 1, 1))
 env.add_link(start=[80, 60], end=[200, 20], initiation_date=Date(2020, 1, 1))
 env.add_link(start=[0, 0], end="Settlement 3", initiation_date=Date(2020, 1, 1))
 
-start_date = Date(2020, 1, 1)
-end_date = start_date + DT(hours=12)
+#start_date = Date(2020, 1, 1)
+#end_date = start_date + DT(hours=12)
 #env.show(start_date, end_date)
 #path_graph = env.to_path_graph(start_date, end_date)
 #path_graph.show()
 
 ''' Society '''
-soc = Society(env)
-soc.add_agents(n=5, gini=0.3, mean=1000)
-print(soc)
+soc = Society(env, gini=0.3, average_income=1000)
+average_resource = Resource(
+    current_resource={
+        'food': 20,
+        'water': 40,
+        'energy': 60,
+    },
+    max_resource={
+        'food': 100,
+        'water': 200,
+        'energy': 300,
+    }
+)
+soc.add_agents(n=5, average_resource=average_resource)
 #agents = soc.all_agents()
 #r = soc.select_best_route(agents[0], start_date, end_date)
 #print(r)
 
 ''' Model '''
-#m = Model()
+m = Model(
+    environment=env,
+    society=soc,
+    step_size=DT(hours=12),
+    current_date=Date(2020, 1, 1)
+)

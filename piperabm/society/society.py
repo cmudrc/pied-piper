@@ -21,8 +21,10 @@ except: from decision import Decision
 
 class Society(Add, Index, Graphics, Update, Search, Decision):
 
-    def __init__(self, env: Environment):
+    def __init__(self, env: Environment, gini, average_income):
         self.env = env
+        self.gini = gini
+        self.average_income = average_income
         self.G = nx.Graph()
         super().__init__()
 

@@ -26,6 +26,6 @@ def dict_mul(main: dict, other, max=None):
 if __name__ == "__main__":
     main = {'a': 1, 'b': 2}
     other = {'b': 2}
-    result = dict_mul(main, other)
-    #result = truediv(main, 2)
+    #result = dict_mul(main, other)
+    result = dict_mul(main, 2)
     print(result)

@@ -81,7 +81,10 @@ class Resource:
             raise ValueError
         return result
     
-    
+    def all_resource_names(self):
+        shared_keys, uncommon_keys = compare_keys(main=self.current_resource, other=self.max_resource)
+        return shared_keys, uncommon_keys
+
     def add_amount(self, name: str, amount: float=0):
         """
         Add amount to the already existing resource
@@ -176,22 +179,29 @@ class Resource:
 
     def __mul__(self, other):
         result = None
-        main_dict = self.batch
+        main_dict = self.current_resource
         main_max_dict = self.max_resource
         if isinstance(other, (float, int)):
             other = other
             max_dict = main_max_dict
+            result = dict_mul(main_dict, other, max_dict)
+            result = Resource(result)
         elif isinstance(other, dict):
             other = other
             max_dict = main_max_dict
+            result = dict_mul(main_dict, other, max_dict)
+            result = DeltaResource(result)
         elif isinstance(other, Resource):
             other = other.current_resource
             max_dict = dict_mul(main_max_dict, other.max_resource)
+            result = dict_mul(main_dict, other, max_dict)
+            result = DeltaResource(result)
         elif isinstance(other, DeltaResource):
             other = other.batch
             max_dict = main_max_dict
-        result = dict_mul(main_dict, other, max_dict)
-        return DeltaResource(result)
+            result = dict_mul(main_dict, other, max_dict)
+            result = DeltaResource(result)
+        return result
 
     def __str__(self):
         return str(self.current_resource)
