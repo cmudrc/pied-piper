@@ -1,5 +1,6 @@
 from piperabm.unit import Date
 from piperabm.economy import Market, Player
+from piperabm.actions import Trade, Move, Walk
 
 
 class Update:
@@ -25,15 +26,24 @@ class Update:
             queue = self.agent_info(index, 'queue')
             if queue.is_empty() is True:
                 # decide
-                pass
-            current_action = queue.current_action()
+                route = self.select_best_route(index, start_date, end_date)
+                move = Move(
+                    start_date=start_date,
+                    path=route,
+                    transportation=Walk()
+                )
+                queue.add(move)
+                trade = Trade(start_date=start_date)
+                queue.add(trade)
+            actions = queue.find_actions(type='move')
+            move = actions[0]
             ## new resource
-            fuel_consumption = current_action.how_much_fuel(start_date, end_date)
+            fuel_consumption = move.how_much_fuel(start_date, end_date)
             resource = self.agent_info(index, 'resource')
             new_resource, remaining = resource - fuel_consumption
             self.set_agent_info(index, 'resource', new_resource)
             ## new pos
-            new_pos = current_action.pos(start_date, end_date)
+            new_pos = move.pos(start_date, end_date)
             self.set_agent_info(index, 'pos', new_pos)
             if new_resource.has_zero():
                 self.set_agent_info(index, 'active', False) ## dead
@@ -46,7 +56,7 @@ class Update:
             if trade.done is False:
                 participants.append(index)
 
-        ## do the trade for each settlement
+        ## do the trade for all settlements
         markets = {} # {market_index: market instance}
         for index in self.env.all_nodes('settlement'):
             market = Market(self.exchange)
@@ -62,6 +72,29 @@ class Update:
             market.add(players_list)
             markets[index] = market
         
+        ## sort markets based on their size
+        market_sizes = {} # {market_index: market_sze}
+        for key in markets:
+            market = markets[key]
+            market_sizes[key] = market.size()
+            sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
+            sorted_markets = list(list(zip(*sorted_markets))[0])
+        
+        ## solve markets
+        for key in sorted_markets:
+            markets[key].solve()
+
+        ## update agent properties
+        for key in markets:
+            for player in markets[key].players:
+                delta_source, delta_wallet = player.to_delta()
+                index = player.index
+                resource = self.agent_info(index, 'resource')
+                new_resource, remaining = resource + delta_source
+                self.set_agent_info(index, 'resource', new_resource)
+                wealth = self.agent_info(index, 'wealth')
+                new_wealth = wealth + delta_wallet
+                self.set_agent_info(index, 'wealth', new_wealth)
 
         ## finalize
         for index in self.all_agents(type='active'):

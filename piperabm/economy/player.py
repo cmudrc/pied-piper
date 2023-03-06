@@ -38,6 +38,10 @@ class Player:
         delta_wallet = self.new_wallet - self.wallet
         result["wallet"] = delta_wallet
         return result
+    
+    def to_delta(self):
+        d = self.delta()
+        return d["source"], d["wallet"]
 
     def actual_demand(self, exchange_rate):
         """
