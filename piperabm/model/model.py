@@ -2,25 +2,23 @@ from piperabm.environment import Environment
 from piperabm.society import Society
 from piperabm.unit import DT, Date
 from piperabm.log import Log
+from piperabm.measure import Measures
 
 try: from .graphics import Graphics
 except: from graphics import Graphics
-try: from .plugins import Plugins
-except: from plugins import Plugins
 
 
-class Model(Graphics, Plugins):
+class Model(Graphics, Measures):
 
     def __init__(
         self,
-        environment: Environment,
         society: Society,
         step_size=None,
         current_step=0,
         current_date=None
     ):
-        self.env = environment
         self.society = society
+        self.env = self.society.env
         self.add_step_size(step_size)
         if current_step >= 0: self.current_step = current_step
         else: raise ValueError

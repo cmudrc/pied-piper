@@ -9,6 +9,7 @@ class Trade:
         self.done = False
         self.duration = DT(seconds=0)
 
+    '''
     def ready_for_trade(self, start_date: Date, end_date: Date):
         ee = ElementExists()
         exists = ee.check(
@@ -21,6 +22,7 @@ class Trade:
         if self.done is False and exists:
             result = True
         return result
+    '''
 
 
 if __name__ == "__main__":

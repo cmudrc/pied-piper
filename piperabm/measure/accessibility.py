@@ -122,7 +122,7 @@ class Accessibility:
         plt.ylim(bottom=0)
         plt.legend()
 
-    def show(self, resource_name):
+    def show(self, resource_name='food'):
         """
         Show the plt plot
         """

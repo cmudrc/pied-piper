@@ -58,9 +58,10 @@ class Update:
         ## mark agents who are ready for participating in trade
         participants = []
         for index in self.all_agents():
+            queue = self.agent_info(index, 'queue')
             if queue.is_empty() is False:
-                queue = self.agent_info(index, 'queue')
-                trade = queue.find_actions('trade')
+                actions = queue.find_actions('trade')
+                trade = actions[0]
                 if trade.done is False:
                     participants.append(index)
 

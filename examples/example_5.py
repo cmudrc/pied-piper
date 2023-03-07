@@ -1,6 +1,7 @@
 from piperabm import Environment, Society, Model
 from piperabm.economy import Exchange
 from piperabm.resource import Resource
+from piperabm.measure import Accessibility, TravelLength
 from piperabm.unit import Date, DT
 
 ''' Environmet '''
@@ -47,9 +48,10 @@ soc.add_agents(n=5, average_resource=average_resource)
 
 ''' Model '''
 m = Model(
-    environment=env,
     society=soc,
     step_size=DT(hours=12),
     current_date=Date(2020, 1, 1)
 )
+m.add_measures([Accessibility(), TravelLength()])
 m.run()
+m.measures.show()
