@@ -59,8 +59,9 @@ class Resource:
         """
         Calculate demand
         """
-        result, _ = DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
-        return result
+        result, _ = dict_sub(self.max_resource, self.current_resource)
+        #result, _ = DeltaResource(self.max_resource) - DeltaResource(self.current_resource)
+        return DeltaResource(result)
 
     def source(self):
         """

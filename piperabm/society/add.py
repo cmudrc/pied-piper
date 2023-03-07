@@ -8,6 +8,10 @@ from piperabm.economy import GiniGenerator
 
 
 class Add:
+    """
+    Contains methods for Society class
+    Add new elements to the society
+    """
 
     def add(
         self,
