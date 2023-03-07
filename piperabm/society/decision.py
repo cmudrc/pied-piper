@@ -5,20 +5,27 @@ class Decision:
         A list of possible routes in path graph
         """
         settlement_index = self.agent_info(agent, 'settlement')
-        path = self.env.to_path_graph(start_date, end_date)
-        return list(path.from_node_perspective(settlement_index))
+        path_graph = self.env.to_path_graph(start_date, end_date)
+        #path_graph.show()
+        #print(settlement_index)
+        result = path_graph.from_node_perspective(settlement_index)
+        #print(result)
+        return result
 
     def select_best_route(self, agent, start_date, end_date):
         """
         Select best possible route based on their scores
         """
         possible_routes = self.possible_routes(agent, start_date, end_date)
+        result = None
         scores = []
         for route in possible_routes:
             score = self.calculate_route_score(agent, route, start_date, end_date)
             scores.append(score)
-        max_index = scores.index(max(scores))
-        return possible_routes[max_index]
+        if len(scores) > 0:
+            max_index = scores.index(max(scores))
+            result = possible_routes[max_index]
+        return result
 
     def calculate_route_score(self, agent, route, start_date, end_date):
         """

@@ -26,35 +26,43 @@ class Update:
             queue = self.agent_info(index, 'queue')
             if queue.is_empty() is True:
                 # decide
+                path_graph = self.env.to_path_graph(start_date, end_date)
                 route = self.select_best_route(index, start_date, end_date)
-                move = Move(
-                    start_date=start_date,
-                    path=route,
-                    transportation=Walk()
-                )
-                queue.add(move)
-                trade = Trade(start_date=start_date)
-                queue.add(trade)
-            actions = queue.find_actions(type='move')
-            move = actions[0]
-            ## new resource
-            fuel_consumption = move.how_much_fuel(start_date, end_date)
-            resource = self.agent_info(index, 'resource')
-            new_resource, remaining = resource - fuel_consumption
-            self.set_agent_info(index, 'resource', new_resource)
-            ## new pos
-            new_pos = move.pos(start_date, end_date)
-            self.set_agent_info(index, 'pos', new_pos)
-            if new_resource.has_zero():
-                self.set_agent_info(index, 'active', False) ## dead
+                if route is not None:
+                    path = path_graph.edge_info(*route, 'path')
+                    move = Move(
+                        start_date=start_date,
+                        path=path,
+                        transportation=Walk()
+                    )
+                    queue.add(move)
+                    trade = Trade(start_date=start_date)
+                    queue.add(trade)
+            if queue.is_empty() is False:
+                actions = queue.find_actions(type='move')
+                move = actions[0]
+                ## new resource
+                fuel_consumption = move.how_much_fuel(start_date, end_date)
+                resource = self.agent_info(index, 'resource')
+                new_resource, remaining = resource - fuel_consumption
+                self.set_agent_info(index, 'resource', new_resource)
+                ## new pos
+                new_pos = move.pos(date=end_date)
+                self.set_agent_info(index, 'pos', new_pos)
+                new_settlement = self.env.find_node(new_pos)
+                if new_settlement is not None:
+                    self.set_agent_info(index, 'settlement', new_settlement)
+                if new_resource.has_zero():
+                    self.set_agent_info(index, 'active', False) ## dead
 
         ## mark agents who are ready for participating in trade
         participants = []
         for index in self.all_agents():
-            queue = self.agent_info(index, 'queue')
-            trade = queue.find_actions('trade')
-            if trade.done is False:
-                participants.append(index)
+            if queue.is_empty() is False:
+                queue = self.agent_info(index, 'queue')
+                trade = queue.find_actions('trade')
+                if trade.done is False:
+                    participants.append(index)
 
         ## do the trade for all settlements
         markets = {} # {market_index: market instance}

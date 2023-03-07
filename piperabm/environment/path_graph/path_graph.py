@@ -15,7 +15,12 @@ class PathGraph(ToGraph, Query, Graphics):
         self.to_graph(links_graph)
 
     def from_node_perspective(self, node):
-        return self.G.out_edges(node)
+        result = []
+        node_index = self.find_node(node)
+        if node_index is not None:
+            if node_index in self.G.nodes():
+                result = list(self.G.out_edges(node_index))
+        return result
     
     def __str__(self):
         return str(self.G)
