@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from piperabm.tools.dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
-from piperabm.tools.storage_custom_arithmetic import add_function, sub_function
+#from piperabm.tools.storage_custom_arithmetic import add_function, sub_function
 
 
 class Resource:
@@ -13,14 +13,11 @@ class Resource:
     def refine_inputs(self, current_resource, max_resource, min_resource):
         shared_cmax, uncommon_cmax = compare_keys(current_resource, max_resource)
         shared_cmin, uncommon_cmin = compare_keys(current_resource, min_resource)
-        #print('compare_max: ', shared_cmax, uncommon_cmax)
-        #print('compare_min: ', shared_cmin, uncommon_cmin)
         for key in current_resource:
-            if key in uncommon_cmax['main']: ########
+            if key in uncommon_cmax['main']:
                 max_resource[key] = None
             if key in uncommon_cmin['main']:
                 min_resource[key] = 0
-        #print(current_resource, max_resource, min_resource)
         return current_resource, max_resource, min_resource
     
     def resource_exists(self, name: str):
@@ -43,8 +40,6 @@ class Resource:
     
     def demand(self):
         result, _ = Resource(self.max_resource) - Resource(self.current_resource)
-        #result, _ = dict_sub(self.max_resource, self.current_resource, self.min_resource)
-        #return Resource(result)
         return result
 
     def source(self):
@@ -85,7 +80,7 @@ class Resource:
                 max=self.max_resource
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
-            remaining = Resource(remaining_dict)
+            remaining = Resource(remaining_dict, other.max_resource, other.min_resource)
         return result, remaining
     
     def __sub__(self, other):
@@ -97,11 +92,11 @@ class Resource:
                 min=self.min_resource
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
-            remaining = Resource(remaining_dict)
+            remaining = Resource(remaining_dict, other.max_resource, other.min_resource)
         return result, remaining
     
     def __mul__(self, other):
-        result, remaining = None, None
+        result = None
         if isinstance(other, (int, float)):
             result_dict = dict_mul(
                 main=self.current_resource,
@@ -115,12 +110,11 @@ class Resource:
                 other=other.current_resource,
                 max=self.max_resource
             )
-            #print(result_dict)
             result = Resource(result_dict, self.max_resource, self.min_resource)
         return result
     
     def __truediv__(self, other):
-        result, remaining = None, None
+        result = None
         if isinstance(other, (int, float)):
             result_dict = dict_truediv(
                 main=self.current_resource,
@@ -134,7 +128,6 @@ class Resource:
                 other=other.current_resource,
                 max=self.max_resource
             )
-            #print(result_dict)
             result = Resource(result_dict, self.max_resource, self.min_resource)
         return result
 
