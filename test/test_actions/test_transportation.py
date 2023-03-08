@@ -16,9 +16,9 @@ class TestTransportaionClass(unittest.TestCase):
         transportation = Walk()
         length = 1000
         result = transportation.how_much_fuel(length)
-        self.assertAlmostEqual(result.batch['food'], 0.01666666666)
-        self.assertAlmostEqual(result.batch['water'], 0.00833333333)
-        self.assertAlmostEqual(result.batch['energy'], 0)
+        self.assertAlmostEqual(result('food'), 0.01666666666)
+        self.assertAlmostEqual(result('water'), 0.00833333333)
+        self.assertAlmostEqual(result('energy'), 0)
 
 
 if __name__ == "__main__":

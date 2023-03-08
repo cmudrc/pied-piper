@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource.resource_new import Resource
+from piperabm.resource import Resource
 
 
 class TestResourceAdd(unittest.TestCase):

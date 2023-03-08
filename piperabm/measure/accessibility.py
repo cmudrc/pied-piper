@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 from piperabm.unit import DT
-from piperabm.resource import DeltaResource
+from piperabm.resource import Resource
 
 
 class Accessibility:
@@ -29,7 +29,7 @@ class Accessibility:
             max_resources: sum of all agents max_resource
         """
         if isinstance(total_current_resource, dict):
-            total_current_resource = DeltaResource(total_current_resource)
+            total_current_resource = Resource(total_current_resource)
         self.total_max_resource_list.append(total_max_resource)
         self.total_current_resource_list.append(total_current_resource)
         if isinstance(duration, DT):
@@ -52,7 +52,7 @@ class Accessibility:
     
     def efficiency(self):
         currents = self.accessibility_current()
-        result_real = DeltaResource(
+        result_real = Resource(
             {
                 'food': 0,
                 'water': 0,
@@ -62,7 +62,7 @@ class Accessibility:
         for current in self.total_current_resource_list:
             result_real, _ = result_real + current
         ideals = self.accessibility_ideal()
-        result_ideal = DeltaResource(
+        result_ideal = Resource(
             {
                 'food': 0,
                 'water': 0,

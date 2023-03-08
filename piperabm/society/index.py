@@ -1,4 +1,4 @@
-from piperabm.resource import DeltaResource
+from piperabm.resource import Resource
 
 
 class Index:
@@ -94,7 +94,7 @@ class Index:
         """
         if isinstance(agents, int):
             agents = [agents]
-        result = DeltaResource(
+        result = Resource(
             {
                 'food': 0,
                 'water': 0,
@@ -104,7 +104,7 @@ class Index:
         for agent in agents:
             agent_resource = self.agent_info(agent, 'resource')
             max_resource = agent_resource.max_resource
-            max_resource = DeltaResource(batch=max_resource)
+            max_resource = Resource(max_resource)
             result, _ = result + max_resource
         return result
 
@@ -114,7 +114,7 @@ class Index:
         """
         if isinstance(agents, int):
             agents = [agents]
-        result = DeltaResource(
+        result = Resource(
             {
                 'food': 0,
                 'water': 0,
@@ -123,7 +123,6 @@ class Index:
         )
         for agent in agents:
             agent_resource = self.agent_info(agent, 'resource')
-            agent_resource = agent_resource.to_delta_resource()
             result, _ = result + agent_resource
         return result
 
@@ -133,7 +132,7 @@ class Index:
         """
         if isinstance(agents, int):
             agents = [agents]
-        result = DeltaResource(
+        result = Resource(
             {
                 'food': 0,
                 'water': 0,

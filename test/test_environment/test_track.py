@@ -8,7 +8,8 @@ from piperabm.unit import Date
 
 class TestTrackClass(unittest.TestCase):
 
-    env = env_0
+    def setUp(self):
+        self.env = env_0
 
     def test_to_path_graph_6(self):
         env = deepcopy(self.env)

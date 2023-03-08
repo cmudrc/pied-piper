@@ -8,14 +8,15 @@ from piperabm.unit import Date
 
 class TestPathClass(unittest.TestCase):
 
-    env = env_0
-    start_date = Date(2020, 1, 5)
-    end_date = Date(2020, 1, 7)
-    env.update_elements(start_date, end_date)
-    path_graph = env.to_path_graph(start_date, end_date)
-    all_settlements = env.all_nodes('settlement')
-    path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
-    #print(path)
+    def setUp(self):
+        env = env_0
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 7)
+        env.update_elements(start_date, end_date)
+        path_graph = env.to_path_graph(start_date, end_date)
+        all_settlements = env.all_nodes('settlement')
+        self.path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
+        #print(path)
 
     def test_adjusted_length(self):
         path = deepcopy(self.path)

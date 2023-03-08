@@ -7,7 +7,8 @@ from piperabm.unit import Date, DT
 
 class TestPathGraph(unittest.TestCase):
 
-    env = env_0
+    def setUp(self):
+        self.env = env_0
 
     def test_to_path_graph(self):
         """

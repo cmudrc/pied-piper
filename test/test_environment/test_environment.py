@@ -7,7 +7,8 @@ from piperabm.unit import Date, DT
 
 class TestEnvironmentClass1(unittest.TestCase):
 
-    env = env_0
+    def setUp(self):
+        self.env = env_0
 
     def test_find_node(self):
         env = deepcopy(self.env)
@@ -72,7 +73,8 @@ class TestEnvironmentClass1(unittest.TestCase):
 
 class TestEnvironmentClass2(unittest.TestCase):
 
-    env = env_1
+    def setUp(self):
+        self.env = env_1
 
     #env.show(Date.today(), Date.today()+DT(hours=1))
 

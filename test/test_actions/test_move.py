@@ -8,20 +8,21 @@ from piperabm.environment.sample import env_0
 
 class TestMoveClass(unittest.TestCase):
 
-    env = env_0
-    start_date = Date(2020, 1, 5)
-    end_date = Date(2020, 1, 7)
-    env.update_elements(start_date, end_date)
-    path_graph = env.to_path_graph(start_date, end_date)
-    all_settlements = env.all_nodes('settlement')
-    path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
-    #print(path)
+    def setUp(self):
+        env = env_0
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 7)
+        env.update_elements(start_date, end_date)
+        path_graph = env.to_path_graph(start_date, end_date)
+        all_settlements = env.all_nodes('settlement')
+        path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
+        #print(path)
 
-    m = Move(
-        start_date=Date(2020, 1, 1),
-        path=path,
-        transportation=Walk()
-    )
+        self.m = Move(
+            start_date=Date(2020, 1, 1),
+            path=path,
+            transportation=Walk()
+        )
 
     def test_end_date(self):
         m = deepcopy(self.m)

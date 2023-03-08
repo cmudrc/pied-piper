@@ -1,4 +1,4 @@
-from piperabm.resource import DeltaResource
+from piperabm.resource import Resource
 from piperabm.unit import Unit, DT
 
 
@@ -20,8 +20,8 @@ class Transportation:
                 'energy': 0,
             }
         if isinstance(fuel_rate, dict):
-            self.fuel_rate = DeltaResource(batch=fuel_rate)
-        elif isinstance(fuel_rate, DeltaResource):
+            self.fuel_rate = Resource(fuel_rate)
+        elif isinstance(fuel_rate, Resource):
             self.fuel_rate = fuel_rate  # resource used for the transport
         self.storage_max = storage_max
 
@@ -63,7 +63,7 @@ class Walk(Transportation):
 
 
 class Vehicle(Transportation):
-    
+
     def __init__(self):
         super().__init__(
             name='vehicle',

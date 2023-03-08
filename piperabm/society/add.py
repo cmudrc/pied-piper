@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from piperabm.actions import Queue
-from piperabm.resource import Resource, DeltaResource
+from piperabm.resource import Resource
 from piperabm.actions.action.transportation import Walk
 from piperabm.unit import Unit
 from piperabm.economy import GiniGenerator
@@ -85,7 +85,7 @@ class Add:
                 wealth_factor=wealth_factor
             )
 
-human_idle_fuel_rate = DeltaResource(
+human_idle_fuel_rate = Resource(
     {
         'food': Unit(2, 'kg/day').to_SI(),
         'water': Unit(4, 'kg/day').to_SI(),
