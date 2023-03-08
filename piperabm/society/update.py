@@ -16,7 +16,7 @@ class Update:
         for index in self.all_agents(type='active'):
             resource = self.agent_info(index, 'resource')
             idle_fuel_rate = self.agent_info(index, 'idle_fuel_rate')
-            new_resource, remaining = resource - (idle_fuel_rate * duration)
+            new_resource, remaining = resource - (idle_fuel_rate * duration.total_seconds())
             self.set_agent_info(index, 'resource', new_resource)
             if new_resource.has_zero():
                 self.set_agent_info(index, 'active', False) ## dead
