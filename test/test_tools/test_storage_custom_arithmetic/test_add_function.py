@@ -47,7 +47,7 @@ class TestAddFunction(unittest.TestCase):
             max_amount=10
         )
         self.assertEqual(result, None)
-        self.assertEqual(remaining, 0)
+        self.assertEqual(remaining, None)
 
     def test_4(self):
         """

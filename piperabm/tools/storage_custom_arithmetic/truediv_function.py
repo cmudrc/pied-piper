@@ -27,7 +27,18 @@ def truediv_function(current_amount: float, div_val: float, max_amount: float=No
             if new_current_amount < min_amount:
                 remaining = min_amount - new_current_amount
                 new_current_amount = min_amount
-
+    else:
+        if div_val is not None: #######
+            new_current_amount = None
+            remaining = 0
+            if max_amount is not None:
+                remaining = None
+                new_current_amount = max_amount
+        elif current_amount is not None:
+            new_current_amount = None
+            if max_amount is not None:
+                remaining = None
+                new_current_amount = max_amount
     return new_current_amount, remaining
 
 

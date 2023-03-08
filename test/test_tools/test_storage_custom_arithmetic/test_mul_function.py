@@ -37,8 +37,8 @@ class TestMulFunction(unittest.TestCase):
             mul_val=None,
             max_amount=10
         )
-        self.assertEqual(result, None)
-        self.assertEqual(remaining, 0)
+        self.assertEqual(result, 10)
+        self.assertEqual(remaining, None)
 
     def test_none_1(self):
         result, remaining = mul_function(

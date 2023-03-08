@@ -23,6 +23,13 @@ def add_function(amount: float, current_amount: float, max_amount: float=None):
             if new_current_amount > max_amount:
                 remaining = new_current_amount - max_amount
                 new_current_amount = deepcopy(max_amount)
+    else:
+        if amount is not None:
+            new_current_amount = None
+            remaining = 0
+        elif current_amount is not None:
+            new_current_amount = None
+            remaining = None
                 
     return new_current_amount, remaining
 
