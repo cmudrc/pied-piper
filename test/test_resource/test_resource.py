@@ -42,7 +42,7 @@ class TestResourceClass0(unittest.TestCase):
         r = deepcopy(self.r)
         self.assertTrue(r.has_zero())
 
-'''
+
 class TestResourceClass1(unittest.TestCase):
 
     def setUp(self):
@@ -170,6 +170,6 @@ class TestResourceClass2(unittest.TestCase):
         r = deepcopy(self.r)
         self.assertFalse(r.has_zero())
         
-'''
+
 if __name__ == "__main__":
     unittest.main()

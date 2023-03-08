@@ -1,6 +1,7 @@
 from copy import deepcopy
 
-from piperabm.tools.dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
+try: from dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
+except: from .dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
 try: from value import resource_value, total_resource_value
 except: from .value import resource_value, total_resource_value
 #from piperabm.tools.storage_custom_arithmetic import add_function, sub_function

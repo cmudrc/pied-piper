@@ -1,4 +1,5 @@
-from piperabm.tools.storage_custom_arithmetic import sub_function
+try: from storage_custom_arithmetic import sub_function
+except: from .storage_custom_arithmetic import sub_function
 try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 

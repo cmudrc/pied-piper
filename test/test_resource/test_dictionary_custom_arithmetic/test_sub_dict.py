@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.tools.dictionary_custom_arithmetic import dict_sub
+from piperabm.resource.dictionary_custom_arithmetic import dict_sub
 
 
 class TestSubDictFunction(unittest.TestCase):
