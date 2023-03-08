@@ -284,7 +284,7 @@ class TestResourceDivInt(unittest.TestCase):
     def test_r_current(self):
         r = self.r
         expected_result = self.expected_result
-        self.assertEqual(r, expected_result)
+        self.assertDictEqual(r.current_resource, expected_result.current_resource)
     
     def test_r_max(self):
         r = self.r
@@ -331,7 +331,7 @@ class TestResourceDiv(unittest.TestCase):
     def test_r_current(self):
         r = self.r
         expected_result = self.expected_result
-        self.assertEqual(r, expected_result)
+        self.assertDictEqual(r.current_resource, expected_result.current_resource)
     
     def test_r_max(self):
         r = self.r

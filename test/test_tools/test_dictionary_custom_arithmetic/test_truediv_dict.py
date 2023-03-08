@@ -30,6 +30,7 @@ class TestSubDictFunction(unittest.TestCase):
         }
         result = dict_truediv(main, other)
         expected_result = {
+            'a': None,
             'b': 1,
             'c': 0
         }

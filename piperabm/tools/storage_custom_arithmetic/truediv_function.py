@@ -1,12 +1,12 @@
-def mul_function(mul_val: float, current_amount: float, max_amount: float=None, min_amount: float=0):
+def truediv_function(current_amount: float, div_val: float, max_amount: float=None, min_amount: float=0):
     """
     Calculate the final amount when subtracting from the resource
     """
     remaining = 0
     new_current_amount = None
 
-    if mul_val is None: pass
-    elif mul_val < 0: raise ValueError
+    if div_val is None: pass
+    elif div_val < 0: raise ValueError
 
     if current_amount is None: pass
     elif current_amount < 0: raise ValueError
@@ -16,8 +16,8 @@ def mul_function(mul_val: float, current_amount: float, max_amount: float=None, 
 
     if min_amount < 0: raise ValueError
 
-    if mul_val is not None and current_amount is not None:
-        new_current_amount = current_amount * mul_val
+    if div_val is not None and current_amount is not None:
+        new_current_amount = current_amount / div_val
         remaining = 0
         if max_amount is not None:
             if new_current_amount > max_amount:
@@ -32,9 +32,9 @@ def mul_function(mul_val: float, current_amount: float, max_amount: float=None, 
 
 
 if __name__ == "__main__":
-    result, remaining = mul_function(
-        mul_val=None, 
+    result, remaining = truediv_function(
         current_amount=3,
+        div_val=3, 
         max_amount=5,
         min_amount=1
     )

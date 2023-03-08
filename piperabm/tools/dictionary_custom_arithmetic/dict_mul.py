@@ -38,5 +38,5 @@ if __name__ == "__main__":
     min = {'b': 1}
     max = {'b': 3}
     #result = dict_mul(main, other)
-    result = dict_mul(main, 0.2, max, min)
+    result = dict_mul(main, other, max, min)
     print(result)
