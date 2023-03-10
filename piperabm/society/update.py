@@ -31,11 +31,11 @@ class Update:
                 # decide
                 path_graph = self.env.to_path_graph(start_date, end_date)
                 decision = Decision(
-                    path_graph=path,
+                    path_graph=path_graph,
                     society=self,
                     agent=index
                 )
-                route = decision.select_best_route(index, start_date, end_date)
+                route = decision.select_best_route()
                 if route is not None:
                     path = path_graph.edge_info(*route, 'path')
                     move = Move(

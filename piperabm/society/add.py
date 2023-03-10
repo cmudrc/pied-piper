@@ -125,5 +125,3 @@ if __name__ == "__main__":
     result = resource_generator(2, average_resource)
     #result = average_resource * 2
     print(result)
-
-
