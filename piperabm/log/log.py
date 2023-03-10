@@ -4,14 +4,16 @@ class Log:
     """
     file_name = "log.txt"
 
-    def __init__(self):
-        pass
+    def __init__(self, prefix=''):
+        self.prefix = prefix
 
     def add(self, txt):
         """
         Add new data as text to log file
         """
         f = open(self.file_name, "a")
+        if self.prefix != '':
+            txt = '[' + self.prefix + ']' + ' ' + '->' + ' ' + txt
         f.write(txt+'\n')
         f.close()
 

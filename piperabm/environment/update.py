@@ -25,7 +25,7 @@ class Update:
                         coeff = length / self.links_unit_length
                 initiation_date = data['initiation_date']
                 if initiation_date < end_date:
-                    if initiation_date > start_date:
+                    if initiation_date >= start_date:
                         kwargs = {
                             'initiation_date': initiation_date,
                             'distribution': distribution,
@@ -33,7 +33,17 @@ class Update:
                             'end_date': end_date,
                             'coeff': coeff,
                         }
-                        self.log.message__element_initiated(xxx) ######
+                        log_kwargs = {
+                            "start_node_index": start,
+                            "start_node_type": self.node_info(start, 'type'),
+                            "end_node_index": end,
+                            "end_node_type": self.node_info(end, 'type'),
+                            "start_node_name": self.node_info(start, 'name'),
+                            "start_node_pos": self.node_info(start, 'pos'),
+                            "end_node_name": self.node_info(end, 'name'),
+                            "end_node_pos": self.node_info(end, 'pos'),
+                        }
+                        self.log.message__link_initiated(**log_kwargs)
                     else:
                         kwargs = {
                             'initiation_date': initiation_date,
@@ -47,12 +57,23 @@ class Update:
                     active = True
 
                 if active is False:
+                    log_kwargs = {
+                        "start_node_index": start,
+                        "start_node_type": self.node_info(start, 'type'),
+                        "end_node_index": end,
+                        "end_node_type": self.node_info(end, 'type'),
+                        "start_node_name": self.node_info(start, 'name'),
+                        "start_node_pos": self.node_info(start, 'pos'),
+                        "end_node_name": self.node_info(end, 'name'),
+                        "end_node_pos": self.node_info(end, 'pos'),
+                    }
+                    self.log.message__link_degraded(**log_kwargs)
                     data['active'] = False
-                    txt = str(start_date.strftime('%Y-%m-%d')) + \
-                        ' -> ' + str(end_date.strftime('%Y-%m-%d'))
-                    txt += ': link ' + str(start) + '-' + \
-                        str(end) + ' degradaded.'
-                    self.log.add(txt)
+                    #txt = str(start_date.strftime('%Y-%m-%d')) + \
+                    #    ' -> ' + str(end_date.strftime('%Y-%m-%d'))
+                    #txt += ': link ' + str(start) + '-' + \
+                    #    str(end) + ' degradaded.'
+                    #self.log.add(txt)
 
     def _update_all_nodes(self, start_date, end_date):
         """
@@ -66,13 +87,20 @@ class Update:
                 distribution = node['degradation_dist']
                 initiation_date = node['initiation_date']
                 if initiation_date < end_date:
-                    if initiation_date > start_date:
+                    if initiation_date >= start_date:
                         kwargs = {
                             'initiation_date': initiation_date,
                             'distribution': distribution,
                             'start_date': initiation_date,
                             'end_date': end_date,
                         }
+                        log_kwargs = {
+                            "node_index": index,
+                            "node_type": self.node_info(index, 'type'),
+                            "node_name": self.node_info(index, 'name'),
+                            "node_pos": self.node_info(index, 'pos'),
+                        }
+                        self.log.message__node_initiated(**log_kwargs)
                     else:
                         kwargs = {
                             'initiation_date': initiation_date,
@@ -85,6 +113,13 @@ class Update:
                     active = True
 
                 if active is False:
+                    log_kwargs = {
+                        "node_index": index,
+                        "node_type": self.node_info(index, 'type'),
+                        "node_name": self.node_info(index, 'name'),
+                        "node_pos": self.node_info(index, 'pos'),
+                    }
+                    self.log.message__node_degraded(**log_kwargs)
                     node['active'] = False
                     txt = str(start_date.strftime('%Y-%m-%d')) + \
                         ' -> ' + str(end_date.strftime('%Y-%m-%d'))

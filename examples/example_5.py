@@ -54,6 +54,6 @@ m = Model(
 )
 m.add_measures([Accessibility(), TravelLength()])
 print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
-m.run()
+m.run(2)
 print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
 #m.measures.show()

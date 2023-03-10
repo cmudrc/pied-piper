@@ -3,8 +3,8 @@ from piperabm.log import Log
 
 class Log(Log):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, prefix):
+        super().__init__(prefix)
     
     def message__link_initiated(
             self,
@@ -17,7 +17,7 @@ class Log(Log):
             end_node_name='',
             end_node_pos=None
         ):
-        txt = '>'
+        txt = 'INITIATED: '
         txt += edge_info(
                 start_node_index,
                 start_node_type,
@@ -28,7 +28,6 @@ class Log(Log):
                 end_node_name,
                 end_node_pos
             )
-        txt += ' ' + 'initiated.'
         self.add(txt)
 
     def message__link_degraded(
@@ -42,7 +41,7 @@ class Log(Log):
             end_node_name='',
             end_node_pos=None
         ):
-        txt = '>'
+        txt = 'DEGRADED: '
         txt += edge_info(
                 start_node_index,
                 start_node_type,
@@ -53,16 +52,15 @@ class Log(Log):
                 end_node_name,
                 end_node_pos
             )
-        txt += ' ' + 'degradaded.'
         self.add(txt)
 
     def message__node_initiated(self, node_index, node_type, node_name='', node_pos=None):
-        txt = '- INITIATED: '
+        txt = 'INITIATED: '
         txt += node_info(node_index, node_type, node_name, node_pos)
         self.add(txt)
 
     def message__node_degraded(self, node_index, node_type, node_name='', node_pos=None):
-        txt = '- DEGRADED: '
+        txt = 'DEGRADED: '
         txt += node_info(node_index, node_type, node_name, node_pos)
         self.add(txt)
     
@@ -79,7 +77,7 @@ def node_info(
         txt += '('
         if node_name != '':
             txt += 'name: '
-            txt += node_name
+            txt += '"' + node_name + '"'
         if node_name != '' and node_pos is not None:
             txt += ', '
         if node_pos is not None:

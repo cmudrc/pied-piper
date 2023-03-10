@@ -1,3 +1,9 @@
-##### Burnout #####
->>> DATE: [2020-01-01-2020-01-01], STEP: 0
->>> DATE: [2020-01-01-2020-01-01], STEP: 0
+[MODEL] -> {BURNOUT} DATE: [2020-01-01-2020-01-01], STEP: 0
+[MODEL] -> DATE: [2020-01-01-2020-01-01], STEP: 0
+[ENVIRONMENT] -> INITIATED: link from settlement node 0 (name: "Settlement 1", pos: [-60, 40]) to cross node 3 (pos: [0, 0])
+[ENVIRONMENT] -> INITIATED: link from settlement node 1 (name: "Settlement 2", pos: [200, 20]) to cross node 4 (pos: [80, 60])
+[ENVIRONMENT] -> INITIATED: link from settlement node 2 (name: "Settlement 3", pos: [100, -180]) to cross node 3 (pos: [0, 0])
+[ENVIRONMENT] -> INITIATED: link from cross node 3 (pos: [0, 0]) to cross node 4 (pos: [80, 60])
+[ENVIRONMENT] -> INITIATED: settlement node 1 (name: "Settlement 2", pos: [200, 20])
+[ENVIRONMENT] -> INITIATED: settlement node 2 (name: "Settlement 3", pos: [100, -180])
+[MODEL] -> DATE: [2020-01-01-2020-01-02], STEP: 1
