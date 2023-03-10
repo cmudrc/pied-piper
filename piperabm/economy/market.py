@@ -1,17 +1,15 @@
 from copy import deepcopy
 
-try:
-    from .pool import Pool, Bid
-except:
-    from pool import Pool, Bid
-try:
-    from .player import Player
-except:
-    from player import Player
-try:
-    from .exchange import Exchange
-except:
-    from exchange import Exchange
+from piperabm.log import Log
+
+try: from .pool import Pool, Bid
+except: from pool import Pool, Bid
+try: from .player import Player
+except: from player import Player
+try: from .exchange import Exchange
+except: from exchange import Exchange
+try: from .log import Log
+except: from .log import Log
 
 
 class Market:
@@ -19,6 +17,7 @@ class Market:
     def __init__(self, exchange):
         self.players = []
         self.exchange = exchange
+        self.log = Log()
 
     def add(self, players):
         if not isinstance(players, list):
@@ -104,13 +103,15 @@ class Market:
                     seller_score = others_demand * player_source
                     buyer_score = others_source * player_demand
                     if seller_score >= buyer_score:
-                        #mode = 'seller'
+                        mode = 'seller'
                         bid = Bid(agent=player.index, amount=player_source)
                         p.add_source(bid)
                     else:
-                        #mode = 'buyer'
+                        mode = 'buyer'
                         bid = Bid(agent=player.index, amount=player_demand)
                         p.add_demand(bid)
+                    txt = 'agent ' + str(player.index) + ' is a ' + mode
+                    self.log.add(txt)
                 pools[resource] = p
             return pools
 
@@ -134,10 +135,12 @@ class Market:
             for player in self.players:
                 bid, bid_type = p.find_bid(player.index)
                 delta_wallet = bid.delta_wallet(self.exchange.rate(resource, 'wealth'))
-                if bid_type == "source":
+                if bid_type == 'source':
+                    #mode = 'sold'
                     delta_wallet = -delta_wallet
                     player.new_source[resource] = bid.new_amount
                 else:
+                    #mode = 'baught'
                     player.new_demand[resource] = bid.new_amount
                 player.new_wallet = player.new_wallet + delta_wallet
                 #print(player.index, player.new_source[resource], player.new_demand[resource])

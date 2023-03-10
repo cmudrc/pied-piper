@@ -1,0 +1,39 @@
+##### Burnout #####
+>>> date: [2020-01-01 00:00:00-2020-01-01 00:00:00], step: 0
+>>> date: [2020-01-01 00:00:00-2020-01-01 12:00:00], step: 0
+agent 0 is a buyer
+agent 2 is a seller
+agent 3 is a buyer
+agent 0 is a buyer
+agent 2 is a seller
+agent 3 is a buyer
+agent 0 is a buyer
+agent 2 is a seller
+agent 3 is a buyer
+agent 0 is a buyer
+agent 2 is a seller
+agent 3 is a buyer
+agent 0 is a seller
+agent 2 is a buyer
+agent 3 is a seller
+agent 0 is a buyer
+agent 2 is a seller
+agent 3 is a buyer
+agent 0 is a buyer
+agent 2 is a seller
+agent 3 is a buyer
+agent 0 is a seller
+agent 2 is a buyer
+agent 3 is a seller
+agent 0 is a seller
+agent 2 is a buyer
+agent 3 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller
+agent 1 is a seller

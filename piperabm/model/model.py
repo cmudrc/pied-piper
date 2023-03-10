@@ -6,6 +6,8 @@ from piperabm.measure import Measures
 
 try: from .graphics import Graphics
 except: from graphics import Graphics
+try: from .log import Log
+except: from log import Log
 
 
 class Model(Graphics, Measures):
@@ -24,8 +26,7 @@ class Model(Graphics, Measures):
         else: raise ValueError
         if current_date is None: self.current_date = Date.today()
         else: self.current_date = current_date
-        log = Log()
-        log.reset()
+        self.log = Log()
         super().__init__()
 
     def add_step_size(self, step_size):
@@ -47,6 +48,7 @@ class Model(Graphics, Measures):
         """
         start_date = self.env.oldest_date()
         end_date = self.current_date
+        self.log.message__date_step(start_date, end_date, self.current_step, burnout=True)
         self.env.update_elements(start_date, end_date)
 
     def run_step(self):
@@ -55,9 +57,11 @@ class Model(Graphics, Measures):
         """
         #print(self.current_step, self.current_date)
         if self.current_step == 0:
+            self.log.reset()
             self.burnout()
         start_date = self.current_date
         end_date = start_date + self.step_size
+        self.log.message__date_step(start_date, end_date, self.current_step)
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
         #self.measure_add_data(self.society, start_date, end_date)
