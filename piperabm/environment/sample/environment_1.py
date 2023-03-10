@@ -20,10 +20,10 @@ env.add_settlement(
     pos=[100, -180],
     boundary=Circular(radius=5)
 )
-env.add_market(
-    name="Market",
-    pos=[70, -30]
-)
+#env.add_market(
+#    name="Market",
+#    pos=[70, -30]
+#)
 
 env.add_link(
     start="Settlement 1",
@@ -34,7 +34,7 @@ env.add_link(
 env.add_link(start=[0.5, 0.5], end=[80, 60])
 env.add_link(start=[80, 60], end=[200, 20])
 env.add_link(start=[0, 0], end="Settlement 3")
-env.add_link(start=[0, 0], end="Market")
+#env.add_link(start=[0, 0], end="Market")
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ class Decision:
         """
         A list of possible routes in path graph
         """
-        settlement_index = self.agent_info(self.agent, 'settlement')
+        settlement_index = self.society.agent_info(self.agent, 'settlement')
         return self.path_graph.from_node_perspective(settlement_index)
     
     def select_best_route(self):
@@ -55,3 +55,23 @@ class Decision:
             market_factor,
             fuel_factor
         )
+
+
+if __name__ == "__main__":
+    from piperabm.society.sample import soc_1 as soc
+    from piperabm.unit import Date, DT
+    
+    agents = soc.all_agents()
+    agent = agents[0]
+    start_date = Date.today() + DT(days=1)
+    end_date = start_date + DT(days=1)
+    path_graph = soc.env.to_path_graph(start_date, end_date)
+    #path_graph.show()
+    decision = Decision(path_graph, soc, agent)
+    possible_routes = decision.possible_routes()
+    print(possible_routes)
+    route = possible_routes[0]
+    score = decision.calculate_route_score(route)
+    print(score)
+    best_route = decision.select_best_route()
+    print(best_route)

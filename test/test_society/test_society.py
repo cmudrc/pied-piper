@@ -3,10 +3,12 @@ from copy import deepcopy
 
 from piperabm import Environment
 from piperabm import Society
+from piperabm.economy import Exchange
+from piperabm.resource import Resource
 from piperabm.unit import Date, DT
 
 
-class TestAddFunction(unittest.TestCase):
+class TestSocietyClass(unittest.TestCase):
 
     def setUp(self):
         env = Environment(links_unit_length=10)
@@ -18,8 +20,26 @@ class TestAddFunction(unittest.TestCase):
         env.add_link(start=[80, 60], end=[200, 20])
         env.add_link(start=[0, 0], end="Settlement 3")
 
-        soc = Society(env)
-        soc.add_agents(5)
+        gini = 0.3
+        average_income = 1000
+        exchange_rate = Exchange()
+        exchange_rate.add('food', 'wealth', 10)
+        exchange_rate.add('water', 'wealth', 2)
+        exchange_rate.add('energy', 'wealth', 4)
+        self.soc = Society(env, gini=gini, average_income=average_income, exchange_rate=exchange_rate)
+        average_resource = Resource(
+            current_resource={
+                'food': 20,
+                'water': 40,
+                'energy': 60,
+            },
+            max_resource={
+                'food': 100,
+                'water': 200,
+                'energy': 300,
+            }
+        )
+        self.soc.add_agents(n=5, average_resource=average_resource)
 
     def test_show_env(self):
         soc = deepcopy(self.soc)
@@ -83,26 +103,6 @@ class TestAddFunction(unittest.TestCase):
         soc = deepcopy(self.soc)
         agents = soc.all_agents()
         soc.all_demand_from(agents)
-
-    def test_possible_routes(self):
-        soc = deepcopy(self.soc)
-        agents = soc.all_agents()
-        start_date = Date.today() + DT(days=1)
-        end_date = start_date + DT(days=1)
-        routes = soc.possible_routes(agents[0], start_date, end_date)
-        for i, _ in enumerate(routes):
-            if i > 0:
-                start_0 = routes[0][0]
-                start_other = routes[i][0]
-                self.assertEqual(start_0, start_other)
-
-    def test_select_best_route(self):
-        soc = deepcopy(self.soc)
-        agents = soc.all_agents()
-        start_date = Date.today() + DT(days=1)
-        end_date = start_date + DT(days=1)
-        route = soc.select_best_route(agents[0], start_date, end_date)
-        self.assertEqual(len(route), 2)
 
 
 if __name__ == "__main__":

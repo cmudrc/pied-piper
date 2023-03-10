@@ -9,6 +9,7 @@ def calculate_market_factor(society, agent, route):
         return participants
 
     participants = market_participants(society, destination=route[1])
+    print(participants)##########
 
     def calculate_source_factor(society, agent):
         result = None
@@ -40,8 +41,8 @@ def calculate_market_factor(society, agent, route):
         result = demand_others / demand_agent
         return result
     
-    source_factor = calculate_source_factor(agent, destination=route[1])
-    demand_factor = calculate_demand_factor(agent, destination=route[1])
+    source_factor = calculate_source_factor(society, agent)
+    demand_factor = calculate_demand_factor(society, agent)
     buyer_factor = source_factor / demand_factor
     seller_factor = demand_factor / source_factor
     return max(buyer_factor, seller_factor)

@@ -15,11 +15,9 @@ try: from .graphics import Graphics
 except: from graphics import Graphics
 try: from .update import Update
 except: from update import Update
-try: from .decision import Decision
-except: from decision import Decision
 
 
-class Society(Add, Index, Graphics, Update, Search, Decision):
+class Society(Add, Index, Graphics, Update, Search):
 
     def __init__(self, env: Environment, gini, average_income, exchange_rate):
         self.env = env

@@ -2,6 +2,9 @@ from piperabm.unit import Date
 from piperabm.economy import Market, Player
 from piperabm.actions import Trade, Move, Walk
 
+try: from .decision import Decision
+except: from decision import Decision
+
 
 class Update:
 
@@ -27,7 +30,12 @@ class Update:
             if queue.is_empty() is True:
                 # decide
                 path_graph = self.env.to_path_graph(start_date, end_date)
-                route = self.select_best_route(index, start_date, end_date)
+                decision = Decision(
+                    path_graph=path,
+                    society=self,
+                    agent=index
+                )
+                route = decision.select_best_route(index, start_date, end_date)
                 if route is not None:
                     path = path_graph.edge_info(*route, 'path')
                     move = Move(
