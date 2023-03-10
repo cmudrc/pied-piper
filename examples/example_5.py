@@ -50,7 +50,7 @@ soc.add_agents(n=5, average_resource=average_resource)
 m = Model(
     society=soc,
     step_size=DT(hours=12),
-    current_date=Date(2020, 1, 1)
+    current_date=Date(2020, 1, 1)+DT(hours=3)
 )
 m.add_measures([Accessibility(), TravelLength()])
 print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))

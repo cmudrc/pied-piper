@@ -17,7 +17,7 @@ class Market:
     def __init__(self, exchange):
         self.players = []
         self.exchange = exchange
-        self.log = Log(prefix='MARKET')
+        self.log = Log(prefix='ECONOMY')
 
     def add(self, players):
         if not isinstance(players, list):

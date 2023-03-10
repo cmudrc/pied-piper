@@ -15,6 +15,8 @@ try: from .graphics import Graphics
 except: from graphics import Graphics
 try: from .update import Update
 except: from update import Update
+try: from .log import Log
+except: from log import Log
 
 
 class Society(Add, Index, Graphics, Update, Search):
@@ -25,6 +27,7 @@ class Society(Add, Index, Graphics, Update, Search):
         self.average_income = average_income
         self.exchange = exchange_rate
         self.G = nx.Graph()
+        self.log = Log(prefix='SOCIETY')
         super().__init__()
 
     def __str__(self):
