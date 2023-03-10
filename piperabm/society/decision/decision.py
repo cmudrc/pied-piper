@@ -47,6 +47,7 @@ class Decision:
             route=route
         )
         fuel_factor = calculate_fuel_factor(
+            society=self.society,
             path_graph=self.path_graph,
             agent=self.agent,
             route=route

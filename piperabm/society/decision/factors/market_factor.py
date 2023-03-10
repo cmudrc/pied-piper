@@ -25,8 +25,6 @@ def calculate_market_factor(society, agent, route):
         source_others = resource_sum(others_source_list)
         agent_resource = society.agent_info(agent, 'resource')
         source_agent = agent_resource.source()
-        print(source_agent)
-        print(source_others)
         result = source_others / source_agent
         return result
     
