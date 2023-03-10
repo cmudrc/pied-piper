@@ -3,33 +3,41 @@ from copy import deepcopy
 
 def calculate_market_factor(society, agent, route):
 
-    def market_participants(society, destination): #### active
+    def trade_participants(society, target): #### active
         #agents_list = society.all_agents(type='active')
-        participants = society.all_agents_available(settlement=destination)
+        participants = society.all_agents_available(settlement=target)
         return participants
 
-    participants = market_participants(society, destination=route[1])
-    print(participants)##########
+    participants = trade_participants(society, target=route[1])
+    #print(participants)##########
 
     def calculate_source_factor(society, agent):
         result = None
         others = deepcopy(participants)
-        others.remove(agent)
+        if agent in others: others.remove(agent)
         others_source_list = []
         for other in others:
             resource = society.agent_info(other, 'resource')
             source = resource.source()
             others_source_list.append(source)
-        source_others = sum(others_source_list)
+        source_others = None
+        for i in range(len(others_source_list)):
+            if i > 0:
+                if i == 1:
+                    source_others, _ = others_source_list[i] - others_source_list[i-1]
+                else:
+                    source_others, _ = source_others + others_source_list[i]
         agent_resource = society.agent_info(agent, 'resource')
         source_agent = agent_resource.source()
+        print(source_agent)
+        print(source_others)
         result = source_others / source_agent
         return result
     
     def calculate_demand_factor(society, agent):
         result = None
         others = deepcopy(participants)
-        others.remove(agent)
+        if agent in others: others.remove(agent)
         others_demand_list = []
         for other in others:
             resource = society.agent_info(other, 'resource')
@@ -49,11 +57,19 @@ def calculate_market_factor(society, agent, route):
 
 
 if __name__ == "__main__":
-    #from piperabm.society.sample import soc_1 as soc
-    from piperabm.unit import Date
+    from piperabm.society.sample import soc_1 as soc
+    from piperabm.unit import Date, DT
 
-    #path_graph = soc.env.to_path_graph(start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 5))
-    agent = 1
-    #path_graph.agent_info(agent, 'settlement')
+    agents = soc.all_agents()
+    agent = agents[0]
+    start_date = Date.today() + DT(days=1)
+    end_date = start_date + DT(days=1)
+    path_graph = soc.env.to_path_graph(start_date, end_date)
+    #path_graph.show()
     route = (0, 1)
-    #calculate_market_factor(soc, path_graph, agent, route)
+    factor = calculate_market_factor(
+        society=soc,
+        agent=agent,
+        route=route
+    )
+    print(factor)

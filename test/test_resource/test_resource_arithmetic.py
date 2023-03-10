@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import Resource
+from piperabm.resource import Resource, resource_sum
 
 
 class TestResourceAdd(unittest.TestCase):
@@ -85,6 +85,16 @@ class TestResourceAdd(unittest.TestCase):
         expected_result = self.expected_dr
         self.assertDictEqual(dr.min_resource, expected_result.min_resource)
 
+    def test_sum(self):
+        resource_list = [self.r, self.dr]
+        result = resource_sum(resource_list)
+        expected_result = {
+            'food': 11,
+            'water': 14,
+            'energy': 0
+        }
+        self.assertDictEqual(result.current_resource, expected_result)
+        
 
 class TestResourceSub(unittest.TestCase):
 
