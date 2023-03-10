@@ -7,16 +7,24 @@ def calculate_fuel_factor(society, path_graph, agent, route):
     path = path_graph.edge_info(route[0], route[1], 'path')
     fuel = path.total_fuel(transportation)
     result = fuel / resource
-    print(result)
-    return result
+    return result(result.max())
 
 
 if __name__ == "__main__":
-    #from piperabm.society.sample import soc_1 as soc
-    from piperabm.unit import Date
+    from piperabm.society.sample import soc_1 as soc
+    from piperabm.unit import Date, DT
 
-    #path_graph = soc.env.to_path_graph(start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 5))
-    agent = 1
-    #path_graph.agent_info(agent, 'settlement')
+    agents = soc.all_agents()
+    agent = agents[0]
+    start_date = Date.today() + DT(days=1)
+    end_date = start_date + DT(days=1)
+    path_graph = soc.env.to_path_graph(start_date, end_date)
+    #path_graph.show()
     route = (0, 1)
-    #calculate_fuel_factor(soc, path_graph, agent, route)
+    factor = calculate_fuel_factor(
+        society=soc,
+        path_graph=path_graph,
+        agent=agent,
+        route=route
+    )
+    print(factor)
