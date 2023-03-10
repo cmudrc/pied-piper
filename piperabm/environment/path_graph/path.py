@@ -42,6 +42,10 @@ class Path:
             duration += track.duration(transportation)
         return duration
     
+    def total_fuel(self, transportation):
+        adjusted_length = self.adjusted_length()
+        return transportation.how_much_fuel(adjusted_length)
+    
     def travel_length(self, delta_time, transportation):
         return self.adjusted_length() * self.progress(delta_time, transportation)
 

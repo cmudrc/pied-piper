@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-try: from dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
-except: from .dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys
+try: from dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys, dict_max, dict_min
+except: from .dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys, dict_max, dict_min
 try: from value import resource_value, total_resource_value
 except: from .value import resource_value, total_resource_value
 #from piperabm.tools.storage_custom_arithmetic import add_function, sub_function
@@ -93,6 +93,12 @@ class Resource:
         Amount of a certain resource
         """
         return self.current_resource[name]
+    
+    def max(self):
+        return dict_max(self.current_resource)
+
+    def min(self):
+        return dict_min(self.current_resource)
 
     def __str__(self):
         return str(self.current_resource)
