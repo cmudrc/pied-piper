@@ -53,5 +53,7 @@ m = Model(
     current_date=Date(2020, 1, 1)
 )
 m.add_measures([Accessibility(), TravelLength()])
+print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
 m.run()
-m.measures.show()
+print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
+#m.measures.show()

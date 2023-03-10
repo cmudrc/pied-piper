@@ -116,14 +116,16 @@ class Market:
 
         def sort_pools(pools):
             pools_score = {}
+            result = None
             for resource_name in pools:
                 pool = pools[resource_name]
                 size_source, size_demand = pool.size()
                 pools_score[resource_name] = size_source + size_demand
                 sorted_pools = sorted(pools_score.items(), key=lambda x:x[1], reverse=True)
                 sorted_pools = list(list(zip(*sorted_pools))[0])
+                result = sorted_pools
             #print(pools_score)
-            return sorted_pools
+            return result
         
         def solve_single(pools, resource):
             p = pools[resource]
@@ -155,9 +157,11 @@ class Market:
 
         def solve_step():
             pools = create_pools()
+            #print(len(pools))
             sorted_pools = sort_pools(pools)
-            resource = sorted_pools[0]
-            solve_single(pools, resource)
+            if sorted_pools is not None:
+                resource = sorted_pools[0]
+                solve_single(pools, resource)
             return pools
 
         #previous_pools = solve_step()

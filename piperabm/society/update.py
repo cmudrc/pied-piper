@@ -84,7 +84,7 @@ class Update:
                 source = resource.source()
                 demand = resource.demand()
                 wallet = self.agent_info(player_index, 'wealth')
-                player = Player(player_index, source, demand, wallet)
+                player = Player(player_index, source.current_resource, demand.current_resource, wallet)
                 players_list.append(player)
             market.add(players_list)
             markets[index] = market

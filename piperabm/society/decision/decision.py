@@ -63,7 +63,7 @@ if __name__ == "__main__":
     from piperabm.unit import Date, DT
     
     agents = soc.all_agents()
-    agent = agents[0]
+    agent = agents[1]
     start_date = Date.today() + DT(days=1)
     end_date = start_date + DT(days=1)
     path_graph = soc.env.to_path_graph(start_date, end_date)

@@ -60,7 +60,7 @@ class Model(Graphics, Measures):
         end_date = start_date + self.step_size
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
-        self.plugins_add_data(self.society, start_date, end_date)
+        #self.measure_add_data(self.society, start_date, end_date)
         self.current_date = end_date
         self.current_step += 1
 
