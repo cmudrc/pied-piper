@@ -4,8 +4,6 @@ from piperabm.degradation import ProgressiveDegradation
 from piperabm.degradation import SuddenDegradation
 from piperabm.unit import DT, Date
 
-from piperabm.log import Log
-
 try: from .search import Search
 except: from search import Search
 try: from .add import Add
@@ -22,6 +20,8 @@ try: from .path_graph import PathGraph
 except: from path_graph import PathGraph
 try: from .link_graph import LinkGraph
 except: from link_graph import LinkGraph
+try: from .log import Log
+except: from log import Log
 
 
 class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Query, Graphics, Update):

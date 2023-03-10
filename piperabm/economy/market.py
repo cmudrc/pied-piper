@@ -110,8 +110,8 @@ class Market:
                         mode = 'buyer'
                         bid = Bid(agent=player.index, amount=player_demand)
                         p.add_demand(bid)
-                    txt = 'agent ' + str(player.index) + ' is a ' + mode
-                    self.log.add(txt)
+                    #txt = 'agent ' + str(player.index) + ' is a ' + mode
+                    #self.log.add(txt)
                 pools[resource] = p
             return pools
 

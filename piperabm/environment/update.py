@@ -33,6 +33,7 @@ class Update:
                             'end_date': end_date,
                             'coeff': coeff,
                         }
+                        self.log.message__element_initiated(xxx) ######
                     else:
                         kwargs = {
                             'initiation_date': initiation_date,

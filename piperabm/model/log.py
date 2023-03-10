@@ -11,7 +11,12 @@ class Log(Log):
             txt = '##### Burnout #####' + '\n'
         else:
             txt = ''
-        txt += '>>> date: [' + str(start_date) + '-' + str(end_date) + ']'
+        txt += '>>> date: '
+        txt += '['
+        txt += str(start_date.strftime('%Y-%m-%d'))
+        txt += '-'
+        txt += str(end_date.strftime('%Y-%m-%d'))
+        txt += ']'
         txt += ', '
         txt += 'step: ' + str(current_step)
         self.add(txt)
