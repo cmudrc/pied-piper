@@ -23,6 +23,13 @@ class Update:
             self.set_agent_info(index, 'resource', new_resource)
             if new_resource.has_zero():
                 self.set_agent_info(index, 'active', False) ## dead
+                ''' log '''
+                msg = self.log.message__agent_died(
+                    agent_index=index,
+                    agent_name='',
+                    agent_pos=None
+                )
+                #print(msg)
         ## calculate new position
         ## reduce movement energy expenditure     
         for index in self.all_agents(type='active'):

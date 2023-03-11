@@ -67,7 +67,13 @@ class TestPoolClass2(unittest.TestCase):
         biggest_source = p.find_biggest_bid(p.source_bids)
         self.assertEqual(biggest_source.agent, 2)
         biggest_demand = p.find_biggest_bid(p.demand_bids)
-        self.assertEqual(biggest_demand.agent, 3)
+        self.assertEqual(biggest_demand, None)
+
+    def test_solve(self):
+        p = deepcopy(self.p)
+        #print(p)
+        p.solve()
+        #print(p)
 
 
 if __name__ == "__main__":

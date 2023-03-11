@@ -41,7 +41,7 @@ class Log:
         result = None
         f = open(self.file_name, "r")
         result = f.read()
-        f.close
+        f.close()
         return result
     
     def header(self):

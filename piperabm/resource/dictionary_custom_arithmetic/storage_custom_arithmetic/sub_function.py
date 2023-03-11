@@ -30,5 +30,9 @@ def sub_function(amount: float, current_amount: float, min_amount: float=0):
 
 
 if __name__ == "__main__":
-    result, remaining = sub_function(6, 5, 1)
+    result, remaining = sub_function(
+        amount=6,
+        current_amount=5,
+        min_amount=1
+    )
     print(result, remaining)

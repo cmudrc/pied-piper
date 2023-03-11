@@ -35,5 +35,9 @@ def add_function(amount: float, current_amount: float, max_amount: float=None):
 
 
 if __name__ == "__main__":
-    result, remaining = add_function(5, 6, 10)
+    result, remaining = add_function(
+        amount=5,
+        current_amount=6,
+        max_amount=10
+    )
     print(result, remaining)
