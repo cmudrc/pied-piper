@@ -1,3 +1,7 @@
+try: from .header import create_header
+except: from header import create_header
+
+
 class Log:
     """
     Log important events
@@ -26,6 +30,8 @@ class Log:
         Reset the log file
         """
         f = open(self.file_name, "w")
+        header = self.header()
+        f.write(header+'\n')
         f.close()
 
     def show(self):
@@ -37,6 +43,12 @@ class Log:
         result = f.read()
         f.close
         return result
+    
+    def header(self):
+        """
+        Log header
+        """
+        return create_header()
 
     def __str__(self):
         return self.show()
