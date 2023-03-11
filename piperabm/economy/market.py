@@ -29,7 +29,7 @@ class Market(Solver):
 
     def size(self):
         """
-        Calculate the economy total value
+        Calculate the market total value
         """
         result = 0
         for player in self.players:
@@ -81,13 +81,11 @@ class Market(Solver):
                 if name not in result: result.append(name)
         return result
                 
-
     def __str__(self):
         txt = ''
         for player in self.players:
             txt += player.__str__() + '\n'
         return txt
-
 
 
 if __name__ == "__main__":

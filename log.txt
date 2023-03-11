@@ -8,3 +8,7 @@
 [POOL] -> from: agent 2, to: agent 1, amount: 6
 [POOL] -> from: agent 2, to: agent 3, amount: 2
 [MARKET] -> POOL COMPLETED (resource: food, total_volume: 8)
+[POOL] -> from: agent 2, to: agent 1, amount: 5
+[POOL] -> from: agent 2, to: agent 3, amount: 2
+[POOL] -> from: agent 2, to: agent 1, amount: 5
+[POOL] -> from: agent 2, to: agent 3, amount: 2

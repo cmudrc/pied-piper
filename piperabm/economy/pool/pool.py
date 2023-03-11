@@ -16,6 +16,9 @@ class Pool(Solver):
         super().__init__()
 
     def all_participants(self):
+        """
+        Return all participants in the pool
+        """
         sellers = []
         buyers = []
         for bid in self.source_bids:
@@ -25,12 +28,18 @@ class Pool(Solver):
         return sellers, buyers
 
     def add_source(self, bids):
+        """
+        Add new bids to the source bids
+        """
         if not isinstance(bids, list):
             bids = [bids]
         for bid in bids:
             self.source_bids.append(bid)
 
     def add_demand(self, bid):
+        """
+        Add new bids to the demand bids
+        """
         if isinstance(bid, list):
             for item in bid:
                 self.demand_bids.append(item)
@@ -66,6 +75,9 @@ class Pool(Solver):
         return result
 
     def find_bid(self, agent):
+        """
+        Find the proposed bid by *agent*
+        """
         result = None
         bid_type = None
         bid = self._find_source_bid(agent)
@@ -79,6 +91,9 @@ class Pool(Solver):
         return result, bid_type
 
     def find_biggest_bid(self, bids):
+        """
+        Find the biggest bid between *bids*
+        """
         result = None
         for bid in bids:
             #print(bid)
@@ -114,7 +129,6 @@ class Pool(Solver):
 
 
 if __name__ == "__main__":
-    '''
     b1 = Bid(1, 5)
     b2 = Bid(2, 8)
     b3 = Bid(3, 2)
@@ -123,24 +137,9 @@ if __name__ == "__main__":
     p = Pool()
     p.add_source([b2, b4])
     p.add_demand([b1, b3])
-    #print("_________ initial __________ \n", p)
+    print("_________ initial __________")
+    print(p)
     p.solve()
-    print("__________ final ___________ \n", p)
-    '''
-    
-    b1 = Bid(1, 5)
-    b2 = Bid(2, 8)
-    b3 = Bid(3, 2)
-    b4 = Bid(4, 1)
-
-    p = Pool()
-    p.add_source([b1, b2])
-    p.add_demand([b3, b4])
-    #print("_________ initial __________ \n", p)
-    print(p.size())
-    p.solve()
-    #print("__________ final ___________ \n", p)
-    
-
-    
+    print("__________ final ___________")
+    print(p)
     
