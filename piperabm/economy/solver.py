@@ -27,15 +27,11 @@ class Solver:
                     seller_score = others_demand * player_source
                     buyer_score = others_source * player_demand
                     if seller_score >= buyer_score:
-                        mode = 'seller'
                         bid = Bid(agent=player.index, amount=player_source)
                         p.add_source(bid)
                     else:
-                        mode = 'buyer'
                         bid = Bid(agent=player.index, amount=player_demand)
                         p.add_demand(bid)
-                    #txt = 'agent ' + str(player.index) + ' is a ' + mode
-                    #self.log.add(txt)
                 pools[resource] = p
             return pools
 
@@ -55,11 +51,13 @@ class Solver:
         def solve_single(pools, resource):
             pool = pools[resource]
             sellers, buyers = pool.all_participants()
+            ''' log '''
             stat = {
                 'sellers': sellers,
                 'buyers': buyers
             }
-            self.log.message__pool_started(resource, stat)
+            msg = self.log.message__pool_started(resource, stat)
+            #print(msg)
             stat = pool.solve()
             #print(pool)
             for player in self.players:
@@ -72,7 +70,9 @@ class Solver:
                     player.new_demand[resource] = bid.new_amount
                 player.new_wallet = player.new_wallet + delta_wallet
                 #print(player.index, player.new_source[resource], player.new_demand[resource])
-            self.log.message__pool_complete(resource, stat)
+            ''' log '''
+            msg = self.log.message__pool_complete(resource, stat)
+            #print(msg)
 
         #for resource in sorted_pools:
         #    solve_single(pools, resource)

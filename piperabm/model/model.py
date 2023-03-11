@@ -48,7 +48,9 @@ class Model(Graphics, Measures):
         """
         start_date = self.env.oldest_date()
         end_date = self.current_date
-        self.log.message__date_step(start_date, end_date, self.current_step, burnout=True)
+        ''' log '''
+        msg = self.log.message__burnout(start_date, end_date)
+        #print(msg)
         self.env.update_elements(start_date, end_date)
 
     def run_step(self):
@@ -61,7 +63,9 @@ class Model(Graphics, Measures):
             self.burnout()
         start_date = self.current_date
         end_date = start_date + self.step_size
-        self.log.message__date_step(start_date, end_date, self.current_step)
+        ''' log '''
+        msg = self.log.message__date_step(start_date, end_date, self.current_step)
+        #print(msg)
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
         #self.measure_add_data(self.society, start_date, end_date)

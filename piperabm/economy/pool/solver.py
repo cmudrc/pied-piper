@@ -23,7 +23,7 @@ class Solver:
                     to_agent_index=biggest_demand_bid.agent,
                     amount=volume
                 )
-                # print(msg)
+                #print(msg)
         else:
             volume = 0
         return volume

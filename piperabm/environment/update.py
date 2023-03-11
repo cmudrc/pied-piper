@@ -43,7 +43,9 @@ class Update:
                             "end_node_name": self.node_info(end, 'name'),
                             "end_node_pos": self.node_info(end, 'pos'),
                         }
-                        self.log.message__link_initiated(**log_kwargs)
+                        ''' log '''
+                        msg = self.log.message__link_initiated(**log_kwargs)
+                        #print(msg)
                     else:
                         kwargs = {
                             'initiation_date': initiation_date,
@@ -57,6 +59,8 @@ class Update:
                     active = True
 
                 if active is False:
+                    data['active'] = False
+                    ''' log '''
                     log_kwargs = {
                         "start_node_index": start,
                         "start_node_type": self.node_info(start, 'type'),
@@ -67,13 +71,8 @@ class Update:
                         "end_node_name": self.node_info(end, 'name'),
                         "end_node_pos": self.node_info(end, 'pos'),
                     }
-                    self.log.message__link_degraded(**log_kwargs)
-                    data['active'] = False
-                    #txt = str(start_date.strftime('%Y-%m-%d')) + \
-                    #    ' -> ' + str(end_date.strftime('%Y-%m-%d'))
-                    #txt += ': link ' + str(start) + '-' + \
-                    #    str(end) + ' degradaded.'
-                    #self.log.add(txt)
+                    msg = self.log.message__link_degraded(**log_kwargs)
+                    #print(msg)
 
     def _update_all_nodes(self, start_date, end_date):
         """
@@ -100,7 +99,9 @@ class Update:
                             "node_name": self.node_info(index, 'name'),
                             "node_pos": self.node_info(index, 'pos'),
                         }
-                        self.log.message__node_initiated(**log_kwargs)
+                        ''' log '''
+                        msg = self.log.message__node_initiated(**log_kwargs)
+                        #print(msg)
                     else:
                         kwargs = {
                             'initiation_date': initiation_date,
@@ -113,18 +114,16 @@ class Update:
                     active = True
 
                 if active is False:
+                    node['active'] = False
+                    ''' log '''
                     log_kwargs = {
                         "node_index": index,
                         "node_type": self.node_info(index, 'type'),
                         "node_name": self.node_info(index, 'name'),
                         "node_pos": self.node_info(index, 'pos'),
                     }
-                    self.log.message__node_degraded(**log_kwargs)
-                    node['active'] = False
-                    txt = str(start_date.strftime('%Y-%m-%d')) + \
-                        ' -> ' + str(end_date.strftime('%Y-%m-%d'))
-                    txt += ': node ' + str(index) + ' degradaded.'
-                    self.log.add(txt)
+                    msg = self.log.message__node_degraded(**log_kwargs)
+                    #print(msg)
 
     def update_elements(self, start_date, end_date):
         """

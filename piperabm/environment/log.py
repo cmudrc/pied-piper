@@ -29,6 +29,7 @@ class Log(Log):
                 end_node_pos
             )
         self.add(txt)
+        return txt
 
     def message__link_degraded(
             self,
@@ -53,13 +54,16 @@ class Log(Log):
                 end_node_pos
             )
         self.add(txt)
+        return txt
 
     def message__node_initiated(self, node_index, node_type, node_name='', node_pos=None):
         txt = 'INITIATED: '
         txt += node_info(node_index, node_type, node_name, node_pos)
         self.add(txt)
+        return txt
 
     def message__node_degraded(self, node_index, node_type, node_name='', node_pos=None):
         txt = 'DEGRADED: '
         txt += node_info(node_index, node_type, node_name, node_pos)
         self.add(txt)
+        return txt
