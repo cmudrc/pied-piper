@@ -71,10 +71,10 @@ def node_info(
         node_name='',
         node_pos=None
     ):
-    txt = node_type + ' ' + 'node' + ' ' + str(node_index) + ' '
+    txt = node_type + ' ' + 'node' + ' ' + str(node_index)
     if node_name != '' or node_pos is not None:
         # extra node info
-        txt += '('
+        txt +=  ' ' + '('
         if node_name != '':
             txt += 'name: '
             txt += '"' + node_name + '"'
