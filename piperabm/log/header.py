@@ -23,7 +23,7 @@ def create_header():
         info = 'indentation shows child-parent relationship'
         add(name, info)
         name = 'WHERE_IT_COMES_FROM'
-        info = 'the class that has produced the prompt'
+        info = 'the class that the prompt is originated'
         add(name, info)
         name = 'PROMPT'
         info = 'the event that happened'
