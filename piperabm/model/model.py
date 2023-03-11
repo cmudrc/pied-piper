@@ -26,7 +26,7 @@ class Model(Graphics, Measures):
         else: raise ValueError
         if current_date is None: self.current_date = Date.today()
         else: self.current_date = current_date
-        self.log = Log(prefix='MODEL')
+        self.log = Log(prefix='MODEL', indentation_depth=0)
         super().__init__()
 
     def add_step_size(self, step_size):

@@ -38,7 +38,7 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         if G is None: self.G = nx.Graph()
         else: self.G = G
         self.links_unit_length = links_unit_length
-        self.log = Log(prefix='ENVIRONMENT')
+        self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
         super().__init__()
 
     def adjusted_length(self, start_node, end_node):

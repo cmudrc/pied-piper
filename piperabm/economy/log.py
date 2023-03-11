@@ -3,8 +3,8 @@ from piperabm.log import Log
 
 class Log(Log):
     
-    def __init__(self, prefix):
-        super().__init__(prefix)
+    def __init__(self, prefix, indentation_depth):
+        super().__init__(prefix, indentation_depth)
     
     def message__market_complete(self) -> str:
         txt = 'COMPLETED'

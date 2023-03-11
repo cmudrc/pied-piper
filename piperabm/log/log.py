@@ -4,8 +4,9 @@ class Log:
     """
     file_name = "log.txt"
 
-    def __init__(self, prefix=''):
+    def __init__(self, prefix='', indentation_depth=0):
         self.prefix = prefix
+        self.indentation_depth = indentation_depth
 
     def add(self, txt):
         """
@@ -14,6 +15,9 @@ class Log:
         f = open(self.file_name, "a")
         if self.prefix != '':
             txt = '[' + self.prefix + ']' + ' ' + '->' + ' ' + txt
+        if self.indentation_depth > 0:
+            for _ in range(self.indentation_depth):
+                txt = '\t' + txt
         f.write(txt+'\n')
         f.close()
 

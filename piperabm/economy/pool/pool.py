@@ -17,7 +17,7 @@ class Pool(Solver, Query):
         self.source_bids = []
         self.demand_bids = []
         self.total_volume = 0
-        self.log = Log(prefix="POOL")
+        self.log = Log(prefix="POOL", indentation_depth=3)
         super().__init__()
 
     def all_participants(self):

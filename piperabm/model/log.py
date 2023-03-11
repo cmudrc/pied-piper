@@ -3,9 +3,9 @@ from piperabm.log import Log
 
 class Log(Log):
     
-    def __init__(self, prefix):
+    def __init__(self, prefix, indentation_depth):
         #format_YMD = date.strftime('%Y-%m-%d')
-        super().__init__(prefix)
+        super().__init__(prefix, indentation_depth)
     
     def message__date_step(self, start_date, end_date, current_step, burnout=False):
         if burnout is True:

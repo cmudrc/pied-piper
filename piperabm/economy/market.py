@@ -13,7 +13,7 @@ class Market(Solver):
     def __init__(self, exchange):
         self.players = []
         self.exchange = exchange
-        self.log = Log(prefix='MARKET')
+        self.log = Log(prefix='MARKET', indentation_depth=2)
         super().__init__()
 
     def add(self, players):
