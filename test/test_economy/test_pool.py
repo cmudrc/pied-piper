@@ -30,7 +30,7 @@ class TestPoolClass(unittest.TestCase):
         bid, type = p.find_bid(agent_index)
         self.assertEqual(type, 'source')
         self.assertEqual(bid.agent, agent_index)
-
+    
     def test_solve_step(self):
         p = deepcopy(self.p)
         #print(p)
@@ -40,7 +40,7 @@ class TestPoolClass(unittest.TestCase):
         self.assertEqual(biggest_source.agent, 2)
         biggest_demand = p.find_biggest_bid(p.demand_bids)
         self.assertEqual(biggest_demand.agent, 3)
-
+    
     def test_solve(self):
         p = deepcopy(self.p)
         #print(p)

@@ -39,27 +39,31 @@ class Pool:
         if biggest_source_bid is not None and biggest_demand_bid is not None:
             diff = biggest_source_bid.new_amount - biggest_demand_bid.new_amount
             volume = min([biggest_source_bid.new_amount, biggest_demand_bid.new_amount])
-            if diff >= 0:
-                biggest_source_bid.new_amount = diff
-                biggest_demand_bid.new_amount = 0
-            else:
-                biggest_source_bid.new_amount = 0
-                biggest_demand_bid.new_amount = -diff
-            ## log
-            msg = self.log.message__transaction(
-                from_agent_index=biggest_source_bid.agent,
-                to_agent_index=biggest_demand_bid.agent,
-                amount=volume
-            )
-            #print(msg)
+            if volume > 0:
+                if diff >= 0:
+                    biggest_source_bid.new_amount = diff
+                    biggest_demand_bid.new_amount = 0
+                else:
+                    biggest_source_bid.new_amount = 0
+                    biggest_demand_bid.new_amount = -diff
+                ## log
+                msg = self.log.message__transaction(
+                    from_agent_index=biggest_source_bid.agent,
+                    to_agent_index=biggest_demand_bid.agent,
+                    amount=volume
+                )
+                #print(msg)
         else:
             volume = 0
         return volume
 
     def solve(self):
+        self.log.message__pool_started()
         volume = None
         while volume is None or volume != 0:
             volume = self.solve_step()
+        else:
+            self.log.message__pool_complete()
 
     def _find_source_bid(self, agent):
         result = None
@@ -123,7 +127,7 @@ class Pool:
             for bid in self.demand_bids:
                 txt_demand += bid.__str__() + '\n'
         return txt_source + '\n' + txt_demand
-
+    
     def __eq__(self, other):
         result = True
         for bid_s in self.source_bids:

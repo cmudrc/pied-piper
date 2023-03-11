@@ -49,24 +49,28 @@ class Market:
             result = sum(ls)
         return result
     
-    def total_actual_demand(self, resource=None):
+    def total_actual_demand(self, resource_name=None):
         result = None
-        if resource is None:
+        if resource_name is None:
             pass
         else:
-            ls = []
+            demand_list = []
             for player in self.players:
-                demand = player.actual_demand(self.exchange)[resource]
-                ls.append(demand)
-            result = sum(ls)
+                demand = player.actual_demand(self.exchange)[resource_name]
+                demand_list.append(demand)
+            result = sum(demand_list)
         return result
 
-    def total_source(self, resource=None):
-        ls = []
-        for player in self.players:
-            source = player.new_source[resource]
-            ls.append(source)
-        result = sum(ls)
+    def total_source(self, resource_name=None):
+        result = None
+        if resource_name is None:
+            pass
+        else:
+            source_list = []
+            for player in self.players:
+                source = player.new_source[resource_name]
+                source_list.append(source)
+            result = sum(source_list)
         return result
 
     def all_resources(self):

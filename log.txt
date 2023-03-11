@@ -1,9 +1,4 @@
-[POOL] -> from: agent 2, to: agent 3, amount: 6
-[POOL] -> from: agent 2, to: agent 4, amount: 5
-[POOL] -> from: agent 1, to: agent 3, amount: 5
+[POOL] -> STARTED
 [POOL] -> from: agent 2, to: agent 3, amount: 2
 [POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 2, to: agent 3, amount: 2
-[POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> from: agent 1, to: agent 3, amount: 0
+[POOL] -> COMPLETED
