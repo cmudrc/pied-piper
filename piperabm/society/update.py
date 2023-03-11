@@ -46,6 +46,14 @@ class Update:
                     queue.add(move)
                     trade = Trade(start_date=start_date)
                     queue.add(trade)
+                    ''' log '''
+                    msg = self.log.message__agent_decided(
+                        route=route,
+                        agent_index=index,
+                        agent_name=self.agent_info(index, 'name'),
+                        agent_pos=self.agent_info(index, 'pos')
+                    )
+                    #print(msg)
             if queue.is_empty() is False:
                 actions = queue.find_actions(type='move')
                 move = actions[0]

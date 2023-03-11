@@ -27,7 +27,7 @@ class Society(Add, Index, Graphics, Update, Search):
         self.average_income = average_income
         self.exchange = exchange_rate
         self.G = nx.Graph()
-        self.log = Log(prefix='SOCIETY')
+        self.log = Log(prefix='SOCIETY', indentation_depth=1)
         super().__init__()
 
     def __str__(self):

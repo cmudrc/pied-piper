@@ -14,11 +14,12 @@ class Log(Log):
             from_agent_name='',
             to_agent_name=''
         ):
-        txt = "from: " + agent_info(
+        txt = 'TRANSACTION' + ':' + ' '
+        txt += 'from: ' + agent_info(
             agent_index=from_agent_index,
             agent_name=from_agent_name
         )
-        txt += ", to: " + agent_info(
+        txt += ', to: ' + agent_info(
             agent_index=to_agent_index,
             agent_name=to_agent_name
         )

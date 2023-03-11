@@ -18,35 +18,37 @@ class Log(Log):
     
     def message__pool_started(self, resource_name: str, stat: dict={}) -> str:
         txt = 'POOL STARTED'
+        txt += ':'
         txt += ' '
-        txt += '('
-        txt += 'resource' + ':' + ' '
         txt += resource_name
-        if 'sellers' in stat:
-            txt += ',' + ' '
-            txt += 'sellers'
-            txt += ':' + ' '
-            txt += str(stat['sellers'])
-        if 'buyers' in stat:
-            txt += ',' + ' '
-            txt += 'buyers'
-            txt += ':' + ' '
-            txt += str(stat['buyers'])
-        txt += ')'
+        if len(stat) > 0:
+            txt += ' '
+            txt += '('
+            if 'sellers' in stat:
+                txt += 'sellers'
+                txt += ':' + ' '
+                txt += str(stat['sellers'])
+            if 'buyers' in stat:
+                txt += ',' + ' '
+                txt += 'buyers'
+                txt += ':' + ' '
+                txt += str(stat['buyers'])
+            txt += ')'
         self.add(txt)
         return txt
     
     def message__pool_complete(self, resource_name: str, stat: dict={}) -> str:
         txt = 'POOL COMPLETED'
+        txt += ':'
         txt += ' '
-        txt += '('
-        txt += 'resource' + ':' + ' '
         txt += resource_name
-        if 'total_volume' in stat:
-            txt += ',' + ' '
-            txt += 'total_volume'
-            txt += ':' + ' '
-            txt += str(stat['total_volume'])
-        txt += ')'
+        if len(stat) > 0:
+            txt += ' '
+            txt += '('
+            if 'total_volume' in stat:
+                txt += 'total_volume'
+                txt += ':' + ' '
+                txt += str(stat['total_volume'])
+            txt += ')'
         self.add(txt)
         return txt
