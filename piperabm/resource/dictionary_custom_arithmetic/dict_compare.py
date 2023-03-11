@@ -37,6 +37,13 @@ def compare_keys(main: dict, other: dict):
                 uncommon_keys['other'].append(key)
     return shared_keys, uncommon_keys
 
+def compare_keys_new(main: dict, other: dict): #####
+    shared_keys = []
+    uncommon_keys = {'main': [], 'other': []}
+    #zeros_index = find_zeros_index(main, other)
+    # compare
+    return shared_keys, uncommon_keys
+
 def compare_common_vals(main: dict, other: dict):
     shared_keys, uncommon_keys = compare_keys(main, other)
     result_list = []

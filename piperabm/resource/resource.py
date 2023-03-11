@@ -20,6 +20,7 @@ class Resource:
     def refine_inputs(self, current_resource, max_resource, min_resource):
         shared_cmax, uncommon_cmax = compare_keys(current_resource, max_resource)
         shared_cmin, uncommon_cmin = compare_keys(current_resource, min_resource)
+
         for key in current_resource:
             if key in uncommon_cmax['main']:
                 max_resource[key] = None
@@ -41,6 +42,16 @@ class Resource:
         Amount of a certain resource
         """
         return self.current_resource[name]
+    
+    def amount_name(self, amount: float):
+        """
+        Name of the resource having the exact *amount*
+        """
+        for resource_name, resource_amount in self.current_resource.items():
+            if resource_amount == amount:
+                result = resource_name
+                break
+        return result
     
     def all_resource_names(self):
         return self.current_resource.keys()

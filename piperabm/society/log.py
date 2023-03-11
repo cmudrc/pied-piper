@@ -6,9 +6,15 @@ class Log(Log):
     def __init__(self, prefix, indentation_depth):
         super().__init__(prefix, indentation_depth)
     
-    def message__agent_died(self, agent_index, agent_name='', agent_pos=None):
+    def message__agent_died(self, agent_index, agent_name='', agent_pos=None, deficient_resource=None):
         txt = 'DIED' + ':' + ' '
         txt += agent_info(agent_index, agent_name, agent_pos)
+        if deficient_resource is not None:
+            txt += ' ' + '('
+            txt += 'reason'
+            txt += ':' + ' '
+            txt += deficient_resource
+            txt += ')'
         self.add(txt)
         return txt
 

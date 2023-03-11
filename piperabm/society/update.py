@@ -22,12 +22,14 @@ class Update:
             new_resource, remaining = resource - (idle_fuel_rate * duration.total_seconds())
             self.set_agent_info(index, 'resource', new_resource)
             if new_resource.has_zero():
+                deficient_resource = new_resource.amount_name(amount=0)
                 self.set_agent_info(index, 'active', False) ## dead
                 ''' log '''
                 msg = self.log.message__agent_died(
                     agent_index=index,
                     agent_name='',
-                    agent_pos=None
+                    agent_pos=None,
+                    deficient_resource=deficient_resource
                 )
                 #print(msg)
         ## calculate new position
