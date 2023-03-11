@@ -1,12 +1,17 @@
 try: from .bid import Bid
 except: from bid import Bid
+try: from .query import Query
+except: from query import Query
 try: from .solver import Solver
 except: from solver import Solver
 try: from .log import Log
 except: from log import Log
 
 
-class Pool(Solver):
+class Pool(Solver, Query):
+    """
+    Solve pool as a single-resource allocation problem
+    """
 
     def __init__(self):
         self.source_bids = []
@@ -46,14 +51,6 @@ class Pool(Solver):
         else:
             self.demand_bids.append(bid)
 
-    def _find_source_bid(self, agent):
-        result = None
-        for bid in self.source_bids:
-            if bid.agent == agent:
-                result = bid
-                break
-        return result
-
     def size(self):
         """
         Calculate total source and totam demand values within the pool
@@ -65,44 +62,6 @@ class Pool(Solver):
         for bid in self.demand_bids:
             size_demand += bid.new_amount
         return size_source, size_demand
-
-    def _find_demand_bid(self, agent):
-        result = None
-        for bid in self.demand_bids:
-            if bid.agent == agent:
-                result = bid
-                break
-        return result
-
-    def find_bid(self, agent):
-        """
-        Find the proposed bid by *agent*
-        """
-        result = None
-        bid_type = None
-        bid = self._find_source_bid(agent)
-        if bid is not None:
-            result = bid
-            bid_type = "source"
-        bid = self._find_demand_bid(agent)
-        if bid is not None:
-            result = bid
-            bid_type = "demand"
-        return result, bid_type
-
-    def find_biggest_bid(self, bids):
-        """
-        Find the biggest bid between *bids*
-        """
-        result = None
-        for bid in bids:
-            #print(bid)
-            if result is None:
-                result = bid
-            else:
-                if bid.new_amount > result.new_amount:
-                    result = bid
-        return result
 
     def __str__(self):
         txt_source = '## sources: \n'
