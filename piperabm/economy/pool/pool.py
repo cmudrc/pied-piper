@@ -49,12 +49,11 @@ class Pool:
             msg = self.log.message__transaction(
                 from_agent_index=biggest_source_bid.agent,
                 to_agent_index=biggest_demand_bid.agent,
-                amount=abs(diff)
+                amount=volume
             )
             #print(msg)
         else:
             volume = 0
-        
         return volume
 
     def solve(self):

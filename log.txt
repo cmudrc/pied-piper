@@ -1,55 +1,9 @@
-[MODEL] -> {BURNOUT} DATE: [2020-01-01 00:00:00 - 2020-01-01 03:00:00], STEP: 0
-[ENVIRONMENT] -> INITIATED: link from settlement node 0 (name: "Settlement 1", pos: [-60, 40]) to cross node 3 (pos: [0, 0])
-[ENVIRONMENT] -> INITIATED: link from settlement node 1 (name: "Settlement 2", pos: [200, 20]) to cross node 4 (pos: [80, 60])
-[ENVIRONMENT] -> INITIATED: link from settlement node 2 (name: "Settlement 3", pos: [100, -180]) to cross node 3 (pos: [0, 0])
-[ENVIRONMENT] -> INITIATED: link from cross node 3 (pos: [0, 0]) to cross node 4 (pos: [80, 60])
-[ENVIRONMENT] -> INITIATED: settlement node 1 (name: "Settlement 2", pos: [200, 20])
-[ENVIRONMENT] -> INITIATED: settlement node 2 (name: "Settlement 3", pos: [100, -180])
-[MODEL] -> DATE: [2020-01-01 03:00:00 - 2020-01-01 15:00:00], STEP: 0
-[POOL] -> from: agent 4, to: agent 0, amount: 142.15359662064196
-[POOL] -> from: agent 4, to: agent 1, amount: 0
-[POOL] -> from: agent 4, to: agent 1, amount: 92.76546104951362
-[POOL] -> from: agent 4, to: agent 0, amount: 0
-[POOL] -> from: agent 0, to: agent 4, amount: 58.10457156718466
-[POOL] -> from: agent 1, to: agent 4, amount: 33.497077814241464
-[POOL] -> from: agent 0, to: agent 4, amount: 0
-[MODEL] -> DATE: [2020-01-01 15:00:00 - 2020-01-02 03:00:00], STEP: 1
-[ENVIRONMENT] -> INITIATED: settlement node 0 (name: "Settlement 1", pos: [-60, 40])
-[POOL] -> from: agent 1, to: agent 2, amount: 8
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 1, to: agent 2, amount: 8
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 2, to: agent 3, amount: 2
-[POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 2, to: agent 3, amount: 2
-[POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 2, to: agent 3, amount: 2
-[POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 2, to: agent 3, amount: 2
-[POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> from: agent 1, to: agent 3, amount: 0
-[POOL] -> from: agent 2, to: agent 3, amount: 6
 [POOL] -> from: agent 2, to: agent 3, amount: 6
 [POOL] -> from: agent 2, to: agent 4, amount: 5
 [POOL] -> from: agent 1, to: agent 3, amount: 5
-[POOL] -> from: agent 2, to: agent 3, amount: 6
-[POOL] -> from: agent 2, to: agent 4, amount: 5
-[POOL] -> from: agent 1, to: agent 3, amount: 5
-[POOL] -> from: agent 2, to: agent 1, amount: 3
-[POOL] -> from: agent 2, to: agent 3, amount: 1
-[POOL] -> from: agent 2, to: agent 1, amount: 1
-[POOL] -> from: agent 2, to: agent 1, amount: 3
-[POOL] -> from: agent 2, to: agent 1, amount: 3
-[POOL] -> from: agent 2, to: agent 3, amount: 1
-[POOL] -> from: agent 2, to: agent 1, amount: 1
-[POOL] -> from: agent 2, to: agent 1, amount: 3
-[POOL] -> from: agent 2, to: agent 1, amount: 3
-[POOL] -> from: agent 2, to: agent 3, amount: 1
-[POOL] -> from: agent 2, to: agent 1, amount: 1
-[POOL] -> from: agent 2, to: agent 1, amount: 3
-[POOL] -> from: agent 2, to: agent 3, amount: 6
-[POOL] -> from: agent 2, to: agent 4, amount: 5
-[POOL] -> from: agent 1, to: agent 3, amount: 5
+[POOL] -> from: agent 2, to: agent 3, amount: 2
+[POOL] -> from: agent 2, to: agent 4, amount: 1
+[POOL] -> from: agent 1, to: agent 3, amount: 0
+[POOL] -> from: agent 2, to: agent 3, amount: 2
+[POOL] -> from: agent 2, to: agent 4, amount: 1
+[POOL] -> from: agent 1, to: agent 3, amount: 0
