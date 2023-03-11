@@ -6,21 +6,23 @@ from piperabm.economy import Pool, Bid
 
 class TestPoolClass(unittest.TestCase):
 
-    b1 = Bid(1, 5)
-    b2 = Bid(2, 8)
-    b3 = Bid(3, 2)
-    b4 = Bid(4, 1)
+    def setUp(self):
+        b1 = Bid(1, 5)
+        b2 = Bid(2, 8)
+        b3 = Bid(3, 2)
+        b4 = Bid(4, 1)
 
-    p = Pool()
-    p.add_source([b2, b4])
-    p.add_demand([b1, b3])
+        p = Pool()
+        p.add_source([b2, b4])
+        p.add_demand([b1, b3])
+        self.p = p
 
     def test_find_biggest(self):
         p = deepcopy(self.p)
-        biggest_source = p.find_biggest(p.source_bids)
-        self.assertEqual(biggest_source.agent, 2)
-        biggest_demand = p.find_biggest(p.demand_bids)
-        self.assertEqual(biggest_demand.agent, 1)
+        biggest_source_bid = p.find_biggest_bid(p.source_bids)
+        self.assertEqual(biggest_source_bid.agent, 2)
+        biggest_demand_bid = p.find_biggest_bid(p.demand_bids)
+        self.assertEqual(biggest_demand_bid.agent, 1)
 
     def test_find(self):
         p = deepcopy(self.p)
@@ -34,9 +36,9 @@ class TestPoolClass(unittest.TestCase):
         #print(p)
         p.solve_step()
         #print(p)
-        biggest_source = p.find_biggest(p.source_bids)
+        biggest_source = p.find_biggest_bid(p.source_bids)
         self.assertEqual(biggest_source.agent, 2)
-        biggest_demand = p.find_biggest(p.demand_bids)
+        biggest_demand = p.find_biggest_bid(p.demand_bids)
         self.assertEqual(biggest_demand.agent, 3)
 
     def test_solve(self):

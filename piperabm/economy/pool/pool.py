@@ -1,4 +1,7 @@
-from copy import deepcopy
+try: from .bid import Bid
+except: from bid import Bid
+try: from .log import Log
+except: from log import Log
 
 
 class Pool:
@@ -6,6 +9,16 @@ class Pool:
     def __init__(self):
         self.source_bids = []
         self.demand_bids = []
+        self.log = Log(prefix="POOL")
+
+    def all_participants(self):
+        sellers = []
+        buyers = []
+        for bid in self.source_bids:
+            sellers.append(bid.agent)
+        for bid in self.demand_bids:
+            buyers.append(bid.agent)
+        return sellers, buyers
 
     def add_source(self, bids):
         if not isinstance(bids, list):
@@ -21,22 +34,24 @@ class Pool:
             self.demand_bids.append(bid)
 
     def solve_step(self):
-        biggest_source = self.find_biggest(self.source_bids)
-        biggest_demand = self.find_biggest(self.demand_bids)
-        #print(biggest_source, biggest_demand)
-        if biggest_source is not None and biggest_demand is not None:
-            diff = biggest_source.new_amount - biggest_demand.new_amount
-            volume = min([biggest_source.new_amount, biggest_demand.new_amount])
-            if diff > 0:
-                biggest_source.new_amount = diff
-                biggest_demand.new_amount = 0
+        biggest_source_bid = self.find_biggest_bid(self.source_bids)
+        biggest_demand_bid = self.find_biggest_bid(self.demand_bids)
+        if biggest_source_bid is not None and biggest_demand_bid is not None:
+            diff = biggest_source_bid.new_amount - biggest_demand_bid.new_amount
+            volume = min([biggest_source_bid.new_amount, biggest_demand_bid.new_amount])
+            if diff >= 0:
+                biggest_source_bid.new_amount = diff
+                biggest_demand_bid.new_amount = 0
             else:
-                biggest_source.new_amount = 0
-                biggest_demand.new_amount = -diff
-            log_txt = "from: " + str(biggest_source.agent)
-            log_txt += ", to: " + str(biggest_demand.agent)
-            log_txt += ", amount: " + str(volume)
-            #print(log_txt)
+                biggest_source_bid.new_amount = 0
+                biggest_demand_bid.new_amount = -diff
+            ## log
+            msg = self.log.message__transaction(
+                from_agent_index=biggest_source_bid.agent,
+                to_agent_index=biggest_demand_bid.agent,
+                amount=abs(diff)
+            )
+            #print(msg)
         else:
             volume = 0
         
@@ -88,7 +103,7 @@ class Pool:
             bid_type = "demand"
         return result, bid_type
 
-    def find_biggest(self, bids):
+    def find_biggest_bid(self, bids):
         result = None
         for bid in bids:
             #print(bid)
@@ -123,26 +138,6 @@ class Pool:
         return result
 
 
-class Bid:
-
-    def __init__(self, agent: int, amount: float):
-        self.agent = agent
-        self.amount = amount
-        self.new_amount = deepcopy(amount)
-
-    def delta_wallet(self, exchange_rate):
-        return (self.new_amount - self.amount) * exchange_rate
-
-    def __str__(self):
-        txt = '>>> agent: ' + str(self.agent) + ' amount: ' + str(self.amount) + ' new_amount: ' + str(self.new_amount)
-        return txt
-
-    def __eq__(self, other):
-        result = False
-        if self.agent == other.agent and self.new_amount == other.new_amount:
-            result = True
-        return result
-
 if __name__ == "__main__":
     '''
     b1 = Bid(1, 5)
@@ -164,11 +159,12 @@ if __name__ == "__main__":
     b4 = Bid(4, 1)
 
     p = Pool()
-    p.add_source([Bid(1, 8)])
-    p.add_demand([Bid(2, 8), Bid(3, 5)])
+    p.add_source([b1, b2])
+    p.add_demand([b3, b4])
     #print("_________ initial __________ \n", p)
+    print(p.size())
     p.solve()
-    print("__________ final ___________ \n", p)
+    #print("__________ final ___________ \n", p)
     
 
     

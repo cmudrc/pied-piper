@@ -1,4 +1,4 @@
-from piperabm.log import Log
+from piperabm.log import Log, agent_info
 
 
 class Log(Log):
@@ -6,6 +6,6 @@ class Log(Log):
     def __init__(self, prefix):
         super().__init__(prefix)
     
-    def message__xxx(self):
+    def message__transaction(self):
         txt = ''
-        self.add(txt)
+        return txt

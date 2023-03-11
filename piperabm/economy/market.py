@@ -1,6 +1,4 @@
-from copy import deepcopy
-
-from piperabm.log import Log
+#from copy import deepcopy
 
 try: from .pool import Pool, Bid
 except: from pool import Pool, Bid
@@ -17,7 +15,7 @@ class Market:
     def __init__(self, exchange):
         self.players = []
         self.exchange = exchange
-        self.log = Log(prefix='ECONOMY')
+        self.log = Log(prefix='MARKET')
 
     def add(self, players):
         if not isinstance(players, list):
