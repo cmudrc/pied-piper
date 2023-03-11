@@ -1,4 +1,10 @@
-[POOL] -> STARTED
+[MARKET] -> POOL STARTED (resource: water, sellers: [1, 2], buyers: [3])
+[POOL] -> from: agent 2, to: agent 3, amount: 5
+[MARKET] -> POOL COMPLETED (resource: water, total_volume: 5)
+[MARKET] -> POOL STARTED (resource: food, sellers: [1], buyers: [2, 3])
+[POOL] -> from: agent 1, to: agent 2, amount: 8
+[MARKET] -> POOL COMPLETED (resource: food, total_volume: 8)
+[MARKET] -> POOL STARTED (resource: food, sellers: [2], buyers: [1, 3])
+[POOL] -> from: agent 2, to: agent 1, amount: 6
 [POOL] -> from: agent 2, to: agent 3, amount: 2
-[POOL] -> from: agent 2, to: agent 4, amount: 1
-[POOL] -> COMPLETED
+[MARKET] -> POOL COMPLETED (resource: food, total_volume: 8)
