@@ -10,10 +10,10 @@ class TestElementExistsClass_0(unittest.TestCase):
         item: [start--end]
         timeline: --|start----end|--
     """
-    ee = ElementExists()
-
-    time_start = Date(2020, 1, 3)
-    time_end = Date(2020, 1, 6)
+    def setUp(self):
+        self.ee = ElementExists()
+        self.time_start = Date(2020, 1, 3)
+        self.time_end = Date(2020, 1, 6)
 
     def test_0(self):
         """

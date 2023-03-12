@@ -91,7 +91,6 @@ class TestResourceAdd(unittest.TestCase):
         expected_result = {
             'food': 11,
             'water': 14,
-            'energy': 0
         }
         self.assertDictEqual(result.current_resource, expected_result)
         

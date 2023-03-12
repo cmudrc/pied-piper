@@ -18,6 +18,12 @@ class Resource:
         )
 
     def refine_inputs(self, current_resource, max_resource, min_resource):
+        for key in current_resource:
+            if key not in max_resource:
+                max_resource[key] = None
+            if key not in min_resource:
+                min_resource[key] = 0
+        '''
         shared_cmax, uncommon_cmax = compare_keys(current_resource, max_resource)
         shared_cmin, uncommon_cmin = compare_keys(current_resource, min_resource)
 
@@ -26,6 +32,7 @@ class Resource:
                 max_resource[key] = None
             if key in uncommon_cmin['main']:
                 min_resource[key] = 0
+        '''
         return current_resource, max_resource, min_resource
     
     def resource_exists(self, name: str):
@@ -132,7 +139,7 @@ class Resource:
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
             remaining = Resource(remaining_dict, other.max_resource, other.min_resource)
-        return result, remaining
+        return deepcopy(result), deepcopy(remaining)
     
     def __sub__(self, other):
         result, remaining = None, None
@@ -144,7 +151,7 @@ class Resource:
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
             remaining = Resource(remaining_dict, other.max_resource, other.min_resource)
-        return result, remaining
+        return deepcopy(result), deepcopy(remaining)
     
     def __mul__(self, other):
         result = None
@@ -162,7 +169,7 @@ class Resource:
                 max=self.max_resource
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
-        return result
+        return deepcopy(result)
     
     def __truediv__(self, other):
         result = None
@@ -180,7 +187,7 @@ class Resource:
                 max=self.max_resource
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
-        return result
+        return deepcopy(result)
 
 
 if __name__ == "__main__":

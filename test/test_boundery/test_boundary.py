@@ -6,8 +6,10 @@ from piperabm.boundary import Circular, Point
 
 class TestCircularClass(unittest.TestCase):
     
-    boundary = Circular(radius=2)
-    boundary.center = [10, 10]
+    def setUp(self):
+        boundary = Circular(radius=2)
+        boundary.center = [10, 10]
+        self.boundary = boundary
 
     def test_circular_boundary_in(self):
         boundary = deepcopy(self.boundary)

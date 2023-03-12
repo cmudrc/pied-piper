@@ -34,7 +34,7 @@ class TestCompareKeysFunction(unittest.TestCase):
             'c': 0
         }
         shared_keys, uncommon_keys = compare_keys(main, other)
-        expected_result = ['a', 'b']
+        expected_result = ['a', 'b', 'c']
         self.assertListEqual(shared_keys, expected_result)
         expected_result = []
         self.assertListEqual(uncommon_keys['main'], expected_result)
@@ -52,7 +52,7 @@ class TestCompareKeysFunction(unittest.TestCase):
             'c': 0
         }
         shared_keys, uncommon_keys = compare_keys(main, other)
-        expected_result = ['b']
+        expected_result = ['b', 'c']
         self.assertListEqual(shared_keys, expected_result)
         expected_result = []
         self.assertListEqual(uncommon_keys['main'], expected_result)
@@ -69,9 +69,9 @@ class TestCompareKeysFunction(unittest.TestCase):
             'a': 3,
         }
         shared_keys, uncommon_keys = compare_keys(main, other)
-        expected_result = ['a']
+        expected_result = ['a', 'c']
         self.assertListEqual(shared_keys, expected_result)
-        expected_result = ['b', 'c']
+        expected_result = ['b']
         self.assertListEqual(uncommon_keys['main'], expected_result)
         expected_result = []
         self.assertListEqual(uncommon_keys['other'], expected_result)

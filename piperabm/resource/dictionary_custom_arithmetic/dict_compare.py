@@ -25,7 +25,8 @@ def compare_keys(main: dict, other: dict):
     # compare
     for key in main:
         if key in other:
-            if key not in shared_keys and key not in zeros_index:
+            #if key not in shared_keys and key not in zeros_index:
+            if key not in shared_keys:
                 shared_keys.append(key)
     for key in main:
         if key not in other:
@@ -35,13 +36,6 @@ def compare_keys(main: dict, other: dict):
         if key not in main:
             if key not in uncommon_keys['other']:
                 uncommon_keys['other'].append(key)
-    return shared_keys, uncommon_keys
-
-def compare_keys_new(main: dict, other: dict): #####
-    shared_keys = []
-    uncommon_keys = {'main': [], 'other': []}
-    #zeros_index = find_zeros_index(main, other)
-    # compare
     return shared_keys, uncommon_keys
 
 def compare_common_vals(main: dict, other: dict):

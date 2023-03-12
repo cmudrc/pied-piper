@@ -6,18 +6,20 @@ from piperabm.economy import Player
 
 class TestEconomyClass(unittest.TestCase):
 
-    p = Player(
-        1,
-        source={
-            'food': 4,
-            'water': 5,
-        },
-        demand={
-            'food': 6,
-            'water': 5,
-        },
-        wallet=10
-    )
+    def setUp(self):
+        p = Player(
+            1,
+            source={
+                'food': 4,
+                'water': 5,
+            },
+            demand={
+                'food': 6,
+                'water': 5,
+            },
+            wallet=10
+        )
+        self.p = p
 
     def test_delta_0(self):
         p = deepcopy(self.p)

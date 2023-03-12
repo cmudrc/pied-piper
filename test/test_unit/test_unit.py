@@ -4,6 +4,7 @@ from piperabm.unit import Unit, Date
 
 
 class TestUnitClass(unittest.TestCase):
+    
     def test_conversion(self):
         v = Unit(2, 'km/hour')
         v_new = v.to('m/minute')

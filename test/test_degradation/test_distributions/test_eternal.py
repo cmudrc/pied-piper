@@ -6,12 +6,14 @@ from piperabm.unit import DT
 
 class TestEternalClass(unittest.TestCase):
 
-    d = Eternal()
+    def setUp(self):
+        dist = Eternal()
+        self.dist = dist
 
     def test_eternal_distribution(self):
         time_start = DT(days=0).total_seconds()
         time_end = DT(days=70).total_seconds()
-        p = self.d.probability(
+        p = self.dist.probability(
             time_start=time_start,
             time_end=time_end
         )
