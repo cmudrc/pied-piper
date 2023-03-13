@@ -13,3 +13,34 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 
 
+[MODEL] -> BURNOUT: [2020-01-01 00:00:00 - 2020-01-01 03:00:00]
+	[ENVIRONMENT] -> INITIATED: link from settlement node 0 (name: "Settlement 1", pos: [-60, 40]) to cross node 3 (pos: [0, 0])
+	[ENVIRONMENT] -> INITIATED: link from settlement node 1 (name: "Settlement 2", pos: [200, 20]) to cross node 4 (pos: [80, 60])
+	[ENVIRONMENT] -> INITIATED: link from settlement node 2 (name: "Settlement 3", pos: [100, -180]) to cross node 3 (pos: [0, 0])
+	[ENVIRONMENT] -> INITIATED: link from cross node 3 (pos: [0, 0]) to cross node 4 (pos: [80, 60])
+	[ENVIRONMENT] -> INITIATED: settlement node 1 (name: "Settlement 2", pos: [200, 20])
+	[ENVIRONMENT] -> INITIATED: settlement node 2 (name: "Settlement 3", pos: [100, -180])
+[MODEL] -> STEP: 0, [2020-01-01 03:00:00 - 2020-01-01 15:00:00]
+	[SOCIETY] -> DECIDED: agent 0 (pos: [100, -180]) will go from 2 to 1
+	[SOCIETY] -> DECIDED: agent 1 (pos: [200, 20]) will go from 1 to 2
+	[SOCIETY] -> DECIDED: agent 3 (pos: [200, 20]) will go from 1 to 2
+	[SOCIETY] -> DECIDED: agent 4 (pos: [100, -180]) will go from 2 to 1
+		[MARKET] -> POOL STARTED: water (sellers: [0], buyers: [4])
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 4, amount: 39.226491886632246
+		[MARKET] -> POOL COMPLETED: water (total_volume: 39.226491886632246)
+		[MARKET] -> POOL STARTED: water (sellers: [4], buyers: [0])
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 0, amount: 6.623742960193938
+		[MARKET] -> POOL COMPLETED: water (total_volume: 6.623742960193938)
+		[MARKET] -> POOL STARTED: energy (sellers: [0], buyers: [4])
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 4, amount: 53.92091452776015
+		[MARKET] -> POOL COMPLETED: energy (total_volume: 53.92091452776015)
+		[MARKET] -> POOL STARTED: water (sellers: [3], buyers: [1])
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 1, amount: 32.651543319964446
+		[MARKET] -> POOL COMPLETED: water (total_volume: 32.651543319964446)
+		[MARKET] -> POOL STARTED: water (sellers: [1], buyers: [3])
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 3, amount: 19.245553669205904
+		[MARKET] -> POOL COMPLETED: water (total_volume: 19.245553669205904)
+		[MARKET] -> POOL STARTED: energy (sellers: [1, 3], buyers: [])
+		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
+[MODEL] -> STEP: 1, [2020-01-01 15:00:00 - 2020-01-02 03:00:00]
+	[ENVIRONMENT] -> INITIATED: settlement node 0 (name: "Settlement 1", pos: [-60, 40])

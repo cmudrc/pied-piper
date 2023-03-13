@@ -39,7 +39,12 @@ class Decision:
             """
             Calculate the score based on the factors
             """
-            return market_factor / fuel_factor
+            result = None
+            if market_factor is not None and \
+            fuel_factor is not None and \
+            fuel_factor != 0:
+                result = market_factor / fuel_factor
+            return result
 
         market_factor_calculator = MarketFactor(
             society=self.society,

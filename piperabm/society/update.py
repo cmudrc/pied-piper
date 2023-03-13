@@ -19,7 +19,6 @@ class Update:
         for index in self.all_agents(type='active'):
             resource = self.agent_info(index, 'resource')
             idle_fuel_rate = self.agent_info(index, 'idle_fuel_rate')
-            #print(resource)
             new_resource, remaining = resource - (idle_fuel_rate * duration.total_seconds())
             self.set_agent_info(index, 'resource', new_resource)
             if new_resource.has_zero():
@@ -126,6 +125,7 @@ class Update:
                 index = player.index
                 resource = self.agent_info(index, 'resource')
                 new_resource, remaining = resource + delta_source
+                print(resource, delta_source, delta_wallet)
                 self.set_agent_info(index, 'resource', new_resource)
                 wealth = self.agent_info(index, 'wealth')
                 new_wealth = wealth + delta_wallet

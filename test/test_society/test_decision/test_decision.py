@@ -56,7 +56,7 @@ class TestDecisionClass(unittest.TestCase):
 
     def test_select_best_route(self):
         route = self.decision.select_best_route()
-        print(route)
+        #print(route)
         '''
         soc = deepcopy(self.soc)
         agents = soc.all_agents()
