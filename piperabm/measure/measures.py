@@ -12,7 +12,7 @@ class Measures:
 
     def measure_add_data(self, society, start_date, end_date):
         for measure in self.measures:
-            measure.read(society, start_date, end_date)
+            measure.add_data(society, start_date, end_date)
     
     def show(self):
         for measure in self.measures:

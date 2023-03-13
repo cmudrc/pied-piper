@@ -1,17 +1,19 @@
-import matplotlib.pyplot as plt
-
 from piperabm.unit import DT
 from piperabm.resource import Resource
 
+try: from .graphics import Graphics
+except: from graphics import Graphics
 
-class Accessibility:
+
+class Accessibility(Graphics):
 
     def __init__(self):
         self.total_current_resource_list = []
         self.total_max_resource_list = []
         self.duration_list = []
+        super().__init__()
 
-    def read(self, society, start_date, end_date):
+    def add_data(self, society, start_date, end_date):
         """
         Read all the required parameters from society
         """
@@ -23,7 +25,6 @@ class Accessibility:
 
     def add(self, total_current_resource, total_max_resource, duration):
         """
-        
         Args:
             current_resources: sum of all agents current_resource
             max_resources: sum of all agents max_resource
@@ -80,51 +81,3 @@ class Accessibility:
             overall *= efficiency[key]
         return overall ** (1 / len(efficiency))
 
-    def to_plt(self, resource_name):
-        """
-        Plot the accessibility over time
-        """
-        def create_x():
-            result = []
-            for i, _ in enumerate(self.duration_list):
-                val = sum(self.duration_list[1:i+1])
-                result.append(val)
-            return result
-
-        def create_y():
-            result_current = {
-                'food': [],
-                'water': [],
-                'energy': [],
-            }
-            result_ideal = {
-                'food': [],
-                'water': [],
-                'energy': [],
-            }
-            for i, _ in enumerate(self.duration_list):
-                for name in result_current:
-                    current = self.total_current_resource_list[i].batch[name]
-                    result_current[name].append(current)
-                    ideal = self.total_max_resource_list[i].batch[name]
-                    result_ideal[name].append(ideal)
-            return result_current, result_ideal
-
-        title = resource_name + ' ' + "accessibility vs. time"
-        plt.title(title)
-        plt.xlabel('Time')
-        plt.ylabel('Accessibity')
-        x = create_x()
-        y_current, y_ideal = create_y()
-        plt.plot(x, y_current[resource_name], color='r', label='real')
-        plt.plot(x, y_ideal[resource_name], color='b', label='ideal')
-        #plt.xlim([25, 50])
-        plt.ylim(bottom=0)
-        plt.legend()
-
-    def show(self, resource_name='food'):
-        """
-        Show the plt plot
-        """
-        self.to_plt(resource_name)
-        plt.show()

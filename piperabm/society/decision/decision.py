@@ -20,6 +20,14 @@ class Decision:
         """
         Select best possible route based on their scores
         """
+
+        def max_score(scores):
+            refined_scores = []
+            for score in scores:
+                if score is not None:
+                    refined_scores.append(score)
+            return max(refined_scores)
+
         possible_routes = self.possible_routes()
         result = None
         scores = []
@@ -27,7 +35,7 @@ class Decision:
             score = self.calculate_route_score(route)
             scores.append(score)
         if len(scores) > 0:
-            max_index = scores.index(max(scores))
+            max_index = scores.index(max_score(scores))
             result = possible_routes[max_index]
         return result
     

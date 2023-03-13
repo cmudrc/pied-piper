@@ -126,6 +126,7 @@ class Update:
                 resource = self.agent_info(index, 'resource')
                 new_resource, remaining = resource + delta_source
                 print(resource, delta_source, delta_wallet)
+                #bug bug bug bug bug
                 self.set_agent_info(index, 'resource', new_resource)
                 wealth = self.agent_info(index, 'wealth')
                 new_wealth = wealth + delta_wallet
