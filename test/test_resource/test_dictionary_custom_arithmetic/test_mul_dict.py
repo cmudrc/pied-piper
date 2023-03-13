@@ -1,5 +1,4 @@
 import unittest
-from copy import deepcopy
 
 from piperabm.resource.dictionary_custom_arithmetic import dict_mul
 

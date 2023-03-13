@@ -1,5 +1,4 @@
 import unittest
-from copy import deepcopy
 
 from piperabm import Environment
 from piperabm import Society
@@ -68,7 +67,6 @@ class TestDecisionClass(unittest.TestCase):
         self.assertEqual(len(route), 2)
         '''
     
-
 
 if __name__ == "__main__":
     unittest.main()

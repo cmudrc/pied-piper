@@ -1,5 +1,12 @@
-def dict_max(dict: dict):
-    return max(dict, key=dict.get)
+def dict_max(dictionary: dict):
+    result = None
+    for key in dictionary:
+        if dictionary[key] is None:
+            result = key
+            break
+    if result is None: # no None in dictionary
+        result = max(dictionary, key=dictionary.get)
+    return result
 
 
 if __name__ == "__main__":

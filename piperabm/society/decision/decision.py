@@ -1,5 +1,5 @@
-try: from .factors import calculate_market_factor, calculate_fuel_factor
-except: from factors import calculate_market_factor, calculate_fuel_factor
+try: from .factors import calculate_fuel_factor, MarketFactor
+except: from factors import calculate_fuel_factor, MarketFactor
 
 
 class Decision:
@@ -41,11 +41,12 @@ class Decision:
             """
             return market_factor / fuel_factor
 
-        market_factor = calculate_market_factor(
+        market_factor_calculator = MarketFactor(
             society=self.society,
             agent=self.agent,
             route=route
         )
+        market_factor = market_factor_calculator.calculate()
         fuel_factor = calculate_fuel_factor(
             society=self.society,
             path_graph=self.path_graph,

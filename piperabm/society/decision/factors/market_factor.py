@@ -3,19 +3,23 @@ from copy import deepcopy
 from piperabm.resource import resource_sum
 
 
-def calculate_market_factor(society, agent, route):
+class MarketFactor:
 
-    def trade_participants(society, target): #### active
+    def __init__(self, society, agent, route):
+        self.society = society
+        self.agent = agent
+        self.route = route
+        self.participants = self.trade_participants(target=route[1])
+
+    def trade_participants(self, target): #### active
         #agents_list = society.all_agents(type='active')
-        participants = society.all_agents_available(settlement=target)
-        return participants
-
-    participants = trade_participants(society, target=route[1])
-    #print(participants)##########
-
-    def calculate_source_factor(society, agent):
+        return self.society.all_agents_available(settlement=target)
+    
+    def calculate_source_factor(self):
         result = None
-        others = deepcopy(participants)
+        others = deepcopy(self.participants)
+        society = self.society
+        agent = self.agent
         if agent in others: others.remove(agent)
         others_source_list = []
         for other in others:
@@ -28,9 +32,11 @@ def calculate_market_factor(society, agent, route):
         result = source_others / source_agent
         return result
     
-    def calculate_demand_factor(society, agent):
+    def calculate_demand_factor(self):
         result = None
-        others = deepcopy(participants)
+        others = deepcopy(self.participants)
+        society = self.society
+        agent = self.agent
         if agent in others: others.remove(agent)
         others_demand_list = []
         for other in others:
@@ -43,13 +49,20 @@ def calculate_market_factor(society, agent, route):
         result = demand_others / demand_agent
         return result
     
-    source_factor = calculate_source_factor(society, agent)
-    demand_factor = calculate_demand_factor(society, agent)
-    buyer_factor = source_factor / demand_factor
-    seller_factor = demand_factor / source_factor
-    buyer_factor_max = buyer_factor(buyer_factor.max())
-    seller_factor_max = seller_factor(seller_factor.max())
-    return max(buyer_factor_max, seller_factor_max)
+    def calculate(self):
+        source_factor = self.calculate_source_factor()
+        demand_factor = self.calculate_demand_factor()
+        buyer_factor = source_factor / demand_factor
+        seller_factor = demand_factor / source_factor
+        buyer_factor_max = buyer_factor(buyer_factor.max())
+        seller_factor_max = seller_factor(seller_factor.max())
+        def custom_max(val_1, val_2):
+            result = None
+            if val_1 is not None:
+                if val_2 is not None:
+                    result = max(val_1, val_2)
+            return result
+        return custom_max(buyer_factor_max, seller_factor_max)
 
 
 if __name__ == "__main__":
@@ -63,9 +76,10 @@ if __name__ == "__main__":
     #path_graph = soc.env.to_path_graph(start_date, end_date)
     #path_graph.show()
     route = (0, 1)
-    factor = calculate_market_factor(
+    market_factor_calculator = MarketFactor(
         society=soc,
         agent=agent,
         route=route
     )
-    print(factor)
+    market_factor = market_factor_calculator.calculate()
+    print(market_factor)
