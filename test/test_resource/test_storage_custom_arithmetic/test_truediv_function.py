@@ -36,13 +36,45 @@ class TestTrueDivFunction(unittest.TestCase):
             current_amount=6,
             div_val=None
         )
-        self.assertEqual(result, None)
+        self.assertEqual(result, 0)
         self.assertEqual(remaining, 0)
 
     def test_none_1(self):
         result, remaining = truediv_function(
             current_amount=None,
             div_val=2
+        )
+        self.assertEqual(result, None)
+        self.assertEqual(remaining, 0)
+
+    def test_zero_0(self):
+        result, remaining = truediv_function(
+            current_amount=0,
+            div_val=6
+        )
+        self.assertEqual(result, 0)
+        self.assertEqual(remaining, 0)
+
+    def test_zero_1(self):
+        result, remaining = truediv_function(
+            current_amount=6,
+            div_val=0
+        )
+        self.assertEqual(result, None)
+        self.assertEqual(remaining, 0)
+    
+    def test_zero_none(self):
+        result, remaining = truediv_function(
+            current_amount=0,
+            div_val=None
+        )
+        self.assertEqual(result, 0)
+        self.assertEqual(remaining, 0)
+
+    def test_none_zero(self):
+        result, remaining = truediv_function(
+            current_amount=None,
+            div_val=0
         )
         self.assertEqual(result, None)
         self.assertEqual(remaining, 0)

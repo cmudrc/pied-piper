@@ -56,7 +56,7 @@ class TestResourceAdd(unittest.TestCase):
         )
 
     def test_r_current(self):
-        r, dr = deepcopy(self.r) + deepcopy(self.dr)
+        r, _ = deepcopy(self.r) + deepcopy(self.dr)
         expected_result = self.expected_r
         self.assertEqual(r, expected_result)
 

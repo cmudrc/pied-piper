@@ -71,6 +71,15 @@ class Resource:
         result, _ = Resource(self.current_resource) - Resource(self.min_resource)
         return result
     
+    def create_zeros(self, resource_names: list):
+        for resource_name in resource_names:
+            if resource_name not in self.current_resource:
+                self.current_resource[resource_name] = 0
+            if resource_name not in self.max_resource:
+                self.max_resource[resource_name] = None
+            if resource_name not in self.min_resource:
+                self.min_resource[resource_name] = 0
+
     def is_zero(self):
         result = True
         for name in self.current_resource:

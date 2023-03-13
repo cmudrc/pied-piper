@@ -2,44 +2,53 @@ def truediv_function(current_amount: float, div_val: float, max_amount: float=No
     """
     Calculate the final amount when subtracting from the resource
     """
-    remaining = 0
-    new_current_amount = None
 
-    if div_val is None: pass
-    elif div_val < 0: raise ValueError
+    def validate_input(current_amount, div_val, max_amount, min_amount):
+        if div_val is None: pass
+        elif div_val < 0: raise ValueError
 
-    if current_amount is None: pass
-    elif current_amount < 0: raise ValueError
+        if current_amount is None: pass
+        elif current_amount < 0: raise ValueError
 
-    if max_amount is not None:
-        if max_amount < 0: raise ValueError
+        if max_amount is not None:
+            if max_amount < 0: raise ValueError
 
-    if min_amount < 0: raise ValueError
+        if min_amount < 0: raise ValueError
 
-    if div_val is not None and current_amount is not None:
-        new_current_amount = current_amount / div_val
+    def min_max_normalize(min_amount, max_amount, current_amount):
         remaining = 0
         if max_amount is not None:
-            if new_current_amount > max_amount:
-                remaining = new_current_amount - max_amount
-                new_current_amount = max_amount
+            if current_amount is not None:
+                if current_amount > max_amount:
+                    remaining = current_amount - max_amount
+                    current_amount = max_amount
+            else: # current_amount is None
+                remaining = None
+                current_amount = max_amount
         if min_amount > 0:
-            if new_current_amount < min_amount:
-                remaining = min_amount - new_current_amount
-                new_current_amount = min_amount
-    else:
-        if div_val is not None: #######
+            if current_amount < min_amount:
+                remaining = min_amount - current_amount
+                current_amount = min_amount
+        return current_amount, remaining
+
+    validate_input(current_amount, div_val, max_amount, min_amount)
+    if div_val is None:
+        if current_amount is None:
+            new_current_amount = 1
+        else: # current_amount is normal
+            new_current_amount = 0
+    elif div_val == 0:
+        new_current_amount = None
+    else: # div_val is normal
+        if current_amount is None:
             new_current_amount = None
-            remaining = 0
-            if max_amount is not None:
-                remaining = None
-                new_current_amount = max_amount
-        elif current_amount is not None:
-            new_current_amount = None
-            if max_amount is not None:
-                remaining = None
-                new_current_amount = max_amount
-    return new_current_amount, remaining
+        else:
+            new_current_amount = current_amount / div_val
+    return min_max_normalize(
+        min_amount,
+        max_amount,
+        new_current_amount
+    )
 
 
 if __name__ == "__main__":

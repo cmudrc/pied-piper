@@ -70,21 +70,21 @@ class TestSocietyClass(unittest.TestCase):
         
     def test_all_agents_from(self):
         soc = deepcopy(self.soc)
-        settlements = self.env.all_nodes("settlement")
+        settlements = soc.env.all_nodes("settlement")
         soc.all_agents_from(settlements[0])
         soc.all_agents_from(settlements[1])
         soc.all_agents_from(settlements[2])
 
     def test_all_agents_in(self):
         soc = deepcopy(self.soc)
-        settlements = self.env.all_nodes("settlement")
+        settlements = soc.env.all_nodes("settlement")
         soc.all_agents_in(settlements[0])
         soc.all_agents_in(settlements[1])
         soc.all_agents_in(settlements[2])
 
     def test_all_agents_available(self):
         soc = deepcopy(self.soc)
-        settlements = self.env.all_nodes("settlement")
+        settlements = soc.env.all_nodes("settlement")
         soc.all_agents_available(settlements[0])
         soc.all_agents_available(settlements[1])
         soc.all_agents_available(settlements[2])

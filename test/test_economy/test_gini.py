@@ -10,11 +10,10 @@ class TestGiniGen(unittest.TestCase):
         
         gini = gini_coefficient(income)
         gdp_per_capita = sum(income) / len(income)
-        gg = GiniGenerator(
+        self.gg = GiniGenerator(
             gini_index=gini,
             gdp_per_capita=gdp_per_capita
         )
-        self.gg = gg
 
     def test_generate(self):
         gg = self.gg

@@ -1,5 +1,4 @@
 import unittest
-from copy import deepcopy
 
 from piperabm.actions import Walk
 
