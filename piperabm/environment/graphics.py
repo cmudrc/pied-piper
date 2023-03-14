@@ -9,9 +9,13 @@ class Graphics:
         link_graph = self.to_link_graph(start_date, end_date)
         link_graph.to_plt()
 
-    def show(self, start_date, end_date):
+    def show(self, start_date, end_date, graph='links'):
         """
         Show current state of Environment graph
         """
-        self.to_plt(start_date, end_date)
-        plt.show()
+        if graph == 'links':
+            self.to_plt(start_date, end_date)
+            plt.show()
+        else:
+            path_graph = self.to_path_graph(start_date, end_date)
+            path_graph.show()

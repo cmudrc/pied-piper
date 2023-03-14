@@ -13,3 +13,117 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 
 
+[MODEL] -> BURNOUT: [2020-01-01 00:00:00 - 2020-01-02 00:00:00]
+	[ENVIRONMENT] -> INITIATED: link from settlement node 0 (name: "Settlement 1", pos: [-60, 40]) to cross node 3 (pos: [0, 0])
+	[ENVIRONMENT] -> INITIATED: link from settlement node 1 (name: "Settlement 2", pos: [200, 20]) to cross node 4 (pos: [80, 60])
+	[ENVIRONMENT] -> INITIATED: link from settlement node 2 (name: "Settlement 3", pos: [100, -180]) to cross node 3 (pos: [0, 0])
+	[ENVIRONMENT] -> INITIATED: link from cross node 3 (pos: [0, 0]) to cross node 4 (pos: [80, 60])
+	[ENVIRONMENT] -> INITIATED: settlement node 1 (name: "Settlement 2", pos: [200, 20])
+	[ENVIRONMENT] -> INITIATED: settlement node 2 (name: "Settlement 3", pos: [100, -180])
+[MODEL] -> STEP: 0, [2020-01-02 00:00:00 - 2020-01-02 12:00:00]
+	[SOCIETY] -> DECIDED: agent 4 (pos: [200, 20]) will go from 1 to 2
+	[SOCIETY] -> DECIDED: agent 6 (pos: [200, 20]) will go from 1 to 2
+		[MARKET] -> POOL STARTED: energy (sellers: [4], buyers: [6])
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 6, amount: 53.15497855014764
+		[MARKET] -> POOL COMPLETED: energy (total_volume: 53.15497855014764)
+		[MARKET] -> POOL STARTED: water (sellers: [4], buyers: [6])
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 6, amount: 33.43304900251741
+		[MARKET] -> POOL COMPLETED: water (total_volume: 33.43304900251741)
+		[MARKET] -> POOL STARTED: energy (sellers: [6], buyers: [4])
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 31.70910116927892
+		[MARKET] -> POOL COMPLETED: energy (total_volume: 31.70910116927892)
+[MODEL] -> STEP: 1, [2020-01-02 12:00:00 - 2020-01-03 00:00:00]
+	[SOCIETY] -> DIED: agent 4 (reason: water)
+	[SOCIETY] -> DIED: agent 6 (reason: energy)
+		[MARKET] -> POOL STARTED: water (sellers: [6], buyers: [4])
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 17.135797415271593
+		[MARKET] -> POOL COMPLETED: water (total_volume: 17.135797415271593)
+		[MARKET] -> POOL STARTED: food (sellers: [4], buyers: [6])
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 6, amount: 15.711119454887179
+		[MARKET] -> POOL COMPLETED: food (total_volume: 15.711119454887179)
+		[MARKET] -> POOL STARTED: food (sellers: [6], buyers: [4])
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 8.562493661264268
+		[MARKET] -> POOL COMPLETED: food (total_volume: 8.562493661264268)
+[MODEL] -> STEP: 2, [2020-01-03 00:00:00 - 2020-01-03 12:00:00]
+	[ENVIRONMENT] -> INITIATED: settlement node 0 (name: "Settlement 1", pos: [-60, 40])
+	[SOCIETY] -> DECIDED: agent 0 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 1 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 2 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 3 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 5 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 7 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 8 (pos: [-60, 40]) will go from 0 to 1
+	[SOCIETY] -> DECIDED: agent 9 (pos: [-60, 40]) will go from 0 to 1
+		[MARKET] -> POOL STARTED: water (sellers: [0, 5, 7], buyers: [1, 2, 3, 8, 9])
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 3, amount: 83.99751164890046
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 2, amount: 43.187747731372575
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 8, amount: 42.04072308853648
+		[MARKET] -> POOL COMPLETED: water (total_volume: 169.22598246880952)
+		[MARKET] -> POOL STARTED: energy (sellers: [0, 5, 7], buyers: [1, 2, 3, 8, 9])
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 8, amount: 69.88913673200355
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 1, amount: 68.24932194006817
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 2, amount: 64.40175730950345
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 9, amount: 30.11086326799645
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 3, amount: 7.663059849950571
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 3, amount: 5.536032183639989
+		[MARKET] -> POOL COMPLETED: energy (total_volume: 245.85017128316218)
+		[MARKET] -> POOL STARTED: food (sellers: [0, 5, 7], buyers: [1, 2, 3, 8, 9])
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 9, amount: 45.11036157632741
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 1, amount: 21.590141339036983
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 8, amount: 21.016629017618936
+		[MARKET] -> POOL COMPLETED: food (total_volume: 87.71713193298334)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+[MODEL] -> STEP: 3, [2020-01-03 12:00:00 - 2020-01-04 00:00:00]
+	[SOCIETY] -> DIED: agent 0 (reason: food)
+	[SOCIETY] -> DIED: agent 5 (reason: food)
+	[SOCIETY] -> DIED: agent 7 (reason: food)
+		[MARKET] -> POOL STARTED: energy (sellers: [1, 2, 3, 8, 9], buyers: [0, 5, 7])
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 0, amount: 46.48067806092925
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 5, amount: 31.75067805993183
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 30.11086326799645
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 7, amount: 15.456421754280829
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 5, amount: 12.066549670393727
+		[MARKET] -> POOL COMPLETED: energy (total_volume: 135.86519081353208)
+		[MARKET] -> POOL STARTED: water (sellers: [1, 2, 3, 8, 9], buyers: [0, 5, 7])
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 0, amount: 22.984630356186628
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 5, amount: 13.164630355521684
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 12.071420494231429
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 7, amount: 2.301792818421017
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 5, amount: 0.04187809582961455
+		[MARKET] -> POOL COMPLETED: water (total_volume: 50.56435212019038)
+		[MARKET] -> POOL STARTED: food (sellers: [1, 2, 3, 8, 9], buyers: [0, 5, 7])
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 0, amount: 11.488582651444009
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 5, amount: 6.578582651111536
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 6.031977720466409
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 7, amount: 1.1471638825612027
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 5, amount: 0.017206521265501706
+		[MARKET] -> POOL COMPLETED: food (total_volume: 25.263513426848654)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+[MODEL] -> STEP: 4, [2020-01-04 00:00:00 - 2020-01-04 12:00:00]
+	[SOCIETY] -> DIED: agent 1 (reason: food)
+	[SOCIETY] -> DIED: agent 2 (reason: food)
+	[SOCIETY] -> DIED: agent 3 (reason: food)
+	[SOCIETY] -> DIED: agent 8 (reason: food)
+	[SOCIETY] -> DIED: agent 9 (reason: food)
+		[MARKET] -> POOL STARTED: food (sellers: [0, 1, 2, 3, 5, 7, 8, 9], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [0, 1, 2, 3, 5, 7, 8, 9], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [0, 1, 2, 3, 5, 7, 8, 9], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)
+		[MARKET] -> POOL STARTED: food (sellers: [4, 6], buyers: [])
+		[MARKET] -> POOL COMPLETED: food (total_volume: 0)

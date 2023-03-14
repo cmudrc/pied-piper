@@ -7,6 +7,7 @@ class TravelLength(Graphics):
     def __init__(self):
         self.length_list = []
         self.duration_list = []
+        self.name = 'travel length'
         super().__init__()
 
     def read_data(self, society, start_date, end_date):

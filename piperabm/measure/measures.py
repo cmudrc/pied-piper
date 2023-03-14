@@ -6,6 +6,16 @@ class Measures:
     def __init__(self):
         self.measures = []
 
+    def __call__(self, name):
+        return self.find(name)
+
+    def find(self, name):
+        result = None
+        for measure in self.measures:
+            if measure.name == name:
+                result = measure
+        return result
+
     def _add_measure(self, measure):
         """
         Add a single measure

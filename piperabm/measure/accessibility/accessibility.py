@@ -14,6 +14,7 @@ class Accessibility(Graphics):
         self.total_current_resource_list = []
         self.total_max_resource_list = []
         self.duration_list = []
+        self.name = 'accessibility'
         super().__init__()
 
     def read_data(self, society, start_date, end_date):
