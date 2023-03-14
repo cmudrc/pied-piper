@@ -22,11 +22,14 @@ class Decision:
         """
 
         def max_score(scores):
+            result = None
             refined_scores = []
             for score in scores:
                 if score is not None:
                     refined_scores.append(score)
-            return max(refined_scores)
+            if len(refined_scores) > 0:
+                result = max(refined_scores)
+            return result
 
         possible_routes = self.possible_routes()
         result = None

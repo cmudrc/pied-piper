@@ -48,8 +48,8 @@ m = Model(
     step_size=DT(hours=12),
     current_date=Date(2020, 1, 1)+DT(hours=12)
 )
-m.add_measures([Accessibility(), TravelLength()])
-print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
-m.run(25)
-print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
+#m.add_measures([Accessibility(), TravelLength()])
+#print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
+m.run(30)
+#print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
 #m.measures.show()

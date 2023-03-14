@@ -40,7 +40,7 @@ average_resource = Resource(
         'energy': 300,
     }
 )
-soc.add_agents(n=5, average_resource=average_resource)
+soc.add_agents(n=10, average_resource=average_resource)
 
 #agents = soc.all_agents()
 #r = soc.select_best_route(agents[0], start_date, end_date)
@@ -52,8 +52,8 @@ m = Model(
     step_size=DT(hours=12),
     current_date=Date(2020, 1, 1)+DT(hours=3)
 )
-m.add_measures([Accessibility(), TravelLength()])
-print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
-m.run(2)
-print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
+#m.add_measures([Accessibility(), TravelLength()])
+#print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
+m.run(5)
+#print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
 #m.measures.show()

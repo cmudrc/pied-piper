@@ -19,7 +19,8 @@ class Update:
         for index in self.all_agents(type='active'):
             resource = self.agent_info(index, 'resource')
             idle_fuel_rate = self.agent_info(index, 'idle_fuel_rate')
-            new_resource, remaining = resource - (idle_fuel_rate * duration.total_seconds())
+            idle_fuel_consumption = idle_fuel_rate * duration.total_seconds()
+            new_resource, _ = resource - idle_fuel_consumption
             self.set_agent_info(index, 'resource', new_resource)
             if new_resource.has_zero():
                 deficient_resource = new_resource.amount_name(amount=0)
@@ -101,7 +102,12 @@ class Update:
                 source = resource.source()
                 demand = resource.demand()
                 wallet = self.agent_info(player_index, 'wealth')
-                player = Player(player_index, source.current_resource, demand.current_resource, wallet)
+                player = Player(
+                    agent=player_index,
+                    source=source.current_resource,
+                    demand=demand.current_resource,
+                    wallet=wallet
+                )
                 players_list.append(player)
             market.add(players_list)
             markets[index] = market
@@ -121,15 +127,13 @@ class Update:
         ## update agent properties
         for key in markets:
             for player in markets[key].players:
-                delta_source, delta_wallet = player.to_delta()
+                delta_source, delta_demand, delta_wallet = player.to_delta()
                 index = player.index
                 resource = self.agent_info(index, 'resource')
-                new_resource, remaining = resource + delta_source
-                print(resource, delta_source, delta_wallet)
-                #bug bug bug bug bug
+                new_resource, remaining = resource - delta_source
                 self.set_agent_info(index, 'resource', new_resource)
                 wealth = self.agent_info(index, 'wealth')
-                new_wealth = wealth + delta_wallet
+                new_wealth = wealth - delta_wallet
                 self.set_agent_info(index, 'wealth', new_wealth)
 
         ## finalize

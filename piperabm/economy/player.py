@@ -1,13 +1,15 @@
 from copy import deepcopy
 
+from piperabm.resource import Resource
+
 
 class Player:
 
     def __init__(self, agent, source, demand, wallet):
-        self.index = agent
-        self.source = source
-        self.demand = demand
-        self.wallet = wallet
+        self.index = deepcopy(agent)
+        self.source = deepcopy(source)
+        self.demand = deepcopy(demand)
+        self.wallet = deepcopy(wallet)
         # will be calculated:
         self.new_source = deepcopy(source)
         self.new_demand = deepcopy(demand)
@@ -24,24 +26,20 @@ class Player:
         self.new_demand[resource] -= volume
         self.new_wallet -= cost
     '''
-    def delta(self):
-        result = {}
+    
+    def to_delta(self, resource_object=True):
         delta_source = {}
         for name in self.source:
-            delta_source[name] = self.new_source[name] - self.source[name]
-        result["source"] = delta_source
+            delta_source[name] = self.source[name] - self.new_source[name]
         delta_demand = {}
         for name in self.demand:
-            delta_demand[name] = self.new_demand[name] - self.demand[name]
-        result["demand"] = delta_demand
+            delta_demand[name] = self.demand[name] - self.new_demand[name]
         delta_wallet = {}
-        delta_wallet = self.new_wallet - self.wallet
-        result["wallet"] = delta_wallet
-        return result
-    
-    def to_delta(self):
-        d = self.delta()
-        return d["source"], d["wallet"]
+        delta_wallet = self.wallet - self.new_wallet
+        if resource_object is True:
+            delta_source = Resource(delta_source)
+            delta_demand = Resource(delta_demand)
+        return delta_source, delta_demand, delta_wallet
 
     def actual_demand(self, exchange_rate):
         """

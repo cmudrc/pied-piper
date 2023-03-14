@@ -28,6 +28,6 @@ class Test:
     
 
 if __name__ == "__main__":
-    test = Test(TEST_DIR='test')
-    #test.run('all')
+    test = Test()
+    #test.run(target='all')
     test.run('move')
