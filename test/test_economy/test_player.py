@@ -21,23 +21,23 @@ class TestEconomyClass(unittest.TestCase):
         )
         self.p = p
 
-    def test_delta_0(self):
+    def test_to_delta_0(self):
         p = deepcopy(self.p)
-        result = p.delta()
-        expected_result = {
-            'source': {
-                'food': 0,
-                'water': 0,
-            },
-            'demand': {
-                'food': 0,
-                'water': 0,
-            },
-            'wallet': 0,
+        delta_source, delta_demand, delta_wealth = p.to_delta()
+        expected_delta_source = {
+            'food': 0,
+            'water': 0,
         }
-        self.assertDictEqual(result, expected_result)
+        self.assertDictEqual(delta_source.current_resource, expected_delta_source)
+        expected_delta_demand = {
+            'food': 0,
+            'water': 0,
+        }
+        self.assertDictEqual(delta_demand.current_resource, expected_delta_demand)
+        expected_delta_wallet = 0
+        self.assertEqual(delta_wealth, expected_delta_wallet)
 
-    def test_delta(self):
+    def test_to_delta(self):
         p = deepcopy(self.p)
         p.new_source = {
             'food': 2,
@@ -48,19 +48,20 @@ class TestEconomyClass(unittest.TestCase):
             'water': 5,
         }
         p.new_wallet = 20
-        result = p.delta()
-        expected_result = {
-            'source': {
-                'food': -2,
-                'water': -3,
-            },
-            'demand': {
-                'food': 4,
-                'water': 0,
-            },
-            'wallet': 10,
+        #result = p.delta()
+        delta_source, delta_demand, delta_wealth = p.to_delta()
+        expected_delta_source = {
+            'food': 2,
+            'water': 3,
         }
-        self.assertDictEqual(result, expected_result)
+        self.assertDictEqual(delta_source.current_resource, expected_delta_source)
+        expected_delta_demand = {
+            'food': -4,
+            'water': 0,
+        }
+        self.assertDictEqual(delta_demand.current_resource, expected_delta_demand)
+        expected_delta_wallet = -10
+        self.assertEqual(delta_wealth, expected_delta_wallet)
 
 
 if __name__ == "__main__":

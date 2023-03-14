@@ -73,13 +73,14 @@ class TestAccessibilityClass(unittest.TestCase):
 
     def test_calculate(self):
         acc = deepcopy(self.accessibility)
-        efficiency = acc.efficiency()
-        expected_result = {
-            'food': 0.5,
-            'water': 0.405,
-            'energy': 0.49333333333333335,
-        }
-        self.assertDictEqual(efficiency.current_resource, expected_result)
+        food_efficiency = acc.efficiency('food')
+        self.assertAlmostEqual(food_efficiency, 0.5)
+        water_efficiency = acc.efficiency('water')
+        self.assertAlmostEqual(water_efficiency, 0.405)
+        energy_efficiency = acc.efficiency('energy')
+        self.assertAlmostEqual(energy_efficiency, 0.49333333333333335)
+        overall_efficiency = acc.efficiency('all')
+        self.assertAlmostEqual(overall_efficiency, 0.464, places=3)
 
 
 if __name__ == "__main__":

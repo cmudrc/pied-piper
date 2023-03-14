@@ -27,9 +27,11 @@ class Graphics:
             }
             for i, _ in enumerate(self.duration_list):
                 for name in result_current:
-                    current = self.total_current_resource_list[i].batch[name]
+                    #current = self.total_current_resource_list[i].current_resource[name]
+                    current = self.total_current_resource_list[i](name)
                     result_current[name].append(current)
-                    ideal = self.total_max_resource_list[i].batch[name]
+                    #ideal = self.total_max_resource_list[i].current_resource[name]
+                    ideal = self.total_max_resource_list[i](name)
                     result_ideal[name].append(ideal)
             return result_current, result_ideal
 
@@ -45,9 +47,14 @@ class Graphics:
         plt.ylim(bottom=0)
         plt.legend()
 
-    def show(self, resource_name='food'):
+    def show(self, resource_name='all'):
         """
         Show the plt plot
         """
-        self.to_plt(resource_name)
-        plt.show()
+        if resource_name == 'all':
+            for resource_name in ['food', 'water', 'energy']:
+                self.to_plt(resource_name)
+                plt.show()
+        else:
+            self.to_plt(resource_name)
+            plt.show()

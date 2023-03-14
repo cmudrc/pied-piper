@@ -1,19 +1,43 @@
 class Measures:
-
+    """
+    Manage measure objects that calculate the result of the simulation
+    """
+    
     def __init__(self):
         self.measures = []
 
-    def add_measure(self, measure):
+    def _add_measure(self, measure):
+        """
+        Add a single measure
+        """
         self.measures.append(measure)
 
-    def add_measures(self, measures: list):
+    def _add_measures(self, measures: list):
+        """
+        Add measures in batch
+        """
         for measure in measures:
-            self.add_measure(measure)
+            self._add_measure(measure)
 
-    def measure_add_data(self, society, start_date, end_date):
+    def add(self, measures):
+        """
+        Add measures
+        """
+        if isinstance(measures, list):
+            self._add_measures(measures)
+        else:
+            self._add_measure(measures)
+
+    def read_data(self, society, start_date, end_date):
+        """
+        Add new data point to the measures
+        """
         for measure in self.measures:
-            measure.add_data(society, start_date, end_date)
+            measure.read_data(society, start_date, end_date)
     
     def show(self):
+        """
+        Show all measure results in sequence
+        """
         for measure in self.measures:
             measure.show()

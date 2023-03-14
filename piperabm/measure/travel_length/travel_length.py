@@ -9,7 +9,7 @@ class TravelLength(Graphics):
         self.duration_list = []
         super().__init__()
 
-    def add_data(self, society, start_date, end_date):
+    def read_data(self, society, start_date, end_date):
         """
         Read all the required parameters from society
         """

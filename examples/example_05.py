@@ -35,9 +35,9 @@ average_resource = Resource(
         'energy': 60,
     },
     max_resource={
-        'food': 100,
-        'water': 200,
-        'energy': 300,
+        'food': 80,
+        'water': 90,
+        'energy': 100,
     }
 )
 soc.add_agents(n=10, average_resource=average_resource)
@@ -52,8 +52,8 @@ m = Model(
     step_size=DT(hours=12),
     current_date=Date(2020, 1, 1)+DT(hours=3)
 )
-#m.add_measures([Accessibility(), TravelLength()])
+m.measures.add([Accessibility()])
 #print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
 m.run(5)
 #print(soc.agent_info(1, 'resource'), soc.agent_info(1, 'active'))
-#m.measures.show()
+m.measures.show()

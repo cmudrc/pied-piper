@@ -1,4 +1,3 @@
-from piperabm.environment import Environment
 from piperabm.society import Society
 from piperabm.unit import DT, Date
 from piperabm.log import Log
@@ -10,7 +9,7 @@ try: from .log import Log
 except: from log import Log
 
 
-class Model(Graphics, Measures):
+class Model(Graphics):
 
     def __init__(
         self,
@@ -26,6 +25,7 @@ class Model(Graphics, Measures):
         else: raise ValueError
         if current_date is None: self.current_date = Date.today()
         else: self.current_date = current_date
+        self.measures = Measures()
         self.log = Log(prefix='MODEL', indentation_depth=0)
         super().__init__()
 
@@ -68,7 +68,7 @@ class Model(Graphics, Measures):
         #print(msg)
         self.env.update_elements(start_date, end_date)
         self.society.update_elements(start_date, end_date)
-        #self.measure_add_data(self.society, start_date, end_date)
+        self.measures.read_data(self.society, start_date, end_date)
         self.current_date = end_date
         self.current_step += 1
 
