@@ -16,9 +16,9 @@ soc = Society(env, gini=gini, average_income=average_income, exchange_rate=excha
 
 average_resource = Resource(
     current_resource={
-        'food': 20,
-        'water': 40,
-        'energy': 60,
+        'food': 50,
+        'water': 60,
+        'energy': 70,
     },
     max_resource={
         'food': 80,

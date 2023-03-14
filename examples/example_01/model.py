@@ -12,5 +12,5 @@ m = Model(
 )
 m.measures.add([Accessibility(), TravelLength()])
 m.run(n=5)
-#m.measures.show()
 print(m.measures('accessibility').efficiency())
+m.measures.show()
