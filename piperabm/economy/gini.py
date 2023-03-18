@@ -40,7 +40,7 @@ class GiniGenerator:
         val_2 = (sigma ** 2) / 2
         return val_1 - val_2
 
-    def generate(self, n: int=1, threashold=0.5):
+    def generate(self, n: int=1, threashold=None):
         """
         Generate a random array of size n which gini index is equal to *gini*
         """
@@ -53,8 +53,11 @@ class GiniGenerator:
             )
 
         result = rvs()
-        while np.abs(gini_coefficient(result) - self.gini) > threashold:
-            result = rvs()
+        if threashold is not None:
+            while np.abs(gini_coefficient(result) - self.gini) > threashold:
+                result = rvs()
+        if n == 1:
+            result = result[0]
         return result
 
     def check_gini(self, x):

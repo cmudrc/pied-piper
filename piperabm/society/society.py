@@ -2,8 +2,9 @@ import networkx as nx
 
 from piperabm import Environment
 from piperabm.unit import DT, Date
-#from piperabm.resource import Resource
-from piperabm.actions import Queue, Move
+from piperabm.resource import Resource
+from piperabm.actions import Move
+from piperabm.economy import GiniGenerator, Exchange
 
 try: from .search import Search
 except: from search import Search
@@ -21,9 +22,10 @@ except: from log import Log
 
 class Society(Add, Index, Graphics, Update, Search):
 
-    def __init__(self, env: Environment, gini, average_income, exchange_rate):
+    def __init__(self, env: Environment, gini: float, average_income: float, exchange_rate: Exchange):
         self.env = env
         self.gini = gini
+        self.gini_gen = GiniGenerator(gini, 1)
         self.average_income = average_income
         self.exchange = exchange_rate
         self.G = nx.Graph()

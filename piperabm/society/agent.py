@@ -10,7 +10,6 @@ class Agent:
 
     def __init__(
             self,
-            id: int,
             name: str = '',
             origin_node=None,
             current_node=None,
@@ -23,7 +22,6 @@ class Agent:
     ):
         ''' name '''
         self.name = name
-        self.id = id
         ''' location '''
         self.origin_node = origin_node
         self.current_node = current_node
@@ -112,7 +110,6 @@ if __name__ == "__main__":
         }
     )
     agent = Agent(
-        id=1,
         name='John',
         origin_node='1',
         current_node='2',
