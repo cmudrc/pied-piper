@@ -12,6 +12,8 @@ try: from .add import Add
 except: from add import Add
 try: from .index import Index
 except: from index import Index
+try: from .query import Query
+except: from query import Query
 try: from .graphics import Graphics
 except: from graphics import Graphics
 try: from .update import Update
@@ -20,7 +22,7 @@ try: from .log import Log
 except: from log import Log
 
 
-class Society(Add, Index, Graphics, Update, Search):
+class Society(Add, Index, Query, Graphics, Update, Search):
 
     def __init__(self, env: Environment, gini: float, exchange_rate: Exchange):
         self.env = env
@@ -36,15 +38,4 @@ class Society(Add, Index, Graphics, Update, Search):
 
 
 if __name__ == "__main__":
-    from piperabm.unit import Date
-    from piperabm.actions import Move, Walk
-
-    m = Move(
-        start_date=Date(2020, 1, 1),
-        start_pos=[0, 0],
-        end_pos=[10000, 10000],
-        adjusted_length=20000,
-        transportation=Walk()
-        )
-    print(m.end_date)
-    print(m.pos(date=Date(2020, 1, 1)+DT(hours=1)))
+    pass

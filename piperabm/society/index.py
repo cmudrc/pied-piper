@@ -1,6 +1,3 @@
-from piperabm.resource import Resource
-
-
 class Index:
     
     def __init__(self):
@@ -18,132 +15,11 @@ class Index:
             new_index = 0
         return new_index
 
-    def all_agents(self, type='all'):
-        """
-        Return a list of all agents' indexes
-        """
-        result = []
-        if type == 'all':
-            result = self.index_list
-        elif type == 'active':
-            for index in self.index_list:
-                if self.agent_info(index, 'active') is True:
-                    result.append(index)
-        return result
-    
-    def agent_info(self, agent, property):
-        result = None
-        index = self.find_agent(agent)
-        if index is not None:
-            agent = self.G.nodes[index]['agent']
-            result = getattr(agent, property)
-        return result
-    
-    def set_agent_info(self, agent, property, val):
-        index = self.find_agent(agent)
-        if index is not None:
-            #info = self.agent_info(index, property)
-            #info = val
-            agent = self.G.nodes[index]['agent']
-            setattr(agent, property, val)
-            #self.G.nodes[index][property] = val
-        else:
-            print("ERROR: agent info not updated")
-        
-    def all_agents_from(self, settlement, agents_list=None):
-        """
-        Create a list of agent indexes that are from *settlement*
-        """
-        result = []
-        if agents_list is None:
-            index_list = self.index_list
-        else:
-            index_list = agents_list
-        for index in index_list:
-            agent_settlement = self.agent_info(index, 'origin_node')
-            if agent_settlement == settlement:
-                result.append(index)
-        return result
 
-    def all_agents_in(self, settlement):
-        """
-        Create a list of agent indexes showing all agents that are inside the *settlement*
-        """
-        result = []
-        for index in self.index_list:
-            current_settlement = self.agent_info(index, 'current_node')
-            if current_settlement == settlement:
-                result.append(index)
-        return result
-
-    def all_agents_available(self, settlement):
-        """
-        All agents available for market in *settlement*
-        """
-        result = []
-        all_agents_in = self.all_agents_in(settlement)
-        all_agents_from = self.all_agents_from(settlement)
-        for index in all_agents_in:
-            if index not in result:
-                result.append(index)
-        for index in all_agents_from:
-            if index not in result:
-                result.append(index)
-        return result
-
-    def all_max_resource_from(self, agents):
-        """
-        Calculate all max_resource for a list of agents
-        """
-        if isinstance(agents, int):
-            agents = [agents]
-        result = Resource(
-            {
-                'food': 0,
-                'water': 0,
-                'energy': 0,
-            }
-        )
-        for agent in agents:
-            agent_resource = self.agent_info(agent, 'resource')
-            max_resource = agent_resource.max_resource
-            max_resource = Resource(max_resource)
-            result, _ = result + max_resource
-        return result
-
-    def all_resource_from(self, agents):
-        """
-        Calculate all resource for a list of agents
-        """
-        if isinstance(agents, int):
-            agents = [agents]
-        result = Resource(
-            {
-                'food': 0,
-                'water': 0,
-                'energy': 0,
-            }
-        )
-        for agent in agents:
-            agent_resource = self.agent_info(agent, 'resource')
-            result, _ = result + agent_resource
-        return result
-
-    def all_demand_from(self, agents):
-        """
-        Calculate all demand from list of agents
-        """
-        if isinstance(agents, int):
-            agents = [agents]
-        result = Resource(
-            {
-                'food': 0,
-                'water': 0,
-                'energy': 0,
-            }
-        )
-        for agent in agents:
-            agent_resource = self.agent_info(agent, 'resource')
-            demand = agent_resource.demand()
-            result, _ = result + demand
-        return result
+if __name__ == "__main__":
+    index_manager = Index()
+    new_index = index_manager.find_next_index()
+    print(new_index)
+    index_manager.index_list.append(new_index)
+    new_index = index_manager.find_next_index()
+    print(new_index)
