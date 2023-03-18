@@ -21,33 +21,23 @@ class Add:
             )
 
         if isinstance(agents, Agent):
-            agent = agents
-            add_single_agent(agent)
-        elif isinstance(agents, list):
+            agents = [agents]
+        if isinstance(agents, list):
             for agent in agents:
                 add_single_agent(agent)
         
     def generate_agents(self, n, average_resource, average_income):
         
         def generate_agent(average_resource):
-            name = name_generator()
-            origin_node = self.env.random_settlement()
-            current_node = deepcopy(origin_node)
-            idle_fuel_rate = None  # default: human_idle_fuel_rate
-            transportation = None # default: Walk()
-            queue = None # default
             wealth_factor = self.gini_gen.generate()
-            balance = balance_generator(wealth_factor, average_income)
-            resource = resource_generator(wealth_factor, average_resource)
             agent = Agent(
-                name=name,
-                origin_node=origin_node,
-                current_node=current_node,
-                transportation=transportation,
-                queue=queue,
-                resource=resource,
-                idle_fuel_rate=idle_fuel_rate,
-                balance=balance,
+                name=name_generator(),
+                origin_node=self.env.random_settlement(),
+                transportation=None, # default: Walk()
+                queue=None, # default
+                resource=resource_generator(wealth_factor, average_resource),
+                idle_fuel_rate=None, # default: human_idle_fuel_rate
+                balance=balance_generator(wealth_factor, average_income),
                 wealth_factor=wealth_factor
             )
             return agent

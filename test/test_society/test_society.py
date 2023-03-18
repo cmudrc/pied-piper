@@ -1,7 +1,6 @@
 import unittest
 from copy import deepcopy
 
-from piperabm import Environment
 from piperabm import Society, Agent
 from piperabm.economy import Exchange
 from piperabm.resource import Resource
@@ -12,17 +11,6 @@ from piperabm.environment.sample import env_1 as env
 class TestSocietyClass(unittest.TestCase):
 
     def setUp(self):
-        '''
-        env = Environment(links_unit_length=10)
-        env.add_settlement(name="Settlement 1", pos=[-60, 40])
-        env.add_settlement(name="Settlement 2", pos=[200, 20])
-        env.add_settlement(name="Settlement 3", pos=[100, -180])
-        env.add_link(start="Settlement 1", end=[0, 0])
-        env.add_link(start=[0.1, 0.1], end=[80, 60])
-        env.add_link(start=[80, 60], end=[200, 20])
-        env.add_link(start=[0, 0], end="Settlement 3")
-        '''
-
         gini = 0.3
         exchange_rate = Exchange()
         exchange_rate.add('food', 'wealth', 10)
@@ -71,6 +59,7 @@ class TestSocietyClass(unittest.TestCase):
         soc.add([agent_0, agent_1])
 
         self.soc = soc
+        self.settlements = settlements
 
     def test_show_env(self):
         start_date = Date.today() - DT(days=1)
@@ -105,59 +94,110 @@ class TestSocietyClass(unittest.TestCase):
         self.assertEqual(soc.G.number_of_nodes(), 5)
 
     def test_agent_info(self):
-        soc = deepcopy(self.soc)
+        soc = self.soc
         name = soc.agent_info(0, 'name')
         self.assertEqual(name, 'John')
-        current_settlement = soc.agent_info('John', 'current_node')
-        print(current_settlement)
+        origin_node = soc.agent_info('John', 'origin_node')
+        self.assertEqual(origin_node, self.settlements[0])
+        current_node = soc.agent_info('John', 'current_node')
+        self.assertEqual(current_node, self.settlements[0])
         name = soc.agent_info(1, 'name')
         self.assertEqual(name, 'Robert')
+        name = soc.agent_info(2, 'name')
+        self.assertEqual(name, None)
     
     def test_set_agent_info(self):
         soc = deepcopy(self.soc)
-        settlement_previous = soc.agent_info(0, 'current_node')
-        new_settlment = settlement_previous + 100
-        soc.set_agent_info(0, 'settlement', new_settlment)
-        settlement = soc.agent_info(0, 'settlement')
+        settlement_previous = soc.agent_info(0, 'current_node') # = 0
+        new_settlment = settlement_previous + 1  # = 1
+        soc.set_agent_info(0, 'current_node', new_settlment)
+        settlement = soc.agent_info(0, 'current_node')
         self.assertEqual(new_settlment, settlement)
-        
+    
     def test_all_agents_from(self):
         soc = deepcopy(self.soc)
-        settlements = soc.env.all_nodes("settlement")
-        result = soc.all_agents_from(settlements[0])
-        print(result)
-        soc.all_agents_from(settlements[1])
-        soc.all_agents_from(settlements[2])
-
+        result = soc.all_agents_from(self.settlements[0])
+        self.assertListEqual(result, [0])
+        result = soc.all_agents_from(self.settlements[1])
+        self.assertListEqual(result, [1])       
+        result = soc.all_agents_from(self.settlements[2])
+        self.assertListEqual(result, [])
+        soc.set_agent_info(0, 'current_node', 1) # previously it was 0
+        result = soc.all_agents_from(self.settlements[0])
+        self.assertListEqual(result, [0])
+        result = soc.all_agents_from(self.settlements[1])
+        self.assertListEqual(result, [1])       
+        result = soc.all_agents_from(self.settlements[2])
+        self.assertListEqual(result, [])
+    
     def test_all_agents_in(self):
         soc = deepcopy(self.soc)
         settlements = soc.env.all_nodes("settlement")
-        soc.all_agents_in(settlements[0])
-        soc.all_agents_in(settlements[1])
-        soc.all_agents_in(settlements[2])
-
+        result = soc.all_agents_in(settlements[0])
+        self.assertListEqual(result, [0])
+        result = soc.all_agents_in(settlements[1])
+        self.assertListEqual(result, [1])
+        result = soc.all_agents_in(settlements[2])
+        self.assertListEqual(result, [])
+        soc.set_agent_info(0, 'current_node', 1) # previously it was 0
+        result = soc.all_agents_in(self.settlements[0])
+        self.assertListEqual(result, [])
+        result = soc.all_agents_in(self.settlements[1])
+        self.assertListEqual(result, [0, 1])       
+        result = soc.all_agents_in(self.settlements[2])
+        self.assertListEqual(result, [])
+    
     def test_all_agents_available(self):
         soc = deepcopy(self.soc)
         settlements = soc.env.all_nodes("settlement")
-        soc.all_agents_available(settlements[0])
-        soc.all_agents_available(settlements[1])
-        soc.all_agents_available(settlements[2])
+        result = soc.all_agents_available(settlements[0])
+        self.assertListEqual(result, [0])
+        result = soc.all_agents_available(settlements[1])
+        self.assertListEqual(result, [1])
+        result = soc.all_agents_available(settlements[2])
+        self.assertListEqual(result, [])
+        soc.set_agent_info(0, 'current_node', 1) # previously it was 0
+        result = soc.all_agents_available(self.settlements[0])
+        self.assertListEqual(result, [0])
+        result = soc.all_agents_available(self.settlements[1])
+        self.assertListEqual(result, [0, 1])       
+        result = soc.all_agents_available(self.settlements[2])
+        self.assertListEqual(result, [])
 
+    
     def test_all_resource_from(self):
         soc = deepcopy(self.soc)
         agents = soc.all_agents()
-        soc.all_resource_from(agents)
+        result = soc.all_resource_from(agents)
+        expected_result = {
+            'food': 60,
+            'water': 120,
+            'energy': 180,
+        }
+        self.assertDictEqual(result.current_resource, expected_result)
     
     def test_all_max_resource_from(self):
         soc = deepcopy(self.soc)
         agents = soc.all_agents()
-        soc.all_max_resource_from(agents)
+        result = soc.all_max_resource_from(agents)
+        expected_result = {
+            'food': 200,
+            'water': 400,
+            'energy': 600,
+        }
+        self.assertDictEqual(result.current_resource, expected_result)
 
     def test_all_demand_from(self):
         soc = deepcopy(self.soc)
         agents = soc.all_agents()
-        soc.all_demand_from(agents)
+        result = soc.all_demand_from(agents)
+        expected_result = {
+            'food': 140,
+            'water': 280,
+            'energy': 420,
+        }
+        self.assertDictEqual(result.current_resource, expected_result)
     
-
+    
 if __name__ == "__main__":
     unittest.main()

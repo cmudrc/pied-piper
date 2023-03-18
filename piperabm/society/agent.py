@@ -12,7 +12,6 @@ class Agent:
             self,
             name: str = '',
             origin_node=None,
-            current_node=None,
             transportation=None,
             queue=None,
             resource: Resource = None,
@@ -24,7 +23,7 @@ class Agent:
         self.name = name
         ''' location '''
         self.origin_node = origin_node
-        self.current_node = current_node
+        self.current_node = deepcopy(origin_node)
         ''' transporation '''
         if transportation is None:
             self.transportation = Walk()

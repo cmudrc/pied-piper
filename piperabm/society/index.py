@@ -30,14 +30,6 @@ class Index:
                 if self.agent_info(index, 'active') is True:
                     result.append(index)
         return result
-    '''
-    def agent_info(self, agent, property):
-        result = None
-        index = self.find_agent(agent)
-        if index is not None:
-            result = self.G.nodes[index][property]
-        return result
-    '''
     
     def agent_info(self, agent, property):
         result = None
@@ -68,7 +60,7 @@ class Index:
         else:
             index_list = agents_list
         for index in index_list:
-            agent_settlement = self.agent_info(index, 'current_node')
+            agent_settlement = self.agent_info(index, 'origin_node')
             if agent_settlement == settlement:
                 result.append(index)
         return result

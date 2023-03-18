@@ -25,7 +25,7 @@ class Search:
             print(txt)
         return result
 
-    def find_agent(self, input, report=True):
+    def find_agent(self, input, report=False):
         """
         Find and return node index based on input (name, position, or index)
         """

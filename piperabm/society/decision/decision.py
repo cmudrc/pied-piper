@@ -13,7 +13,7 @@ class Decision:
         """
         A list of possible routes in path graph
         """
-        settlement_index = self.society.agent_info(self.agent, 'settlement')
+        settlement_index = self.society.agent_info(self.agent, 'current_node')
         return self.path_graph.from_node_perspective(settlement_index)
     
     def select_best_route(self):
