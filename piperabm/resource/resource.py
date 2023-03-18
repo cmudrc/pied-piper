@@ -9,7 +9,7 @@ except: from .value import resource_value, total_resource_value
 
 class Resource:
 
-    def __init__(self, current_resource: dict={}, max_resource: dict={}, min_resource: dict={}):
+    def __init__(self, current_resource={}, max_resource: dict={}, min_resource: dict={}):
         self.current_resource, self.max_resource, self.min_resource = \
         self.refine_inputs(
             deepcopy(current_resource),
@@ -18,7 +18,14 @@ class Resource:
         )
 
     def refine_inputs(self, current_resource, max_resource, min_resource):
-        for key in current_resource:
+        if isinstance(current_resource, list):
+            resource_names = deepcopy(current_resource)
+            current_resource = {}
+            for key in resource_names:
+                current_resource[key] = 0
+        elif isinstance(current_resource, dict):
+            resource_names = current_resource.keys()
+        for key in resource_names:
             if key not in max_resource:
                 max_resource[key] = None
             if key not in min_resource:
@@ -80,19 +87,26 @@ class Resource:
             if resource_name not in self.min_resource:
                 self.min_resource[resource_name] = 0
 
-    def is_zero(self):
+    def is_zero(self, resource_names: list = []) -> bool:
+        if len(resource_names) == 0: # check all
+            check_list = self.current_resource
+        else:
+            check_list = resource_names
         result = True
-        for name in self.current_resource:
-            if self.current_resource[name] > 0:
+        for name in check_list:
+            if name in self.current_resource and self.current_resource[name] > 0:
                 result = False
                 break
         return result
 
-    def has_zero(self):
+    def has_zero(self, resource_names: list = []) -> bool:
+        if len(resource_names) == 0: # check all
+            check_list = self.current_resource
+        else:
+            check_list = resource_names
         result = False
-        if len(self.current_resource) == 0: result = True
-        for name in self.current_resource:
-            if self.current_resource[name] <= 0:
+        for name in check_list:
+            if self.is_zero([name]) is True:
                 result = True
                 break
         return result

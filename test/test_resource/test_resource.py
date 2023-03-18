@@ -37,10 +37,11 @@ class TestResourceClass0(unittest.TestCase):
     def test_is_zero(self):
         r = deepcopy(self.r)
         self.assertTrue(r.is_zero())
+        self.assertTrue(r.is_zero('food'))
 
     def test_has_zero(self):
         r = deepcopy(self.r)
-        self.assertTrue(r.has_zero())
+        self.assertFalse(r.has_zero())
 
 
 class TestResourceClass1(unittest.TestCase):
@@ -100,6 +101,8 @@ class TestResourceClass1(unittest.TestCase):
     def test_is_zero(self):
         r = deepcopy(self.r)
         self.assertFalse(r.is_zero())
+        self.assertFalse(r.is_zero(['food']))
+        self.assertFalse(r.is_zero(['food', 'water']))
 
     def test_has_zero(self):
         r = deepcopy(self.r)
@@ -224,10 +227,71 @@ class TestResourceClass2(unittest.TestCase):
     def test_is_zero(self):
         r = deepcopy(self.r)
         self.assertFalse(r.is_zero())
+        self.assertTrue(r.is_zero(['food']))
+        self.assertFalse(r.is_zero(['water']))
+        self.assertFalse(r.is_zero(['food', 'water']))
 
     def test_has_zero(self):
         r = deepcopy(self.r)
         self.assertTrue(r.has_zero())
+
+
+class TestResourceClass3(unittest.TestCase):
+    
+    def setUp(self):
+        self.r = Resource(['food', 'water'])
+
+    def test_current_resource(self):
+        r = deepcopy(self.r)
+        expected_result = {
+            'food': 0,
+            'water': 0,
+        }
+        self.assertDictEqual(r.current_resource, expected_result)
+    
+    def test_max_resource(self):
+        r = deepcopy(self.r)
+        expected_result = {
+            'food': None,
+            'water': None,
+        }
+        self.assertDictEqual(r.max_resource, expected_result)
+
+    def test_min_resource(self):
+        r = deepcopy(self.r)
+        expected_result = {
+            'food': 0,
+            'water': 0,
+        }
+        self.assertDictEqual(r.min_resource, expected_result)
+
+    def test_source(self):
+        r = deepcopy(self.r)
+        expected_result = {
+            'food': 0,
+            'water': 0,
+        }
+        self.assertDictEqual(r.source().current_resource, expected_result)
+
+    def test_demand(self):
+        r = deepcopy(self.r)
+        expected_result = {
+            'food': None,
+            'water': None,
+        }
+        self.assertDictEqual(r.demand().current_resource, expected_result)
+
+    def test_is_zero(self):
+        r = deepcopy(self.r)
+        self.assertTrue(r.is_zero())
+        self.assertTrue(r.is_zero(['food']))
+        self.assertTrue(r.is_zero(['water']))
+        self.assertTrue(r.is_zero(['food', 'water']))
+
+    def test_has_zero(self):
+        r = deepcopy(self.r)
+        self.assertTrue(r.has_zero())   
+
 
 if __name__ == "__main__":
     unittest.main()
