@@ -4,7 +4,7 @@ import numpy as np
 class Query:
     """
     Contains methods for Environment class
-    Create a wrap-up for accessing graph data
+    Create a wrap-up for accessing data
     """
 
     def all_nodes(self, type='all'):

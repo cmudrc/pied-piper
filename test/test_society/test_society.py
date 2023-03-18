@@ -66,12 +66,12 @@ class TestSocietyClass(unittest.TestCase):
         end_date = start_date + DT(days=1)
         #self.soc.env.show(start_date, end_date)
 
-    def test_find_agent_by_index(self):
-        index = self.soc._find_agent_by_index(0)
+    def test_find_agent_index_by_index(self):
+        index = self.soc._find_agent_index_by_index(0)
         self.assertEqual(index, 0)
 
     def test_find_agent_by_name(self):
-        index= self.soc._find_agent_by_name('John')
+        index= self.soc._find_agent_index_by_name('John')
         self.assertEqual(index, 0)
 
     def test_add_agents(self):

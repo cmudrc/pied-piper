@@ -1,5 +1,9 @@
 class Index:
-    
+    """
+    Contains methods for Society class
+    Manage nodes index
+    """
+
     def __init__(self):
         self.index_list = []
 

@@ -26,6 +26,7 @@ except: from log import Log
 
 class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Query, Graphics, Update):
     """
+    Represent physical environment
     Manage settlements and their connecting links
     """
 

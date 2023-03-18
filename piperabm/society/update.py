@@ -7,6 +7,10 @@ except: from decision import Decision
 
 
 class Update:
+    """
+    Contains methods for Society class
+    Methods for updating agents in each step
+    """
 
     def update_elements(self, start_date: Date, end_date: Date):
         """
@@ -16,7 +20,7 @@ class Update:
         """            
         ## reduce idle energy expenditure
         duration = end_date - start_date
-        for index in self.all_agents(type='active'):
+        for index in self.all_agents(type='alive'):
             resource = self.agent_info(index, 'resource')
             idle_fuel_rate = self.agent_info(index, 'idle_fuel_rate')
             idle_fuel_consumption = idle_fuel_rate * duration.total_seconds()
@@ -24,7 +28,7 @@ class Update:
             self.set_agent_info(index, 'resource', new_resource)
             if new_resource.has_zero():
                 deficient_resource = new_resource.amount_name(amount=0)
-                self.set_agent_info(index, 'active', False) ## dead
+                self.set_agent_info(index, 'alive', False) ## dead
                 ''' log '''
                 msg = self.log.message__agent_died(
                     agent_index=index,

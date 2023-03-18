@@ -4,7 +4,7 @@ from piperabm.resource import Resource, resource_sum
 class Query:
     """
     Contains methods for Society class
-    Create a wrap-up for accessing graph data
+    Create a wrap-up for accessing data
     """
 
     def all_agents(self, type='all'):
@@ -14,28 +14,23 @@ class Query:
         result = []
         if type == 'all':
             result = self.index_list
-        elif type == 'active':
+        elif type == 'alive':
             for index in self.index_list:
-                if self.agent_info(index, 'active') is True:
+                if self.agent_info(index, 'alive') is True:
                     result.append(index)
         return result
     
     def agent_info(self, agent, property):
         result = None
-        index = self.find_agent(agent)
-        if index is not None:
-            agent = self.G.nodes[index]['agent']
+        agent = self.find_agent(agent)
+        if agent is not None:
             result = getattr(agent, property)
         return result
     
     def set_agent_info(self, agent, property, val):
-        index = self.find_agent(agent)
-        if index is not None:
-            #info = self.agent_info(index, property)
-            #info = val
-            agent = self.G.nodes[index]['agent']
+        agent = self.find_agent(agent)
+        if agent is not None:
             setattr(agent, property, val)
-            #self.G.nodes[index][property] = val
         else:
             print("ERROR: agent info not updated")
         

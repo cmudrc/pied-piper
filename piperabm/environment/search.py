@@ -1,6 +1,7 @@
 class Search:
     """
     Contains methods for Environment class
+    Methods for searching for node index
     """
 
     def _find_node_by_name(self, name: str, report=True):

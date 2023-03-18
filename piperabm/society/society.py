@@ -23,6 +23,10 @@ except: from log import Log
 
 
 class Society(Add, Index, Query, Graphics, Update, Search):
+    """
+    Represent society
+    Manage agents
+    """
 
     def __init__(self, env: Environment, gini: float, exchange_rate: Exchange):
         self.env = env

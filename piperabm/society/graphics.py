@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 
 
 class Graphics:
+    """
+    Contains methods for Society class
+    Add graphical functionality
+    """
     
     def to_plt(self, ax=None):
         """
