@@ -21,12 +21,12 @@ class TestDecisionClass(unittest.TestCase):
         env.add_link(start=[0, 0], end="Settlement 3")
 
         gini = 0.3
-        average_income = 1000
+        
         exchange_rate = Exchange()
         exchange_rate.add('food', 'wealth', 10)
         exchange_rate.add('water', 'wealth', 2)
         exchange_rate.add('energy', 'wealth', 4)
-        soc = Society(env, gini=gini, average_income=average_income, exchange_rate=exchange_rate)
+        soc = Society(env, gini=gini, exchange_rate=exchange_rate)
         average_resource = Resource(
             current_resource={
                 'food': 20,
@@ -39,7 +39,12 @@ class TestDecisionClass(unittest.TestCase):
                 'energy': 300,
             }
         )
-        soc.add_agents(n=5, average_resource=average_resource)
+        average_income = 1000
+        soc.generate_agents(
+            n=5,
+            average_resource=average_resource,
+            average_income=average_income
+        )
         agents = soc.all_agents()
         start_date = Date.today() + DT(days=1)
         end_date = start_date + DT(days=1)

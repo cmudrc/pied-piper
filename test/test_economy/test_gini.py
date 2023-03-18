@@ -31,7 +31,7 @@ class TestGiniGen(unittest.TestCase):
         sample = []
         for _ in range(1000):
             single_sample = gg.generate(1)
-            sample.append(single_sample[0])
+            sample.append(single_sample)
         sample_gini = gini_coefficient(sample)
         result = sample_gini / gg.gini
         self.assertAlmostEqual(result, 1, places=0)

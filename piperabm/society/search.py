@@ -4,7 +4,8 @@ class Search:
         result = None
         if len(name) > 0:
             for index in self.G.nodes():
-                if self.G.nodes[index]['name'] == name:
+                agent = self.G.nodes[index]['agent']
+                if agent.name == name:
                     result = index
         if result is None and report is True:
             txt = name + ' not found.'

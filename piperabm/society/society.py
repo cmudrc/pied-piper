@@ -22,11 +22,10 @@ except: from log import Log
 
 class Society(Add, Index, Graphics, Update, Search):
 
-    def __init__(self, env: Environment, gini: float, average_income: float, exchange_rate: Exchange):
+    def __init__(self, env: Environment, gini: float, exchange_rate: Exchange):
         self.env = env
         self.gini = gini
         self.gini_gen = GiniGenerator(gini, 1)
-        self.average_income = average_income
         self.exchange = exchange_rate
         self.G = nx.Graph()
         self.log = Log(prefix='SOCIETY', indentation_depth=1)

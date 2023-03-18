@@ -6,12 +6,11 @@ from piperabm import Resource
 
 
 gini = 0.3
-average_income = 1000
 exchange_rate = Exchange()
 exchange_rate.add('food', 'wealth', 10)
 exchange_rate.add('water', 'wealth', 2)
 exchange_rate.add('energy', 'wealth', 4)
-soc = Society(env, gini=gini, average_income=average_income, exchange_rate=exchange_rate)
+soc = Society(env, gini=gini, exchange_rate=exchange_rate)
 average_resource = Resource(
     current_resource={
         'food': 20,
@@ -24,7 +23,12 @@ average_resource = Resource(
         'energy': 300,
     }
 )
-soc.add_agents(n=5, average_resource=average_resource)
+average_income = 1000
+soc.generate_agents(
+    n=5,
+    average_resource=average_resource,
+    average_income=average_income
+)
 
 
 if __name__ == "__main__":
