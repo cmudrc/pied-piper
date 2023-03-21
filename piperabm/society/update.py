@@ -21,14 +21,10 @@ class Update:
         ## reduce idle energy expenditure
         duration = end_date - start_date
         for index in self.all_agents(type='alive'):
-            resource = self.agent_info(index, 'resource')
-            idle_fuel_rate = self.agent_info(index, 'idle_fuel_rate')
-            idle_fuel_consumption = idle_fuel_rate * duration.total_seconds()
-            new_resource, _ = resource - idle_fuel_consumption
-            self.set_agent_info(index, 'resource', new_resource)
-            if new_resource.has_zero():
-                deficient_resource = new_resource.amount_name(amount=0)
-                self.set_agent_info(index, 'alive', False) ## dead
+            agent = self.find_agent(index)
+            agent.idle_time_pass(duration)
+            if agent.alive is False:
+                deficient_resource = agent.resource.amount_name(amount=0)
                 ''' log '''
                 msg = self.log.message__agent_died(
                     agent_index=index,
@@ -121,8 +117,8 @@ class Update:
         for key in markets:
             market = markets[key]
             market_sizes[key] = market.size()
-            sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
-            sorted_markets = list(list(zip(*sorted_markets))[0])
+        sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
+        sorted_markets = list(list(zip(*sorted_markets))[0])
         
         ## solve markets
         for key in sorted_markets:

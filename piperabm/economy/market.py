@@ -1,7 +1,7 @@
+from piperabm.resource import resource_sum
+
 try: from .player import Player
 except: from player import Player
-try: from .exchange import Exchange
-except: from exchange import Exchange
 try: from .solver import Solver
 except: from solver import Solver
 try: from .log import Log
@@ -17,12 +17,18 @@ class Market(Solver):
         super().__init__()
 
     def add(self, players):
+        """
+        Add new player to the market
+        """
         if not isinstance(players, list):
             players = [players]
         for player in players:
             self.players.append(player)
 
     def find_player(self, index):
+        """
+        Return player based on index
+        """
         for player in self.players:
             if player.index == index:
                 return player
@@ -31,28 +37,34 @@ class Market(Solver):
         """
         Calculate the market total value
         """
-        result = 0
-        for player in self.players:
-            pass
-        return result
+        size = 0
+        for resource in self.all_resources():
+            total_demand = self.total_actual_demand(resource)
+            total_demand_value = total_demand * self.exchange.rate(resource, 'wealth')
+            total_source = self.total_source(resource)
+            total_source_value = total_source * self.exchange.rate(resource, 'wealth')
+            size += total_source_value + total_demand_value
+        return size
 
-    def total_demand(self, resource=None):
+    def total_demand(self, resource_name=None):
+        """
+        Calculate overall demand
+        """
         result = None
-        if resource is None:
-            pass
-        else:
-            ls = []
+        if resource_name is not None:
+            demand_list = []
             for player in self.players:
-                demand = player.new_demand[resource]
-                ls.append(demand)
-            result = sum(ls)
+                demand = player.new_demand[resource_name]
+                demand_list.append(demand)
+            result = sum(demand_list)
         return result
     
     def total_actual_demand(self, resource_name=None):
+        """
+        Calculate overall demand when not possible to have more than budget
+        """
         result = None
-        if resource_name is None:
-            pass
-        else:
+        if resource_name is not None:
             demand_list = []
             for player in self.players:
                 demand = player.actual_demand(self.exchange)[resource_name]
@@ -61,10 +73,11 @@ class Market(Solver):
         return result
 
     def total_source(self, resource_name=None):
+        """
+        Calculate overall source
+        """
         result = None
-        if resource_name is None:
-            pass
-        else:
+        if resource_name is not None:
             source_list = []
             for player in self.players:
                 source = player.new_source[resource_name]
@@ -73,6 +86,9 @@ class Market(Solver):
         return result
 
     def all_resources(self):
+        """
+        Return all resource names
+        """
         result = []
         for player in self.players:
             for name in player.new_source:
@@ -89,6 +105,7 @@ class Market(Solver):
 
 
 if __name__ == "__main__":
+    from piperabm.economy import Exchange
 
     p1 = Player(
         1,
@@ -136,5 +153,4 @@ if __name__ == "__main__":
     mk.solve()
     print(mk)
 
-    #for player in econ.players:
-    #    print(player)
+    print(mk.size())

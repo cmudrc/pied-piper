@@ -15,6 +15,7 @@ class Add:
         def add_single_agent(agent: Agent):
             index = self.find_next_index()
             self.index_list.append(index)
+            agent.index = index
             self.G.add_node(
                 index,
                 agent=agent

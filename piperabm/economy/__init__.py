@@ -1,3 +1,4 @@
+from .economy import Economy
 from .market import Market
 from .player import Player
 from .exchange import Exchange

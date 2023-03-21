@@ -10,7 +10,8 @@ m = Model(
     step_size=DT(hours=12),
     current_date=Date(2020, 1, 2)
 )
-m.measures.add([Accessibility(), TravelLength()])
-m.run(n=5)
+#m.measures.add([Accessibility(), TravelLength()])
+m.measures.add(Accessibility())
+m.run(n=10)
 #print(m.measures('accessibility').efficiency())
-m.measures.show()
+#m.measures.show()

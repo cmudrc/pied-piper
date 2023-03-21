@@ -10,6 +10,7 @@ class Agent:
 
     def __init__(
             self,
+            index: int = None,
             name: str = '',
             origin_node=None,
             transportation=None,
@@ -19,8 +20,10 @@ class Agent:
             balance: float = 0,
             wealth_factor: float = 1
     ):
-        ''' name '''
+        ''' identity '''
+        self.index = index
         self.name = name
+        self.alive = True
         ''' location '''
         self.origin_node = origin_node
         self.current_node = deepcopy(origin_node)
@@ -47,8 +50,7 @@ class Agent:
             self.balance = balance
         if wealth_factor >= 0:
             self.wealth_factor = wealth_factor
-        ''' state '''
-        self.alive = True
+        
 
     def is_alive(self) -> bool:
         """
@@ -80,7 +82,6 @@ class Agent:
         if self.name != '':
             txt += ' '
             txt += '(' + self.name + ')'
-            txt += ' '
         return txt
 
 
@@ -111,7 +112,6 @@ if __name__ == "__main__":
     agent = Agent(
         name='John',
         origin_node='1',
-        current_node='2',
         transportation=None,
         queue=None,
         resource=resource,
