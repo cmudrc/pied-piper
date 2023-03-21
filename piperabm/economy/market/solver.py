@@ -104,3 +104,6 @@ class Solver:
         #while not check_stagnation(previous_pools, current_pools):
         #    previous_pools = deepcopy(current_pools)
         #    current_pools = solve_step()
+
+        stat = {}
+        return stat

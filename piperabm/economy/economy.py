@@ -9,6 +9,9 @@ class Economy:
         self.exchange = exchange
 
     def all_nodes(self):
+        """
+        Return all current and origin nodes of agents
+        """
         result = []
         for agent in self.agents:
             if agent.current_node not in result:
@@ -18,6 +21,9 @@ class Economy:
         return result
     
     def find_agent(self, index):
+        """
+        Find agent based on its index
+        """
         result = None
         for agent in self.agents:
             if agent.index == index:
@@ -26,6 +32,9 @@ class Economy:
         return result
     
     def create_markets(self):
+        """
+        Create markets between agents
+        """
         markets = {} # {market_index: market instance}
         all_nodes = self.all_nodes()
         for index in all_nodes:
@@ -49,6 +58,9 @@ class Economy:
         return markets
     
     def sort_markets(self, markets):
+        """
+        Sort markets based on their sizes
+        """
         market_sizes = {} # {market_index: market_size}
         for key in markets:
             market = markets[key]
@@ -58,17 +70,26 @@ class Economy:
         return sorted_markets
 
     def solve_biggest(self):
+        """
+        Solve and update the biggest market
+        """
         markets = self.create_markets()
         sorted_markets = self.sort_markets(markets)
         biggest_market = markets[sorted_markets[0]]
-        biggest_market.solve()
+        stat = biggest_market.solve()
         self.update_agents(markets)
 
     def solve(self):
+        """
+        Solve until stagnation
+        """
         for _ in range(5):
             self.solve_biggest()
 
     def update_agents(self, markets):
+        """
+        Update agents info based on the final result of the solution
+        """
         for market_index in markets:
             market = markets[market_index]
             for player in market.players:
