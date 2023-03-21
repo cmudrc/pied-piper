@@ -1,7 +1,8 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.economy import Player, Market, Exchange
+from piperabm.economy import Exchange
+from piperabm.economy.market import Player, Market
 
 
 class TestMarketClass1(unittest.TestCase):

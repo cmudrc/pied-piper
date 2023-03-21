@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.economy import Pool, Bid
+from piperabm.economy.market.pool import Pool, Bid
 
 
 class TestPoolClass1(unittest.TestCase):

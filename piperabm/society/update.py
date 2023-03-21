@@ -1,5 +1,5 @@
 from piperabm.unit import Date
-from piperabm.economy import Market, Player
+from piperabm.economy.market import Market, Player
 from piperabm.actions import Trade, Move, Walk
 
 try: from .decision import Decision
