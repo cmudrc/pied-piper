@@ -5,44 +5,7 @@ from piperabm.economy import Exchange
 from piperabm.economy.market import Player, Market
 
 
-class TestMarketClass1(unittest.TestCase):
-
-    def setUp(self):
-        p1 = Player(
-            1,
-            source={
-                'food': 4,
-            },
-            demand={
-                'food': 6,
-            },
-            wallet=10
-        )
-        p2 = Player(
-            2,
-            source={
-                'food': 2,
-            },
-            demand={
-                'food': 8,
-            },
-            wallet=20
-            )
-
-        exchange = Exchange()
-        exchange.add('food', 'wealth', 5)
-
-        mkt = Market(exchange)
-        mkt.add([p1, p2])
-        self.mkt = mkt
-
-    def test_solve(self):
-        mkt = deepcopy(self.mkt)
-        mkt.solve()
-        #print(mkt)
-
-
-class TestMarketClass(unittest.TestCase):
+class TestMarketClass_0(unittest.TestCase):
 
     def setUp(self):
         p1 = Player(
@@ -164,11 +127,100 @@ class TestMarketClass(unittest.TestCase):
         expected_result = ['food', 'water']
         self.assertListEqual(result, expected_result)
 
+    def test_solve_single_pool(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+
+        market.solve_single_pool('food')
+        pool = market.pools['food']
+        source_bids = pool.source_bids
+        demand_bids = pool.demand_bids
+        print(len(source_bids), len(demand_bids))
+        
+        market.solve_single_pool('water')
+        pool = market.pools['water']
+        source_bids = pool.source_bids
+        #self.assertEqual(source_bids[2].agent, 1)
+        #self.assertEqual(source_bids[0].amount, 4)
+        #self.assertEqual(source_bids[0].new_amount, 1)
+        demand_bids = pool.demand_bids
+        #self.assertEqual(demand_bids[0].agent, 2)
+        #self.assertEqual(demand_bids[0].amount, 1)
+        #self.assertEqual(demand_bids[0].new_amount, 1)
+        #self.assertEqual(demand_bids[1].agent, 3)
+        #self.assertEqual(demand_bids[1].amount, 1)
+        #self.assertEqual(demand_bids[1].new_amount, 1)
+
+
+class TestMarketClass_1(unittest.TestCase):
+
+    def setUp(self):
+        p1 = Player(
+            1,
+            source={
+                'food': 4,
+            },
+            demand={
+                'food': 6,
+            },
+            wallet=10
+        )
+        p2 = Player(
+            2,
+            source={
+                'food': 2,
+            },
+            demand={
+                'food': 8,
+            },
+            wallet=20
+            )
+
+        exchange = Exchange()
+        exchange.add('food', 'wealth', 5)
+
+        market = Market(exchange)
+        market.add([p1, p2])
+        self.market = market
+
+    def test_create_pools(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        pool = market.pools['food']
+        source_bids = pool.source_bids
+        self.assertEqual(source_bids[0].agent, 1)
+        self.assertEqual(source_bids[0].amount, 4)
+        self.assertEqual(source_bids[0].new_amount, 4)
+        demand_bids = pool.demand_bids
+        self.assertEqual(demand_bids[0].agent, 2)
+        self.assertEqual(demand_bids[0].amount, 4)
+        self.assertEqual(demand_bids[0].new_amount, 4)
+
+    def test_solve_biggest_pool(self):
+        market = deepcopy(self.market)
+        market.solve_biggest_pool()
+        pool = market.pools['food']
+        source_bids = pool.source_bids
+        self.assertEqual(source_bids[0].agent, 1)
+        self.assertEqual(source_bids[0].amount, 4)
+        self.assertEqual(source_bids[0].new_amount, 0)
+        demand_bids = pool.demand_bids
+        self.assertEqual(demand_bids[0].agent, 2)
+        self.assertEqual(demand_bids[0].amount, 4)
+        self.assertEqual(demand_bids[0].new_amount, 0)
+
     def test_solve(self):
         market = deepcopy(self.market)
         market.solve()
-        #print(mkt)
-
+        pool = market.pools['food']
+        source_bids = pool.source_bids
+        self.assertEqual(source_bids[0].agent, 1)
+        self.assertEqual(source_bids[0].amount, 4)
+        self.assertEqual(source_bids[0].new_amount, 0)
+        demand_bids = pool.demand_bids
+        self.assertEqual(demand_bids[0].agent, 2)
+        self.assertEqual(demand_bids[0].amount, 4)
+        self.assertEqual(demand_bids[0].new_amount, 0)
 
 
 if __name__ == "__main__":

@@ -150,7 +150,7 @@ class Solver:
                 result = False
             return result
 
-        if is_solve_valid(stat) is True: ######## valid
+        if is_solve_valid(stat) is True:
             #print(pool)
             #self.update_player(resource_name, pool) #######
             ''' log '''
