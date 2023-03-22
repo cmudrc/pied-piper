@@ -2,7 +2,7 @@ try: from .pool import Pool, Bid
 except: from pool import Pool, Bid
 
 
-class NewSolver:
+class Solver:
     """
     Solve the resource allocation problem for the pool of players
     """
@@ -10,8 +10,9 @@ class NewSolver:
         self.pools = {}
 
     def solve(self):
-        while True:
-            stat = self.solve_biggest_pool()
+        stat = self.solve_biggest_pool()
+        #while True:
+        #    stat = self.solve_biggest_pool()
 
     def score(self, player, resource_name):
         """
@@ -125,7 +126,7 @@ class NewSolver:
             player.new_wallet = player.new_wallet + delta_wallet
             #print(player.index, player.new_source[resource_name], player.new_demand[resource_name])
     '''
-    
+
     def solve_single_pool(self, resource_name):
         pool = self.pools[resource_name]
         """
@@ -146,8 +147,9 @@ class NewSolver:
                 result = True
             else:
                 result = False
+            return result
 
-        if is_solve_valid(stat): ######## valid
+        if is_solve_valid(stat) is True: ######## valid
             #print(pool)
             #self.update_player(resource_name, pool) #######
             ''' log '''
@@ -158,7 +160,7 @@ class NewSolver:
 
 
 
-class Solver:
+class OldSolver:
 
     def solve(self):
         """

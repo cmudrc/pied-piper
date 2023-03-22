@@ -46,11 +46,12 @@ class Query:
         Find the biggest bid between *bids*
         """
         result = None
-        for bid in bids:
-            #print(bid)
-            if result is None:
-                result = bid
-            else:
-                if bid.new_amount > result.new_amount:
+        if bids is not None and len(bids) > 0:
+            for bid in bids:
+                #print(bid)
+                if result is None:
                     result = bid
+                else:
+                    if bid.new_amount > result.new_amount:
+                        result = bid
         return result
