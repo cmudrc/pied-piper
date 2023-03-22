@@ -131,3 +131,112 @@ ________________________________________________________________________________
 			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
 			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
 			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 2, amount: 2.0
+		[MARKET] -> POOL COMPLETED: food (total_volume: 2.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 2, amount: 2.0
+		[MARKET] -> POOL COMPLETED: food (total_volume: 2.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 2, amount: 2.0
+		[MARKET] -> POOL COMPLETED: food (total_volume: 2.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 2, amount: 2.0
+		[MARKET] -> POOL COMPLETED: food (total_volume: 2.0)
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 2, amount: 4
+		[MARKET] -> POOL COMPLETED: food (total_volume: 4.0)

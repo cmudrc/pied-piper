@@ -4,6 +4,10 @@ class Solver:
     """
 
     def solve_step(self):
+        """
+        Solve a single step
+        """
+        stat = {}
         biggest_source_bid = self.find_biggest_bid(self.source_bids)
         biggest_demand_bid = self.find_biggest_bid(self.demand_bids)
         if biggest_source_bid is not None and biggest_demand_bid is not None:
@@ -17,6 +21,7 @@ class Solver:
                 else:
                     biggest_source_bid.new_amount = 0
                     biggest_demand_bid.new_amount = -diff
+                    
                 ''' log '''
                 msg = self.log.message__transaction(
                     from_agent_index=biggest_source_bid.agent,
@@ -26,19 +31,30 @@ class Solver:
                 #print(msg)
         else:
             volume = 0
-        return volume
+        stat['volume'] = volume
+        return stat
 
     def solve(self):
         ''' log '''
         #msg = self.log.message__pool_started()
         #print(msg)
-        volume = None
-        while volume is None or volume != 0:
-            volume = self.solve_step()
-            self.total_volume += volume
+        
+        def check_stagnation(stat):
+            result = True
+            volume = stat['volume']
+            if volume > 0 or stat is None:
+                result = False
+            return result
+
+        stat = None
+        while stat is None or check_stagnation(stat) is False:
+            stat = self.solve_step()
+            self.total_volume += stat['volume']
+
         ''' log '''
         #msg = self.log.message__pool_complete()
         #print(msg)
+
         stat = {
             'total_volume': self.total_volume,
         }

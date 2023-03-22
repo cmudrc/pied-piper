@@ -29,13 +29,16 @@ class Market(Solver):
         """
         Return player based on index
         """
+        result = None
         for player in self.players:
             if player.index == index:
-                return player
+                result = player
+                break
+        return result
 
     def size(self):
         """
-        Calculate the market total value
+        Calculate the market total value in units of currency
         """
         size = 0
         for resource in self.all_resources():

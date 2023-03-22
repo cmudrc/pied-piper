@@ -86,7 +86,8 @@ class Solver:
         for resource_name in pools:
             pool = pools[resource_name]
             size_source, size_demand = pool.size()
-            pools_score[resource_name] = size_source + size_demand
+            score = size_source * size_demand
+            pools_score[resource_name] = score
             sorted_pools = sorted(pools_score.items(), key=lambda x:x[1], reverse=True)
             sorted_pools = list(list(zip(*sorted_pools))[0])
             result = sorted_pools
