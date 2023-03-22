@@ -13,33 +13,6 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 
 
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
-		[MARKET] -> POOL STARTED: energy (sellers: [1], buyers: [])
-		[MARKET] -> POOL COMPLETED: energy (total_volume: 0)
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 2
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 1, amount: 5

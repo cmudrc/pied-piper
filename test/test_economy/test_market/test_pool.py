@@ -7,10 +7,10 @@ from piperabm.economy.market.pool import Pool, Bid
 class TestPoolClass1(unittest.TestCase):
 
     def setUp(self):
-        b1 = Bid(1, 5)
-        b2 = Bid(2, 8)
-        b3 = Bid(3, 2)
-        b4 = Bid(4, 1)
+        b1 = Bid(agent=1, amount=5)
+        b2 = Bid(agent=2, amount=8)
+        b3 = Bid(agent=3, amount=2)
+        b4 = Bid(agent=4, amount=1)
 
         p = Pool()
         p.add_source([b2, b4])
@@ -51,8 +51,8 @@ class TestPoolClass1(unittest.TestCase):
 class TestPoolClass2(unittest.TestCase):
 
     def setUp(self):
-        b2 = Bid(2, 8)
-        b4 = Bid(4, 1)
+        b2 = Bid(agent=2, amount=8)
+        b4 = Bid(agent=4, amount=1)
 
         p = Pool()
         p.add_source([b2, b4])
