@@ -103,7 +103,19 @@ class Solver:
         sorted_pools = self.sort_pools()
         if sorted_pools is not None:
             resource = sorted_pools[0] # biggest pool
-            self.solve_single_pool(resource) ######
+            stat = self.solve_single_pool(resource) ######
+
+    def update_players(self, resource_name, pool):
+        for player in self.players:
+            bid, bid_type = pool.find_bid(player.index)
+            delta_wallet = bid.delta_wallet(self.exchange.rate(resource_name, 'wealth'))
+            if bid_type == 'source':
+                delta_wallet = -delta_wallet
+                player.new_source[resource_name] = bid.new_amount
+            else:
+                player.new_demand[resource_name] = bid.new_amount
+            player.new_wallet = player.new_wallet + delta_wallet
+                #print(player.index, player.new_source[resource], player.new_demand[resource])
 
     '''
     def update_player(self, resource_name):
@@ -152,7 +164,7 @@ class Solver:
 
         if is_solve_valid(stat) is True:
             #print(pool)
-            #self.update_player(resource_name, pool) #######
+            self.update_players(resource_name, pool) #######
             ''' log '''
             msg = self.log.message__pool_complete(resource_name, stat)
             #print(msg)

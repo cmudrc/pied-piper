@@ -76,6 +76,7 @@ class TestPoolClass_0(unittest.TestCase):
         self.assertEqual(biggest_demand_bid.agent, 1)
         self.assertEqual(biggest_demand_bid.amount, 5)
         self.assertEqual(biggest_demand_bid.new_amount, 0)
+        #print(pool.stat)
 
 
 class TestPoolClass_1(unittest.TestCase):
@@ -112,6 +113,7 @@ class TestPoolClass_1(unittest.TestCase):
         self.assertEqual(biggest_source_bid.new_amount, 8)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
+        #print(pool.stat)
 
 
 class TestPoolClass_2(unittest.TestCase):
@@ -148,6 +150,7 @@ class TestPoolClass_2(unittest.TestCase):
         self.assertEqual(biggest_demand_bid.agent, 2)
         self.assertEqual(biggest_demand_bid.amount, 8)
         self.assertEqual(biggest_demand_bid.new_amount, 8)
+        #print(pool.stat)
 
 
 class TestPoolClass_3(unittest.TestCase):
@@ -174,6 +177,7 @@ class TestPoolClass_3(unittest.TestCase):
         self.assertEqual(biggest_source_bid, None)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
+        #print(pool.stat)
     
 
 if __name__ == "__main__":

@@ -127,7 +127,7 @@ class TestMarketClass_0(unittest.TestCase):
         expected_result = ['food', 'water']
         self.assertListEqual(result, expected_result)
 
-    def test_solve_single_pool(self):
+    def test_solve_single_pool(self): ######
         market = deepcopy(self.market)
         market.create_pools()
 
@@ -135,8 +135,8 @@ class TestMarketClass_0(unittest.TestCase):
         pool = market.pools['food']
         source_bids = pool.source_bids
         demand_bids = pool.demand_bids
-        print(len(source_bids), len(demand_bids))
-        
+        #print(len(source_bids), len(demand_bids))
+        print(demand_bids[0].delta_amount())
         market.solve_single_pool('water')
         pool = market.pools['water']
         source_bids = pool.source_bids
