@@ -108,52 +108,28 @@ class Market(Solver):
 
 
 if __name__ == "__main__":
-    from piperabm.economy import Exchange
+    from piperabm.economy.exchange.sample import exchange_0 as exchange
 
     p1 = Player(
-        1,
-        source={
-            'food': 8,
-            'water': 9,
-        },
-        demand={
-            'food': 6,
-            'water': 5,
-        },
+        index=1,
+        source={'food': 8, 'water': 9, 'energy': 5},
+        demand={'food': 6, 'water': 5, 'energy': 3},
         wallet=100
     )
     p2 = Player(
-        2,
-        source={
-            'food': 8,
-            'water': 10,
-        },
-        demand={
-            'food': 8,
-            'water': 5,
-        },
+        index=2,
+        source={'food': 8, 'water': 10, 'energy': 8},
+        demand={'food': 8, 'water': 5, 'energy': 1},
         wallet=200
         )
     p3 = Player(
-        3,
-        source={
-            'food': 5,
-            'water': 5,
-        },
-        demand={
-            'food': 5,
-            'water': 5,
-        },
+        index=3,
+        source={'food': 5, 'water': 5, 'energy': 2},
+        demand={'food': 5, 'water': 5, 'energy': 7},
         wallet=200
         )
 
-    exchange = Exchange()
-    exchange.add('food', 'wealth', 10)
-    exchange.add('water', 'wealth', 2)
-
-    mk = Market(exchange)
-    mk.add([p1, p2, p3])
-    mk.solve()
-    print(mk)
-
-    print(mk.size())
+    market = Market(exchange)
+    market.add([p1, p2, p3])
+    market.solve()
+    print(market.stat['size'])

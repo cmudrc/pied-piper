@@ -5,8 +5,8 @@ from piperabm.resource import Resource
 
 class Player:
 
-    def __init__(self, agent, source, demand, wallet):
-        self.index = deepcopy(agent)
+    def __init__(self, index, source, demand, wallet):
+        self.index = deepcopy(index)
         self.source = deepcopy(source)
         self.demand = deepcopy(demand)
         self.wallet = deepcopy(wallet)

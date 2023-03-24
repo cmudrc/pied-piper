@@ -47,7 +47,7 @@ class Economy:
                     demand = resource.demand()
                     wallet = agent.balance
                     player = Player(
-                        agent=agent.index,
+                        index=agent.index,
                         source=source.current_resource,
                         demand=demand.current_resource,
                         wallet=wallet

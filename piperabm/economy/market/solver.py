@@ -8,11 +8,32 @@ class Solver:
     """
     def __init__(self):
         self.pools = {}
+        self.stat = {
+            'food': {
+                'transactions': [],
+                'total_volume': 0,
+            },
+            'water': {
+                'transactions': [],
+                'total_volume': 0,
+            },
+            'energy': {
+                'transactions': [],
+                'total_volume': 0,
+            },
+            'size': []
+        }
 
     def solve(self):
-        stat = self.solve_biggest_pool()
-        #while True:
-        #    stat = self.solve_biggest_pool()
+        #self.solve_biggest_pool()
+        size = self.size()
+        delta = None
+        while delta is None or delta != 0:
+            #print(size)
+            self.solve_biggest_pool()
+            new_size = self.size()
+            delta = new_size - size
+            size = new_size
 
     def score(self, player, resource_name):
         """
@@ -99,11 +120,10 @@ class Solver:
         Solve the biggest pool
         """
         self.create_pools()
-        #print(len(pools))
         sorted_pools = self.sort_pools()
         if sorted_pools is not None:
             resource = sorted_pools[0] # biggest pool
-            stat = self.solve_single_pool(resource) ######
+            pool_stat = self.solve_single_pool(resource) ######
 
     def update_players(self, resource_name, pool):
         for player in self.players:
@@ -111,34 +131,13 @@ class Solver:
             delta_wallet = bid.delta_wallet(self.exchange.rate(resource_name, 'wealth'))
             if bid_type == 'source':
                 delta_wallet = -delta_wallet
-                player.new_source[resource_name] = bid.new_amount
+                player.new_source[resource_name] += bid.delta_amount()
+                #player.new_demand[resource_name] -= bid.delta_amount()
             else:
-                player.new_demand[resource_name] = bid.new_amount
+                player.new_demand[resource_name] += bid.delta_amount()
+                #player.new_source[resource_name] -= bid.delta_amount()
             player.new_wallet = player.new_wallet + delta_wallet
                 #print(player.index, player.new_source[resource], player.new_demand[resource])
-
-    '''
-    def update_player(self, resource_name):
-        for player in self.players:
-            bid, bid_type = pool.find_bid(player.index)
-            delta_wallet = bid.delta_wallet(self.exchange.rate(resource_name, 'wealth'))
-            if bid_type == 'source':
-                delta_wallet = -delta_wallet
-                player.new_source[resource_name] = bid.new_amount
-            else:
-                player.new_demand[resource_name] = bid.new_amount
-            player.new_wallet = player.new_wallet + delta_wallet
-            #print(player.index, player.new_source[resource_name], player.new_demand[resource_name])        for player in self.players:
-            bid, bid_type = pool.find_bid(player.index)
-            delta_wallet = bid.delta_wallet(self.exchange.rate(resource_name, 'wealth'))
-            if bid_type == 'source':
-                delta_wallet = -delta_wallet
-                player.new_source[resource_name] = bid.new_amount
-            else:
-                player.new_demand[resource_name] = bid.new_amount
-            player.new_wallet = player.new_wallet + delta_wallet
-            #print(player.index, player.new_source[resource_name], player.new_demand[resource_name])
-    '''
 
     def solve_single_pool(self, resource_name):
         pool = self.pools[resource_name]
@@ -152,8 +151,21 @@ class Solver:
         msg = self.log.message__pool_started(resource_name, stat)
         #print(msg)
         """
-        stat = pool.solve()
-
+        pool_stat = pool.solve()
+        ''' update self.stat '''
+        new_transactions = pool_stat['transactions']
+        for new_transaction in new_transactions:
+            self.stat[resource_name]['transactions'].append(new_transaction)
+        self.stat[resource_name]['total_volume'] += pool_stat['total_volume']
+        ''' update players '''
+        if len(self.stat['size']) == 0:
+            self.stat['size'].append(self.size())
+        self.update_players(resource_name, pool)
+        self.stat['size'].append(self.size())
+        # log 
+        #msg = self.log.message__pool_complete(resource_name, stat)
+        #print(msg)
+        '''
         def is_solve_valid(stat):
             result = None
             if stat['total_volume'] > 0:
@@ -161,120 +173,12 @@ class Solver:
             else:
                 result = False
             return result
-
-        if is_solve_valid(stat) is True:
+        
+        if is_solve_valid(pool_stat) is True:
             #print(pool)
             self.update_players(resource_name, pool) #######
-            ''' log '''
+            # log 
             msg = self.log.message__pool_complete(resource_name, stat)
             #print(msg)
-        return stat
-
-
-
-
-class OldSolver:
-
-    def solve(self):
-        """
-        Solve the resource allocation problem for the pool of players
-        """
-        def create_pools():
-            """
-            Create a dictionary in form of {resource: Pool()} of current state
-            """
-            pools = {}
-            for resource in self.all_resources():
-                p = Pool()
-                for player in self.players:
-                    t_s = self.total_source(resource)
-                    #t_d = self.total_demand(resource)
-                    t_d_a = self.total_actual_demand(resource)
-                    player_source = player.new_source[resource]
-                    player_actual_demand = player.actual_demand(self.exchange)
-                    player_demand = player_actual_demand[resource]
-                    others_source = t_s - player_source
-                    others_demand = t_d_a - player_demand
-                    seller_score = others_demand * player_source
-                    buyer_score = others_source * player_demand
-                    if seller_score >= buyer_score:
-                        bid = Bid(agent=player.index, amount=player_source)
-                        p.add_source(bid)
-                    else:
-                        bid = Bid(agent=player.index, amount=player_demand)
-                        p.add_demand(bid)
-                pools[resource] = p
-            return pools
-
-        def sort_pools(pools):
-            pools_score = {}
-            result = None
-            for resource_name in pools:
-                pool = pools[resource_name]
-                size_source, size_demand = pool.size()
-                pools_score[resource_name] = size_source + size_demand
-                sorted_pools = sorted(pools_score.items(), key=lambda x:x[1], reverse=True)
-                sorted_pools = list(list(zip(*sorted_pools))[0])
-                result = sorted_pools
-            #print(pools_score)
-            return result
-        
-        def solve_single(pools, resource):
-            pool = pools[resource]
-            sellers, buyers = pool.all_participants()
-            ''' log '''
-            stat = {
-                'sellers': sellers,
-                'buyers': buyers
-            }
-            msg = self.log.message__pool_started(resource, stat)
-            #print(msg)
-            stat = pool.solve()
-            #print(pool)
-            for player in self.players:
-                bid, bid_type = pool.find_bid(player.index)
-                delta_wallet = bid.delta_wallet(self.exchange.rate(resource, 'wealth'))
-                if bid_type == 'source':
-                    delta_wallet = -delta_wallet
-                    player.new_source[resource] = bid.new_amount
-                else:
-                    player.new_demand[resource] = bid.new_amount
-                player.new_wallet = player.new_wallet + delta_wallet
-                #print(player.index, player.new_source[resource], player.new_demand[resource])
-            ''' log '''
-            msg = self.log.message__pool_complete(resource, stat)
-            #print(msg)
-
-        #for resource in sorted_pools:
-        #    solve_single(pools, resource)
-        #for i in range(len(self.all_resources())):
-        #    pass
-        
-        def check_stagnation(previous_pools, current_pools):
-            result = True
-            for resource_name in previous_pools:
-                if previous_pools[resource_name] != current_pools[resource_name]:
-                    result = False
-            print(result)
-            return result
-
-        def solve_step():
-            pools = create_pools()
-            #print(len(pools))
-            sorted_pools = sort_pools(pools)
-            if sorted_pools is not None:
-                resource = sorted_pools[0]
-                solve_single(pools, resource)
-            return pools
-
-        #previous_pools = solve_step()
-        #current_pools = solve_step()
-        solve_step()
-        solve_step()
-        solve_step()
-        #while not check_stagnation(previous_pools, current_pools):
-        #    previous_pools = deepcopy(current_pools)
-        #    current_pools = solve_step()
-
-        stat = {}
-        return stat
+        '''
+        return self.stat
