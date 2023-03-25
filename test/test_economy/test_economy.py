@@ -47,10 +47,10 @@ class TestEconomyClass(unittest.TestCase):
 
     def test_solve_biggest_market(self):
         eco = deepcopy(self.eco)
-        print(eco)
+        #print(eco)
         stat = eco.solve_biggest_market()
-        #print(stat)
-        print(eco)
+        print(stat)
+        #print(eco)
 
 
 if __name__ == "__main__":

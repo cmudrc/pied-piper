@@ -103,6 +103,8 @@ class Economy:
             agent = self.find_agent(index)
             new_resource, remaining = agent.resource - delta_source
             agent.resource = new_resource
+            new_resource, remaining = agent.resource + delta_demand
+            agent.resource = new_resource
             new_balance = agent.balance - delta_wallet
             agent.balance = new_balance
         '''

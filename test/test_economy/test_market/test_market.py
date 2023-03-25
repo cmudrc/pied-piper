@@ -4,6 +4,9 @@ from copy import deepcopy
 from piperabm.economy import Exchange
 from piperabm.economy.market import Player, Market
 
+from piperabm.society.agent.sample import agent_0, agent_1
+from piperabm.economy.exchange.sample import exchange_0 as exchange
+
 
 class TestMarketClass_Single(unittest.TestCase):
     """
@@ -78,6 +81,7 @@ class TestMarketClass_Single(unittest.TestCase):
     def test_solve(self):
         market = deepcopy(self.market)
         market.solve()
+        #print(market)
         #print(market.stat)
 
         agent_index = 1
@@ -204,11 +208,17 @@ class TestMarketClass_Multiple(unittest.TestCase):
         expected_result = ['food', 'water']
         self.assertListEqual(result, expected_result)
 
-    def test_solve_single_pool(self): ###### change to test_biggest_pool
+    def test_biggest_pool(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        biggest_pool_name = market.biggest_pool()
+        self.assertEqual(biggest_pool_name, 'food')
+
+    def test_solve_pool(self): ###### change to test_biggest_pool
         market = deepcopy(self.market)
         market.create_pools()
 
-        market.solve_single_pool('food')
+        market.solve_pool('food')  # biggest pool
         #print(market.stat)
         pool = market.pools['food']
         #print(pool.stat) # >>> transaction from 3 ta 2, amount=2
@@ -227,13 +237,121 @@ class TestMarketClass_Multiple(unittest.TestCase):
         self.assertEqual(buyer.new_source['food'], 2)
         self.assertEqual(buyer.new_demand['food'], 6)
 
-        market.solve_single_pool('water')
-        pool = market.pools['water']
-        #print(pool.stat) # >>> no transactions
+    def test_solve(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+
+        market.solve()
+        #print(market)
+        #print(market.stat['food'])
+
+
+class TestMarketClass_Standard(unittest.TestCase):
+    """
+    2 players, 2 resource each, standard inputs
+    """
+
+    def setUp(self):
+        p1 = Player(
+            1,
+            source=agent_0.resource.source().current_resource,
+            demand=agent_0.resource.demand().current_resource,
+            wallet=agent_0.balance
+        )
+        p2 = Player(
+            2,
+            source=agent_1.resource.source().current_resource,
+            demand=agent_1.resource.demand().current_resource,
+            wallet=agent_1.balance
+            )
+
+        market = Market(exchange)
+        market.add([p1, p2])
+        #print(market)
+
+        ''' pass objects to the tests '''
+        self.market = market
+
+    def test_score(self):
+        player_1 = self.market.find_player(1)
+        buyer_score_1, seller_score_1 = self.market.score(player=player_1, resource_name='food')
+        self.assertListEqual([buyer_score_1, seller_score_1], [700, 400])
+        player_2 = self.market.find_player(2)
+        buyer_score_2, seller_score_2 = self.market.score(player=player_2, resource_name='food')
+        self.assertListEqual([buyer_score_2, seller_score_2], [400, 700])
+
+    def test_create_pool(self):
+        pool = self.market.create_pool('food')
         source_bids = pool.source_bids
-        self.assertEqual(len(source_bids), 3)
+        #print(source_bids[0])
+        self.assertEqual(source_bids[0].amount, 70)
+        self.assertEqual(source_bids[0].new_amount, 70)
         demand_bids = pool.demand_bids
-        self.assertEqual(len(demand_bids), 0)
+        #print(demand_bids[0])
+        self.assertEqual(demand_bids[0].amount, 10)
+        self.assertEqual(demand_bids[0].new_amount, 10)
+
+    def test_sort_pools(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        #print(market.pools['food'].size(), market.pools['water'].size(), market.pools['energy'].size())
+        result = market.sort_pools()
+        expected_result = ['water', 'energy', 'food']
+        self.assertListEqual(result, expected_result)
+
+    def test_biggest_pool(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, 'water')
+
+    def test_solve_biggest_pool(self):
+        market = deepcopy(self.market)
+        
+        # step 1:
+        market.create_pools()
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, 'water')
+        stat = market.solve_biggest_pool()
+        #print(len(stat[biggest_pool]['transactions']))
+        volume = stat[biggest_pool]['transactions'][0]['volume']
+        _from = stat[biggest_pool]['transactions'][0]['from_agent_index']
+        _to = stat[biggest_pool]['transactions'][0]['to_agent_index']
+        seller = market.find_player(index=_from)
+        buyer = market.find_player(index=_to)
+        self.assertEqual(seller.source[biggest_pool] - seller.new_source[biggest_pool], volume)
+        self.assertEqual(buyer.demand[biggest_pool] -  buyer.new_demand[biggest_pool], volume)
+        self.assertEqual(seller.new_wallet - seller.wallet, volume*exchange.rate(biggest_pool, 'wealth'))
+        self.assertEqual(buyer.wallet - buyer.new_wallet, volume*exchange.rate(biggest_pool, 'wealth'))
+        #print(market)
+
+        market.create_pools()
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, 'energy')
+        stat = market.solve_biggest_pool()
+        #print(len(stat[biggest_pool]['transactions']))
+        volume = stat[biggest_pool]['transactions'][0]['volume']
+        _from = stat[biggest_pool]['transactions'][0]['from_agent_index']
+        _to = stat[biggest_pool]['transactions'][0]['to_agent_index']
+        seller = market.find_player(index=_from)
+        buyer = market.find_player(index=_to)
+        self.assertEqual(seller.source[biggest_pool] - seller.new_source[biggest_pool], volume)
+        self.assertEqual(buyer.demand[biggest_pool] -  buyer.new_demand[biggest_pool], volume)
+        self.assertEqual(seller.new_wallet - seller.wallet, volume*exchange.rate(biggest_pool, 'wealth'))
+        self.assertEqual(buyer.wallet - buyer.new_wallet, volume*exchange.rate(biggest_pool, 'wealth'))
+        #print(stat)
+
+        market.create_pools()
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, 'energy')
+        #stat = market.solve_biggest_pool()
+        #print(stat)
+
+    def test_solve(self):
+        market = deepcopy(self.market)
+        stat = market.solve()
+        #print(stat[3]['food'])
+        #print(stat[0]['size'])
 
 
 if __name__ == "__main__":

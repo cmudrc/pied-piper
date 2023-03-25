@@ -118,16 +118,24 @@ class Solver:
         #print(pools_score)
         return result
     
+    def biggest_pool(self):
+        """
+        Return biggest pool
+        """
+        resource_name = None
+        self.create_pools()
+        sorted_pools = self.sort_pools()
+        if sorted_pools is not None:
+            resource_name = sorted_pools[0]
+        return resource_name
+
     def solve_biggest_pool(self):
         """
         Solve the biggest pool
         """
         stat = {}
-        self.create_pools()
-        sorted_pools = self.sort_pools()
-        if sorted_pools is not None:
-            resource = sorted_pools[0] # biggest pool
-            stat = self.solve_single_pool(resource) ######
+        resource_name = self.biggest_pool()
+        stat = self.solve_pool(resource_name)
         return stat
 
     def update_players(self, resource_name, pool):
@@ -142,9 +150,8 @@ class Solver:
                 player.new_demand[resource_name] += bid.delta_amount()
                 #player.new_source[resource_name] -= bid.delta_amount()
             player.new_wallet = player.new_wallet + delta_wallet
-                #print(player.index, player.new_source[resource], player.new_demand[resource])
 
-    def solve_single_pool(self, resource_name):
+    def solve_pool(self, resource_name):
         pool = self.pools[resource_name]
         """
         sellers, buyers = pool.all_participants()
@@ -157,33 +164,18 @@ class Solver:
         #print(msg)
         """
         pool_stat = pool.solve()
+        #print(resource_name, pool)
         ''' update self.stat '''
+        if len(self.stat['size']) == 0:
+            self.stat['size'].append(self.size())
         new_transactions = pool_stat['transactions']
         for new_transaction in new_transactions:
             self.stat[resource_name]['transactions'].append(new_transaction)
         self.stat[resource_name]['total_volume'] += pool_stat['total_volume']
         ''' update players '''
-        if len(self.stat['size']) == 0:
-            self.stat['size'].append(self.size())
         self.update_players(resource_name, pool)
         self.stat['size'].append(self.size())
         # log 
         #msg = self.log.message__pool_complete(resource_name, stat)
         #print(msg)
-        '''
-        def is_solve_valid(stat):
-            result = None
-            if stat['total_volume'] > 0:
-                result = True
-            else:
-                result = False
-            return result
-        
-        if is_solve_valid(pool_stat) is True:
-            #print(pool)
-            self.update_players(resource_name, pool) #######
-            # log 
-            msg = self.log.message__pool_complete(resource_name, stat)
-            #print(msg)
-        '''
         return self.stat

@@ -178,6 +178,36 @@ class TestPoolClass_3(unittest.TestCase):
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
         #print(pool.stat)
+
+
+class TestPoolClass_Standard(unittest.TestCase):
+    """
+    Test based on standard samples
+    """
+
+    def setUp(self):
+        from piperabm.society.agent.sample import agent_0, agent_1
+        from piperabm.economy.exchange.sample import exchange_0 as exchange
+
+        amount = agent_0.resource.max_resource['food'] - agent_0.resource.current_resource['food']
+        max_amount = agent_0.balance / exchange.rate('food', 'wealth')
+        if amount > max_amount:
+            amount = max_amount
+        b1 = Bid(agent=agent_0.index, amount=amount)
+
+        amount = agent_1.resource.current_resource['food']
+        b2 = Bid(agent=agent_1.index, amount=amount)
+
+        pool = Pool()
+        pool.add_source([b2])
+        pool.add_demand([b1])
+        self.pool = pool
+
+    def test_solve(self):
+        pool = deepcopy(self.pool)
+        pool.solve()
+        #print(pool.stat)
+        #print(pool)
     
 
 if __name__ == "__main__":
