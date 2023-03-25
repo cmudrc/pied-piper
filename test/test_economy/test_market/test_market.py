@@ -209,6 +209,7 @@ class TestMarketClass_Multiple(unittest.TestCase):
         market.create_pools()
 
         market.solve_single_pool('food')
+        #print(market.stat)
         pool = market.pools['food']
         #print(pool.stat) # >>> transaction from 3 ta 2, amount=2
         source_bids = pool.source_bids

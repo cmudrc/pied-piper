@@ -26,14 +26,17 @@ class Solver:
 
     def solve(self):
         #self.solve_biggest_pool()
+        stat = []
         size = self.size()
         delta = None
         while delta is None or delta != 0:
             #print(size)
-            self.solve_biggest_pool()
+            pool_stat = self.solve_biggest_pool()
+            stat.append(pool_stat)
             new_size = self.size()
             delta = new_size - size
             size = new_size
+        return stat
 
     def score(self, player, resource_name):
         """
@@ -119,11 +122,13 @@ class Solver:
         """
         Solve the biggest pool
         """
+        stat = {}
         self.create_pools()
         sorted_pools = self.sort_pools()
         if sorted_pools is not None:
             resource = sorted_pools[0] # biggest pool
-            pool_stat = self.solve_single_pool(resource) ######
+            stat = self.solve_single_pool(resource) ######
+        return stat
 
     def update_players(self, resource_name, pool):
         for player in self.players:

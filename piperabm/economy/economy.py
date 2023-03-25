@@ -65,31 +65,47 @@ class Economy:
         for key in markets:
             market = markets[key]
             market_sizes[key] = market.size()
+        #print(market_sizes)
         sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
         sorted_markets = list(list(zip(*sorted_markets))[0])
         return sorted_markets
 
-    def solve_biggest(self):
-        """
-        Solve and update the biggest market
-        """
+    def biggest_market(self):
         markets = self.create_markets()
         sorted_markets = self.sort_markets(markets)
         biggest_market = markets[sorted_markets[0]]
+        return biggest_market
+
+    def solve_biggest_market(self):
+        """
+        Solve and update the biggest market
+        """
+        biggest_market = self.biggest_market()
         stat = biggest_market.solve()
-        self.update_agents(markets)
+        #print(stat)
+        self.update_agents(biggest_market)
+        return stat
 
     def solve(self):
         """
         Solve until stagnation
         """
         for _ in range(5):
-            self.solve_biggest()
+            stat = self.solve_biggest_market()
 
-    def update_agents(self, markets):
+    def update_agents(self, biggest_market):
         """
         Update agents info based on the final result of the solution
         """
+        for player in biggest_market.players:
+            delta_source, delta_demand, delta_wallet = player.to_delta()
+            index = player.index
+            agent = self.find_agent(index)
+            new_resource, remaining = agent.resource - delta_source
+            agent.resource = new_resource
+            new_balance = agent.balance - delta_wallet
+            agent.balance = new_balance
+        '''
         for market_index in markets:
             market = markets[market_index]
             for player in market.players:
@@ -100,6 +116,7 @@ class Economy:
                 agent.resource = new_resource
                 new_balance = agent.balance - delta_wallet
                 agent.balance = new_balance
+        '''
 
     def __str__(self):
         txt = ''
