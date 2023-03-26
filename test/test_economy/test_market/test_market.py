@@ -353,14 +353,13 @@ class TestMarketClass_Standard(unittest.TestCase):
         biggest_pool = market.biggest_pool()
         self.assertEqual(biggest_pool, 'energy')
         stat = market.solve_biggest_pool()
-        print(stat)
+        #print(stat)
 
     def test_solve(self):
         market = deepcopy(self.market)
         stat = market.solve()
+        #print(stat)
         #print(market)
-        #print(stat[3]['food'])
-        #print(stat[0]['size'])
 
 
 if __name__ == "__main__":
