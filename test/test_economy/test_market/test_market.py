@@ -329,9 +329,11 @@ class TestMarketClass_Standard(unittest.TestCase):
 
         # step 2:
         market.create_pools()
+        #print(market)
         biggest_pool = market.biggest_pool()
         self.assertEqual(biggest_pool, 'food')
         stat = market.solve_biggest_pool()
+        #print(market)
         #print(len(stat[biggest_pool]['transactions']))
         volume = stat[biggest_pool]['transactions'][0]['volume']
         _from = stat[biggest_pool]['transactions'][0]['from_agent_index']
@@ -342,21 +344,21 @@ class TestMarketClass_Standard(unittest.TestCase):
         #print(buyer, seller)
         self.assertEqual(seller.source[biggest_pool] - seller.new_source[biggest_pool], volume)
         self.assertEqual(buyer.demand[biggest_pool] -  buyer.new_demand[biggest_pool], volume)
-        print(seller.new_wallet, seller.wallet) ######
-        print(buyer.new_wallet, buyer.wallet)
-        self.assertEqual(seller.new_wallet - seller.wallet, volume*exchange.rate(biggest_pool, 'wealth'))
-        self.assertEqual(buyer.wallet - buyer.new_wallet, volume*exchange.rate(biggest_pool, 'wealth'))
+        self.assertEqual(seller.new_wallet - 0, volume*exchange.rate(biggest_pool, 'wealth'))
+        self.assertEqual(300 - buyer.new_wallet, volume*exchange.rate(biggest_pool, 'wealth'))
         #print(stat)
 
-        #market.create_pools()
-        #biggest_pool = market.biggest_pool()
-        #self.assertEqual(biggest_pool, 'energy')
-        #stat = market.solve_biggest_pool()
-        #print(stat)
+        market.create_pools()
+        #print(market)
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, 'energy')
+        stat = market.solve_biggest_pool()
+        print(stat)
 
     def test_solve(self):
         market = deepcopy(self.market)
         stat = market.solve()
+        #print(market)
         #print(stat[3]['food'])
         #print(stat[0]['size'])
 
