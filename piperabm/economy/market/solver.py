@@ -75,6 +75,7 @@ class Solver:
             amount = player.actual_demand(self.exchange)[resource_name]
             bid = Bid(agent=player.index, amount=amount)
             type = 'demand'
+        #print(player.index, bid, type)
         return bid, type
 
     def create_pool(self, resource_name):
@@ -141,15 +142,16 @@ class Solver:
     def update_players(self, resource_name, pool):
         for player in self.players:
             bid, bid_type = pool.find_bid(player.index)
-            delta_wallet = bid.delta_wallet(self.exchange.rate(resource_name, 'wealth'))
+            delta_amount, delta_wallet = bid.to_delta(self.exchange.rate(resource_name, 'wealth'))
+            #delta_wallet = bid.delta_wallet(self.exchange.rate(resource_name, 'wealth'))
             if bid_type == 'source':
-                delta_wallet = -delta_wallet
-                player.new_source[resource_name] += bid.delta_amount()
+                player.new_source[resource_name] += delta_amount
                 #player.new_demand[resource_name] -= bid.delta_amount()
+                player.new_wallet -= delta_wallet
             else:
-                player.new_demand[resource_name] += bid.delta_amount()
+                player.new_demand[resource_name] += delta_amount
                 #player.new_source[resource_name] -= bid.delta_amount()
-            player.new_wallet = player.new_wallet + delta_wallet
+                player.new_wallet += delta_wallet
 
     def solve_pool(self, resource_name):
         pool = self.pools[resource_name]

@@ -11,6 +11,9 @@ class Bid:
         self.amount = amount
         self.new_amount = deepcopy(amount)
 
+    def to_delta(self, exchange_rate):
+        return self.delta_amount(), self.delta_wallet(exchange_rate)
+
     def delta_amount(self):
         """
         Return diff between starting state and current state of bid

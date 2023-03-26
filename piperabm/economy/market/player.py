@@ -47,7 +47,7 @@ class Player:
         """
         player_demand = deepcopy(self.new_demand)
         for name in self.demand:
-            player_demand_max = self.wallet / exchange_rate.rate(name, 'wealth')
+            player_demand_max = self.new_wallet / exchange_rate.rate(name, 'wealth')
             if player_demand[name] > player_demand_max:
                 player_demand[name] = player_demand_max
         return player_demand
