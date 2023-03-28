@@ -1,9 +1,9 @@
-def calculate_fuel_factor(society, path_graph, agent, route):
+def calculate_fuel_factor(society, path_graph, agent_index, route):
     """
     Ratio of required fuel until destination to agent's current resource
     """
-    resource = society.agent_info(agent, 'resource')
-    transportation = society.agent_info(agent, 'transportation')
+    resource = society.agent_info(agent_index, 'resource')
+    transportation = society.agent_info(agent_index, 'transportation')
     path = path_graph.edge_info(route[0], route[1], 'path')
     fuel = path.total_fuel(transportation)
     result = fuel / resource
@@ -15,7 +15,7 @@ if __name__ == "__main__":
     from piperabm.unit import Date, DT
 
     agents = soc.all_agents()
-    agent = agents[0]
+    agent_index = agents[0]
     start_date = Date.today() + DT(days=1)
     end_date = start_date + DT(days=1)
     path_graph = soc.env.to_path_graph(start_date, end_date)
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     factor = calculate_fuel_factor(
         society=soc,
         path_graph=path_graph,
-        agent=agent,
+        agent_index=agent_index,
         route=route
     )
     print(factor)

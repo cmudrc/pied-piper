@@ -5,9 +5,9 @@ from piperabm.resource import resource_sum
 
 class MarketFactor:
 
-    def __init__(self, society, agent, route):
+    def __init__(self, society, agent_index, route):
         self.society = society
-        self.agent = agent
+        self.agent_index = agent_index
         self.route = route
         self.participants = self.trade_participants(target=route[1])
 
@@ -19,7 +19,7 @@ class MarketFactor:
         result = None
         others = deepcopy(self.participants)
         society = self.society
-        agent = self.agent
+        agent = self.agent_index
         if agent in others: others.remove(agent)
         others_source_list = []
         for other in others:
@@ -36,7 +36,7 @@ class MarketFactor:
         result = None
         others = deepcopy(self.participants)
         society = self.society
-        agent = self.agent
+        agent = self.agent_index
         if agent in others: others.remove(agent)
         others_demand_list = []
         for other in others:
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     from piperabm.unit import Date, DT
 
     agents = soc.all_agents()
-    agent = agents[0]
+    agent_index = agents[0]
     #start_date = Date.today() + DT(days=1)
     #end_date = start_date + DT(days=1)
     #path_graph = soc.env.to_path_graph(start_date, end_date)
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     route = (0, 1)
     market_factor_calculator = MarketFactor(
         society=soc,
-        agent=agent,
+        agent_index=agent_index,
         route=route
     )
     market_factor = market_factor_calculator.calculate()

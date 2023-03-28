@@ -1,6 +1,5 @@
 from piperabm.unit import Date
 from piperabm.economy import Economy
-from piperabm.actions import Trade, Move, Walk
 
 
 class Update:
@@ -20,9 +19,6 @@ class Update:
         duration = end_date - start_date
         for agent in agents:
             agent.idle_time_pass(duration)
-        for index in self.all_agents(type='alive'):
-            agent = self.find_agent(index)
-            agent.idle_time_pass(duration)
             agent.is_alive()
             #if agent.alive is False:
             #    ''' log '''
@@ -38,25 +34,7 @@ class Update:
                 # decide
                 path_graph = self.env.path_graph
                 agent.observe(path_graph=path_graph, society=self)
-                route = agent.select_best_route()
-                if route is not None:
-                    path = path_graph.edge_info(*route, 'path')
-                    move = Move(
-                        start_date=start_date,
-                        path=path,
-                        transportation=Walk()
-                    )
-                    queue.add(move)
-                    trade = Trade(start_date=start_date)
-                    queue.add(trade)
-                    ''' log '''
-                    msg = self.log.message__agent_decided(
-                        route=route,
-                        agent_index=index,
-                        agent_name=self.agent_info(index, 'name'),
-                        agent_pos=self.agent_info(index, 'pos')
-                    )
-                    #print(msg)
+                agent.decide_action(start_date, end_date)
             if queue.is_empty() is False:
                 actions = queue.find_actions(type='move')
                 move = actions[0]
@@ -87,7 +65,7 @@ class Update:
 
         ## do the trade for all settlements
         economy = Economy(
-            agents=agents,
+            agents=participants,
             exchange=self.exchange
         )
         economy.solve()
@@ -98,50 +76,3 @@ class Update:
         for agent in agents:
             if agent.queue.done():
                 agent.queue.reset()
-
-
-        '''
-        markets = {} # {market_index: market instance}
-        for index in self.env.all_nodes('settlement'):
-            market = Market(self.exchange)
-            player_index_list = self.all_agents_from(index, participants)
-            players_list = []
-            for player_index in player_index_list:
-                resource = self.agent_info(player_index, 'resource')
-                source = resource.source()
-                demand = resource.demand()
-                wallet = self.agent_info(player_index, 'wealth')
-                player = Player(
-                    agent=player_index,
-                    source=source.current_resource,
-                    demand=demand.current_resource,
-                    wallet=wallet
-                )
-                players_list.append(player)
-            market.add(players_list)
-            markets[index] = market
-        
-        ## sort markets based on their size
-        market_sizes = {} # {market_index: market_sze}
-        for key in markets:
-            market = markets[key]
-            market_sizes[key] = market.size()
-        sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
-        sorted_markets = list(list(zip(*sorted_markets))[0])
-        
-        ## solve markets
-        for key in sorted_markets:
-            markets[key].solve()
-
-        ## update agent properties
-        for key in markets:
-            for player in markets[key].players:
-                delta_source, delta_demand, delta_wallet = player.to_delta()
-                index = player.index
-                resource = self.agent_info(index, 'resource')
-                new_resource, remaining = resource - delta_source
-                self.set_agent_info(index, 'resource', new_resource)
-                wealth = self.agent_info(index, 'wealth')
-                new_wealth = wealth - delta_wallet
-                self.set_agent_info(index, 'wealth', new_wealth)
-        '''

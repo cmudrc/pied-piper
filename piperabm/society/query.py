@@ -12,19 +12,23 @@ class Query:
         Return a list of all agents' indexes
         """
         def check_active(agent_index):
-            agent = self.get_agents(agent_index)
+            agents = self.get_agents([agent_index])
+            agent = agents[0]
             agent_origin_index = agent.origin_node
             is_active = self.env.link_graph.node_info(agent_origin_index, 'currently_active')
             return is_active
-            #print(agent_origin_index, is_active)
-            #agent.active = is_active
+        
+        def check_alive(agent_index):
+            agents = self.get_agents([agent_index])
+            agent = agents[0]
+            return agent.alive
 
         result = []
         if type == 'all':
             result = self.index_list
         elif type == 'alive':
             for index in self.index_list:
-                if self.agent_info(index, 'alive') is True:
+                if check_alive(index):
                     result.append(index)
         elif type == 'active':
             for index in self.index_list:
@@ -33,15 +37,15 @@ class Query:
         elif type == 'active&alive':
             for index in self.index_list:
                 if check_active(index) \
-                    and self.agent_info(index, 'alive') is True:
+                    and check_alive(index):
                     result.append(index)
         return result
     
     def agent_info(self, agent, property):
         result = None
-        agent = self.find_agent(agent)
-        if agent is not None:
-            result = getattr(agent, property)
+        agent_index = self.find_agent(agent)
+        if agent_index is not None:
+            result = getattr(agent_index, property)
         return result
     
     def set_agent_info(self, agent, property, val):

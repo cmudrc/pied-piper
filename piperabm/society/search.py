@@ -65,7 +65,7 @@ class Search:
         for index in index_list:
             agent = get_single_agent(index)
             result.append(agent)
-        if len(result) == 1: result = result[0]
+        #if len(result) == 1: result = result[0]
         return result
 
         

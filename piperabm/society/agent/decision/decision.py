@@ -1,3 +1,5 @@
+from piperabm.actions import Trade, Move, Walk
+
 try: from .factors import calculate_fuel_factor, MarketFactor
 except: from factors import calculate_fuel_factor, MarketFactor
 
@@ -57,20 +59,41 @@ class Decision:
 
         market_factor_calculator = MarketFactor(
             society=self.society,
-            agent=self.index,
+            agent_index=self.index,
             route=route
         )
         market_factor = market_factor_calculator.calculate()
         fuel_factor = calculate_fuel_factor(
             society=self.society,
             path_graph=self.path_graph,
-            agent=self.index,
+            agent_index=self.index,
             route=route
         )
         return calculate_score(
             market_factor,
             fuel_factor
         )
+
+    def decide_action(self, start_date, end_date):
+        route = self.select_best_route()
+        if route is not None:
+            path = self.path_graph.edge_info(*route, 'path')
+            move = Move(
+                start_date=start_date,
+                path=path,
+                transportation=Walk()
+            )
+            self.queue.add(move)
+            trade = Trade(start_date=start_date)
+            self.queue.add(trade)
+            ''' log '''
+            #msg = self.log.message__agent_decided(
+            #    route=route,
+            #    agent_index=index,
+            #    agent_name=self.agent_info(index, 'name'),
+            #    agent_pos=self.agent_info(index, 'pos')
+            #)
+            #print(msg)
 
 
 if __name__ == "__main__":
