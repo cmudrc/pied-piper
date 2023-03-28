@@ -20,11 +20,12 @@ class Update:
         duration = end_date - start_date
         for agent in agents:
             agent.idle_time_pass(duration)
-        for index in self.all_agents(type='alive'): ###### index or agent
+        for index in self.all_agents(type='alive'):
             agent = self.find_agent(index)
             agent.idle_time_pass(duration)
-            if agent.alive is False:
-                ''' log '''
+            agent.is_alive()
+            #if agent.alive is False:
+            #    ''' log '''
                 #msg = self.log.message__agent_died(agent)
                 #print(msg)
 
@@ -61,16 +62,17 @@ class Update:
                 move = actions[0]
                 ## new resource
                 fuel_consumption = move.how_much_fuel(start_date, end_date)
-                resource = self.agent_info(index, 'resource')
-                new_resource, remaining = resource - fuel_consumption
-                self.set_agent_info(index, 'resource', new_resource)
+                new_resource, remaining = agent.resource - fuel_consumption
+                agent.resource = new_resource
                 ## new pos
                 new_pos = move.pos(date=end_date)
-                self.set_agent_info(index, 'pos', new_pos)
-                new_settlement = self.env.find_node(new_pos)
-                if new_settlement is not None:
-                    self.set_agent_info(index, 'settlement', new_settlement)
-                if new_resource.has_zero():
+                agent.pos = new_pos
+                new_settlement = self.env.find_node(new_pos, report=False)
+                if new_settlement is None:
+                    agent.current_node = None
+                else:
+                    agent.current_node = new_settlement
+                if new_resource.has_zero(): #####
                     self.set_agent_info(index, 'active', False) ## dead
 
         ## mark agents who are ready for participating in trade
@@ -88,11 +90,14 @@ class Update:
             agents=agents,
             exchange=self.exchange
         )
+        economy.solve()
 
         ## finalize
-        for index in self.all_agents(type='active'):
-            if queue.done():
-                queue.reset()
+        agents_indexes = self.all_agents(type='active&alive')
+        agents = self.get_agents(agents_indexes)
+        for agent in agents:
+            if agent.queue.done():
+                agent.queue.reset()
 
 
         '''

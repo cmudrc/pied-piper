@@ -63,9 +63,11 @@ class Agent(Decision):
         Check whether agent is alive
         """
         result = True
-        #if self.resource.has_zero(['food', 'water']):
-        if self.resource.has_zero(VITAL_RESOURCES):
+        resource_zeros = self.resource.find_zeros(VITAL_RESOURCES)
+        if len(resource_zeros) > 0:
             result = False
+            self.alive = False
+            self.death_reason = resource_zeros
         return result
     
     def reduce_resource(self, resource: Resource) -> None:
@@ -83,12 +85,6 @@ class Agent(Decision):
             duration = duration.total_seconds()
         if self.alive is True:
             self.reduce_resource(self.idle_fuel_rate * duration)
-            if self.is_alive() is False:
-                self.alive = False
-                self.death_reason = self.resource.find_zeros(VITAL_RESOURCES)
-
-    def decide(self):
-        pass
         
     def __str__(self) -> str:
         txt = 'agent' + ' ' + str(self.index)
