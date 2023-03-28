@@ -3,7 +3,9 @@ from copy import deepcopy
 from piperabm.resource import Resource
 from piperabm.actions.action.transportation import Walk
 from piperabm.actions import Queue
-from piperabm.unit import Unit, DT
+from piperabm.unit import DT
+try: from .config import *
+except: from config import *
 
 
 class Agent:
@@ -89,18 +91,6 @@ class Agent:
             txt += '(' + self.name + ')'
         return txt
 
-
-HUMAN_IDLE_FUEL_RATE = Resource(
-    {
-        'food': Unit(2, 'kg/day').to_SI(),
-        'water': Unit(4, 'kg/day').to_SI(),
-        'energy': 0
-    }
-)
-
-DEFAULT_RESOURCE = Resource(['food', 'water', 'energy'])
-
-VITAL_RESOURCES = ['food', 'water']
 
 if __name__ == "__main__":
     resource = Resource(
