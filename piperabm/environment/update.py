@@ -132,3 +132,5 @@ class Update:
         """
         self._update_all_edges(start_date, end_date)
         self._update_all_nodes(start_date, end_date)
+        self.to_link_graph(start_date, end_date)
+        self.to_path_graph(start_date, end_date)

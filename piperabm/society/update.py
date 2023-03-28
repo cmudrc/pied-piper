@@ -16,12 +16,10 @@ class Update:
         """
         Update all agents between *start_date* and *end_date*
         """
-        links = self.env.to_link_graph(start_date, end_date)
-        print(links.all_nodes())
+
+        ''' reduce idle energy expenditure '''
         agents_indexes = self.all_agents(type='active&alive')
         agents = self.get_agents(agents_indexes)
-        #print(agents)
-        ''' reduce idle energy expenditure '''
         duration = end_date - start_date
         for agent in agents:
             agent.idle_time_pass(duration)
@@ -34,15 +32,18 @@ class Update:
                 #print(msg)
 
         ''' calculate new position and reduce movement energy expenditure '''   
-        for index in self.all_agents(type='active'): # and alive?
-            queue = self.agent_info(index, 'queue')
+        agents_indexes = self.all_agents(type='active&alive')
+        agents = self.get_agents(agents_indexes)
+        for agent in agents:
+            queue = agent.queue
             if queue.is_empty() is True:
+                agent.decide() ##########
                 # decide
                 path_graph = self.env.to_path_graph(start_date, end_date)
                 decision = Decision(
                     path_graph=path_graph,
                     society=self,
-                    agent=index
+                    agent=agent.index
                 )
                 route = decision.select_best_route()
                 if route is not None:

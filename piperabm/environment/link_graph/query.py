@@ -15,6 +15,11 @@ class Query:
         nodes_list = list(self.G)
         if type == 'all':
             all_index = nodes_list
+        elif type == 'currently_active': # active settlements
+            for node in nodes_list:
+                if 'settlement' == self.node_info(node, 'type'):
+                    if self.node_info(node, 'currently_active'):
+                        all_index.append(node)
         else:
             for node in nodes_list:
                 if type == self.node_info(node, 'type'):

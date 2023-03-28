@@ -13,21 +13,16 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 
 
-[MODEL] -> BURNOUT: [2020-01-01 00:00:00 - 2020-01-02 00:00:00]
+[MODEL] -> BURNOUT: [2020-01-01 00:00:00 - 2020-01-01 00:00:00]
+[MODEL] -> STEP: 0, [2020-01-01 00:00:00 - 2020-01-01 12:00:00]
 	[ENVIRONMENT] -> INITIATED: link from settlement node 0 (name: "Settlement 1", pos: [-60, 40]) to cross node 3 (pos: [0, 0])
 	[ENVIRONMENT] -> INITIATED: link from settlement node 1 (name: "Settlement 2", pos: [200, 20]) to cross node 4 (pos: [80, 60])
 	[ENVIRONMENT] -> INITIATED: link from settlement node 2 (name: "Settlement 3", pos: [100, -180]) to cross node 3 (pos: [0, 0])
 	[ENVIRONMENT] -> INITIATED: link from cross node 3 (pos: [0, 0]) to cross node 4 (pos: [80, 60])
 	[ENVIRONMENT] -> INITIATED: settlement node 1 (name: "Settlement 2", pos: [200, 20])
 	[ENVIRONMENT] -> INITIATED: settlement node 2 (name: "Settlement 3", pos: [100, -180])
-[MODEL] -> STEP: 0, [2020-01-02 00:00:00 - 2020-01-02 12:00:00]
-[MODEL] -> STEP: 1, [2020-01-02 12:00:00 - 2020-01-03 00:00:00]
-[MODEL] -> STEP: 2, [2020-01-03 00:00:00 - 2020-01-03 12:00:00]
+[MODEL] -> STEP: 1, [2020-01-01 12:00:00 - 2020-01-02 00:00:00]
+[MODEL] -> STEP: 2, [2020-01-02 00:00:00 - 2020-01-02 12:00:00]
+[MODEL] -> STEP: 3, [2020-01-02 12:00:00 - 2020-01-03 00:00:00]
+[MODEL] -> STEP: 4, [2020-01-03 00:00:00 - 2020-01-03 12:00:00]
 	[ENVIRONMENT] -> INITIATED: settlement node 0 (name: "Settlement 1", pos: [-60, 40])
-[MODEL] -> STEP: 3, [2020-01-03 12:00:00 - 2020-01-04 00:00:00]
-[MODEL] -> STEP: 4, [2020-01-04 00:00:00 - 2020-01-04 12:00:00]
-[MODEL] -> STEP: 5, [2020-01-04 12:00:00 - 2020-01-05 00:00:00]
-[MODEL] -> STEP: 6, [2020-01-05 00:00:00 - 2020-01-05 12:00:00]
-[MODEL] -> STEP: 7, [2020-01-05 12:00:00 - 2020-01-06 00:00:00]
-[MODEL] -> STEP: 8, [2020-01-06 00:00:00 - 2020-01-06 12:00:00]
-[MODEL] -> STEP: 9, [2020-01-06 12:00:00 - 2020-01-07 00:00:00]

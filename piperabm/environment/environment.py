@@ -39,6 +39,8 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         if G is None: self.G = nx.Graph()
         else: self.G = G
         self.links_unit_length = links_unit_length
+        self.link_graph = None # last link_graph
+        self.path_graph = None # last path_graph
         self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
         super().__init__()
 
@@ -59,13 +61,17 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         Convert the environment to "path_graph" object
         """
         link_graph = self.to_link_graph(start_date, end_date)
-        return PathGraph(link_graph)
+        path_graph = PathGraph(link_graph)
+        self.path_graph = path_graph
+        return path_graph
     
     def to_link_graph(self, start_date=None, end_date=None):
         """
         Convert the environment to "link_graph" object
         """
-        return LinkGraph(env=self, start_date=start_date, end_date=end_date)
+        link_graph = LinkGraph(env=self, start_date=start_date, end_date=end_date)
+        self.link_graph = link_graph
+        return link_graph
 
     def __str__(self):
         return str(self.G)
