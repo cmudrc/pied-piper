@@ -100,15 +100,33 @@ class Resource:
         return result
 
     def has_zero(self, resource_names: list = []) -> bool:
-        if len(resource_names) == 0: # check all
-            check_list = self.current_resource
-        else:
-            check_list = resource_names
+        """
+        Check if any of resources in *resource_name* has zero value
+        """
         result = False
-        for name in check_list:
-            if self.is_zero([name]) is True:
+        if len(resource_names) == 0: # check all
+            names_list = self.all_resource_names()
+        else:
+            names_list = resource_names
+        zero_resource_names = self.find_zeros()
+        for name in names_list:
+            if name in zero_resource_names:
                 result = True
                 break
+        return result
+    
+    def find_zeros(self, resource_names: list = []) -> list:
+        """
+        Find resources that have zero amount left
+        """
+        result = []
+        if len(resource_names) == 0: # check all
+            names_list = self.all_resource_names()
+        else:
+            names_list = resource_names
+        for resource_name in names_list:
+            if self.current_resource[resource_name] == 0:
+                result.append(resource_name)
         return result
 
     def val(self, property='current'):

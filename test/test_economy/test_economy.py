@@ -30,7 +30,7 @@ class TestEconomyClass(unittest.TestCase):
     def test_size(self):
         eco = deepcopy(self.eco)
         eco.create_markets()
-        print(eco.size())
+        #print(eco.size())
 
     def test_create_markets(self):
         eco = deepcopy(self.eco)

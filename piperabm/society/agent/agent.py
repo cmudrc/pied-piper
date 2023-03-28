@@ -24,9 +24,11 @@ class Agent:
         self.index = index
         self.name = name
         self.alive = True
+        self.death_reason = None
         ''' location '''
         self.origin_node = origin_node
         self.current_node = deepcopy(origin_node)
+        self.active = False # active is True when their origin_node exist at the moment
         ''' transporation '''
         if transportation is None:
             self.transportation = Walk()
@@ -39,18 +41,17 @@ class Agent:
             self.queue = queue
         ''' assset '''
         if idle_fuel_rate is None or not isinstance(idle_fuel_rate, Resource):
-            self.idle_fuel_rate = deepcopy(human_idle_fuel_rate)
+            self.idle_fuel_rate = deepcopy(HUMAN_IDLE_FUEL_RATE)
         else:
             self.idle_fuel_rate = idle_fuel_rate
         if resource is None or not isinstance(resource, Resource):
-            self.resource = deepcopy(default_resource)
+            self.resource = deepcopy(DEFAULT_RESOURCE)
         else:
             self.resource = resource
         if balance >= 0:
             self.balance = balance
         if wealth_factor >= 0:
-            self.wealth_factor = wealth_factor
-        
+            self.wealth_factor = wealth_factor 
 
     def is_alive(self) -> bool:
         """
@@ -58,7 +59,7 @@ class Agent:
         """
         result = True
         #if self.resource.has_zero(['food', 'water']):
-        if self.resource.has_zero(['food', 'water']):
+        if self.resource.has_zero(VITAL_RESOURCES):
             result = False
         return result
     
@@ -75,7 +76,11 @@ class Agent:
         """
         if isinstance(duration, DT):
             duration = duration.total_seconds()
-        self.reduce_resource(self.idle_fuel_rate * duration)
+        if self.alive is True:
+            self.reduce_resource(self.idle_fuel_rate * duration)
+            if self.is_alive() is False:
+                self.alive = False
+                self.death_reason = self.resource.find_zeros(VITAL_RESOURCES)
         
     def __str__(self) -> str:
         txt = 'agent' + ' ' + str(self.index)
@@ -85,7 +90,7 @@ class Agent:
         return txt
 
 
-human_idle_fuel_rate = Resource(
+HUMAN_IDLE_FUEL_RATE = Resource(
     {
         'food': Unit(2, 'kg/day').to_SI(),
         'water': Unit(4, 'kg/day').to_SI(),
@@ -93,8 +98,9 @@ human_idle_fuel_rate = Resource(
     }
 )
 
-default_resource = Resource(['food', 'water', 'energy'])
+DEFAULT_RESOURCE = Resource(['food', 'water', 'energy'])
 
+VITAL_RESOURCES = ['food', 'water']
 
 if __name__ == "__main__":
     resource = Resource(
@@ -121,4 +127,5 @@ if __name__ == "__main__":
     )
     agent.idle_time_pass(3600 * 24 * 8)
     print(agent.resource)
-    print(agent.is_alive())
+    print('alive: ', agent.alive)
+    print('reason of death: ', agent.death_reason)

@@ -31,7 +31,7 @@ class Search:
 
     def find_agent_index(self, input, report=False):
         """
-        Find and return node index based on input (name, position, or index)
+        Find and return agent index based on input (name, position, or index)
         """
         result = None
         if isinstance(input, str):
@@ -40,9 +40,32 @@ class Search:
             result = self._find_agent_index_by_index(input, report=report)
         return result
     
-    def find_agent(self, agent):
-        result = None
-        index = self.find_agent_index(agent)
-        if index is not None:
-            result = self.G.nodes[index]['agent']
+    def find_agent(self, agent_info):
+        """
+        Return agent object based on its info
+        """
+        index = self.find_agent_index(agent_info)
+        return self.get_agents(index)
+    
+    def get_agents(self, index):
+        """
+        Return agent objects based on their index
+        """
+        def get_single_agent(index):
+            result = None
+            if index is not None:
+                result = self.G.nodes[index]['agent']
+            return result
+        
+        result = []
+        if isinstance(index, int):
+            index_list = [index] # list
+        elif isinstance(index, list):
+            index_list = index
+        for index in index_list:
+            agent = get_single_agent(index)
+            result.append(agent)
+        if len(result) == 1: result = result[0]
         return result
+
+        

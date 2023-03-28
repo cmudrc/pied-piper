@@ -1,5 +1,5 @@
 from piperabm.unit import Date
-from piperabm.economy.market import Market, Player
+from piperabm.economy import Economy
 from piperabm.actions import Trade, Move, Walk
 
 try: from .decision import Decision
@@ -14,28 +14,27 @@ class Update:
 
     def update_elements(self, start_date: Date, end_date: Date):
         """
-        Update all agents
-            start_date: starting date of the time duration
-            end_date: ending date of the time duration
-        """            
-        ## reduce idle energy expenditure
+        Update all agents between *start_date* and *end_date*
+        """
+        links = self.env.to_link_graph(start_date, end_date)
+        print(links.all_nodes())
+        agents_indexes = self.all_agents(type='active&alive')
+        agents = self.get_agents(agents_indexes)
+        #print(agents)
+        ''' reduce idle energy expenditure '''
         duration = end_date - start_date
-        for index in self.all_agents(type='alive'):
+        for agent in agents:
+            agent.idle_time_pass(duration)
+        for index in self.all_agents(type='alive'): ###### index or agent
             agent = self.find_agent(index)
             agent.idle_time_pass(duration)
             if agent.alive is False:
-                deficient_resource = agent.resource.amount_name(amount=0)
                 ''' log '''
-                msg = self.log.message__agent_died(
-                    agent_index=index,
-                    agent_name='',
-                    agent_pos=None,
-                    deficient_resource=deficient_resource
-                )
+                #msg = self.log.message__agent_died(agent)
                 #print(msg)
-        ## calculate new position
-        ## reduce movement energy expenditure     
-        for index in self.all_agents(type='active'):
+
+        ''' calculate new position and reduce movement energy expenditure '''   
+        for index in self.all_agents(type='active'): # and alive?
             queue = self.agent_info(index, 'queue')
             if queue.is_empty() is True:
                 # decide
@@ -82,7 +81,7 @@ class Update:
                     self.set_agent_info(index, 'active', False) ## dead
 
         ## mark agents who are ready for participating in trade
-        participants = []
+        participants = [] # active and alive
         for index in self.all_agents():
             queue = self.agent_info(index, 'queue')
             if queue.is_empty() is False:
@@ -92,6 +91,18 @@ class Update:
                     participants.append(index)
 
         ## do the trade for all settlements
+        economy = Economy(
+            agents=agents,
+            exchange=self.exchange
+        )
+
+        ## finalize
+        for index in self.all_agents(type='active'):
+            if queue.done():
+                queue.reset()
+
+
+        '''
         markets = {} # {market_index: market instance}
         for index in self.env.all_nodes('settlement'):
             market = Market(self.exchange)
@@ -135,8 +146,4 @@ class Update:
                 wealth = self.agent_info(index, 'wealth')
                 new_wealth = wealth - delta_wallet
                 self.set_agent_info(index, 'wealth', new_wealth)
-
-        ## finalize
-        for index in self.all_agents(type='active'):
-            if queue.done():
-                queue.reset()
+        '''

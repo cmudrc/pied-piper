@@ -18,6 +18,15 @@ class Query:
             for index in self.index_list:
                 if self.agent_info(index, 'alive') is True:
                     result.append(index)
+        elif type == 'active':
+            for index in self.index_list:
+                if self.agent_info(index, 'active') is True:
+                    result.append(index)
+        elif type == 'active&alive':
+            for index in self.index_list:
+                if self.agent_info(index, 'active') is True\
+                    and self.agent_info(index, 'alive') is True:
+                    result.append(index)
         return result
     
     def agent_info(self, agent, property):

@@ -102,9 +102,7 @@ class ToGraph:
             for other_index in index_list:
                 if other_index != index and env.G.has_edge(index, other_index):
                     if edge_exists(index, other_index, start_date, end_date):
-                        #print('edge', index, other_index)
                         if index not in self.all_nodes():
-                            #print('node', index)
                             add_node(index, currently_active=False)
                         if other_index not in self.all_nodes():
                             add_node(index, currently_active=False)
