@@ -4,11 +4,13 @@ from piperabm.resource import Resource
 from piperabm.actions.action.transportation import Walk
 from piperabm.actions import Queue
 from piperabm.unit import DT
+try: from .decision import Decision
+except: from decision import Decision
 try: from .config import *
 except: from config import *
 
 
-class Agent:
+class Agent(Decision):
 
     def __init__(
             self,
@@ -28,6 +30,7 @@ class Agent:
         self.alive = True
         self.death_reason = None
         ''' location '''
+        self.pos = None # default: pos of self.origin_node
         self.origin_node = origin_node
         self.current_node = deepcopy(origin_node)
         self.active = False # active is True when their origin_node exist at the moment
@@ -83,6 +86,9 @@ class Agent:
             if self.is_alive() is False:
                 self.alive = False
                 self.death_reason = self.resource.find_zeros(VITAL_RESOURCES)
+
+    def decide(self):
+        pass
         
     def __str__(self) -> str:
         txt = 'agent' + ' ' + str(self.index)
