@@ -20,6 +20,8 @@ class LinkGraph(ToGraph, Query, Graphics):
         self.env = env
         self.G = nx.Graph()
         self.to_graph(start_date, end_date)
+        self.start_date = start_date
+        self.end_date = end_date
 
     def to_path_graph(self):
         """

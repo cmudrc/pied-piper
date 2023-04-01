@@ -1,3 +1,5 @@
+import numpy as np
+
 from piperabm.society import Society
 from piperabm.unit import DT, Date
 from piperabm.log import Log
@@ -16,7 +18,9 @@ class Model(Graphics):
         society: Society,
         step_size=None,
         current_step=0,
-        current_date=None
+        current_date=None,
+        seed=None,
+        seed_state=None
     ):
         self.society = society
         self.env = self.society.env
@@ -27,6 +31,11 @@ class Model(Graphics):
         else: self.current_date = current_date
         self.measures = Measures()
         self.log = Log(prefix='MODEL', indentation_depth=0)
+        if seed is not None:
+            self.seed = seed
+            np.random.seed(self.seed)
+            if seed_state is not None:
+                np.random.set_state(seed_state)
         super().__init__()
 
     def add_step_size(self, step_size):

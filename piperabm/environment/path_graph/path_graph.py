@@ -13,6 +13,8 @@ class PathGraph(ToGraph, Query, Graphics):
         self.env = links_graph.env
         self.G = nx.DiGraph()
         self.to_graph(links_graph)
+        self.start_date = links_graph.start_date
+        self.end_date = links_graph.end_date
 
     def from_node_perspective(self, node):
         result = []

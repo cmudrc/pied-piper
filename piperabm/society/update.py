@@ -44,7 +44,7 @@ class Update:
                 agent.resource = new_resource
                 ## new pos
                 new_pos = move.pos(date=end_date)
-                agent.pos = new_pos
+                agent.pos = new_pos ### when reached?
                 new_settlement = self.env.find_node(new_pos, report=False)
                 if new_settlement is None:
                     agent.current_node = None

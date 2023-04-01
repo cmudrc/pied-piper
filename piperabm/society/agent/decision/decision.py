@@ -6,9 +6,11 @@ except: from factors import calculate_fuel_factor, MarketFactor
 
 class Decision:
 
-    def observe(self, path_graph, society):
-        self.path_graph = path_graph
+    def observe(self, society):
         self.society = society
+        self.path_graph = self.society.env.path_graph
+        self.start_date = self.path_graph.start_date
+        self.end_date = self.path_graph.end_date
 
     def possible_routes(self):
         """
@@ -74,17 +76,17 @@ class Decision:
             fuel_factor
         )
 
-    def decide_action(self, start_date, end_date):
+    def decide_action(self):
         route = self.select_best_route()
         if route is not None:
             path = self.path_graph.edge_info(*route, 'path')
             move = Move(
-                start_date=start_date,
+                start_date=self.start_date,
                 path=path,
                 transportation=Walk()
             )
             self.queue.add(move)
-            trade = Trade(start_date=start_date)
+            trade = Trade(start_date=self.start_date)
             self.queue.add(trade)
             ''' log '''
             #msg = self.log.message__agent_decided(

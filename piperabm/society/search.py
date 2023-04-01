@@ -45,11 +45,12 @@ class Search:
         Return agent object based on its info
         """
         index = self.find_agent_index(agent_info)
-        return self.get_agents(index)
+        agents = self.get_agents(index)
+        return agents[0]
     
-    def get_agents(self, index):
+    def get_agents(self, indexes):
         """
-        Return agent objects based on their index
+        Return agent objects based on their indexes
         """
         def get_single_agent(index):
             result = None
@@ -58,10 +59,10 @@ class Search:
             return result
         
         result = []
-        if isinstance(index, int):
-            index_list = [index] # list
-        elif isinstance(index, list):
-            index_list = index
+        if isinstance(indexes, int):
+            index_list = [indexes] # list
+        elif isinstance(indexes, list):
+            index_list = indexes
         for index in index_list:
             agent = get_single_agent(index)
             result.append(agent)
