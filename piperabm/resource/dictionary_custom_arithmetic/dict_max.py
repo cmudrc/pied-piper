@@ -1,4 +1,7 @@
 def dict_max(dictionary: dict):
+    """
+    Return key that has max value
+    """
     result = None
     for key in dictionary:
         if dictionary[key] is None:

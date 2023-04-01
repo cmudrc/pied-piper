@@ -28,6 +28,7 @@ class TestDecisionClass(unittest.TestCase):
         route = agent.select_best_route()
         self.assertListEqual(routes, [route])
         #print(routes) # [(0, 1)]
+        #print(route) # (0, 1)
         route_score = agent.calculate_route_score(route)
         print(route_score)
 
@@ -37,6 +38,7 @@ class TestDecisionClass(unittest.TestCase):
         route = agent.select_best_route()
         self.assertListEqual(routes, [route])
         #print(routes) # [(1, 0)]
+        #print(route) # (1, 0)
         route_score = agent.calculate_route_score(route)
         print(route_score)
 

@@ -5,9 +5,9 @@ from piperabm.resource import resource_sum
 
 class MarketFactor:
 
-    def __init__(self, society, agent_index, route):
-        self.society = society
-        self.agent_index = agent_index
+    def __init__(self, agent, route):
+        self.society = agent.society
+        self.agent_index = agent.index
         self.route = route
         self.participants = self.trade_participants(target=route[1])
 
@@ -48,26 +48,32 @@ class MarketFactor:
         demand_agent = agent_resource.demand()
         result = demand_others / demand_agent
         return result
-    
+
     def calculate(self):
         source_factor = self.calculate_source_factor()
         demand_factor = self.calculate_demand_factor()
         buyer_factor = source_factor / demand_factor
         seller_factor = demand_factor / source_factor
+        #print(self.agent_index)
+        #print(buyer_factor, seller_factor)
+        #print(buyer_factor.max(), seller_factor.max())
         buyer_factor_max = buyer_factor(buyer_factor.max())
         seller_factor_max = seller_factor(seller_factor.max())
+        #print(buyer_factor_max, seller_factor_max)
+
         def custom_max(val_1, val_2):
             result = None
             if val_1 is not None:
                 if val_2 is not None:
                     result = max(val_1, val_2)
             return result
+        
         return custom_max(buyer_factor_max, seller_factor_max)
 
-
+'''
 if __name__ == "__main__":
-    from piperabm.society.sample import soc_1 as soc
-    from piperabm.unit import Date, DT
+    from piperabm.society.sample import sample_society_0
+    from piperabm.unit import Date
 
     agents = soc.all_agents()
     agent_index = agents[0]
@@ -83,3 +89,4 @@ if __name__ == "__main__":
     )
     market_factor = market_factor_calculator.calculate()
     print(market_factor)
+'''

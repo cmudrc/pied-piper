@@ -60,8 +60,7 @@ class Decision:
             return result
 
         market_factor_calculator = MarketFactor(
-            society=self.society,
-            agent_index=self.index,
+            agent=self,
             route=route
         )
         market_factor = market_factor_calculator.calculate()
