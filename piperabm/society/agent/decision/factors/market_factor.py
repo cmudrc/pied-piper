@@ -8,6 +8,7 @@ class MarketFactor:
     def __init__(self, agent, route):
         self.society = agent.society
         self.agent_index = agent.index
+        self.agent = agent #####
         self.route = route
         self.participants = self.trade_participants(target=route[1])
 
@@ -70,23 +71,22 @@ class MarketFactor:
         
         return custom_max(buyer_factor_max, seller_factor_max)
 
-'''
+
 if __name__ == "__main__":
     from piperabm.society.sample import sample_society_0
     from piperabm.unit import Date
 
-    agents = soc.all_agents()
-    agent_index = agents[0]
-    #start_date = Date.today() + DT(days=1)
-    #end_date = start_date + DT(days=1)
-    #path_graph = soc.env.to_path_graph(start_date, end_date)
-    #path_graph.show()
-    route = (0, 1)
+    society = deepcopy(sample_society_0)
+    start_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 10)
+    society.env.update_elements(start_date, end_date)
+    agent = society.find_agent(agent_info=0)
+    #print(agent)
+    agent.observe(society)
+    agent_route = (0, 1)
     market_factor_calculator = MarketFactor(
-        society=soc,
-        agent_index=agent_index,
-        route=route
+        agent=agent,
+        route=agent_route
     )
     market_factor = market_factor_calculator.calculate()
     print(market_factor)
-'''

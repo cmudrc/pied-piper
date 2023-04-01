@@ -8,7 +8,7 @@ from piperabm.unit import DT
 class TestAgentClass(unittest.TestCase):
 
     def setUp(self):
-        self.agent = agent_0
+        self.agent = deepcopy(agent_0)
 
     def test_idle_time_pass(self):
         agent = deepcopy(self.agent)

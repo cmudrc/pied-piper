@@ -10,16 +10,14 @@ class TestMarketFactor(unittest.TestCase):
 
     def setUp(self):
         society = deepcopy(sample_society_0)
-        self.start_date = Date(2020, 1, 5)
-        self.end_date = Date(2020, 1, 10)
-        society.env.update_elements(
-            start_date=self.start_date,
-            end_date=self.end_date
-            )
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 10)
+        society.env.update_elements(start_date, end_date)
+        
         agent_0 = society.find_agent(agent_info=0)
         #print(agent_0)
-        agent_0_route = (0, 1)
         agent_0.observe(society)
+        agent_0_route = (0, 1)
         self.market_factor_calculator_0 = MarketFactor(
             agent=agent_0,
             route=agent_0_route
@@ -27,8 +25,8 @@ class TestMarketFactor(unittest.TestCase):
 
         agent_1 = society.find_agent(agent_info=1)
         #print(agent_1)
-        agent_1_route = (1, 0)
         agent_1.observe(society)
+        agent_1_route = (1, 0)
         self.market_factor_calculator_1 = MarketFactor(
             agent=agent_1,
             route=agent_1_route
@@ -36,8 +34,10 @@ class TestMarketFactor(unittest.TestCase):
 
     def test_trade_participants(self):
         participants_0 = self.market_factor_calculator_0.trade_participants(target=0)
+        #print(participants_0)
         self.assertListEqual(participants_0, [0])
         participants_1 = self.market_factor_calculator_1.trade_participants(target=1)
+        #print(participants_1)
         self.assertListEqual(participants_1, [1])
 
     def test_calculate_source_factor(self):

@@ -7,6 +7,8 @@ from piperabm.resource import Resource
 from piperabm.unit import Date, DT
 from piperabm.environment.sample import env_1 as env
 
+from piperabm.society.sample import sample_society_0
+
 
 class TestSocietyClass(unittest.TestCase):
 

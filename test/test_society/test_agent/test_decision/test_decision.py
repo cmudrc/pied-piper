@@ -9,17 +9,16 @@ class TestDecisionClass(unittest.TestCase):
 
     def setUp(self):
         society = deepcopy(sample_society_0)
-        self.start_date = Date(2020, 1, 5)
-        self.end_date = Date(2020, 1, 10)
-        society.env.update_elements(
-            start_date=self.start_date,
-            end_date=self.end_date
-            )
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 10)
+        society.env.update_elements(start_date, end_date)
+        
+        agent_0 = society.find_agent(agent_info=0)
+        agent_0.observe(society)
+        agent_1 = society.find_agent(agent_info=1)
+        agent_1.observe(society)
+
         self.society = society
-        agent_0 = self.society.find_agent(agent_info=0)
-        agent_0.observe(society=self.society)
-        agent_1 = self.society.find_agent(agent_info=1)
-        agent_1.observe(society=self.society)
 
     def test_routes(self):
         agent = self.society.find_agent(agent_info=0)
@@ -30,7 +29,7 @@ class TestDecisionClass(unittest.TestCase):
         #print(routes) # [(0, 1)]
         #print(route) # (0, 1)
         route_score = agent.calculate_route_score(route)
-        print(route_score)
+        #print(route_score)
 
         agent = self.society.find_agent(agent_info=1)
         #print(agent)
@@ -40,7 +39,7 @@ class TestDecisionClass(unittest.TestCase):
         #print(routes) # [(1, 0)]
         #print(route) # (1, 0)
         route_score = agent.calculate_route_score(route)
-        print(route_score)
+        #print(route_score)
 
     def test_decide_action(self):
         agent = self.society.find_agent(agent_info=0)

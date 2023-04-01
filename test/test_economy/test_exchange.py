@@ -2,16 +2,13 @@ import unittest
 from copy import deepcopy
 
 from piperabm.resource import Resource
-from piperabm.economy import Exchange
+from piperabm.economy.exchange.sample import exchange_0
 
 
 class TestExchangeClass(unittest.TestCase):
 
     def setUp(self):
-        self.exchange = Exchange()
-        self.exchange.add('food', 'wealth', 10)
-        self.exchange.add('water', 'wealth', 2)
-        self.exchange.add('energy', 'wealth', 5)
+        self.exchange = deepcopy(exchange_0)
 
         self.r = Resource(
             current_resource={
@@ -30,7 +27,7 @@ class TestExchangeClass(unittest.TestCase):
             }
         )
 
-    def test_exchange_0(self):
+    def test_exchange(self):
         e = deepcopy(self.exchange)
         rate = e.rate('food', 'water')
         self.assertEqual(rate, 5)
