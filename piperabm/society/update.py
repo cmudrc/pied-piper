@@ -33,8 +33,8 @@ class Update:
             if queue.is_empty() is True:
                 # decide
                 path_graph = self.env.path_graph
-                agent.observe(path_graph=path_graph, society=self)
-                agent.decide_action(start_date, end_date)
+                agent.observe(society=self)
+                agent.decide_action()
             if queue.is_empty() is False:
                 actions = queue.find_actions(type='move')
                 move = actions[0]
@@ -50,10 +50,22 @@ class Update:
                     agent.current_node = None
                 else:
                     agent.current_node = new_settlement
-                if new_resource.has_zero(): #####
-                    self.set_agent_info(index, 'active', False) ## dead
+                agent.is_alive()
+                #if new_resource.has_zero(): #####
+                #    self.set_agent_info(index, 'active', False) ## dead
 
         ## mark agents who are ready for participating in trade
+        participants = []
+        agents_indexes = self.all_agents(type='active&alive')
+        agents = self.get_agents(agents_indexes)
+        for agent in agents:
+            queue = agent.queue
+            if queue.is_empty() is False:
+                actions = queue.find_actions('trade')
+                trade = actions[0]
+                if trade.done is False:
+                    participants.append(agent)
+        '''
         participants = [] # active and alive
         for index in self.all_agents():
             queue = self.agent_info(index, 'queue')
@@ -62,6 +74,7 @@ class Update:
                 trade = actions[0]
                 if trade.done is False:
                     participants.append(index)
+        '''
 
         ## do the trade for all settlements
         economy = Economy(

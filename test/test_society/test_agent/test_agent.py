@@ -1,14 +1,14 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.society.agent.sample import agent_0
+from piperabm.society.agent.sample import sample_agent_0
 from piperabm.unit import DT
 
 
 class TestAgentClass(unittest.TestCase):
 
     def setUp(self):
-        self.agent = deepcopy(agent_0)
+        self.agent = deepcopy(sample_agent_0)
 
     def test_idle_time_pass(self):
         agent = deepcopy(self.agent)

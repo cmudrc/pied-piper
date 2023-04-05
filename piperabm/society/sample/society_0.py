@@ -1,7 +1,7 @@
 from piperabm import Society
 from piperabm.economy.exchange.sample import exchange_0
 from piperabm.environment.sample import env_0
-from piperabm.society.agent.sample import agent_0, agent_1
+from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
 
 
 society = Society(
@@ -9,7 +9,8 @@ society = Society(
     gini=0.3,
     exchange_rate=exchange_0
 )
-society.add(agents=[agent_0, agent_1])
+agents=[sample_agent_0, sample_agent_1]
+society.add(agents)
 
 
 if __name__ == "__main__":

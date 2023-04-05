@@ -33,10 +33,13 @@ class Model(Graphics):
         self.log = Log(prefix='MODEL', indentation_depth=0)
         if seed is not None:
             self.seed = seed
-            np.random.seed(self.seed)
+            np.random.default_rng(self.seed)
             if seed_state is not None:
                 np.random.set_state(seed_state)
         super().__init__()
+
+    def get_random_state(self):
+        return np.random.get_state()
 
     def add_step_size(self, step_size):
         """

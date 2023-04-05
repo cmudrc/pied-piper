@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.economy import Exchange
 from piperabm.economy.market import Player, Market
 
-from piperabm.society.agent.sample import agent_0, agent_1
+from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
 from piperabm.economy.exchange.sample import exchange_0 as exchange
 
 
@@ -254,15 +254,15 @@ class TestMarketClass_Standard(unittest.TestCase):
     def setUp(self):
         p1 = Player(
             1,
-            source=deepcopy(agent_0.resource.source().current_resource),
-            demand=deepcopy(agent_0.resource.demand().current_resource),
-            wallet=deepcopy(agent_0.balance)
+            source=deepcopy(sample_agent_0.resource.source().current_resource),
+            demand=deepcopy(sample_agent_0.resource.demand().current_resource),
+            wallet=deepcopy(sample_agent_0.balance)
         )
         p2 = Player(
             2,
-            source=deepcopy(agent_1.resource.source().current_resource),
-            demand=deepcopy(agent_1.resource.demand().current_resource),
-            wallet=deepcopy(agent_1.balance)
+            source=deepcopy(sample_agent_1.resource.source().current_resource),
+            demand=deepcopy(sample_agent_1.resource.demand().current_resource),
+            wallet=deepcopy(sample_agent_1.balance)
             )
 
         market = Market(exchange)

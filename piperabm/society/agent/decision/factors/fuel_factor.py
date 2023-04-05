@@ -1,3 +1,13 @@
+'''
+class FuelFactor:
+    def __init__(self, agent, route):
+        self.agent = agent
+        path_graph = agent.society.env.path_graph
+        transportation = agent.transportation
+        path = path_graph.edge_info(route[0], route[1], 'path')
+        fuel = path.total_fuel(transportation)
+'''
+
 def calculate_fuel_factor(society, path_graph, agent_index, route):
     """
     Ratio of required fuel until destination to agent's current resource

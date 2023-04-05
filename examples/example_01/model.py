@@ -8,10 +8,11 @@ from society import soc
 m = Model(
     society=soc,
     step_size=DT(hours=12),
-    current_date=Date(2020, 1, 1)
+    current_date=Date(2020, 1, 1),
+    seed=1
 )
 #m.measures.add([Accessibility(), TravelLength()])
 m.measures.add(Accessibility())
 m.run(n=10)
-#print(m.measures('accessibility').efficiency())
-#m.measures.show()
+print(m.measures('accessibility').efficiency())
+m.measures.show()

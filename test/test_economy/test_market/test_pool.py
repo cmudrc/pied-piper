@@ -186,9 +186,11 @@ class TestPoolClass_Standard(unittest.TestCase):
     """
 
     def setUp(self):
-        from piperabm.society.agent.sample import agent_0, agent_1
+        from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
         from piperabm.economy.exchange.sample import exchange_0 as exchange
 
+        agent_0 = deepcopy(sample_agent_0)
+        agent_1 = deepcopy(sample_agent_1)
         amount = agent_0.resource.max_resource['food'] - agent_0.resource.current_resource['food']
         max_amount = agent_0.balance / exchange.rate('food', 'wealth')
         if amount > max_amount:

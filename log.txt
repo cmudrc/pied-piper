@@ -13,3 +13,214 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 
 
+[MODEL] -> BURNOUT: [2020-01-01 00:00:00 - 2020-01-01 00:00:00]
+[MODEL] -> STEP: 0, [2020-01-01 00:00:00 - 2020-01-01 12:00:00]
+	[ENVIRONMENT] -> INITIATED: link from settlement node 0 (name: "Settlement 1", pos: [-60, 40]) to cross node 3 (pos: [0, 0])
+	[ENVIRONMENT] -> INITIATED: link from settlement node 1 (name: "Settlement 2", pos: [200, 20]) to cross node 4 (pos: [80, 60])
+	[ENVIRONMENT] -> INITIATED: link from settlement node 2 (name: "Settlement 3", pos: [100, -180]) to cross node 3 (pos: [0, 0])
+	[ENVIRONMENT] -> INITIATED: link from cross node 3 (pos: [0, 0]) to cross node 4 (pos: [80, 60])
+	[ENVIRONMENT] -> INITIATED: settlement node 1 (name: "Settlement 2", pos: [200, 20])
+	[ENVIRONMENT] -> INITIATED: settlement node 2 (name: "Settlement 3", pos: [100, -180])
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 77.61374706203839
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 1, amount: 64.15252135056228
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 5, amount: 61.09481441462492
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 1, amount: 61.277193093301065
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 5, amount: 58.65630143392619
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 7, amount: 32.849432420508144
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 5, amount: 19.409650497900618
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 1, amount: 13.294236626025896
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 32.57911596881789
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 0, amount: 20.484662079996497
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 6, amount: 13.541314983229583
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 4, amount: 31.75694254210822
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 0, amount: 23.84759943281611
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 6, amount: 17.896159064158752
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 0, amount: 24.210536785635725
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 19.251003145087928
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 5, amount: 14.98297394147721
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 1, amount: 3.689027648768203
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 10.826647842540183
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 7, amount: 10.82664784254018
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 4, amount: 7.496099133257701
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 7.496099133257697
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 11.318424546317633
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 1, amount: 10.249398564570182
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 5, amount: 14.566810723834891
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 1, amount: 14.566810723834891
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 7, amount: 15.891527218865143
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 4, amount: 15.891527218865143
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 77.61374706203839
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 1, amount: 64.15252135056228
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 5, amount: 61.09481441462492
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 1, amount: 61.277193093301065
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 5, amount: 58.65630143392619
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 7, amount: 32.849432420508144
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 5, amount: 19.409650497900618
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 1, amount: 13.294236626025896
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 32.57911596881789
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 0, amount: 20.484662079996497
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 6, amount: 13.541314983229583
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 4, amount: 31.75694254210822
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 0, amount: 23.84759943281611
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 6, amount: 17.896159064158752
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 0, amount: 24.210536785635725
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 19.251003145087928
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 5, amount: 14.98297394147721
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 1, amount: 3.689027648768203
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 10.826647842540183
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 7, amount: 10.82664784254018
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 4, amount: 7.496099133257701
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 7.496099133257697
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 4, amount: 11.318424546317633
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 1, amount: 10.249398564570182
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 5, amount: 14.566810723834891
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 1, amount: 14.566810723834891
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 7, amount: 15.891527218865143
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 4, amount: 15.891527218865143
+[MODEL] -> STEP: 1, [2020-01-01 12:00:00 - 2020-01-02 00:00:00]
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 6, amount: 86.45868501677042
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 0, amount: 79.5153379200035
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 67.42088403118211
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 6, amount: 61.74899685491207
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 0, amount: 56.789463214364275
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 22.210536785635725
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 7, amount: 17.251003145087928
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 7, amount: 8.689027648768203
+			[POOL] -> TRANSACTION: from: agent 1, to: agent 6, amount: 74.10384093584125
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 0, amount: 68.15240056718389
+			[POOL] -> TRANSACTION: from: agent 5, to: agent 7, amount: 57.78572580533698
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 1, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 5, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 1, amount: 1.0
+			[POOL] -> TRANSACTION: from: agent 4, to: agent 5, amount: 0.6293968975494266
+[MODEL] -> STEP: 2, [2020-01-02 00:00:00 - 2020-01-02 12:00:00]
+[MODEL] -> STEP: 3, [2020-01-02 12:00:00 - 2020-01-03 00:00:00]
+[MODEL] -> STEP: 4, [2020-01-03 00:00:00 - 2020-01-03 12:00:00]
+	[ENVIRONMENT] -> INITIATED: settlement node 0 (name: "Settlement 1", pos: [-60, 40])
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 3, amount: 56.79918862943725
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 52.135739129488215
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 2, amount: 46.20453588127705
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 3, amount: 54.973049974511035
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 50.97580754598329
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 2, amount: 45.89191904751657
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 2, amount: 42.579302213756094
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 37.32805836831061
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 3, amount: 28.001159368412534
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 0, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 6, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 7, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 0, amount: 3.0
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 6, amount: 3.0
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 3.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 8, amount: 4.199999999999994
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 0, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 6, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 7, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 0, amount: 3.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 6, amount: 3.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 7, amount: 3.0
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 9, amount: 2.0024883510995437
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 9, amount: 1.0049767021990732
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 3, amount: 56.79918862943725
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 8, amount: 43.20081137056275
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 3, amount: 54.973049974511035
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 8, amount: 33.02446167438942
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 8, amount: 44.492298646199565
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 2, amount: 34.50272465160136
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 2, amount: 46.20453588127705
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 2, amount: 39.02419245401671
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 2, amount: 6.86772659349986
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 9, amount: 2.0024883510995437
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 3, amount: 29.775202357332414
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 9, amount: 1.0049767021990732
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 8, amount: 17.951345871593865
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 8, amount: 8.934927758925468
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 2, amount: 8.076577562154732
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 8, amount: 2.3235773162787936
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 3, amount: 2.3235773162787936
+[MODEL] -> STEP: 5, [2020-01-03 12:00:00 - 2020-01-04 00:00:00]
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 9, amount: 53.79546411872295
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 46.20453588127705
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 9, amount: 54.10808095248343
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 35.88943069641703
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 9, amount: 52.798840631587474
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 27.196182666213453
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 6, amount: 43.20081137056275
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 6, amount: 40.97580754598329
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 7, amount: 0.04616577730659088
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 7, amount: 0.0024883510995437064
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 7, amount: 27.201159368412526
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 0, amount: 13.134761757599684
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 0, amount: 20.47575896547594
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 0, amount: 0.004976702199073202
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 6, amount: 13.209585013433234
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 0, amount: 1.659724989234732
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 0, amount: 56.79918862943725
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 6, amount: 52.135739129488215
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 46.20453588127705
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 0, amount: 39.58925561815424
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 6, amount: 32.32805836831061
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 27.201159368412526
+			[POOL] -> TRANSACTION: from: agent 2, to: agent 0, amount: 48.97802667671012
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 6, amount: 40.97580754598329
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 35.89191904751657
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 2, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 8, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 2, amount: 1.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 8, amount: 1.0
+[MODEL] -> STEP: 6, [2020-01-04 00:00:00 - 2020-01-04 12:00:00]
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 3, amount: 100.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 92.4090717625541
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 3, amount: 85.95161509196657
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 71.78383809503315
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 8, amount: 11.428770037301527
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 3, amount: 3.8492632251221606
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 18.216161904966853
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 7, amount: 6.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 0, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 3.6432323809933704
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 7, amount: 3.3965218947624294
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 3.1342982499455445
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 0, amount: 1.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 7, amount: 7.590928237445894
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 7, amount: 24.216161904966853
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 7, amount: 7.590928237445894
+			[POOL] -> TRANSACTION: from: agent 0, to: agent 7, amount: 3.3965218947624294
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 6, amount: 3.1342982499455445
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 9, amount: 2.0024883510995437
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 0, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 1.0049767021990732
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 0, amount: 1.0
+[MODEL] -> STEP: 7, [2020-01-04 12:00:00 - 2020-01-05 00:00:00]
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 6, amount: 100.0
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 6, amount: 77.78383809503315
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 3, amount: 55.556767619006635
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 6, amount: 7.630374405385012
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 8, amount: 20.216161904966853
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 3.5871420243916416
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 7, amount: 1.0
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 7, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 8, amount: 0.4
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 100.0
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 77.78383809503315
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 6, amount: 7.630374405385012
+			[POOL] -> TRANSACTION: from: agent 7, to: agent 9, amount: 6.263619797692016
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 7, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 7, amount: 1.0
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 9, amount: 6.263619797692016
+			[POOL] -> TRANSACTION: from: agent 3, to: agent 8, amount: 20.216161904966853
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 3, amount: 4.043232380993371
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 8, amount: 2.220387416698645
+			[POOL] -> TRANSACTION: from: agent 8, to: agent 9, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 8, amount: 0.4
+[MODEL] -> STEP: 8, [2020-01-05 00:00:00 - 2020-01-05 12:00:00]
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 2.8000000000000114
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 2.0
+[MODEL] -> STEP: 9, [2020-01-05 12:00:00 - 2020-01-06 00:00:00]
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 2.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 6, amount: 1.9680888631290827
+			[POOL] -> TRANSACTION: from: agent 6, to: agent 9, amount: 1.0
+			[POOL] -> TRANSACTION: from: agent 9, to: agent 6, amount: 5.0
