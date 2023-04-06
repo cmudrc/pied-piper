@@ -6,6 +6,47 @@ from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
 from piperabm.economy.exchange.sample import exchange_0 as exchange
 
 
+class TestEconomyClass_0Agents(unittest.TestCase):
+
+    def setUp(self):
+        agents = []
+        eco = Economy(agents, exchange)
+        self.eco = eco
+
+    def test_all_nodes(self):
+        eco = deepcopy(self.eco)
+        result = eco.all_nodes()
+        expected_result = []
+        self.assertListEqual(result, expected_result)
+
+    def test_create_markets(self):
+        eco = deepcopy(self.eco)
+        eco.create_markets()
+        #print(markets)
+        self.assertEqual(len(eco.markets), 0)
+
+    def test_sort_markets(self):
+        eco = deepcopy(self.eco)
+        eco.create_markets()
+        sorted_markets_index = eco.sort_markets()
+        expected_result = []
+        self.assertListEqual(sorted_markets_index, expected_result)
+    
+    def test_biggest_market(self):
+        eco = deepcopy(self.eco)
+        eco.create_markets()
+        biggest_market = eco.biggest_market()
+        #print(biggest_market)
+
+    def test_solve_biggest_market(self):
+        eco = deepcopy(self.eco)
+        eco.create_markets()
+        #print(eco)
+        stat = eco.solve_biggest_market()
+        #print(stat)
+        #print(eco)
+
+
 class TestEconomyClass(unittest.TestCase):
 
     def setUp(self):

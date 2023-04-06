@@ -51,16 +51,17 @@ class Query:
 
         result = None
         node_index = self.find_node(node)
-        if property == 'type':
-            result = node_type(node_index)
-        elif property == 'pos':
-            node = self.G.nodes[node_index]
-            result = node['boundary'].center
-        elif property == 'index':
-            result = node_index
-        else:
-            node = self.G.nodes[node_index]
-            result = node[property]
+        if node_index is not None:
+            if property == 'type':
+                result = node_type(node_index)
+            elif property == 'pos':
+                node = self.G.nodes[node_index]
+                result = node['boundary'].center
+            elif property == 'index':
+                result = node_index
+            else:
+                node = self.G.nodes[node_index]
+                result = node[property]
         return result
 
     def edge_info(self, start, end, property):

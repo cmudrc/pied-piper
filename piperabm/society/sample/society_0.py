@@ -9,7 +9,7 @@ society = Society(
     gini=0.3,
     exchange_rate=exchange_0
 )
-agents=[sample_agent_0, sample_agent_1]
+agents = [sample_agent_0, sample_agent_1]
 society.add(agents)
 
 

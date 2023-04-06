@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.economy.market.pool import Pool, Bid
 
 
-class TestPoolClass_0(unittest.TestCase):
+class TestPoolClass_4Bids(unittest.TestCase):
 
     def setUp(self):
         b1 = Bid(agent=1, amount=5)
@@ -79,7 +79,46 @@ class TestPoolClass_0(unittest.TestCase):
         #print(pool.stat)
 
 
-class TestPoolClass_1(unittest.TestCase):
+class TestPoolClass_1Bid(unittest.TestCase):
+    
+    def setUp(self):
+        b2 = Bid(agent=2, amount=8)
+
+        pool = Pool()
+        pool.add_source([b2])
+        pool.add_demand([])
+        self.pool = pool
+
+    def test_solve_step(self):
+        pool = deepcopy(self.pool)
+        #print(pool)
+        stat = pool.solve_step()
+        self.assertDictEqual(stat, {'volume': 0})
+        #print(pool)
+        biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
+        self.assertEqual(biggest_source_bid.agent, 2)
+        self.assertEqual(biggest_source_bid.amount, 8)
+        self.assertEqual(biggest_source_bid.new_amount, 8)
+        biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
+        self.assertEqual(biggest_demand_bid, None)
+
+    def test_solve(self):
+        pool = deepcopy(self.pool)
+        #print(pool)
+        stat = pool.solve()
+        expected_result = {'transactions': [], 'total_volume': 0}
+        self.assertDictEqual(stat, expected_result)
+        #print(pool)
+        biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
+        self.assertEqual(biggest_source_bid.agent, 2)
+        self.assertEqual(biggest_source_bid.amount, 8)
+        self.assertEqual(biggest_source_bid.new_amount, 8)
+        biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
+        self.assertEqual(biggest_demand_bid, None)
+        #print(pool.stat)
+
+
+class TestPoolClass_2Bids_Source(unittest.TestCase):
 
     def setUp(self):
         b2 = Bid(agent=2, amount=8)
@@ -116,7 +155,7 @@ class TestPoolClass_1(unittest.TestCase):
         #print(pool.stat)
 
 
-class TestPoolClass_2(unittest.TestCase):
+class TestPoolClass_2Bids_Demand(unittest.TestCase):
 
     def setUp(self):
         b2 = Bid(agent=2, amount=8)
@@ -153,7 +192,7 @@ class TestPoolClass_2(unittest.TestCase):
         #print(pool.stat)
 
 
-class TestPoolClass_3(unittest.TestCase):
+class TestPoolClass_0Bids(unittest.TestCase):
 
     def setUp(self):
         self.pool = Pool()

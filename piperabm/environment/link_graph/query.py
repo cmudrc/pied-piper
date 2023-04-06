@@ -43,12 +43,14 @@ class Query:
         """
         Return *property* of *node*
         """
+        result = None
         private_property = ['currently_active']
         if property in private_property:
             ## when property is saved in this level of graph, not top-level
             node_index = self.find_node(node)
-            node = self.G.nodes[node_index]
-            result = node[property]
+            if node_index is not None:
+                node = self.G.nodes[node_index]
+                result = node[property]
         else:
             result = self.env.node_info(node, property)
         return result
@@ -60,7 +62,11 @@ class Query:
         return self.env.edge_info(start, end, property)
 
     def find_node(self, node):
-        return self.env.find_node(node)
+        result = None
+        node_index = self.env.find_node(node)
+        if node_index in self.G.nodes():
+            result = node_index
+        return result
 
     def node_degree(self, node):
         """

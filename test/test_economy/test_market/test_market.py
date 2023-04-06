@@ -8,7 +8,72 @@ from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
 from piperabm.economy.exchange.sample import exchange_0 as exchange
 
 
-class TestMarketClass_Single(unittest.TestCase):
+class TestMarketClass_1Player(unittest.TestCase):
+    """
+    2 players, 1 resource each
+    """
+
+    def setUp(self):
+        p1 = Player(
+            1,
+            source={'food': 4},
+            demand={'food': 6},
+            wallet=10
+        )
+
+        exchange = Exchange()
+        exchange.add('food', 'wealth', 5)
+
+        market = Market(exchange)
+        market.add([p1])
+        #print(market)
+
+        ''' pass objects to the tests '''
+        self.market = market
+
+    def test_create_pools(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        pool = market.pools['food']
+        source_bids = pool.source_bids
+        self.assertEqual(source_bids[0].agent, 1)
+        self.assertEqual(source_bids[0].amount, 4)
+        self.assertEqual(source_bids[0].new_amount, 4)
+        demand_bids = pool.demand_bids
+        self.assertListEqual(demand_bids, [])
+
+    def test_solve_biggest_pool(self):
+        market = deepcopy(self.market)
+        market.solve_biggest_pool()
+        pool = market.pools['food']
+        #print(pool.stat)
+
+        agent = 1
+        bid, type = pool.find_bid(agent=agent)
+        self.assertEqual(type, 'source')
+        self.assertEqual(bid.amount, 4)
+        self.assertEqual(bid.new_amount, 4)
+        seller = market.find_player(index=agent)
+        self.assertEqual(seller.source['food'], 4)
+        self.assertEqual(seller.new_source['food'], 4)
+        self.assertEqual(seller.demand['food'], 6)
+        self.assertEqual(seller.new_demand['food'], 6)
+
+    def test_solve(self):
+        market = deepcopy(self.market)
+        stat = market.solve()
+        #print(market)
+        #print(stat)
+
+        agent_index = 1
+        agent = market.find_player(index=agent_index)
+        self.assertEqual(agent.source['food'], 4)
+        self.assertEqual(agent.new_source['food'], 4)
+        self.assertEqual(agent.demand['food'], 6)
+        self.assertEqual(agent.new_demand['food'], 6)
+
+
+class TestMarketClass_2Players(unittest.TestCase):
     """
     2 players, 1 resource each
     """
@@ -99,7 +164,7 @@ class TestMarketClass_Single(unittest.TestCase):
         self.assertEqual(agent.new_demand['food'], 4)
 
 
-class TestMarketClass_Multiple(unittest.TestCase):
+class TestMarketClass_3Players(unittest.TestCase):
     """
     3 players, 2 resource each
     """
@@ -244,6 +309,64 @@ class TestMarketClass_Multiple(unittest.TestCase):
         market.solve()
         #print(market)
         #print(market.stat['food'])
+
+
+class TestMarketClass_0Players(unittest.TestCase):
+    """
+    No players
+    """
+
+    def setUp(self):
+        market = Market(exchange)
+        market.add([])
+        #print(market)
+
+        ''' pass objects to the tests '''
+        self.market = market
+
+    def test_create_pool(self):
+        market = deepcopy(self.market)
+        pool = market.create_pool('food')
+        source_bids = pool.source_bids
+        self.assertListEqual(source_bids, [])
+        demand_bids = pool.demand_bids
+        self.assertListEqual(demand_bids, [])
+
+    def test_sort_pools(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        self.assertDictEqual(market.pools, {})
+        result = market.sort_pools()
+        self.assertListEqual(result, [])
+
+    def test_biggest_pool(self):
+        market = deepcopy(self.market)
+        market.create_pools()
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, None)
+
+    def test_solve_biggest_pool(self):
+        market = deepcopy(self.market)
+        
+        # step 1:
+        market.create_pools()
+        biggest_pool = market.biggest_pool()
+        self.assertEqual(biggest_pool, None)
+        stat = market.solve_biggest_pool()
+        expected_result = {
+            'food': {'transactions': [], 'total_volume': 0},
+            'water': {'transactions': [], 'total_volume': 0},
+            'energy': {'transactions': [], 'total_volume': 0},
+            'size': []
+        }
+        self.assertDictEqual(stat, expected_result)
+        #print(market)
+
+    def test_solve(self):
+        market = deepcopy(self.market)
+        stat = market.solve()
+        #print(stat)
+        #print(market)
 
 
 class TestMarketClass_Standard(unittest.TestCase):

@@ -37,7 +37,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_1(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=12)
+        end_date = start_date + DT(hours=12)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -48,7 +48,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_2(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 2)
+        end_date = start_date + DT(days=1)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -59,7 +59,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_3(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 3)
+        end_date = start_date + DT(days=2)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -70,7 +70,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_4(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 4)
+        end_date = start_date + DT(days=3)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -81,7 +81,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_5(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 5)
+        end_date = start_date + DT(days=4)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -92,7 +92,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_6(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 11)
+        end_date = start_date + DT(days=6)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -103,7 +103,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_7(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 2)
-        end_date = Date(2020, 1, 13)
+        end_date = start_date + DT(days=11)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -114,7 +114,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_8(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 2)
-        end_date = Date(2020, 1, 15)
+        end_date = start_date + DT(days=13)
         env.update_elements(start_date, end_date)
         
         link_graph = env.to_link_graph(start_date, end_date)
@@ -126,7 +126,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_9(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 14)
+        end_date = start_date + DT(days=9)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -137,7 +137,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_link_graph_10(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 13)
-        end_date = Date(2020, 1, 15)
+        end_date = start_date + DT(days=2)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         nodes_count = link_graph.G.number_of_nodes()
@@ -148,7 +148,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_all_nodes(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 2)
-        end_date = Date(2020, 1, 3)
+        end_date = start_date + DT(days=1)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         all_nodes = link_graph.all_nodes()
@@ -161,7 +161,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_xylim(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 10)
+        end_date = start_date + DT(days=5)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         x_lim, y_lim = link_graph.xy_lim()
@@ -173,7 +173,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_size(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 10)
+        end_date = start_date + DT(days=5)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         size = link_graph.size()
@@ -183,7 +183,7 @@ class TestLinkGraph(unittest.TestCase):
     def test_to_path(self):
         env = deepcopy(self.env)
         start_date = Date(2020, 1, 5)
-        end_date = Date(2020, 1, 10)
+        end_date = start_date + DT(days=5)
         env.update_elements(start_date, end_date)
         link_graph = env.to_link_graph(start_date, end_date)
         link_graph.to_path_graph()

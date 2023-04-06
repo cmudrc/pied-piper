@@ -106,7 +106,7 @@ class Solver:
         Sort pools based on their sizes
         """
         pools_score = {}
-        result = None
+        result = []
         pools = self.pools
         for resource_name in pools:
             pool = pools[resource_name]
@@ -126,7 +126,7 @@ class Solver:
         resource_name = None
         self.create_pools()
         sorted_pools = self.sort_pools()
-        if sorted_pools is not None:
+        if len(sorted_pools) > 0:
             resource_name = sorted_pools[0]
         return resource_name
 
@@ -154,30 +154,31 @@ class Solver:
                 player.new_wallet += delta_wallet
 
     def solve_pool(self, resource_name):
-        pool = self.pools[resource_name]
-        """
-        sellers, buyers = pool.all_participants()
-        ''' log '''
-        stat = {
-            'sellers': sellers,
-            'buyers': buyers
-        }
-        msg = self.log.message__pool_started(resource_name, stat)
-        #print(msg)
-        """
-        pool_stat = pool.solve()
-        #print(resource_name, pool)
-        ''' update self.stat '''
-        if len(self.stat['size']) == 0:
+        if resource_name is not None:
+            pool = self.pools[resource_name]
+            """
+            sellers, buyers = pool.all_participants()
+            ''' log '''
+            stat = {
+                'sellers': sellers,
+                'buyers': buyers
+            }
+            msg = self.log.message__pool_started(resource_name, stat)
+            #print(msg)
+            """
+            pool_stat = pool.solve()
+            #print(resource_name, pool)
+            ''' update self.stat '''
+            if len(self.stat['size']) == 0:
+                self.stat['size'].append(self.size())
+            new_transactions = pool_stat['transactions']
+            for new_transaction in new_transactions:
+                self.stat[resource_name]['transactions'].append(new_transaction)
+            self.stat[resource_name]['total_volume'] += pool_stat['total_volume']
+            ''' update players '''
+            self.update_players(resource_name, pool)
             self.stat['size'].append(self.size())
-        new_transactions = pool_stat['transactions']
-        for new_transaction in new_transactions:
-            self.stat[resource_name]['transactions'].append(new_transaction)
-        self.stat[resource_name]['total_volume'] += pool_stat['total_volume']
-        ''' update players '''
-        self.update_players(resource_name, pool)
-        self.stat['size'].append(self.size())
-        # log 
-        #msg = self.log.message__pool_complete(resource_name, stat)
-        #print(msg)
+            # log 
+            #msg = self.log.message__pool_complete(resource_name, stat)
+            #print(msg)
         return self.stat
