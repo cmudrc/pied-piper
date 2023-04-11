@@ -1,6 +1,6 @@
 import networkx as nx
 
-from piperabm import Environment
+from piperabm.environment import Environment
 from piperabm.economy import GiniGenerator, Exchange
 
 try: from .search import Search

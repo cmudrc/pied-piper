@@ -39,10 +39,9 @@ class Gaussian:
         }
         return dictionary
     
-    def from_dict(self, dictionary: dict):
-        d = dictionary
-        self.mean = d['mean']
-        self.sigma = d['sigma']
+    def from_dict(self, dictionary: dict) -> None:
+        self.mean = dictionary['mean']
+        self.sigma = dictionary['sigma']
 
 
 if __name__ == "__main__":

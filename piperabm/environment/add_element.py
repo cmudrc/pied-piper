@@ -4,6 +4,32 @@ from piperabm.tools import euclidean_distance
 from piperabm.degradation import Eternal
 
 
+class AddElement:
+
+    def add(self, element):
+        index = self.find_next_index()
+        if element.type == 'settlement':
+            self.element_indexes['settlement'].append(index)
+            self.G.add_node(
+                index,
+                element=element
+            )
+    
+    def add_settlement(self, settlement):
+        type = 'settlement'
+        if not settlement.type == type:
+            raise ValueError
+        index = self.find_next_index()
+        self.element_indexes['settlement'].append(index)
+        self.G.add_node(
+            index,
+            element=settlement
+        )
+        
+
+
+
+
 class Add:
     """
     Contains methods for Environment class

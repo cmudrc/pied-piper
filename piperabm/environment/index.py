@@ -9,9 +9,9 @@ class Index:
 
     def __init__(self):
         '''node_types is node indexes gathered as list inside a dictionary based on their type'''
-        self.node_types = {
+        self.element_indexes = {
             'settlement': [],
-            'cross': [],
+            'hub': [],
             'market': [],
         }
 
@@ -19,7 +19,7 @@ class Index:
         """
         Check all indexes in self.node_types dictionary and suggest a new index
         """
-        all = self.all_nodes()
+        all = self.all_indexes()
         if len(all) > 0:
             max_index = max(all)
             new_index = max_index + 1

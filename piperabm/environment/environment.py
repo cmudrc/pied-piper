@@ -1,30 +1,18 @@
 import networkx as nx
 
-from piperabm.degradation import ProgressiveDegradation
-from piperabm.degradation import SuddenDegradation
+#from piperabm.degradation import ProgressiveDegradation
+#from piperabm.degradation import SuddenDegradation
 from piperabm.unit import DT, Date
+from piperabm.environment.add_element import AddElement
+from piperabm.environment.index import Index
 
-try: from .search import Search
-except: from search import Search
-try: from .add import Add
-except: from add import Add
-try: from .index import Index
-except: from index import Index
-try: from .query import Query
-except: from query import Query
-try: from .update import Update
-except: from update import Update
-try: from .graphics import Graphics
-except: from graphics import Graphics
-try: from .path_graph import PathGraph
-except: from path_graph import PathGraph
-try: from .link_graph import LinkGraph
-except: from link_graph import LinkGraph
-try: from .log import Log
-except: from log import Log
+#try: from .add_element import AddElement
+#except: from add_element import AddElement
+#try: from .index import Index
+#except: from index import Index
 
 
-class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index, Query, Graphics, Update):
+class Environment(AddElement, Index):
     """
     Represent physical environment
     Manage settlements and their connecting links
@@ -41,9 +29,9 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         self.links_unit_length = links_unit_length
         self.link_graph = None # last link_graph
         self.path_graph = None # last path_graph
-        self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
+        #self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
         super().__init__()
-
+    '''
     def adjusted_length(self, start_node, end_node):
         """
         Calculate adjusted_length between *start_node* and *end_node*
@@ -72,7 +60,7 @@ class Environment(SuddenDegradation, ProgressiveDegradation, Search, Add, Index,
         link_graph = LinkGraph(env=self, start_date=start_date, end_date=end_date)
         self.link_graph = link_graph
         return link_graph
-
+    '''
     def __str__(self):
         return str(self.G)
 
