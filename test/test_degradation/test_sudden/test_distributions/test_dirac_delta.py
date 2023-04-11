@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.degradation.distributions import DiracDelta
+from piperabm.degradation.sudden.distributions import DiracDelta
 from piperabm.unit import DT
 
 

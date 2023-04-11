@@ -54,6 +54,23 @@ class ProgressiveDegradation:
             result = True
         return result
     
+    def __sub__(self, other) -> dict:
+        """
+        Create delta
+        """
+        delta_usage_current = self.usage_current - other.usage_current
+        delta = {
+            'usage_current': delta_usage_current,
+        }
+        return delta
+
+    def __add__(self, delta: dict) -> None:
+        """
+        Add delta
+        """
+        delta_usage_current = delta['usage_current']
+        self.usage_current += delta_usage_current
+    
 
 if __name__ == "__main__":
     degradation = ProgressiveDegradation(
