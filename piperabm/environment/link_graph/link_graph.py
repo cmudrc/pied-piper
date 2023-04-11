@@ -1,7 +1,6 @@
 import networkx as nx
 
 from piperabm.environment.path_graph import PathGraph
-from piperabm.tools import ElementExists
 
 try: from .to_graph import ToGraph
 except: from to_graph import ToGraph
@@ -22,6 +21,7 @@ class LinkGraph(ToGraph, Query, Graphics):
         self.to_graph(start_date, end_date)
         self.start_date = start_date
         self.end_date = end_date
+        super().__init__()
 
     def to_path_graph(self):
         """

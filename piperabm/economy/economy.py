@@ -70,29 +70,35 @@ class Economy:
         """
         Sort markets based on their sizes
         """
+        sorted_markets = []
         market_sizes = {} # {market_index: market_size}
         markets = self.markets
-        for key in markets:
-            market = markets[key]
-            market_sizes[key] = market.size()
-        #print(market_sizes)
-        sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
-        sorted_markets = list(list(zip(*sorted_markets))[0])
+        if len(markets) > 0:
+            for key in markets:
+                market = markets[key]
+                market_sizes[key] = market.size()
+            #print(market_sizes)
+            sorted_markets = sorted(market_sizes.items(), key=lambda x:x[1], reverse=True)
+            sorted_markets = list(list(zip(*sorted_markets))[0])
         return sorted_markets
 
     def biggest_market(self):
+        biggest_market = None
         sorted_markets = self.sort_markets()
-        biggest_market = self.markets[sorted_markets[0]]
+        if len(sorted_markets) > 0:
+            biggest_market = self.markets[sorted_markets[0]]
         return biggest_market
 
     def solve_biggest_market(self):
         """
         Solve and update the biggest market
         """
+        stat = {}
         biggest_market = self.biggest_market()
-        stat = biggest_market.solve()
-        #print(stat)
-        self.update_agents(biggest_market)
+        if biggest_market is not None:
+            stat = biggest_market.solve()
+            #print(stat)
+            self.update_agents(biggest_market)
         return stat
 
     def solve(self):

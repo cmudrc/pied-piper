@@ -16,33 +16,31 @@ class TestEconomyClass_0Agents(unittest.TestCase):
     def test_all_nodes(self):
         eco = deepcopy(self.eco)
         result = eco.all_nodes()
-        expected_result = []
-        self.assertListEqual(result, expected_result)
+        self.assertListEqual(result, [])
 
     def test_create_markets(self):
         eco = deepcopy(self.eco)
         eco.create_markets()
-        #print(markets)
-        self.assertEqual(len(eco.markets), 0)
+        self.assertDictEqual(eco.markets, {})
 
     def test_sort_markets(self):
         eco = deepcopy(self.eco)
         eco.create_markets()
         sorted_markets_index = eco.sort_markets()
-        expected_result = []
-        self.assertListEqual(sorted_markets_index, expected_result)
+        self.assertListEqual(sorted_markets_index, [])
     
     def test_biggest_market(self):
         eco = deepcopy(self.eco)
         eco.create_markets()
         biggest_market = eco.biggest_market()
-        #print(biggest_market)
+        self.assertEqual(biggest_market, None)
 
     def test_solve_biggest_market(self):
         eco = deepcopy(self.eco)
         eco.create_markets()
         #print(eco)
         stat = eco.solve_biggest_market()
+        self.assertDictEqual(stat, {})
         #print(stat)
         #print(eco)
 
