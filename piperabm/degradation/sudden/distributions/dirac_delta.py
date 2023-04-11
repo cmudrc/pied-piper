@@ -1,8 +1,4 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-class DiracDelta():
+class DiracDelta:
     """
     Dirac Delta distribution.
     """

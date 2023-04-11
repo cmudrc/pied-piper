@@ -1,7 +1,7 @@
 from piperabm.boundary import Point
 from piperabm.unit import Date
 from piperabm.tools import euclidean_distance
-from piperabm.degradation import Eternal
+from piperabm.degradation.sudden.distributions import Eternal
 
 
 class AddElement:

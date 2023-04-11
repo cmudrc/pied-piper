@@ -1,2 +1,3 @@
-from .distributions import Eternal, DiracDelta, Gaussian
-from .degradation_property import SuddenDegradation, ProgressiveDegradation
+#from .degradation_property import SuddenDegradation
+from .progressive import ProgressiveDegradation
+from .sudden import SuddenDegradation

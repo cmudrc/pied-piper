@@ -1,6 +1,6 @@
 from piperabm.environment.elements.element import Element
 from piperabm.boundary.load import load_boundary
-from piperabm.degradation import SuddenDegradation, DiracDelta, Gaussian
+from piperabm.degradation.sudden.load import load_sudden_degradation
 
 
 class Settlement(Element):
@@ -31,16 +31,6 @@ class Settlement(Element):
         self.active = dictionary['active']
         self.sudden_degradation = load_sudden_degradation(dictionary=['sudden_degradation'])
         self.type = dictionary['type']
-
-
-def load_sudden_degradation(dictionary: dict):
-    sudden_degradation_dict = dictionary['sudden_degradation']
-    if sudden_degradation_dict['type'] == 'dirac_delta':
-        sudden_degradation = DiracDelta()
-    elif sudden_degradation_dict['type'] == 'gaussian':
-        sudden_degradation = Gaussian()
-    sudden_degradation.from_dict(sudden_degradation_dict)
-    return sudden_degradation
 
 
 if __name__ == "__main__":
