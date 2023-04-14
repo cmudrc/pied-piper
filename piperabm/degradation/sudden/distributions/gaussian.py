@@ -2,6 +2,8 @@ from scipy.stats import norm
 import numpy as np
 import matplotlib.pyplot as plt
 
+from piperabm.unit import DT
+
 
 class Gaussian:
     """
@@ -9,10 +11,19 @@ class Gaussian:
     """
 
     def __init__(self, mean, sigma):
-        self.mean = mean
-        self.sigma = sigma
+        self.mean = self.refine_input(mean)
+        self.sigma = self.refine_input(sigma)
+
+    def refine_input(self, dt_object):
+        if isinstance(dt_object, DT):
+            dt = dt_object.total_seconds()
+        else:
+            dt = dt_object
+        return dt
 
     def probability(self, time_start, time_end):
+        time_start = self.refine_input(time_start)
+        time_end = self.refine_input(time_end)
         probability_numerator = self.CDF(time_end) - self.CDF(time_start)
         probability_denominator = 1 - self.CDF(time_start)
         probability = probability_numerator / probability_denominator
@@ -21,6 +32,7 @@ class Gaussian:
     def CDF(self, time):
         def normalize(value, mean, sigma):
             return (value - mean) / sigma
+        time = self.refine_input(time)
         point = normalize(time, self.mean, self.sigma)
         return norm.cdf(point)
 

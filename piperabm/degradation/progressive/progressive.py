@@ -10,29 +10,45 @@ class ProgressiveDegradation:
     def __init__(
         self,
         usage_max: float=None,
-        usage_current: float=0,
+        usage_current: float=None,
         formula=None
     ):
+        if usage_current is None:
+            usage_current = 0
         self.usage_current = usage_current
+        if usage_max is None:
+            usage_max = float('inf')
         self.usage_max = usage_max
         if formula is None:
             formula = Formula_01
         self.formula = formula
 
-    def add_usage(self, amount: float):
-        self.usage_current += amount
+    def repair(self, amount: float=0):
+        if self.usage_current is not None:
+            self.usage_current -= amount
+
+    def add_usage(self, amount: float=0):
+        if self.usage_current is not None:
+            self.usage_current += amount
 
     def ratio(self):
         result = None
         if self.usage_current is not None and \
             self.usage_max is not None:
             result = self.usage_current / self.usage_max
+        if result is not None:
+            if result < 0:
+                result = 0
+            elif result > 1:
+                result = 1
         return result
 
     def factor(self):
         result = None
         if self.formula is not None:
-            result = self.formula.calculate(ratio=self.ratio())
+            ratio = self.ratio()
+            if ratio is not None:
+                result = self.formula.calculate(ratio)
         return result
     
     def to_dict(self) -> dict:
@@ -58,10 +74,15 @@ class ProgressiveDegradation:
         """
         Create delta
         """
-        delta_usage_current = self.usage_current - other.usage_current
         delta = {
-            'usage_current': delta_usage_current,
-        }
+                'usage_current': None,
+            }
+        if self.usage_current is not None and \
+            other.usage_current is not None:
+            delta_usage_current = self.usage_current - other.usage_current
+            delta = {
+                'usage_current': delta_usage_current,
+            }
         return delta
 
     def __add__(self, delta: dict) -> None:
@@ -69,12 +90,13 @@ class ProgressiveDegradation:
         Add delta
         """
         delta_usage_current = delta['usage_current']
-        self.usage_current += delta_usage_current
+        if delta_usage_current is not None:
+            self.usage_current += delta_usage_current
     
 
 if __name__ == "__main__":
     degradation = ProgressiveDegradation(
-        usage_max=10,
-        usage_current=3
+        usage_current=3,
+        usage_max=10
     )
     print(degradation.factor())

@@ -7,15 +7,14 @@ from piperabm.unit import DT
 class TestGaussianClass(unittest.TestCase):
     
     def setUp(self):
-        dist = Gaussian(
-            mean=DT(days=70).total_seconds(),
-            sigma=DT(days=10).total_seconds()
+        self.dist = Gaussian(
+            mean=DT(days=70),
+            sigma=DT(days=10)
         )
-        self.dist = dist
 
     def test_normal_distribution(self):
-        time_start = DT(days=0).total_seconds()
-        time_end = DT(days=70).total_seconds()
+        time_start = DT(days=0)
+        time_end = DT(days=70)
         p = self.dist.probability(
             time_start=time_start,
             time_end=time_end
