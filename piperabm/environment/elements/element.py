@@ -7,18 +7,21 @@ from piperabm.degradation.progressive.formulas import Formula_01
 
 
 class Element:
+    """
+    Represent a physical element
+    """
 
     def __init__(
         self,
         boundary=None,
-        active: bool=True,
+        active: bool = True,
         start_date: Date = None,
         end_date: Date = None,
         sudden_degradation_dist=None,
-        sudden_degradation_coeff=None,
+        sudden_degradation_coeff: float=None,
         progressive_degradation_formula=None,
-        progressive_degradation_current=None,
-        progressive_degradation_max=None,
+        progressive_degradation_current: float=None,
+        progressive_degradation_max: float=None,
     ):
         # boundary:
         if boundary is None:
@@ -49,11 +52,14 @@ class Element:
         self.type = 'element'
 
     def add_progressive_degradation(
-            self,
-            formula=None,
-            current=0,
-            max=float('inf')
-        ):
+        self,
+        formula=None,
+        current: float = 0,
+        max: float = float('inf')
+    ):
+        """
+        Add progressive_degaradtion object
+        """
         if formula is None:
             formula = Formula_01
         progressive_degradation = ProgressiveDegradation(
@@ -63,7 +69,10 @@ class Element:
         )
         return progressive_degradation
 
-    def add_sudden_degradation(self, distribution=None, coeff: float=1):
+    def add_sudden_degradation(self, distribution=None, coeff: float = 1):
+        """
+        Add sudden_degaradtion object
+        """
         if distribution is None:
             distribution = Eternal()
         if coeff is None:
@@ -82,12 +91,21 @@ class Element:
         )
 
     def add_usage(self, amount: float):
+        """
+        Add usage to progressive_degradation
+        """
         self.progressive_degradation.add_usage(amount)
 
-    def progressive_degradation_factor(self):
+    def degradation_factor(self):
+        """
+        Add usage to progressive_degradation
+        """
         return self.progressive_degradation.factor()
 
-    def sudden_degradation_active(self, start_date: Date, end_date: Date):
+    def degradation_active(self, start_date: Date, end_date: Date):
+        """
+        Check if the element is active based on sudden_degradation
+        """
         return self.sudden_degradation.is_active(
             start_date=start_date,
             end_date=end_date
