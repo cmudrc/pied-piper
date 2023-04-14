@@ -1,35 +1,23 @@
-from piperabm.unit import DT
+from piperabm.degradation.sudden.distributions.distribution import Distribution
 
 
-class DiracDelta:
+class DiracDelta(Distribution):
     """
     Dirac Delta distribution.
     """
     
-    def __init__(self, main):
+    def __init__(self, main=0):
+        super().__init__()
         self.main = self.refine_input(main)
 
-    def refine_input(self, dt_object):
-        if isinstance(dt_object, DT):
-            dt = dt_object.total_seconds()
-        else:
-            dt = dt_object
-        return dt
-
-    def probability(self, time_start, time_end):
-        time_start = self.refine_input(time_start)
-        time_end = self.refine_input(time_end)
-        return self.CDF(time_end) - self.CDF(time_start)
-
-    def CDF(self, point):
+    def CDF(self, point) -> float:
+        result = None
         point = self.refine_input(point)
-        result = 0
         if self.main <= point:
             result = 1
+        else:
+            result = 0
         return result
-
-    def show(self):
-        pass
 
     def to_dict(self) -> dict:
         dictionary = {

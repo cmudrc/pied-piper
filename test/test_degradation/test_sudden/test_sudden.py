@@ -47,6 +47,22 @@ class TestSuddenDegradation_Distribution(unittest.TestCase):
         )
         self.assertFalse(result)
 
+    def test_to_dict(self):
+        dictionary = self.degradation.to_dict()
+        expected_result = {
+            'distribution': {
+                'type': 'dirac delta',
+                'main': DT(days=5).total_seconds()
+            },
+            'coeff': 1}
+        self.assertDictEqual(dictionary, expected_result)
+
+    def test_from_dict(self):
+        dictionary = self.degradation.to_dict()
+        new_degradation = SuddenDegradation()
+        new_degradation.from_dict(dictionary)
+        self.assertEqual(self.degradation, new_degradation)
+
 
 if __name__ == "__main__":
     unittest.main()

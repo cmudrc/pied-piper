@@ -2,6 +2,7 @@ import numpy as np
 
 from piperabm.unit import Date
 from piperabm.degradation.sudden.distributions import Eternal
+from piperabm.degradation.sudden.distributions.load import load_sudden_degradation_distribution
 
 
 class SuddenDegradation:
@@ -75,29 +76,25 @@ class SuddenDegradation:
         active = self.is_working(probability)
         return active
 
-    '''
     def to_dict(self) -> dict:
-        start_date_dict = date_to_dict(self.start_date)
-        end_date_dict = date_to_dict(self.end_date)
         return {
-            'boundary': self.boundary.to_dict(),
-            'active': self.active,
-            'initiation_date': initiation_date_dict,
-            'end_date': end_date_dict,
-            'sudden_degradation': self.sudden_degradation.to_dict(),
-            'type': self.type
+            'distribution': self.distribution.to_dict(),
+            'coeff': self.coeff,
         }
     
     def from_dict(self, dictionary: dict) -> None:
-        self.boundary = load_boundary(dictionary['boundary'])
-        self.active = dictionary['active']
-        start_date_dict = dictionary['start_date']
-        self.start_date = date_from_dict(start_date_dict)
-        end_date_dict = dictionary['end_date']
-        self.end_date = date_from_dict(end_date_dict)
-        self.sudden_degradation = load_sudden_degradation(dictionary=['sudden_degradation'])
-        self.type = dictionary['type']
-    '''
+        self.distribution = load_sudden_degradation_distribution(dictionary['distribution'])
+        self.coeff = dictionary['coeff']
+
+    def __str__(self) -> str:
+        return str(self.to_dict())
+
+    def __eq__(self, other) -> bool:
+        result = False
+        if self.to_dict() == other.to_dict():
+            result = True
+        return result
+    
 
 if __name__ == "__main__":
     from piperabm.degradation.sudden.distributions import DiracDelta

@@ -1,22 +1,36 @@
-class Eternal:
+from piperabm.degradation.sudden.distributions.distribution import Distribution
+
+
+class Eternal(Distribution):
     """
     Eternal distribution.
     """
 
     def __init__(self):
-        pass
+        super().__init__()
+        self.type = 'eternal'
 
-    def probability(self, time_start, time_end):
+    def probability(self, time_start, time_end) -> float:
         return 0
-
-    def show(self):
-        pass
 
     def to_dict(self) -> dict:
         dictionary = {
-            'type': 'eternal'
+            'type': self.type
         }
         return dictionary
     
-    def from_dict(self, dictionary: dict):
+    def from_dict(self, dictionary: dict) -> None:
         pass
+    
+
+if __name__ == "__main__":
+    time_start=0
+    time_end=90
+
+    distribution = Eternal()
+    print(
+        distribution.probability(
+            time_start=time_start,
+            time_end=time_end
+        )
+    )
