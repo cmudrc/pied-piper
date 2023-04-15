@@ -1,12 +1,13 @@
 import networkx as nx
 
+from piperabm.object import Object
 from piperabm.unit import DT, Date
 from piperabm.environment.add import Add
 from piperabm.environment.index import Index
 from piperabm.environment.search import Search
 
 
-class Environment(Add, Index, Search):
+class Environment(Object, Add, Index, Search):
     """
     Represent physical environment
     Manage settlements and their connecting links
@@ -81,21 +82,22 @@ if __name__ == "__main__":
         sudden_degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
     #print(env.all_indexes(type='settlement'))
-    print(env.find_node(1))
-    '''
-    env.add_link(
-        "John's Home",
-        [20, 0],
-        initiation_date=Date(2020, 1, 1),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
+    #print(env.find_node(1))
+    
+    env.add_road(
+        _from="John's Home",
+        _to=[20, 0],
+        start_date=Date(2020, 1, 1),
+        sudden_degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-    env.add_link(
-        [20.3, 0.3],
-        "Peter's Home",
-        initiation_date=Date(2020, 1, 3),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
+    env.add_road(
+        _from=[20, 0],
+        _to="Peter's Home",
+        start_date=Date(2020, 1, 3),
+        sudden_degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-    '''
+    print(env)
+    
     #env.show(start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
     #from path import Path
     #p = Path(env, start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 4))

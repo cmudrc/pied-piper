@@ -1,4 +1,7 @@
 class Object:
+    """
+    Contains global methods for classes 
+    """
 
     def __str__(self) -> str:
         return str(self.to_dict())
@@ -11,7 +14,8 @@ class Object:
     
     def to_dict(self) -> dict:
         dictionary = {}
+        print("NOT IMPLEMENTED YET")
         return dictionary
     
     def from_dict(self, dictionary: dict) -> None:
-        pass
+        print("NOT IMPLEMENTED YET")

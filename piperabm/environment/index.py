@@ -19,9 +19,9 @@ class Index:
             new_index = 0
         return new_index
 
-    def get_node_object(self, index: int):
+    def get_node_element(self, index: int):
         """
-        Retrieve node object based on its index
+        Retrieve node element based on its index
         """
         try:
             result = self.G.nodes[index]['element']
@@ -29,11 +29,11 @@ class Index:
             result = None
         return result
     
-    def get_node_objects(self, indexes: list):
+    def get_node_elements(self, indexes: list):
         result = []
         for index in indexes:
-            object = self.get_node_object(index)
-            result.append(object)
+            element = self.get_node_element(index)
+            result.append(element)
         return result
     
     def all_indexes(self, type='all'):
@@ -46,7 +46,7 @@ class Index:
         else:
             result = []
             for index in self.all_indexes():
-                element = self.get_node_object(index)
+                element = self.get_node_element(index)
                 if element.get_type() == type:
                     result.append(index)
         return result

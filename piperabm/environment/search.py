@@ -12,7 +12,7 @@ class Search:
         if len(name) > 0: # to avoid: (name='')
             index_list = self.all_indexes()
             for index in index_list:
-                node_element = self.get_node_object(index)
+                node_element = self.get_node_element(index)
                 if node_element.name == name:
                     result = index
                     break
@@ -35,7 +35,7 @@ class Search:
         result = None
         index_list = self.all_indexes()
         for index in index_list:
-            hub = self.get_node_object(index)
+            hub = self.get_node_element(index)
             if hub.is_in(pos) is True:
                 result = index
                 break
