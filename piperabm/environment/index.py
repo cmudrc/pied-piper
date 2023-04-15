@@ -7,14 +7,6 @@ class Index:
     Manage nodes index
     """
 
-    def __init__(self):
-        '''node_types is node indexes gathered as list inside a dictionary based on their type'''
-        self.element_indexes = {
-            'settlement': [],
-            'hub': [],
-            'market': [],
-        }
-
     def find_next_index(self):
         """
         Check all indexes in self.node_types dictionary and suggest a new index
@@ -27,4 +19,30 @@ class Index:
             new_index = 0
         return new_index
 
-        
+    def get_node_object(self, index: int):
+        """
+        Retrieve node object based on its index
+        """
+        return self.G.nodes[index]['element']
+    
+    def get_node_objects(self, indexes: list):
+        result = []
+        for index in indexes:
+            object = self.get_node_object(index)
+            result.append(object)
+        return result
+    
+    def all_indexes(self, type='all'):
+        """
+        Filter all node indexes based on their type
+        """
+        result = None
+        if type == 'all':
+            result = self.G.nodes()
+        else:
+            result = []
+            for index in self.all_indexes():
+                element = self.get_node_object(index)
+                if element.get_type() == type:
+                    result.append(index)
+        return result

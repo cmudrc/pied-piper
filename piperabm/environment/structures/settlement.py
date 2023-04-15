@@ -14,7 +14,7 @@ class Settlement(Structure):
         sudden_degradation_coeff: float=None,
         progressive_degradation_formula=None,
         progressive_degradation_current: float=None,
-        progressive_degradation_max: float=None,
+        progressive_degradation_max: float=None
     ):
         super().__init__(
             boundary=boundary,

@@ -22,6 +22,13 @@ class Hub(Element):
         self.pos = pos
         self.type = 'hub'
 
+    def add_structure(self, structure):
+        if self.start_date > structure.start_date:
+            self.start_date = structure.start_date
+        if self.end_date < structure.end_date:
+            self.end_date = structure.end_date
+        self.structure = structure
+
     def to_dict(self) -> dict:
         structure_dict = None
         if self.structure is not None:

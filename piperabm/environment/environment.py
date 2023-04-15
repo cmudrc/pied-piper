@@ -1,9 +1,7 @@
 import networkx as nx
 
-#from piperabm.degradation import ProgressiveDegradation
-#from piperabm.degradation import SuddenDegradation
 from piperabm.unit import DT, Date
-from piperabm.environment.add_element import AddElement
+from piperabm.environment.add import Add
 from piperabm.environment.index import Index
 
 #try: from .add_element import AddElement
@@ -12,20 +10,19 @@ from piperabm.environment.index import Index
 #except: from index import Index
 
 
-class Environment(AddElement, Index):
+class Environment(Add, Index):
     """
     Represent physical environment
     Manage settlements and their connecting links
     """
 
-    def __init__(self, G=None, links_unit_length=None):
+    def __init__(self, links_unit_length=None):
         """
             G: create instance from another graph
             log: logging instance
             unit_length: unit_length for the degradation distribution
         """
-        if G is None: self.G = nx.Graph()
-        else: self.G = G
+        self.G = nx.Graph()
         self.links_unit_length = links_unit_length
         self.link_graph = None # last link_graph
         self.path_graph = None # last path_graph
@@ -67,7 +64,7 @@ class Environment(AddElement, Index):
 
 if __name__ == "__main__":
     from piperabm.boundary import Circular
-    from piperabm.degradation import DiracDelta
+    from piperabm.degradation.sudden.distributions import DiracDelta
     from piperabm.unit import Date, DT
 
 
@@ -77,17 +74,18 @@ if __name__ == "__main__":
         name="John's Home",
         pos=[-2, -2],
         boundary=Circular(radius=5),
-        initiation_date=Date(2020, 1, 1),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
+        start_date=Date(2020, 1, 1),
+        sudden_degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
     env.add_settlement(
         name="Peter's Home",
         pos=[20, 20],
         boundary=Circular(radius=5),
-        initiation_date=Date(2020, 1, 3),
-        degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
+        start_date=Date(2020, 1, 3),
+        sudden_degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-
+    print(env.all_indexes(type='settlement'))
+    '''
     env.add_link(
         "John's Home",
         [20, 0],
@@ -100,7 +98,7 @@ if __name__ == "__main__":
         initiation_date=Date(2020, 1, 3),
         degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-
+    '''
     #env.show(start_date=Date(2020, 1, 1), end_date=Date(2020, 1, 2))
     #from path import Path
     #p = Path(env, start_date=Date(2020, 1, 3), end_date=Date(2020, 1, 4))
