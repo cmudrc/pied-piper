@@ -1,12 +1,15 @@
 from random import uniform #######
 
+from piperabm.setting import SETTING
 from piperabm.boundary.shapes.shape import Shape
 from piperabm.tools import euclidean_distance
 
 
 class Circle(Shape):
 
-    def __init__(self, radius: float=0):
+    def __init__(self, radius: float=None):
+        if radius is None:
+            radius = SETTING['eps']
         super().__init__()
         self.radius = radius
         self.type = 'circle'

@@ -9,18 +9,13 @@ class Eternal(Distribution):
     def __init__(self):
         super().__init__()
         self.type = 'eternal'
-
-    def probability(self, time_start, time_end) -> float:
+    
+    def CDF(self, time) -> float:
         return 0
 
     def to_dict(self) -> dict:
-        dictionary = {
-            'type': self.type
-        }
+        dictionary = {'type': self.type}
         return dictionary
-    
-    def from_dict(self, dictionary: dict) -> None:
-        pass
     
 
 if __name__ == "__main__":

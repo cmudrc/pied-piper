@@ -8,3 +8,10 @@ class Object:
         if self.to_dict() == other.to_dict():
             result = True
         return result
+    
+    def to_dict(self) -> dict:
+        dictionary = {}
+        return dictionary
+    
+    def from_dict(self, dictionary: dict) -> None:
+        pass

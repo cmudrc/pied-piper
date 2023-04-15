@@ -1,16 +1,18 @@
 import numpy as np
 
+from piperabm.object import Object
 from piperabm.unit import Date
 from piperabm.degradation.sudden.distributions import Eternal
 from piperabm.degradation.sudden.distributions.load import load_sudden_degradation_distribution
 
 
-class SuddenDegradation:
+class SuddenDegradation(Object):
     """
     Represent degradation property of an element that degrades by sudden.
     """
 
     def __init__(self, distribution=None, coeff: float=1):
+        super().__init__()
         if distribution is None:
             distribution = Eternal()
         self.distribution = distribution
@@ -85,15 +87,6 @@ class SuddenDegradation:
     def from_dict(self, dictionary: dict) -> None:
         self.distribution = load_sudden_degradation_distribution(dictionary['distribution'])
         self.coeff = dictionary['coeff']
-
-    def __str__(self) -> str:
-        return str(self.to_dict())
-
-    def __eq__(self, other) -> bool:
-        result = False
-        if self.to_dict() == other.to_dict():
-            result = True
-        return result
     
 
 if __name__ == "__main__":

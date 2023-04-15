@@ -1,9 +1,11 @@
+from piperabm.object import Object
 from piperabm.unit import DT
 
 
-class Distribution:
+class Distribution(Object):
 
     def __init__(self):
+        super().__init__()
         self.type = 'distribution'
 
     def probability(self, time_start, time_end) -> float:
@@ -20,12 +22,3 @@ class Distribution:
         else:
             dt = dt_object
         return dt
-
-    def __str__(self) -> str:
-        return str(self.to_dict())
-
-    def __eq__(self, other) -> bool:
-        result = False
-        if self.to_dict() == other.to_dict():
-            result = True
-        return result
