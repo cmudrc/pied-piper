@@ -21,6 +21,17 @@ class Hub(Element):
         self.pos = pos
         self.type = 'hub'
 
+    def is_in(self, pos: list) -> bool:
+        result = None
+        if self.structure is not None:
+            result = self.structure.boundary.is_in(
+                point=pos,
+                center=self.pos
+            )
+        elif pos == self.pos:
+            result = True
+        return result
+
     def add_structure(self, structure):
         if self.start_date > structure.start_date:
             self.start_date = structure.start_date

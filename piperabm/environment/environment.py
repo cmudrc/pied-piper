@@ -3,9 +3,10 @@ import networkx as nx
 from piperabm.unit import DT, Date
 from piperabm.environment.add import Add
 from piperabm.environment.index import Index
+from piperabm.environment.search import Search
 
 
-class Environment(Add, Index):
+class Environment(Add, Index, Search):
     """
     Represent physical environment
     Manage settlements and their connecting links
@@ -79,7 +80,8 @@ if __name__ == "__main__":
         start_date=Date(2020, 1, 3),
         sudden_degradation_dist=DiracDelta(main=DT(days=10).total_seconds())
     )
-    print(env.all_indexes(type='settlement'))
+    #print(env.all_indexes(type='settlement'))
+    print(env.find_node(1))
     '''
     env.add_link(
         "John's Home",

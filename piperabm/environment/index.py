@@ -23,7 +23,11 @@ class Index:
         """
         Retrieve node object based on its index
         """
-        return self.G.nodes[index]['element']
+        try:
+            result = self.G.nodes[index]['element']
+        except:
+            result = None
+        return result
     
     def get_node_objects(self, indexes: list):
         result = []

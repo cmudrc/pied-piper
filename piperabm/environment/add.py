@@ -34,14 +34,13 @@ class Add:
             progressive_degradation_current=progressive_degradation_current,
             progressive_degradation_max=progressive_degradation_max
         )
-        hub = Hub(
+        index = self.add_hub(
             name=name,
             pos=pos,
             start_date=start_date,
             end_date=end_date,
             structure=settlement
         )
-        index = self.add_node(hub)
         return index
 
     def add_hub(
@@ -55,19 +54,28 @@ class Add:
         """
         Create a new hub object and add to the model
         """
-        hub = Hub(
-            name=name,
-            pos=pos,
-            start_date=start_date,
-            end_date=end_date,
-            structure=structure
-        )
-        index = self.add_node(hub)
+        hub_index_by_name = self.find_node(name)
+        hub_index_by_pos = self.find_node(pos)
+        if hub_index_by_name is None and hub_index_by_pos is None:
+            hub = Hub(
+                name=name,
+                pos=pos,
+                start_date=start_date,
+                end_date=end_date,
+                structure=structure
+            )
+            index = self.add_node(hub)
+        else:
+            print('hub already exists.')
+            if hub_index_by_name is not None:
+                index = hub_index_by_name
+            elif hub_index_by_pos is not None:
+                index = hub_index_by_pos
         return index
 
     def add_node(self, object):
         """
-        Add object to the model
+        Add a node to the model together with its object
         """
         index = self.find_next_index()
         self.G.add_node(
@@ -75,4 +83,13 @@ class Add:
             element=object
         )
         return index
+    
+    def add_edge(self, start_index, end_index, object):
+        self.G.add_edge(
+            start_index,
+            end_index,
+            element=object
+        )
+
+
 
