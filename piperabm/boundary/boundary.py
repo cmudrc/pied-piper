@@ -1,19 +1,39 @@
-class Boundary:
+from piperabm.object import Object
+from piperabm.boundary.shapes import Dot, Circle
 
-    def __str__(self) -> str:
-        center = str(self.center)
-        radius = str(self.radius)
-        txt = '>>>'
-        txt += ' '
-        txt += f'{self.type} boundary'
-        txt += ' '
-        txt += f'[center: {center}]'
-        txt += ' '
-        txt += f' [radius: {radius}]'
-        return txt
 
-    def __eq__(self, other) -> bool:
-        result = False
-        if self.__str__() == other.__str__():
-            result = True
-        return result
+class Boundary(Object):
+
+    def __init__(self, shape=None):
+        if shape is None:
+            shape = Dot()
+        self.shape = shape
+
+    def relative_pos(self, point, center):
+        x = point[0]-center[0]
+        y = point[1]-center[1]
+        return [x, y]
+
+    def is_in(self, point, center):
+        relative_pos = self.relative_pos(point, center)
+        return self.shape.is_in(relative_pos)
+
+    def to_dict(self) -> dict:
+        return {
+            'shape': self.shape.to_dict(),
+        }
+
+    def from_dict(self, dictionary: dict):
+        shape_dict = dictionary['shape']
+        type = shape_dict['type']
+        if type == 'dot':
+            shape = Dot()
+        elif type == 'circle':
+            shape = Circle()
+        shape.from_dict(shape_dict)
+        self.shape = shape
+
+
+if __name__ == "__main__":
+    boundary = Boundary()
+    print(boundary)

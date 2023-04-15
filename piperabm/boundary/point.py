@@ -1,33 +1,15 @@
-from piperabm.boundary.circular import Circular
+from piperabm.boundary.shapes.dot import Dot
+from piperabm.boundary.boundary import Boundary
 
 
-class Point(Circular):
-    """
-    Create a infitesimal circular boundery in space
-    """
+class Point(Boundary):
 
     def __init__(self):
         super().__init__(
-            radius=1
+            shape=Dot()
         )
-        self.type = 'point'
-
-    def rand_pos(self) -> list:
-        return self.center
-
-    def to_dict(self) -> dict:
-        dictionary = {
-            'type': 'point',
-            'center': self.center
-        }
-        return dictionary
-
-    def from_dict(self, dictionary: dict):
-        d = dictionary
-        self.center = d['center']
 
 
 if __name__ == "__main__":
     boundary = Point()
-    boundary.center = [-2, -2]
     print(boundary)

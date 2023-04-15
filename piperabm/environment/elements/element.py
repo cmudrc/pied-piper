@@ -1,7 +1,10 @@
-from piperabm.unit import Date
+from piperabm.object import Object
+from piperabm.environment.structures.load import load_structure
+from piperabm.unit import Date, date_to_dict, date_from_dict
+from piperabm.tools import ElementExists
 
 
-class Element:
+class Element(Object):
 
     def __init__(
         self,
@@ -19,6 +22,9 @@ class Element:
         self.type = 'element'
 
     def get_type(self):
+        """
+        Return type of element
+        """
         result = None
         if self.structure is None:
             result = self.type
@@ -26,16 +32,38 @@ class Element:
             result = self.structure.type
         return result
     
-    def __str__(self) -> str:
-        return str(self.to_dict())
-
-    def __eq__(self, other) -> bool:
-        result = False
-        if self.to_dict() == other.to_dict():
-            result = True
-        return result
+    def exists(self, start_date: Date, end_date: Date):
+        """
+        Check whether element exists in the time range
+        """
+        ee = ElementExists()
+        return ee.check(
+            item_start=self.start_date,
+            item_end=self.end_date,
+            time_start=start_date,
+            time_end=end_date
+        )
+    
+    def to_dict(self) -> dict:
+        structure_dict = None
+        if self.structure is not None:
+            structure_dict = self.structure.to_dict()
+        return {
+            'name': self.name,
+            'start_date': date_to_dict(self.start_date),
+            'end_date': date_to_dict(self.end_date),
+            'structure': structure_dict,
+            'type': self.type,
+        }
+    
+    def from_dict(self, dictionary: dict) -> None:
+        self.name = dictionary['name']
+        self.start_date = date_from_dict(dictionary['start_date'])
+        self.end_date = date_from_dict(dictionary['end_date'])
+        self.structure = load_structure(dictionary['structure'])
+        self.type = dictionary['type']
 
 
 if __name__ == "__main__":
     element = Element()
-    print(element.start_date)
+    print(element)

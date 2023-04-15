@@ -4,11 +4,6 @@ from piperabm.unit import DT, Date
 from piperabm.environment.add import Add
 from piperabm.environment.index import Index
 
-#try: from .add_element import AddElement
-#except: from add_element import AddElement
-#try: from .index import Index
-#except: from index import Index
-
 
 class Environment(Add, Index):
     """

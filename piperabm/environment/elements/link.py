@@ -1,6 +1,5 @@
 from piperabm.environment.elements.element import Element
-from piperabm.environment.structures.load import load_structure
-from piperabm.unit import Date, date_to_dict, date_from_dict
+from piperabm.unit import Date
 
 
 class Link(Element):
@@ -21,24 +20,12 @@ class Link(Element):
         self.type = 'link'
 
     def to_dict(self) -> dict:
-        structure_dict = None
-        if self.structure is not None:
-            structure_dict = self.structure.to_dict()
-        return {
-            'name': self.name,
-            'start_date': date_to_dict(self.start_date),
-            'end_date': date_to_dict(self.end_date),
-            'structure': structure_dict
-        }
+        return super().to_dict()
     
     def from_dict(self, dictionary: dict) -> None:
-        self.name = dictionary['name']
-        self.start_date = date_from_dict(dictionary['start_date'])
-        self.end_date = date_from_dict(dictionary['end_date'])
-        self.structure = load_structure(dictionary['structure'])
+        super().from_dict(dictionary)
 
 
 if __name__ == "__main__":
-    hub = Link(start_date=Date(2020,1,1))
-    dictionary = hub.to_dict()
-    print(dictionary['start_date'])
+    link = Link(start_date=Date(2020,1,1))
+    print(link)

@@ -1,14 +1,14 @@
-from piperabm.boundary.load import load_boundary
 from piperabm.unit import Date, date_to_dict, date_from_dict
 
-from piperabm.boundary import Point
+from piperabm.object import Object
+from piperabm.boundary import Point, Boundary
 from piperabm.degradation.sudden import SuddenDegradation
 from piperabm.degradation.sudden.distributions import Eternal
 from piperabm.degradation.progressive import ProgressiveDegradation
 from piperabm.degradation.progressive.formulas import Formula_01
 
 
-class Structure:
+class Structure(Object):
     """
     Represent a physical element
     """
@@ -25,9 +25,12 @@ class Structure:
         progressive_degradation_current: float=None,
         progressive_degradation_max: float=None,
     ):
+        super().__init__()
+
         # boundary:
         if boundary is None:
-            boundary = Point()
+            shape = Point()
+            boundary = Boundary(shape)
         self.boundary = boundary
 
         # activeness:
@@ -131,7 +134,8 @@ class Structure:
         }
     
     def from_dict(self, dictionary: dict) -> None:
-        self.boundary = load_boundary(dictionary['boundary'])
+        boundary = Boundary()
+        self.boundary = boundary.from_dict(dictionary['boundary'])
         self.active = dictionary['active']
         self.start_date = date_from_dict(dictionary['start_date'])
         self.end_date = date_from_dict(dictionary['end_date'])
@@ -142,3 +146,4 @@ class Structure:
 
 if __name__ == "__main__":
     structure = Structure()
+    print(structure)
