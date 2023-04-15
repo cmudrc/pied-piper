@@ -3,12 +3,11 @@ from piperabm.environment.structures.load import load_structure
 from piperabm.unit import Date, date_to_dict, date_from_dict
 
 
-class Hub(Element):
+class Link(Element):
 
     def __init__(
         self,
         name: str = '',
-        pos: list = [0, 0],
         start_date: Date = None,
         end_date: Date = None,
         structure = None
@@ -19,8 +18,7 @@ class Hub(Element):
             end_date=end_date,
             structure=structure
         )
-        self.pos = pos
-        self.type = 'hub'
+        self.type = 'link'
 
     def to_dict(self) -> dict:
         structure_dict = None
@@ -28,7 +26,6 @@ class Hub(Element):
             structure_dict = self.structure.to_dict()
         return {
             'name': self.name,
-            'pos': self.pos,
             'start_date': date_to_dict(self.start_date),
             'end_date': date_to_dict(self.end_date),
             'structure': structure_dict
@@ -36,13 +33,12 @@ class Hub(Element):
     
     def from_dict(self, dictionary: dict) -> None:
         self.name = dictionary['name']
-        self.pos = dictionary['pos']
         self.start_date = date_from_dict(dictionary['start_date'])
         self.end_date = date_from_dict(dictionary['end_date'])
         self.structure = load_structure(dictionary['structure'])
 
 
 if __name__ == "__main__":
-    hub = Hub(start_date=Date(2020,1,1))
+    hub = Link(start_date=Date(2020,1,1))
     dictionary = hub.to_dict()
     print(dictionary['start_date'])
