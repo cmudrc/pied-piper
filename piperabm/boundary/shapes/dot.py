@@ -1,11 +1,11 @@
 from piperabm.boundary.shapes.circle import Circle
-from piperabm.setting import SETTING
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Dot(Circle):
 
     def __init__(self):
-        epsilon = SETTING['eps']
+        epsilon = SYMBOLS['eps']
         super().__init__(radius=epsilon)
         self.type = 'dot'
 

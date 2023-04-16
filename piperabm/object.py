@@ -1,6 +1,6 @@
 class Object:
     """
-    Contains global methods for classes 
+    Pure object for the model
     """
 
     def __str__(self) -> str:

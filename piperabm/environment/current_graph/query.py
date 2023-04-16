@@ -6,61 +6,40 @@ class Query:
     Contains methods for LinkGraph class
     Create a wrap-up for accessing graph data
     """
+    
+    def get_node_element(self, index: int):
+        """
+        Retrieve node element from environment based on its index
+        """
+        result = None
+        if self.env.G.has_node(index):
+            result = self.env.G.nodes[index]['element']
+        return result
+    
+    def get_edge_element(self, index_start: int, index_end: int):
+        """
+        Retrieve node element from environment based on its index
+        """
+        result = None
+        if self.env.G.has_edge(index_start, index_end):
+            result = self.env.G.edges[index_start][index_end]['element']
+        return result
 
-    def all_nodes(self, type='all'):
+    def all_indexes(self, type='all'):
         """
-        Aggregate all lists of nodes in self.node_types
+        Filter all node indexes based on their type
         """
-        all_index = []
-        nodes_list = list(self.G)
+        result = None
         if type == 'all':
-            all_index = nodes_list
-        elif type == 'currently_active': # active settlements
-            for node in nodes_list:
-                if 'settlement' == self.node_info(node, 'type'):
-                    if self.node_info(node, 'currently_active'):
-                        all_index.append(node)
+            result = self.G.nodes()
         else:
-            for node in nodes_list:
-                if type == self.node_info(node, 'type'):
-                    all_index.append(node)
-        return all_index
-
-    def all_edges(self, node=None):
-        """
-        Return a list of all edges if *node* is None, and if *node* is provided,
-        return a list of edges that connect to the *node*
-        """
-        result = None
-        if node is None:
-            result = self.G.edges()
-        else:
-            node_index = self.env.find_node(node)
-            result = self.G.out_edges(node_index)
+            result = []
+            for index in self.all_indexes():
+                element = self.get_node_element(index)
+                if element.get_type() == type:
+                    result.append(index)
         return result
-
-    def node_info(self, node, property):
-        """
-        Return *property* of *node*
-        """
-        result = None
-        private_property = ['currently_active']
-        if property in private_property:
-            ## when property is saved in this level of graph, not top-level
-            node_index = self.find_node(node)
-            if node_index is not None:
-                node = self.G.nodes[node_index]
-                result = node[property]
-        else:
-            result = self.env.node_info(node, property)
-        return result
-
-    def edge_info(self, start, end, property):
-        """
-        Return *property* of edge between *start* and *end*
-        """
-        return self.env.edge_info(start, end, property)
-
+    
     def find_node(self, node):
         result = None
         node_index = self.env.find_node(node)

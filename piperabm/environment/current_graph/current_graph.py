@@ -1,16 +1,12 @@
 import networkx as nx
 
-from piperabm.environment.path_graph import PathGraph
-
-try: from .to_graph import ToGraph
-except: from to_graph import ToGraph
-try: from .query import Query
-except: from query import Query
-try: from .graphics import Graphics
-except: from graphics import Graphics
+from piperabm.environment.current_graph.path_graph import PathGraph
+from piperabm.environment.current_graph.to_graph import ToGraph
+from piperabm.environment.current_graph.query import Query
+from piperabm.environment.current_graph.graphics import Graphics
 
 
-class LinkGraph(ToGraph, Query, Graphics):
+class CurrentGraph(ToGraph, Query, Graphics):
     """
     A graph quivalent to environment, but frozen in time
     """
@@ -40,5 +36,5 @@ if __name__ == "__main__":
     start_date = Date(2020, 1, 5)
     end_date = Date(2020, 1, 10)
     env.update_elements(start_date, end_date)
-    link_graph = LinkGraph(env, start_date, end_date)
-    link_graph.show()
+    current_graph = CurrentGraph(env, start_date, end_date)
+    current_graph.show()

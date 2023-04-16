@@ -1,11 +1,11 @@
 from piperabm.unit import Date, date_to_dict, date_from_dict
-
 from piperabm.object import Object
 from piperabm.boundary import Point, Boundary
 from piperabm.degradation.sudden import SuddenDegradation
 from piperabm.degradation.sudden.distributions import Eternal
 from piperabm.degradation.progressive import ProgressiveDegradation
 from piperabm.degradation.progressive.formulas import Formula_01
+from piperabm.tools import ElementExists
 
 
 class Structure(Object):
@@ -37,6 +37,8 @@ class Structure(Object):
         self.active = active
 
         # dates:
+        if start_date is None:
+            start_date = Date.today()
         self.start_date = start_date
         self.end_date = end_date
 
@@ -120,6 +122,18 @@ class Structure(Object):
         return self.sudden_degradation.is_active(
             start_date=start_date,
             end_date=end_date
+        )
+    
+    def exists(self, start_date: Date, end_date: Date):
+        """
+        Check whether element exists in the time range
+        """
+        ee = ElementExists()
+        return ee.check(
+            item_start=self.start_date,
+            item_end=self.end_date,
+            time_start=start_date,
+            time_end=end_date
         )
     
     def to_dict(self) -> dict:

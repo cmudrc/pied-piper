@@ -1,47 +1,34 @@
-from piperabm import Environment
-from piperabm.unit import Date, DT
-from piperabm.degradation import DiracDelta
-from piperabm.boundary import Circular
-    
+from piperabm.environment import Environment
+from piperabm.environment.elements.samples import hub_0, hub_1
+from piperabm.environment.elements.samples import link_0, link_1
 
-env = Environment(links_unit_length=10)
 
-env.add_settlement(
-    name="Settlement 1",
-    pos=[-60, 40]
-)
-env.add_settlement(
-    name="Settlement 2",
-    pos=[200, 20],
-    boundary=Circular(radius=5)
-)
-env.add_settlement(
-    name="Settlement 3",
-    pos=[100, -180],
-    boundary=Circular(radius=5)
-)
-#env.add_market(
-#    name="Market",
-#    pos=[70, -30]
-#)
+environment = Environment(links_unit_length=10)
+index = environment.find_next_index()
+environment.add_node(index, element=hub_0)
+index = environment.find_next_index()
+environment.add_node(index, element=hub_1)
 
-env.add_link(
-    start="Settlement 1",
-    end=[0, 0],
-    initiation_date=Date.today()-DT(days=3),
-    degradation_dist=DiracDelta(main=DT(days=5).total_seconds())
+'''
+environment.add_link(
+    "John's Home",
+    [20, 0],
+    start_date=Date(2020, 1, 2),
+    sudden_degradation_dist=DiracDelta(main=DT(days=10))
 )
-env.add_link(start=[0.5, 0.5], end=[80, 60])
-env.add_link(start=[80, 60], end=[200, 20])
-env.add_link(start=[0, 0], end="Settlement 3")
-#env.add_link(start=[0, 0], end="Market")
-
+environment.add_link(
+    [20.3, 0.3],
+    "Peter's Home",
+    start_date=Date(2020, 1, 4),
+    sudden_degradation_dist=DiracDelta(main=DT(days=10))
+)
+'''
 
 if __name__ == "__main__":
-    from piperabm.unit import Date, DT
+    from piperabm.unit import Date
 
-    start_date = Date.today()
-    end_date = start_date + DT(days=1)
-    env.update_elements(start_date, end_date)
-    link_graph = env.to_link_graph(start_date, end_date)
-    link_graph.show()
+    start_date = Date(2020, 1, 5)
+    end_date = Date(2020, 1, 10)
+    environment.update_elements(start_date, end_date)
+    current_graph = environment.to_current_graph(start_date, end_date)
+    current_graph.show()

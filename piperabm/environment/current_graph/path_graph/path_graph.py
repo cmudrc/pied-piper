@@ -1,11 +1,8 @@
 import networkx as nx
 
-try: from .to_graph import ToGraph
-except: from to_graph import ToGraph
-try: from .query import Query
-except: from query import Query
-try: from .graphics import Graphics
-except: from graphics import Graphics
+from piperabm.environment.current_graph.path_graph.to_graph import ToGraph
+from piperabm.environment.current_graph.path_graph.query import Query
+from piperabm.environment.current_graph.path_graph.graphics import Graphics
 
 
 class PathGraph(ToGraph, Query, Graphics):
@@ -31,7 +28,7 @@ class PathGraph(ToGraph, Query, Graphics):
 if __name__ == "__main__":
     from piperabm.unit import Date
     from piperabm.environment.sample import env_0 as env
-    from piperabm.environment.link_graph import LinkGraph
+    from piperabm.environment.current_graph import LinkGraph
 
     start_date = Date(2020, 1, 5)
     end_date = Date(2020, 1, 10)

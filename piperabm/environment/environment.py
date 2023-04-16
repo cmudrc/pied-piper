@@ -3,11 +3,11 @@ import networkx as nx
 from piperabm.object import Object
 from piperabm.unit import DT, Date
 from piperabm.environment.add import Add
-from piperabm.environment.index import Index
 from piperabm.environment.search import Search
+from piperabm.environment.query import Query
 
 
-class Environment(Object, Add, Index, Search):
+class Environment(Object, Add, Search, Query):
     """
     Represent physical environment
     Manage settlements and their connecting links
