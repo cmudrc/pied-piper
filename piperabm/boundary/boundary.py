@@ -9,12 +9,29 @@ class Boundary(Object):
             shape = Dot()
         self.shape = shape
 
+    def distance(self, pos, center, mode='center'):
+        relative_pos = self.relative_pos(pos, center)
+        return self.shape.distance(relative_pos, mode)
+
     def relative_pos(self, point, center):
-        x = point[0]-center[0]
-        y = point[1]-center[1]
+        """
+        Calculate pos after moving origin to center
+        """
+        x = point[0] - center[0]
+        y = point[1] - center[1]
         return [x, y]
 
+    def rand_pos(self, center) -> list:
+        pos_local = self.shape.rand_pos()
+        return [
+            pos_local[0] + center[0],
+            pos_local[1] + center[1],
+        ]
+
     def is_in(self, point, center):
+        """
+        Check whether *point* is located within the boundary
+        """
         relative_pos = self.relative_pos(point, center)
         return self.shape.is_in(relative_pos)
 

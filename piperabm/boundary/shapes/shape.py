@@ -1,4 +1,5 @@
 from piperabm.object import Object
+from piperabm.tools import euclidean_distance
 
 
 class Shape(Object):
@@ -6,6 +7,44 @@ class Shape(Object):
     def __init__(self):
         super().__init__()
         self.type = 'shape'
+
+    def is_in(self, point: list=[0, 0]) -> bool:
+        """
+        Check whether *point* is located within the shape
+        """
+        print("NOT IMPLEMENTED YET")
+        return None
+
+    def point_distance_from_center(self, point: list=[0, 0]) -> float:
+        """
+        Calculate the distance from center
+        """
+        center = [0, 0]
+        return euclidean_distance(*center, *point)
+
+    def point_distance_from_body(self, point: list=[0, 0]) -> float:
+        """
+        Calculate distance from body, negative when located inside
+        """
+        print("NOT IMPLEMENTED YET")
+        return None
+
+    def point_distance(self, point: list=[0, 0], mode='center') -> float:
+        """
+        Calculate the distance
+        """
+        result = None
+        if mode == 'center':
+            result = self.point_distance_from_center(point)
+        elif mode == 'body':
+            result = self.point_distance_from_body(point)
+        return result
+
+    def distance(self, other, mode='center') -> float:
+        result = None
+        if isinstance(other, list): # point
+            result = self.point_distance(point=other, mode=mode)
+        return result
 
     def to_dict(self) -> dict:
         return {

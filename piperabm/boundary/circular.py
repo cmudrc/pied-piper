@@ -4,7 +4,7 @@ from piperabm.boundary.boundary import Boundary
 
 class Circular(Boundary):
 
-    def __init__(self, radius):
+    def __init__(self, radius=0):
         super().__init__(
             shape=Circle(radius)
         )

@@ -2,7 +2,7 @@ from random import uniform #######
 
 from piperabm.tools.symbols import SYMBOLS
 from piperabm.boundary.shapes.shape import Shape
-from piperabm.tools import euclidean_distance
+
 
 
 class Circle(Shape):
@@ -16,7 +16,7 @@ class Circle(Shape):
 
     def is_in(self, point: list=[0, 0]):
         """
-        Check whether *point* is located within the boundary
+        Check whether *point* is located within the shape
         """
         distance = self.distance(point, mode='center')
         result = False
@@ -24,40 +24,17 @@ class Circle(Shape):
             result = True
         return result
 
-    def point_distance_from_center(self, point: list=[0, 0]):
+    def point_distance_from_body(self, point: list=[0, 0]):
         """
-        Calculate the distance from center.
-        """
-        center = [0, 0]
-        return euclidean_distance(*center, *point)
-
-    def point_distance_from_boundary(self, point: list=[0, 0]):
-        """
-        Calculate distance from boundary, negative when located inside
+        Calculate distance from body, negative when located inside
         """
         return self.point_distance_from_center(point) - self.radius
-
-    def point_distance(self, point: list=[0, 0], mode='center'):
-        """
-        Calculate the distance.
-        """
-        if mode == 'center':
-            return self.point_distance_from_center(point)
-        elif mode == 'boundary':
-            return self.point_distance_from_boundary(point)
-        
-    def distance(self, other, mode='center'):
-        result = None
-        if isinstance(other, list): # point
-            result = self.point_distance(point=other, mode=mode)
-        return result
 
     def rand_pos(self) -> list:
         result = None
         while True:
             pos = [uniform(-self.radius, self.radius),
                    uniform(-self.radius, self.radius)]
-            pos = [(pos[0] + self.center[0]), (pos[1] + self.center[1])]
             if self.is_in(pos):
                 result = pos
                 break
