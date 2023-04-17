@@ -29,16 +29,13 @@ class TestDiracDeltaClass(unittest.TestCase):
         )
         self.assertEqual(probability, 0)
 
-    def test_to_dict(self):
+    def test_dict(self):
         dictionary = self.distribution.to_dict()
         expected_result = {
             'type': 'dirac delta',
             'main': DT(days=35).total_seconds()
         }
         self.assertDictEqual(dictionary, expected_result)
-
-    def test_from_dict(self):
-        dictionary = self.distribution.to_dict()
         new_distribution = DiracDelta()
         new_distribution.from_dict(dictionary)
         self.assertEqual(self.distribution, new_distribution)

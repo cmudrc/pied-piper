@@ -22,7 +22,7 @@ class TestProgressiveDegradationClass(unittest.TestCase):
         factor = self.degradation.factor()
         self.assertAlmostEqual(factor, 1.35, places=2)
 
-    def test_to_dict(self):
+    def test_dict(self):
         dictionary = self.degradation.to_dict()
         expected_result = {
             'usage_max': 10,
@@ -30,9 +30,6 @@ class TestProgressiveDegradationClass(unittest.TestCase):
             'formula_name': 'formula_01'
         }
         self.assertDictEqual(dictionary, expected_result)
-
-    def test_from_dict(self):
-        dictionary = self.degradation.to_dict()
         new_degradation = ProgressiveDegradation()
         new_degradation.from_dict(dictionary)
         new_dictionary = new_degradation.to_dict()
@@ -94,7 +91,7 @@ class TestProgressiveDegradationClass_usage_max_None(unittest.TestCase):
         factor = self.degradation.factor()
         self.assertEqual(factor, 1)
 
-    def test_to_dict(self):
+    def test_dict(self):
         dictionary = self.degradation.to_dict()
         expected_result = {
             'usage_max': float('inf'),
@@ -102,9 +99,6 @@ class TestProgressiveDegradationClass_usage_max_None(unittest.TestCase):
             'formula_name': 'formula_01'
         }
         self.assertDictEqual(dictionary, expected_result)
-
-    def test_from_dict(self):
-        dictionary = self.degradation.to_dict()
         new_degradation = ProgressiveDegradation()
         new_degradation.from_dict(dictionary)
         new_dictionary = new_degradation.to_dict()
@@ -165,7 +159,7 @@ class TestProgressiveDegradationClass_usage_max_inf(unittest.TestCase):
         factor = self.degradation.factor()
         self.assertEqual(factor, 1)
 
-    def test_to_dict(self):
+    def test_dict(self):
         dictionary = self.degradation.to_dict()
         expected_result = {
             'usage_max': float('inf'),
@@ -173,9 +167,6 @@ class TestProgressiveDegradationClass_usage_max_inf(unittest.TestCase):
             'formula_name': 'formula_01'
         }
         self.assertDictEqual(dictionary, expected_result)
-
-    def test_from_dict(self):
-        dictionary = self.degradation.to_dict()
         new_degradation = ProgressiveDegradation()
         new_degradation.from_dict(dictionary)
         new_dictionary = new_degradation.to_dict()

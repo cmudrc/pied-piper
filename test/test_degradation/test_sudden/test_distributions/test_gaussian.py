@@ -21,7 +21,7 @@ class TestGaussianClass(unittest.TestCase):
         )
         self.assertAlmostEqual(p, 0.5, places=5, msg="Should be equal")
 
-    def test_to_dict(self):
+    def test_dict(self):
         dictionary = self.distribution.to_dict()
         expected_result = {
             'type': 'gaussian',
@@ -29,9 +29,6 @@ class TestGaussianClass(unittest.TestCase):
             'sigma': DT(days=10).total_seconds()
         }
         self.assertDictEqual(dictionary, expected_result)
-
-    def test_from_dict(self):
-        dictionary = self.distribution.to_dict()
         new_distribution = Gaussian()
         new_distribution.from_dict(dictionary)
         self.assertEqual(self.distribution, new_distribution)

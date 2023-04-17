@@ -47,7 +47,7 @@ class TestSuddenDegradation_Distribution(unittest.TestCase):
         )
         self.assertFalse(result)
 
-    def test_to_dict(self):
+    def test_dict(self):
         dictionary = self.degradation.to_dict()
         expected_result = {
             'distribution': {
@@ -56,9 +56,6 @@ class TestSuddenDegradation_Distribution(unittest.TestCase):
             },
             'coeff': 1}
         self.assertDictEqual(dictionary, expected_result)
-
-    def test_from_dict(self):
-        dictionary = self.degradation.to_dict()
         new_degradation = SuddenDegradation()
         new_degradation.from_dict(dictionary)
         self.assertEqual(self.degradation, new_degradation)
