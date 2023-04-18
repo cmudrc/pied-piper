@@ -1,5 +1,5 @@
 from piperabm.object import Object
-from piperabm.boundary.shapes import Dot, Circle
+from piperabm.boundary.shapes import Dot, Circle, Rectangle
 
 
 class Boundary(Object):
@@ -47,6 +47,8 @@ class Boundary(Object):
             shape = Dot()
         elif type == 'circle':
             shape = Circle()
+        elif type == 'rectangle':
+            shape = Rectangle()
         shape.from_dict(shape_dict)
         self.shape = shape
 

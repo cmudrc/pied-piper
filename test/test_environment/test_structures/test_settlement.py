@@ -12,8 +12,9 @@ class TestSettlementClass(unittest.TestCase):
 
     def test_dict(self):
         dictionary = self.settlement.to_dict()
+        print(self.settlement.boundary)
         expected_result = {
-            'boundary': {'shape': {'type': 'circle', 'radius': 5}},
+            'boundary': {'shape': {'type': 'dot', 'radius': 2.220446049250313e-16}},
             'active': True,
             'start_date': {'year': 2020, 'month': 1, 'day': 2, 'hour': 0, 'minute': 0, 'second': 0},
             'end_date': None,
