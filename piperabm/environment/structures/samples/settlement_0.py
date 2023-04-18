@@ -1,13 +1,13 @@
 from piperabm.environment.structures.settlement import Settlement
-from piperabm.degradation.sudden.distributions import DiracDelta
-from piperabm.unit import Date, DT
-from piperabm.boundary import Circular
+from piperabm.degradation.sudden.distributions.samples import distribution_0 as distribution
+from piperabm.boundary.samples import boundary_0 as boundary
+from piperabm.unit import Date
 
 
 settlement = Settlement(
-    boundary=Circular(radius=5),
+    boundary=boundary,
     start_date=Date(2020, 1, 2),
-    sudden_degradation_dist=DiracDelta(main=DT(days=10))
+    sudden_degradation_dist=distribution
 )
 
 

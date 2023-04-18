@@ -1,0 +1,1 @@
+from .dirac_delta_0 import dirac_delta as dirac_delta_0
