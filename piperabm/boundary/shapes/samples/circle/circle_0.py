@@ -1,4 +1,4 @@
-from piperabm.boundary.shapes.circle import Circle
+from piperabm.boundary.shapes import Circle
 
 
 circle = Circle(radius=5)

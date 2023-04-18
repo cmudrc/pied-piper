@@ -13,16 +13,6 @@ class Circle(Shape):
         self.radius = radius
         self.type = 'circle'
 
-    def is_in(self, point: list=[0, 0]):
-        """
-        Check whether *point* is located within the shape
-        """
-        distance = self.distance(point, mode='center')
-        result = False
-        if distance <= self.radius:
-            result = True
-        return result
-
     def point_distance_from_body(self, point: list=[0, 0]):
         """
         Calculate distance from body, negative when located inside
@@ -44,7 +34,7 @@ class Circle(Shape):
         dictionary['radius'] = self.radius
         return dictionary
 
-    def from_dict(self, dictionary: dict):
+    def from_dict(self, dictionary: dict) -> None:
         super().from_dict(dictionary)
         self.radius = dictionary['radius']    
 

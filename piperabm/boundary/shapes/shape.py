@@ -8,12 +8,15 @@ class Shape(Object):
         super().__init__()
         self.type = 'shape'
 
-    def is_in(self, point: list=[0, 0]) -> bool:
+    def is_in(self, point: list=[0, 0]):
         """
         Check whether *point* is located within the shape
         """
-        print("NOT IMPLEMENTED YET")
-        return None
+        distance = self.distance(point, mode='body')
+        result = False
+        if distance <= 0:
+            result = True
+        return result
 
     def point_distance_from_center(self, point: list=[0, 0]) -> float:
         """
@@ -31,7 +34,7 @@ class Shape(Object):
 
     def point_distance(self, point: list=[0, 0], mode='center') -> float:
         """
-        Calculate the distance
+        Calculate the distance from a point [x, y]
         """
         result = None
         if mode == 'center':
@@ -41,6 +44,9 @@ class Shape(Object):
         return result
 
     def distance(self, other, mode='center') -> float:
+        """
+        Calculate the distance
+        """
         result = None
         if isinstance(other, list): # point
             result = self.point_distance(point=other, mode=mode)

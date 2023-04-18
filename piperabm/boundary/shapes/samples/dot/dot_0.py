@@ -1,4 +1,4 @@
-from piperabm.boundary.shapes.dot import Dot
+from piperabm.boundary.shapes import Dot
 
 
 dot = Dot()
