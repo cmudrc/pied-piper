@@ -32,13 +32,7 @@ class TestProgressiveDegradationClass(unittest.TestCase):
         self.assertDictEqual(dictionary, expected_result)
         new_degradation = ProgressiveDegradation()
         new_degradation.from_dict(dictionary)
-        new_dictionary = new_degradation.to_dict()
-        expected_result = {
-            'usage_max': 10,
-            'usage_current': 3,
-            'formula_name': 'formula_01'
-        }
-        self.assertDictEqual(new_dictionary, expected_result)
+        self.assertEqual(new_degradation, self.degradation)
 
     def test_eq(self):
         dictionary = self.degradation.to_dict()
@@ -94,20 +88,14 @@ class TestProgressiveDegradationClass_usage_max_None(unittest.TestCase):
     def test_dict(self):
         dictionary = self.degradation.to_dict()
         expected_result = {
-            'usage_max': float('inf'),
+            'usage_max': 'inf',
             'usage_current': 3,
             'formula_name': 'formula_01'
         }
         self.assertDictEqual(dictionary, expected_result)
         new_degradation = ProgressiveDegradation()
         new_degradation.from_dict(dictionary)
-        new_dictionary = new_degradation.to_dict()
-        expected_result = {
-            'usage_max': float('inf'),
-            'usage_current': 3,
-            'formula_name': 'formula_01'
-        }
-        self.assertDictEqual(new_dictionary, expected_result)
+        self.assertEqual(new_degradation, self.degradation)
 
     def test_eq(self):
         dictionary = self.degradation.to_dict()
@@ -135,7 +123,7 @@ class TestProgressiveDegradationClass_usage_max_None(unittest.TestCase):
         new_degradation + delta
         new_dictionary = new_degradation.to_dict()
         expected_result = {
-            'usage_max': float('inf'),
+            'usage_max': 'inf',
             'usage_current': 5,
             'formula_name': 'formula_01'
         }
@@ -162,7 +150,7 @@ class TestProgressiveDegradationClass_usage_max_inf(unittest.TestCase):
     def test_dict(self):
         dictionary = self.degradation.to_dict()
         expected_result = {
-            'usage_max': float('inf'),
+            'usage_max': 'inf',
             'usage_current': 3,
             'formula_name': 'formula_01'
         }
@@ -170,12 +158,7 @@ class TestProgressiveDegradationClass_usage_max_inf(unittest.TestCase):
         new_degradation = ProgressiveDegradation()
         new_degradation.from_dict(dictionary)
         new_dictionary = new_degradation.to_dict()
-        expected_result = {
-            'usage_max': float('inf'),
-            'usage_current': 3,
-            'formula_name': 'formula_01'
-        }
-        self.assertDictEqual(new_dictionary, expected_result)
+        self.assertEqual(new_degradation, self.degradation)
 
     def test_eq(self):
         dictionary = self.degradation.to_dict()
@@ -203,7 +186,7 @@ class TestProgressiveDegradationClass_usage_max_inf(unittest.TestCase):
         new_degradation + delta
         new_dictionary = new_degradation.to_dict()
         expected_result = {
-            'usage_max': float('inf'),
+            'usage_max': 'inf',
             'usage_current': 3,
             'formula_name': 'formula_01'
         }

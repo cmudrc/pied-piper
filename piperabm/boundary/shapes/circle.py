@@ -4,7 +4,6 @@ from piperabm.tools.symbols import SYMBOLS
 from piperabm.boundary.shapes.shape import Shape
 
 
-
 class Circle(Shape):
 
     def __init__(self, radius: float=None):
@@ -48,6 +47,7 @@ class Circle(Shape):
     def from_dict(self, dictionary: dict):
         super().from_dict(dictionary)
         self.radius = dictionary['radius']    
+
 
 if __name__ == "__main__":
     shape = Circle(radius=5)

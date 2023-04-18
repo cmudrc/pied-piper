@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.boundary import Boundary
+from piperabm.boundary import Boundary, Point, Circular
 
 
 class TestCircularClass(unittest.TestCase):
@@ -13,6 +13,20 @@ class TestCircularClass(unittest.TestCase):
         pos = [13, 14]
         relative_pos = self.boundary.relative_pos(pos, center)
         self.assertEqual(relative_pos, [3, 4])
+
+    def test_laod_point(self):
+        boundary = Point()
+        dictionary = boundary.to_dict()
+        new_boundary = Boundary()
+        new_boundary.from_dict(dictionary)
+        self.assertEqual(boundary, new_boundary)
+
+    def test_laod_circular(self):
+        boundary = Circular(radius=5)
+        dictionary = boundary.to_dict()
+        new_boundary = Boundary()
+        new_boundary.from_dict(dictionary)
+        self.assertEqual(boundary, new_boundary)
 
 
 if __name__ == "__main__":

@@ -120,6 +120,7 @@ class Structure(Object):
         Check if the element is active based on sudden_degradation
         """
         return self.sudden_degradation.is_active(
+            initiation_date=self.start_date,
             start_date=start_date,
             end_date=end_date
         )
@@ -149,12 +150,17 @@ class Structure(Object):
     
     def from_dict(self, dictionary: dict) -> None:
         boundary = Boundary()
-        self.boundary = boundary.from_dict(dictionary['boundary'])
+        boundary.from_dict(dictionary['boundary'])
+        self.boundary = boundary
         self.active = dictionary['active']
         self.start_date = date_from_dict(dictionary['start_date'])
         self.end_date = date_from_dict(dictionary['end_date'])
         sudden_degradation = SuddenDegradation()
-        self.sudden_degradation = sudden_degradation.from_dict(dictionary['sudden_degradation'])
+        sudden_degradation.from_dict(dictionary['sudden_degradation'])
+        self.sudden_degradation = sudden_degradation
+        progressive_degradation = ProgressiveDegradation()
+        progressive_degradation.from_dict(dictionary['progressive_degradation'])
+        self.progressive_degradation = progressive_degradation
         self.type = dictionary['type']
 
 

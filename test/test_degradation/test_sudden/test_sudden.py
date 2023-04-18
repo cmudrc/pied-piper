@@ -5,31 +5,21 @@ from piperabm.degradation.sudden import SuddenDegradation
 from piperabm.degradation.sudden.distributions import DiracDelta
 
 
-class TestSuddenDegradation_Default(unittest.TestCase):
-    """
-    Test instance of class with empty input
-    """
-
-    def setUp(self):
-        self.degradation = SuddenDegradation()
-
-    def test_is_active(self):
-        result = self.degradation.is_active(
-            initiation_date=Date(2000, 1, 1),
-            start_date=Date(2000, 1, 2),
-            end_date=Date(2000, 1, 3)
-        )
-        self.assertTrue(result)
-
-
-class TestSuddenDegradation_Distribution(unittest.TestCase):
-    """
-    Test instance of class with empty input
-    """
+class TestSuddenDegradation(unittest.TestCase):
 
     def setUp(self):
         distribution = DiracDelta(DT(days=5))
         self.degradation = SuddenDegradation(distribution)
+
+    def test_date_to_time(self):
+        time_start, time_end = self.degradation.date_to_time(
+            initiation_date=Date(2000, 1, 1),
+            start_date=Date(2000, 1, 2),
+            end_date=Date(2000, 1, 3)
+        )
+        seconds_per_day = 60 * 60 * 24
+        self.assertEqual(time_start, seconds_per_day * 1)
+        self.assertEqual(time_end, seconds_per_day * 2)
 
     def test_is_active_0(self):
         result = self.degradation.is_active(

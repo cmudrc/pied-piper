@@ -1,5 +1,6 @@
 from piperabm.degradation.progressive.formulas import load_formula
 from piperabm.degradation.progressive.formulas.formula_01 import Formula as Formula_01
+from piperabm.tools.symbols import SYMBOLS
 
 
 class ProgressiveDegradation:
@@ -17,7 +18,7 @@ class ProgressiveDegradation:
             usage_current = 0
         self.usage_current = usage_current
         if usage_max is None:
-            usage_max = float('inf')
+            usage_max = SYMBOLS['inf']
         self.usage_max = usage_max
         if formula is None:
             formula = Formula_01
@@ -52,15 +53,39 @@ class ProgressiveDegradation:
         return result
     
     def to_dict(self) -> dict:
+
+        def convert(var):
+            result = None
+            var_str = str(var)
+            if var_str != 'inf':
+                result = var
+            else:
+                result = var_str
+            return result
+        
         return {
-            'usage_max': self.usage_max,
-            'usage_current': self.usage_current,
+            'usage_max': convert(self.usage_max),
+            'usage_current': convert(self.usage_current),
             'formula_name': self.formula.name
         }
     
     def from_dict(self, dictionary: dict) -> None:
-        self.usage_max = dictionary['usage_max']
-        self.usage_current = dictionary['usage_current']
+
+        def convert(var):
+            result = None
+            if isinstance(var, str):
+                for key in SYMBOLS:
+                    if var == key:
+                        result = SYMBOLS[var]
+                        break
+            else:
+                result = var
+            return result
+
+        usage_max = dictionary['usage_max']
+        self.usage_max = convert(usage_max)
+        current_usage = dictionary['usage_current']
+        self.usage_current = convert(current_usage)
         self.formula = load_formula(dictionary['formula_name'])
 
     def __eq__(self, other):
