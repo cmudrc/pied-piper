@@ -20,5 +20,5 @@ class Rectangular(Boundary):
 
 
 if __name__ == "__main__":
-    shape = Rectangle(width=4, height=3, angle=0)
-    print(shape)
+    boundary = Rectangular(width=4, height=3, angle=0)
+    print(boundary)

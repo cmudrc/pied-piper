@@ -3,7 +3,7 @@ import numpy as np
 
 from piperabm.tools.symbols import SYMBOLS
 from piperabm.boundary.shapes.shape import Shape
-from piperabm.tools.coordinate import rotate_coordinate, rotate_point
+from piperabm.tools.coordinate import rotate_coordinate
 
 
 class Rectangle(Shape):
@@ -52,7 +52,6 @@ class Rectangle(Shape):
         pos = [uniform(-self.width/2, self.width/2),
                uniform(-self.height/2, self.height/2)]
         new_pos = rotate_coordinate(pos, -self.angle)
-        print(new_pos)
         return new_pos
 
     def to_dict(self) -> dict:
