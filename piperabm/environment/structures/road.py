@@ -1,5 +1,6 @@
 from piperabm.environment.structures.structure import Structure
 from piperabm.unit import Date
+from piperabm.boundary.rectangular import Rectangular
 
 
 class Road(Structure):
@@ -16,8 +17,10 @@ class Road(Structure):
         progressive_degradation_current: float=None,
         progressive_degradation_max: float=None
     ):
+        if boundary is None:
+            boundary = Rectangular()
         super().__init__(
-            boundary=boundary, ######### rectangular / line
+            boundary=boundary,
             active=active,
             start_date=start_date,
             end_date=end_date,

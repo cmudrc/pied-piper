@@ -14,11 +14,11 @@ class Hub(Element):
     ):
         super().__init__(
             name=name,
+            pos=pos,
             start_date=start_date,
             end_date=end_date,
             structure=structure
         )
-        self.pos = pos
         self.type = 'hub'
 
     def is_in(self, pos: list) -> bool:
@@ -34,12 +34,10 @@ class Hub(Element):
 
     def to_dict(self) -> dict:
         dictionary = super().to_dict()
-        dictionary['pos'] = self.pos
         return dictionary
     
     def from_dict(self, dictionary: dict) -> None:
         super().from_dict(dictionary)
-        self.pos = dictionary['pos']
 
 
 if __name__ == "__main__":

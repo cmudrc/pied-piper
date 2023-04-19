@@ -9,24 +9,29 @@ class Element(Object):
     def __init__(
         self,
         name: str = '',
+        pos: list = [0, 0],
         start_date: Date = None,
         end_date: Date = None,
         structure = None
     ):
         self.name = name
+        self.pos = pos
         if start_date is None:
             start_date = Date.today()
         self.start_date = start_date
         self.end_date = end_date
-        self.structure = structure
+        self.structure = self.add_structure(structure)
         self.type = 'element'
 
     def add_structure(self, structure):
-        if self.start_date > structure.start_date:
-            self.start_date = structure.start_date
-        if self.end_date < structure.end_date:
-            self.end_date = structure.end_date
-        self.structure = structure
+        result = None
+        if structure is not None:
+            if self.start_date > structure.start_date:
+                self.start_date = structure.start_date
+            if self.end_date < structure.end_date:
+                self.end_date = structure.end_date
+            result = structure
+        return result
 
     def get_type(self):
         """
@@ -57,6 +62,7 @@ class Element(Object):
             structure_dict = self.structure.to_dict()
         return {
             'name': self.name,
+            'pos': self.pos,
             'start_date': date_to_dict(self.start_date),
             'end_date': date_to_dict(self.end_date),
             'structure': structure_dict,
@@ -65,6 +71,7 @@ class Element(Object):
     
     def from_dict(self, dictionary: dict) -> None:
         self.name = dictionary['name']
+        self.pos = dictionary['pos']
         self.start_date = date_from_dict(dictionary['start_date'])
         self.end_date = date_from_dict(dictionary['end_date'])
         self.structure = load_structure(dictionary['structure'])
