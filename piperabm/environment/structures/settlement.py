@@ -11,7 +11,7 @@ class Settlement(Structure):
         start_date: Date = None,
         end_date: Date = None,
         sudden_degradation_dist=None,
-        sudden_degradation_coeff: float=None,
+        sudden_degradation_unit_size: float=None,
         progressive_degradation_formula=None,
         progressive_degradation_current: float=None,
         progressive_degradation_max: float=None
@@ -22,7 +22,7 @@ class Settlement(Structure):
             start_date=start_date,
             end_date=end_date,
             sudden_degradation_dist=sudden_degradation_dist,
-            sudden_degradation_coeff=sudden_degradation_coeff,
+            sudden_degradation_unit_size=sudden_degradation_unit_size,
             progressive_degradation_formula=progressive_degradation_formula,
             progressive_degradation_current=progressive_degradation_current,
             progressive_degradation_max=progressive_degradation_max

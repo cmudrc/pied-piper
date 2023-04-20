@@ -2,13 +2,13 @@ import unittest
 
 from piperabm.unit import DT, Date
 from piperabm.degradation.sudden import SuddenDegradation
-from piperabm.degradation.sudden.distributions import DiracDelta
+from piperabm.degradation.sudden.distributions.samples.dirac_delta import dirac_delta_0
 
 
 class TestSuddenDegradation(unittest.TestCase):
 
     def setUp(self):
-        distribution = DiracDelta(DT(days=5))
+        distribution = dirac_delta_0
         self.degradation = SuddenDegradation(distribution)
 
     def test_date_to_time(self):
@@ -32,8 +32,8 @@ class TestSuddenDegradation(unittest.TestCase):
     def test_is_active_1(self):
         result = self.degradation.is_active(
             initiation_date=Date(2000, 1, 1),
-            start_date=Date(2000, 1, 4),
-            end_date=Date(2000, 1, 6)
+            start_date=Date(2000, 1, 9),
+            end_date=Date(2000, 1, 11)
         )
         self.assertFalse(result)
 
@@ -42,9 +42,9 @@ class TestSuddenDegradation(unittest.TestCase):
         expected_result = {
             'distribution': {
                 'type': 'dirac delta',
-                'main': DT(days=5).total_seconds()
+                'main': DT(days=10).total_seconds()
             },
-            'coeff': 1}
+            'unit_size': None}
         self.assertDictEqual(dictionary, expected_result)
         new_degradation = SuddenDegradation()
         new_degradation.from_dict(dictionary)

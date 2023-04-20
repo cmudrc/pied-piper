@@ -1,5 +1,5 @@
 from piperabm.environment import Environment
-from piperabm.environment.elements.samples import hub_0
+from piperabm.environment.elements.samples.hub import hub_0
 
 
 environment = Environment(links_unit_length=10)

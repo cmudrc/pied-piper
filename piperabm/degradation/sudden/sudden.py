@@ -18,6 +18,14 @@ class SuddenDegradation(Object):
         self.distribution = distribution
         self.unit_size = unit_size
 
+    def calculate_coeff(self, size: float = None):
+        coeff = None
+        if self.unit_size is None or size is None:
+            coeff = 1
+        else:
+            coeff = self.unit_size / size
+        return coeff
+
     def date_to_time(
             self,
             initiation_date: Date,
@@ -37,10 +45,7 @@ class SuddenDegradation(Object):
             time_start,
             time_end
         )
-        if self.unit_size is None or size is None:
-            coeff = 1
-        else:
-            coeff = self.unit_size / size
+        coeff = self.calculate_coeff(size)
         probability_of_death *= coeff
         if probability_of_death > 1:
             probability_of_death = 1

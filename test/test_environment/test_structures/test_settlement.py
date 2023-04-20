@@ -12,13 +12,12 @@ class TestSettlementClass(unittest.TestCase):
 
     def test_dict(self):
         dictionary = self.settlement.to_dict()
-        print(self.settlement.boundary)
         expected_result = {
             'boundary': {'shape': {'type': 'dot', 'radius': 2.220446049250313e-16}},
             'active': True,
             'start_date': {'year': 2020, 'month': 1, 'day': 2, 'hour': 0, 'minute': 0, 'second': 0},
             'end_date': None,
-            'sudden_degradation': {'distribution': {'type': 'dirac delta', 'main': 864000.0}, 'coeff': 1},
+            'sudden_degradation': {'distribution': {'type': 'dirac delta', 'main': 864000.0}, 'unit_size': None},
             'progressive_degradation': {'usage_max': 'inf', 'usage_current': 0, 'formula_name': 'formula_01'},
             'type': 'settlement'
         }

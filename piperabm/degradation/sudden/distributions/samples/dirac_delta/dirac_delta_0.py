@@ -1,5 +1,5 @@
 from piperabm.degradation.sudden.distributions import DiracDelta
-from piperabm.unit import Date, DT
+from piperabm.unit import DT
 
 
 dirac_delta = DiracDelta(main=DT(days=10))

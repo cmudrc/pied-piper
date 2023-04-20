@@ -1,6 +1,6 @@
 from piperabm.environment import Environment
-from piperabm.environment.elements.samples import hub_0, hub_1
-from piperabm.environment.elements.samples import link_0, link_1
+from piperabm.environment.elements.samples.hub import hub_0, hub_1
+from piperabm.environment.elements.samples.link import link_0, link_1
 
 
 environment = Environment(links_unit_length=10)

@@ -26,10 +26,12 @@ class Element(Object):
     def add_structure(self, structure):
         result = None
         if structure is not None:
-            if self.start_date > structure.start_date:
-                self.start_date = structure.start_date
-            if self.end_date < structure.end_date:
-                self.end_date = structure.end_date
+            if self.start_date is not None and structure.start_date is not None:
+                if self.start_date > structure.start_date:
+                    self.start_date = structure.start_date
+            if self.end_date is not None and structure.end_date is not None:
+                if self.end_date < structure.end_date:
+                    self.end_date = structure.end_date
             result = structure
         return result
 
