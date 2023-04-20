@@ -1,20 +1,18 @@
 from piperabm.tools.coordinate.inverse_function import inverse_function
 
 
-"""
-move point in coordinate system based on the vector
-return new pos
-"""
 def move(
         pos: list=[0,0],
         vector: list=[0, 0],
         inverse: bool=False
     ) -> list:
+    """
+    move point in coordinate system based on the vector
+    return new pos
+    """
     inverse_factor = inverse_function(inverse)
-    new_x = pos[0] + vector[0]
-    new_x *= inverse_factor
-    new_y = pos[1] + vector[1]
-    new_y *= inverse_factor
+    new_x = pos[0] + (vector[0] * inverse_factor)
+    new_y = pos[1] + (vector[1] * inverse_factor)
     result = [new_x, new_y]
     return result
 

@@ -1,5 +1,5 @@
 from piperabm.object import Object
-from piperabm.tools import euclidean_distance
+from piperabm.tools.coordinate import euclidean_distance
 
 
 class Shape(Object):
@@ -29,6 +29,10 @@ class Shape(Object):
         """
         Calculate distance from body, negative when located inside
         """
+        print("NOT IMPLEMENTED YET")
+        return None
+    
+    def size(self):
         print("NOT IMPLEMENTED YET")
         return None
 

@@ -1,4 +1,5 @@
 from random import uniform #######
+import numpy as np
 
 from piperabm.tools.symbols import SYMBOLS
 from piperabm.boundary.shapes.shape import Shape
@@ -12,6 +13,9 @@ class Circle(Shape):
         super().__init__()
         self.radius = radius
         self.type = 'circle'
+
+    def size(self):
+        return np.pi * (self.radius ** 2)
 
     def point_distance_from_body(self, point: list=[0, 0]):
         """

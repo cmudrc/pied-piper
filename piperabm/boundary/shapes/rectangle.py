@@ -24,6 +24,9 @@ class Rectangle(Shape):
         self.angle = angle
         self.type = 'rectangle'
 
+    def size(self):
+        return self.width * self.height
+
     def point_distance_from_body(self, point: list=[0, 0]):
         """
         Calculate distance from body, negative when located inside

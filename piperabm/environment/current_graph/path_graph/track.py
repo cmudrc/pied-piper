@@ -1,7 +1,7 @@
 import numpy as np
 
 from piperabm.unit import DT
-from piperabm.tools import euclidean_distance
+from piperabm.tools.coordinate import euclidean_distance
 
 
 class Track:

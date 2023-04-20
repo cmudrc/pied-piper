@@ -20,7 +20,7 @@ class Structure(Object):
         start_date: Date = None,
         end_date: Date = None,
         sudden_degradation_dist=None,
-        sudden_degradation_coeff: float=None,
+        sudden_degradation_unit_size: float=None,
         progressive_degradation_formula=None,
         progressive_degradation_current: float=None,
         progressive_degradation_max: float=None,
@@ -45,7 +45,7 @@ class Structure(Object):
         # sudden degradation:
         self.sudden_degradation = self.add_sudden_degradation(
             distribution=sudden_degradation_dist,
-            coeff=sudden_degradation_coeff
+            unit_size=sudden_degradation_unit_size
         )
 
         # progressive degradation:
@@ -76,17 +76,15 @@ class Structure(Object):
         )
         return progressive_degradation
 
-    def add_sudden_degradation(self, distribution=None, coeff: float = 1):
+    def add_sudden_degradation(self, distribution=None, unit_size: float = None):
         """
         Add sudden_degaradtion object
         """
         if distribution is None:
             distribution = Eternal()
-        if coeff is None:
-            coeff = 1
         sudden_degradation = SuddenDegradation(
             distribution=distribution,
-            coeff=coeff
+            unit_size=unit_size
         )
         return sudden_degradation
 
@@ -115,16 +113,23 @@ class Structure(Object):
         """
         return self.progressive_degradation.factor()
 
-    def degradation_active(self, start_date: Date, end_date: Date):
+    def degradation_active(self, start_date: Date, end_date: Date, adjust_for_size: bool = False):
         """
         Check if the element is active based on sudden_degradation
         """
+        size = None
+        if adjust_for_size is True:
+            size = self.size()
         return self.sudden_degradation.is_active(
             initiation_date=self.start_date,
             start_date=start_date,
-            end_date=end_date
+            end_date=end_date,
+            size=size
         )
     
+    def size(self):
+        return self.boundary.shape.size()
+
     def exists(self, start_date: Date, end_date: Date):
         """
         Check whether element exists in the time range

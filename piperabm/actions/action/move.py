@@ -1,5 +1,5 @@
 from piperabm.unit import Date, DT
-from piperabm.tools import euclidean_distance
+from piperabm.tools.coordinate import euclidean_distance
 
 
 class Move:
