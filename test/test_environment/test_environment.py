@@ -1,8 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment.sample import env_0, env_1
+from piperabm.environment.samples import env_0, env_1
 from piperabm.unit import Date, DT
+from piperabm.environment import Environment
 
 
 class TestEnvironmentClass1(unittest.TestCase):

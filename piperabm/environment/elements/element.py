@@ -9,13 +9,12 @@ class Element(Object):
     def __init__(
         self,
         name: str = '',
-        pos: list = [0, 0],
         start_date: Date = None,
         end_date: Date = None,
         structure = None
     ):
         self.name = name
-        self.pos = pos
+        self.pos = [0, 0]
         if start_date is None:
             start_date = Date.today()
         self.start_date = start_date
@@ -24,6 +23,9 @@ class Element(Object):
         self.type = 'element'
 
     def add_structure(self, structure):
+        """
+        Add a structure to the element
+        """
         result = None
         if structure is not None:
             if self.start_date is not None and structure.start_date is not None:
@@ -34,6 +36,12 @@ class Element(Object):
                     self.end_date = structure.end_date
             result = structure
         return result
+
+    def get_pos(self):
+        """
+        Return pos of element
+        """
+        return self.pos
 
     def get_type(self):
         """
@@ -58,6 +66,17 @@ class Element(Object):
             time_end=end_date
         )
     
+    def is_in(self, pos: list) -> bool:
+        result = None
+        if self.structure is not None:
+            result = self.structure.boundary.is_in(
+                point=pos,
+                center=self.pos
+            )
+        elif pos == self.pos:
+            result = True
+        return result
+
     def to_dict(self) -> dict:
         structure_dict = None
         if self.structure is not None:

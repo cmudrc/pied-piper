@@ -23,7 +23,7 @@ class Shape(Object):
         Calculate the distance from center
         """
         center = [0, 0]
-        return euclidean_distance(*center, *point)
+        return euclidean_distance(center, point)
 
     def point_distance_from_body(self, point: list=[0, 0]) -> float:
         """

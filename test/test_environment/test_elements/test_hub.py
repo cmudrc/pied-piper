@@ -1,7 +1,7 @@
 import unittest
 
 from piperabm.environment.elements import Hub
-from piperabm.environment.elements.samples.hub import hub_0 as hub
+from piperabm.environment.elements.hub.samples import hub_0 as hub
 from piperabm.unit import Date, DT
 
 

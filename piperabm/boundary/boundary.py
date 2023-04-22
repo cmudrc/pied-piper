@@ -32,8 +32,8 @@ class Boundary(Object):
         """
         Check whether *point* is located within the boundary
         """
-        relative_pos = self.relative_pos(point, center)
-        return self.shape.is_in(relative_pos)
+        local_pos = self.relative_pos(point, center)
+        return self.shape.is_in(local_pos)
 
     def to_dict(self) -> dict:
         return {

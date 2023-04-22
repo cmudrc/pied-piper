@@ -38,6 +38,8 @@ environment.add_link(start=[0, 0], end="Settlement 3")
 
 
 if __name__ == "__main__":
+    print(environment)
+    '''
     from piperabm.unit import Date, DT
 
     start_date = Date.today()
@@ -45,3 +47,4 @@ if __name__ == "__main__":
     environment.update_elements(start_date, end_date)
     current_graph = environment.to_current_graph(start_date, end_date)
     current_graph.show()
+    '''

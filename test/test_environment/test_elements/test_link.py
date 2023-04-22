@@ -1,7 +1,7 @@
 import unittest
 
 from piperabm.environment.elements import Link
-from piperabm.environment.elements.samples.link import link_0 as link
+from piperabm.environment.elements.link.samples import link_0 as link
 from piperabm.unit import Date, DT
 
 

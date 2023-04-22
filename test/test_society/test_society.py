@@ -5,7 +5,7 @@ from piperabm import Model, Society
 from piperabm.unit import Date, DT
 
 from piperabm.economy.exchange.sample import exchange_0
-from piperabm.environment.sample import env_0
+from piperabm.environment.samples import env_0
 from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
 
 

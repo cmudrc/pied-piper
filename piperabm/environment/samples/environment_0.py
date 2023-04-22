@@ -1,10 +1,9 @@
 from piperabm.environment import Environment
-from piperabm.environment.elements.samples.hub import hub_0
+from piperabm.environment.elements.hub.samples import hub_0
 
 
-environment = Environment(links_unit_length=10)
-index = environment.find_next_index()
-environment.add_node(index, element=hub_0)
+environment = Environment()
+environment.append_node(element=hub_0)
 
 
 if __name__ == "__main__":

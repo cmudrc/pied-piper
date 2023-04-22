@@ -53,6 +53,25 @@ class TestSettlementClass(unittest.TestCase):
         exists = self.settlement.exists(start_date, end_date)
         self.assertFalse(exists)
 
+    def test_is_in_local(self):
+        pos = [0, 0]
+        result = self.settlement.is_in(pos)
+        self.assertTrue(result)
+        pos = [1, 1]
+        result = self.settlement.is_in(pos)
+        self.assertFalse(result)
+
+    def test_is_in_global(self):
+        center = [10, 10]
+
+        pos = [10, 10]
+        result = self.settlement.is_in(pos, center, local=False)
+        self.assertTrue(result)
+
+        pos = [11, 11]
+        result = self.settlement.is_in(pos, center, local=False)
+        self.assertFalse(result)
+
 
 if __name__ == "__main__":
     unittest.main()

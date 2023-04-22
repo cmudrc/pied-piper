@@ -11,6 +11,7 @@ class Road(Structure):
         active=True,
         start_date: Date = None,
         end_date: Date = None,
+        length: float = None,
         sudden_degradation_dist=None,
         sudden_degradation_coeff: float=None,
         progressive_degradation_formula=None,

@@ -142,6 +142,17 @@ class Structure(Object):
             time_end=end_date
         )
     
+    def is_in(self, pos: list, center: list=None, local: bool=True) -> bool:
+        result = None
+        boundary = self.boundary
+        if boundary is not None:
+            if local is False:
+                if center is not None:
+                    result = boundary.is_in(pos, center)
+            else:
+                result = boundary.is_in(pos, center=[0, 0])
+        return result
+    
     def to_dict(self) -> dict:
         return {
             'boundary': self.boundary.to_dict(),

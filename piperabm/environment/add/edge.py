@@ -1,10 +1,11 @@
 import numpy as np
+from copy import deepcopy
 
 from piperabm.unit import Date
 from piperabm.environment.structures import Road
 from piperabm.environment.elements import Link
 from piperabm.boundary.rectangular import Rectangular
-from piperabm.tools.coordinate import slope, euclidean_distance
+from piperabm.tools.coordinate import slope, euclidean_distance, center
 from piperabm.tools.symbols import SYMBOLS
 
 
@@ -20,6 +21,7 @@ class Edge:
             _to=None,
             name: str = '',
             width: float = None,
+            actual_length: float = None,
             active=True,
             start_date: Date = None,
             end_date: Date = None,
@@ -29,114 +31,20 @@ class Edge:
             progressive_degradation_current: float=None,
             progressive_degradation_max: float=None
         ):
-        start_index, end_index = self.input_to_index(_from, _to, start_date, end_date)
-        height, angle = self.calculate_height_and_angle(start_index, end_index)
-        if width is None:
-            width = SYMBOLS['eps']
-        boundary = Rectangular(
-            width=width,
-            height=height,
-            angle=angle
-            )
-        road = Road(
-            boundary=boundary,
-            active=active,
-            start_date=start_date,
-            end_date=end_date,
-            sudden_degradation_dist=sudden_degradation_dist,
-            sudden_degradation_unit_size=sudden_degradation_unit_size,
-            progressive_degradation_formula=progressive_degradation_formula,
-            progressive_degradation_current=progressive_degradation_current,
-            progressive_degradation_max=progressive_degradation_max
-        )
-        link = Link(
-            name=name,
-            start_date=start_date,
-            end_date=end_date,
-            structure=road
-        )
-        self.add_edge(
-            start_index=start_index,
-            end_index=end_index,
-            element=link
-        )
-    
-    def add_edge(self, start_index: int, end_index: int, element):
         """
-        Add aa edge to the model together with its element
+        Create a new road on a new link object and add it to the model
         """
-        self.G.add_edge(
-            start_index,
-            end_index,
-            element=element
-        )
-
-    def input_to_index(self, _from, _to, start_date: Date = None, end_date: Date = None):
-        start_index = self.find_node(_from)
-        if start_index is None and isinstance(_from, list):
-            start_index = self.add_hub(
-                pos=_from,
-                start_date=start_date,
-                end_date=end_date,
-                structure=None
-            )
-        end_index = self.find_node(_to)
-        if end_index is None and isinstance(_to, list):
-            end_index = self.add_hub(
-                pos=_to,
-                start_date=start_date,
-                end_date=end_date,
-                structure=None
-            )
-        return start_index, end_index
-    
-    def calculate_height_and_angle(self, start_index, end_index):
-        if width is None:
-            width = SYMBOLS['eps']
-        start_hub = self.get_node_element(start_index)
-        start_pos = start_hub.pos
-        end_hub = self.get_node_element(end_index)
-        end_pos = end_hub.pos
-        distance = euclidean_distance(*start_pos, *end_pos)
+        start_index, end_index = self.input_to_index_edge(_from, _to, start_date, end_date)
+        start_pos, end_pos = self.index_to_pos_edge(start_index, end_index)
+        length = euclidean_distance(start_pos, end_pos)
         angle = slope(start_pos, end_pos)
-        return distance, angle
-    
-    def calculate_pos(self, start_pos: list, length: float, angle: float):
-        x = start_pos[0] + (length / 2) * np.cos(angle)
-        y = start_pos[1] + (length / 2) * np.sin(angle)
-        return [x, y]
-    
-
-'''
-class EdgeOld:
-    """
-    Manage edges
-    Extends Add class
-    """
-
-    def add_road(
-            self,
-            _from=None,
-            _to=None,
-            name: str = '',
-            width: float = None,
-            active=True,
-            start_date: Date = None,
-            end_date: Date = None,
-            sudden_degradation_dist=None,
-            sudden_degradation_unit_size: float=None,
-            progressive_degradation_formula=None,
-            progressive_degradation_current: float=None,
-            progressive_degradation_max: float=None
-        ):
-        if width is None:
-            width = SYMBOLS['eps']
-        boundary = Rectangular(width=width)
+        boundary = self.create_boundary(length, width, angle)
         road = Road(
             boundary=boundary,
             active=active,
             start_date=start_date,
             end_date=end_date,
+            actual_length=actual_length,
             sudden_degradation_dist=sudden_degradation_dist,
             sudden_degradation_unit_size=sudden_degradation_unit_size,
             progressive_degradation_formula=progressive_degradation_formula,
@@ -151,41 +59,63 @@ class EdgeOld:
             end_date=end_date,
             structure=road
         )
-
-    def calculate_pos(self, start_pos: list, length: float, angle: float):
-        x = start_pos[0] + (length / 2) * np.cos(angle)
-        y = start_pos[1] + (length / 2) * np.sin(angle)
-        return [x, y]
     
-    def slope(self, start_pos: list, end_pos: list):
-        result = None
-        start_x = start_pos[0]
-        start_y = start_pos[1]
-        end_x = end_pos[0]
-        end_y = end_pos[1]
-        delta_x = end_x - start_x
-        delta_y = end_y - start_y
-        if delta_x != 0:
-            result = np.arctan(delta_y / delta_x)
-        else:
-            if delta_y > 0:
-                result = np.pi / 2
-            else:
-                result = np.pi * 3 / 2
-        return result
-
-    def calculate_height_and_angle(self, start_index, end_index):
+    def create_boundary(self, length, width, slope):
+        """
+        Create boundary for the link
+        """
         if width is None:
             width = SYMBOLS['eps']
-        start_hub = self.get_node_element(start_index)
-        start_pos = start_hub.pos
-        end_hub = self.get_node_element(end_index)
-        end_pos = end_hub.pos
-        distance = euclidean_distance(*start_pos, *end_pos)
-        angle = self.slope(start_pos, end_pos)
-        return distance, angle
+        return Rectangular(
+            width=length,
+            height=width,
+            angle=slope
+        )
 
-    def input_to_index(self, _from, _to, start_date: Date = None, end_date: Date = None):
+    def add_link(
+            self,
+            _from,
+            _to,
+            name: str = None,
+            start_date: Date = None,
+            end_date: Date = None,
+            structure = None 
+        ):
+        """
+        Create a new link object and add it to the model
+        """
+        start_index, end_index = self.input_to_index_edge(_from, _to, start_date, end_date)
+        start_pos, end_pos = self.index_to_pos_edge(start_index, end_index)
+        pos_center = center(start_pos, end_pos)
+        link = Link(
+            name=name,
+            start_date=start_date,
+            end_date=end_date,
+            structure=structure
+        )
+        link.pos = pos_center
+        self.add_link_object(_from, _to, link)
+
+    def add_link_object(self, _from, _to, link):
+        """
+        Add a current link object to the model
+        """
+        start_date = link.start_date
+        end_date = link.end_date
+        start_index, end_index = self.input_to_index_edge(_from, _to, start_date, end_date)
+        self.add_edge(start_index, end_index, element=link)
+
+    def add_edge(self, start_index: int, end_index: int, element):
+        """
+        Add aa edge to the model together with its element
+        """
+        self.G.add_edge(
+            start_index,
+            end_index,
+            element=element
+        )
+
+    def input_to_index_edge(self, _from, _to, start_date: Date = None, end_date: Date = None):
         start_index = self.find_node(_from)
         if start_index is None and isinstance(_from, list):
             start_index = self.add_hub(
@@ -203,39 +133,11 @@ class EdgeOld:
                 structure=None
             )
         return start_index, end_index
-
-    def add_link(
-            self,
-            _from=None,
-            _to=None,
-            name: str = '',
-            start_date: Date = None,
-            end_date: Date = None,
-            structure = None
-        ):
-        start_index, end_index = self.input_to_index(_from, _to, start_date, end_date)
-        height, angle = self.calculate_height_and_angle(start_index, end_index)
-        structure.boundary.height = height
-        structure.boundary.angle = angle
-        link = Link(
-            name=name,
-            start_date=start_date,
-            end_date=end_date,
-            structure=structure
-        )
-        self.add_edge(
-            start_index=start_index,
-            end_index=end_index,
-            element=link
-        )
     
-    def add_edge(self, start_index: int, end_index: int, element):
-        """
-        Add aa edge to the model together with its element
-        """
-        self.G.add_edge(
-            start_index,
-            end_index,
-            element=element
-        )
-'''
+    def index_to_pos_edge(self, start_index, end_index):
+        start_hub = self.get_node_element(start_index)
+        start_pos = start_hub.pos
+        end_hub = self.get_node_element(end_index)
+        end_pos = end_hub.pos
+        return start_pos, end_pos
+    

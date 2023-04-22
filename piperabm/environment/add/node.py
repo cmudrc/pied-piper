@@ -9,7 +9,6 @@ class Node:
     Extends Add class
     """
 
-    # node methods:
     def add_settlement(
             self,
             name: str = '',
@@ -19,13 +18,13 @@ class Node:
             start_date: Date = None,
             end_date: Date = None,
             sudden_degradation_dist=None,
-            sudden_degradation_coeff: float=None,
+            sudden_degradation_unit_size: float=None,
             progressive_degradation_formula=None,
             progressive_degradation_current: float=None,
             progressive_degradation_max: float=None
         ):
         """
-        Create a new settlement on a new hub object and add to the model
+        Create a new settlement on a new hub object and add it to the model
         """
         settlement = Settlement(
             boundary=boundary,
@@ -33,7 +32,7 @@ class Node:
             start_date=start_date,
             end_date=end_date,
             sudden_degradation_dist=sudden_degradation_dist,
-            sudden_degradation_coeff=sudden_degradation_coeff,
+            sudden_degradation_unit_size=sudden_degradation_unit_size,
             progressive_degradation_formula=progressive_degradation_formula,
             progressive_degradation_current=progressive_degradation_current,
             progressive_degradation_max=progressive_degradation_max
@@ -56,7 +55,7 @@ class Node:
             structure = None
         ):
         """
-        Create a new hub object and add to the model
+        Create a new hub object and add it to the model
         """
         hub = Hub(
             name=name,
@@ -65,6 +64,43 @@ class Node:
             end_date=end_date,
             structure=structure
         )
+        index = self.add_hub_object(hub)
+        return index
+
+    def add_hub_object(self, hub):
+        """
+        Add a current hub object to the model
+        """
+        index = self.input_to_index_node(
+            name=hub.name,
+            pos=hub.pos
+        )
+        self.add_node(
+            index=index,
+            element=hub
+        )
+        return index
+
+    def add_node(self, index: int, element):
+        """
+        Add a node to the model together with its element
+        """
+        self.G.add_node(
+            index,
+            element=element
+        )
+    
+    def append_node(self, element):
+        """
+        Add a node to the model together with its element
+        """
+        index = self.find_next_index()
+        self.add_node(index, element)
+
+    def input_to_index_node(self, name: str, pos: list):
+        """
+        Return index based on inputs
+        """
         index = None
         hub_index_by_name = self.find_node(name)
         hub_index_by_pos = self.find_node(pos)
@@ -78,24 +114,4 @@ class Node:
                 index = hub_index_by_name
             elif hub_index_by_pos is not None:
                 index = hub_index_by_pos
-        self.add_node(
-            index=index,
-            element=hub
-        )
         return index
-
-    def add_hub(self, index: int, hub):
-        ####################################
-        self.add_node(
-            index=index,
-            element=hub
-        )
-
-    def add_node(self, index: int, element):
-        """
-        Add a node to the model together with its element
-        """
-        self.G.add_node(
-            index,
-            element=element
-        )

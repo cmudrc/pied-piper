@@ -13,14 +13,12 @@ class Environment(Object, Add, Search, Query):
     Manage settlements and their connecting links
     """
 
-    def __init__(self, links_unit_length=None):
+    def __init__(self):
         """
             G: create instance from another graph
             log: logging instance
-            unit_length: unit_length for the degradation distribution
         """
         self.G = nx.Graph()
-        self.links_unit_length = links_unit_length
         self.link_graph = None # last link_graph
         self.path_graph = None # last path_graph
         #self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)

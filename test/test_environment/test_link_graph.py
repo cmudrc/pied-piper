@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment.sample import env_0
+from piperabm.environment.samples import env_0
 from piperabm.unit import Date, DT
 
 

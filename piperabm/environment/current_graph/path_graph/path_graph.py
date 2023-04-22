@@ -27,7 +27,7 @@ class PathGraph(ToGraph, Query, Graphics):
 
 if __name__ == "__main__":
     from piperabm.unit import Date
-    from piperabm.environment.sample import env_0 as env
+    from piperabm.environment.samples import env_0 as env
     from piperabm.environment.current_graph import LinkGraph
 
     start_date = Date(2020, 1, 5)
