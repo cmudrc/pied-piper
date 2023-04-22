@@ -1,5 +1,5 @@
 from piperabm.environment.elements.hub import Hub
-from piperabm.environment.structures.samples import settlement_0
+from piperabm.environment.structures.settlement.samples import settlement_0
 from piperabm.unit import Date
 
 

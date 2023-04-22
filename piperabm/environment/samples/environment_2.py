@@ -4,7 +4,7 @@ from piperabm.degradation.sudden.distributions import DiracDelta
 from piperabm.boundary import Circular
     
 
-environment = Environment(links_unit_length=10)
+environment = Environment()
 
 environment.add_settlement(
     name="Settlement 1",

@@ -7,7 +7,6 @@ class Link(Element):
     def __init__(
         self,
         name: str = '',
-        actual_length: float = None,
         start_date: Date = None,
         end_date: Date = None,
         structure=None
@@ -21,7 +20,7 @@ class Link(Element):
         )
         self.type = 'link'
         ''' Link-specific variables '''
-        self.actual_length = actual_length
+        # pass
 
     def length(self) -> float:
         """
@@ -60,15 +59,14 @@ class Link(Element):
         ''' Element-specific variables '''
         dictionary = super().to_dict()
         ''' Link-specific variables '''
-        dictionary['actual_length'] = self.actual_length
+        # pass
         return dictionary
 
     def from_dict(self, dictionary: dict) -> None:
         ''' Element-specific variables '''
         super().from_dict(dictionary)
         ''' Link-specific variables '''
-        self.actual_length = dictionary['actual_length']
-
+        # pass
 
 if __name__ == "__main__":
     link = Link(start_date=Date(2020, 1, 1))

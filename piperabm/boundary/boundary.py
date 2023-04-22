@@ -1,5 +1,5 @@
 from piperabm.object import Object
-from piperabm.boundary.shapes import Dot, Circle, Rectangle
+from piperabm.tools.shapes import Dot, Circle, Rectangle
 
 
 class Boundary(Object):
