@@ -40,7 +40,7 @@ class Boundary(Object):
             'shape': self.shape.to_dict(),
         }
 
-    def from_dict(self, dictionary: dict):
+    def from_dict(self, dictionary: dict) -> None:
         shape_dict = dictionary['shape']
         type = shape_dict['type']
         if type == 'dot':

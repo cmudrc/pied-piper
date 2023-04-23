@@ -1,4 +1,4 @@
-from piperabm.boundary.shapes import Rectangle
+from piperabm.tools.shapes import Rectangle
 
 
 rectangle = Rectangle(

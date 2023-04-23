@@ -1,14 +1,15 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.environment.structures import Settlement
-from piperabm.environment.structures.samples import settlement_0 as settlement
+from piperabm.environment.structures.settlement.samples import settlement_0 as settlement
 from piperabm.unit import Date, DT
 
 
 class TestSettlementClass(unittest.TestCase):
 
     def setUp(self):
-        self.settlement = settlement
+        self.settlement = deepcopy(settlement)
 
     def test_dict(self):
         dictionary = self.settlement.to_dict()

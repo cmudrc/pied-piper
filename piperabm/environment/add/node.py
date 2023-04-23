@@ -81,7 +81,7 @@ class Node:
         )
         return index
 
-    def add_node(self, index: int, element):
+    def add_node(self, index: int, element=None):
         """
         Add a node to the model together with its element
         """

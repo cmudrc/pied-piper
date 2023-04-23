@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def euclidean_distance(pos_start: list, pos_end: list):
-    start = np.array(pos_start)
-    end = np.array(pos_end)
+def euclidean_distance(start_pos: list, end_pos: list):
+    start = np.array(start_pos)
+    end = np.array(end_pos)
     return np.sqrt(np.sum(np.square(end - start)))
 
 

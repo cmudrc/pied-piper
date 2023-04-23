@@ -32,3 +32,4 @@ class Settlement(Structure):
 
 if __name__ == "__main__":
     settlement = Settlement()
+    print(settlement)

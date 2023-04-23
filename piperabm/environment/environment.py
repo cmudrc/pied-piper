@@ -24,18 +24,6 @@ class Environment(Object, Add, Search, Query):
         #self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
         super().__init__()
     '''
-    def adjusted_length(self, start_node, end_node):
-        """
-        Calculate adjusted_length between *start_node* and *end_node*
-        """
-        edge = self.G[start_node][end_node]
-        difficulty = edge['difficulty']
-        current_axels = edge['current_axels']
-        total_axels = edge['total_axels']
-        pd = self.progressive_degradation_factor(current_axels, total_axels)
-        length = edge['length']
-        return difficulty * pd * length
-
     def to_path_graph(self, start_date=None, end_date=None):
         """
         Convert the environment to "path_graph" object

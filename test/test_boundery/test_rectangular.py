@@ -1,7 +1,7 @@
 import unittest
 
 from piperabm.boundary import Rectangular
-from piperabm.boundary.samples.rectangular import rectangular_1 as rectangular
+from piperabm.boundary.rectangular.samples import rectangular_1 as rectangular
 
 
 class TestRectangularClass(unittest.TestCase):

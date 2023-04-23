@@ -23,7 +23,7 @@ class Structure(Object):
         sudden_degradation_unit_size: float=None,
         progressive_degradation_formula=None,
         progressive_degradation_current: float=None,
-        progressive_degradation_max: float=None,
+        progressive_degradation_max: float=None
     ):
         super().__init__()
 
@@ -56,7 +56,7 @@ class Structure(Object):
         )
 
         # type:
-        self.type = 'element'
+        self.type = 'structure'
 
     def add_progressive_degradation(
         self,

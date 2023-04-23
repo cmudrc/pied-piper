@@ -1,7 +1,7 @@
 import unittest
 
 from piperabm.boundary import Point
-from piperabm.boundary.samples.point import point_0 as point
+from piperabm.boundary.point.samples import point_0 as point
 from piperabm.tools.symbols import SYMBOLS
 
 

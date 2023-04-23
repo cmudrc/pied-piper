@@ -1,5 +1,4 @@
 import numpy as np
-from piperabm.tools.symbols import SYMBOLS
 
 
 def slope(start_pos: list, end_pos: list):
@@ -15,7 +14,8 @@ def slope(start_pos: list, end_pos: list):
             end_y - start_y
         ]
     )
-    dot_product = np.dot(vector, vector_unit)
+    vector_normalized = vector / np.linalg.norm(vector)
+    dot_product = np.dot(vector_normalized, vector_unit)
     angle = np.arccos(dot_product)
     if vector[1] < 0:
         angle += np.pi
@@ -25,5 +25,7 @@ def slope(start_pos: list, end_pos: list):
 if __name__ == "__main__":
     start_pos = [0, 0]
     end_pos = [-1, 0]
+    #start_pos = [1, 1]
+    #end_pos = [-1, -1]
     angle = slope(start_pos, end_pos)
-    print(angle)
+    print(angle * 180 / np.pi)

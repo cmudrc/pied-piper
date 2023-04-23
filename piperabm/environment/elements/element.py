@@ -73,8 +73,9 @@ class Element(Object):
                 point=pos,
                 center=self.pos
             )
-        elif pos == self.pos:
-            result = True
+        else:
+            if pos == self.pos:
+                result = True
         return result
 
     def to_dict(self) -> dict:

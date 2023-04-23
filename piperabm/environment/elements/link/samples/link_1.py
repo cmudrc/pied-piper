@@ -1,14 +1,14 @@
 from copy import deepcopy
 
 from piperabm.environment.elements import Link
-from piperabm.environment.structures.road.samples import road_0
+from piperabm.environment.structures.road.samples import road_1
 from piperabm.unit import Date
 
 
 link = Link(
-    name='halfway 0',
-    start_date=Date(2020, 1, 2),
-    structure=deepcopy(road_0)
+    name='halfway 1',
+    start_date=Date(2020, 1, 4),
+    structure=deepcopy(road_1)
 )
 
 

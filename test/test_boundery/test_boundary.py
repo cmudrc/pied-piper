@@ -1,9 +1,9 @@
 import unittest
 
 from piperabm.boundary import Boundary
-from piperabm.boundary.samples.point import point_0
-from piperabm.boundary.samples.circular import circular_0
-from piperabm.boundary.samples.rectangular import rectangular_0
+from piperabm.boundary.point.samples import point_0
+from piperabm.boundary.circular.samples import circular_0
+from piperabm.boundary.rectangular.samples import rectangular_0
 
 
 class TestCircularClass(unittest.TestCase):

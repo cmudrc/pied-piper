@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.unit import DT, Date
 from piperabm.degradation.sudden import SuddenDegradation
@@ -8,7 +9,7 @@ from piperabm.degradation.sudden.distributions.samples.dirac_delta import dirac_
 class TestSuddenDegradation(unittest.TestCase):
 
     def setUp(self):
-        distribution = dirac_delta_0
+        distribution = deepcopy(dirac_delta_0)
         self.degradation = SuddenDegradation(distribution)
 
     def test_date_to_time(self):

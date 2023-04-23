@@ -1,7 +1,7 @@
 import unittest
 
 from piperabm.boundary import Circular
-from piperabm.boundary.samples.circular import circular_0 as circular
+from piperabm.boundary.circular.samples import circular_0 as circular
 
 
 class TestCircularClass(unittest.TestCase):

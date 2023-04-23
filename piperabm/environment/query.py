@@ -25,7 +25,8 @@ class Query:
         """
         result = None
         if self.G.has_node(index):
-            result = self.G.nodes[index]['element']
+            node = self.G.nodes[index]
+            result = node['element']
         return result
 
     def get_edge_element(self, index_start: int, index_end: int):
@@ -34,5 +35,6 @@ class Query:
         """
         result = None
         if self.G.has_edge(index_start, index_end):
-            result = self.G.edges[index_start][index_end]['element']
+            edge = self.G.edges[index_start, index_end]
+            result = edge['element']
         return result

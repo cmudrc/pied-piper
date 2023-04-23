@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.unit import Date
 from piperabm.environment import Environment
@@ -11,7 +12,7 @@ class TestAddClass_Hub(unittest.TestCase):
         self.env = Environment()
 
     def test_add_node(self):
-        self.env.add_node(index=0, element=hub_0)
+        self.env.add_node(index=0, element=deepcopy(hub_0))
         nodes = self.env.G.nodes()
         self.assertListEqual(list(nodes), [0])
         

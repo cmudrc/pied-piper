@@ -1,6 +1,3 @@
-import numpy as np
-from copy import deepcopy
-
 from piperabm.unit import Date
 from piperabm.environment.structures import Road
 from piperabm.environment.elements import Link
@@ -105,10 +102,16 @@ class Edge:
         start_index, end_index = self.input_to_index_edge(_from, _to, start_date, end_date)
         self.add_edge(start_index, end_index, element=link)
 
-    def add_edge(self, start_index: int, end_index: int, element):
+    def add_edge(self, start_index: int, end_index: int, element=None):
         """
         Add aa edge to the model together with its element
         """
+        start_pos, end_pos = self.index_to_pos_edge(start_index, end_index)
+        length = euclidean_distance(start_pos, end_pos)
+        angle = slope(start_pos, end_pos)
+        width = element.structure.boundary.shape.height
+        boundary = self.create_boundary(length, width, angle)
+        element.structure.boundary = boundary
         self.G.add_edge(
             start_index,
             end_index,

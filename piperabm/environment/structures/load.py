@@ -1,4 +1,4 @@
-from piperabm.environment.structures import Settlement
+from piperabm.environment.structures import Settlement, Road
 
 
 def load_structure(dictionary: dict):
@@ -8,5 +8,7 @@ def load_structure(dictionary: dict):
         type = dictionary['type']
         if type == 'settlement':
             structure = Settlement()
+        elif type == 'road':
+            structure = Road()
         structure.from_dict(dictionary)
     return structure
