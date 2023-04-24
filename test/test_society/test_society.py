@@ -5,7 +5,7 @@ from piperabm import Model, Society
 from piperabm.unit import Date, DT
 
 from piperabm.economy.exchange.sample import exchange_0
-from piperabm.environment.samples import env_0
+from piperabm.environment.samples import environment_0
 from piperabm.society.agent.sample import sample_agent_0, sample_agent_1
 
 
@@ -16,7 +16,7 @@ class TestSocietyClass_1Agent(unittest.TestCase):
 
     def setUp(self):
         society = Society(
-            env=deepcopy(env_0),
+            env=deepcopy(environment_0),
             gini=0.3,
             exchange_rate=deepcopy(exchange_0)
         )

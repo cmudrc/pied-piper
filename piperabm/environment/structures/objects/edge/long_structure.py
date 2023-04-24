@@ -1,4 +1,4 @@
-from piperabm.environment.objects.object import StructuralObject
+from piperabm.environment.structures.objects.object import StructuralObject
 from piperabm.boundary import Rectangular
 from piperabm.unit import Date
 
@@ -54,6 +54,14 @@ class LongStructure(StructuralObject):
             result = self._actual_length()
         elif mode == 'ideal':
             result = self._ideal_length()
+        return result
+    
+    def area(self, mode='adjusted'):
+        result = None
+        if self.boundary is not None:
+            length = self.length(mode)
+            width = self.boundary.shape.height
+            result = length * width
         return result
 
     def _actual_length(self):

@@ -145,11 +145,16 @@ class StructuralObject(Object):
             time_end=end_date
         )
     
-    def is_in(self, pos: list, center: list=[0, 0]) -> bool:
+    def is_in(self, pos: list, center: list=None, local: bool=True) -> bool:
         result = None
         boundary = self.boundary
         if boundary is not None:
-            result = boundary.is_in(pos, center)
+            if local:
+                result = boundary.is_in(pos, center=[0, 0])
+            else:
+                if center is None or not isinstance(center, list):
+                    raise ValueError
+                result = boundary.is_in(pos, center=center)
         return result
     
     def to_dict(self) -> dict:

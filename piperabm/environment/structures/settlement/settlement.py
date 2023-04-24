@@ -1,4 +1,4 @@
-from piperabm.environment.objects.node.structure import Structure
+from piperabm.environment.structures.objects import Structure
 from piperabm.unit import Date
 
 

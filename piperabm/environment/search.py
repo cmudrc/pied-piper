@@ -36,11 +36,11 @@ class Search:
         index_list = self.all_indexes()
         for index in index_list:
             center_pos = self.get_node_pos(index)
-            node = self.get_node_object(index)
+            structure = self.get_node_object(index)
             if center_pos is not None and center_pos == pos:
                 result = index
                 break
-            if node is not None and node.is_in(pos, center=center_pos) is True:
+            if structure is not None and structure.is_in(pos, center=center_pos, local=False) is True:
                 result = index
                 break
         return result

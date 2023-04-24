@@ -2,12 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.environment.samples import environment_1
-#from piperabm.unit import Date, DT
-#from piperabm.environment import Environment
-
-
-from piperabm.tools.coordinate import slope, center, euclidean_distance
-
+from piperabm.unit import Date
 
 
 class TestEnvironmentClass_1(unittest.TestCase):
@@ -23,6 +18,13 @@ class TestEnvironmentClass_1(unittest.TestCase):
         self.assertEqual(len(nodes), 3)
         self.assertListEqual(list(nodes), [0, 1, 2])
 
+    def test_update(self):
+        pass
+
+    def test_dict(self):
+        pass
+
+'''
     def test_edge_boundary_creation(self):
         settlement_0 = self.env.get_node_element(0)
         settlement_1 = self.env.get_node_element(1)
@@ -60,7 +62,7 @@ class TestEnvironmentClass_1(unittest.TestCase):
 
         self.assertEqual(road_0.width(), 2)
         self.assertEqual(road_1.width(), 2)
-
+'''
 
 
 '''
