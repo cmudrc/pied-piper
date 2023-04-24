@@ -29,6 +29,7 @@ class ToGraph:
             """
             Refine inputs
             """
+            '''
             def swap(start, end):
                 temp = None
                 if start > end:
@@ -36,28 +37,38 @@ class ToGraph:
                     start = deepcopy(end)
                     end = deepcopy(temp)
                 return start, end
+            '''
 
             if end_date is None:
                 if start_date is not None:
                     end_date = start_date
-            return swap(start_date, end_date)
+            return start_date, end_date
+
+        def validate_structure(structure, start_date, end_date) -> bool:
+            result = False
+            if structure is not None and \
+                structure.exists(start_date, end_date) and \
+                structure.active is True:
+                result = True
+            return result
 
         start_date, end_date = refine_input(start_date, end_date)
         index_list = self.env.all_indexes()
 
         for index in index_list:
-            element = self.env.get_node_element(index)
-            if element.exists(start_date, end_date):
+            structure = self.env.get_node_object(index)
+            valid = validate_structure(structure, start_date, end_date)
+            if valid is True:
                 add_node(index)
         
         for index in index_list:
             for other_index in index_list:
                 if other_index != index:
-                    element = self.env.get_edge_element(index, other_index)
-                    if element is not None and \
-                        element.exists(start_date, end_date):
+                    structure = self.env.get_edge_object(index, other_index)
+                    valid = validate_structure(structure, start_date, end_date)
+                    if valid is True:
                         add_edge(index, other_index)
         
-        for node in self.env.all_indexes('hub'):
-            if self.node_degree(node) == 0:
-                self.G.remove_node(node)
+        for index in self.all_indexes('hub'):
+            if self.node_degree(index) == 0:
+                self.G.remove_node(index)

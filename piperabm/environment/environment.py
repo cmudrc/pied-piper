@@ -5,6 +5,7 @@ from piperabm.unit import DT, Date
 from piperabm.environment.add import Add
 from piperabm.environment.search import Search
 from piperabm.environment.query import Query
+from piperabm.environment.current_graph import CurrentGraph
 
 
 class Environment(Object, Add, Search, Query):
@@ -19,7 +20,7 @@ class Environment(Object, Add, Search, Query):
             log: logging instance
         """
         self.G = nx.Graph()
-        self.link_graph = None # last link_graph
+        self.current_graph = None # last link_graph
         self.path_graph = None # last path_graph
         #self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
         super().__init__()
@@ -32,15 +33,15 @@ class Environment(Object, Add, Search, Query):
         path_graph = PathGraph(link_graph)
         self.path_graph = path_graph
         return path_graph
-    
-    def to_link_graph(self, start_date=None, end_date=None):
+    '''
+    def current(self, start_date=None, end_date=None):
         """
         Convert the environment to "link_graph" object
         """
-        link_graph = LinkGraph(env=self, start_date=start_date, end_date=end_date)
-        self.link_graph = link_graph
-        return link_graph
-    '''
+        current_graph = CurrentGraph(env=self, start_date=start_date, end_date=end_date)
+        self.current_graph = current_graph
+        return current_graph
+    
     def __str__(self):
         return str(self.G)
 

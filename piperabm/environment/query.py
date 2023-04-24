@@ -11,11 +11,18 @@ class Query:
         result = None
         if type == 'all':
             result = self.G.nodes()
+        elif type == 'hub':
+            result = []
+            for index in self.all_indexes():
+                structure = self.get_node_object(index)
+                if structure is None:
+                    result.append(index)
         else:
             result = []
             for index in self.all_indexes():
                 structure = self.get_node_object(index)
-                if structure.type == type:
+                if structure is not None and \
+                    structure.type == type:
                     result.append(index)
         return result
 
