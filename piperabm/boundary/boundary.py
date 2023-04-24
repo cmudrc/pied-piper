@@ -28,7 +28,7 @@ class Boundary(Object):
             pos_local[1] + center[1],
         ]
 
-    def is_in(self, point, center):
+    def is_in(self, point, center=[0, 0]):
         """
         Check whether *point* is located within the boundary
         """

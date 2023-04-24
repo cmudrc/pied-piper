@@ -2,18 +2,19 @@ import unittest
 from copy import deepcopy
 
 from piperabm.environment.structures import Settlement
-from piperabm.environment.structures.settlement.samples import settlement_0 as settlement
+from piperabm.environment.structures.settlement.samples import settlement_0
 from piperabm.unit import Date, DT
 
 
 class TestSettlementClass(unittest.TestCase):
 
     def setUp(self):
-        self.settlement = deepcopy(settlement)
+        self.settlement = deepcopy(settlement_0)
 
     def test_dict(self):
         dictionary = self.settlement.to_dict()
         expected_result = {
+            'name': "John's Home",
             'boundary': {'shape': {'type': 'dot', 'radius': 2.220446049250313e-16}},
             'active': True,
             'start_date': {'year': 2020, 'month': 1, 'day': 2, 'hour': 0, 'minute': 0, 'second': 0},
@@ -58,6 +59,7 @@ class TestSettlementClass(unittest.TestCase):
         pos = [0, 0]
         result = self.settlement.is_in(pos)
         self.assertTrue(result)
+
         pos = [1, 1]
         result = self.settlement.is_in(pos)
         self.assertFalse(result)

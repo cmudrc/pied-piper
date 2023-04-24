@@ -14,27 +14,48 @@ class Query:
         else:
             result = []
             for index in self.all_indexes():
-                element = self.get_node_element(index)
-                if element.get_type() == type:
+                structure = self.get_node_object(index)
+                if structure.type == type:
                     result.append(index)
         return result
 
-    def get_node_element(self, index: int):
+    def get_node_attr(self, index: int, attr: str):
+        result = None
+        if self.G.has_node(index):
+            node = self.G.nodes[index] 
+            result = node[attr]
+        return result 
+
+    def get_node_object(self, index: int):
         """
         Retrieve node element based on its index
         """
-        result = None
-        if self.G.has_node(index):
-            node = self.G.nodes[index]
-            result = node['element']
-        return result
+        return self.get_node_attr(index, 'structure')
+    
+    def get_node_pos(self, index: int):
+        """
+        Retrieve node element based on its index
+        """
+        return self.get_node_attr(index, 'pos')
 
-    def get_edge_element(self, index_start: int, index_end: int):
+    def get_edge_attr(self, index_start: int, index_end: int, attr: str):
         """
         Retrieve node element based on its index
         """
         result = None
         if self.G.has_edge(index_start, index_end):
             edge = self.G.edges[index_start, index_end]
-            result = edge['element']
+            result = edge[attr]
         return result
+
+    def get_edge_object(self, index_start: int, index_end: int):
+        """
+        Retrieve node element based on its index
+        """
+        return self.get_edge_attr(index_start, index_end, 'structure')
+
+    def get_edge_pos(self, index_start: int, index_end: int):
+        """
+        Retrieve node element based on its index
+        """
+        return self.get_edge_attr(index_start, index_end, 'pos')

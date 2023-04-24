@@ -1,11 +1,15 @@
 from copy import deepcopy
 
 from piperabm.environment import Environment
-from piperabm.environment.elements.hub.samples import hub_0
+from piperabm.environment.structures.settlement.samples import settlement_0
 
 
 environment = Environment()
-environment.append_node(element=deepcopy(hub_0))
+
+environment.append_node(
+    pos=[-2, -2],
+    structure=deepcopy(settlement_0)
+)
 
 
 if __name__ == "__main__":

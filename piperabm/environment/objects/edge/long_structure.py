@@ -1,13 +1,13 @@
-from piperabm.environment.structures.structure import Structure
+from piperabm.environment.objects.object import StructuralObject
 from piperabm.boundary import Rectangular
 from piperabm.unit import Date
 
 
-class LongStructure(Structure):
+class LongStructure(StructuralObject):
 
     def __init__(
         self,
-        boundary=None,
+        name: str = '',
         active: bool = True,
         start_date: Date = None,
         end_date: Date = None,
@@ -20,11 +20,9 @@ class LongStructure(Structure):
         progressive_degradation_current: float=None,
         progressive_degradation_max: float=None
     ):
-        if boundary is None:
-            boundary = Rectangular()
-        if width is not None:
-            boundary.shape.height = width
+        boundary = Rectangular(height=width)
         super().__init__(
+            name=name,
             boundary=boundary,
             active=active,
             start_date=start_date,
@@ -37,6 +35,7 @@ class LongStructure(Structure):
         )
         self.actual_length = actual_length
         self.difficulty = difficulty
+        self.type = 'long structure'
 
     def width(self):
         result = None

@@ -1,6 +1,5 @@
 from piperabm.unit import Date
 from piperabm.environment.structures import Settlement
-from piperabm.environment.elements import Hub
 
 
 class Node:
@@ -26,7 +25,8 @@ class Node:
         """
         Create a new settlement on a new hub object and add it to the model
         """
-        settlement = Settlement(
+        structure = Settlement(
+            name=name,
             boundary=boundary,
             active=active,
             start_date=start_date,
@@ -37,81 +37,45 @@ class Node:
             progressive_degradation_current=progressive_degradation_current,
             progressive_degradation_max=progressive_degradation_max
         )
-        index = self.add_hub(
-            name=name,
-            pos=pos,
-            start_date=start_date,
-            end_date=end_date,
-            structure=settlement
-        )
+        index = self.append_node(pos, structure)
+        return index
+    
+    def append_node(self, pos: list=[0, 0], structure=None):
+        if structure is not None:
+            name = structure.name
+        else:
+            name = ''
+        index = self.input_to_index_node(name=name, pos=pos)
+        self.add_node(index, pos, structure)
         return index
 
-    def add_hub(
-            self,
-            name: str = '',
-            pos: list = [0, 0],
-            start_date: Date = None,
-            end_date: Date = None,
-            structure = None
-        ):
-        """
-        Create a new hub object and add it to the model
-        """
-        hub = Hub(
-            name=name,
-            pos=pos,
-            start_date=start_date,
-            end_date=end_date,
-            structure=structure
-        )
-        index = self.add_hub_object(hub)
-        return index
-
-    def add_hub_object(self, hub):
-        """
-        Add a current hub object to the model
-        """
-        index = self.input_to_index_node(
-            name=hub.name,
-            pos=hub.pos
-        )
-        self.add_node(
-            index=index,
-            element=hub
-        )
-        return index
-
-    def add_node(self, index: int, element=None):
+    def add_node(self, index: int, pos: list=[0, 0], structure=None):
         """
         Add a node to the model together with its element
         """
         self.G.add_node(
             index,
-            element=element
+            pos=pos,
+            structure=structure
         )
-    
-    def append_node(self, element):
-        """
-        Add a node to the model together with its element
-        """
-        index = self.find_next_index()
-        self.add_node(index, element)
 
     def input_to_index_node(self, name: str, pos: list):
         """
         Return index based on inputs
         """
         index = None
-        hub_index_by_name = self.find_node(name)
-        hub_index_by_pos = self.find_node(pos)
-        if hub_index_by_name is None and hub_index_by_pos is None:
+        index_by_name = self.find_node(name)
+        index_by_pos = self.find_node(pos)
+        if index_by_name is None and index_by_pos is None:
             # create node:
             index = self.find_next_index()
-        else:
+        elif index_by_name is not None or index_by_pos is not None:
             # update node:
-            print('hub already exists.')
-            if hub_index_by_name is not None:
-                index = hub_index_by_name
-            elif hub_index_by_pos is not None:
-                index = hub_index_by_pos
+            print('node already exists.')
+            if index_by_name is not None:
+                index = index_by_name
+            elif index_by_pos is not None:
+                index = index_by_pos
+        elif index_by_name is not None and index_by_pos is not None:
+            raise ValueError
         return index

@@ -12,8 +12,8 @@ class Search:
         if len(name) > 0: # to avoid: (name='')
             index_list = self.all_indexes()
             for index in index_list:
-                node_element = self.get_node_element(index)
-                if node_element.name == name:
+                structure = self.get_node_object(index)
+                if structure is not None and structure.name == name:
                     result = index
                     break
         return result
@@ -35,8 +35,12 @@ class Search:
         result = None
         index_list = self.all_indexes()
         for index in index_list:
-            hub = self.get_node_element(index)
-            if hub.is_in(pos) is True:
+            center_pos = self.get_node_pos(index)
+            node = self.get_node_object(index)
+            if center_pos is not None and center_pos == pos:
+                result = index
+                break
+            if node is not None and node.is_in(pos, center=center_pos) is True:
                 result = index
                 break
         return result

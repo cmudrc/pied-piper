@@ -1,5 +1,5 @@
-from piperabm.unit import Date, date_to_dict, date_from_dict
 from piperabm.object import Object
+from piperabm.unit import Date, date_to_dict, date_from_dict
 from piperabm.boundary import Point, Boundary
 from piperabm.degradation.sudden import SuddenDegradation
 from piperabm.degradation.sudden.distributions import Eternal
@@ -8,13 +8,14 @@ from piperabm.degradation.progressive.formulas import Formula_01
 from piperabm.tools import ElementExists
 
 
-class Structure(Object):
+class StructuralObject(Object):
     """
     Represent a physical element
     """
 
     def __init__(
         self,
+        name: str = '',
         boundary=None,
         active: bool = True,
         start_date: Date = None,
@@ -27,10 +28,12 @@ class Structure(Object):
     ):
         super().__init__()
 
+        # id:
+        self.name = name
+
         # boundary:
         if boundary is None:
-            shape = Point()
-            boundary = Boundary(shape)
+            boundary = Point()
         self.boundary = boundary
 
         # activeness:
@@ -56,7 +59,7 @@ class Structure(Object):
         )
 
         # type:
-        self.type = 'structure'
+        self.type = 'infrastructure object'
 
     def add_progressive_degradation(
         self,
@@ -65,7 +68,7 @@ class Structure(Object):
         max: float = float('inf')
     ):
         """
-        Add progressive_degaradtion object
+        Add object to self.progressive_degaradtion
         """
         if formula is None:
             formula = Formula_01
@@ -142,19 +145,16 @@ class Structure(Object):
             time_end=end_date
         )
     
-    def is_in(self, pos: list, center: list=None, local: bool=True) -> bool:
+    def is_in(self, pos: list, center: list=[0, 0]) -> bool:
         result = None
         boundary = self.boundary
         if boundary is not None:
-            if local is False:
-                if center is not None:
-                    result = boundary.is_in(pos, center)
-            else:
-                result = boundary.is_in(pos, center=[0, 0])
+            result = boundary.is_in(pos, center)
         return result
     
     def to_dict(self) -> dict:
         return {
+            'name': self.name,
             'boundary': self.boundary.to_dict(),
             'active': self.active,
             'start_date': date_to_dict(self.start_date),
@@ -165,6 +165,7 @@ class Structure(Object):
         }
     
     def from_dict(self, dictionary: dict) -> None:
+        self.name = dictionary['name']
         boundary = Boundary()
         boundary.from_dict(dictionary['boundary'])
         self.boundary = boundary
@@ -181,5 +182,5 @@ class Structure(Object):
 
 
 if __name__ == "__main__":
-    structure = Structure()
-    print(structure)
+    object = Object()
+    print(object)

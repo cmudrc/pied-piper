@@ -1,4 +1,4 @@
-from piperabm.environment.structures.structure import Structure
+from piperabm.environment.objects.node.structure import Structure
 from piperabm.unit import Date
 
 
@@ -6,6 +6,7 @@ class Settlement(Structure):
 
     def __init__(
         self,
+        name: str = '',
         boundary=None,
         active=True,
         start_date: Date = None,
@@ -17,6 +18,7 @@ class Settlement(Structure):
         progressive_degradation_max: float=None
     ):
         super().__init__(
+            name=name,
             boundary=boundary,
             active=active,
             start_date=start_date,

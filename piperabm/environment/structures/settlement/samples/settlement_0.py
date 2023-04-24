@@ -7,6 +7,7 @@ from piperabm.unit import Date
 
 
 settlement = Settlement(
+    name="John's Home",
     boundary=deepcopy(boundary),
     start_date=Date(2020, 1, 2),
     sudden_degradation_dist=deepcopy(distribution)
