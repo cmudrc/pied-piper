@@ -26,7 +26,11 @@ class TestEnvironmentEdgeQuery(unittest.TestCase):
         
     def test_get_edge_pos(self):
         pos = self.env.get_edge_pos(2, 0)
-        self.assertEqual(pos, [9, -1])    
+        self.assertEqual(pos, [9, -1])  
+
+    def test_oldest_edge(self):
+        oldest_edge = self.env.oldest_edge()
+        self.assertListEqual(list(oldest_edge), [0, 2])  
 
 
 if __name__ == "__main__":

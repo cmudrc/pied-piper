@@ -1,9 +1,9 @@
-class Query:
+class Node:
     """
-    *** Extends Environment Class ***
-    Manage query
+    *** Extends Query Class ***
+    Manage node query
     """
-    
+
     def all_indexes(self, type='all'):
         """
         Filter all nodes based on their type
@@ -26,15 +26,6 @@ class Query:
                     result.append(index)
         return result
     
-    def all_edges(self, type='all'):
-        """
-        Filter all edges based on their type
-        """
-        result = None
-        if type == 'all':
-            result = list(self.G.edges())
-        return result
-
     def get_node_attr(self, index: int, attr: str):
         result = None
         if self.G.has_node(index):
@@ -53,25 +44,20 @@ class Query:
         Retrieve node element based on its index
         """
         return self.get_node_attr(index, 'pos')
-
-    def get_edge_attr(self, index_start: int, index_end: int, attr: str):
+    
+    def oldest_node(self):
         """
-        Retrieve node element based on its index
+        Find the oldest node object
         """
-        result = None
-        if self.G.has_edge(index_start, index_end):
-            edge = self.G.edges[index_start, index_end]
-            result = edge[attr]
-        return result
-
-    def get_edge_object(self, index_start: int, index_end: int):
-        """
-        Retrieve node element based on its index
-        """
-        return self.get_edge_attr(index_start, index_end, 'structure')
-
-    def get_edge_pos(self, index_start: int, index_end: int):
-        """
-        Retrieve node element based on its index
-        """
-        return self.get_edge_attr(index_start, index_end, 'pos')
+        oldest_index = None
+        for index in self.all_indexes():
+            structure = self.get_node_object(index)
+            if structure is not None:
+                start_date = structure.start_date
+                if oldest_index is None:
+                    oldest_index = index
+                current_oldest_structure = self.get_node_object(oldest_index)
+                current_oldest_date = current_oldest_structure.start_date
+                if start_date < current_oldest_date:
+                    oldest_index = index
+        return oldest_index

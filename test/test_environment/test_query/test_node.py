@@ -5,7 +5,7 @@ from piperabm.environment.samples import environment_0
 from piperabm.environment.structures.settlement.samples import settlement_0
 
 
-class TestnvironmentNodeQuery(unittest.TestCase):
+class TestEnvironmentNodeQuery(unittest.TestCase):
 
     def setUp(self) -> None:
         self.env = deepcopy(environment_0)
@@ -23,6 +23,10 @@ class TestnvironmentNodeQuery(unittest.TestCase):
     def test_get_node_pos(self):
         pos = self.env.get_node_pos(0)
         self.assertEqual(pos, [-2, -2])
+
+    def test_oldest_node(self):
+        oldest_node = self.env.oldest_node()
+        self.assertEqual(oldest_node, 0)
 
 
 if __name__ == "__main__":
