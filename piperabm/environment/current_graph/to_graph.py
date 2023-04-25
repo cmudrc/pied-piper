@@ -1,11 +1,6 @@
-from copy import deepcopy
-
-from piperabm.tools import ElementExists
-
-
 class ToGraph:
     """
-    Contains methods for LinkGraph class
+    *** Extends CurrentGraph Class ***
     Create graph from input
     """
 
@@ -44,31 +39,53 @@ class ToGraph:
                     end_date = start_date
             return start_date, end_date
 
-        def validate_structure(structure, start_date, end_date) -> bool:
+        def validate_structure(structure, start_date, end_date, accept_none=False) -> bool:
+            """
+            Is it valid to get added to the current graph?
+            """
             result = False
-            if structure is not None and \
-                structure.exists(start_date, end_date) and \
-                structure.active is True:
-                result = True
+            if structure is None:
+                if accept_none is True:
+                    result = True
+                else:
+                    result = False
+            else:
+                if structure.exists(start_date, end_date) and \
+                        structure.active is True:
+                    result = True
             return result
 
         start_date, end_date = refine_input(start_date, end_date)
-        index_list = self.env.all_indexes()
 
-        for index in index_list:
+        """ Filter Nodes """
+        indexes = self.env.all_indexes()
+        for index in indexes:
             structure = self.env.get_node_object(index)
-            valid = validate_structure(structure, start_date, end_date)
+            valid = validate_structure(
+                structure,
+                start_date,
+                end_date,
+                accept_none=True
+            )
             if valid is True:
                 add_node(index)
-        
-        for index in index_list:
-            for other_index in index_list:
-                if other_index != index:
-                    structure = self.env.get_edge_object(index, other_index)
-                    valid = validate_structure(structure, start_date, end_date)
-                    if valid is True:
-                        add_edge(index, other_index)
-        
+
+        """ Filter Edges """
+        edges = self.env.all_edges()
+        for edge in edges:
+            index = edge[0]
+            other_index = edge[1]
+            structure = self.env.get_edge_object(index, other_index)
+            valid = validate_structure(
+                structure,
+                start_date,
+                end_date,
+                accept_none=False
+            )
+            if valid is True:
+                add_edge(index, other_index)
+
+        """ Remove nodes without structure object (hub) and without any edges attachted """
         for index in self.all_indexes('hub'):
             if self.node_degree(index) == 0:
                 self.G.remove_node(index)

@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.environment.samples import environment_1
 
 
-class TestNodeSearch(unittest.TestCase):
+class TestEnvironmentNodeSearch(unittest.TestCase):
 
     def setUp(self) -> None:
         self.env = deepcopy(environment_1)

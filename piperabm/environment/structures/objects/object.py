@@ -92,11 +92,15 @@ class StructuralObject(Object):
         return sudden_degradation
 
     def update(self, start_date: Date, end_date: Date):
-        self.active = self.sudden_degradation_active(
-            initiation_date=self.start_date,
-            start_date=start_date,
-            end_date=end_date
-        )
+        """
+        Update object
+        """
+        result = None
+        if self.active is True:
+            result = self.degradation_active(start_date, end_date)
+            if result is False:
+                self.active = result
+        ##### stat
 
     def repair(self, amount: float):
         """

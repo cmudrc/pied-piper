@@ -1,6 +1,6 @@
 class Search:
     """
-    Contains methods for Environment class
+    *** Extends Environment Class ***
     Methods for searching for node index
     """
 

@@ -7,7 +7,7 @@ from piperabm.environment.structures.road.samples import road_0
 from piperabm.unit import Date
 
 
-class TestCurrentClassQuery(unittest.TestCase):
+class TestEnvironmentCurrentQueryClass(unittest.TestCase):
 
     def setUp(self):
         env = deepcopy(environment_1)

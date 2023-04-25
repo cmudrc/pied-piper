@@ -1,7 +1,7 @@
 class Query:
     """
+    *** Extends Environment Class ***
     Manage query
-    Extends Environment class
     """
     
     def all_indexes(self, type='all'):

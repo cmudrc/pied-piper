@@ -8,7 +8,7 @@ from piperabm.boundary.rectangular import Rectangular
 from piperabm.tools.coordinate import slope, euclidean_distance, center
 
 
-class TestAddLink(unittest.TestCase):
+class TestEnvironmentAddLink(unittest.TestCase):
 
     def setUp(self) -> None:
         self.env = Environment()

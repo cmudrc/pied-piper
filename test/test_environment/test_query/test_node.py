@@ -5,7 +5,7 @@ from piperabm.environment.samples import environment_0
 from piperabm.environment.structures.settlement.samples import settlement_0
 
 
-class TestNodeQuery(unittest.TestCase):
+class TestnvironmentNodeQuery(unittest.TestCase):
 
     def setUp(self) -> None:
         self.env = deepcopy(environment_0)

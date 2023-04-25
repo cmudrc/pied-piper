@@ -4,8 +4,8 @@ from piperabm.environment.structures import Settlement
 
 class Node:
     """
+    *** Extends Add Class ***
     Manage nodes
-    Extends Add class
     """
 
     def add_settlement(

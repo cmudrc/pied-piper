@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from piperabm.resource import Resource
-from piperabm.actions.action.transportation import Walk
+from piperabm.actions.action.move.transporation.transportation import Walk
 from piperabm.actions import Queue
 from piperabm.unit import DT
 try: from .decision import Decision

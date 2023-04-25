@@ -5,17 +5,10 @@ from piperabm.environment.samples import environment_1
 from piperabm.unit import Date
 
 
-class TestCurrentClass(unittest.TestCase):
+class TestEnvironmentCurrentClass(unittest.TestCase):
 
     def setUp(self):
         self.env = deepcopy(environment_1)
-
-    def test_to_current_0(self):
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 2)
-        current_graph = self.env.current(start_date, end_date)
-        self.assertEqual(len(current_graph.G.nodes()), 0)
-        self.assertEqual(len(current_graph.G.edges()), 0)
 
     def test_to_current_0(self):
         start_date = Date(2020, 1, 1)

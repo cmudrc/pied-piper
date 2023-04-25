@@ -5,11 +5,12 @@ from piperabm.unit import DT, Date
 from piperabm.environment.add import Add
 from piperabm.environment.search import Search
 from piperabm.environment.query import Query
+from piperabm.environment.update import Update
 from piperabm.environment.current_graph import CurrentGraph
 from piperabm.environment.structures.load import load_structure
 
 
-class Environment(Object, Add, Search, Query):
+class Environment(Object, Add, Search, Query, Update):
     """
     Represent physical environment
     Manage settlements and their connecting links

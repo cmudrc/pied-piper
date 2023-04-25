@@ -5,7 +5,7 @@ from piperabm.environment.add.edge import Edge
 
 class Add(Node, Edge):
     """
-    Contains methods for Environment class
+    *** Extends Environment Class ***
     Add new elements to the environment
     """
     

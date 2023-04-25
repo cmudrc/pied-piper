@@ -6,7 +6,7 @@ from piperabm.environment import Environment
 from piperabm.environment.structures.settlement.samples import settlement_0
 
 
-class TestAddNode(unittest.TestCase):
+class TestEnvironmentAddNode(unittest.TestCase):
 
     def setUp(self):
         self.env = Environment()

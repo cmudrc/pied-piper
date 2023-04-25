@@ -64,7 +64,7 @@ class Track:
 
 
 if __name__ == "__main__":
-    from piperabm.actions.action.transportation import Foot
+    from piperabm.actions.action.move.transporation.transportation import Foot
 
     t = Track(
         start_index=0, 

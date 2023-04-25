@@ -4,7 +4,7 @@ import networkx as nx
 
 class Graphics:
     """
-    Contains methods for LinkGraph class
+    *** Extends CurrentGraph Class ***
     Add graphical representation
     """
 

@@ -3,7 +3,7 @@ import numpy as np
 
 class Query:
     """
-    Contains methods for CurrentGraph class
+    *** Extends CurrentGraph Class ***
     Create a wrap-up for accessing graph data
     """
     

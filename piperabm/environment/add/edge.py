@@ -8,8 +8,8 @@ from piperabm.tools.coordinate import slope, euclidean_distance, center
 
 class Edge:
     """
+    *** Extends Add Class ***
     Manage edges
-    Extends Add class
     """
 
     def add_road(
@@ -73,9 +73,12 @@ class Edge:
 
     def add_edge(self, start_index: int, end_index: int, structure):
         """
-        Add aa edge to the model together with its element
+        Add aa edge to the model together with its object
         """
         def swap(start_index, end_index):
+            """
+            To have one final value for angle (no duplicate answers)
+            """
             start_pos, end_pos = self.index_to_pos_edge(start_index, end_index)
             angle = slope(start_pos, end_pos)
             angle_inverse = slope(end_pos, start_pos)
@@ -91,7 +94,7 @@ class Edge:
         angle = slope(start_pos, end_pos)
         structure.boundary = self.modify_boundary(length, angle, structure.boundary)
         pos = center(start_pos, end_pos)
-        
+
         if structure is not None:
             self.G.add_edge(
                 start_index,
@@ -101,8 +104,15 @@ class Edge:
             )
 
     def input_to_index_edge(self, _from, _to):
+        """
+        Find/Create indexes associated with input values
+        """
 
         def to_index(input):
+            """
+            Try to find the index associated with input,
+            if not found, new one gets created
+            """
             index = self.find_node(input)
             if index is None and isinstance(input, list):
                 index = self.append_node(

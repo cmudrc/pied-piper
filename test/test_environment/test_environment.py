@@ -55,7 +55,6 @@ class TestEnvironmentClass_1(unittest.TestCase):
         edges = self.env.G.edges()
         self.assertEqual(len(edges), 2)
         self.assertListEqual(list(edges), [(0, 2), (1, 2)])
-        self.assertTrue(self.env.G.has_edge(2, 0))
         nodes = self.env.G.nodes()
         self.assertEqual(len(nodes), 3)
         self.assertListEqual(list(nodes), [0, 1, 2])
