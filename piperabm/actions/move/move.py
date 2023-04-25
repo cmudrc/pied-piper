@@ -1,17 +1,19 @@
 from piperabm.unit import Date, DT
-from piperabm.tools.coordinate import euclidean_distance
+from piperabm.actions.action import Action
 
 
-class Move:
+class Move(Action):
 
     def __init__(self, start_date: Date, path, transportation):
-        self.start_date = start_date
+        super().__init__(
+            start_date=start_date,
+            duration=self.path.duration(self.transportation)
+        )
         self.path = path
         self.transportation = transportation
-        self.duration = self.path.duration(self.transportation)
-        self.end_date  = self.start_date + DT(seconds=self.duration)
         self.fuel_consumption = self.total_fuel_consumption()
         self.done = False
+        self.type = 'move'
 
     def total_fuel_consumption(self):
         result = self.transportation.fuel_rate * self.duration

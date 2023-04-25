@@ -6,11 +6,11 @@ class Query:
     
     def all_indexes(self, type='all'):
         """
-        Filter all node indexes based on their type
+        Filter all nodes based on their type
         """
         result = None
         if type == 'all':
-            result = self.G.nodes()
+            result = list(self.G.nodes())
         elif type == 'hub':
             result = []
             for index in self.all_indexes():
@@ -24,6 +24,15 @@ class Query:
                 if structure is not None and \
                     structure.type == type:
                     result.append(index)
+        return result
+    
+    def all_edges(self, type='all'):
+        """
+        Filter all edges based on their type
+        """
+        result = None
+        if type == 'all':
+            result = list(self.G.edges())
         return result
 
     def get_node_attr(self, index: int, attr: str):

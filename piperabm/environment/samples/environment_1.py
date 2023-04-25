@@ -29,4 +29,16 @@ environment.add_edge_object(
 
 
 if __name__ == "__main__":
-    print(environment)
+    import networkx as nx
+
+    environment.print()
+    #G = environment.G
+    #dictionary = environment.to_dict()
+    #dictionary = nx.to_dict_of_dicts(G, edge_data={})
+    #G_new = nx.Graph()
+    #G_new = nx.from_dict_of_dicts(dictionary)
+    #print(G_new)
+    #environment.G = G_new
+    #pos = environment.get_edge_pos(0, 1)
+    #print(pos)
+    #print(dictionary['edges'])

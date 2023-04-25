@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from piperabm.tools.symbols import SYMBOLS
 
 
@@ -5,6 +7,9 @@ class Object:
     """
     Pure object for the model
     """
+
+    def print(self):
+        pprint(self.to_dict())
 
     def __str__(self) -> str:
         return str(self.to_dict())

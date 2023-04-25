@@ -20,6 +20,10 @@ environment.add_settlement(
     pos=[100, -180],
     start_date=Date(2020, 1, 2)
 )
+#environment.add_market(
+#    name="Market",
+#    pos=[70, -30]
+#)
 
 environment.add_road(
     _from="Settlement 1",
@@ -42,6 +46,7 @@ environment.add_road(
     _to="Settlement 3",
     start_date=Date(2020, 1, 2)
 )
+#enenvironmentv.add_road(start=[0, 0], end="Market")
 
 
 if __name__ == "__main__":

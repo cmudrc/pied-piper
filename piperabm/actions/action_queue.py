@@ -1,9 +1,6 @@
 from piperabm.unit import Date
-
-try: from .action import Move
-except: from action import Move
-try: from .action import Trade
-except: from action import Trade
+from piperabm.actions.move import Move
+from piperabm.actions.trade import Trade
 
 
 class Queue:

@@ -1,9 +1,9 @@
+from copy import deepcopy
+
 from piperabm.unit import Date
 from piperabm.environment.structures import Road
-#from piperabm.environment.elements import Link
 from piperabm.boundary.rectangular import Rectangular
 from piperabm.tools.coordinate import slope, euclidean_distance, center
-from piperabm.tools.symbols import SYMBOLS
 
 
 class Edge:
@@ -45,7 +45,7 @@ class Edge:
         )
         road.boundary = Rectangular(height=width)
         self.add_edge_object(
-            _from=_to,
+            _from=_from,
             _to=_to,
             structure=road
         )
@@ -75,11 +75,23 @@ class Edge:
         """
         Add aa edge to the model together with its element
         """
+        def swap(start_index, end_index):
+            start_pos, end_pos = self.index_to_pos_edge(start_index, end_index)
+            angle = slope(start_pos, end_pos)
+            angle_inverse = slope(end_pos, start_pos)
+            if angle > angle_inverse:
+                temp = deepcopy(start_index)
+                start_index = deepcopy(end_index)
+                end_index = temp
+            return start_index, end_index
+        
+        start_index, end_index = swap(start_index, end_index)
         start_pos, end_pos = self.index_to_pos_edge(start_index, end_index)
         length = euclidean_distance(start_pos, end_pos)
         angle = slope(start_pos, end_pos)
         structure.boundary = self.modify_boundary(length, angle, structure.boundary)
         pos = center(start_pos, end_pos)
+        
         if structure is not None:
             self.G.add_edge(
                 start_index,
