@@ -13,7 +13,7 @@ environment.append_node(
 
 
 if __name__ == "__main__":
-    print(environment)
+    environment.print()
 
     '''
     from piperabm.unit import Date

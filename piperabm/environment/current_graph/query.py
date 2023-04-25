@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class Query:
     """
     *** Extends CurrentGraph Class ***
@@ -45,13 +42,19 @@ class Query:
             result = self.env.get_edge_pos(index_start, index_end)
         return result
     
+    def all_edges(self, type='all'):
+        result = None
+        if type == 'all':
+            result = list(self.G.edges())
+        return result
+    
     def all_indexes(self, type='all'):
         """
         Filter all node indexes based on their type
         """
         result = None
         if type == 'all':
-            result = self.G.nodes()
+            result = list(self.G.nodes())
         elif type == 'hub':
             result = []
             for index in self.all_indexes():

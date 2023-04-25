@@ -50,4 +50,4 @@ environment.add_road(
 
 
 if __name__ == "__main__":
-    print(environment)
+    environment.print()

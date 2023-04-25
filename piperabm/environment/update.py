@@ -4,7 +4,7 @@ class Update:
     Methods for updating environment elements in each step
     """
 
-    def update(self, start_date, end_date):
+    def update(self, start_date, end_date) -> None:
         """
         Update all active non-None elements
         """
@@ -21,4 +21,5 @@ class Update:
                 structure.active is True:
                 structure.update(start_date, end_date)
         ##### stat
+        self.current = self.to_current_graph(start_date, end_date)
         

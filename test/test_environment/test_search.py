@@ -29,6 +29,18 @@ class TestEnvironmentNodeSearch(unittest.TestCase):
         index = self.env._find_node_by_pos([-10, -10])
         self.assertEqual(index, None)
 
+    def test_find_edge_by_name(self):
+        edge = self.env._find_edge_by_name("Halfway 0")
+        self.assertListEqual(list(edge), [0, 2])
+        edge = self.env._find_edge_by_name("My Way")
+        self.assertEqual(edge, None)
+    
+    def test_find_edge_by_pos(self):
+        edge = self.env._find_edge_by_pos([20, 10])
+        self.assertListEqual(list(edge), [1, 2])
+        edge = self.env._find_edge_by_pos([20.5, 10.5])
+        self.assertListEqual(list(edge), [1, 2])
+
 
 if __name__ == "__main__":
     unittest.main()

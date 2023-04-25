@@ -15,4 +15,4 @@ road = Road(
 
 
 if __name__ == "__main__":
-    print(road)
+    road.print()

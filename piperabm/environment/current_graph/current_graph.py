@@ -30,11 +30,10 @@ class CurrentGraph(ToGraph, Query, Graphics):
 
 
 if __name__ == "__main__":
-    from piperabm.unit import Date
     from piperabm.environment.samples import environment_1 as environment
+    from piperabm.unit import Date
 
     start_date = Date(2020, 1, 5)
     end_date = Date(2020, 1, 10)
     environment.update(start_date, end_date)
-    current_graph = environment.current(start_date, end_date)
-    current_graph.show()
+    environment.show()

@@ -1,4 +1,3 @@
-#from piperabm.tools import euclidean_distance
 from piperabm.environment.add.node import Node
 from piperabm.environment.add.edge import Edge
 

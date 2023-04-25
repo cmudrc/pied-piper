@@ -13,7 +13,7 @@ class TestEnvironmentCurrentQueryClass(unittest.TestCase):
         env = deepcopy(environment_1)
         start_date = Date(2020, 1, 2)
         end_date = Date(2020, 1, 3)
-        self.current = env.current(start_date, end_date)
+        self.current = env.to_current_graph(start_date, end_date)
 
     def test_all_indexes(self):
         indexes = self.current.all_indexes(type='all')
@@ -38,6 +38,10 @@ class TestEnvironmentCurrentQueryClass(unittest.TestCase):
         self.assertEqual(pos, None)
         pos = self.current.get_node_pos(2)
         self.assertListEqual(pos, [20, 0])
+
+    def test_all_edges(self):
+        edges = self.current.all_edges(type='all')
+        self.assertListEqual(edges, [(0, 2)])
 
     def test_get_edge_object(self):
         structure = self.current.get_edge_object(0, 2)

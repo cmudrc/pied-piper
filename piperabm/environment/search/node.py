@@ -1,6 +1,6 @@
-class Search:
+class Node:
     """
-    *** Extends Environment Class ***
+    *** Extends Search Class ***
     Methods for searching for node index
     """
 

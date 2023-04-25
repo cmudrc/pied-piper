@@ -15,4 +15,4 @@ settlement = Settlement(
 
 
 if __name__ == "__main__":
-    print(settlement)
+    settlement.print()
