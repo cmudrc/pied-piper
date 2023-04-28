@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.tools.shapes import Circle
 from piperabm.tools.shapes.circle.samples import circle_0 as circle
@@ -54,6 +55,14 @@ class TestCircleClass(unittest.TestCase):
         new_circle = Circle()
         new_circle.from_dict(dictionary)
         self.assertEqual(self.circle, new_circle)
+
+    def test_delta(self):
+        circle = deepcopy(self.circle)
+        delta = {'radius': 2,}
+        circle + delta
+        self.assertEqual(circle.radius, 7)
+        circle_old = deepcopy(self.circle)
+        self.assertEqual(circle_old - circle, delta)
 
 
 if __name__ == "__main__":

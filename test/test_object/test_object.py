@@ -4,7 +4,7 @@ from piperabm.object import Object
 from piperabm.tools.symbols import SYMBOLS
 
 
-class TestUnitClass(unittest.TestCase):
+class TestObjectClass(unittest.TestCase):
 
     def setUp(self) -> None:
         

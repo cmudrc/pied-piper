@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.boundary import Circular
 from piperabm.boundary.circular.samples import circular_0 as circular
@@ -62,6 +63,16 @@ class TestCircularClass(unittest.TestCase):
         new_circular = Circular()
         new_circular.from_dict(dictionary)
         self.assertEqual(self.circular, new_circular)
+
+    def test_delta(self):
+        circular = deepcopy(self.circular)
+        delta = {
+            'shape': {'radius': 2,},
+        }
+        circular + delta
+        self.assertEqual(circular.shape.radius, 7)
+        circular_old = deepcopy(self.circular)
+        self.assertEqual(circular_old - circular, delta)
 
 
 if __name__ == "__main__":

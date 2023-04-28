@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 
 from piperabm.tools.shapes import Rectangle
 from piperabm.tools.shapes.rectangle.samples import rectangle_0, rectangle_1
@@ -54,6 +55,20 @@ class TestRectangleClass_0(unittest.TestCase):
         new_rectangle = Rectangle()
         new_rectangle.from_dict(dictionary)
         self.assertEqual(self.rectangle, new_rectangle)
+
+    def test_delta(self):
+        rectangle = deepcopy(self.rectangle)
+        delta = {
+            'height': 1,
+            'width': 1,
+            'angle': 1,
+        }
+        rectangle + delta
+        self.assertEqual(rectangle.width, 5)
+        self.assertEqual(rectangle.height, 4)
+        self.assertEqual(rectangle.angle, 1)
+        rectangle_old = deepcopy(self.rectangle)
+        self.assertEqual(rectangle_old - rectangle, delta)
 
 
 class TestRectangleClass_1(unittest.TestCase):

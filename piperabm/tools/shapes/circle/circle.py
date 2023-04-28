@@ -40,9 +40,21 @@ class Circle(Shape):
 
     def from_dict(self, dictionary: dict) -> None:
         super().from_dict(dictionary)
-        self.radius = dictionary['radius']    
+        self.radius = dictionary['radius']
+
+    def add_delta(self, delta: dict) -> None:
+        dictionary = self.to_dict()
+        for key in delta:
+            dictionary[key] += delta[key]
+        self.from_dict(dictionary)
+    
+    def __add__(self, delta):
+        self.add_delta(delta)
+
 
 
 if __name__ == "__main__":
     shape = Circle(radius=5)
+    shape + {'radius': 2}
     print(shape)
+    #print()

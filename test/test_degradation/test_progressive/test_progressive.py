@@ -51,20 +51,27 @@ class TestProgressiveDegradationClass(unittest.TestCase):
         }
         self.assertDictEqual(delta, expected_result)
 
-    def test_add(self):
+    def test_delta(self):
         degradation = deepcopy(self.degradation)
         delta = {
+            'usage_max': 2,
             'usage_current': 2,
         }
-        new_degradation = deepcopy(degradation)
-        new_degradation + delta
-        new_dictionary = new_degradation.to_dict()
+        degradation + delta
         expected_result = {
-            'usage_max': 10,
-            'usage_current': 5,
-            'formula_name': 'formula_01'
+            'usage_max': 2,
+            'usage_current': 12,
         }
-        self.assertDictEqual(new_dictionary, expected_result)
+        self.assertDictEqual(degradation.to_dict(), expected_result)
+        degradation_old = deepcopy(self.degradation)
+        self.assertEqual(degradation - degradation_old, delta)
+        #new_dictionary = new_degradation.to_dict()
+        #expected_result = {
+        #    'usage_max': 12,
+        #    'usage_current': 5,
+        #    'formula_name': 'formula_01'
+        #}
+        #self.assertDictEqual(new_dictionary, expected_result)
 
 
 class TestProgressiveDegradationClass_usage_max_None(unittest.TestCase):
@@ -114,7 +121,7 @@ class TestProgressiveDegradationClass_usage_max_None(unittest.TestCase):
         }
         self.assertDictEqual(delta, expected_result)
 
-    def test_add(self):
+    def test_delta(self):
         degradation = deepcopy(self.degradation)
         delta = {
             'usage_current': 2,
@@ -177,7 +184,7 @@ class TestProgressiveDegradationClass_usage_max_inf(unittest.TestCase):
         }
         self.assertDictEqual(delta, expected_result)
 
-    def test_add(self):
+    def test_delta(self):
         degradation = deepcopy(self.degradation)
         delta = {
             'usage_current': None,
