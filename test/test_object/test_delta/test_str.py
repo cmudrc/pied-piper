@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.object.delta import DeltaStr
+from piperabm.object.delta_var import DeltaStr
 
 
 class TestFloatDeltaClass(unittest.TestCase):

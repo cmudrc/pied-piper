@@ -1,4 +1,4 @@
-from piperabm.object.delta import DeltaBool, DeltaFloat, DeltaStr
+from piperabm.object.delta_var import DeltaBool, DeltaFloat, DeltaStr
 
 
 class Delta:
