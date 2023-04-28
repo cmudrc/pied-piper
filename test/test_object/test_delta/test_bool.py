@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.object.delta import DeltaBool
+from piperabm.object.delta_var import DeltaBool
 
 
 class TestBoolDeltaClass(unittest.TestCase):
