@@ -12,15 +12,14 @@ class Walk(Transportation):
                 'food': Unit(2, 'kg/day').to_SI(),
                 'water': Unit(1, 'kg/day').to_SI(),
                 'energy': Unit(0, 'kg/day').to_SI(),
-            },
-            storage_max=Unit(20, 'kg').to_SI()
+            }
         )
 
 
 if __name__ == "__main__":
     transportation = Walk()
     #print(transportation)
-    #print('transportation.name:', transportation.name)
+
     length = 1000
     delta_t = transportation.how_long(length)
     delta_f = transportation.how_much_fuel(length)

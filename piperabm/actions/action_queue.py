@@ -1,10 +1,13 @@
+from piperabm.object import Object
 from piperabm.unit import Date
 from piperabm.actions.move import Move
 from piperabm.actions.trade import Trade
 
 
-class Queue:
+class Queue(Object):
+
     def __init__(self):
+        super().__init__()
         self.action_list = []
 
     def add(self, action):

@@ -28,38 +28,33 @@ class StructuralObject(Object):
     ):
         super().__init__()
 
-        # id:
+        ''' identity '''
         self.name = name
-
-        # boundary:
-        if boundary is None:
-            boundary = Point()
-        self.boundary = boundary
-
-        # activeness:
         self.active = active
+        self.type = 'infrastructure object'
 
-        # dates:
         if start_date is None:
             start_date = Date.today()
         self.start_date = start_date
         self.end_date = end_date
 
-        # sudden degradation:
+        ''' boundary '''
+        if boundary is None:
+            boundary = Point()
+        self.boundary = boundary
+
+        ''' sudden degradation '''
         self.sudden_degradation = self.add_sudden_degradation(
             distribution=sudden_degradation_dist,
             unit_size=sudden_degradation_unit_size
         )
 
-        # progressive degradation:
+        ''' progressive degradation '''
         self.progressive_degradation = self.add_progressive_degradation(
             formula=progressive_degradation_formula,
             current=progressive_degradation_current,
             max=progressive_degradation_max
         )
-
-        # type:
-        self.type = 'infrastructure object'
 
     def add_progressive_degradation(
         self,

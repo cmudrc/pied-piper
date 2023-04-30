@@ -15,15 +15,10 @@ resource = Resource(
     }
 )
 agent = Agent(
-    index=1,
     name='Robert',
-    origin_node=1,
-    transportation=None,
-    queue=None,
+    origin=1,
     resource=resource,
-    idle_fuel_rate=None,
     balance=200,
-    wealth_factor=1
 )
 
 

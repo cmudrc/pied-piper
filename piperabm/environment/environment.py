@@ -18,8 +18,8 @@ class Environment(Object, Add, Search, Query, Update):
 
     def __init__(self):
         self.G = nx.Graph()
+        self.society = None # will be binded later
         self.current = None # last link_graph
-        #self.log = Log(prefix='ENVIRONMENT', indentation_depth=1)
         super().__init__()
         self.type = 'environment'
 
