@@ -2,27 +2,24 @@ class DeltaBool:
 
     def create_bool_delta(main: bool, other: bool) -> bool:
         result = None
-        if main is True:
-            if other is False:
-                result = True
+        if main is not None:
+            if other is not None:
+                if other != main:
+                    result = True
         else:
-            if other is True:
-                result = True
+            result = other
         return result
     
     def apply_bool_delta(main: bool, delta: bool) -> bool:        
         result = None
         if delta is not None:
-            if main is True:
+            if main is not None:
                 if delta is True:
                     result = inverse_bool(main)
                 else:
                     result = main
             else:
-                if delta is True:
-                    result = inverse_bool(main)
-                else:
-                    result = main
+                result = delta
         else:
             result = main
         return result    
@@ -41,4 +38,7 @@ def inverse_bool(main: bool):
 
 
 if __name__ == "__main__":
-    pass
+    main = True
+    other = False
+    result = DeltaBool.create_bool_delta(other, main)
+    print(result)

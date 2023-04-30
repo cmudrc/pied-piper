@@ -16,8 +16,13 @@ class DeltaFloat:
                 other = delta
             else:
                 other = main + delta
+        else:
+            other = main
         return other   
 
 
 if __name__ == "__main__":
-    pass
+    main = 2
+    other = 5
+    result = DeltaFloat.create_float_delta(main, other)
+    print(result)

@@ -1,9 +1,10 @@
+from piperabm.object import Object
 from piperabm.degradation.progressive.formulas import load_formula
 from piperabm.degradation.progressive.formulas.formula_01 import Formula as Formula_01
-from piperabm.tools.symbols import SYMBOLS
+from piperabm.tools.symbols import SYMBOLS, serialize_symbol, deserialize_symbol
 
 
-class ProgressiveDegradation:
+class ProgressiveDegradation(Object):
     """
     Represent degradation property of an element that degrades over time due to usage.
     """
@@ -14,6 +15,7 @@ class ProgressiveDegradation:
         usage_current: float=None,
         formula=None
     ):
+        super().__init__()
         if usage_current is None:
             usage_current = 0
         self.usage_current = usage_current
@@ -53,70 +55,18 @@ class ProgressiveDegradation:
         return result
     
     def to_dict(self) -> dict:
-
-        def convert(var):
-            result = None
-            var_str = str(var)
-            if var_str != 'inf':
-                result = var
-            else:
-                result = var_str
-            return result
-        
         return {
-            'usage_max': convert(self.usage_max),
-            'usage_current': convert(self.usage_current),
+            'usage_max': self.usage_max,
+            'usage_current': self.usage_current,
             'formula_name': self.formula.name
         }
     
     def from_dict(self, dictionary: dict) -> None:
-
-        def convert(var):
-            result = None
-            if isinstance(var, str):
-                for key in SYMBOLS:
-                    if var == key:
-                        result = SYMBOLS[var]
-                        break
-            else:
-                result = var
-            return result
-
         usage_max = dictionary['usage_max']
-        self.usage_max = convert(usage_max)
+        self.usage_max = usage_max
         current_usage = dictionary['usage_current']
-        self.usage_current = convert(current_usage)
+        self.usage_current = current_usage
         self.formula = load_formula(dictionary['formula_name'])
-
-    def __eq__(self, other):
-        result = False
-        if self.ratio() == other.ratio() and \
-            self.formula.name == other.formula.name:
-            result = True
-        return result
-    
-    def __sub__(self, other) -> dict:
-        """
-        Create delta
-        """
-        delta = {
-                'usage_current': None,
-            }
-        if self.usage_current is not None and \
-            other.usage_current is not None:
-            delta_usage_current = self.usage_current - other.usage_current
-            delta = {
-                'usage_current': delta_usage_current,
-            }
-        return delta
-
-    def __add__(self, delta: dict) -> None:
-        """
-        Add delta
-        """
-        delta_usage_current = delta['usage_current']
-        if delta_usage_current is not None:
-            self.usage_current += delta_usage_current
     
 
 if __name__ == "__main__":
@@ -125,3 +75,4 @@ if __name__ == "__main__":
         usage_max=10
     )
     print(degradation.factor())
+    print(degradation)

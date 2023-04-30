@@ -19,4 +19,7 @@ class DeltaStr:
     
 
 if __name__ == "__main__":
-    pass
+    main = 'a'
+    other = 'b'
+    result = DeltaStr.create_str_delta(main, other)
+    print(result)

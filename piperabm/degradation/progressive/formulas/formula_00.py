@@ -3,7 +3,7 @@ class Formula:
     name = "formula_00"
 
     def calculate(ratio: float=0):
-        return ratio
+        return 1 + ratio
 
 
 if __name__ == "__main__":

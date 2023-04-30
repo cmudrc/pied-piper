@@ -41,6 +41,10 @@ class Object:
     '''
         
     def __add__(self, other) -> None:
+        """
+        *self* is old instance, *other* is delta
+        new = old + delta
+        """
         if isinstance(other, dict):
             dictionary = self.to_dict()
             dictionary_new = Delta.apply_delta(dictionary, other)
@@ -54,10 +58,14 @@ class Object:
             '''
 
     def __sub__(self, other) -> None:
+        """
+        *self* is old instance, *other* is new
+        delta = new - old
+        """
         if not isinstance(other, dict):
             other = other.to_dict()
         dictionary = self.to_dict()
-        delta = Delta.create_delta(dictionary, other)
+        delta = Delta.create_delta(other, dictionary)
         return delta
 
         '''

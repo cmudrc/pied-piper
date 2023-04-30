@@ -16,6 +16,11 @@ class TestFloatDeltaClass(unittest.TestCase):
         delta = DeltaStr.create_str_delta(var_old, var_new)
         self.assertEqual(delta, None)
 
+        var_old = None
+        var_new = 'John'
+        delta = DeltaStr.create_str_delta(var_old, var_new)
+        self.assertEqual(delta, 'John')
+
     def test_apply_str_delta(self):
         var_old = 'John'
         delta = 'Peter'

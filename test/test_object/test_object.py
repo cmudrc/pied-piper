@@ -23,6 +23,8 @@ class TestObjectClass(unittest.TestCase):
                 self.val = dictionary['val']
         
         self.A = A(val=5)
+        self.A_new = A(val=7)
+
         self.ClassA = A
     
     def test_str(self):
@@ -57,20 +59,9 @@ class TestObjectClass(unittest.TestCase):
         self.A + delta
         self.assertEqual(self.A.val, 3)
 
-    def test_sub_0(self):
-        delta = {'val': 2}
-        self.A - delta
-        self.assertEqual(self.A.val, 3)
-
-    def test_sub_1(self):
-        delta = {'val': 0}
-        self.A - delta
-        self.assertEqual(self.A.val, 5)
-
-    def test_sub_2(self):
-        delta = {'val': -2}
-        self.A - delta
-        self.assertEqual(self.A.val, 7)
+    def test_sub(self):
+        delta = self.A_new - self.A
+        self.assertEqual(delta, {'val': 2})
 
     def test_mul_0(self):
         delta = {'val': 2}

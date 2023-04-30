@@ -78,7 +78,7 @@ class TestRectangularClass(unittest.TestCase):
         self.assertEqual(rectangular.shape.width, 11)
         self.assertAlmostEqual(rectangular.shape.angle, 1.7854, places=5)
         rectangular_old = deepcopy(self.rectangular)
-        self.assertEqual(rectangular_old - rectangular, delta)
+        self.assertEqual(rectangular - rectangular_old, delta)
 
 
 if __name__ == "__main__":

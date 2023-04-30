@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.environment.structures import Settlement
-from piperabm.environment.structures.settlement.samples import settlement_0
+from piperabm.environment.structures.settlement.samples import settlement_0, settlement_1
 from piperabm.unit import Date, DT
 
 
@@ -20,7 +20,7 @@ class TestSettlementClass(unittest.TestCase):
             'start_date': {'year': 2020, 'month': 1, 'day': 2, 'hour': 0, 'minute': 0, 'second': 0},
             'end_date': None,
             'sudden_degradation': {'distribution': {'type': 'dirac delta', 'main': 864000.0}, 'unit_size': None},
-            'progressive_degradation': {'usage_max': 'inf', 'usage_current': 0, 'formula_name': 'formula_01'},
+            'progressive_degradation': {'usage_max': float('inf'), 'usage_current': 0, 'formula_name': 'formula_01'},
             'type': 'settlement'
         }
         self.maxDiff = None
@@ -28,6 +28,19 @@ class TestSettlementClass(unittest.TestCase):
         new_settlement = Settlement()
         new_settlement.from_dict(dictionary)
         self.assertEqual(self.settlement, new_settlement)
+
+    def test_delta(self):
+        settlement_new = deepcopy(settlement_1)
+        settlement_old = deepcopy(self.settlement)
+        delta = settlement_new - settlement_old
+        expected_delta = {
+            'name': "Peter's Home",
+            'boundary': {'shape': {'type': 'circle', 'radius': 5.0}},
+            'start_date': {'day': 2},
+        }
+        self.assertDictEqual(delta, expected_delta)
+        settlement_old + delta
+        self.assertEqual(settlement_new, settlement_old)
 
     def test_progressive_degradation(self):
         self.settlement.add_usage(amount=5)

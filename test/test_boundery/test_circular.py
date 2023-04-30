@@ -72,7 +72,7 @@ class TestCircularClass(unittest.TestCase):
         circular + delta
         self.assertEqual(circular.shape.radius, 7)
         circular_old = deepcopy(self.circular)
-        self.assertEqual(circular_old - circular, delta)
+        self.assertEqual(circular - circular_old, delta)
 
 
 if __name__ == "__main__":

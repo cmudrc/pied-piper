@@ -105,6 +105,35 @@ class TestDeltaClass(unittest.TestCase):
         self.maxDiff = None
         self.assertDictEqual(var_new, expected_result)
 
+    def test_apply_delta_none(self):
+        var_old = None
+        delta = {
+            'float': 3,
+            'bool': True,
+            'str': 'Peter',
+            'dict': {
+                'float': 3,
+                'bool': True,
+                'str': 'Peter',
+            }
+        }
+        var_new = Delta.apply_delta(var_old, delta)
+        self.assertDictEqual(var_new, delta)
+
+        var_old = {
+            'float': 3,
+            'bool': True,
+            'str': 'Peter',
+            'dict': {
+                'float': 3,
+                'bool': True,
+                'str': 'Peter',
+            }
+        }
+        delta = None
+        var_new = Delta.apply_delta(var_old, delta)
+        self.assertDictEqual(var_new, var_old)
+
 
 if __name__ == "__main__":
     unittest.main()
