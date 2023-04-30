@@ -45,6 +45,15 @@ class TestEnvironmentClass_0(unittest.TestCase):
         new_dictionary = new_env.to_dict()
         self.assertDictEqual(dictionary, new_dictionary)
 
+    def test_delta(self):
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 15)
+        self.env.update(start_date, end_date)
+        env_old = deepcopy(environment_0)
+        delta = self.env - env_old
+        expected_delta = {'nodes': {0: {'structure': {'active': True}}}}
+        self.assertDictEqual(delta, expected_delta)
+
 
 class TestEnvironmentClass_1(unittest.TestCase):
 
@@ -59,8 +68,24 @@ class TestEnvironmentClass_1(unittest.TestCase):
         self.assertEqual(len(nodes), 3)
         self.assertListEqual(list(nodes), [0, 1, 2])
 
-    def test_update(self):
-        pass
+    def test_delta(self):
+        env = deepcopy(self.env)
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 15)
+        env.update(start_date, end_date)
+        env_old = deepcopy(self.env)
+        delta = env - env_old
+        expected_delta = {
+            'nodes': {
+                0: {'structure': {'active': True}},
+                1: {'structure': {'active': True}}
+            },
+            'edges': {
+                0: {'structure': {'active': True}},
+                1: {'structure': {'active': True}}
+            }
+        }
+        self.assertDictEqual(delta, expected_delta)
 
     def test_dict(self):
         dictionary = self.env.to_dict()

@@ -27,19 +27,33 @@ class Delta:
             result = DeltaStr.apply_str_delta(main, delta)
         elif isinstance(main, dict) or isinstance(delta, dict):
             result = Delta.apply_dict_delta(main, delta)
-        elif isinstance(main, list) or isinstance(delta, list):
+        elif isinstance(main, list) or isinstance(delta, dict):
             result = Delta.apply_list_delta(main, delta)
         return result
     
-    def create_list_delta(main, other) -> list:
-        pass
-    
-    def apply_list_delta(main: list, delta: list) -> list:
-        delta = main
-        for delta_item in delta:
-            if delta_item not in main:
-                delta.append(delta_item)
+    def create_list_delta(main: list, other: list) -> list:
+        delta = None
+        if main is not None:
+            if other is not None:
+                main_dict = list_to_dict(main)
+                other_dict = list_to_dict(other)
+                delta = Delta.create_dict_delta(main_dict, other_dict)
+            else:
+                delta = main
+        else:
+            delta = other
         return delta
+    
+    def apply_list_delta(main: list, delta: dict) -> list:
+        if main is not None:
+            other = main
+            if delta is not None:
+                pass
+            else:
+                other = main
+        else:
+            other = delta
+        return other
     
     def create_dict_delta(main: dict, other: dict) -> dict:
         delta = None
@@ -71,13 +85,27 @@ class Delta:
                     else:
                         new_val = delta_val
                     other[key] = new_val
-            else:
-                other = main
         else:
             other = delta
         return other
 
+
+def list_to_dict(input: list) -> dict:
+    result = {}
+    for i, item in enumerate(input):
+        result[i] = item
+    return result
+
+
+def dict_to_list(input: dict) -> list:
+    result = []
+    for i in input:
+        result.append(input[i])
+    return result
+
+
 if __name__ == "__main__":
+    '''
     main = {
         'd': {
             'a': 'a',
@@ -98,3 +126,12 @@ if __name__ == "__main__":
         'e': [{'b': 3}]
     }
     print(Delta.apply_dict_delta(main, delta))
+    '''
+    ls_old = [3, True, 'Peter']
+    dc_old = list_to_dict(ls_old)
+    
+    ls_new = [2, False, 'John']
+    dc_new = list_to_dict(ls_new)
+    print(dc_new)
+    #print(Delta.create_dict_delta(dc_old, dc_new))
+    #print(Delta.create_list_delta(ls_old, ls_new))

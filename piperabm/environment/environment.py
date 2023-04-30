@@ -102,4 +102,5 @@ if __name__ == "__main__":
     start_date = Date(2020, 1, 5)
     end_date = Date(2020, 1, 10)
     environment.update(start_date, end_date)
+    #environment.print()
     environment.show()
