@@ -43,6 +43,29 @@ class TestResourceClass0(unittest.TestCase):
         r = deepcopy(self.r)
         self.assertFalse(r.has_zero())
 
+    def test_dict(self):
+        dictionary = self.r.to_dict()
+        expected_result = {'current': {}, 'max': {}, 'min': {}}
+        self.assertDictEqual(dictionary, expected_result)
+        r_new = Resource()
+        r_new.from_dict(dictionary)
+        self.assertDictEqual(r_new.to_dict(), expected_result)
+        self.assertEqual(r_new, self.r)
+    
+    def test_delta(self):
+        r = deepcopy(self.r)
+        delta = {
+            'current': {'a': 2},
+            'max': {'a': 5},
+            'min': {'a': 1},
+        }
+        r + delta
+        expected_result = {'current': {'a': 2}, 'max': {'a': 5}, 'min': {'a': 1}}
+        self.assertDictEqual(r.to_dict(), expected_result)
+        r_old = deepcopy(self.r)
+        print(r - r_old.to_dict())
+        #self.assertDictEqual(r - r_old, delta)
+
 
 class TestResourceClass1(unittest.TestCase):
 

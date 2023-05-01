@@ -1,15 +1,19 @@
 from copy import deepcopy
 
-try: from dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys, dict_max, dict_min
-except: from .dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, compare_keys, dict_max, dict_min
-try: from value import resource_value, total_resource_value
-except: from .value import resource_value, total_resource_value
-#from piperabm.tools.storage_custom_arithmetic import add_function, sub_function
+from piperabm.object import Object
+from piperabm.resource.dictionary_custom_arithmetic import dict_add, dict_sub, dict_mul, dict_truediv, dict_max, dict_min
+from piperabm.resource.value import resource_value, total_resource_value
 
 
-class Resource:
+class Resource(Object):
 
-    def __init__(self, current_resource={}, max_resource: dict={}, min_resource: dict={}):
+    def __init__(
+            self,
+            current_resource={},
+            max_resource: dict={},
+            min_resource: dict={}
+        ):
+        super().__init__()
         self.current_resource, self.max_resource, self.min_resource = \
         self.refine_inputs(
             deepcopy(current_resource),
@@ -18,6 +22,9 @@ class Resource:
         )
 
     def refine_inputs(self, current_resource, max_resource, min_resource):
+        """
+        Refine input values
+        """
         if isinstance(current_resource, list):
             resource_names = deepcopy(current_resource)
             current_resource = {}
@@ -30,16 +37,6 @@ class Resource:
                 max_resource[key] = None
             if key not in min_resource:
                 min_resource[key] = 0
-        '''
-        shared_cmax, uncommon_cmax = compare_keys(current_resource, max_resource)
-        shared_cmin, uncommon_cmin = compare_keys(current_resource, min_resource)
-
-        for key in current_resource:
-            if key in uncommon_cmax['main']:
-                max_resource[key] = None
-            if key in uncommon_cmin['main']:
-                min_resource[key] = 0
-        '''
         return current_resource, max_resource, min_resource
     
     def resource_exists(self, name: str):
@@ -53,7 +50,7 @@ class Resource:
     
     def amount(self, name: str):
         """
-        Amount of a certain resource
+        Amount of a certain resource based on its *name*
         """
         return self.current_resource[name]
     
@@ -68,17 +65,29 @@ class Resource:
         return result
     
     def all_resource_names(self):
+        """
+        Return all different resource names
+        """
         return self.current_resource.keys()
     
     def demand(self):
+        """
+        Calculate demand
+        """
         result, _ = Resource(self.max_resource) - Resource(self.current_resource)
         return result
 
     def source(self):
+        """
+        Calculate source
+        """
         result, _ = Resource(self.current_resource) - Resource(self.min_resource)
         return result
     
     def create_zeros(self, resource_names: list):
+        """
+        Create an empty resource instance with *resource_names*
+        """
         for resource_name in resource_names:
             if resource_name not in self.current_resource:
                 self.current_resource[resource_name] = 0
@@ -88,6 +97,9 @@ class Resource:
                 self.min_resource[resource_name] = 0
 
     def is_zero(self, resource_names: list = []) -> bool:
+        """
+        Check if the *resource_names* are zero
+        """
         if len(resource_names) == 0: # check all
             check_list = self.current_resource
         else:
@@ -154,13 +166,28 @@ class Resource:
         return self.current_resource[name]
     
     def max(self):
+        """
+        Max amount of all resources
+        """
         return dict_max(self.current_resource)
 
     def min(self):
+        """
+        Min amount of all resources
+        """
         return dict_min(self.current_resource)
 
-    def __str__(self):
-        return str(self.current_resource)
+    def to_dict(self) -> dict:
+        return {
+            'current': self.current_resource,
+            'max': self.max_resource,
+            'min': self.min_resource,
+        }
+    
+    def from_dict(self, dictionary: dict) -> None:
+        self.current_resource = dictionary['current']
+        self.max_resource = dictionary['max']
+        self.min_resource = dictionary['min']
     
     def __call__(self, name: str):
         return self.amount(name)
@@ -180,7 +207,9 @@ class Resource:
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
             remaining = Resource(remaining_dict, other.max_resource, other.min_resource)
-        return deepcopy(result), deepcopy(remaining)
+            return deepcopy(result), deepcopy(remaining)
+        elif isinstance(other, dict): # delta
+            super().__add__(other)
     
     def __sub__(self, other):
         result, remaining = None, None
@@ -192,7 +221,11 @@ class Resource:
             )
             result = Resource(result_dict, self.max_resource, self.min_resource)
             remaining = Resource(remaining_dict, other.max_resource, other.min_resource)
-        return deepcopy(result), deepcopy(remaining)
+            return deepcopy(result), deepcopy(remaining)
+        elif isinstance(other, dict): # delta
+            super().__sub__(other)
+            #delta = super().__sub__(other)
+            #return delta
     
     def __mul__(self, other):
         result = None
