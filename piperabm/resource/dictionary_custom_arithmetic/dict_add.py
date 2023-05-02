@@ -1,5 +1,4 @@
-try: from storage_custom_arithmetic import add_function
-except: from .storage_custom_arithmetic import add_function
+from piperabm.resource.dictionary_custom_arithmetic.storage_arithmetic import add_function
 try: from .dict_compare import compare_keys
 except: from dict_compare import compare_keys
 
@@ -13,7 +12,7 @@ def dict_add(main: dict, other, max=None):
             if max is None: max_amount = None
             else: max_amount = max[key]
             result[key], remaining[key] = add_function(
-                amount=other[key],
+                val=other[key],
                 current_amount=main[key],
                 max_amount=max_amount
             )
@@ -31,5 +30,4 @@ if __name__ == "__main__":
     other = {'b': 2, 'c': 3}
     max = {'b': 3}
     result, remaining = dict_add(main, other, max)
-    #result = truediv(main, 2)
     print(result, remaining)
