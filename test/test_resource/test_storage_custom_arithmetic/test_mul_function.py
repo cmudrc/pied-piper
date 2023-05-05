@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.resource.dictionary_custom_arithmetic.storage_custom_arithmetic import mul_function
+from piperabm.resource.dictionary_custom_arithmetic.storage_arithmetic import mul_function
 
 
 class TestMulFunction(unittest.TestCase):

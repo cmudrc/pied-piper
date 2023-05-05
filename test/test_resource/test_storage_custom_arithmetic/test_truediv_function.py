@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.resource.dictionary_custom_arithmetic.storage_custom_arithmetic import truediv_function
+from piperabm.resource.dictionary_custom_arithmetic.storage_arithmetic import truediv_function
 
 
 class TestTrueDivFunction(unittest.TestCase):

@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.society.agent.sample import sample_agent_0
+from piperabm.society.agent.samples import sample_agent_0
 from piperabm.unit import DT
 
 

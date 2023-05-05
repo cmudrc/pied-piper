@@ -42,6 +42,18 @@ class TestSettlementClass(unittest.TestCase):
         settlement_old + delta
         self.assertEqual(settlement_new, settlement_old)
 
+        settlement_old = deepcopy(self.settlement)
+        settlement = deepcopy(self.settlement)
+        settlement.add_usage(amount=5)
+        settlement.active = False
+        delta = settlement - settlement_old
+        expected_delta = {
+            'active': True,
+            'progressive_degradation': {'usage_current': 5}
+        }
+        self.assertDictEqual(delta, expected_delta)
+        print(delta)
+
     def test_progressive_degradation(self):
         self.settlement.add_usage(amount=5)
         self.assertEqual(self.settlement.degradation_factor(), 1)

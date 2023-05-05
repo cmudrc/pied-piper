@@ -1,0 +1,1 @@
+from .resource_0 import resource as resource_0
