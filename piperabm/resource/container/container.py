@@ -45,8 +45,12 @@ class Container(Object):
     
     def __add__(self, other):
         matter = self.matter
-        if isinstance(other, (int, float, Matter)): # resource arithmetic
+        if isinstance(other, (int, float)): # resource arithmetic
             matter + other
+            matter, remainder = remainder_calc(matter, self.max, self.min)
+            return remainder
+        elif isinstance(other, Matter): # resource arithmetic
+            matter + other.amount
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder
         elif isinstance(other, Container): # delta arithmetic
@@ -54,8 +58,12 @@ class Container(Object):
         
     def __sub__(self, other):
         matter = self.matter
-        if isinstance(other, (int, float, Matter)): # resource arithmetic
+        if isinstance(other, (int, float)): # resource arithmetic
             matter - other
+            matter, remainder = remainder_calc(matter, self.max, self.min)
+            return remainder
+        elif isinstance(other, Matter): # resource arithmetic
+            matter - other.amount
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder
         elif isinstance(other, Container): # delta arithmetic

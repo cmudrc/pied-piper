@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from piperabm.object import Object
 from piperabm.resource.matter import Matter
 
@@ -9,9 +7,11 @@ class ResourceRate(Object):
     Represent a physical storage unit
     """
 
-    def __init__(self):
+    def __init__(self, from_dict: dict = None):
         super().__init__()
         self.db = {} # database
+        if from_dict is not None:
+            self.from_dict(from_dict)
 
     def add_matter_object(self, name: str, matter: Matter):
         self.db[name] = matter
@@ -21,7 +21,7 @@ class ResourceRate(Object):
         self.add_matter_object(name, matter)
     
     def __call__(self, name):
-        return self.db[name]
+        return self.db[name].amount
 
     def __mul__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
@@ -51,6 +51,4 @@ class ResourceRate(Object):
 if __name__ == "__main__":
     resource_rate = ResourceRate()
     resource_rate.create(name='food', amount=6)
-    resource_rate * 2
     print(resource_rate)
-    #print(resource_rate('food'))
