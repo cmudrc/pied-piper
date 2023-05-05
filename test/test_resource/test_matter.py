@@ -5,7 +5,7 @@ from piperabm.resource.matter import Matter
 from piperabm.resource.matter.samples import matter_0
 
 
-class TestObjectClass(unittest.TestCase):
+class TestMatterClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.matter = deepcopy(matter_0)

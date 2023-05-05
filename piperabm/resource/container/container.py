@@ -40,12 +40,17 @@ class Container(Object):
     def demand(self):
         return self.max - self.matter.amount
     
+    def __call__(self):
+        return self.matter.__call__()
+    
     def __add__(self, other):
         matter = self.matter
         if isinstance(other, (int, float, Matter)): # resource arithmetic
             matter + other
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder
+        elif isinstance(other, Container): # delta arithmetic
+            return matter.__add__(other.matter)
         
     def __sub__(self, other):
         matter = self.matter
@@ -53,6 +58,8 @@ class Container(Object):
             matter - other
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder
+        elif isinstance(other, Container): # delta arithmetic
+            return matter.__sub__(other.matter)
 
     def __mul__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
@@ -61,9 +68,10 @@ class Container(Object):
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder
         
-    def __trudiv__(self, other):
+    def __truediv__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
             matter = self.matter
+            print(matter.amount)
             matter / other
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder
@@ -101,6 +109,6 @@ if __name__ == "__main__":
         amount=6,
         max=10
     )
-    remainder = container * 2
+    remainder = container / 0.5
     print(container)
     print(remainder)
