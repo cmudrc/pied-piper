@@ -31,16 +31,14 @@ class Matter(Object):
     def __add__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
             self.amount += other
-        elif isinstance(other, Matter): # delta arithmetic
-            other = other.amount
-            return self.__add__(other)
+        elif isinstance(other, dict): # delta arithmetic
+            return super().__add__(other)
 
     def __sub__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
             self.amount -= other
         elif isinstance(other, Matter): # delta arithmetic
-            other = other.amount
-            return self.__sub__(other)
+            return super().__sub__(other)
 
     def __mul__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic

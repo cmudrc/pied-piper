@@ -8,7 +8,7 @@ from piperabm.resource.resource_rate import ResourceRate
 
 class Resource(Object):
     """
-    Represent a physical storage unit
+    Represent resources located within physical storage unit (container)
     """
 
     def __init__(self):
@@ -16,9 +16,15 @@ class Resource(Object):
         self.db = {} # database
 
     def add_container_object(self, name: str, container: Container):
+        """
+        Directly define a new resource by adding container object
+        """
         self.db[name] = container
 
     def create(self, name, amount=None, max=None, min=None):
+        """
+        Define new resource
+        """
         matter = Matter(amount=amount)
         container = Container(max=max, min=min)
         container.add_matter_object(matter)
@@ -29,22 +35,22 @@ class Resource(Object):
     
     def __add__(self, other):
         remainder = {}
-        if isinstance(other, ResourceRate):
+        if isinstance(other, ResourceRate): # resource arithmetic
             for key in other.db:
                 if key in self.db:
                     remainder[key] = self.db[key] + other.db[key]
             return remainder
-        else:
+        else: # delta arithmetic
             super().__add__(other)
 
     def __sub__(self, other):
         remainder = {}
-        if isinstance(other, ResourceRate):
+        if isinstance(other, ResourceRate): # resource arithmetic
             for key in other.db:
                 if key in self.db:
                     remainder[key] = self.db[key] - other.db[key]
             return remainder
-        else:
+        else: # delta arithmetic
             super().__add__(other)
 
     def __mul__(self, other):

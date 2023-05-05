@@ -72,12 +72,12 @@ class Container(Object):
         return {
             'max': self.max,
             'min': self.min,
-            'matter': self.matter.to_dict(),
+            'amount': self.matter.to_dict(),
         }
 
     def from_dict(self, dictionary: dict) -> None:
         matter = Matter()
-        matter.from_dict(dictionary['matter'])
+        matter.from_dict(dictionary['amount'])
         self.matter = matter
         self.max = float(dictionary['max'])
         self.min = float(dictionary['min'])
