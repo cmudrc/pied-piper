@@ -38,11 +38,18 @@ class ResourceDelta(Object):
         self.db[name].amount = amount
         
     def is_all_zero(self):
+        """
+        Check if all the resource names have zero amount
+        """
         results = []
+
         for name in self.all_names():
             amount = self.get_amount(name)
             if amount <= SYMBOLS['eps']:
                 results.append(True)
+            else:
+                results.append(False)
+
         if False in results:
             return False
         else:

@@ -1,3 +1,4 @@
+from piperabm.transporation import Transportation
 from piperabm.resource import ResourceDelta
 from piperabm.unit import Unit
 
@@ -14,3 +15,17 @@ DEFAULT_RESOURCE = ResourceDelta()
 DEFAULT_RESOURCE.create_zeros(['food', 'water', 'energy']) # zeros
 
 VITAL_RESOURCES = ['food', 'water']
+
+
+class Walk(Transportation):
+
+    def __init__(self):
+        super().__init__(
+            name='foot',
+            speed=Unit(5, 'km/hour').to_SI(),
+            fuel_rate={
+                'food': Unit(2, 'kg/day').to_SI(),
+                'water': Unit(1, 'kg/day').to_SI(),
+                'energy': Unit(0, 'kg/day').to_SI(),
+            }
+        )

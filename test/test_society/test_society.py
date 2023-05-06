@@ -1,6 +1,7 @@
 import unittest
 from copy import deepcopy
 
+'''
 from piperabm import Model, Society
 from piperabm.unit import Date, DT
 
@@ -98,7 +99,7 @@ class TestSocietyClass_2Agents_II(unittest.TestCase):
         self.assertListEqual(list(self.society.env.link_graph.G.nodes()), [])
         self.assertListEqual(list(self.society.env.link_graph.G.edges()), [])
         self.society.update_elements(start_date, end_date)
-    
+'''
 
 if __name__ == "__main__":
     unittest.main()

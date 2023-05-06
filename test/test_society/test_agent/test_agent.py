@@ -12,14 +12,35 @@ class TestAgentClass(unittest.TestCase):
         self.agent = deepcopy(agent_0)
 
     def test_add_resource(self):
-        self.agent + resource_rate_0
-        print(self.agent.resource)
+        remaining = self.agent + resource_rate_0
+        expected_result = {
+            'food': {'max': 100, 'min': 0, 'amount': 26},
+            'water': {'max': 100, 'min': 0, 'amount': 34},
+            'energy': {'max': 100, 'min': 0, 'amount': 43}
+        }
+        self.assertDictEqual(self.agent.resource.to_dict(), expected_result)
+        self.assertTrue(remaining.is_all_zero())
+
+    def test_sub_resource(self):
+        remaining = self.agent - resource_rate_0
+        expected_result = {
+            'food': {'max': 100, 'min': 0, 'amount': 14},
+            'water': {'max': 100, 'min': 0, 'amount': 26},
+            'energy': {'max': 100, 'min': 0, 'amount': 37}
+        }
+        self.assertDictEqual(self.agent.resource.to_dict(), expected_result)
+        self.assertTrue(remaining.is_all_zero())
 
     def test_fuel_consumption_idle(self):
-        self.agent.idle_time_pass(DT(days=7))
+        fuel_consumption = self.agent.fuel_consumption_idle(duration=DT(days=7))
+        self.agent - fuel_consumption
         self.assertTrue(self.agent.alive)
-        self.agent.idle_time_pass(DT(days=1))
+
+        fuel_consumption = self.agent.fuel_consumption_idle(duration=DT(days=1))
+        remaining = self.agent - fuel_consumption
         self.assertFalse(self.agent.alive)
+        self.assertFalse(remaining.is_all_zero())
+        self.assertListEqual(self.agent.death_reason, ['water'])
     
     
 if __name__ == "__main__":

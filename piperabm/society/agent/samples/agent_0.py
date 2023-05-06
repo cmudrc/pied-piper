@@ -1,19 +1,12 @@
-from piperabm.society import Agent
+from piperabm.society.agent import Agent
 from piperabm.resource import Resource
 
 
-resource = Resource(
-    current_resource={
-        'food': 20,
-        'water': 30,
-        'energy': 40
-    },
-    max_resource={
-        'food': 100,
-        'water': 100,
-        'energy': 100
-    }
-)
+resource = Resource()
+resource.create('food', amount=20, max=100)
+resource.create('water', amount=30, max=100)
+resource.create('energy', amount=40, max=100)
+
 agent = Agent(
     name='John',
     origin=0,

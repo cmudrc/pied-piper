@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from piperabm.object import Object
 from piperabm.resource import Resource, ResourceDelta
-from piperabm.transporation import Transportation, Walk
+from piperabm.transporation import Transportation
 #from piperabm.transporation.load import load_transportation
 from piperabm.actions import Queue
 from piperabm.unit import DT, Date, date_to_dict, date_from_dict
@@ -88,7 +88,6 @@ class Agent(Object):
         else:
             result = False
         return result
-    
 
     def update(self, start_date, end_date) -> None:
         """
@@ -111,7 +110,7 @@ class Agent(Object):
 
     def __add__(self, other):
         if isinstance(other, ResourceDelta): # resource arithmetic
-            self.resource, remaining = self.resource + other
+            remaining = self.resource + other
             self.active = self.is_alive()
             return remaining
         else:
@@ -119,7 +118,7 @@ class Agent(Object):
 
     def __sub__(self, other):
         if isinstance(other, ResourceDelta): # resource arithmetic
-            self.resource, remaining = self.resource - other
+            remaining = self.resource - other
             self.active = self.is_alive()
             return remaining
         else:

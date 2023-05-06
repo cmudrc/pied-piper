@@ -59,7 +59,7 @@ class Transportation(Object):
     
     def from_dict(self, dictionary: dict) -> None:
         self.name = dictionary['name']
-        self.speed = dictionary['speed']
+        self.speed = float(dictionary['speed'])
         fuel_rate = ResourceDelta()
         fuel_rate.from_dict(dictionary['fuel_rate'])
         self.fuel_rate = fuel_rate

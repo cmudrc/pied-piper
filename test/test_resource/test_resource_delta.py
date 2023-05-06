@@ -14,12 +14,24 @@ class TestResourceDeltaClass(unittest.TestCase):
         rate = self.rate('food')
         self.assertEqual(rate, 6)
 
+    def test_all_names(self):
+        names = self.rate.all_names()
+        expected_result = ['food', 'water', 'energy']
+        self.assertListEqual(names, expected_result)
+
+    def test_set_get(self):
+        self.rate.set_amount('food', 0)
+        self.assertEqual(self.rate.get_amount('food'), 0)
+
     def test_zeros(self):
-        rate = ResourceDelta()
-        rate.create_zeros(['food', 'water', 'energy'])
+        resource_delta = ResourceDelta()
+        resource_delta.create_zeros(['food', 'water', 'energy'])
         expected_result = {'energy': 0, 'food': 0, 'water': 0}
-        self.assertDictEqual(rate.to_dict(), expected_result)
-        self.assertTrue(rate.is_all_zero())
+        self.assertDictEqual(resource_delta.to_dict(), expected_result)
+        self.assertTrue(resource_delta.is_all_zero())
+
+    def test_is_all_zero(self):
+        self.assertFalse(self.rate.is_all_zero())
 
     def test_mul(self):
         self.rate * 2

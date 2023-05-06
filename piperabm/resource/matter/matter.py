@@ -16,13 +16,9 @@ class Matter(Object):
         self.amount = amount
 
     def to_dict(self):
-        #return {
-        #    'amount': self.amount
-        #}
         return self.amount
     
     def from_dict(self, dictionary) -> None:
-        #self.amount = float(dictionary['amount'])
         self.amount = float(dictionary)
 
     def __call__(self):
