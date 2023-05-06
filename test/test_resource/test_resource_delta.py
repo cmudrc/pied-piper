@@ -1,11 +1,11 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import ResourceRate
+from piperabm.resource import ResourceDelta
 from piperabm.resource.samples import resource_rate_0
 
 
-class TestResourceRateClass(unittest.TestCase):
+class TestResourceDeltaClass(unittest.TestCase):
     
     def setUp(self) -> None:
         self.rate = deepcopy(resource_rate_0)
@@ -13,6 +13,13 @@ class TestResourceRateClass(unittest.TestCase):
     def test_call(self):
         rate = self.rate('food')
         self.assertEqual(rate, 6)
+
+    def test_zeros(self):
+        rate = ResourceDelta()
+        rate.create_zeros(['food', 'water', 'energy'])
+        expected_result = {'energy': 0, 'food': 0, 'water': 0}
+        self.assertDictEqual(rate.to_dict(), expected_result)
+        self.assertTrue(rate.is_all_zero())
 
     def test_mul(self):
         self.rate * 2
@@ -28,7 +35,7 @@ class TestResourceRateClass(unittest.TestCase):
         dictionary = self.rate.to_dict()
         expected_result = {'food': 6, 'water': 4, 'energy': 3}
         self.assertEqual(dictionary, expected_result)
-        rate = ResourceRate()
+        rate = ResourceDelta()
         rate.from_dict(dictionary)
         self.assertEqual(rate, self.rate)
 

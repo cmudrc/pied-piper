@@ -12,6 +12,10 @@ class Vehicle(Transportation):
                 'food': Unit(0, 'kg/day').to_SI(),
                 'water': Unit(0, 'kg/day').to_SI(),
                 'energy': Unit(1, 'kg/day').to_SI(),
-            },
-            storage_max=Unit(200, 'kg').to_SI()
+            }
         )
+
+
+if __name__ == "__main__":
+    transportation = Vehicle()
+    print(transportation)

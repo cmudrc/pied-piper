@@ -15,6 +15,25 @@ class TestResourceClass(unittest.TestCase):
     def test_call(self):
         resource = self.resource('food')
         self.assertEqual(resource, 6)
+
+    def test_set_get(self):
+        self.resource.set_amount('food', 0)
+        self.assertEqual(self.resource.get_amount('food'), 0)
+
+    def test_all_resource_names(self):
+        names = self.resource.all_names()
+        expected_result = ['food', 'water', 'energy']
+        self.assertListEqual(names, expected_result)
+
+    def test_find_zeros(self):
+        zeros_names = self.resource.find_zeros()
+        expected_result = []
+        self.assertListEqual(zeros_names, expected_result)
+
+        self.resource.set_amount('food', 0)
+        zeros_names = self.resource.find_zeros()
+        expected_result = ['food']
+        self.assertListEqual(zeros_names, expected_result)
     
     def test_add(self):
         remainder = self.resource + self.rate

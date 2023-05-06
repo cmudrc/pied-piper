@@ -1,8 +1,8 @@
-from piperabm.resource import Resource
+from piperabm.resource import ResourceDelta
 from piperabm.unit import Unit
 
 
-HUMAN_IDLE_FUEL_RATE = Resource(
+HUMAN_IDLE_FUEL_RATE = ResourceDelta(
     {
         'food': Unit(2, 'kg/day').to_SI(),
         'water': Unit(4, 'kg/day').to_SI(),
@@ -10,6 +10,7 @@ HUMAN_IDLE_FUEL_RATE = Resource(
     }
 )
 
-DEFAULT_RESOURCE = Resource(['food', 'water', 'energy']) # zeros
+DEFAULT_RESOURCE = ResourceDelta()
+DEFAULT_RESOURCE.create_zeros(['food', 'water', 'energy']) # zeros
 
 VITAL_RESOURCES = ['food', 'water']

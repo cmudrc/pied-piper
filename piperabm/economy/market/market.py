@@ -1,5 +1,3 @@
-from piperabm.resource import resource_sum
-
 try: from .player import Player
 except: from player import Player
 try: from .solver import Solver

@@ -1,9 +1,9 @@
 from copy import deepcopy
 
 from piperabm.object import Object
-from piperabm.resource import Resource
-from piperabm.transporation import Walk
-from piperabm.transporation.load import load_transportation
+from piperabm.resource import Resource, ResourceDelta
+from piperabm.transporation import Transportation, Walk
+#from piperabm.transporation.load import load_transportation
 from piperabm.actions import Queue
 from piperabm.unit import DT, Date, date_to_dict, date_from_dict
 #try: from .decision import Decision
@@ -20,10 +20,10 @@ class Agent(Object):
             start_date: Date = None,
             end_date: Date = None,
             origin: int = None,
-            transportation=None,
+            transportation: Transportation = None,
             queue=None,
             resource: Resource = None,
-            fuel_rate_idle: Resource = None,
+            fuel_rate_idle: ResourceDelta = None,
             income: float = 0,
             balance: float = 0
     ):
@@ -48,18 +48,18 @@ class Agent(Object):
             self.transportation = transportation
 
         ''' queue '''
-        if queue is None or not isinstance(queue, Queue):
+        if queue is None:
             self.queue = Queue()
         else:
             self.queue = queue
 
         ''' resource '''
-        if resource is None or not isinstance(resource, Resource):
+        if resource is None:
             self.resource = deepcopy(DEFAULT_RESOURCE)
         else:
             self.resource = resource
     
-        if fuel_rate_idle is None or not isinstance(fuel_rate_idle, Resource):
+        if fuel_rate_idle is None:
             self.fuel_rate_idle = deepcopy(HUMAN_IDLE_FUEL_RATE)
         else:
             self.fuel_rate_idle = fuel_rate_idle
@@ -78,29 +78,52 @@ class Agent(Object):
         """
         Check whether agent is alive
         """
-        result = True
-        resource_zeros = self.resource.find_zeros(VITAL_RESOURCES)
-        if len(resource_zeros) > 0:
+        result = None
+        if self.alive is True:
+            result = True
+            resource_zeros = self.resource.find_zeros(VITAL_RESOURCES)
+            if len(resource_zeros) > 0:
+                result = False
+                self.death_reason = resource_zeros
+        else:
             result = False
-            self.active = False
-            self.death_reason = resource_zeros
         return result
     
-    def reduce_resource(self, resource: Resource) -> None:
-        """
-        Reduce the *resource* from agent and check whether its alive
-        """
-        self.resource, remaining = self.resource - resource
-        self.active = self.is_alive()
 
-    def idle_time_pass(self, duration) -> None:
+    def update(self, start_date, end_date) -> None:
         """
         Reduce the idle_fuel_consumption from agent's resource
         """
+        if self.alive is True:
+            duration = end_date - start_date
+            fuel_consumption = self.fuel_consumption_idle(duration)
+            self.resource - fuel_consumption
+
+    def fuel_consumption_idle(self, duration) -> ResourceDelta:
+        """
+        Create ResourceDelta object based on duration and fuel_rate
+        """
         if isinstance(duration, DT):
             duration = duration.total_seconds()
-        if self.alive is True:
-            self.reduce_resource(self.fuel_rate_idle * duration)
+        rate = deepcopy(self.fuel_rate_idle)
+        rate * duration
+        return rate
+
+    def __add__(self, other):
+        if isinstance(other, ResourceDelta): # resource arithmetic
+            self.resource, remaining = self.resource + other
+            self.active = self.is_alive()
+            return remaining
+        else:
+            super().__add__(other) # delta arithmetic
+
+    def __sub__(self, other):
+        if isinstance(other, ResourceDelta): # resource arithmetic
+            self.resource, remaining = self.resource - other
+            self.active = self.is_alive()
+            return remaining
+        else:
+            super().__sub__(other) # delta arithmetic
 
     def to_dict(self) -> dict:
         return {
@@ -112,8 +135,8 @@ class Agent(Object):
             'origin': self.origin,
             'transportation': self.transportation.to_dict(),
             'queue': self.queue.to_dict(), #
-            #'resource': self.resource.to_dict(), #
-            #'fuel_rate_idle': self.fuel_rate_idle.to_dict(), #
+            'resource': self.resource.to_dict(),
+            'fuel_rate_idle': self.fuel_rate_idle.to_dict(),
             'income': self.income,
             'balance': self.balance,
             'type': self.type
@@ -126,38 +149,32 @@ class Agent(Object):
         self.end_date = date_from_dict(dictionary['end_date'])
         self.death_reason = dictionary['death_reason']
         self.origin = dictionary['origin']
-        self.transportation = load_transportation(dictionary['transportation'])
+        transportation = Transportation()
+        transportation.from_dict(dictionary['transportation'])
+        self.transportation = transportation
         queue = Queue()
         queue.from_dict(dictionary['queue']) ##
         self.queue = queue
-        #resource = Resource()
-        #resource.from_dict(dictionary['resource']) ##
-        #self.resource = resource
-        #self.fuel_rate_idle = dictionary['fuel_rate_idle']
+        resource = Resource()
+        resource.from_dict(dictionary['resource']) ##
+        self.resource = resource
+        fuel_rate_idle = ResourceDelta()
+        fuel_rate_idle.from_dict(dictionary['fuel_rate_idle'])
+        self.fuel_rate_idle = fuel_rate_idle
         self.income = dictionary['income']
         self.balance = dictionary['balance']
         self.type = dictionary['type']
 
 
 if __name__ == "__main__":
-    resource = Resource(
-        current_resource={
-            'food': 20,
-            'water': 30,
-            'energy': 40
-        },
-        max_resource={
-            'food': 100,
-            'water': 100,
-            'energy': 100
-        }
-    )
+    from piperabm.resource.samples import resource_0
+
     agent = Agent(
         name='John',
-        resource=resource
+        resource=resource_0
     )
     print(agent)
-    agent.idle_time_pass(3600 * 24 * 8)
-    print(agent.resource)
-    print('alive: ', agent.alive)
-    print('reason of death: ', agent.death_reason)
+    #agent.idle_time_pass(3600 * 24 * 8)
+    #print(agent.resource)
+    #print('alive: ', agent.alive)
+    #print('reason of death: ', agent.death_reason)

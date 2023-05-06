@@ -1,7 +1,7 @@
-from piperabm.resource import ResourceRate
+from piperabm.resource import ResourceDelta
 
 
-resource_rate = ResourceRate()
+resource_rate = ResourceDelta()
 resource_rate.create('food', 6)
 resource_rate.create('water', 4)
 resource_rate.create('energy', 3)

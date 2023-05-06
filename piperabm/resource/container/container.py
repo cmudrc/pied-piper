@@ -79,7 +79,6 @@ class Container(Object):
     def __truediv__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
             matter = self.matter
-            print(matter.amount)
             matter / other
             matter, remainder = remainder_calc(matter, self.max, self.min)
             return remainder

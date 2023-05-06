@@ -1,7 +1,8 @@
 from piperabm.object import Object
 from piperabm.resource.matter import Matter
 from piperabm.resource.container import Container
-from piperabm.resource.resource_rate import ResourceRate
+from piperabm.resource.resource_rate import ResourceDelta
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Resource(Object):
@@ -27,28 +28,53 @@ class Resource(Object):
         container = Container(max=max, min=min)
         container.add_matter_object(matter)
         self.add_container_object(name, container)
-    
-    def __call__(self, name):
+
+    def get_amount(self, name: str):
         return self.db[name].matter.amount
+
+    def set_amount(self, name: str, amount: float):
+        self.db[name].matter.amount = amount
+
+    def all_names(self) -> list:
+        """
+        Return all different resource names
+        """
+        return list(self.db.keys())
+
+    def find_zeros(self, resource_names: list = []) -> list:
+        """
+        Find resources that have zero amount left
+        """
+        result = []
+        if len(resource_names) == 0: # check all
+            names_list = self.all_names()
+        else:
+            names_list = resource_names
+        for resource_name in names_list:
+            if self.__call__(resource_name) <= SYMBOLS['eps']:
+                result.append(resource_name)
+        return result
+    
+    def __call__(self, name: str):
+        return self.get_amount(name)
     
     def __add__(self, other):
-        if isinstance(other, ResourceRate): # resource arithmetic
+        if isinstance(other, ResourceDelta): # resource arithmetic
             remainder = {}
             for key in other.db:
                 if key in self.db:
-                    print(self.db[key])
                     remainder[key] = self.db[key] + other.db[key]
-            return ResourceRate(remainder)
+            return ResourceDelta(remainder)
         else: # delta arithmetic
             super().__add__(other)
 
     def __sub__(self, other):
-        if isinstance(other, ResourceRate): # resource arithmetic
+        if isinstance(other, ResourceDelta): # resource arithmetic
             remainder = {}
             for key in other.db:
                 if key in self.db:
                     remainder[key] = self.db[key] - other.db[key]
-            return ResourceRate(remainder)
+            return ResourceDelta(remainder)
         else: # delta arithmetic
             return super().__sub__(other)
 
@@ -58,7 +84,7 @@ class Resource(Object):
             for key in self.db:
                 resource = self.db[key]
                 remainder[key] = resource * other
-            return ResourceRate(remainder)
+            return ResourceDelta(remainder)
         
     def __truediv__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
@@ -66,7 +92,7 @@ class Resource(Object):
             for key in self.db:
                 resource = self.db[key]
                 remainder[key] = resource / other
-            return ResourceRate(remainder)
+            return ResourceDelta(remainder)
 
     def to_dict(self) -> dict:
         dictionary = {}
