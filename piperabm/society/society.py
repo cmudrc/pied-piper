@@ -1,42 +1,31 @@
 import networkx as nx
 
-from piperabm.environment import Environment
-from piperabm.economy import GiniGenerator, Exchange
-
-try: from .search import Search
-except: from search import Search
-try: from .add import Add
-except: from add import Add
-try: from .index import Index
-except: from index import Index
-try: from .query import Query
-except: from query import Query
-try: from .graphics import Graphics
-except: from graphics import Graphics
-try: from .update import Update
-except: from update import Update
-try: from .log import Log
-except: from log import Log
+from piperabm.object import Object
+from piperabm.society.add import Add
+from piperabm.society.search import Search
+from piperabm.society.query import Query
+#from piperabm.environment import Environment
+from piperabm.economy import GiniGenerator, ExchangeRate
 
 
-class Society(Add, Index, Query, Graphics, Update, Search):
+class Society(Object, Add, Search, Query):
     """
     Represent society
-    Manage agents
+    Manage agents and their relationships
     """
 
-    def __init__(self, env: Environment, gini: float, exchange_rate: Exchange):
-        self.env = env
-        self.gini = gini
-        self.gini_gen = GiniGenerator(gini, 1)
-        self.exchange = exchange_rate
-        self.G = nx.Graph()
-        self.log = Log(prefix='SOCIETY', indentation_depth=1)
+    def __init__(self, environment = None, gini: float = 0, exchange_rate: ExchangeRate = None):
         super().__init__()
-
-    def __str__(self):
-        return str(self.G)
+        self.environment = environment
+        self.gini = gini
+        #self.gini_gen = GiniGenerator(gini, 1)
+        self.exchange = exchange_rate
+        self.G = nx.MultiGraph()
+        self.type = 'society'
+        #self.log = Log(prefix='SOCIETY', indentation_depth=1)
+        
 
 
 if __name__ == "__main__":
-    pass
+    society = Society()
+    print(society)

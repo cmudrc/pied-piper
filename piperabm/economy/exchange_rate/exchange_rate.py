@@ -1,7 +1,7 @@
 import networkx as nx
 
 
-class Exchange:
+class ExchangeRate:
     """
     Save exchange rates and calculate (target = rate * source)
     """
@@ -28,7 +28,7 @@ class Exchange:
 
 
 if __name__ == "__main__":
-    exchange = Exchange()
+    exchange = ExchangeRate()
     exchange.add('food', 'wealth', 10)
     exchange.add('water', 'wealth', 2)
     rate = exchange.rate('food', 'water')

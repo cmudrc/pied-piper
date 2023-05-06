@@ -1,10 +1,11 @@
 import unittest
 from copy import deepcopy
 
-from piperabm import Model, Society
+from piperabm.model import Model
+from piperabm.society import Society
 from piperabm.unit import Date, DT
 
-from piperabm.economy.exchange.sample import exchange_0
+from piperabm.economy.exchange_rate.samples import exchange_0
 from piperabm.environment.samples import env_0
 from piperabm.society.agent.samples import sample_agent_0, sample_agent_1
 

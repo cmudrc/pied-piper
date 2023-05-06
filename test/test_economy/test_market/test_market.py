@@ -1,11 +1,11 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.economy import Exchange
+from piperabm.economy.exchange_rate import ExchangeRate
 from piperabm.economy.market import Player, Market
 
-from piperabm.society.agent.samples import sample_agent_0, sample_agent_1
-from piperabm.economy.exchange.sample import exchange_0 as exchange
+from piperabm.society.agent.samples import agent_0, agent_1
+from piperabm.economy.exchange_rate.samples import exchange_rate_0 as exchange
 
 
 class TestMarketClass_1Player(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestMarketClass_1Player(unittest.TestCase):
             wallet=10
         )
 
-        exchange = Exchange()
+        exchange = ExchangeRate()
         exchange.add('food', 'wealth', 5)
 
         market = Market(exchange)
@@ -92,7 +92,7 @@ class TestMarketClass_2Players(unittest.TestCase):
             wallet=20
             )
 
-        exchange = Exchange()
+        exchange = ExchangeRate()
         exchange.add('food', 'wealth', 5)
 
         market = Market(exchange)
@@ -189,7 +189,7 @@ class TestMarketClass_3Players(unittest.TestCase):
             wallet=20
             )
 
-        exchange = Exchange()
+        exchange = ExchangeRate()
         exchange.add('food', 'wealth', 10)
         exchange.add('water', 'wealth', 2)
 
@@ -377,15 +377,15 @@ class TestMarketClass_Standard(unittest.TestCase):
     def setUp(self):
         p1 = Player(
             1,
-            source=deepcopy(sample_agent_0.resource.source().current_resource),
-            demand=deepcopy(sample_agent_0.resource.demand().current_resource),
-            wallet=deepcopy(sample_agent_0.balance)
+            source=deepcopy(agent_0.resource.source().current_resource),
+            demand=deepcopy(agent_0.resource.demand().current_resource),
+            wallet=deepcopy(agent_0.balance)
         )
         p2 = Player(
             2,
-            source=deepcopy(sample_agent_1.resource.source().current_resource),
-            demand=deepcopy(sample_agent_1.resource.demand().current_resource),
-            wallet=deepcopy(sample_agent_1.balance)
+            source=deepcopy(agent_1.resource.source().current_resource),
+            demand=deepcopy(agent_1.resource.demand().current_resource),
+            wallet=deepcopy(agent_1.balance)
             )
 
         market = Market(exchange)

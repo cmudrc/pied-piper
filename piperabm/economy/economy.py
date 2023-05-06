@@ -145,7 +145,7 @@ class Economy:
 
 if __name__ == "__main__":
     from piperabm.society.agent.samples import agent_0, agent_1
-    from piperabm.economy.exchange.sample import exchange_0 as exchange
+    from piperabm.economy.exchange_rate.samples import exchange_0 as exchange
 
     agent_1.current_node = agent_0.current_node # 0
     agents = [agent_0, agent_1]

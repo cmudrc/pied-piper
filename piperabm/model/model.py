@@ -1,42 +1,63 @@
 import numpy as np
 
 from piperabm.society import Society
+from piperabm.environment import Environment
 from piperabm.unit import DT, Date
 from piperabm.log import Log
 from piperabm.measure import Measures
 
-try: from .graphics import Graphics
-except: from graphics import Graphics
-try: from .log import Log
-except: from log import Log
 
 
-class Model(Graphics):
+class Model:
 
     def __init__(
         self,
-        society: Society,
-        step_size=None,
-        current_step=0,
-        current_date=None,
+        society: Society = None,
+        environment: Environment = None,
+        step_size: int = None,
+        current_step: int = 0,
+        current_date: Date = None,
         seed=None,
         seed_state=None
     ):
-        self.society = society
-        self.env = self.society.env
+        #super().__init__()
+        self.add_environment_society(environment, society)
+
         self.add_step_size(step_size)
-        if current_step >= 0: self.current_step = current_step
-        else: raise ValueError
-        if current_date is None: self.current_date = Date.today()
-        else: self.current_date = current_date
+
+        if current_step >= 0:
+            self.current_step = current_step
+        else:
+            raise ValueError
+
+        if current_date is None:
+            self.current_date = Date.today()
+        else:
+            self.current_date = current_date
+
         self.measures = Measures()
         self.log = Log(prefix='MODEL', indentation_depth=0)
+        
         if seed is not None:
             self.seed = seed
             np.random.default_rng(self.seed)
             if seed_state is not None:
                 np.random.set_state(seed_state)
-        super().__init__()
+
+    def add_environment_society(
+            self,
+            environment: Environment,
+            society: Society
+        ):
+        """
+        Add environment and society to the model and create their entanglement
+        """    
+        self.environment = environment
+        self.society = society
+        if society is not None and environment is not None:
+            ''' create mutual entanglement '''
+            self.environment.society = self.society
+            self.society.environment = self.environment
 
     def get_random_state(self):
         return np.random.get_state()
@@ -58,12 +79,12 @@ class Model(Graphics):
         """
         Burnout phase for initiating the model
         """
-        start_date = self.env.oldest_date()
+        start_date = self.environment.oldest_date()
         end_date = self.current_date
-        ''' log '''
-        msg = self.log.message__burnout(start_date, end_date)
+        #''' log '''
+        #msg = self.log.message__burnout(start_date, end_date)
         #print(msg)
-        self.env.update_elements(start_date, end_date)
+        self.environment.update(start_date, end_date)
 
     def run_step(self):
         """
@@ -75,11 +96,11 @@ class Model(Graphics):
             self.burnout()
         start_date = self.current_date
         end_date = start_date + self.step_size
-        ''' log '''
-        msg = self.log.message__date_step(start_date, end_date, self.current_step)
+        #''' log '''
+        #msg = self.log.message__date_step(start_date, end_date, self.current_step)
         #print(msg)
-        self.env.update_elements(start_date, end_date)
-        self.society.update_elements(start_date, end_date)
+        self.environment.update(start_date, end_date)
+        self.society.update(start_date, end_date)
         self.measures.read_data(self.society, start_date, end_date)
         self.current_date = end_date
         self.current_step += 1
