@@ -75,8 +75,8 @@ class Environment(Object, Add, Search, Query, Update):
         for edge in edges:
             index_start = edge[0]
             index_end = edge[1]
-            structure_dict = self.edge_to_dict(index_start, index_end)
-            dictionary['edges'][index_start] = structure_dict
+            edge_dictionary = self.edge_to_dict(index_start, index_end)
+            dictionary['edges'][index_start] = edge_dictionary
         return dictionary
     
     def from_dict(self, dictionary: dict) -> None:

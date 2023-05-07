@@ -11,10 +11,10 @@ society = Society(
     exchange_rate=deepcopy(exchange_rate_0)
 )
 society.add_agent_object(
-    initial_node=0,
-    object=deepcopy(agent_0)
+    agent=deepcopy(agent_0)
 )
 
 
 if __name__ == "__main__":
-    society.print()
+    #society.print()
+    print(society.G)

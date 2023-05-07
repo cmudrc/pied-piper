@@ -1,5 +1,5 @@
-from piperabm.environment.query.node import Node
-from piperabm.environment.query.edge import Edge
+from piperabm.society.query.node import Node
+from piperabm.society.query.edge import Edge
 
 
 class Query(Node, Edge):
