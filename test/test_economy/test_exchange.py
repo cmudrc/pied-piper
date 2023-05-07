@@ -3,29 +3,15 @@ from copy import deepcopy
 
 from piperabm.resource import Resource
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
+from piperabm.resource.samples import resource_0, resource_rate_0
 
 
 class TestExchangeClass(unittest.TestCase):
 
     def setUp(self):
         self.exchange = deepcopy(exchange_rate_0)
-
-        self.r = Resource(
-            current_resource={
-                'food': 5,
-                'water': 8,
-            },
-            max_resource={
-                'food': 10,
-                'water': 10,
-            }
-        )
-        self.dr = Resource(
-            {
-                'food': 5,
-                'water': 8,
-            }
-        )
+        self.resource = deepcopy(resource_0)
+        self.resource_delta = deepcopy(resource_rate_0)
 
     def test_rate(self):
         e = deepcopy(self.exchange)
@@ -33,8 +19,7 @@ class TestExchangeClass(unittest.TestCase):
         self.assertEqual(rate, 5)
 
     def test_resource_value(self):
-        r = deepcopy(self.r)
-        result = r.value(exchange_rate=self.exchange)
+        result = self.resource.value(exchange_rate=self.exchange)
         expected_result = {
             'food': 50,
             'water': 16,

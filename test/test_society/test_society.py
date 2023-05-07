@@ -1,105 +1,66 @@
 import unittest
 from copy import deepcopy
 
-'''
-from piperabm import Model, Society
-from piperabm.unit import Date, DT
-
-from piperabm.economy.exchange.sample import exchange_0
-from piperabm.environment.samples import environment_0
-from piperabm.society.agent.samples import sample_agent_0, sample_agent_1
+from piperabm.society.samples import society_0, society_1
 
 
-class TestSocietyClass_1Agent(unittest.TestCase):
-    """
-    Single agent
-    """
+class TestSocietyClass_0(unittest.TestCase):
 
-    def setUp(self):
-        society = Society(
-            env=deepcopy(environment_0),
-            gini=0.3,
-            exchange_rate=deepcopy(exchange_0)
-        )
-        agents = [
-            deepcopy(sample_agent_0)
-        ]
-        society.add(agents)
-        self.society = society
+    def setUp(self) -> None:
+        self.society = deepcopy(society_0)
 
-    def test_(self):
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=12)
-        self.society.env.update_elements(start_date, end_date)
-        # env
-        self.assertListEqual(list(self.society.env.G.nodes()), [0, 1, 2])
-        self.assertListEqual(list(self.society.env.G.edges()), [(0, 2), (1, 2)])
-        # link graph
-        self.assertListEqual(list(self.society.env.link_graph.G.nodes()), [])
-        self.assertListEqual(list(self.society.env.link_graph.G.edges()), [])
-        self.society.update_elements(start_date, end_date)
+    def test_all_indexes(self):
+        nodes = self.society.all_indexes()
+        self.assertListEqual(nodes, [0])
+
+    def test_all_edges(self):
+        edges = self.society.all_edges()
+        self.assertListEqual(edges, [])
+
+    def test_get_pos(self):
+        pos = self.society.get_agent_pos(0)
+        self.assertListEqual(pos, [-2, -2])
+
+    def test_find(self):
+        agent_index = self.society.find('John')
+        self.assertEqual(agent_index, 0)
+        agent_index = self.society.find(0)
+        self.assertEqual(agent_index, 0)
 
 
-class TestSocietyClass_2Agents_I(unittest.TestCase):
-    """
-    Two agents in the same node
-    """
+class TestSocietyClass_1(unittest.TestCase):
 
-    def setUp(self):
-        society = Society(
-            env=deepcopy(env_0),
-            gini=0.3,
-            exchange_rate=deepcopy(exchange_0)
-        )
-        agent_0 = deepcopy(sample_agent_0)
-        agent_1 = deepcopy(sample_agent_1)
-        agent_1.current_node = deepcopy(agent_0.current_node)
-        agents = [agent_0, agent_1]
-        society.add(agents)
-        self.society = society
+    def setUp(self) -> None:
+        self.society = deepcopy(society_1)
 
-    def test_(self):
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=12)
-        self.society.env.update_elements(start_date, end_date)
-        # env
-        self.assertListEqual(list(self.society.env.G.nodes()), [0, 1, 2])
-        self.assertListEqual(list(self.society.env.G.edges()), [(0, 2), (1, 2)])
-        # link graph
-        self.assertListEqual(list(self.society.env.link_graph.G.nodes()), [])
-        self.assertListEqual(list(self.society.env.link_graph.G.edges()), [])
-        self.society.update_elements(start_date, end_date)
+    def test_all_indexes(self):
+        nodes = self.society.all_indexes()
+        self.assertListEqual(nodes, [0, 1])
 
+    def test_all_edges(self):
+        edges = self.society.all_edges()
+        self.assertListEqual(edges, [(0, 1)])
 
-class TestSocietyClass_2Agents_II(unittest.TestCase):
-    """
-    Two agents in distinct nodes
-    """
+    def test_relationship(self):
+        relationships = self.society.get_relationship_object(0, 1)
+        self.assertListEqual(list(relationships.keys()), ['family', 'fellow citizen'])
 
-    def setUp(self):
-        society = Society(
-            env=deepcopy(env_0),
-            gini=0.3,
-            exchange_rate=deepcopy(exchange_0)
-        )
-        agent_0 = deepcopy(sample_agent_0)
-        agent_1 = deepcopy(sample_agent_1)
-        agents = [agent_0, agent_1]
-        society.add(agents)
-        self.society = society
+        expected_result = {
+            'type': 'family',
+            'start_date': {'year': 2020, 'month': 1, 'day': 4, 'hour': 0, 'minute': 0, 'second': 0},
+            'end_date': None,
+            'distance': 0.0,
+        }
+        self.assertDictEqual(relationships['family'].to_dict(), expected_result)
 
-    def test_(self):
-        start_date = Date(2020, 1, 1)
-        end_date = Date(2020, 1, 1) + DT(hours=12)
-        self.society.env.update_elements(start_date, end_date)
-        # env
-        self.assertListEqual(list(self.society.env.G.nodes()), [0, 1, 2])
-        self.assertListEqual(list(self.society.env.G.edges()), [(0, 2), (1, 2)])
-        # link graph
-        self.assertListEqual(list(self.society.env.link_graph.G.nodes()), [])
-        self.assertListEqual(list(self.society.env.link_graph.G.edges()), [])
-        self.society.update_elements(start_date, end_date)
-'''
+        expected_result = {
+            'type': 'fellow citizen',
+            'start_date': {'year': 2020, 'month': 1, 'day': 4, 'hour': 0, 'minute': 0, 'second': 0},
+            'end_date': None,
+            'distance': 0.0
+        }
+        self.assertDictEqual(relationships['fellow citizen'].to_dict(), expected_result)
+
 
 if __name__ == "__main__":
     unittest.main()

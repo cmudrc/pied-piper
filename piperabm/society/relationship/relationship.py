@@ -8,11 +8,13 @@ class Relationship(Object):
     def __init__(
             self,
             start_date: Date = None,
-            end_date: Date = None
+            end_date: Date = None,
+            distance: float = None
         ):
         super().__init__()
         self.start_date = start_date
         self.end_date = end_date
+        self.distance = distance
         self.type = 'relationship'
 
     def exists(self, start_date: Date, end_date: Date):
@@ -32,12 +34,14 @@ class Relationship(Object):
             'type': self.type,
             'start_date': date_to_dict(self.start_date),
             'end_date': date_to_dict(self.end_date),
+            'distance': self.distance
         }
     
     def from_dict(self, dictionary: dict) -> None:
         self.type = dictionary['type']
         self.start_date = date_from_dict(dictionary['start_date'])
         self.end_date = date_from_dict(dictionary['end_date'])
+        self.distance = float(dictionary['distance'])
 
 
 if __name__ == "__main__":

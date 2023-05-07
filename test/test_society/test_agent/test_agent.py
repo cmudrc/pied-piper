@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.society.agent.samples import agent_0
-from piperabm.resource.samples import resource_rate_0
+from piperabm.resource.samples import resource_delta_0 as resource_delta
 from piperabm.unit import DT
 
 
@@ -12,7 +12,7 @@ class TestAgentClass(unittest.TestCase):
         self.agent = deepcopy(agent_0)
 
     def test_add_resource(self):
-        remaining = self.agent + resource_rate_0
+        remaining = self.agent + resource_delta
         expected_result = {
             'food': {'max': 100, 'min': 0, 'amount': 26},
             'water': {'max': 100, 'min': 0, 'amount': 34},
@@ -22,7 +22,7 @@ class TestAgentClass(unittest.TestCase):
         self.assertTrue(remaining.is_all_zero())
 
     def test_sub_resource(self):
-        remaining = self.agent - resource_rate_0
+        remaining = self.agent - resource_delta
         expected_result = {
             'food': {'max': 100, 'min': 0, 'amount': 14},
             'water': {'max': 100, 'min': 0, 'amount': 26},

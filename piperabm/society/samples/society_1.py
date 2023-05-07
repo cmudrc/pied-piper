@@ -21,4 +21,3 @@ society.add_agent_object(agent_1)
 
 if __name__ == "__main__":
     society.print()
-    #print(society)

@@ -1,5 +1,6 @@
 from piperabm.society.agent import Agent
 from piperabm.resource import Resource
+from piperabm.unit import Date
 
 
 resource = Resource()
@@ -10,6 +11,7 @@ resource.create('energy', amount=90, max=100)
 agent = Agent(
     name='Peter',
     origin=1,
+    start_date=Date(2020, 1, 4),
     resource=resource,
     balance=200,
 )

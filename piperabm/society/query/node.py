@@ -13,6 +13,14 @@ class Node:
             result = list(self.G.nodes())
         return result
     
+    def agents_from_origin(self, origin):
+        result = []
+        for index in self.all_indexes():
+            agent = self.get_agent_object(index)
+            if origin == agent.origin:
+                result.append(index)
+        return result
+    
     def get_node_attr(self, index: int, attr: str):
         result = None
         if self.G.has_node(index):
@@ -26,11 +34,23 @@ class Node:
         """
         return self.get_node_attr(index, 'object')
     
+    def get_agent_object(self, index: int):
+        """
+        An alias for intuition
+        """
+        return self.get_node_object(index)
+    
     def get_node_pos(self, index: int):
         """
         Retrieve node element based on its index
         """
         return self.get_node_attr(index, 'pos')
+    
+    def get_agent_pos(self, index: int):
+        """
+        An alias for intuition
+        """
+        return self.get_node_pos(index)
     
     def oldest_node(self):
         """

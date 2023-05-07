@@ -3,11 +3,8 @@ from copy import deepcopy
 from piperabm.object import Object
 from piperabm.resource import Resource, ResourceDelta
 from piperabm.transporation import Transportation
-#from piperabm.transporation.load import load_transportation
 from piperabm.actions import Queue
 from piperabm.unit import DT, Date, date_to_dict, date_from_dict
-#try: from .decision import Decision
-#except: from decision import Decision
 from piperabm.society.agent.config import *
 
 
@@ -36,6 +33,7 @@ class Agent(Object):
         self.origin = origin
         self.type = 'agent'
 
+        ''' dates '''
         if start_date is None:
             start_date = Date.today()
         self.start_date = start_date
@@ -93,10 +91,17 @@ class Agent(Object):
         """
         Reduce the idle_fuel_consumption from agent's resource
         """
+        duration = end_date - start_date
         if self.alive is True:
-            duration = end_date - start_date
+            ''' income '''
+            self.balance += self.income * duration
+            ''' idle fuel consumption '''
             fuel_consumption = self.fuel_consumption_idle(duration)
             self.resource - fuel_consumption
+        
+        if self.alive is True:
+            ''' decide '''
+            pass
 
     def fuel_consumption_idle(self, duration) -> ResourceDelta:
         """
@@ -173,7 +178,3 @@ if __name__ == "__main__":
         resource=resource_0
     )
     print(agent)
-    #agent.idle_time_pass(3600 * 24 * 8)
-    #print(agent.resource)
-    #print('alive: ', agent.alive)
-    #print('reason of death: ', agent.death_reason)

@@ -28,6 +28,12 @@ class Edge:
         Retrieve node element based on its index
         """
         return self.get_edge_attr(index_start, index_end, 'object')
+    
+    def get_relationship_object(self, index_start: int, index_end: int):
+        """
+        An alias for intuition
+        """
+        return self.get_edge_object(index_start, index_end)
 
     def oldest_edge(self):
         """

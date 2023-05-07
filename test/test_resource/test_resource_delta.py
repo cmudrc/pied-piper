@@ -2,13 +2,13 @@ import unittest
 from copy import deepcopy
 
 from piperabm.resource import ResourceDelta
-from piperabm.resource.samples import resource_rate_0
+from piperabm.resource.samples import resource_delta_0
 
 
 class TestResourceDeltaClass(unittest.TestCase):
     
     def setUp(self) -> None:
-        self.rate = deepcopy(resource_rate_0)
+        self.rate = deepcopy(resource_delta_0)
 
     def test_call(self):
         rate = self.rate('food')

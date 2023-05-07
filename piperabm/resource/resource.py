@@ -1,7 +1,7 @@
 from piperabm.object import Object
 from piperabm.resource.matter import Matter
 from piperabm.resource.container import Container
-from piperabm.resource.resource_rate import ResourceDelta
+from piperabm.resource.resource_delta import ResourceDelta
 from piperabm.tools.symbols import SYMBOLS
 
 

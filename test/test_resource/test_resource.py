@@ -3,14 +3,14 @@ from copy import deepcopy
 
 from piperabm.resource import Resource
 from piperabm.resource.samples import resource_0
-from piperabm.resource.samples import resource_rate_0
+from piperabm.resource.samples import resource_delta_0
 
 
 class TestResourceClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.resource = deepcopy(resource_0)
-        self.rate = resource_rate_0
+        self.rate = resource_delta_0
 
     def test_call(self):
         resource = self.resource('food')

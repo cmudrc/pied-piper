@@ -1,6 +1,7 @@
 from piperabm.unit import Date
 from piperabm.society.agent import Agent
 from piperabm.society.relationship import Family, Neighbor, FellowCitizen
+from piperabm.tools.coordinate import euclidean_distance
 
 
 class Add:
@@ -77,59 +78,84 @@ class Add:
         pos = self.environment.get_node_pos(agent.origin)
         index = self.find_next_index()
         self.add_node(index, pos, agent)
-        self.add_relationships(index, agent)
+        self.add_relationships(index)
         return index
     
-    def add_relationships(self, index, agent):
+    def add_relationships(self, index):
         """
         Check and add eligible relationships
         """
         for other_index in self.all_indexes():
             if index != other_index:
                 relationships = {}
+                ''' add edge between all nodes '''
                 self.add_edge(index, other_index, relationships)
+                ''' add relationships to the relationships dictionary '''
+                self.add_family_relationship(index, other_index)
+                self.add_fellow_citizen_relationship(index, other_index)
+                self.add_neighbor_relationship(index, other_index)
 
-        self.add_family_relationship(index, agent.origin)
-        self.add_fellow_citizen_relationship(index)
-        self.add_neighbor_relationship(index)
-
-    def add_family_relationship(self, agent_index, origin_index):
+    def add_family_relationship(self, agent_index, other_index):
         """
-        Check the eligibility of agents to be family
+        Create family relationship between agents
         """
-        for index in self.all_indexes():
-            if index != agent_index:
-                other_agent = self.get_node_object(index)
-                if other_agent.origin == origin_index: # family constraint
-                    relationship = Family(
-                        start_date=None, ####
-                        end_date=None
-                    )
-                    relationships = self.get_edge_object(index, agent_index)
-                    relationships['family'] = relationship
+        agent = self.get_agent_object(agent_index)
+        other = self.get_agent_object(other_index)
+        if other.origin == agent.origin: # family constraint
+            start_date, end_date = self.calculate_dates(agent, other)
+            agent_pos = self.get_agent_pos(agent_index)
+            other_pos = self.get_agent_pos(other_index)
+            distance = euclidean_distance(agent_pos, other_pos)
+            relationship = Family(start_date, end_date, distance)
+            relationships = self.get_relationship_object(agent_index, other_index)
+            relationships['family'] = relationship
     
-    def add_fellow_citizen_relationship(self, agent_index):
+    def add_fellow_citizen_relationship(self, agent_index, other_index):
         """
-        Check the eligibility of agents to be fellow citizen
+        Create fellow citizen relationship between agents
         """
-        for index in self.all_indexes():
-            if index != agent_index: ###### rank is missing
-                relationship = FellowCitizen(
-                    start_date=None, ####
-                    end_date=None
-                )
-                relationships = self.get_edge_object(index, agent_index)
-                relationships['fellow citizen'] = relationship
+        agent = self.get_agent_object(agent_index)
+        other = self.get_agent_object(other_index)
+        start_date, end_date = self.calculate_dates(agent, other)
+        agent_pos = self.get_agent_pos(agent_index)
+        other_pos = self.get_agent_pos(other_index)
+        distance = euclidean_distance(agent_pos, other_pos)
+        relationship = FellowCitizen(start_date, end_date, distance)
+        relationships = self.get_relationship_object(agent_index, other_index)
+        relationships['fellow citizen'] = relationship
 
-    def add_neighbor_relationship(self, agent_index):
+    def add_neighbor_relationship(self, agent_index, other_index):
         """
-        Check the eligibility of agents to be neighbors
+        Create neighbor relationship between agents
         """
-        for index in self.all_indexes():
-            if index != agent_index: ###### rank is missing
-                relationship = Neighbor(
-                    start_date=None, ####
-                    end_date=None
-                )
-                relationships = self.get_edge_object(index, agent_index)
-                relationships['neighbor'] = relationship
+        agent = self.get_agent_object(agent_index)
+        other = self.get_agent_object(other_index)
+        if agent.origin != other.origin: # neighbor constraint
+            start_date, end_date = self.calculate_dates(agent, other)
+            agent_pos = self.environment.get_node_pos(agent_index)
+            other_pos = self.environment.get_node_pos(other_index)
+            distance = euclidean_distance(agent_pos, other_pos)
+            relationship = Neighbor(start_date, end_date, distance)
+            relationships = self.get_relationship_object(agent_index, other_index)
+            relationships['neighbor'] = relationship
+
+    def calculate_dates(self, agent, other):
+        """
+        Calcualte start_date and end_date of a relationship
+        """
+        start_date = None
+        if agent.start_date is not None and other.start_date is not None:
+            start_date = max(agent.start_date, other.start_date)
+        elif agent.start_date is None and other.start_date is not None:
+            start_date = other.start_date
+        elif agent.start_date is not None and other.start_date is None:
+            start_date = agent.start_date
+        end_date = None
+        if agent.end_date is not None and other.end_date is not None:
+            end_date = min(agent.end_date, other.end_date)
+        elif agent.end_date is None and other.end_date is not None:
+            end_date = other.end_date
+        elif agent.end_date is not None and other.end_date is None:
+            end_date = agent.end_date
+        return start_date, end_date
+
