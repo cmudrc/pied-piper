@@ -8,6 +8,7 @@ from piperabm.society.query import Query
 from piperabm.society.agent import Agent
 from piperabm.society.relationship.load import load_relationship
 from piperabm.economy import GiniGenerator, ExchangeRate
+from piperabm.society.current_graph import CurrentGraph
 
 
 class Society(Object, Add, Search, Query):
@@ -25,6 +26,14 @@ class Society(Object, Add, Search, Query):
         self.G = nx.Graph()
         self.type = 'society'
         #self.log = Log(prefix='SOCIETY', indentation_depth=1)
+
+    def to_current_graph(self, start_date=None, end_date=None):
+        """
+        Convert the environment to "link_graph" object
+        """
+        current_graph = CurrentGraph(society=self, start_date=start_date, end_date=end_date)
+        self.current_graph = current_graph
+        return current_graph
 
     def node_to_dict(self, index) -> dict:
         dictionary = {}

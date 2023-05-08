@@ -6,7 +6,7 @@ class ToGraph:
 
     def to_graph(self, start_date=None, end_date=None):
         """
-        Create path graph from environment graph
+        Create current graph from environment graph
         """
         def add_node(index):
             """
@@ -57,7 +57,7 @@ class ToGraph:
 
         start_date, end_date = refine_input(start_date, end_date)
 
-        """ Filter Nodes """
+        ''' Filter nodes '''
         indexes = self.env.all_indexes()
         for index in indexes:
             structure = self.env.get_node_object(index)
@@ -70,7 +70,7 @@ class ToGraph:
             if valid is True:
                 add_node(index)
 
-        """ Filter Edges """
+        ''' Filter edges '''
         edges = self.env.all_edges()
         for edge in edges:
             index = edge[0]
@@ -85,7 +85,7 @@ class ToGraph:
             if valid is True:
                 add_edge(index, other_index)
 
-        """ Remove nodes without structure object (hub) and without any edges attachted """
+        ''' Remove nodes without structure object (hub) and without any edges attachted '''
         for index in self.all_indexes('hub'):
             if self.node_degree(index) == 0:
                 self.G.remove_node(index)

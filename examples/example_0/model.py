@@ -1,4 +1,4 @@
-from piperabm.society.sample import sample_society_0 as society
+from piperabm.society.samples import sample_society_0 as society
 
 
 from piperabm import Model

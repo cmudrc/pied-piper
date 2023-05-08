@@ -34,6 +34,11 @@ class TestResourceClass(unittest.TestCase):
         zeros_names = self.resource.find_zeros()
         expected_result = ['food']
         self.assertListEqual(zeros_names, expected_result)
+
+    def test_to_resource_delta(self):
+        resource_delta = self.resource.to_resource_delta()
+        expected_result = {'food': 6.0, 'water': 8.0, 'energy': 19.0}
+        self.assertDictEqual(resource_delta.to_dict(), expected_result)
     
     def test_add(self):
         remainder = self.resource + self.rate

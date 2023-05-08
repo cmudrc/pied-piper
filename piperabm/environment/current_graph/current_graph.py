@@ -11,8 +11,8 @@ class CurrentGraph(ToGraph, Query, Graphics):
     A graph quivalent to environment, but frozen in time
     """
 
-    def __init__(self, env, start_date=None, end_date=None):
-        self.env = env
+    def __init__(self, environment, start_date=None, end_date=None):
+        self.env = environment
         self.G = nx.Graph()
         self.to_graph(start_date, end_date)
         self.start_date = start_date

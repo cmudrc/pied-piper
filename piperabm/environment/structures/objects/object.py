@@ -21,10 +21,10 @@ class StructuralObject(Object):
         start_date: Date = None,
         end_date: Date = None,
         sudden_degradation_dist=None,
-        sudden_degradation_unit_size: float=None,
+        sudden_degradation_unit_size: float = None,
         progressive_degradation_formula=None,
-        progressive_degradation_current: float=None,
-        progressive_degradation_max: float=None
+        progressive_degradation_current: float = None,
+        progressive_degradation_max: float = None
     ):
         super().__init__()
 

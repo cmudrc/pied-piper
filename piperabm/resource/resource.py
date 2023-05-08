@@ -55,6 +55,23 @@ class Resource(Object):
                 result.append(resource_name)
         return result
     
+    def to_resource_delta(self) -> ResourceDelta:
+        """
+        Create an equivalent ResourceDelta object from current Resource object
+        Required for resource_sum module
+        """
+        resource_delta = ResourceDelta()
+        dictionary = self.to_dict()
+        new_dictionary = {}
+        for name in dictionary:
+            new_dictionary[name] = dictionary[name]['amount']
+        resource_delta.from_dict(new_dictionary)
+        return resource_delta
+    
+    def create_zeros(self, names: list):
+        for name in names:
+            self.create(name, amount=0)
+
     def __call__(self, name: str):
         return self.get_amount(name)
     

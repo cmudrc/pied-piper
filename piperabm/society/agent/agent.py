@@ -6,6 +6,7 @@ from piperabm.transporation import Transportation
 from piperabm.actions import Queue
 from piperabm.unit import DT, Date, date_to_dict, date_from_dict
 from piperabm.society.agent.config import *
+from piperabm.tools import ElementExists
 
 
 class Agent(Object):
@@ -80,9 +81,10 @@ class Agent(Object):
         if self.alive is True:
             result = True
             resource_zeros = self.resource.find_zeros(VITAL_RESOURCES)
-            if len(resource_zeros) > 0:
+            if len(resource_zeros) > 0: # died
                 result = False
                 self.death_reason = resource_zeros
+                self.end_date = None ##### deepcopy(self.current.start_date)
         else:
             result = False
         return result
@@ -112,6 +114,18 @@ class Agent(Object):
         rate = deepcopy(self.fuel_rate_idle)
         rate * duration
         return rate
+    
+    def exists(self, start_date: Date, end_date: Date):
+        """
+        Check whether element exists in the time range
+        """
+        ee = ElementExists()
+        return ee.check(
+            item_start=self.start_date,
+            item_end=self.end_date,
+            time_start=start_date,
+            time_end=end_date
+        )
 
     def __add__(self, other):
         if isinstance(other, ResourceDelta): # resource arithmetic
