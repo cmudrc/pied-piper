@@ -1,11 +1,11 @@
 import networkx as nx
 
 from piperabm.society.current_graph.to_graph import ToGraph
-#from piperabm.society.current_graph.query import Query
+from piperabm.society.current_graph.query import Query
 from piperabm.society.current_graph.graphics import Graphics
 
 
-class CurrentGraph(ToGraph, Graphics):
+class CurrentGraph(ToGraph, Query, Graphics):
     """
     A graph quivalent to environment, but frozen in time
     """

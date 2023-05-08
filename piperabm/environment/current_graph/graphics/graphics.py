@@ -77,7 +77,8 @@ class Graphics:
             node_size=node_size_list,
             labels=label_dict,
             edgelist=edge_list,
-            edge_color=edge_color_list
+            edge_color=edge_color_list,
+            node_color=node_color_list
         )
 
     def show(self):

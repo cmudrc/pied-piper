@@ -10,77 +10,69 @@ class Graphics:
     Add graphical representation
     """
 
-    def to_plt(self, ax=None):
+    def to_plt(self, ax=None, relationships='all'):
         """
         Add elements to plt
         """
         if ax is None:
             ax = plt.gca()
 
+        def create_multi_graph(self):
+            G = nx.MultiGraph()
+            for edge in self.all_edges():
+                start_index = edge[0]
+                end_index = edge[1]
+                relationships = self.society.get_edge_object(start_index, end_index)
+                for relationship in relationships:
+                    G.add_edge(edge[0], edge[1], type=relationship)
+            return G
+            
+        G = create_multi_graph(self)
+
         pos_dict = {}
         node_list = []
-        node_size_list = []
         node_color_list = []
         label_dict = {}
         edge_list = []
         edge_color_list = []
-        """
+        
         ''' draw nodes '''
         for index in self.all_indexes():
-            ''' index '''
-            node_list.append(index)
+            agent = self.get_node_object(index)           
+            if agent is not None:
+                ''' index '''
+                node_list.append(index)
 
-            ''' pos '''
-            pos = self.get_node_pos(index)
-            pos_dict[index] = pos
- 
-            ''' label, color, size '''
-            structure = self.get_node_object(index)           
-            if structure is not None:
-                node_type = structure.type
-                if node_type == 'settlement':
-                    settlement_style = style['nodes']['settlement']
-                    label = structure.name
-                    if structure.active is True:
-                        node_size = settlement_style['radius']['active']
-                        node_color = settlement_style['color']['active']
-                    else:
-                        node_size = settlement_style['radius']['inactive']
-                        node_color = settlement_style['color']['active']
-            else: # hub
-                hub_style = style['nodes']['hub']
-                node_size = hub_style['radius']
-                label = ''
-                node_color = hub_style['color']
-            node_size_list.append(node_size)
-            node_color_list.append(node_color)
-            label_dict[index] = label
-
-        ''' draw edges '''
-        for edge in self.all_edges():
-            edge_list.append(edge)
-            structure = self.get_edge_object(edge[0], edge[1])
-            edge_type = structure.type
-            if edge_type == 'road':
-                road_style = style['edges']['road']
-                if structure.active is True:
-                    color = road_style['color']['active']
+                ''' pos '''
+                pos = self.get_node_pos(index)
+                pos_dict[index] = pos
+    
+                ''' label, color '''
+                label = agent.name
+                if agent.alive is True:
+                    node_color = style['nodes']['agent']['color']['active']
                 else:
-                    color = road_style['color']['inactive']
-            edge_color_list.append(color)
-        """
-        ''' add to plt '''
-        nx.draw_networkx(self.G)
-        '''
+                    node_color = style['nodes']['agent']['color']['inactive']
+                node_color_list.append(node_color)
+                label_dict[index] = label
+   
+        ''' draw edges '''
+        for start, end, relationship in G.edges(data=True):
+            if relationship is not None:
+                edge_list.append([start, end])
+                relationship_type = relationship['type']
+                color = style['edges'][relationship_type]['color']
+                edge_color_list.append(color)
+
         nx.draw_networkx(
-            self.G,
-            pos=pos_dict,
+            G,
+            #pos=pos_dict,
             nodelist=node_list,
             labels=label_dict,
             edgelist=edge_list,
-            edge_color=edge_color_list
+            edge_color=edge_color_list,
+            node_color=node_color_list
         )
-        '''
 
     def show(self):
         """

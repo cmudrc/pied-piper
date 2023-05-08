@@ -33,7 +33,7 @@ class Society(Object, Add, Search, Query, Update):
         Convert the environment to "link_graph" object
         """
         current_graph = CurrentGraph(society=self, start_date=start_date, end_date=end_date)
-        self.current_graph = current_graph
+        self.current = current_graph
         return current_graph
 
     def node_to_dict(self, index) -> dict:
@@ -94,6 +94,10 @@ class Society(Object, Add, Search, Query, Update):
         edges = dictionary['edges']
         for index_start in edges:
             self.edge_from_dict(index_start, edges[index_start])
+    
+    def show(self):
+        if self.current is not None:
+            self.current.show()
         
 
 if __name__ == "__main__":

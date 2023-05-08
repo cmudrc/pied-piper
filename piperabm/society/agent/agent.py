@@ -97,17 +97,21 @@ class Agent(Object):
         """
         Reduce the idle_fuel_consumption from agent's resource
         """
-        duration = end_date - start_date
-        if self.alive is True:
-            ''' income '''
-            self.balance += self.income * duration
-            ''' idle fuel consumption '''
-            fuel_consumption = self.fuel_consumption_idle(duration)
-            self.resource - fuel_consumption
+        if self.exists(start_date, end_date):
+            duration = end_date - start_date
 
-        if self.alive is True:
+            ''' idle fuel consumption '''
+            if self.alive is True:    
+                fuel_consumption = self.fuel_consumption_idle(duration)
+                self.resource - fuel_consumption
+
+            ''' income '''
+            if self.alive is True:
+                self.balance += self.income * duration.total_seconds()
+
             ''' decide '''
-            pass
+            if self.alive is True:  
+                pass
 
     def fuel_consumption_idle(self, duration) -> ResourceDelta:
         """
