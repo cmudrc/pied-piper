@@ -41,13 +41,13 @@ class Edge:
         """
         oldest_edge = None
         for edge in self.all_edges():
-            structure = self.get_edge_object(edge[0], edge[1])
-            if structure is not None:
-                start_date = structure.start_date
+            object = self.get_edge_object(edge[0], edge[1])
+            if object is not None:
+                start_date = object.start_date
                 if oldest_edge is None:
                     oldest_edge = edge
-                current_oldest_structure = self.get_edge_object(oldest_edge[0], oldest_edge[1])
-                current_oldest_date = current_oldest_structure.start_date
+                current_oldest_object = self.get_edge_object(oldest_edge[0], oldest_edge[1])
+                current_oldest_date = current_oldest_object.start_date
                 if start_date < current_oldest_date:
                     oldest_edge = edge
         return oldest_edge

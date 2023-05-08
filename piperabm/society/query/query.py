@@ -17,18 +17,18 @@ class Query(Node, Edge):
         edge = self.oldest_edge()
         if index is None and \
             edge is not None:
-            structure_edge = self.get_edge_object(edge[0], edge[1])
-            result = structure_edge.start_date
+            edge_object = self.get_edge_object(edge[0], edge[1])
+            result = edge_object.start_date
         elif index is not None and \
             edge is None:
-            structure_index = self.get_node_object(index)
-            result = structure_index.start_date
+            node_object = self.get_node_object(index)
+            result = node_object.start_date
         elif index is not None and \
             edge is not None:
-            structure_index = self.get_node_object(index)
-            structure_edge = self.get_edge_object(edge[0], edge[1])
-            if structure_index.start_date < structure_edge.start_date:
-                result = structure_index.start_date
+            node_object = self.get_node_object(index)
+            edge_object = self.get_edge_object(edge[0], edge[1])
+            if node_object.start_date < edge_object.start_date:
+                result = node_object.start_date
             else:
-                result = structure_edge.start_date
+                result = edge_object.start_date
         return result

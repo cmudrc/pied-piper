@@ -38,6 +38,8 @@ class Add:
         Add a node to the model together with its element
         """
         if agent is not None:
+            agent.environment = self.environment # binding to the environment
+            agent.society = self # binding to the society
             self.G.add_node(
                 index,
                 pos=pos,

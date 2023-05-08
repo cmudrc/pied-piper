@@ -4,20 +4,21 @@ from piperabm.object import Object
 from piperabm.society.add import Add
 from piperabm.society.search import Search
 from piperabm.society.query import Query
-#from piperabm.environment import Environment
+from piperabm.environment import Environment
 from piperabm.society.agent import Agent
+from piperabm.society.update import Update
 from piperabm.society.relationship.load import load_relationship
 from piperabm.economy import GiniGenerator, ExchangeRate
 from piperabm.society.current_graph import CurrentGraph
 
 
-class Society(Object, Add, Search, Query):
+class Society(Object, Add, Search, Query, Update):
     """
     Represent society
     Manage agents and their relationships
     """
 
-    def __init__(self, environment = None, gini: float = 0, exchange_rate: ExchangeRate = None):
+    def __init__(self, environment: Environment = None, gini: float = 0, exchange_rate: ExchangeRate = None):
         super().__init__()
         self.environment = environment
         self.gini = gini

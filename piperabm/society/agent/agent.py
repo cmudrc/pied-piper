@@ -12,18 +12,18 @@ from piperabm.tools import ElementExists
 class Agent(Object):
 
     def __init__(
-            self,
-            name: str = '',
-            active: bool = True,
-            start_date: Date = None,
-            end_date: Date = None,
-            origin: int = None,
-            transportation: Transportation = None,
-            queue=None,
-            resource: Resource = None,
-            fuel_rate_idle: ResourceDelta = None,
-            income: float = 0,
-            balance: float = 0
+        self,
+        name: str = '',
+        active: bool = True,
+        start_date: Date = None,
+        end_date: Date = None,
+        origin: int = None,
+        transportation: Transportation = None,
+        queue=None,
+        resource: Resource = None,
+        fuel_rate_idle: ResourceDelta = None,
+        income: float = 0,
+        balance: float = 0
     ):
         super().__init__()
 
@@ -57,7 +57,7 @@ class Agent(Object):
             self.resource = deepcopy(DEFAULT_RESOURCE)
         else:
             self.resource = resource
-    
+
         if fuel_rate_idle is None:
             self.fuel_rate_idle = deepcopy(HUMAN_IDLE_FUEL_RATE)
         else:
@@ -68,6 +68,10 @@ class Agent(Object):
             self.income = income
         if balance >= 0:
             self.balance = balance
+
+        ''' binding to the world '''
+        self.environment = None
+        self.society = None
 
     @property
     def alive(self) -> bool:
@@ -81,10 +85,10 @@ class Agent(Object):
         if self.alive is True:
             result = True
             resource_zeros = self.resource.find_zeros(VITAL_RESOURCES)
-            if len(resource_zeros) > 0: # died
+            if len(resource_zeros) > 0:  # died
                 result = False
                 self.death_reason = resource_zeros
-                self.end_date = None ##### deepcopy(self.current.start_date)
+                self.end_date = None  # deepcopy(self.current.start_date)
         else:
             result = False
         return result
@@ -100,7 +104,7 @@ class Agent(Object):
             ''' idle fuel consumption '''
             fuel_consumption = self.fuel_consumption_idle(duration)
             self.resource - fuel_consumption
-        
+
         if self.alive is True:
             ''' decide '''
             pass
@@ -114,7 +118,7 @@ class Agent(Object):
         rate = deepcopy(self.fuel_rate_idle)
         rate * duration
         return rate
-    
+
     def exists(self, start_date: Date, end_date: Date):
         """
         Check whether element exists in the time range
@@ -128,20 +132,20 @@ class Agent(Object):
         )
 
     def __add__(self, other):
-        if isinstance(other, ResourceDelta): # resource arithmetic
+        if isinstance(other, ResourceDelta):  # resource arithmetic
             remaining = self.resource + other
             self.active = self.is_alive()
             return remaining
         else:
-            super().__add__(other) # delta arithmetic
+            super().__add__(other)  # delta arithmetic
 
     def __sub__(self, other):
-        if isinstance(other, ResourceDelta): # resource arithmetic
+        if isinstance(other, ResourceDelta):  # resource arithmetic
             remaining = self.resource - other
             self.active = self.is_alive()
             return remaining
         else:
-            super().__sub__(other) # delta arithmetic
+            super().__sub__(other)  # delta arithmetic
 
     def to_dict(self) -> dict:
         return {
@@ -152,14 +156,14 @@ class Agent(Object):
             'death_reason': self.death_reason,
             'origin': self.origin,
             'transportation': self.transportation.to_dict(),
-            'queue': self.queue.to_dict(), #
+            'queue': self.queue.to_dict(),
             'resource': self.resource.to_dict(),
             'fuel_rate_idle': self.fuel_rate_idle.to_dict(),
             'income': self.income,
             'balance': self.balance,
             'type': self.type
         }
-    
+
     def from_dict(self, dictionary: dict) -> None:
         self.name = dictionary['name']
         self.active = dictionary['active']
@@ -171,10 +175,10 @@ class Agent(Object):
         transportation.from_dict(dictionary['transportation'])
         self.transportation = transportation
         queue = Queue()
-        queue.from_dict(dictionary['queue']) ##
+        queue.from_dict(dictionary['queue'])
         self.queue = queue
         resource = Resource()
-        resource.from_dict(dictionary['resource']) ##
+        resource.from_dict(dictionary['resource'])
         self.resource = resource
         fuel_rate_idle = ResourceDelta()
         fuel_rate_idle.from_dict(dictionary['fuel_rate_idle'])

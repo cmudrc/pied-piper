@@ -11,6 +11,21 @@ class TestSettlementClass(unittest.TestCase):
     def setUp(self):
         self.settlement = deepcopy(settlement_0)
 
+    def test_update(self):
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 7)
+        settlement_previous = deepcopy(self.settlement)
+        self.settlement.update(start_date, end_date)
+        delta = self.settlement - settlement_previous
+        self.assertEqual(delta, None)
+
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 15)
+        settlement_previous = deepcopy(self.settlement)
+        self.settlement.update(start_date, end_date)
+        delta = self.settlement - settlement_previous
+        self.assertDictEqual(delta, {'active': True})
+
     def test_dict(self):
         dictionary = self.settlement.to_dict()
         expected_result = {
@@ -52,7 +67,6 @@ class TestSettlementClass(unittest.TestCase):
             'progressive_degradation': {'usage_current': 5}
         }
         self.assertDictEqual(delta, expected_delta)
-        print(delta)
 
     def test_progressive_degradation(self):
         self.settlement.add_usage(amount=5)

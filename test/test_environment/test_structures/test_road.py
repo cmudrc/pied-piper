@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from piperabm.environment.structures.road.samples import road_1
 from piperabm.tools.symbols import SYMBOLS
+from piperabm.unit import Date
 
 
 class TestRoadClass(unittest.TestCase):
@@ -21,6 +22,14 @@ class TestRoadClass(unittest.TestCase):
     def test_width(self):
         width = self.road.width()
         self.assertEqual(width, 2)
+
+    def test_update(self):
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 15)
+        road_previous = deepcopy(self.road)
+        self.road.update(start_date, end_date)
+        delta = self.road - road_previous
+        self.assertDictEqual(delta, {'active': True})
 
 
 if __name__ == "__main__":

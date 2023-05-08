@@ -6,6 +6,7 @@ from piperabm.degradation.sudden.distributions import Eternal
 from piperabm.degradation.progressive import ProgressiveDegradation
 from piperabm.degradation.progressive.formulas import Formula_01
 from piperabm.tools import ElementExists
+from copy import deepcopy
 
 
 class StructuralObject(Object):
@@ -90,12 +91,13 @@ class StructuralObject(Object):
         """
         Update object
         """
-        result = None
-        if self.active is True:
-            result = self.degradation_active(start_date, end_date)
-            if result is False:
-                self.active = result
-        ##### stat
+        if self.active is True and \
+            self.exists(start_date, end_date):
+
+            ''' sudden degradation '''
+            active = self.degradation_active(start_date, end_date)
+            if active is False: # suddenly degraded
+                self.active = active # update value
 
     def repair(self, amount: float):
         """

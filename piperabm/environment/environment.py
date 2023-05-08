@@ -23,12 +23,12 @@ class Environment(Object, Add, Search, Query, Update):
         super().__init__()
         self.type = 'environment'
 
-    def to_current_graph(self, start_date=None, end_date=None):
+    def to_current_graph(self, start_date=None, end_date=None) -> CurrentGraph:
         """
         Convert the environment to "link_graph" object
         """
-        current_graph = CurrentGraph(env=self, start_date=start_date, end_date=end_date)
-        self.current_graph = current_graph
+        current_graph = CurrentGraph(environment=self, start_date=start_date, end_date=end_date)
+        self.current = current_graph
         return current_graph
     
     def node_to_dict(self, index) -> dict:

@@ -8,18 +8,15 @@ class Update:
         """
         Update all active non-None elements
         """
-        indexes = self.all_indexes()
-        for index in indexes:
-            structure = self.get_node_object(index)
-            if structure is not None and \
-                structure.active is True:
-                structure.update(start_date, end_date)
-        edges = self.all_edges()
-        for edge in edges:
-            structure = self.get_edge_object(edge[0], edge[1])
-            if structure is not None and \
-                structure.active is True:
-                structure.update(start_date, end_date)
-        ##### stat
-        self.current = self.to_current_graph(start_date, end_date)
+        ''' filter current elements '''
+        self.to_current_graph(start_date, end_date)
+        ''' update current elements '''
+        for index in self.current.all_indexes():
+            object = self.get_node_object(index)
+            if object is not None:
+                object.update(start_date, end_date)
+        for edge in self.current.all_edges():
+            object = self.get_edge_object(edge[0], edge[1])
+            if object is not None:
+                object.update(start_date, end_date)
         
