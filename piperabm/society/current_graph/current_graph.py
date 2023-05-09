@@ -29,4 +29,4 @@ if __name__ == "__main__":
     start_date = Date(2020, 1, 5)
     end_date = Date(2020, 1, 10)
     society.update(start_date, end_date)
-    society.show()
+    society.show(filter='family')

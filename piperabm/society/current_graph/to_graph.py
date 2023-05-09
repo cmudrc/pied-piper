@@ -1,3 +1,6 @@
+import networkx as nx
+
+
 class ToGraph:
     """
     *** Extends CurrentGraph Class ***
@@ -86,3 +89,20 @@ class ToGraph:
             )
             if valid is True:
                 add_edge(edge[0], edge[1], relationships=filtered_relationships)
+
+    def to_multi_graph(self, filter='all'):
+        """
+        Create multi graph representation of graph for visualization pusposes
+        """
+        G = nx.MultiGraph()
+        for index in self.all_indexes():
+            G.add_node(index)
+        for edge in self.all_edges():
+            start_index = edge[0]
+            end_index = edge[1]
+            relationships = self.society.get_edge_object(start_index, end_index)
+            for relationship in relationships:
+                if filter == 'all' or filter == relationship:
+                    #print(relationship, filter == relationship, filter)
+                    G.add_edge(edge[0], edge[1], type=relationship)
+        return G

@@ -10,24 +10,14 @@ class Graphics:
     Add graphical representation
     """
 
-    def to_plt(self, ax=None, relationships='all'):
+    def to_plt(self, ax=None, filter='all'):
         """
         Add elements to plt
         """
         if ax is None:
             ax = plt.gca()
-
-        def create_multi_graph(self):
-            G = nx.MultiGraph()
-            for edge in self.all_edges():
-                start_index = edge[0]
-                end_index = edge[1]
-                relationships = self.society.get_edge_object(start_index, end_index)
-                for relationship in relationships:
-                    G.add_edge(edge[0], edge[1], type=relationship)
-            return G
             
-        G = create_multi_graph(self)
+        G = self.to_multi_graph(filter)
 
         pos_dict = {}
         node_list = []
@@ -47,20 +37,22 @@ class Graphics:
                 pos = self.get_node_pos(index)
                 pos_dict[index] = pos
     
-                ''' label, color '''
+                ''' label '''
                 label = agent.name
+                label_dict[index] = label
+
+                ''' color '''
                 if agent.alive is True:
                     node_color = style['nodes']['agent']['color']['active']
                 else:
                     node_color = style['nodes']['agent']['color']['inactive']
                 node_color_list.append(node_color)
-                label_dict[index] = label
    
         ''' draw edges '''
         for start, end, relationship in G.edges(data=True):
             if relationship is not None:
-                edge_list.append([start, end])
                 relationship_type = relationship['type']
+                edge_list.append([start, end])
                 color = style['edges'][relationship_type]['color']
                 edge_color_list.append(color)
 
@@ -74,9 +66,9 @@ class Graphics:
             node_color=node_color_list
         )
 
-    def show(self):
+    def show(self, filter='all'):
         """
         Show the graph using matplotlib
         """
-        self.to_plt()
+        self.to_plt(filter=filter)
         plt.show()

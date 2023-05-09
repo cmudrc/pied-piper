@@ -95,9 +95,9 @@ class Society(Object, Add, Search, Query, Update):
         for index_start in edges:
             self.edge_from_dict(index_start, edges[index_start])
     
-    def show(self):
+    def show(self, filter='all'):
         if self.current is not None:
-            self.current.show()
+            self.current.show(filter)
         
 
 if __name__ == "__main__":

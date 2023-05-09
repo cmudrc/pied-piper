@@ -58,19 +58,6 @@ class Query:
         result = None
         if type == 'all':
             result = list(self.G.nodes())
-        elif type == 'hub':
-            result = []
-            for index in self.all_indexes():
-                object = self.get_node_object(index)
-                if object is None:
-                    result.append(index)
-        else:
-            result = []
-            for index in self.all_indexes():
-                object = self.get_node_object(index)
-                if object is not None and \
-                    object.type == type:
-                    result.append(index)
         return result
     
     def find_node(self, node):
@@ -120,4 +107,3 @@ class Query:
         y_size = y_lim[1] - y_lim[0]
         size = [x_size, y_size]
         return size
-
