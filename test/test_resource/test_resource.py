@@ -39,7 +39,19 @@ class TestResourceClass(unittest.TestCase):
         resource_delta = self.resource.to_resource_delta()
         expected_result = {'food': 6.0, 'water': 8.0, 'energy': 19.0}
         self.assertDictEqual(resource_delta.to_dict(), expected_result)
-    
+
+    def test_gt(self):
+        self.assertTrue(self.resource > self.rate)
+        self.assertFalse(self.resource < self.rate)
+        self.assertTrue(self.rate < self.resource)
+        self.assertFalse(self.rate > self.resource)
+
+    def test_lt(self):
+        self.assertFalse(self.resource < self.rate)
+        self.assertTrue(self.resource > self.rate)
+        self.assertFalse(self.rate > self.resource)
+        self.assertTrue(self.rate < self.resource)
+
     def test_add(self):
         remainder = self.resource + self.rate
         expected_resource = {

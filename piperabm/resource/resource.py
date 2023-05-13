@@ -75,6 +75,22 @@ class Resource(Object):
     def __call__(self, name: str):
         return self.get_amount(name)
     
+    def __gt__(self, other):
+        rd_self = self.to_resource_delta()
+        if isinstance(other, Resource):
+            rd_other = other.to_resource_delta()
+        elif isinstance(other, ResourceDelta):
+            rd_other = other
+        return rd_self > rd_other
+    
+    def __lt__(self, other):
+        rd_self = self.to_resource_delta()
+        if isinstance(other, Resource):
+            rd_other = other.to_resource_delta()
+        elif isinstance(other, ResourceDelta):
+            rd_other = other
+        return rd_self < rd_other
+    
     def __add__(self, other):
         if isinstance(other, ResourceDelta): # resource arithmetic
             remainder = {}

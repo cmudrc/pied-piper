@@ -2,8 +2,8 @@ import unittest
 from copy import deepcopy
 
 from piperabm.economy import Economy
-from piperabm.society.agent.samples import sample_agent_0, sample_agent_1
-from piperabm.economy.exchange_rate.samples import exchange_0 as exchange
+from piperabm.society.agent.samples import agent_0, agent_1
+from piperabm.economy.exchange_rate.samples import exchange_rate_0 as exchange
 
 
 class TestEconomyClass_0Agents(unittest.TestCase):
@@ -48,8 +48,8 @@ class TestEconomyClass_0Agents(unittest.TestCase):
 class TestEconomyClass(unittest.TestCase):
 
     def setUp(self):
-        agent_0 = deepcopy(sample_agent_0)
-        agent_1 = deepcopy(sample_agent_1)
+        agent_0 = deepcopy(agent_0)
+        agent_1 = deepcopy(agent_1)
         agent_1.current_node = agent_0.current_node # 0
         agents = [agent_0, agent_1]
         eco = Economy(agents, exchange)

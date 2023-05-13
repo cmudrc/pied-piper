@@ -1,3 +1,6 @@
+from piperabm.tools.coordinate import center
+
+
 class Edge:
     """
     *** Extends Query Class ***
@@ -33,7 +36,9 @@ class Edge:
         """
         Retrieve node element based on its index
         """
-        return self.get_edge_attr(index_start, index_end, 'pos')
+        pos_start = self.get_node_pos(index_start)
+        pos_end = self.get_node_pos(index_end)
+        return center(pos_start, pos_end)
 
     def oldest_edge(self):
         """

@@ -63,7 +63,8 @@ class Move(Action):
 
     
 if __name__ == "__main__":
-    from piperabm.actions import Move, Walk
+    from piperabm.actions import Move
+    from piperabm.society.agent.config import Walk
 
     path=None
     start_date=Date.today()

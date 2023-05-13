@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.unit import Date, DT
-from piperabm.actions import Move, Walk
+from piperabm.actions import Move
 from piperabm.environment.samples import env_0
 
 

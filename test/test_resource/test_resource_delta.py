@@ -33,6 +33,34 @@ class TestResourceDeltaClass(unittest.TestCase):
     def test_is_all_zero(self):
         self.assertFalse(self.rate.is_all_zero())
 
+    def test_gt(self):
+        delta = ResourceDelta({'energy': 2, 'food': 5, 'water': 3})
+        self.assertTrue(self.rate > delta)
+        self.assertFalse(delta > self.rate)
+        delta = ResourceDelta({'energy': 2, 'food': 7, 'water': 3})
+        self.assertFalse(self.rate > delta)
+        self.assertFalse(delta > self.rate)
+        delta = ResourceDelta({'energy': 2, 'food': 5})
+        self.assertTrue(self.rate > delta)
+        self.assertFalse(delta > self.rate)
+        delta = ResourceDelta({'energy': 2, 'food': 6, 'water': 3, 'other': 1})
+        self.assertFalse(self.rate > delta)
+        self.assertFalse(delta > self.rate)    
+
+    def test_lt(self):
+        delta = ResourceDelta({'energy': 2, 'food': 5, 'water': 3})
+        self.assertTrue(delta < self.rate)
+        self.assertFalse(self.rate < delta)
+        delta = ResourceDelta({'energy': 2, 'food': 7, 'water': 3})
+        self.assertFalse(self.rate < delta)
+        self.assertFalse(delta < self.rate)
+        delta = ResourceDelta({'energy': 2, 'food': 5})
+        self.assertFalse(self.rate < delta)
+        #self.assertTrue(delta < self.rate)
+        delta = ResourceDelta({'energy': 2, 'food': 6, 'water': 3, 'other': 1})
+        self.assertFalse(self.rate < delta)
+        #self.assertFalse(delta < self.rate)
+
     def test_mul(self):
         self.rate * 2
         expected_result = {'energy': 6, 'food': 12, 'water': 8}

@@ -58,6 +58,44 @@ class ResourceDelta(Object):
     def __call__(self, name):
         return self.get_amount(name)
 
+    def __gt__(self, other):
+        if isinstance(other, ResourceDelta):
+            rd_other = other
+        else:
+            rd_other = other.to_resource_delta()
+        results = []
+        for resource_name in rd_other.db:
+            if resource_name in self.db:
+                self_amount = self.db[resource_name].amount                
+            else:
+                self_amount = 0
+            other_amount = rd_other.db[resource_name].amount
+            result = self_amount >= other_amount
+            results.append(result)
+        if False in results:
+            return False
+        else:
+            return True
+        
+    def __lt__(self, other):
+        if isinstance(other, ResourceDelta):
+            rd_other = other
+        else:
+            rd_other = other.to_resource_delta()
+        results = []
+        for resource_name in rd_other.db:
+            if resource_name in self.db:
+                self_amount = self.db[resource_name].amount
+            else:
+                self_amount = 0
+            other_amount = rd_other.db[resource_name].amount
+            result = self_amount <= other_amount
+            results.append(result)
+        if False in results:
+            return False
+        else:
+            return True
+
     def __mul__(self, other):
         if isinstance(other, (int, float)): # resource arithmetic
             for key in self.db:

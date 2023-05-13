@@ -93,13 +93,11 @@ class Edge:
         length = euclidean_distance(start_pos, end_pos)
         angle = slope(start_pos, end_pos)
         structure.boundary = self.modify_boundary(length, angle, structure.boundary)
-        pos = center(start_pos, end_pos)
 
         if structure is not None:
             self.G.add_edge(
                 start_index,
                 end_index,
-                pos=pos,
                 structure=structure
             )
 
