@@ -50,6 +50,16 @@ class LongStructure(StructuralObject, Track):
                 result = shape.height
         return result
 
+    @property
+    def angle(self):
+        result = None
+        boundary = self.boundary
+        if boundary is not None:
+            shape = boundary.shape
+            if shape is not None:
+                result = shape.angle
+        return result
+
     def length(self, mode='adjusted'):
         """
         Return distance between start and end points

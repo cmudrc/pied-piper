@@ -2,6 +2,7 @@ from piperabm.object import Object
 from piperabm.unit import Date
 from piperabm.actions.move import Move
 from piperabm.actions.trade import Trade
+from piperabm.actions.load import load_action
 
 
 class Queue(Object):
@@ -16,6 +17,9 @@ class Queue(Object):
         """
         self.actions.append(action)
 
+    def __call__(self, index: int):
+        return self.actions[index]
+
     def pos(self, start_date: Date=None, end_date: Date=None):
         """
         Return position of agent in *date*
@@ -26,6 +30,51 @@ class Queue(Object):
         pos = None
         pos = move.pos(end_date) # *pos* at *end_date*
         return pos
+
+    @property
+    def history(self):
+        """
+        Return completed actions in reverse format
+        """
+        result = []
+        for i in range(self.break_index):
+            result.append(self.actions[i])
+        result.reverse()
+        return result
+
+    @property
+    def current(self):
+        """
+        Return current actions
+        """
+        result = []
+        for i in range(self.break_index, self.size):
+            result.append(self.actions[i])
+        return result
+    
+    @property
+    def size(self):
+        """
+        Return total number of actions
+        """
+        return len(self.actions)
+
+    @property
+    def break_index(self):
+        """
+        Calculate the index in *self.actions* list that separates current and
+        completed actions
+        """
+        break_index = self.size
+        for i in range(self.size): # checks all actions
+        #for i in range(5): # checks last 5 actions
+            index = -i - 1
+            action = self.actions[index]
+            if action.done is False:
+                break_index -= 1
+            else:
+                break
+        return break_index
     
     def find_actions(self, type='all'):
         result = []
@@ -37,10 +86,6 @@ class Queue(Object):
                 if type == 'trade' or type == 'all':
                     result.append(action)
         return result
-
-    def how_much_fuel(self, start_date: Date, end_date: Date):
-        move = self.last_action(type='move')
-        return move.how_much_fuel(start_date, end_date)
     
     def last_action(self, type=None):
         """
@@ -93,49 +138,21 @@ class Queue(Object):
             else:
                 result = True
         return result
-
-    def reset(self):
-        """
-        Reset *self.action_list*
-        """
-        self.action_list = []
     
+    def to_dict(self) -> list:
+        dictionary = []
+        for action in self.actions:
+            dictionary.append(action.to_dict())
+        return dictionary
+    
+    def from_dict(self, dictionary) -> None:
+        actions = []
+        for action_dictionary in dictionary:
+            action = load_action(action_dictionary)
+            actions.append(action)
+        self.actions = actions
 
-    def fuel_consumption(self, date: Date):
 
-        def add(input_1: dict, input_2: dict):
-
-            def add_non_empty(input_1, input_2):
-                result = {}
-                for key in input_1:
-                    if key in input_2:
-                        result[key] = input_1[key] + input_2[key]
-                    else:
-                        result[key] = input_1[key]
-                for key in input_2:
-                    if key not in result:
-                        result[key] = input_2[key]
-                return result
-
-            result = {}
-            if len(input_1) == 0:
-                if len(input_2) == 0:
-                    pass
-                else:
-                    result = input_2
-            else:
-                if len(input_2) == 0:
-                    result = input_1
-                else:
-                    result = add_non_empty(input_1, input_2)
-            return result
-
-        result = {}
-        for action in self.action_list:
-            if action.end_date <= date:
-                result = add(result, action.fuel_consumption)
-        return result
-        
-
-    def cumulative_resource_consumption(self, new, total={}):
-        pass
+if __name__ == "__main__":
+    queue = Queue()
+    print(queue)

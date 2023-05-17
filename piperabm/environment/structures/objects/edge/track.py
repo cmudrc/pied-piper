@@ -24,15 +24,3 @@ class Track:
         else: raise ValueError
         return delta_time
     
-    def progress(self, elapsed_time, transportation):
-        delta_time = self.refine_delta_time(elapsed_time)
-        delta_time = delta_time.total_seconds()
-        duration = self.duration(transportation)
-        duration = duration.total_seconds()
-        progress = delta_time / duration
-        if progress < 0:
-            progress = 0
-        elif progress > 1:
-            progress = 1
-        return progress
-

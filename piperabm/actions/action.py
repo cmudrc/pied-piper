@@ -7,7 +7,7 @@ class Action(Object):
 
     def __init__(
             self,
-            start_date: Date,
+            start_date: Date=None,
             end_date: Date=None,
             duration=None
         ):
@@ -32,12 +32,15 @@ class Action(Object):
                 self.start_date,
                 self.end_date
             )
-        elif end_date is None and \
-            duration is None:
-            raise ValueError
-        elif end_date is not None and \
-            duration is not None:
-            raise ValueError
+        else:
+            self.end_date = None
+            self.duration = None
+        #elif end_date is None and \
+        #    duration is None:
+        #    raise ValueError
+        #elif end_date is not None and \
+        #    duration is not None:
+        #    raise ValueError
         self.done = False
         self.type = 'action'
 
@@ -88,7 +91,11 @@ class Action(Object):
         dictionary = {}
         dictionary['start_date'] = date_to_dict(self.start_date)
         dictionary['end_date'] = date_to_dict(self.end_date)
-        dictionary['duration'] = self.duration.total_seconds()
+        if self.duration is None:
+            duration = None
+        else:
+            duration = self.duration.total_seconds()
+        dictionary['duration'] = duration
         dictionary['done'] = self.done
         dictionary['type'] = self.type
         return dictionary

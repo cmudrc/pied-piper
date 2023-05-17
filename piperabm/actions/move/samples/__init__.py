@@ -1,0 +1,1 @@
+from .move_0 import move as move_0

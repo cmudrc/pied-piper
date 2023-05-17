@@ -25,7 +25,5 @@ def slope(start_pos: list, end_pos: list):
 if __name__ == "__main__":
     start_pos = [0, 0]
     end_pos = [-1, 0]
-    #start_pos = [1, 1]
-    #end_pos = [-1, -1]
     angle = slope(start_pos, end_pos)
     print(angle * 180 / np.pi)

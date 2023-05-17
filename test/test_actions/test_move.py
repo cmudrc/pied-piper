@@ -1,39 +1,22 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.unit import Date, DT
-from piperabm.actions import Move
-from piperabm.society.agent.config import Walk
-from piperabm.environment.samples import environment_1
+from piperabm.actions.move import Move
+from piperabm.actions.move.samples import move_0
 
 
 class TestMoveClass(unittest.TestCase):
 
     def setUp(self):
-        env = deepcopy(environment_1)
-        self.action_start_date = Date(2020, 1, 5)
-        env.update(
-            start_date=Date(2020, 1, 1),
-            end_date=self.action_start_date
-        )
-        #env.show()
-        path = [(0, 2), (2, 1)]
-        #self.env = env
-
-        self.action = Move(
-            start_date=self.action_start_date,
-            path=path,
-            transportation=Walk(),
-            environment=env
-        )
+        self.move = deepcopy(move_0)
 
     def test_duration(self):
-        self.assertAlmostEqual(self.action.duration.total_seconds(), 37.5, places=1)
+        self.assertAlmostEqual(self.move.duration.total_seconds(), 37.5, places=1)
 
     def test_dates(self):
-        self.assertEqual(self.action_start_date, self.action.start_date)
-        expected_end_date = self.action_start_date + self.action.duration
-        self.assertEqual(self.action.end_date, expected_end_date)
+        self.assertEqual(self.move.start_date.day, 5)
+        expected_end_date = self.move.start_date + self.move.duration
+        self.assertEqual(self.move.end_date, expected_end_date)
 
     def test_fuel(self):
         expected_result = {
@@ -41,49 +24,89 @@ class TestMoveClass(unittest.TestCase):
             'water': 0.0004340893518518518,
             'energy': 0.0
         }
-        self.assertDictEqual(self.action.fuel_consumption.to_dict(), expected_result)
+        self.assertDictEqual(self.move.fuel_consumption.to_dict(), expected_result)
+
+    def test_progress(self):
+        duration = self.move.duration / 2
+        date = self.move.start_date + duration
+        progress = self.move.progress(date)
+        self.assertEqual(progress, 0.5)
+
+    def test_current_track(self):
+        # when reaches intermediary node?
+        #print(self.move.environment.get_edge_object(0, 2).duration(self.move.transportation))
         
-    '''
-    def test_progress_0(self):
-        m = deepcopy(self.m)
-        date = Date(2020, 1, 1)
-        self.assertEqual(m.progress(date), 0)
+        date = self.move.start_date
+        index, elapsed = self.move.current_track(date)
+        self.assertEqual(index, 0)
+        self.assertAlmostEqual(elapsed, 0, places=1)
 
-    def test_move_progress_1(self):
-        m = deepcopy(self.m)
-        date = Date(2020, 1, 2)
-        self.assertEqual(m.progress(date), 1)
-        #print(m.pos(date=Date(2020, 1, 1)+DT(hours=1)))
-    
-    def test_move_progress_2(self):
-        m = deepcopy(self.m)
-        date = Date(2020, 1, 1) + DT(seconds=15)
-        self.assertAlmostEqual(m.progress(date), 0.5, places=1)
+        duration = self.move.duration / 4
+        date = self.move.start_date + duration
+        index, elapsed = self.move.current_track(date)
+        self.assertEqual(index, 0)
+        self.assertAlmostEqual(elapsed, 9.37, places=1)
 
-    def test_fuel_0(self):
-        m = deepcopy(self.m)
-        start_date = Date(2020, 1, 1)
-        end_date = start_date
-        fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption('food'), 0)
-        self.assertAlmostEqual(fuel_consumption('water'), 0)
+        duration = self.move.duration / 2
+        date = self.move.start_date + duration
+        index, elapsed = self.move.current_track(date)
+        self.assertEqual(index, 1)
+        self.assertAlmostEqual(elapsed, 2.85, places=1)
 
-    def test_fuel_1(self):
-        m = deepcopy(self.m)
-        start_date = Date(2020, 1, 1)
-        end_date = start_date + DT(seconds=15)
-        fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption('food'), 0.00035, places=4)
-        self.assertAlmostEqual(fuel_consumption('water'), 0.00017, places=4)
+        duration = self.move.duration
+        date = self.move.start_date + duration
+        index, elapsed = self.move.current_track(date)
+        self.assertEqual(index, 1)
+        self.assertAlmostEqual(elapsed, 21.60, places=1)
 
-    def test_fuel_2(self):
-        m = deepcopy(self.m)
-        start_date = Date(2020, 1, 1)
-        end_date = start_date + DT(seconds=31)
-        fuel_consumption = m.how_much_fuel(start_date, end_date)
-        self.assertAlmostEqual(fuel_consumption('food'), 0.00070, places=4)
-        self.assertAlmostEqual(fuel_consumption('water'), 0.00035, places=4)
-    '''
+    def test_pos(self):
+        date = self.move.start_date
+        pos = self.move.pos(date)
+        expected_pos = [-2.0, -2.0]
+        self.assertListEqual(pos, expected_pos)
+
+        duration = self.move.duration / 4
+        date = self.move.start_date + duration
+        pos = self.move.pos(date)
+        expected_pos = [10.969198984993701, -0.8209819104551195]
+        self.assertListEqual(pos, expected_pos)
+
+        duration = self.move.duration / 2
+        date = self.move.start_date + duration
+        pos = self.move.pos(date)
+        expected_pos = [20.0, 2.636425925925925]
+        self.assertListEqual(pos, expected_pos)
+
+        duration = self.move.duration
+        date = self.move.start_date + duration
+        pos = self.move.pos(date)
+        expected_pos = [20.0, 19.999999999999996]
+        self.assertListEqual(pos, expected_pos)
+
+    def test_dict(self):
+        dictionary = self.move.to_dict()
+        expected_result = {
+            'start_date': {'year': 2020, 'month': 1, 'day': 5, 'hour': 0, 'minute': 0, 'second': 0},
+            'end_date': {'year': 2020, 'month': 1, 'day': 5, 'hour': 0, 'minute': 0, 'second': 37},
+            'duration': 37.50532,
+            'done': False,
+            'type': 'move',
+            'path': [(0, 2), (2, 1)],
+            'transportation': {
+                'fuel_rate': {
+                    'energy': 0.0,
+                    'food': 2.3148148148148147e-05,
+                    'water': 1.1574074074074073e-05
+                },
+                'name': 'foot',
+                'speed': 1.3888888888888888},
+        }
+        self.maxDiff = None
+        self.assertDictEqual(dictionary, expected_result)
+        move = Move()
+        move.from_dict(dictionary)
+        self.assertDictEqual(move.to_dict(), self.move.to_dict())
+
 
 if __name__ == "__main__":
     unittest.main()
