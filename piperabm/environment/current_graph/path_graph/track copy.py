@@ -6,10 +6,12 @@ from piperabm.tools.coordinate import euclidean_distance
 
 class Track:
     
-    def __init__(self, start_index, end_index, object):
+    def __init__(self, start_index, start_pos, end_index, end_pos, adjusted_length):
         self.start_index = start_index
+        self.start_pos = start_pos
         self.end_index = end_index
-        self.object = object
+        self.end_pos = end_pos
+        self.adjusted_length = adjusted_length
 
     def refine_delta_time(self, delta_time):
         if isinstance(delta_time, (int, float)):
@@ -20,10 +22,11 @@ class Track:
         return delta_time
 
     def duration(self, transportation):
-        return transportation.how_long(self.object.length('adjusted'))
+        duration = transportation.how_long(self.adjusted_length)
+        return duration.total_seconds()
     
     def fuel(self, transportation):
-        return transportation.how_much_fuel(self.object.length('adjusted'))
+        return transportation.how_much_fuel(self.adjusted_length)
 
     def progress(self, delta_time, transportation):
         delta_time = self.refine_delta_time(delta_time)
@@ -35,7 +38,6 @@ class Track:
         return progress
 
     def pos(self, delta_time, transportation):
-        #start_pos = 
         delta_time = self.refine_delta_time(delta_time)
         progress = self.progress(delta_time, transportation)
         current_length = progress * euclidean_distance(*self.start_pos, *self.end_pos)
@@ -62,7 +64,7 @@ class Track:
 
 
 if __name__ == "__main__":
-    #from piperabm.actions.action.move.transporation.transportation import Foot
+    from piperabm.actions.action.move.transporation.transportation import Foot
 
     t = Track(
         start_index=0, 
@@ -71,5 +73,5 @@ if __name__ == "__main__":
         end_pos=[100, 100], 
         adjusted_length=400
     )
-    #pos = t.pos(delta_time=250, transportation=Foot())
-    #print(pos)
+    pos = t.pos(delta_time=250, transportation=Foot())
+    print(pos)

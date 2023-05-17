@@ -1,4 +1,4 @@
-from piperabm.resource import Resource
+from piperabm.resource import Resource, ResourceDelta
 
 
 def resource_sum(resources: list):
@@ -17,8 +17,11 @@ def resource_sum(resources: list):
     sum = Resource()
     sum.create_zeros(all_resource_names)
     for resource in resources:
-        sum + resource.to_resource_delta()
-    return sum
+        if isinstance(resource, Resource):
+            sum + resource.to_resource_delta()
+        elif isinstance(resource, ResourceDelta):
+            sum + resource
+    return sum.to_resource_delta()
 
 
 if __name__ == "__main__":

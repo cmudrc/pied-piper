@@ -6,12 +6,24 @@ from piperabm.environment.current_graph.path_graph.graphics import Graphics
 
 
 class PathGraph(ToGraph, Query, Graphics):
-    def __init__(self, links_graph):
-        self.env = links_graph.env
+
+    def __init__(self, current_graph):
+        self.current = current_graph
         self.G = nx.DiGraph()
-        self.to_graph(links_graph)
-        self.start_date = links_graph.start_date
-        self.end_date = links_graph.end_date
+        self.to_graph(current_graph)
+        super().__init__()
+
+    @property
+    def start_date(self):
+        return self.current.start_date
+    
+    @property
+    def end_date(self):
+        return self.current.end_date
+    
+    @property
+    def environment(self):
+        return self.current.env
 
     def from_node_perspective(self, node):
         result = []

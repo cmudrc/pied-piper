@@ -1,23 +1,46 @@
 from piperabm.unit import Date, DT
 from piperabm.actions.action import Action
+from piperabm.resource import resource_sum
 
 
 class Move(Action):
 
-    def __init__(self, start_date: Date, path, transportation):
+    def __init__(self, start_date: Date, path: list, transportation, environment=None):
+        self.environment = environment
+        self.transportation = transportation
+        self.path = path
         super().__init__(
             start_date=start_date,
-            duration=self.path.duration(self.transportation)
+            duration=self.total_duration()
         )
-        self.path = path
-        self.transportation = transportation
-        self.fuel_consumption = self.total_fuel_consumption()
+        self.fuel_consumption = self.total_fuel()
         self.done = False
         self.type = 'move'
 
-    def total_fuel_consumption(self):
-        result = self.transportation.fuel_rate * self.duration
-        return result
+    def get_track_object(self, track):
+        return self.environment.get_edge_object(track[0], track[1])
+
+    def total_duration(self):
+        """
+        Calculate the duration for the movement
+        """
+        total = 0
+        for track in self.path:
+            structure = self.get_track_object(track)
+            total += structure.duration(self.transportation).total_seconds()
+        return DT(seconds=total)
+
+    def total_fuel(self):
+        """
+        Calculate total fuel needed for the movement
+        """
+        fuels = []
+        for track in self.path:
+            structure = self.get_track_object(track)
+            fuels.append(structure.fuel(self.transportation))
+        return resource_sum(fuels)
+    
+    '''
 
     def how_much_fuel(self, start_date: Date, end_date: Date):
         start_progress = self.progress(start_date)
@@ -60,6 +83,7 @@ class Move(Action):
     def progress(self, date: Date):
         delta_time = date - self.start_date
         return self.path.progress(delta_time, self.transportation)
+    '''
 
     
 if __name__ == "__main__":

@@ -56,7 +56,7 @@ class TestResourceDeltaClass(unittest.TestCase):
         self.assertFalse(delta < self.rate)
         delta = ResourceDelta({'energy': 2, 'food': 5})
         self.assertFalse(self.rate < delta)
-        #self.assertTrue(delta < self.rate)
+        self.assertTrue(delta < self.rate)
         delta = ResourceDelta({'energy': 2, 'food': 6, 'water': 3, 'other': 1})
         self.assertFalse(self.rate < delta)
         #self.assertFalse(delta < self.rate)

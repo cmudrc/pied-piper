@@ -4,46 +4,36 @@ from copy import deepcopy
 from piperabm.unit import Date, DT
 from piperabm.actions import Move
 from piperabm.society.agent.config import Walk
-from piperabm.environment.samples import environment_1
+from piperabm.environment.samples import environment_0
 
 
 class TestMoveClass(unittest.TestCase):
 
     def setUp(self):
-        env = deepcopy(environment_1)
-        self.action_start_date = Date(2020, 1, 5)
-        env.update(
-            start_date=Date(2020, 1, 1),
-            end_date=self.action_start_date
-        )
-        #env.show()
-        path = [(0, 2), (2, 1)]
-        #self.env = env
+        env = environment_0
+        start_date = Date(2020, 1, 5)
+        end_date = Date(2020, 1, 7)
+        env.update(start_date, end_date)
+        #path_graph = env.to_path_graph(start_date, end_date)
+        all_settlements = env.all_indexes('settlement')
+        #path = path_graph.edge_info(all_settlements[0], all_settlements[1], 'path')
+        #print(path)
+        self.env = env
 
         self.action = Move(
-            start_date=self.action_start_date,
-            path=path,
-            transportation=Walk(),
-            environment=env
+            start_date=Date(2020, 1, 1),
+            #path=path,
+            transportation=Walk()
         )
 
-    def test_duration(self):
-        self.assertAlmostEqual(self.action.duration.total_seconds(), 37.5, places=1)
+    def test_show(self):
+        self.env.show()
 
-    def test_dates(self):
-        self.assertEqual(self.action_start_date, self.action.start_date)
-        expected_end_date = self.action_start_date + self.action.duration
-        self.assertEqual(self.action.end_date, expected_end_date)
+    def test_end_date(self):
+        m = deepcopy(self.m)
+        #print(m.end_date)
+        self.assertAlmostEqual(m.end_date.second, 30, places=2)
 
-    def test_fuel(self):
-        expected_result = {
-            'food': 0.0008681787037037036,
-            'water': 0.0004340893518518518,
-            'energy': 0.0
-        }
-        self.assertDictEqual(self.action.fuel_consumption.to_dict(), expected_result)
-        
-    '''
     def test_progress_0(self):
         m = deepcopy(self.m)
         date = Date(2020, 1, 1)
@@ -83,7 +73,7 @@ class TestMoveClass(unittest.TestCase):
         fuel_consumption = m.how_much_fuel(start_date, end_date)
         self.assertAlmostEqual(fuel_consumption('food'), 0.00070, places=4)
         self.assertAlmostEqual(fuel_consumption('water'), 0.00035, places=4)
-    '''
+
 
 if __name__ == "__main__":
     unittest.main()

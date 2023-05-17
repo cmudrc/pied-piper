@@ -53,7 +53,7 @@ class Query:
         return result
 
     def find_node(self, node):
-        return self.env.find_node(node)
+        return self.current.find_node(node)
 
     def node_degree(self, node):
         """

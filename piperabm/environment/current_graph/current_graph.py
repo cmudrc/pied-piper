@@ -1,9 +1,9 @@
 import networkx as nx
 
-from piperabm.environment.current_graph.path_graph import PathGraph
 from piperabm.environment.current_graph.to_graph import ToGraph
 from piperabm.environment.current_graph.query import Query
 from piperabm.environment.current_graph.graphics import Graphics
+from piperabm.environment.current_graph.path_graph import PathGraph
 
 
 class CurrentGraph(ToGraph, Query, Graphics):

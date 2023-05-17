@@ -18,12 +18,20 @@ class Action(Object):
                 duration = DT(seconds=duration)
             elif isinstance(duration, DT):
                 pass
+            else:
+                raise ValueError
             self.duration = duration
-            self.end_date = self.start_date + self.duration
+            self.end_date = self.calculate_end_date(
+                self.start_date,
+                self.duration
+            )
         elif end_date is not None and \
             duration is None:
             self.end_date = end_date
-            self.duration = self.end_date - self.start_date
+            self.duration = self.calculate_duration(
+                self.start_date,
+                self.end_date
+            )
         elif end_date is None and \
             duration is None:
             raise ValueError
@@ -33,10 +41,18 @@ class Action(Object):
         self.done = False
         self.type = 'action'
 
-        ''' temporary variables '''
-        #self.started = None
-        #self.finished = None
-        #self.current_progress = None
+    def calculate_duration(self, start_date: Date, end_date: Date):
+        return end_date - start_date
+    
+    def calculate_end_date(self, start_date: Date, duration: DT):
+        return start_date + duration
+
+    def is_current(self, date: Date):
+        result = False
+        if self.is_started(date) is True and \
+            self.is_finished(date) is False:
+            result = True
+        return result
 
     def is_finished(self, date: Date):
         result = None
@@ -44,7 +60,6 @@ class Action(Object):
             result = True
         else:
             result = False
-        #self.finished = result
         return result
     
     def is_started(self, date: Date):
@@ -53,7 +68,6 @@ class Action(Object):
             result = False
         else:
             result = True
-        #self.started = result
         return result
     
     def progress(self, date: Date):
@@ -68,7 +82,6 @@ class Action(Object):
                 result = 1
         else:
             result = 0
-        #self.current_progress = result
         return result
     
     def to_dict(self) -> dict:

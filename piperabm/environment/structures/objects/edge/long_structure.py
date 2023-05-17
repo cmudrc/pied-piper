@@ -1,9 +1,10 @@
 from piperabm.environment.structures.objects.object import StructuralObject
+from piperabm.environment.structures.objects.edge.track import Track
 from piperabm.boundary import Rectangular
 from piperabm.unit import Date
 
 
-class LongStructure(StructuralObject):
+class LongStructure(StructuralObject, Track):
 
     def __init__(
         self,
@@ -38,6 +39,9 @@ class LongStructure(StructuralObject):
         self.type = 'long structure'
 
     def width(self):
+        """
+        Return width of the long structure (e.g. road)
+        """
         result = None
         boundary = self.boundary
         if boundary is not None:
@@ -47,6 +51,9 @@ class LongStructure(StructuralObject):
         return result
 
     def length(self, mode='adjusted'):
+        """
+        Return distance between start and end points
+        """
         result = None
         if mode == 'adjusted':
             result = self._adjusted_length()
@@ -57,6 +64,10 @@ class LongStructure(StructuralObject):
         return result
     
     def area(self, mode='adjusted'):
+        """
+        Return surface area of long structure between start and end points,
+        useful for calculating adjusted degradation probability
+        """
         result = None
         if self.boundary is not None:
             length = self.length(mode)
@@ -65,6 +76,10 @@ class LongStructure(StructuralObject):
         return result
 
     def _actual_length(self):
+        """
+        Return actual distance between start and end points,
+        useful while reading real-world data
+        """
         result = None
         actual_length = self.actual_length
         if actual_length is not None:
@@ -72,6 +87,10 @@ class LongStructure(StructuralObject):
         return result
     
     def _ideal_length(self):
+        """
+        Return euclidean distance between start and end points,
+        useful for visualizations
+        """
         result = None
         boundary = self.boundary
         if boundary is not None:
@@ -79,21 +98,27 @@ class LongStructure(StructuralObject):
         return result
     
     def _adjusted_length(self):
-        result = None
+        """
+        Return adjusted distance between start and end points,
+        useful for calculations related to transportation
+        """
+        ''' progressive degradation factor '''
         degradation_factor = self.degradation_factor()
         if degradation_factor is None:
             degradation_factor = 1
+        ''' euclidean distance '''
         actual_length = self._actual_length()
         if actual_length is None:
             actual_length = self._ideal_length()
             if actual_length is None:
-                actual_length = 1
+                actual_length = 0
+        ''' difficulty coefficient '''
         difficulty = self.difficulty
         if difficulty is None:
             difficulty = 1
-        result = actual_length * difficulty * degradation_factor
-        return result
-    
+        ''' main '''
+        return actual_length * difficulty * degradation_factor
+
     def to_dict(self) -> dict:
         dictionary = super().to_dict()
         dictionary['actual_length'] = self.actual_length

@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from piperabm.environment import Environment
 from piperabm.environment.samples import environment_0, environment_1
+from piperabm.society.agent.config import Walk
 from piperabm.unit import Date
 from piperabm.tools.symbols import SYMBOLS
 
@@ -58,6 +59,7 @@ class TestEnvironmentClass_1(unittest.TestCase):
 
     def setUp(self):
         self.env = deepcopy(environment_1)
+        self.transportation = Walk()
 
     def test_shape(self):
         edges = self.env.G.edges()
@@ -66,6 +68,21 @@ class TestEnvironmentClass_1(unittest.TestCase):
         nodes = self.env.G.nodes()
         self.assertEqual(len(nodes), 3)
         self.assertListEqual(list(nodes), [0, 1, 2])
+
+    def test_duration(self):
+        object = self.env.get_edge_object(0, 2)
+        duration = object.duration(self.transportation)
+        self.assertAlmostEqual(duration.total_seconds(), 15.90, places=1)
+
+    def test_fuel(self):
+        object = self.env.get_edge_object(0, 2)
+        fuel = object.fuel(self.transportation)
+        expected_result = {
+            'food': 0.0003681787037037037,
+            'water': 0.00018408935185185185,
+            'energy': 0.0
+        }
+        self.assertDictEqual(expected_result, fuel.to_dict())
 
     def test_delta(self):
         env = deepcopy(self.env)
@@ -185,7 +202,6 @@ class TestEnvironmentClass_1(unittest.TestCase):
         new_env.from_dict(dictionary)
         new_dictionary = new_env.to_dict()
         self.assertDictEqual(dictionary, new_dictionary)
-        # print(dictionary)
 
 
 if __name__ == "__main__":
