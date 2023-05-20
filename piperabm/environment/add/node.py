@@ -1,5 +1,5 @@
 from piperabm.unit import Date
-from piperabm.environment.infrastructure import Settlement
+from piperabm.infrastructure import Settlement
 
 
 class Node:

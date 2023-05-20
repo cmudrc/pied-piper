@@ -1,11 +1,6 @@
-try: from .bid import Bid
-except: from bid import Bid
-try: from .query import Query
-except: from query import Query
-try: from .solver import Solver
-except: from solver import Solver
-try: from .log import Log
-except: from log import Log
+from piperabm.economy.market.pool.bid import Bid
+from piperabm.economy.market.pool.query import Query
+from piperabm.economy.market.pool.solver import Solver
 
 
 class Pool(Solver, Query):
@@ -17,7 +12,6 @@ class Pool(Solver, Query):
         self.source_bids = []
         self.demand_bids = []
         self.total_volume = 0
-        self.log = Log(prefix="POOL", indentation_depth=3)
         super().__init__()
 
     def all_participants(self):

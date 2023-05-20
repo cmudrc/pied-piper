@@ -1,4 +1,4 @@
-from piperabm.environment.infrastructure.objects import LongStructure
+from piperabm.infrastructure.objects import LongStructure
 from piperabm.unit import Date
 
 

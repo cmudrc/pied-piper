@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from piperabm.environment.infrastructure.road import Road
+from piperabm.infrastructure.road import Road
 from piperabm.degradation.sudden.distributions.samples import distribution_0 as distribution
 from piperabm.unit import Date
 

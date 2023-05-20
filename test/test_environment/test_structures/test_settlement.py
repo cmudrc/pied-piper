@@ -1,8 +1,8 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment.infrastructure import Settlement
-from piperabm.environment.infrastructure.settlement.samples import settlement_0, settlement_1
+from piperabm.infrastructure import Settlement
+from piperabm.infrastructure.settlement.samples import settlement_0, settlement_1
 from piperabm.unit import Date, DT
 
 

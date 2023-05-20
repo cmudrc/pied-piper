@@ -2,8 +2,8 @@ import unittest
 from copy import deepcopy
 
 from piperabm.environment.samples import environment_1
-from piperabm.environment.infrastructure.settlement.samples import settlement_0
-from piperabm.environment.infrastructure.road.samples import road_0
+from piperabm.infrastructure.settlement.samples import settlement_0
+from piperabm.infrastructure.road.samples import road_0
 from piperabm.unit import Date
 
 

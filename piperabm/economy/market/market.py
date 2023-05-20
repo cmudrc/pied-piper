@@ -1,9 +1,5 @@
-try: from .player import Player
-except: from player import Player
-try: from .solver import Solver
-except: from solver import Solver
-try: from .log import Log
-except: from log import Log
+from piperabm.economy.market.player import Player
+from piperabm.economy.market.solver import Solver
 
 
 class Market(Solver):
@@ -11,7 +7,6 @@ class Market(Solver):
     def __init__(self, exchange):
         self.players = []
         self.exchange = exchange
-        self.log = Log(prefix='MARKET', indentation_depth=2)
         super().__init__()
 
     def add(self, players):
@@ -106,7 +101,7 @@ class Market(Solver):
 
 
 if __name__ == "__main__":
-    from piperabm.economy.exchange_rate.samples import exchange_0 as exchange
+    from piperabm.economy.exchange_rate.samples import exchange_rate_0 as exchange
 
     p1 = Player(
         index=1,

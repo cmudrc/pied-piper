@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.environment import Environment
 from piperabm.environment.samples import environment_0, environment_1
-from piperabm.society.agent.config import Walk
+from piperabm.agent.config import Walk
 from piperabm.unit import Date
 from piperabm.tools.symbols import SYMBOLS
 

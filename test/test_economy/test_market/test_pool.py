@@ -225,7 +225,7 @@ class TestPoolClass_Standard(unittest.TestCase):
     """
 
     def setUp(self):
-        from piperabm.society.agent.samples import agent_0, agent_1
+        from piperabm.agent.samples import agent_0, agent_1
         from piperabm.economy.exchange_rate.samples import exchange_rate_0 as exchange_rate
 
         agent_0 = deepcopy(agent_0)

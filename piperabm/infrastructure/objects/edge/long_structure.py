@@ -1,5 +1,5 @@
-from piperabm.environment.infrastructure.objects.object import StructuralObject
-from piperabm.environment.infrastructure.objects.edge.track import Track
+from piperabm.infrastructure.objects.object import StructuralObject
+from piperabm.infrastructure.objects.edge.track import Track
 from piperabm.boundary import Rectangular
 from piperabm.unit import Date
 

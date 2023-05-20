@@ -1,5 +1,5 @@
 from piperabm.unit import Date
-from piperabm.economy import Economy
+#from piperabm.economy import Economy
 
 
 class Update:
