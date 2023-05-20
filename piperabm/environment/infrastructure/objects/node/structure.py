@@ -1,14 +1,17 @@
-from piperabm.environment.structures.objects import Structure
+from piperabm.environment.infrastructure.objects.object import StructuralObject
 from piperabm.unit import Date
 
 
-class Settlement(Structure):
+class Structure(StructuralObject):
+    """
+    Represent a physical element
+    """
 
     def __init__(
         self,
         name: str = '',
         boundary=None,
-        active=True,
+        active: bool = True,
         start_date: Date = None,
         end_date: Date = None,
         sudden_degradation_dist=None,
@@ -29,9 +32,11 @@ class Settlement(Structure):
             progressive_degradation_current=progressive_degradation_current,
             progressive_degradation_max=progressive_degradation_max
         )
-        self.type = 'settlement'
+
+        # type:
+        self.type = 'structure'
 
 
 if __name__ == "__main__":
-    settlement = Settlement()
-    print(settlement)
+    structure = Structure()
+    print(structure)

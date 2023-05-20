@@ -1,4 +1,7 @@
-class Relocation:
+from piperabm.agent.brain.decision.decision import Decision
+
+
+class Move(Decision):
 
     def observe(self, environment, society) -> dict:
         """

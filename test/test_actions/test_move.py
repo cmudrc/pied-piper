@@ -83,6 +83,30 @@ class TestMoveClass(unittest.TestCase):
         expected_pos = [20.0, 19.999999999999996]
         self.assertListEqual(pos, expected_pos)
 
+    def test_status(self):
+        date = self.move.start_date
+        self.assertTrue(self.move.is_current(date))
+        self.assertTrue(self.move.is_started(date))
+        self.assertFalse(self.move.is_finished(date))
+
+        duration = self.move.duration / 2
+        date = self.move.start_date + duration
+        self.assertTrue(self.move.is_current(date))
+        self.assertTrue(self.move.is_started(date))
+        self.assertFalse(self.move.is_finished(date))
+
+        duration = self.move.duration
+        date = self.move.start_date + duration
+        self.assertFalse(self.move.is_current(date))
+        self.assertTrue(self.move.is_started(date))
+        self.assertTrue(self.move.is_finished(date))
+
+        duration = self.move.duration * 2
+        date = self.move.start_date + duration
+        self.assertFalse(self.move.is_current(date))
+        self.assertTrue(self.move.is_started(date))
+        self.assertTrue(self.move.is_finished(date))
+
     def test_dict(self):
         dictionary = self.move.to_dict()
         expected_result = {

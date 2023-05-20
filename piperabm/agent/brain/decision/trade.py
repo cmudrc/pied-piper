@@ -1,4 +1,7 @@
-class Trade:
+from piperabm.agent.brain.decision.decision import Decision
+
+
+class Trade(Decision):
 
     def observe(self, environment, society) -> dict:
         """

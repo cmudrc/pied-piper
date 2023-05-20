@@ -1,3 +1,6 @@
+from piperabm.agent import Agent
+
+
 class Node:
     """
     *** Extends Query Class ***
@@ -28,13 +31,13 @@ class Node:
             result = node[attr]
         return result 
 
-    def get_node_object(self, index: int):
+    def get_node_object(self, index: int) -> Agent:
         """
         Retrieve node element based on its index
         """
         return self.get_node_attr(index, 'object')
     
-    def get_agent_object(self, index: int):
+    def get_agent_object(self, index: int) -> Agent:
         """
         An alias for intuition
         """

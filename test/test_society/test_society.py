@@ -27,6 +27,14 @@ class TestSocietyClass_0(unittest.TestCase):
         agent_index = self.society.find(0)
         self.assertEqual(agent_index, 0)
 
+    def test_bindings(self):
+        self.assertEqual(self.society.environment.type, 'environment')
+        self.assertEqual(self.society.environment.society.type, 'society')
+        agent = self.society.get_agent_object(0)
+        self.assertEqual(agent.environment.type, 'environment')
+        self.assertEqual(agent.environment.society.type, 'society')        
+        print(agent.queue.society.type)
+
 
 class TestSocietyClass_1(unittest.TestCase):
 

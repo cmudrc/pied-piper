@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from piperabm.unit import Date
-from piperabm.environment.structures import Road
+from piperabm.environment.infrastructure import Road
 from piperabm.boundary.rectangular import Rectangular
 from piperabm.tools.coordinate import slope, euclidean_distance, center
 

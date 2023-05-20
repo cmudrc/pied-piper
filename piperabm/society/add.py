@@ -1,5 +1,5 @@
 from piperabm.unit import Date
-from piperabm.society.agent import Agent
+from piperabm.agent import Agent
 from piperabm.society.relationship import Family, Neighbor, FellowCitizen
 from piperabm.tools.coordinate import euclidean_distance
 
@@ -38,8 +38,15 @@ class Add:
         Add a node to the model together with its element
         """
         if agent is not None:
+            ''' binding '''
             agent.environment = self.environment # binding to the environment
             agent.society = self # binding to the society
+            agent.index = index
+
+            agent.queue.environment = agent.environment
+            agent.queue.society = agent.society
+            agent.queue.agent_index = agent.index
+
             self.G.add_node(
                 index,
                 pos=pos,
@@ -58,7 +65,7 @@ class Add:
             fuel_rate_idle=None
         ):
         """
-        Create a new settlement on a new hub object and add it to the model
+        Create a new agent
         """
         agent = Agent(
             name=name,
@@ -70,7 +77,7 @@ class Add:
             resource=resource,
             fuel_rate_idle=fuel_rate_idle
         )
-        index = self.add_agent_object(origin, agent)
+        index = self.add_agent_object(agent)
         return index
     
     def add_agent_object(self, agent):

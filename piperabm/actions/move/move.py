@@ -11,12 +11,15 @@ class Move(Action):
 
     def __init__(
             self,
-            start_date: Date=None,
-            path: list=None,
+            start_date: Date = None,
+            path: list = None,
             transportation=None,
-            environment=None
+            environment=None,
+            agent_index: int = None,
         ):
         self.environment = environment
+        self.agent_index = agent_index
+
         self.transportation = transportation
         self.path = path
         try:

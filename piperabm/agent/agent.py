@@ -1,11 +1,12 @@
 from copy import deepcopy
 
+from piperabm.agent.brain import Brain
 from piperabm.object import Object
 from piperabm.resource import Resource, ResourceDelta
 from piperabm.transporation import Transportation
 from piperabm.actions import Queue
 from piperabm.unit import DT, Date, date_to_dict, date_from_dict
-from piperabm.society.agent.config import *
+from piperabm.agent.config import *
 from piperabm.tools import ElementExists
 
 
@@ -13,19 +14,28 @@ class Agent(Object):
 
     def __init__(
         self,
+        index = None,
+        environment = None,
+        society = None,
         name: str = '',
         active: bool = True,
         start_date: Date = None,
         end_date: Date = None,
         origin: int = None,
         transportation: Transportation = None,
-        queue=None,
         resource: Resource = None,
         fuel_rate_idle: ResourceDelta = None,
         income: float = 0,
-        balance: float = 0
+        balance: float = 0,
     ):
         super().__init__()
+        ''' binding '''
+        self.index = index
+        self.environment = environment
+        self.society = society
+
+        ''' decision making '''
+        self.brain = Brain()
 
         ''' identity '''
         self.name = name
@@ -47,10 +57,8 @@ class Agent(Object):
             self.transportation = transportation
 
         ''' queue '''
-        if queue is None:
-            self.queue = Queue()
-        else:
-            self.queue = queue
+        queue = Queue()
+        self.add_queue(queue)
 
         ''' resource '''
         if resource is None:
@@ -69,9 +77,12 @@ class Agent(Object):
         if balance >= 0:
             self.balance = balance
 
-        ''' binding to the world '''
-        self.environment = None
-        self.society = None
+    def add_queue(self, queue: Queue):
+        ''' bindings '''
+        queue.environment = self.environment
+        queue.society = self.society
+        queue.agent_index = self.index
+        self.queue = queue
 
     @property
     def alive(self) -> bool:
@@ -180,7 +191,7 @@ class Agent(Object):
         self.transportation = transportation
         queue = Queue()
         queue.from_dict(dictionary['queue'])
-        self.queue = queue
+        self.add_queue(queue)
         resource = Resource()
         resource.from_dict(dictionary['resource'])
         self.resource = resource

@@ -5,7 +5,7 @@ from piperabm.society.add import Add
 from piperabm.society.search import Search
 from piperabm.society.query import Query
 from piperabm.environment import Environment
-from piperabm.society.agent import Agent
+from piperabm.agent import Agent
 from piperabm.society.update import Update
 from piperabm.society.relationship.load import load_relationship
 from piperabm.economy import GiniGenerator, ExchangeRate
@@ -20,6 +20,7 @@ class Society(Object, Add, Search, Query, Update):
 
     def __init__(self, environment: Environment = None, gini: float = 0, exchange_rate: ExchangeRate = None):
         super().__init__()
+        environment.society = self
         self.environment = environment
         self.gini = gini
         #self.gini_gen = GiniGenerator(gini, 1)

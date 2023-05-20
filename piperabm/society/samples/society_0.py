@@ -3,7 +3,7 @@ from copy import deepcopy
 from piperabm.society import Society
 from piperabm.environment.samples import environment_0
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
-from piperabm.society.agent.samples import agent_0
+from piperabm.agent.samples import agent_0
 
 
 society = Society(

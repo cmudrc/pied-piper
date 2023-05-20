@@ -1,8 +1,7 @@
-from piperabm.society.agent.brain.relocation import Relocation
-from piperabm.society.agent.brain.trade import Trade
+from piperabm.object import Object
 
 
-class Decision:
+class Decision(Object):
 
     def observe(self, environment, society) -> dict:
         """

@@ -1,10 +1,13 @@
+from piperabm.unit import Date
+
+
 class Update:
     """
     *** Extends Environment Class ***
     Methods for updating environment elements in each step
     """
 
-    def update(self, start_date, end_date) -> None:
+    def update(self, start_date: Date, end_date: Date) -> None:
         """
         Update all active non-None elements
         """

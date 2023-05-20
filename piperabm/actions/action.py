@@ -1,6 +1,7 @@
 from piperabm.object import Object
 from piperabm.unit import Date, date_to_dict, date_from_dict
 from piperabm.unit import Date, DT
+from piperabm.tools.existance import ElementExists
 
 
 class Action(Object):
@@ -35,14 +36,15 @@ class Action(Object):
         else:
             self.end_date = None
             self.duration = None
-        #elif end_date is None and \
-        #    duration is None:
-        #    raise ValueError
-        #elif end_date is not None and \
-        #    duration is not None:
-        #    raise ValueError
         self.done = False
         self.type = 'action'
+
+    def do(self):
+        """
+        Execute action
+        """
+        if self.done is False:
+            self.done = True
 
     def calculate_duration(self, start_date: Date, end_date: Date):
         return end_date - start_date
@@ -55,7 +57,7 @@ class Action(Object):
         if self.is_started(date) is True and \
             self.is_finished(date) is False:
             result = True
-        return result
+        return result  
 
     def is_finished(self, date: Date):
         result = None
@@ -86,6 +88,18 @@ class Action(Object):
         else:
             result = 0
         return result
+
+    def exists(self, date: Date):
+        """
+        Check whether element exists in the time range
+        """
+        ee = ElementExists()
+        return ee.check(
+            item_start=self.start_date,
+            item_end=self.end_date,
+            time_start=date,
+            time_end=date
+        )
     
     def to_dict(self) -> dict:
         dictionary = {}

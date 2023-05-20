@@ -1,19 +1,18 @@
-from piperabm.environment.structures.objects.object import StructuralObject
+from piperabm.environment.infrastructure.objects import LongStructure
 from piperabm.unit import Date
 
 
-class Structure(StructuralObject):
-    """
-    Represent a physical element
-    """
+class Road(LongStructure):
 
     def __init__(
         self,
         name: str = '',
-        boundary=None,
-        active: bool = True,
+        active=True,
         start_date: Date = None,
         end_date: Date = None,
+        actual_length: float = None,
+        width: float = None,
+        difficulty: float = 1,
         sudden_degradation_dist=None,
         sudden_degradation_unit_size: float=None,
         progressive_degradation_formula=None,
@@ -22,21 +21,21 @@ class Structure(StructuralObject):
     ):
         super().__init__(
             name=name,
-            boundary=boundary,
             active=active,
             start_date=start_date,
             end_date=end_date,
+            actual_length=actual_length,
+            width=width,
+            difficulty=difficulty,
             sudden_degradation_dist=sudden_degradation_dist,
             sudden_degradation_unit_size=sudden_degradation_unit_size,
             progressive_degradation_formula=progressive_degradation_formula,
             progressive_degradation_current=progressive_degradation_current,
             progressive_degradation_max=progressive_degradation_max
         )
-
-        # type:
-        self.type = 'structure'
+        self.type = 'road'
 
 
 if __name__ == "__main__":
-    structure = Structure()
-    print(structure)
+    road = Road()
+    print(road)

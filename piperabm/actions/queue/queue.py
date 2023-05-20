@@ -1,5 +1,5 @@
 from piperabm.object import Object
-from piperabm.unit import Date
+from piperabm.unit import Date, DT
 from piperabm.actions.move import Move
 from piperabm.actions.trade import Trade
 from piperabm.actions.load import load_action
@@ -10,26 +10,84 @@ class Queue(Object):
     def __init__(self):
         super().__init__()
         self.actions = []
+        ''' bindings '''
+        self.agent_index = None
+        self.environment = None
+        self.society = None
 
     def add(self, action):
         """
         Add new *action* to *self.actions*
         """
+        ''' bindings '''
+        action.environment = self.environment
+        action.society = self.society
+        action.agent_index = self.agent_index
+        ''' add '''
         self.actions.append(action)
+
+    @property
+    def end_date(self):
+        """
+        When will current actions in the queue finish?
+        """
+        action = self.last_action()
+        return action.end_date
+    
+    def remaining(self, date: Date):
+        """
+        How long does it remain to finish the queue
+        """
+        if self.done is True:
+            return DT(seconds=0)
+        else:
+            return self.end_date - date
 
     def __call__(self, index: int):
         return self.actions[index]
+    
+    def find_action(self, date: Date):
+        """
+        Find the action that is happening in *date*
+        """
+        object = None
+        index = None
+        for i, action in enumerate(self.actions):
+            if action.is_current(date) is True:
+                object = action
+                index = i
+                break
+        return index, object
 
-    def pos(self, start_date: Date=None, end_date: Date=None):
+    def pos(self, date: Date):
         """
         Return position of agent in *date*
         """
-        if end_date is None: raise ValueError
-        actions = self.find_actions('move')
-        move = actions[0]
-        pos = None
-        pos = move.pos(end_date) # *pos* at *end_date*
+        ''' find nearst move action '''
+        i, action = self.find_action(date)
+        if action is None:
+            pos = self.society.get_agent_pos(self.agent_index)
+        else:
+            if action.type != 'move':
+                if i-1 in self.actions:
+                    action = self.actions[i-1]
+                else:
+                    action = None
+            if action is None:
+                pos = self.society.get_agent_pos(self.agent_index)
+            else:
+                if action.end_date < date:
+                    date = action.end_date
+                pos = action.pos(date)
         return pos
+    
+    def update(self, start_date: Date, end_date: Date) -> None:
+        recently_done = []
+        for action in self.current:
+            if action.end_date <= end_date:
+                action.do()
+                recently_done.append(action)
+        return recently_done
 
     @property
     def history(self):
@@ -76,67 +134,48 @@ class Queue(Object):
                 break
         return break_index
     
-    def find_actions(self, type='all'):
+    def filter_actions(self, type='all', current=None):
+        """
+        Filter and return the list of actions
+        """
         result = []
-        for action in self.action_list:
-            if isinstance(action, Move):
-                if type == 'move' or type == 'all':
-                    result.append(action)
-            elif isinstance(action, Trade):
-                if type == 'trade' or type == 'all':
-                    result.append(action)
+        if current is None:
+            actions = self.actions
+        elif current is True:
+            actions = self.current
+        elif current is False:
+            actions = self.history
+        for action in actions:
+            if type == 'all':
+                result.append(action)
+            elif type == 'move' and isinstance(action, Move):
+                result.append(action)
+            elif type == 'trade' and isinstance(action, Trade):
+                result.append(action)
         return result
     
-    def last_action(self, type=None):
+    def last_action(self, type='all'):
         """
-        Return last action from *self.actions* list
+        Return last action
         """
-
-        def find_last(type):
-            result = None
-            for i in range(len(self.actions)): # checks all actions
-            #for i in range(5): # checks last 5 actions
-                index = -i - 1
-                action = self.actions[index]
-                if action.type == type and action.done is False:
-                    result = action
-            return result
-        
         result = None
-        if type is None:
+        if type == 'all':
             result = self.actions[-1]
         else:
-            result = find_last(type)
+            actions = self.filter_actions(type)
+            result = actions[-1]
         return result
 
     @property
     def done(self):
         """
-        Is every action in *self.queue* already done?
+        Check if all the actions are completed
         """
         result = True
         for action in self.actions:
             if action.done is False:
                 result = False
                 break
-        return result
-
-    def is_done(self, date: Date):
-        """
-        Check if all the actions are completed
-        """
-        result = None
-        if self.is_empty():
-            result = True
-        else:
-            result_list = []
-            for action in self.action_list:
-                status = action.is_done(date)
-                result_list.append(status)
-            if False in result_list:
-                result = False
-            else:
-                result = True
         return result
     
     def to_dict(self) -> list:
@@ -146,11 +185,10 @@ class Queue(Object):
         return dictionary
     
     def from_dict(self, dictionary) -> None:
-        actions = []
+        self.actions = []
         for action_dictionary in dictionary:
             action = load_action(action_dictionary)
-            actions.append(action)
-        self.actions = actions
+            self.add(action)
 
 
 if __name__ == "__main__":

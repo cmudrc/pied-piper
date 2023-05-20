@@ -1,4 +1,4 @@
-from piperabm.environment.structures import Settlement, Road
+from piperabm.environment.infrastructure import Settlement, Road
 
 
 def load_structure(dictionary: dict):

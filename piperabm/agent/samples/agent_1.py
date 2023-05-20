@@ -1,4 +1,4 @@
-from piperabm.society.agent import Agent
+from piperabm.agent import Agent
 from piperabm.resource import Resource
 from piperabm.unit import Date
 

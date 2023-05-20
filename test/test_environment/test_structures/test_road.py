@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment.structures.road.samples import road_1
+from piperabm.environment.infrastructure.road.samples import road_1
 from piperabm.tools.symbols import SYMBOLS
 from piperabm.unit import Date
 

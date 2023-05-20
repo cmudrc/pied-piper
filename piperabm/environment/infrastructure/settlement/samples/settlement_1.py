@@ -1,15 +1,15 @@
 from copy import deepcopy
 
-from piperabm.environment.structures.settlement import Settlement
+from piperabm.environment.infrastructure.settlement import Settlement
 from piperabm.degradation.sudden.distributions.samples import distribution_0 as distribution
-from piperabm.boundary.point.samples import point_0 as boundary
+from piperabm.boundary.circular.samples import circular_0 as boundary
 from piperabm.unit import Date
 
 
 settlement = Settlement(
-    name="John's Home",
+    name="Peter's Home",
     boundary=deepcopy(boundary),
-    start_date=Date(2020, 1, 2),
+    start_date=Date(2020, 1, 4),
     sudden_degradation_dist=deepcopy(distribution)
 )
 

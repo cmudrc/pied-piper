@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.transporation import Transportation
-from piperabm.society.agent.config import Walk
+from piperabm.agent.config import Walk
 
 
 class TestTransportaionClass(unittest.TestCase):
