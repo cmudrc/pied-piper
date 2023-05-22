@@ -1,2 +1,2 @@
-from .move import Move
-from .trade import Trade
+from .move import MovementDecision
+from .trade import TradingDecision

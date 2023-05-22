@@ -66,11 +66,11 @@ class LongStructure(StructuralObject, Track):
         """
         result = None
         if mode == 'adjusted':
-            result = self._adjusted_length()
+            result = self.adjusted_length
         elif mode == 'actual':
-            result = self._actual_length()
+            result = self.actual_length
         elif mode == 'ideal':
-            result = self._ideal_length()
+            result = self.ideal_length
         return result
     
     def area(self, mode='adjusted'):
@@ -84,19 +84,9 @@ class LongStructure(StructuralObject, Track):
             width = self.boundary.shape.height
             result = length * width
         return result
-
-    def _actual_length(self):
-        """
-        Return actual distance between start and end points,
-        useful while reading real-world data
-        """
-        result = None
-        actual_length = self.actual_length
-        if actual_length is not None:
-            result = actual_length
-        return result
     
-    def _ideal_length(self):
+    @property
+    def ideal_length(self):
         """
         Return euclidean distance between start and end points,
         useful for visualizations
@@ -107,7 +97,8 @@ class LongStructure(StructuralObject, Track):
             result = boundary.shape.width
         return result
     
-    def _adjusted_length(self):
+    @property
+    def adjusted_length(self):
         """
         Return adjusted distance between start and end points,
         useful for calculations related to transportation
@@ -117,9 +108,9 @@ class LongStructure(StructuralObject, Track):
         if degradation_factor is None:
             degradation_factor = 1
         ''' euclidean distance '''
-        actual_length = self._actual_length()
+        actual_length = self.actual_length
         if actual_length is None:
-            actual_length = self._ideal_length()
+            actual_length = self.ideal_length
             if actual_length is None:
                 actual_length = 0
         ''' difficulty coefficient '''

@@ -122,7 +122,9 @@ class Agent(Object):
 
             ''' decide '''
             if self.alive is True:  
-                pass
+                self.brain.observe(self.index, self.environment, self.society)
+                actions = self.brain.decide()
+                self.queue.add(actions)
 
     def fuel_consumption_idle(self, duration) -> ResourceDelta:
         """

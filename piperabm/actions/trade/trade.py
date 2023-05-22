@@ -1,13 +1,19 @@
 from piperabm.unit import Date, DT
 from piperabm.tools import ElementExists
+from piperabm.actions.action import Action
 
 
-class Trade:
+class Trade(Action):
 
     def __init__(self, start_date: Date):
         self.start_date = start_date
         self.done = False
-        self.duration = DT(seconds=0)
+        duration = DT(seconds=0)
+        super().__init__(
+            start_date=start_date,
+            duration=duration
+        )
+        self.type = 'trade'
 
     '''
     def ready_for_trade(self, start_date: Date, end_date: Date):

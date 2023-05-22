@@ -18,7 +18,8 @@ class ToGraph:
             """
             Add edge to the graph
             """
-            self.G.add_edge(index, other_index)
+            object = self.get_edge_object(index, other_index)
+            self.G.add_edge(index, other_index, adjusted_length=object.adjusted_length)
 
         def refine_input(start_date, end_date):
             """

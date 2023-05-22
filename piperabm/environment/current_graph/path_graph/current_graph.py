@@ -19,17 +19,11 @@ class CurrentGraph(ToGraph, Query, Graphics):
         self.end_date = end_date
         super().__init__()
 
-    def to_active_graph(self):
-        """
-        Remove newely inactive elements from the current graph
-        """
-        return CurrentGraph(self.env, self.start_date, self.end_date)
-    
     def to_path_graph(self):
         """
         Convert the environment to PathGraph object
         """
-        return PathGraph(self.to_active_graph())
+        return PathGraph(self)
     
     def __str__(self):
         return str(self.G)

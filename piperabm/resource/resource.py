@@ -68,6 +68,22 @@ class Resource(Object):
         resource_delta.from_dict(new_dictionary)
         return resource_delta
     
+    @property
+    def source(self) -> ResourceDelta:
+        result = {}
+        for resource in self.db:
+            container = self.db[resource]
+            result[resource] = container.source
+        return ResourceDelta(result)
+
+    @property
+    def demand(self) -> ResourceDelta:
+        result = {}
+        for resource in self.db:
+            container = self.db[resource]
+            result[resource] = container.demand
+        return ResourceDelta(result)
+    
     def create_zeros(self, names: list):
         for name in names:
             self.create(name, amount=0)

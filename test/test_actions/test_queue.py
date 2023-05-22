@@ -2,9 +2,6 @@ import unittest
 from copy import deepcopy
 
 from piperabm.actions.queue import Queue
-#from piperabm.agent.samples import agent_0
-#from piperabm.environment.samples import environment_1
-#from piperabm.society import Society
 from piperabm.actions.move.samples import move_0
 from piperabm.actions.action import Action
 from piperabm.unit import Date
@@ -14,15 +11,6 @@ from piperabm.society.samples import society_2
 class TestQueueClass(unittest.TestCase):
 
     def setUp(self) -> None:
-        '''
-        env = deepcopy(environment_1)
-        society = Society(environment=env)
-        agent = deepcopy(agent_0)
-        society.add_agent_object(agent)
-        move = deepcopy(move_0)
-        agent.queue.add(move)
-        print(agent.society)
-        '''
         self.society = deepcopy(society_2)
         agent = self.society.get_agent_object(0)
         move = deepcopy(move_0)
@@ -43,25 +31,25 @@ class TestQueueClass(unittest.TestCase):
         self.assertEqual(agent.queue.end_date.second, 37)
 
     def test_break_index(self):
-        agent = self.society.get_agent_object(0)
+        agent = self.society.get_agent_object(0) # no actions
         self.assertEqual(agent.queue.break_index, 0)
 
         action = agent.queue(0)
-        action.done = True
+        action.done = True # action 0 is completed
         self.assertEqual(agent.queue.break_index, 1)
 
         action = Action()
-        agent.queue.add(action)
+        agent.queue.add(action) # action 1 is added
         self.assertEqual(agent.queue.break_index, 1)
 
         action = agent.queue(1)
-        action.done = True
+        action.done = True # action 1 is completed
         action = Action()
-        agent.queue.add(action)
+        agent.queue.add(action) # action 2 is added
         self.assertEqual(agent.queue.break_index, 2)
 
         action = agent.queue(2)
-        action.done = True
+        action.done = True # action 2 is completed
         self.assertEqual(agent.queue.break_index, 3)
 
     def test_pos(self):

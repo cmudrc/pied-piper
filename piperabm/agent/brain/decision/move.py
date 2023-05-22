@@ -1,15 +1,96 @@
 from piperabm.agent.brain.decision.decision import Decision
+from piperabm.actions import Move, Stay
+from piperabm.unit import DT
 
 
-class Move(Decision):
+class MovementDecision(Decision):
 
-    def observe(self, environment, society) -> dict:
-        """
-        Agent observe itself, environment and the society
-        """
-        observation = {}
-        print("NOT IMPLEMENTED YET")
-        return observation
-    
     def decide(self, observation: dict):
-        print("NOT IMPLEMENTED YET")
+        action = None
+        decision_go_or_stay = self.go_or_stay(observation)
+        if decision_go_or_stay == 'go':
+            action = self.where_to_go(observation)
+        elif decision_go_or_stay == 'stay':
+            action = self.how_long_stay(observation)
+        return action
+
+    def go_or_stay(self):
+        """
+        Should agent move to another location or stay?
+        """
+        result = None
+        path = self.find_best_destination()
+        pass
+
+    def find_best_destination(self, observation):
+        """
+        Where is the best suitable destination?
+        """
+        # all possible destinations
+        destinations = None
+        # sort destinations based on eucledian distance
+        destinations = []
+        scores = []
+        for destination in destinations:
+            score = self.destionation_score(observation, destination)
+            scores.append(score)
+        # sort destinations based on score
+        destinations = [destination for _, destination in sorted(zip(scores, destinations))]
+        path = destinations[0]
+        return path
+    
+    def destionation_score(self, observation, destination):
+        """
+        Calculate score of each destination
+        """
+        result = None
+        start_date = observation['start_date']
+        environment = observation['environment']
+        agent_index = observation['index']
+        agent = environment.society.get_agent_object(agent_index)
+        transportation = agent.transportation
+        path = self.find_path(destination)
+        action = Move(
+            start_date=start_date,
+            path=path,
+            transportation=transportation,
+            environment=environment,
+            agent_index=agent_index,
+        )
+        benefit = 0 ##############
+        result = benefit / action.total_fuel
+        return result
+
+    def where_to_go(self, observation):
+        """
+        Where should agent go next?
+        """
+        start_date = observation['start_date']
+        environment = observation['environment']
+        agent_index = observation['index']
+        agent = environment.society.get_agent_object(agent_index)
+        transportation = agent.transportation
+        path = self.find_best_destination()
+        action = Move(
+            start_date=start_date,
+            path=path,
+            transportation=transportation,
+            environment=environment,
+            agent_index=agent_index
+        )
+        return action
+
+    def how_long_stay(self, observation):
+        """
+        How long should agent stay?
+        """
+        start_date = observation['start_date']
+        environment = observation['environment']
+        agent_index = observation['index']
+        action = Stay(
+            start_date=start_date,
+            duration=DT(days=1),
+            environment=environment,
+            agent_index=agent_index
+        )
+        return action

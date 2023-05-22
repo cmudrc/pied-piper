@@ -1,8 +1,7 @@
 from copy import deepcopy
 
 from piperabm.unit import Date
-from piperabm.actions import Move
-from piperabm.agent.config import Walk
+from piperabm.actions import Stay
 from piperabm.environment.samples import environment_1
 
 
@@ -13,10 +12,8 @@ env.update(
     end_date=action_start_date
 )
 
-action = Move(
+action = Stay(
     start_date=action_start_date,
-    path=[(0, 2), (2, 1)],
-    transportation=Walk(),
     environment=env,
     agent_index=0
 )

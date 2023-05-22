@@ -23,23 +23,24 @@ class Move(Action):
         self.transportation = transportation
         self.path = path
         try:
-            duration = self.total_duration()
+            duration = self.total_duration
         except:
             duration = None
         super().__init__(
             start_date=start_date,
             duration=duration
         )
-        try:
-            self.fuel_consumption = self.total_fuel()
-        except:
-            self.fuel_consumption = None
+        #try:
+        #    self.fuel_consumption = self.total_fuel()
+        #except:
+        #    self.fuel_consumption = None
         self.done = False
         self.type = 'move'
 
     def get_track_object(self, track):
         return self.environment.get_edge_object(track[0], track[1])
 
+    @property
     def total_duration(self):
         """
         Calculate the duration for the movement
@@ -50,6 +51,7 @@ class Move(Action):
             total += structure.duration(self.transportation).total_seconds()
         return DT(seconds=total)
 
+    @property
     def total_fuel(self):
         """
         Calculate total fuel needed for the movement
@@ -74,7 +76,7 @@ class Move(Action):
     def current_track(self, date: Date):
         current_index = None
         current_elapsed = None
-        duration = self.total_duration() * self.progress(date)
+        duration = self.total_duration * self.progress(date)
         duration = duration.total_seconds()
         for index, track in enumerate(self.path):
             structure = self.get_track_object(track)

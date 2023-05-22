@@ -24,7 +24,7 @@ class TestMoveClass(unittest.TestCase):
             'water': 0.0004340893518518518,
             'energy': 0.0
         }
-        self.assertDictEqual(self.move.fuel_consumption.to_dict(), expected_result)
+        self.assertDictEqual(self.move.total_fuel.to_dict(), expected_result)
 
     def test_progress(self):
         duration = self.move.duration / 2

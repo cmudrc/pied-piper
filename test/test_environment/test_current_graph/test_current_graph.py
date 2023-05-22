@@ -5,7 +5,7 @@ from piperabm.environment.samples import environment_1
 from piperabm.unit import Date
 
 
-class TestEnvironmentCurrentClass(unittest.TestCase):
+class TestEnvironmentCurrentGraphClass(unittest.TestCase):
 
     def setUp(self):
         self.env = deepcopy(environment_1)

@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import Resource
+from piperabm.resource import Resource, ResourceDelta
 from piperabm.resource.samples import resource_0
 from piperabm.resource.samples import resource_delta_0
 
@@ -37,8 +37,24 @@ class TestResourceClass(unittest.TestCase):
 
     def test_to_resource_delta(self):
         resource_delta = self.resource.to_resource_delta()
-        expected_result = {'food': 6.0, 'water': 8.0, 'energy': 19.0}
-        self.assertDictEqual(resource_delta.to_dict(), expected_result)
+        expected_result = ResourceDelta(
+            {'food': 6.0, 'water': 8.0, 'energy': 19.0}
+        )
+        self.assertEqual(resource_delta, expected_result)
+
+    def test_source(self):
+        resource_delta = self.resource.source
+        expected_result = ResourceDelta(
+            {'food': 6.0, 'water': 8.0, 'energy': 19.0}
+        )
+        self.assertEqual(resource_delta, expected_result)
+
+    def test_demand(self):
+        resource_delta = self.resource.demand
+        expected_result = ResourceDelta(
+            {'food': 4.0, 'water': 12.0, 'energy': 6.0}
+        )
+        self.assertEqual(resource_delta, expected_result)
 
     def test_gt(self):
         self.assertTrue(self.resource > self.rate)

@@ -17,14 +17,18 @@ class Queue(Object):
 
     def add(self, action):
         """
-        Add new *action* to *self.actions*
+        Add action (or a list of actions) to *self.actions*
         """
-        ''' bindings '''
-        action.environment = self.environment
-        action.society = self.society
-        action.agent_index = self.agent_index
-        ''' add '''
-        self.actions.append(action)
+        if isinstance(action, list):
+            for a in action:
+                self.add(a)
+        else:
+            ''' bindings '''
+            action.environment = self.environment
+            action.society = self.society
+            action.agent_index = self.agent_index
+            ''' add '''
+            self.actions.append(action)
 
     @property
     def end_date(self):
@@ -46,18 +50,32 @@ class Queue(Object):
     def __call__(self, index: int):
         return self.actions[index]
     
-    def find_action(self, date: Date):
+    def find_action(self, date: Date, actions: list = None):
         """
         Find the action that is happening in *date*
         """
         object = None
         index = None
-        for i, action in enumerate(self.actions):
+        if actions is not None:
+            actions_list = actions
+        else:
+            actions_list = self.actions
+        for i, action in enumerate(actions_list):
             if action.is_current(date) is True:
                 object = action
                 index = i
                 break
         return index, object
+    
+    def find_closest(self, date: Date):
+        """
+        Find the closest action in time
+        """
+        actions = self.filter(date=date)
+        index, object = self.find_action(date, actions)
+        if object is None:
+            pass #######
+
 
     def pos(self, date: Date):
         """
@@ -88,6 +106,13 @@ class Queue(Object):
                 action.do()
                 recently_done.append(action)
         return recently_done
+
+    def filter(self, date: Date):
+        result = []
+        for action in self.actions:
+            if action.start_date <= date:
+                result.append(action)
+        return result
 
     @property
     def history(self):
