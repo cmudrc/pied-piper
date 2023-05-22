@@ -5,7 +5,11 @@ from piperabm.environment import Environment
 from piperabm.environment.samples import environment_0, environment_1
 from piperabm.agent.config import Walk
 from piperabm.unit import Date
-from piperabm.tools.symbols import SYMBOLS
+
+try:
+    from .test_environment_results import environment_0_serialized, environment_1_serialized
+except:
+    from test_environment_results import environment_0_serialized, environment_1_serialized
 
 
 class TestEnvironmentClass_0(unittest.TestCase):
@@ -15,29 +19,7 @@ class TestEnvironmentClass_0(unittest.TestCase):
 
     def test_dict(self):
         dictionary = self.env.to_dict()
-        expected_result = {
-            'edges': {},
-            'nodes': {0: {'pos': [-2, -2],
-                          'structure': {'active': True,
-                                        'boundary': {'shape': {'radius': 2.220446049250313e-16,
-                                                               'type': 'dot'}},
-                                        'end_date': None,
-                                        'name': "John's Home",
-                                        'progressive_degradation': {'formula_name': 'formula_01',
-                                                                    'usage_current': 0,
-                                                                    'usage_max': SYMBOLS['inf']},
-                                        'start_date': {'day': 2,
-                                                       'hour': 0,
-                                                       'minute': 0,
-                                                       'month': 1,
-                                                       'second': 0,
-                                                       'year': 2020},
-                                        'sudden_degradation': {'distribution': {'main': 864000.0,
-                                                                                'type': 'dirac '
-                                                                                'delta'},
-                                                               'unit_size': None},
-                                        'type': 'settlement'}}},
-            'type': 'environment'}
+        expected_result = environment_0_serialized
         self.maxDiff = None
         self.assertDictEqual(dictionary, expected_result)
         new_env = Environment()
@@ -106,96 +88,7 @@ class TestEnvironmentClass_1(unittest.TestCase):
     def test_dict(self):
         dictionary = self.env.to_dict()
         self.env.print()
-        expected_result = {'edges': {0: {'index_end': 2,
-                                         'structure': {'active': True,
-                                                       'actual_length': None,
-                                                       'boundary': {'shape': {'angle': 0.090659887200745,
-                                                                              'height': 2.220446049250313e-16,
-                                                                              'type': 'rectangle',
-                                                                              'width': 22.090722034374522}},
-                                                       'difficulty': 1,
-                                                       'end_date': None,
-                                                       'name': 'Halfway 0',
-                                                       'progressive_degradation': {'formula_name': 'formula_01',
-                                                                                   'usage_current': 0,
-                                                                                   'usage_max': SYMBOLS['inf']},
-                                                       'start_date': {'day': 2,
-                                                                      'hour': 0,
-                                                                      'minute': 0,
-                                                                      'month': 1,
-                                                                      'second': 0,
-                                                                      'year': 2020},
-                                                       'sudden_degradation': {'distribution': {'main': 864000.0,
-                                                                                               'type': 'dirac '
-                                                                                               'delta'},
-                                                                              'unit_size': None},
-                                                       'type': 'road'}},
-                                     1: {'index_end': 2,
-                                         'structure': {'active': True,
-                                                       'actual_length': None,
-                                                       'boundary': {'shape': {'angle': 1.5707963267948966,
-                                                                              'height': 2,
-                                                                              'type': 'rectangle',
-                                                                              'width': 20.0}},
-                                                       'difficulty': 1.5,
-                                                       'end_date': None,
-                                                       'name': 'Halfway 1',
-                                                       'progressive_degradation': {'formula_name': 'formula_01',
-                                                                                   'usage_current': 0,
-                                                                                   'usage_max': SYMBOLS['inf']},
-                                                       'start_date': {'day': 4,
-                                                                      'hour': 0,
-                                                                      'minute': 0,
-                                                                      'month': 1,
-                                                                      'second': 0,
-                                                                      'year': 2020},
-                                                       'sudden_degradation': {'distribution': {'main': 864000.0,
-                                                                                               'type': 'dirac '
-                                                                                               'delta'},
-                                                                              'unit_size': None},
-                                                       'type': 'road'}}},
-                           'nodes': {0: {'pos': [-2, -2],
-                                         'structure': {'active': True,
-                                                       'boundary': {'shape': {'radius': 2.220446049250313e-16,
-                                                                              'type': 'dot'}},
-                                                       'end_date': None,
-                                                       'name': "John's Home",
-                                                       'progressive_degradation': {'formula_name': 'formula_01',
-                                                                                   'usage_current': 0,
-                                                                                   'usage_max': SYMBOLS['inf']},
-                                                       'start_date': {'day': 2,
-                                                                      'hour': 0,
-                                                                      'minute': 0,
-                                                                      'month': 1,
-                                                                      'second': 0,
-                                                                      'year': 2020},
-                                                       'sudden_degradation': {'distribution': {'main': 864000.0,
-                                                                                               'type': 'dirac '
-                                                                                               'delta'},
-                                                                              'unit_size': None},
-                                                       'type': 'settlement'}},
-                                     1: {'pos': [20, 20],
-                                         'structure': {'active': True,
-                                                       'boundary': {'shape': {'radius': 5,
-                                                                              'type': 'circle'}},
-                                                       'end_date': None,
-                                                       'name': "Peter's Home",
-                                                       'progressive_degradation': {'formula_name': 'formula_01',
-                                                                                   'usage_current': 0,
-                                                                                   'usage_max': SYMBOLS['inf']},
-                                                       'start_date': {'day': 4,
-                                                                      'hour': 0,
-                                                                      'minute': 0,
-                                                                      'month': 1,
-                                                                      'second': 0,
-                                                                      'year': 2020},
-                                                       'sudden_degradation': {'distribution': {'main': 864000.0,
-                                                                                               'type': 'dirac '
-                                                                                               'delta'},
-                                                                              'unit_size': None},
-                                                       'type': 'settlement'}},
-                                     2: {'pos': [20, 0], 'structure': None}},
-                           'type': 'environment'}
+        expected_result = environment_1_serialized
         self.maxDiff = None
         self.assertDictEqual(dictionary, expected_result)
         new_env = Environment()

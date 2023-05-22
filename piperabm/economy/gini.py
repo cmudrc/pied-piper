@@ -20,17 +20,17 @@ def gini_coefficient(x):
 
 class GiniGenerator:
     
-    def __init__(self, gini_index: float, gdp_per_capita: float):
+    def __init__(self, gini_index: float, average: float):
         if gini_index >= 0 and gini_index <= 1:
             self.gini = gini_index
         else:
             raise ValueError
-        if gdp_per_capita > 0:
-            self.gdp_per_capita = gdp_per_capita
+        if average > 0:
+            self.average = average
         else:
             raise ValueError
         self.sigma = self.sigma_calculate(gini=gini_index)
-        self.mu = self.mu_calculate(mean=self.gdp_per_capita, sigma=self.sigma)
+        self.mu = self.mu_calculate(mean=self.average, sigma=self.sigma)
 
     def sigma_calculate(self, gini):
         return 2 * erfinv(gini)
@@ -83,16 +83,16 @@ if __name__ == "__main__":
 
     gini = gini_coefficient(income)
     gini = 0.5
-    gdp_per_capita = sum(income) / len(income)
+    average = sum(income) / len(income)
     g = GiniGenerator(
         gini_index=gini,
-        gdp_per_capita=gdp_per_capita
+        average=average
     )
     sample = g.generate(1000)
 
     #g.show(income)
     #g.show(sample)
     print(">>> input: ")
-    print(" " + "gini: " + str(gini) + ", " + "gdp_per_capita: " + str(gdp_per_capita))
+    print(" " + "gini: " + str(gini) + ", " + "average: " + str(average))
     print(">>> sample: ")
-    print(" " + "gini: " + str(gini_coefficient(sample)) + ", " + "gdp_per_capita: " + str(sum(sample) / len(sample)))
+    print(" " + "gini: " + str(gini_coefficient(sample)) + ", " + "average: " + str(sum(sample) / len(sample)))
