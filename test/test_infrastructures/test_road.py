@@ -20,7 +20,7 @@ class TestRoadClass(unittest.TestCase):
         self.assertEqual(length_adjusted, expected_result)
 
     def test_width(self):
-        width = self.road.width()
+        width = self.road.width
         self.assertEqual(width, 2)
 
     def test_update(self):

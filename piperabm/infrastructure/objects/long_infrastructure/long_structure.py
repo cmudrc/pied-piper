@@ -38,6 +38,7 @@ class LongStructure(Infrastructure, Track):
         self.difficulty = difficulty
         self.type = 'long structure'
 
+    @property
     def width(self):
         """
         Return width of the long structure (e.g. road)
