@@ -1,2 +1,2 @@
-from .node import Structure
-from .edge import LongStructure
+from .simple_infrastructure import Infrastructure
+from .long_infrastructure import LongStructure

@@ -10,7 +10,7 @@ class Query:
         """
         result = None
         if index in self.all_indexes():
-            result = self.env.get_node_object(index)
+            result = self.current_environment.get_node_object(index)
         return result
     
     def get_node_pos(self, index: int):
@@ -19,7 +19,7 @@ class Query:
         """
         result = None
         if index in self.all_indexes():
-            result = self.env.get_node_pos(index)
+            result = self.current_environment.get_node_pos(index)
         return result
     
     def get_edge_object(self, index_start: int, index_end: int):
@@ -29,7 +29,7 @@ class Query:
         result = None
         if index_start in self.all_indexes() and \
             index_end in self.all_indexes():
-            result = self.env.get_edge_object(index_start, index_end)
+            result = self.current_environment.get_edge_object(index_start, index_end)
         return result
     
     def get_edge_pos(self, index_start: int, index_end: int):
@@ -39,7 +39,7 @@ class Query:
         result = None
         if index_start in self.all_indexes() and \
             index_end in self.all_indexes():
-            result = self.env.get_edge_pos(index_start, index_end)
+            result = self.current_environment.get_edge_pos(index_start, index_end)
         return result
     
     def all_edges(self, type='all'):
@@ -72,7 +72,7 @@ class Query:
     
     def find_node(self, node):
         result = None
-        node_index = self.env.find_node(node)
+        node_index = self.current_environment.find_node(node)
         if node_index in self.all_indexes():
             result = node_index
         return result

@@ -1,10 +1,10 @@
-from piperabm.infrastructure.objects.object import StructuralObject
-from piperabm.infrastructure.objects.edge.track import Track
+from piperabm.infrastructure.objects.simple_infrastructure import Infrastructure
+from piperabm.infrastructure.objects.long_infrastructure.track import Track
 from piperabm.boundary import Rectangular
 from piperabm.unit import Date
 
 
-class LongStructure(StructuralObject, Track):
+class LongStructure(Infrastructure, Track):
 
     def __init__(
         self,

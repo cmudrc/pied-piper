@@ -6,10 +6,9 @@ from piperabm.degradation.sudden.distributions import Eternal
 from piperabm.degradation.progressive import ProgressiveDegradation
 from piperabm.degradation.progressive.formulas import Formula_01
 from piperabm.tools import ElementExists
-from copy import deepcopy
 
 
-class StructuralObject(Object):
+class Infrastructure(Object):
     """
     Represent a physical element
     """
@@ -32,7 +31,7 @@ class StructuralObject(Object):
         ''' identity '''
         self.name = name
         self.active = active
-        self.type = 'infrastructure object'
+        self.type = 'infrastructure'
 
         if start_date is None:
             start_date = Date.today()

@@ -1,8 +1,8 @@
-from piperabm.infrastructure.objects import Structure
+from piperabm.infrastructure.objects import Infrastructure
 from piperabm.unit import Date
 
 
-class Settlement(Structure):
+class Settlement(Infrastructure):
 
     def __init__(
         self,

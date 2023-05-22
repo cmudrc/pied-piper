@@ -1,10 +1,11 @@
 import networkx as nx
 
 from piperabm.environment.current_graph.path_graph.to_graph import ToGraph
-#from piperabm.environment.current_graph.path_graph.graphics import Graphics
+from piperabm.environment.current_graph.path_graph.query import Query
+from piperabm.environment.current_graph.path_graph.graphics import Graphics
 
-#, Query, Graphics
-class PathGraph(ToGraph):
+
+class PathGraph(ToGraph, Query, Graphics):
 
     def __init__(self, current_environment):
         self.current_environment = current_environment.to_active_graph()
@@ -21,5 +22,4 @@ if __name__ == "__main__":
     end_date = Date(2020, 1, 10)
     environment.update(start_date, end_date)
     path_graph = environment.current.to_path_graph()
-    print(path_graph.G)
-    #path_graph.show()
+    path_graph.show()
