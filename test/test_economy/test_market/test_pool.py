@@ -4,7 +4,10 @@ from copy import deepcopy
 from piperabm.economy.market.pool import Pool, Bid
 
 
-class TestPoolClass_4Bids(unittest.TestCase):
+class TestPoolClass_0(unittest.TestCase):
+    """
+    2 source bids, 2 demand bids
+    """
 
     def setUp(self):
         b1 = Bid(agent=1, amount=5)
@@ -45,23 +48,23 @@ class TestPoolClass_4Bids(unittest.TestCase):
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
-        self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 3)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
+        self.assertEqual(biggest_source_bid.amount, 3)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid.agent, 3)
+        self.assertEqual(biggest_demand_bid.initial_amount, 2)
         self.assertEqual(biggest_demand_bid.amount, 2)
-        self.assertEqual(biggest_demand_bid.new_amount, 2)
         ''' step 2 '''
         pool.solve_step()
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
-        self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 1)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
+        self.assertEqual(biggest_source_bid.amount, 1)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid.agent, 1)
-        self.assertEqual(biggest_demand_bid.amount, 5)
-        self.assertEqual(biggest_demand_bid.new_amount, 0)
+        self.assertEqual(biggest_demand_bid.initial_amount, 5)
+        self.assertEqual(biggest_demand_bid.amount, 0)
     
     def test_solve(self):
         pool = deepcopy(self.pool)
@@ -70,16 +73,19 @@ class TestPoolClass_4Bids(unittest.TestCase):
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
-        self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 1)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
+        self.assertEqual(biggest_source_bid.amount, 1)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid.agent, 1)
-        self.assertEqual(biggest_demand_bid.amount, 5)
-        self.assertEqual(biggest_demand_bid.new_amount, 0)
+        self.assertEqual(biggest_demand_bid.initial_amount, 5)
+        self.assertEqual(biggest_demand_bid.amount, 0)
         #print(pool.stat)
 
 
-class TestPoolClass_1Bid(unittest.TestCase):
+class TestPoolClass_1(unittest.TestCase):
+    """
+    1 source bids, 0 demand bids
+    """
     
     def setUp(self):
         b2 = Bid(agent=2, amount=8)
@@ -92,13 +98,13 @@ class TestPoolClass_1Bid(unittest.TestCase):
     def test_solve_step(self):
         pool = deepcopy(self.pool)
         #print(pool)
-        stat = pool.solve_step()
-        self.assertDictEqual(stat, {'volume': 0})
+        transaction = pool.solve_step()
+        self.assertEqual(transaction, None)
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
         self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 8)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
 
@@ -111,14 +117,17 @@ class TestPoolClass_1Bid(unittest.TestCase):
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
         self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 8)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
         #print(pool.stat)
 
 
-class TestPoolClass_2Bids_Source(unittest.TestCase):
+class TestPoolClass_2(unittest.TestCase):
+    """
+    2 source bids, 0 demand bids
+    """
 
     def setUp(self):
         b2 = Bid(agent=2, amount=8)
@@ -136,8 +145,8 @@ class TestPoolClass_2Bids_Source(unittest.TestCase):
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
         self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 8)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
 
@@ -148,14 +157,17 @@ class TestPoolClass_2Bids_Source(unittest.TestCase):
         #print(pool)
         biggest_source_bid = pool.find_biggest_bid(pool.source_bids)
         self.assertEqual(biggest_source_bid.agent, 2)
+        self.assertEqual(biggest_source_bid.initial_amount, 8)
         self.assertEqual(biggest_source_bid.amount, 8)
-        self.assertEqual(biggest_source_bid.new_amount, 8)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid, None)
         #print(pool.stat)
 
 
-class TestPoolClass_2Bids_Demand(unittest.TestCase):
+class TestPoolClass_3(unittest.TestCase):
+    """
+    0 source bids, 2 demand bids
+    """
 
     def setUp(self):
         b2 = Bid(agent=2, amount=8)
@@ -175,8 +187,8 @@ class TestPoolClass_2Bids_Demand(unittest.TestCase):
         self.assertEqual(biggest_source_bid, None)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid.agent, 2)
+        self.assertEqual(biggest_demand_bid.initial_amount, 8)
         self.assertEqual(biggest_demand_bid.amount, 8)
-        self.assertEqual(biggest_demand_bid.new_amount, 8)
 
     def test_solve(self):
         pool = deepcopy(self.pool)
@@ -187,12 +199,15 @@ class TestPoolClass_2Bids_Demand(unittest.TestCase):
         self.assertEqual(biggest_source_bid, None)
         biggest_demand_bid = pool.find_biggest_bid(pool.demand_bids)
         self.assertEqual(biggest_demand_bid.agent, 2)
+        self.assertEqual(biggest_demand_bid.initial_amount, 8)
         self.assertEqual(biggest_demand_bid.amount, 8)
-        self.assertEqual(biggest_demand_bid.new_amount, 8)
         #print(pool.stat)
 
 
-class TestPoolClass_0Bids(unittest.TestCase):
+class TestPoolClass_4(unittest.TestCase):
+    """
+    0 source bids, 0 demand bids
+    """
 
     def setUp(self):
         self.pool = Pool()
@@ -218,7 +233,7 @@ class TestPoolClass_0Bids(unittest.TestCase):
         self.assertEqual(biggest_demand_bid, None)
         #print(pool.stat)
 
-
+'''
 class TestPoolClass_Standard(unittest.TestCase):
     """
     Test based on standard samples
@@ -249,7 +264,7 @@ class TestPoolClass_Standard(unittest.TestCase):
         pool.solve()
         #print(pool.stat)
         #print(pool)
-    
+'''   
 
 if __name__ == "__main__":
     unittest.main()

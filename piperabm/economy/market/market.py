@@ -4,9 +4,9 @@ from piperabm.economy.market.solver import Solver
 
 class Market(Solver):
 
-    def __init__(self, exchange):
+    def __init__(self, exchange_rate):
         self.players = []
-        self.exchange = exchange
+        self.exchange = exchange_rate
         super().__init__()
 
     def add(self, players):

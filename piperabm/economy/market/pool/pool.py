@@ -11,51 +11,7 @@ class Pool(Solver, Query):
     def __init__(self):
         self.source_bids = []
         self.demand_bids = []
-        self.total_volume = 0
         super().__init__()
-
-    def all_participants(self):
-        """
-        Return all participants in the pool
-        """
-        sellers = []
-        buyers = []
-        for bid in self.source_bids:
-            sellers.append(bid.agent)
-        for bid in self.demand_bids:
-            buyers.append(bid.agent)
-        return sellers, buyers
-
-    def add_source(self, bids):
-        """
-        Add new bids to the source bids
-        """
-        if not isinstance(bids, list):
-            bids = [bids]
-        for bid in bids:
-            self.source_bids.append(bid)
-
-    def add_demand(self, bid):
-        """
-        Add new bids to the demand bids
-        """
-        if isinstance(bid, list):
-            for item in bid:
-                self.demand_bids.append(item)
-        else:
-            self.demand_bids.append(bid)
-
-    def size(self):
-        """
-        Calculate total source and totam demand values within the pool
-        """
-        size_source = 0
-        for bid in self.source_bids:
-            size_source += bid.new_amount
-        size_demand = 0
-        for bid in self.demand_bids:
-            size_demand += bid.new_amount
-        return size_source, size_demand
 
     def __str__(self):
         txt_source = '## sources: \n'
@@ -68,6 +24,7 @@ class Pool(Solver, Query):
                 txt_demand += bid.__str__() + '\n'
         return txt_source + '\n' + txt_demand
     
+    '''
     def __eq__(self, other):
         result = True
         for bid_s in self.source_bids:
@@ -79,6 +36,7 @@ class Pool(Solver, Query):
                 if not bid_s == bid_o:
                     result = False
         return result
+    '''
 
 
 if __name__ == "__main__":
@@ -92,7 +50,9 @@ if __name__ == "__main__":
     p.add_demand([b1, b3])
     print("_________ initial __________")
     print(p)
-    p.solve()
+    stat = p.solve()
     print("__________ final ___________")
     print(p)
+    print("__________ stat ___________")
+    print(stat)
     

@@ -1,6 +1,7 @@
 class Query:
     """
-    Contains methods for Pool class
+    *** Extends Pool Class ***
+    Contain methods for query bids
     """
 
     def _find_source_bid(self, agent):
@@ -52,6 +53,49 @@ class Query:
                 if result is None:
                     result = bid
                 else:
-                    if bid.new_amount > result.new_amount:
+                    if bid.amount > result.amount:
                         result = bid
         return result
+    
+    def all_participants(self):
+        """
+        Return all participants in the pool
+        """
+        sellers = []
+        buyers = []
+        for bid in self.source_bids:
+            sellers.append(bid.agent)
+        for bid in self.demand_bids:
+            buyers.append(bid.agent)
+        return sellers, buyers
+
+    def add_source(self, bids):
+        """
+        Add new bids to the source bids
+        """
+        if not isinstance(bids, list):
+            bids = [bids]
+        for bid in bids:
+            self.source_bids.append(bid)
+
+    def add_demand(self, bid):
+        """
+        Add new bids to the demand bids
+        """
+        if isinstance(bid, list):
+            for item in bid:
+                self.demand_bids.append(item)
+        else:
+            self.demand_bids.append(bid)
+
+    def size(self):
+        """
+        Calculate total source and totam demand values within the pool
+        """
+        size_source = 0
+        for bid in self.source_bids:
+            size_source += bid.amount
+        size_demand = 0
+        for bid in self.demand_bids:
+            size_demand += bid.amount
+        return size_source, size_demand

@@ -8,8 +8,8 @@ class Bid:
 
     def __init__(self, agent: int, amount: float):
         self.agent = agent
-        self.amount = amount
-        self.new_amount = deepcopy(amount)
+        self.initial_amount = amount
+        self.amount = deepcopy(amount)
 
     def to_delta(self, exchange_rate):
         return self.delta_amount(), self.delta_wallet(exchange_rate)
@@ -18,7 +18,7 @@ class Bid:
         """
         Return diff between starting state and current state of bid
         """
-        return self.new_amount - self.amount
+        return self.amount - self.initial_amount
 
     def delta_wallet(self, exchange_rate):
         """
@@ -27,15 +27,16 @@ class Bid:
         return self.delta_amount() * exchange_rate
 
     def __str__(self):
-        txt = '>>> agent: ' + str(self.agent) + ' amount: ' + str(self.amount) + ' new_amount: ' + str(self.new_amount)
+        txt = '>>> agent: ' + str(self.agent) + ' amount: ' + str(self.initial_amount) + ' new_amount: ' + str(self.amount)
         return txt
 
     def __eq__(self, other):
         result = False
-        if self.agent == other.agent and self.new_amount == other.new_amount:
+        if self.agent == other.agent and self.amount == other.new_amount:
             result = True
         return result
     
 
 if __name__ == "__main__":
     b = Bid(agent=1, amount=5)
+    print(b)
