@@ -1,12 +1,19 @@
 import networkx as nx
 
+from piperabm.object import Object
+from piperabm.resource import Resource, ResourceDelta
 
-class ExchangeRate:
+
+class ExchangeRate(Object):
     """
     Save exchange rates and calculate (target = rate * source)
     """
     def __init__(self):
         self.G = nx.DiGraph()
+        super().__init__()
+
+    def __call__(self, source, target):
+        return self.rate(source, target)
 
     def add(self, source, target, rate):
         """
@@ -25,11 +32,40 @@ class ExchangeRate:
             if i != 0:
                 rate *= self.G[nodes[i-1]][nodes[i]]['rate']
         return rate
+    
+    def value(self, resource, target='wealth'):
+        if isinstance(resource, Resource):
+            resource = resource.to_resource_delta()
+        if not isinstance(resource, ResourceDelta):
+            raise ValueError
+        result = {}
+        for name in resource.all_names():
+            result[name] = resource(name) * self.rate(source=name, target=target)
+        return result
+    
+    def to_dict(self) -> list:
+        G_prime = nx.Graph(self.G)
+        dictionary = {}
+        for edge in G_prime.edges():
+            rate = self.rate(source=edge[0], target=edge[1])
+            dictionary[edge[0]] = {
+                'to': edge[1],
+                'rate': rate,
+            }
+        return dictionary
+    
+    def from_dict(self, dictionary: list) -> None:
+        self.G = nx.DiGraph() # reset
+        for item in dictionary:
+            source = item
+            target = dictionary[source]['to']
+            rate = dictionary[source]['rate']
+            self.add(source, target, rate)
 
 
 if __name__ == "__main__":
-    exchange = ExchangeRate()
-    exchange.add('food', 'wealth', 10)
-    exchange.add('water', 'wealth', 2)
-    rate = exchange.rate('food', 'water')
+    exchange_rate = ExchangeRate()
+    exchange_rate.add('food', 'wealth', 10)
+    exchange_rate.add('water', 'wealth', 2)
+    rate = exchange_rate('food', 'water')
     print(rate)

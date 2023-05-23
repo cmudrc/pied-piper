@@ -15,6 +15,17 @@ class Player:
         self.new_demand = deepcopy(demand)
         self.new_wallet = deepcopy(wallet)
 
+    def to_value(self, resource, exchange_rate):
+        """
+        convert resource (source or demand) to its value
+        """
+        result = {}
+        for name in resource:
+            result[name] = resource[name] * exchange_rate(name, 'wealth')
+        return result
+
+    
+
     '''
     def sell(self, resource, volume, cost):
         self.new_source[resource] -= volume

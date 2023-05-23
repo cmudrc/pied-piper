@@ -8,4 +8,4 @@ exchange_rate.add('energy', 'wealth', 4)
 
 
 if __name__ == "__main__":
-    print(exchange_rate.rate('food', 'water'))
+    print(exchange_rate('food', 'water'))
