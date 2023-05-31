@@ -36,6 +36,8 @@ class ExchangeRate(Object):
     def value(self, resource, target='wealth'):
         if isinstance(resource, Resource):
             resource = resource.to_resource_delta()
+        elif isinstance(resource, dict):
+            resource = ResourceDelta(resource)
         if not isinstance(resource, ResourceDelta):
             raise ValueError
         result = {}

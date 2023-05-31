@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from piperabm.resource import ResourceDelta
 from piperabm.resource.samples import resource_delta_0
+from piperabm.economy.exchange_rate.samples import exchange_rate_0
 
 
 class TestResourceDeltaClass(unittest.TestCase):
@@ -32,6 +33,11 @@ class TestResourceDeltaClass(unittest.TestCase):
 
     def test_is_all_zero(self):
         self.assertFalse(self.rate.is_all_zero())
+
+    def test_value(self):
+        value = self.rate.value(exchange_rate_0)
+        expected_result = {'food': 60.0, 'water': 8.0, 'energy': 12.0}
+        self.assertDictEqual(value, expected_result)
 
     def test_gt(self):
         delta = ResourceDelta({'energy': 2, 'food': 5, 'water': 3})

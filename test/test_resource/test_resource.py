@@ -4,6 +4,7 @@ from copy import deepcopy
 from piperabm.resource import Resource, ResourceDelta
 from piperabm.resource.samples import resource_0
 from piperabm.resource.samples import resource_delta_0
+from piperabm.economy.exchange_rate.samples import exchange_rate_0
 
 
 class TestResourceClass(unittest.TestCase):
@@ -55,6 +56,11 @@ class TestResourceClass(unittest.TestCase):
             {'food': 4.0, 'water': 12.0, 'energy': 6.0}
         )
         self.assertEqual(resource_delta, expected_result)
+
+    def test_value(self):
+        value = self.resource.value(exchange_rate_0)
+        expected_result = {'food': 60.0, 'water': 16.0, 'energy': 76.0}
+        self.assertDictEqual(value, expected_result)
 
     def test_gt(self):
         self.assertTrue(self.resource > self.rate)

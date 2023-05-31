@@ -54,6 +54,9 @@ class ResourceDelta(Object):
             return False
         else:
             return True
+        
+    def value(self, exchange_rate, target: str='wealth'):
+        return exchange_rate.value(self, target)
     
     def __call__(self, name):
         return self.get_amount(name)

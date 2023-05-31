@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.economy.exchange_rate import ExchangeRate
 from piperabm.economy.market import Player, Market
 
-from piperabm.society.agent.samples import agent_0, agent_1
+from piperabm.agent.samples import agent_0, agent_1
 from piperabm.economy.exchange_rate.samples import exchange_rate_0 as exchange
 
 

@@ -68,6 +68,9 @@ class Resource(Object):
         resource_delta.from_dict(new_dictionary)
         return resource_delta
     
+    def value(self, exchange_rate, target: str='wealth'):
+        return exchange_rate.value(self, target)
+    
     @property
     def source(self) -> ResourceDelta:
         result = {}
