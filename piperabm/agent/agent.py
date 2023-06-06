@@ -103,6 +103,14 @@ class Agent(Object):
         else:
             result = False
         return result
+    
+    @property
+    def source(self):
+        return self.resource.source
+    
+    @property
+    def demand(self):
+        return self.resource.demand
 
     def update(self, start_date, end_date) -> None:
         """

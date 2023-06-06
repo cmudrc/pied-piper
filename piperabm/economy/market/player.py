@@ -24,7 +24,7 @@ class Player:
             result[name] = resource[name] * exchange_rate(name, 'wealth')
         return result
 
-    
+
 
     '''
     def sell(self, resource, volume, cost):
@@ -37,7 +37,7 @@ class Player:
         self.new_demand[resource] -= volume
         self.new_wallet -= cost
     '''
-    
+    '''
     def to_delta(self, resource_object=True):
         delta_source = {}
         for name in self.source:
@@ -51,7 +51,7 @@ class Player:
             delta_source = Resource(delta_source)
             delta_demand = Resource(delta_demand)
         return delta_source, delta_demand, delta_wallet
-
+    '''
     def actual_demand(self, exchange_rate):
         """
         When the agent does not have enough money, they can't have a demand more than a certain point

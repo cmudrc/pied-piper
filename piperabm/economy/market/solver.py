@@ -1,5 +1,4 @@
-try: from .pool import Pool, Bid
-except: from pool import Pool, Bid
+from piperabm.economy.market.pool import Pool, Bid
 
 
 class Solver:
