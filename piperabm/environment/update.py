@@ -13,11 +13,14 @@ class Update:
         """
         ''' filter current elements '''
         self.to_current_graph(start_date, end_date)
-        ''' update current elements '''
+        
+        ''' update current nodes '''
         for index in self.current.all_indexes():
             object = self.get_node_object(index)
             if object is not None:
                 object.update(start_date, end_date)
+                
+        ''' update current edges '''
         for edge in self.current.all_edges():
             object = self.get_edge_object(edge[0], edge[1])
             if object is not None:

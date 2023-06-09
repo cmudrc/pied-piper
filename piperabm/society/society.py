@@ -29,6 +29,17 @@ class Society(Object, Add, Search, Query, Update):
         self.type = 'society'
         #self.log = Log(prefix='SOCIETY', indentation_depth=1)
 
+    def current_node(self, agent_index):
+        result = None
+        pos = self.get_agent_pos(agent_index)
+        for index in self.environment.all_indexes():
+            object = self.environment.get_node_object(index)
+            is_in = object.boundary.is_in(pos)
+            if is_in is True:
+                result = index
+                break
+        return result
+
     def to_current_graph(self, start_date=None, end_date=None):
         """
         Convert the environment to "link_graph" object

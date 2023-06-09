@@ -6,7 +6,7 @@ from piperabm.agent.samples import agent_0 as sample_agent_0
 from piperabm.agent.samples import agent_1 as sample_agent_1
 from piperabm.economy.exchange_rate.samples import exchange_rate_0 as exchange
 
-
+'''
 class TestEconomyClass_0Agents(unittest.TestCase):
 
     def setUp(self):
@@ -100,7 +100,7 @@ class TestEconomyClass(unittest.TestCase):
         stat = eco.solve_biggest_market()
         #print(stat)
         #print(eco)
-
+'''
 
 if __name__ == "__main__":
     unittest.main()

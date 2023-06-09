@@ -17,7 +17,7 @@ class Brain(Object):
         """
         observation = {
             'index': agent_index,
-            #'map': PathGraph(environment.current),
+            'map': environment.current.to_path_graph(),
             'self': None,
             'others': None,
         }

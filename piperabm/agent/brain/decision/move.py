@@ -26,16 +26,22 @@ class MovementDecision(Decision):
         """
         Where is the best suitable destination?
         """
-        # all possible destinations
-        destinations = None
-        # sort destinations based on eucledian distance
-        destinations = []
+        ''' list all possible destinations '''
+        path_graph = observation['map']
+        destinations = path_graph.all_indexes()
+        ''' remove current node '''
+        society = observation['society']
+        index = observation['index']
+        current_node = society.current_node(index)
+        destinations.remove(current_node)
+        ''' score destinations '''
         scores = []
         for destination in destinations:
             score = self.destionation_score(observation, destination)
             scores.append(score)
-        # sort destinations based on score
+        ''' sort based on score '''
         destinations = [destination for _, destination in sorted(zip(scores, destinations))]
+        ''' pick the best destination '''
         path = destinations[0]
         return path
     
