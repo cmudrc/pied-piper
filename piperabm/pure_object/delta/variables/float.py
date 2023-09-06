@@ -3,7 +3,8 @@ class DeltaFloat:
     Create and apply delta for float (and integer) variable
     """
 
-    def create_float_delta(main, other):
+    def create(main, other):
+        """ Create delta for float variables """
         delta = None
         if other is not None:
             if main is None:
@@ -12,7 +13,8 @@ class DeltaFloat:
                 delta = other - main
         return delta
 
-    def apply_float_delta(main, delta):
+    def apply(main, delta):
+        """ Apply delta to float variables """
         other = None
         if delta is not None:
             if main is None:
@@ -27,5 +29,5 @@ class DeltaFloat:
 if __name__ == "__main__":
     main = 2
     other = 5
-    result = DeltaFloat.create_float_delta(main, other)
+    result = DeltaFloat.create(main, other)
     print(result)

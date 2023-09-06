@@ -1,0 +1,1 @@
+from .pure_object import PureObject

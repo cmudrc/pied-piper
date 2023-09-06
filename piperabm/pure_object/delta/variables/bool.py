@@ -3,7 +3,8 @@ class DeltaBool:
     Create and apply delta for boolean variable
     """
 
-    def create_bool_delta(main: bool, other: bool) -> bool:
+    def create(main: bool, other: bool) -> bool:
+        """ Create delta for boolean variables """
         result = None
         if main is not None:
             if other is not None:
@@ -13,7 +14,8 @@ class DeltaBool:
             result = other
         return result
     
-    def apply_bool_delta(main: bool, delta: bool) -> bool:        
+    def apply(main: bool, delta: bool) -> bool:
+        """ Create delta to boolean variables """       
         result = None
         if delta is not None:
             if main is not None:
@@ -43,5 +45,5 @@ def inverse_bool(main: bool):
 if __name__ == "__main__":
     main = True
     other = False
-    result = DeltaBool.create_bool_delta(other, main)
+    result = DeltaBool.create(other, main)
     print(result)

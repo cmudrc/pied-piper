@@ -3,7 +3,8 @@ class DeltaStr:
     Create and apply delta for string variable
     """
 
-    def create_str_delta(main: str, other: str) -> str:
+    def create(main: str, other: str) -> str:
+        """ Create delta for string variables """
         delta = None
         if main is not None:
             if other != main:
@@ -12,7 +13,8 @@ class DeltaStr:
             delta = other
         return delta
     
-    def apply_str_delta(main: str, delta: str) -> str:
+    def apply(main: str, delta: str) -> str:
+        """ Apply delta to string variables """
         other = None
         if delta is not None:
             other = delta
@@ -24,5 +26,5 @@ class DeltaStr:
 if __name__ == "__main__":
     main = 'a'
     other = 'b'
-    result = DeltaStr.create_str_delta(main, other)
+    result = DeltaStr.create(main, other)
     print(result)

@@ -1,10 +1,10 @@
 from pprint import pprint
 
 from piperabm.tools.symbols import SYMBOLS
-from piperabm.object.delta import Delta
+from piperabm.pure_object.delta import Delta
 
 
-class Object:
+class PureObject:
     """
     Pure object for the model
     """
@@ -47,7 +47,7 @@ class Object:
         """
         if isinstance(other, dict):
             dictionary = self.to_dict()
-            dictionary_new = Delta.apply_delta(dictionary, other)
+            dictionary_new = Delta.apply(dictionary, other)
             self.from_dict(dictionary_new)
             '''
             for key in other:
@@ -65,9 +65,8 @@ class Object:
         if not isinstance(other, dict):
             other = other.to_dict()
         dictionary = self.to_dict()
-        delta = Delta.create_delta(other, dictionary)
+        delta = Delta.create(other, dictionary)
         return delta
-
         '''
         for key in other_dict:
             if hasattr(self, key):
