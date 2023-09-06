@@ -1,5 +1,5 @@
-from piperabm.environment.search.node import Node
-from piperabm.environment.search.edge import Edge
+from piperabm.environment_old.search.node import Node
+from piperabm.environment_old.search.edge import Edge
 
 
 class Search(Node, Edge):

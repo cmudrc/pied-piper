@@ -9,6 +9,7 @@ class LongStructure(Infrastructure, Track):
     def __init__(
         self,
         name: str = '',
+        pos: list = None,
         active: bool = True,
         start_date: Date = None,
         end_date: Date = None,
@@ -24,6 +25,7 @@ class LongStructure(Infrastructure, Track):
         boundary = Rectangular(height=width)
         super().__init__(
             name=name,
+            pos=pos,
             boundary=boundary,
             active=active,
             start_date=start_date,

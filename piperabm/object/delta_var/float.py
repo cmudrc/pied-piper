@@ -1,4 +1,7 @@
 class DeltaFloat:
+    """
+    Create and apply delta for float (and integer) variable
+    """
 
     def create_float_delta(main, other):
         delta = None

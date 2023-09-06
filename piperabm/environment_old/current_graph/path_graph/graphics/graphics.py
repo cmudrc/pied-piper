@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from piperabm.environment.current_graph.path_graph.graphics.style import style
+from piperabm.environment_old.current_graph.path_graph.graphics.style import style
 
 
 class Graphics:

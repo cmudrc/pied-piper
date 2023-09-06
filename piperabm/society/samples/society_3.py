@@ -1,5 +1,5 @@
 from piperabm.unit import Date, DT
-from piperabm.environment.samples import env_1 as env
+from piperabm.environment_old.samples import env_1 as env
 from piperabm import Society
 from piperabm.economy import Exchange
 from piperabm import Resource

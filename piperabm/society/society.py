@@ -4,7 +4,7 @@ from piperabm.object import Object
 from piperabm.society.add import Add
 from piperabm.society.search import Search
 from piperabm.society.query import Query
-from piperabm.environment import Environment
+from piperabm.environment_old import Environment
 from piperabm.agent import Agent
 from piperabm.society.update import Update
 from piperabm.society.relationship.load import load_relationship

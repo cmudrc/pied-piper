@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment.samples import environment_0
+from piperabm.environment_old.samples import environment_0
 from piperabm.infrastructure.settlement.samples import settlement_0
 
 

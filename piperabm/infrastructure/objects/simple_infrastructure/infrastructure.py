@@ -16,6 +16,7 @@ class Infrastructure(Object):
     def __init__(
         self,
         name: str = '',
+        pos: list = None,
         boundary=None,
         active: bool = True,
         start_date: Date = None,
@@ -30,6 +31,7 @@ class Infrastructure(Object):
 
         ''' identity '''
         self.name = name
+        self.pos = pos
         self.active = active
         self.type = 'infrastructure'
 
@@ -145,21 +147,21 @@ class Infrastructure(Object):
             time_end=end_date
         )
     
-    def is_in(self, pos: list, center: list=None, local: bool=True) -> bool:
-        result = None
+    def is_in(self, pos: list, local: bool=True) -> bool:
         boundary = self.boundary
-        if boundary is not None:
+        if boundary is None or self.pos is None or not isinstance(self.pos, list):
+            raise ValueError
+        else:
             if local:
-                result = boundary.is_in(pos, center=[0, 0])
+                center = [0, 0]
             else:
-                if center is None or not isinstance(center, list):
-                    raise ValueError
-                result = boundary.is_in(pos, center=center)
-        return result
+                center = self.pos
+        return boundary.is_in(pos, center)
     
     def to_dict(self) -> dict:
         return {
             'name': self.name,
+            'pos': self.pos,
             'boundary': self.boundary.to_dict(),
             'active': self.active,
             'start_date': date_to_dict(self.start_date),
@@ -171,6 +173,7 @@ class Infrastructure(Object):
     
     def from_dict(self, dictionary: dict) -> None:
         self.name = dictionary['name']
+        self.pos = dictionary['pos']
         boundary = Boundary()
         boundary.from_dict(dictionary['boundary'])
         self.boundary = boundary
@@ -187,5 +190,5 @@ class Infrastructure(Object):
 
 
 if __name__ == "__main__":
-    object = Object()
+    object = Infrastructure()
     print(object)

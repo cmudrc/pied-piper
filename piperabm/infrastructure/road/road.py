@@ -21,6 +21,7 @@ class Road(LongStructure):
     ):
         super().__init__(
             name=name,
+            pos=None,
             active=active,
             start_date=start_date,
             end_date=end_date,

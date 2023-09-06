@@ -1,4 +1,7 @@
 class DeltaBool:
+    """
+    Create and apply delta for boolean variable
+    """
 
     def create_bool_delta(main: bool, other: bool) -> bool:
         result = None

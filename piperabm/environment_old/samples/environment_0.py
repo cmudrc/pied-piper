@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from piperabm.environment import Environment
+from piperabm.environment_old import Environment
 from piperabm.infrastructure.settlement.samples import settlement_0
 
 

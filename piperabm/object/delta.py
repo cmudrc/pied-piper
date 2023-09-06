@@ -2,6 +2,9 @@ from piperabm.object.delta_var import DeltaBool, DeltaFloat, DeltaStr
 
 
 class Delta:
+    """
+    Create and apply delta for variables
+    """
 
     def create_delta(main, other):
         result = None
@@ -91,6 +94,7 @@ class Delta:
 
 
 def list_to_dict(input: list) -> dict:
+    """ Convert list to dictionary """
     result = {}
     for i, item in enumerate(input):
         result[i] = item
@@ -98,6 +102,7 @@ def list_to_dict(input: list) -> dict:
 
 
 def dict_to_list(input: dict) -> list:
+    """ Convert dictionary to list """
     result = []
     for i in input:
         result.append(input[i])

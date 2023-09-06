@@ -1,5 +1,5 @@
-from piperabm.environment.add.node import Node
-from piperabm.environment.add.edge import Edge
+from piperabm.environment_old.add.node import Node
+from piperabm.environment_old.add.edge import Edge
 
 
 class Add(Node, Edge):

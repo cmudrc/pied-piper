@@ -7,6 +7,7 @@ class Settlement(Infrastructure):
     def __init__(
         self,
         name: str = '',
+        pos: list = None,
         boundary=None,
         active=True,
         start_date: Date = None,
@@ -19,6 +20,7 @@ class Settlement(Infrastructure):
     ):
         super().__init__(
             name=name,
+            pos=pos,
             boundary=boundary,
             active=active,
             start_date=start_date,

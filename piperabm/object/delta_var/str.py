@@ -1,4 +1,7 @@
 class DeltaStr:
+    """
+    Create and apply delta for string variable
+    """
 
     def create_str_delta(main: str, other: str) -> str:
         delta = None

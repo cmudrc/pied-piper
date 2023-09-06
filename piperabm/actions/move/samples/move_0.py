@@ -3,7 +3,7 @@ from copy import deepcopy
 from piperabm.unit import Date
 from piperabm.actions import Move
 from piperabm.agent.config import Walk
-from piperabm.environment.samples import environment_1
+from piperabm.environment_old.samples import environment_1
 
 
 env = deepcopy(environment_1)

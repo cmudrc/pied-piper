@@ -1,7 +1,7 @@
 import numpy as np
 
 from piperabm.society import Society
-from piperabm.environment import Environment
+from piperabm.environment_old import Environment
 from piperabm.unit import DT, Date
 from piperabm.log import Log
 from piperabm.measure import Measures

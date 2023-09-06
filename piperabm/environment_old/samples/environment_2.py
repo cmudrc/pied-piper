@@ -1,4 +1,4 @@
-from piperabm.environment import Environment
+from piperabm.environment_old import Environment
 from piperabm.unit import Date, DT
 from piperabm.degradation.sudden.distributions import DiracDelta
     

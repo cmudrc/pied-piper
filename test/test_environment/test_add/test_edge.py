@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment import Environment
+from piperabm.environment_old import Environment
 from piperabm.infrastructure.road.samples import road_0
 from piperabm.infrastructure.settlement.samples import settlement_0, settlement_1
 from piperabm.boundary.rectangular import Rectangular
