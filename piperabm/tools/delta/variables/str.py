@@ -4,7 +4,7 @@ class DeltaStr:
     """
 
     def create(main: str, other: str) -> str:
-        """ Create delta for string variables """
+        """ Create delta for string variable """
         delta = None
         if main is not None:
             if other != main:
@@ -14,7 +14,7 @@ class DeltaStr:
         return delta
     
     def apply(main: str, delta: str) -> str:
-        """ Apply delta to string variables """
+        """ Apply delta to string variable """
         other = None
         if delta is not None:
             other = delta

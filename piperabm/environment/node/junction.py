@@ -5,7 +5,7 @@ class Junction(Object):
 
     def __init__(
             self,
-            id: int,
+            id: str = '',
             name: str = '',
             pos: list = [0, 0]
         ):
@@ -15,11 +15,17 @@ class Junction(Object):
             pos=pos
         )
         self.type = 'junction'
+    
+    def serialize(self) -> dict:
+        dictionary = {}
+        dictionary['id'] = self.id
+        dictionary['name'] = self.name
+        dictionary['pos'] = self.pos
 
 
 if __name__ == "__main__":
-    junction = Junction(
-        id=1,
+    node = Junction(
+        id='1',
         name='square',
         pos=[0, 0]
     )

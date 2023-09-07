@@ -4,7 +4,7 @@ class DeltaFloat:
     """
 
     def create(main, other):
-        """ Create delta for float variables """
+        """ Create delta for float variable """
         delta = None
         if other is not None:
             if main is None:
@@ -14,7 +14,7 @@ class DeltaFloat:
         return delta
 
     def apply(main, delta):
-        """ Apply delta to float variables """
+        """ Apply delta to float variable """
         other = None
         if delta is not None:
             if main is None:

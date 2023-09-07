@@ -4,7 +4,7 @@ class DeltaBool:
     """
 
     def create(main: bool, other: bool) -> bool:
-        """ Create delta for boolean variables """
+        """ Create delta for boolean variable """
         result = None
         if main is not None:
             if other is not None:
@@ -15,7 +15,7 @@ class DeltaBool:
         return result
     
     def apply(main: bool, delta: bool) -> bool:
-        """ Create delta to boolean variables """       
+        """ Create delta to boolean variable """       
         result = None
         if delta is not None:
             if main is not None:

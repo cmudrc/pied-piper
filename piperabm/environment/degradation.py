@@ -9,10 +9,12 @@ class Degradation:
         self.current = current
 
     def add(self, amount: int = 0):
+        """ Add usage """
         self.current += amount
 
     @property
     def factor(self):
+        """ Calculate degradation factor """
         return self.current / self.total
 
 

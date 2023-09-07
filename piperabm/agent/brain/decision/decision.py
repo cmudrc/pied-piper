@@ -1,7 +1,7 @@
-from piperabm.object import Object
+from piperabm.pure_object import PureObject
 
 
-class Decision(Object):
+class Decision(PureObject):
     
     def decide(self, observation: dict):
         print("NOT IMPLEMENTED YET")
