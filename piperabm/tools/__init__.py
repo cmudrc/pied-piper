@@ -1,2 +1,4 @@
 from .existance import ElementExists
-from .kde import KDE
+from .point_to_point_distance import euclidean_distance
+from .line_intersecting_circle import line_intersecting_circle
+from .line_intersecting_line import line_intersecting_line

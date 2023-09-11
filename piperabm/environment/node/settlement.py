@@ -32,6 +32,7 @@ class Settlement(Junction):
         dictionary['date_start'] = '' #
         dictionary['date_end'] = '' #
         dictionary['degradation'] = '' #
+        return dictionary
 
 
 if __name__ == "__main__":

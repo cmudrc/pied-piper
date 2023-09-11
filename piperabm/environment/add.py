@@ -1,8 +1,18 @@
 class Add:
 
-    def add(self, new_item):
+    def add(self, new_items):
+        if isinstance(new_items, list):
+            self.add_multiple(new_items)
+        else:
+            self.add_single(new_items)
+
+    def add_single(self, new_item):
         if self.validate(new_item) is True:
             self.items[new_item.id] = new_item
+        
+    def add_multiple(self, new_items: list):
+        for new_item in new_items:
+            self.add_single(new_item)
 
 
 class Validate:

@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.tools.coordinate.distance import euclidean_distance
+from piperabm.tools.distance import euclidean_distance
 
 
 class TestRotateFunction(unittest.TestCase):

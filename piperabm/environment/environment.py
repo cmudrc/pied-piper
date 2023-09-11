@@ -19,12 +19,16 @@ class Environment(
 if __name__ == '__main__':
     from piperabm.environment import Settlement, Junction
 
-    s_1 = Settlement(
+    settlement = Settlement(
         id='1',
-        name='settlement 1',
+        name='sample settlement',
         pos=[0, 0],
     )
+    junction = Junction(
+        id='2',
+        name='sample junction',
+        pos=[1, 1],
+    )
     env = Environment()
-    env.add(s_1)
-    #print(env.items['1'])
-    #print(env.get_item_by_id('1'))
+    env.add([settlement, junction])
+    print(env.get_item_by_id('1'))

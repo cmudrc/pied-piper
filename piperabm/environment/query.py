@@ -13,7 +13,7 @@ class Query:
         """ Get item as object by its id """
         result = None
         if input in self.items:
-            result = self.items[input]
+            result = self.items.get(input)
         return result
     
     def get_items_by_ids(self, input: list) -> list:
