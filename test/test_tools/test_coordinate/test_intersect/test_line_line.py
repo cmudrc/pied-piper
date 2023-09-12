@@ -1,9 +1,9 @@
 import unittest
 
-from piperabm.tools import line_intersecting_line
+from piperabm.tools import intersect_line_line
 
 
-class TestSymbols(unittest.TestCase):
+class TestLineLineFunction(unittest.TestCase):
 
     def test_case_0(self):
         """ Normal intersection """
@@ -11,7 +11,7 @@ class TestSymbols(unittest.TestCase):
         line_1_point_2 = [2, 2]
         line_2_point_1 = [0, 2]
         line_2_point_2 = [2, 0]
-        result = line_intersecting_line(
+        result = intersect_line_line(
             line_1_point_1,
             line_1_point_2,
             line_2_point_1,
@@ -25,7 +25,7 @@ class TestSymbols(unittest.TestCase):
         line_1_point_2 = [1, 2]
         line_2_point_1 = [0, 1]
         line_2_point_2 = [2, 1]
-        result = line_intersecting_line(
+        result = intersect_line_line(
             line_1_point_1,
             line_1_point_2,
             line_2_point_1,
@@ -39,7 +39,7 @@ class TestSymbols(unittest.TestCase):
         line_1_point_2 = [1, 0.5]
         line_2_point_1 = [0, 1]
         line_2_point_2 = [0.5, 1]
-        result = line_intersecting_line(
+        result = intersect_line_line(
             line_1_point_1,
             line_1_point_2,
             line_2_point_1,
@@ -53,7 +53,7 @@ class TestSymbols(unittest.TestCase):
         line_1_point_2 = [2, 0]
         line_2_point_1 = [0, 2]
         line_2_point_2 = [2, 2]
-        result = line_intersecting_line(
+        result = intersect_line_line(
             line_1_point_1,
             line_1_point_2,
             line_2_point_1,

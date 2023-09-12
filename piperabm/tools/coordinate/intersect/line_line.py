@@ -1,17 +1,22 @@
+'''
+Source: Computer Graphics by F.S. Hill
+'''
+
 import numpy as np
 
-from piperabm.tools import euclidean_distance
+from piperabm.tools.coordinate.distance import distance_point_to_point
 
-'''
-Source Computer Graphics by F.S. Hill
-'''
 
-def line_intersecting_line(
+def intersect_line_line(
         line_1_point_1: list,
         line_1_point_2: list,
         line_2_point_1: list,
         line_2_point_2: list
 ):
+    """
+    Calculate intersecting point between two line segments
+    """
+
     def perp(a):
         b = np.empty_like(a)
         b[0] = -a[1]
@@ -37,9 +42,9 @@ def line_intersecting_line(
         intersection = (numerator / denominator.astype(float)) * delta_line_2 + line_2_point_1
     
     if intersection is not None: # check whether intersection is within the segments
-        distance_1 = euclidean_distance(line_1_point_1, intersection)
-        distance_2 = euclidean_distance(line_1_point_2, intersection)
-        total_distance = euclidean_distance(line_1_point_1, line_1_point_2)
+        distance_1 = distance_point_to_point(line_1_point_1, intersection)
+        distance_2 = distance_point_to_point(line_1_point_2, intersection)
+        total_distance = distance_point_to_point(line_1_point_1, line_1_point_2)
         if distance_1 + distance_2 != total_distance:
             intersection = None
     return intersection
@@ -50,4 +55,5 @@ if __name__ == '__main__':
     line_1_point_2 = [1, 2]
     line_2_point_1 = [0, 1]
     line_2_point_2 = [2, 1]
-    print(line_intersecting_line(line_1_point_1, line_1_point_2, line_2_point_1, line_2_point_2))
+    point = intersect_line_line(line_1_point_1, line_1_point_2, line_2_point_1, line_2_point_2)
+    print(point)

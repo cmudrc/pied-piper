@@ -1,5 +1,5 @@
-from .distance import euclidean_distance, point_to_line_distance
-from .intersect import line_intersecting_line, line_intersecting_circle
+from .distance import distance_point_to_point, distance_point_to_line
+from .intersect import intersect_line_circle, intersect_line_line
 
 from .move import move_coordinate, move_point
 from .rotate import rotate_coordinate, rotate_point

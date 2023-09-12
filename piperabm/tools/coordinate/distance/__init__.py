@@ -1,2 +1,2 @@
-from .point_to_point_distance import euclidean_distance
-from .point_to_line_distance import point_to_line_distance
+from .distance_point_to_point import distance_point_to_point
+from .distance_point_to_line import distance_point_to_line

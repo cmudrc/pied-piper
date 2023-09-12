@@ -1,4 +1,4 @@
 from .existance import ElementExists
-from .point_to_point_distance import euclidean_distance
-from .line_intersecting_circle import line_intersecting_circle
-from .line_intersecting_line import line_intersecting_line
+from .coordinate import distance_point_to_point, distance_point_to_line
+from .coordinate import intersect_line_circle
+from .coordinate import intersect_line_line
