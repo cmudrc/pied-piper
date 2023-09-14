@@ -1,9 +1,9 @@
 import unittest
 
-from piperabm.object.delta.variables.float import DeltaFloat
+from piperabm.object.delta.simple_variables.float import DeltaFloat
 
 
-class TestFloatDeltaClass(unittest.TestCase):
+class TestDeltaFloatClass(unittest.TestCase):
 
     def test_create(self):
         var_old = 2
@@ -38,5 +38,5 @@ class TestFloatDeltaClass(unittest.TestCase):
         self.assertEqual(new_var, 3) 
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

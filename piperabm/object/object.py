@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from piperabm.tools.symbols import SYMBOLS
-from piperabm.tools.delta import Delta
+from piperabm.object.delta import Delta
 
 
 class PureObject:

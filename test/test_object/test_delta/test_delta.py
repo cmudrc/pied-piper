@@ -1,10 +1,10 @@
 import unittest
 
 from piperabm.object.delta import Delta
-from piperabm.object.delta import list_to_dict, dict_to_list
+from piperabm.object.delta.delta import DeltaList, DeltaDict
 
 
-class TestDictDeltaClass(unittest.TestCase):
+class TestDeltaDictClass(unittest.TestCase):
 
     def test_create_delta(self):
         var_old = {
@@ -37,7 +37,7 @@ class TestDictDeltaClass(unittest.TestCase):
                 }
             }
         }
-        delta = Delta.create_delta(var_old, var_new)
+        delta = Delta.create(var_old, var_new)
         expected_result = {
             'float': 2,
             'bool': True,
@@ -87,7 +87,7 @@ class TestDictDeltaClass(unittest.TestCase):
                 }
             }
         }
-        var_new = Delta.apply_delta(var_old, delta)
+        var_new = DeltaDict.apply(var_old, delta)
         expected_result = {
             'float': 3,
             'bool': True,
@@ -118,7 +118,7 @@ class TestDictDeltaClass(unittest.TestCase):
                 'str': 'Peter',
             }
         }
-        var_new = Delta.apply_delta(var_old, delta)
+        var_new = Delta.apply(var_old, delta)
         self.assertDictEqual(var_new, delta)
 
         var_old = {
@@ -132,24 +132,41 @@ class TestDictDeltaClass(unittest.TestCase):
             }
         }
         delta = None
-        var_new = Delta.apply_delta(var_old, delta)
+        var_new = Delta.apply(var_old, delta)
         self.assertDictEqual(var_new, var_old)
 
 
-class TestListDeltaClass(unittest.TestCase):
+class TestDeltaListClass(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.pos_old = [1, 1]
+        self.pos_new = [2, 3]
+        self.delta = [1, 2]
+    
+    def test_create_delta(self):
+        delta = DeltaList.create(self.pos_old, self.pos_new)
+        self.assertListEqual(delta, self.delta)
+
+    def test_apply_delta(self):
+        pos_new = DeltaList.apply(self.pos_old, self.delta)
+        self.assertListEqual(pos_new, self.pos_new)
+
+
+class TestDeltaListClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.list_old = [3, True, 'Peter']
         self.list_new = [2, False, 'John']
-        self.delta = {0: -1, 1: True, 2: 'John'}
+        #self.delta = {0: -1, 1: False, 2: 'John'}
+        self.delta = [-1, False, 'John']
     
     def test_create_delta(self):
-        delta = Delta.create_list_delta(self.list_old, self.list_new)
-        self.assertDictEqual(delta, self.delta)
+        delta = DeltaList.create(self.list_old, self.list_new)
+        self.assertListEqual(delta, self.delta)
 
     def test_apply_delta(self):
-        list_new = Delta.apply_list_delta(self.list_old, self.delta)
-        print(list_new)
+        list_new = DeltaList.apply(self.list_old, self.delta)
+        self.assertListEqual(list_new, self.list_new)
 
 
 class TestListDictConversion(unittest.TestCase):
@@ -159,14 +176,14 @@ class TestListDictConversion(unittest.TestCase):
         self.dict = {0: 3, 1: True, 2: 'Peter'}
     
     def test_list_to_dict(self):
-        dict = list_to_dict(self.list)
+        dict = DeltaList.list_to_dict(self.list)
         self.assertDictEqual(dict, self.dict)
 
     def test_dict_to_list(self):
-        list = dict_to_list(self.dict)
+        list = DeltaList.dict_to_list(self.dict)
         self.assertListEqual(list, self.list)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
     

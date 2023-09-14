@@ -1,9 +1,9 @@
 import unittest
 
-from piperabm.object.delta.variables.bool import DeltaBool
+from piperabm.object.delta.simple_variables.bool import DeltaBool
 
 
-class TestBoolDeltaClass(unittest.TestCase):
+class TestDeltaBoolClass(unittest.TestCase):
     
     def test_create(self):
         var_old = True
@@ -14,7 +14,7 @@ class TestBoolDeltaClass(unittest.TestCase):
         var_old = True
         var_new = False
         delta = DeltaBool.create(var_old, var_new)
-        self.assertTrue(delta)
+        self.assertFalse(delta)
 
         var_old = False
         var_new = True
@@ -50,12 +50,12 @@ class TestBoolDeltaClass(unittest.TestCase):
         var_old = True
         delta = True
         var_new = DeltaBool.apply(var_old, delta)
-        self.assertFalse(var_new)
+        self.assertTrue(var_new)
 
         var_old = True
         delta = False
         var_new = DeltaBool.apply(var_old, delta)
-        self.assertTrue(var_new)
+        self.assertFalse(var_new)
 
         var_old = False
         delta = True
@@ -88,5 +88,5 @@ class TestBoolDeltaClass(unittest.TestCase):
         self.assertFalse(var_new)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

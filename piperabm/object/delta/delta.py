@@ -1,6 +1,6 @@
-from piperabm.tools.delta.variables.bool import DeltaBool
-from piperabm.tools.delta.variables.float import DeltaFloat
-from piperabm.tools.delta.variables.str import DeltaStr
+from piperabm.object.delta.simple_variables.bool import DeltaBool
+from piperabm.object.delta.simple_variables.float import DeltaFloat
+from piperabm.object.delta.simple_variables.str import DeltaStr
 
 
 class Delta:
@@ -34,7 +34,7 @@ class Delta:
             result = DeltaStr.apply(main, delta)
         elif isinstance(main, dict) or isinstance(delta, dict):
             result = DeltaDict.apply(main, delta)
-        elif isinstance(main, list) or isinstance(delta, dict):
+        elif isinstance(main, list) or isinstance(delta, list):
             result = DeltaList.apply(main, delta)
         return result
 
@@ -59,7 +59,7 @@ class DeltaDict:
                             delta[key] = delta_val
                 if len(delta) == 0:
                     delta = None
-        else:
+        else:  # when *main* is None
             delta = other
         return delta
 
@@ -76,7 +76,7 @@ class DeltaDict:
                     else:
                         new_val = delta_val
                     other[key] = new_val
-        else:
+        else:  # when *main* is None
             other = delta
         return other
     
@@ -94,22 +94,27 @@ class DeltaList:
             if other is not None:
                 main_dict = DeltaList.list_to_dict(main)
                 other_dict = DeltaList.list_to_dict(other)
-                delta = DeltaDict.create(main_dict, other_dict)
+                delta_dict = DeltaDict.create(main_dict, other_dict)
+                delta = DeltaList.dict_to_list(delta_dict)
             else:
                 delta = main
         else:
             delta = other
         return delta
     
-    def apply(main: list, delta: dict) -> list:
+    def apply(main: list, delta: list) -> list:
         """ Apply delta to list variable """
+        if delta == []: delta = None  # empty and None are the same
         if main is not None:
-            other = main
+            #other = main
             if delta is not None:
-                pass
-            else:
+                delta_dict = DeltaList.list_to_dict(delta)
+                main_dict = DeltaList.list_to_dict(main)
+                other_dict = DeltaDict.apply(main_dict, delta_dict)
+                other = DeltaList.dict_to_list(other_dict)
+            else:  # when *delta* is None
                 other = main
-        else:
+        else:  # when *main* is None
             other = delta
         return other
     
@@ -128,8 +133,7 @@ class DeltaList:
         return result
 
 
-if __name__ == "__main__":
-    
+if __name__ == '__main__':
     main = {
         'd': {
             'a': 'a',
