@@ -31,6 +31,12 @@ class Environment:
             result = False
         return result
 
+    def add(self, object):
+        if object.category == 'node':
+            self.add_node(object)
+        elif object.category == 'edge':
+            self.add_edge(object)
+
     def add_node(
             self,
             object

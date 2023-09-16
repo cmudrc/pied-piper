@@ -1,6 +1,7 @@
 from piperabm.object import PureObject
 from piperabm.environment.items.degradation import Degradation
 from piperabm.time import Date, date_serialize
+from piperabm.tools.coordinate.distance import distance_point_to_point
 
 
 class Road(PureObject):
@@ -8,33 +9,86 @@ class Road(PureObject):
     def __init__(
             self,
             name: str = '',
-            pos: list = [0, 0],
             date_start: Date = Date.today(),
             date_end: Date = None,
+            length_actual: float = None,
+            roughness: float = 1,
             degradation = Degradation()
         ):
-        self.index = None
+        self.environment = None  # to access environment information
+        self.index_1 = None
+        self.index_2 = None
         self.name = name
-        self.pos = pos
         self.date_start = date_start
         self.date_end = date_end
+        self.length_actual = length_actual
+        self.roughness = roughness
         self.degradation = degradation
-        self.type = 'settlement'
+        self.category = 'edge'
+        self.type = 'road'
 
     def serialize(self) -> dict:
         dictionary = {}
-        dictionary['index'] = self.index
+        dictionary['index_1'] = self.index_1
+        dictionary['index_2'] = self.index_2
         dictionary['name'] = self.name
-        dictionary['pos'] = self.pos
         dictionary['date_start'] = date_serialize(self.date_start)
         dictionary['date_end'] = date_serialize(self.date_end)
-        dictionary['degradation'] = '' #
+        dictionary['length_actual'] = self.length_actual
+        dictionary['roughness'] = self.roughness
+        dictionary['degradation'] = self.degradation.serialize()
+        dictionary['category'] = self.category
+        dictionary['type'] = self.type
         return dictionary
+    
+    @property
+    def pos_1(self):
+        """ Return pos of index_1 """
+        result = None
+        if self.environment is not None:
+            item = self.environment.get_node_object(self.index_1)
+            result = item.pos
+        return result
+    
+    @property
+    def pos_2(self):
+        """ Return pos of index_2 """
+        result = None
+        if self.environment is not None:
+            item = self.environment.get_node_object(self.index_2)
+            result = item.pos
+        return result
+    
+    @property
+    def length_linear(self):
+        """ Eucledian distance between two ends of the edge """
+        result = None
+        if self.environment is not None:
+            result = distance_point_to_point(self.pos_1, self.pos_2)
+        return result
+    
+    @property
+    def length(self):
+        """ Compare and return the most appropriate definition of length """
+        result = None
+        linear = self.length_linear
+        actual = self.length_actual
+        if linear is not None:
+            if actual is not None:
+                if actual > linear:
+                    result = actual
+                else:
+                    result = linear
+            else:  # when actual is None
+                result = linear
+        else:
+            if actual is not None:
+                result = actual
+        return result
 
 
 if __name__ == "__main__":
     item = Road(
-        name='road',
-        pos=[0, 0]
+        name='road'
     )
     print(item)

@@ -19,6 +19,7 @@ class Settlement(PureObject):
         self.date_start = date_start
         self.date_end = date_end
         self.degradation = degradation
+        self.category = 'node'
         self.type = 'settlement'
 
     def serialize(self) -> dict:
@@ -28,7 +29,9 @@ class Settlement(PureObject):
         dictionary['pos'] = self.pos
         dictionary['date_start'] = date_serialize(self.date_start)
         dictionary['date_end'] = date_serialize(self.date_end)
-        dictionary['degradation'] = '' #
+        dictionary['degradation'] = self.degradation.serialize
+        dictionary['category'] = self.category
+        dictionary['type'] = self.type
         return dictionary
 
 

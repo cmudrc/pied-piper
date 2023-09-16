@@ -11,6 +11,7 @@ class Junction(PureObject):
         self.index = None
         self.name = name
         self.pos = pos
+        self.category = 'node'
         self.type = 'junction'
 
     def serialize(self) -> dict:
@@ -18,6 +19,8 @@ class Junction(PureObject):
         dictionary['index'] = self.index
         dictionary['name'] = self.name
         dictionary['pos'] = self.pos
+        dictionary['category'] = self.category
+        dictionary['type'] = self.type
         return dictionary
 
 

@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.environment import Environment
-from piperabm.environment.items import Junction, Settlement
+from piperabm.environment.items import Junction, Settlement, Road
 from piperabm.time import Date
 
 

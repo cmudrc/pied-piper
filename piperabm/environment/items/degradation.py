@@ -1,10 +1,14 @@
-class Degradation:
+from piperabm.object import PureObject
+
+
+class Degradation(PureObject):
 
     def __init__(
         self,
-        total: int = float('inf'),
-        current: int = 0
+        total: float = float('inf'),
+        current: float = 0
     ):
+        super().__init__()
         self.total = total
         self.current = current
 
@@ -16,6 +20,12 @@ class Degradation:
     def factor(self):
         """ Calculate degradation factor """
         return self.current / self.total
+    
+    def serialize(self) -> dict:
+        dictionary = {}
+        dictionary['current'] = self.current
+        dictionary['total'] = self.total
+        return dictionary
 
 
 if __name__ == "__main__":
