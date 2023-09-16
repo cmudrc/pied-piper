@@ -1,1 +1,0 @@
-from .point_0 import point as point_0

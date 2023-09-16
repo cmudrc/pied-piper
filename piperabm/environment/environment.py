@@ -1,34 +1,88 @@
-from piperabm.object import PureObject
-from piperabm.environment.add import Add, Validate
-from piperabm.environment.query import Query, Search, Filter
+import networkx as nx
+import uuid
+
+from piperabm.tools.coordinate import distance_point_to_point
 
 
-class Environment(
-    PureObject,
-    Add,
-    Validate,
-    Query,
-    Search,
-    Filter
-):
+class Environment:
 
     def __init__(self):
-        self.items = {}
+        self.G = nx.Graph()
+        self.society = None  # used for binding
+        self.proximity_radius = 0.1  # distance less than this amount is equal to zero
+        self.type = 'environment'
+
+    def check_node_node_interception(self, new_node_object, all_nodes: list):
+        # check interception with other nodes
+        result = None
+        proximity = []
+        new_pos = new_node_object.pos
+        for node_index in all_nodes:
+            node_object = self.get_node_object(node_index)
+            node_pos = node_object.pos
+            distance = distance_point_to_point(new_pos, node_pos)
+            if distance < self.proximity_radius:
+                proximity.append(True)
+            else:
+                proximity.append(False)
+        if True in proximity:
+            result = True
+        else:
+            result = False
+        return result
+
+    def add_node(
+            self,
+            object
+        ):
+        all_nodes = self.all_nodes()
+        nodes_interception = self.check_node_node_interception(object, all_nodes)
+        if nodes_interception is False:
+            object.index = self.new_id()
+            self.G.add_node(
+                object.index,
+                object=object
+            )
+
+    def add_edge(
+            self,
+            index_1: int,
+            index_2: int,
+            object
+        ):
+        self.G.add_edge(
+            index_1,
+            index_2,
+            object
+        )
+
+    def new_id(self) -> int:
+        return uuid.uuid4().int
+    
+    def get_node_object(self, index: int):
+        result = None
+        if self.G.has_node(index):
+            node = self.G.nodes[index] 
+            result = node['object']
+        return result
+    
+    def get_edge_object(self, index_1: int, index_2: int):
+        result = None
+        if self.G.has_edge(index_1, index_2):
+            edge = self.G.edges[index_1, index_2]
+            result = edge['object']
+        return result
+    
+    def all_nodes(self):
+        all = list(self.G.nodes())
+        return all
 
 
 if __name__ == '__main__':
-    from piperabm.environment import Settlement, Junction
+    from items import Junction
 
-    settlement = Settlement(
-        id='1',
-        name='sample settlement',
-        pos=[0, 0],
-    )
-    junction = Junction(
-        id='2',
-        name='sample junction',
-        pos=[1, 1],
-    )
     env = Environment()
-    env.add([settlement, junction])
-    print(env.get_item_by_id('1'))
+    item_1 = Junction(name='sample', pos=[0, 0])
+    env.add_node(item_1)
+    print(env.all_nodes())
+    
