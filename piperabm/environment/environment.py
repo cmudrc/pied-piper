@@ -1,7 +1,9 @@
 import networkx as nx
+import numpy as np
 import uuid
 
-from piperabm.tools.coordinate import distance_point_to_point
+from piperabm.environment.items import Junction
+from piperabm.tools.coordinate import distance_point_to_point, distance_point_to_line
 
 
 class Environment:
@@ -12,60 +14,82 @@ class Environment:
         self.proximity_radius = 0.1  # distance less than this amount is equal to zero
         self.type = 'environment'
 
-    def check_node_node_interception(self, new_node_object, all_nodes: list):
-        # check interception with other nodes
+    def add(self, object):
+        """ Add new item """
         result = None
-        proximity = []
-        new_pos = new_node_object.pos
-        for node_index in all_nodes:
-            node_object = self.get_node_object(node_index)
-            node_pos = node_object.pos
-            distance = distance_point_to_point(new_pos, node_pos)
-            if distance < self.proximity_radius:
-                proximity.append(True)
-            else:
-                proximity.append(False)
-        if True in proximity:
-            result = True
-        else:
-            result = False
+        if object.category == 'node':
+            result = self.add_node(object)
+        elif object.category == 'edge':
+            result = self.add_edge(object)
         return result
 
-    def add(self, object):
-        if object.category == 'node':
-            self.add_node(object)
-        elif object.category == 'edge':
-            self.add_edge(object)
-
-    def add_node(
-            self,
-            object
-        ):
-        all_nodes = self.all_nodes()
-        nodes_interception = self.check_node_node_interception(object, all_nodes)
-        if nodes_interception is False:
-            object.index = self.new_id()
+    def add_node(self, object):
+        """ Add new node and return the index """
+        nodes_distance = self.filter_nodes_by_distance(pos=object.pos)
+        if len(nodes_distance) == 0:  # create new
+            index = self.new_id()
+            object.index = index
             self.G.add_node(
                 object.index,
                 object=object
             )
+        else:  # return currently available node index
+            distance, index = self.find_nearest_node(pos=object.pos)
+        return index
 
-    def add_edge(
-            self,
-            index_1: int,
-            index_2: int,
-            object
-        ):
+    def add_edge(self, object):
+        """ Add new edge """
+        junction_1 = Junction(pos=object.pos_1)
+        junction_2 = Junction(pos=object.pos_2)
+        index_1 = self.add_node(junction_1)
+        index_2 = self.add_node(junction_2)
         self.G.add_edge(
             index_1,
             index_2,
-            object
+            object=object
         )
 
     def new_id(self) -> int:
+        """ Generate a new unique integer """
         return uuid.uuid4().int
+
+    def calculate_nodes_distance(self, pos: list):
+        """ Calculate nodes distance from pos """
+        result = []  # list of [distance, index]
+        for node_index in self.all_nodes():
+            item = self.get_node_object(node_index)
+            distance = distance_point_to_point(pos, item.pos)
+            result.append([distance, node_index])
+        return result
+
+    def sort_nodes_by_distance(self, pos: list):
+        """ Sort all nodes based on their distance from pos """
+        nodes_distance = self.calculate_nodes_distance(pos)
+        return [[distance, index] for distance, index in sorted(nodes_distance)]
+    
+    def filter_nodes_by_distance(self, pos: list):
+        """ Filter nodes closer than *self.proximity_radius* """
+        result = []  # list of [distance, index]
+        nodes_distance = self.sort_nodes_by_distance(pos)
+        for element in nodes_distance:
+            distance = element[0]
+            node_index = element[1]
+            if distance < self.proximity_radius:
+                result.append([distance, node_index])
+            else:
+                break
+        return result
+
+    def find_nearest_node(self, pos: list):
+        """ Return index and distance of the closest nodes to the input pos """
+        nodes_distance = self.sort_nodes_by_distance(pos)
+        nearest_item = nodes_distance[0]
+        distance = nearest_item[0]
+        index = nearest_item[1]
+        return distance, index
     
     def get_node_object(self, index: int):
+        """ Return node object by its index """
         result = None
         if self.G.has_node(index):
             node = self.G.nodes[index] 
@@ -73,14 +97,21 @@ class Environment:
         return result
     
     def get_edge_object(self, index_1: int, index_2: int):
+        """ Return edge object by its index_1 and index_2 """
         result = None
         if self.G.has_edge(index_1, index_2):
             edge = self.G.edges[index_1, index_2]
             result = edge['object']
         return result
     
-    def all_nodes(self):
+    def all_nodes(self) -> list:
+        """ Return a list of all nodes """
         all = list(self.G.nodes())
+        return all
+    
+    def all_edges(self) -> list:
+        """ Return a list of all edges """
+        all = list(self.G.edges())
         return all
 
 

@@ -8,6 +8,8 @@ class Road(PureObject):
 
     def __init__(
             self,
+            pos_1: list,
+            pos_2: list,
             name: str = '',
             date_start: Date = Date.today(),
             date_end: Date = None,
@@ -16,8 +18,8 @@ class Road(PureObject):
             degradation = Degradation()
         ):
         self.environment = None  # to access environment information
-        self.index_1 = None
-        self.index_2 = None
+        self.pos_1 = pos_1
+        self.pos_2 = pos_2
         self.name = name
         self.date_start = date_start
         self.date_end = date_end
@@ -27,37 +29,9 @@ class Road(PureObject):
         self.category = 'edge'
         self.type = 'road'
 
-    def serialize(self) -> dict:
-        dictionary = {}
-        dictionary['index_1'] = self.index_1
-        dictionary['index_2'] = self.index_2
-        dictionary['name'] = self.name
-        dictionary['date_start'] = date_serialize(self.date_start)
-        dictionary['date_end'] = date_serialize(self.date_end)
-        dictionary['length_actual'] = self.length_actual
-        dictionary['roughness'] = self.roughness
-        dictionary['degradation'] = self.degradation.serialize()
-        dictionary['category'] = self.category
-        dictionary['type'] = self.type
-        return dictionary
-    
-    @property
-    def pos_1(self):
-        """ Return pos of index_1 """
-        result = None
+    def find_index(self):
         if self.environment is not None:
-            item = self.environment.get_node_object(self.index_1)
-            result = item.pos
-        return result
-    
-    @property
-    def pos_2(self):
-        """ Return pos of index_2 """
-        result = None
-        if self.environment is not None:
-            item = self.environment.get_node_object(self.index_2)
-            result = item.pos
-        return result
+            pass
     
     @property
     def length_linear(self):
@@ -85,6 +59,20 @@ class Road(PureObject):
             if actual is not None:
                 result = actual
         return result
+    
+    def serialize(self) -> dict:
+        dictionary = {}
+        dictionary['pos_1'] = self.pos_1
+        dictionary['pos_2'] = self.pos_2
+        dictionary['name'] = self.name
+        dictionary['date_start'] = date_serialize(self.date_start)
+        dictionary['date_end'] = date_serialize(self.date_end)
+        dictionary['length_actual'] = self.length_actual
+        dictionary['roughness'] = self.roughness
+        dictionary['degradation'] = self.degradation.serialize()
+        dictionary['category'] = self.category
+        dictionary['type'] = self.type
+        return dictionary
 
 
 if __name__ == "__main__":
