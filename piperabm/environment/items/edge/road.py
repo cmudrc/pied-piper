@@ -20,6 +20,8 @@ class Road(PureObject):
         self.environment = None  # to access environment information
         self.pos_1 = pos_1
         self.pos_2 = pos_2
+        self.index_1 = None
+        self.index_2 = None
         self.name = name
         self.date_start = date_start
         self.date_end = date_end

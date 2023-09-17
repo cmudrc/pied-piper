@@ -1,14 +1,15 @@
 import networkx as nx
-import numpy as np
 import uuid
 
+from piperabm.object import PureObject
 from piperabm.environment.items import Junction
 from piperabm.tools.coordinate import distance_point_to_point, distance_point_to_line
 
 
-class Environment:
+class Environment(PureObject):
 
     def __init__(self):
+        super().__init__()
         self.G = nx.Graph()
         self.society = None  # used for binding
         self.proximity_radius = 0.1  # distance less than this amount is equal to zero
@@ -43,6 +44,8 @@ class Environment:
         junction_2 = Junction(pos=object.pos_2)
         index_1 = self.add_node(junction_1)
         index_2 = self.add_node(junction_2)
+        object.index_1 = index_1
+        object.index_2 = index_2
         self.G.add_edge(
             index_1,
             index_2,
@@ -52,6 +55,19 @@ class Environment:
     def new_id(self) -> int:
         """ Generate a new unique integer """
         return uuid.uuid4().int
+    
+    def check_node_edge_proximity(self, pos: list):
+        result = None
+        return result
+    
+    def check_node_node_proximity(self, pos: list):
+        result = None
+        nodes_distance = self.filter_nodes_by_distance(pos)
+        if len(nodes_distance) == 0:
+            result = False
+        else:
+            result = True
+        return result
 
     def calculate_nodes_distance(self, pos: list):
         """ Calculate nodes distance from pos """
@@ -61,12 +77,27 @@ class Environment:
             distance = distance_point_to_point(pos, item.pos)
             result.append([distance, node_index])
         return result
+    
+    def calculate_edges_distance(self, pos: list):
+        """ Calculate edges distance from pos """
+        result = []  # list of [distance, index]
+        for edge_indexes in self.all_edges():
+            item = self.get_edge_object(*edge_indexes)
+            distance = distance_point_to_line(pos, item.pos_1, item.pos_2)
+            if distance is not None:
+                result.append([distance, edge_indexes])
+        return result
 
     def sort_nodes_by_distance(self, pos: list):
         """ Sort all nodes based on their distance from pos """
         nodes_distance = self.calculate_nodes_distance(pos)
         return [[distance, index] for distance, index in sorted(nodes_distance)]
     
+    def sort_edges_by_distance(self, pos: list):
+        """ Sort all edges based on their distance from pos """
+        edges_distance = self.calculate_edges_distance(pos)
+        return [[distance, indexes] for distance, indexes in sorted(edges_distance)]
+
     def filter_nodes_by_distance(self, pos: list):
         """ Filter nodes closer than *self.proximity_radius* """
         result = []  # list of [distance, index]
@@ -79,6 +110,19 @@ class Environment:
             else:
                 break
         return result
+    
+    def filter_edges_by_distance(self, pos: list):
+        """ Filter edges closer than *self.proximity_radius* """
+        result = []  # list of [distance, index]
+        edges_distance = self.sort_edges_by_distance(pos)
+        for element in edges_distance:
+            distance = element[0]
+            edge_indexes = element[1]
+            if distance < self.proximity_radius:
+                result.append([distance, edge_indexes])
+            else:
+                break
+        return result
 
     def find_nearest_node(self, pos: list):
         """ Return index and distance of the closest nodes to the input pos """
@@ -87,6 +131,14 @@ class Environment:
         distance = nearest_item[0]
         index = nearest_item[1]
         return distance, index
+    
+    def find_nearest_edge(self, pos: list):
+        """ Return index and distance of the closest edge to the input pos """
+        edges_distance = self.sort_edges_by_distance(pos)
+        nearest_item = edges_distance[0]
+        distance = nearest_item[0]
+        indexes = nearest_item[1]
+        return distance, indexes
     
     def get_node_object(self, index: int):
         """ Return node object by its index """
