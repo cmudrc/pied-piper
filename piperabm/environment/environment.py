@@ -1,5 +1,6 @@
 import networkx as nx
 import uuid
+from copy import deepcopy
 
 from piperabm.object import PureObject
 from piperabm.environment.items import Junction
@@ -8,11 +9,14 @@ from piperabm.tools.coordinate import distance_point_to_point, distance_point_to
 
 class Environment(PureObject):
 
-    def __init__(self):
+    def __init__(
+            self,
+            proximity_radius: float = 0.1    
+        ):
         super().__init__()
         self.G = nx.Graph()
         self.society = None  # used for binding
-        self.proximity_radius = 0.1  # distance less than this amount is equal to zero
+        self.proximity_radius = proximity_radius  # distance less than this amount is equivalent to zero
         self.type = 'environment'
 
     def add(self, object):
@@ -26,14 +30,30 @@ class Environment(PureObject):
 
     def add_node(self, object):
         """ Add new node and return the index """
-        nodes_distance = self.filter_nodes_by_distance(pos=object.pos)
-        if len(nodes_distance) == 0:  # create new
+        ''' node proximity '''
+        node_node_proximity = self.check_node_node_proximity(pos=object.pos)
+        if node_node_proximity is False:  # create new node
             index = self.new_id()
             object.index = index
             self.G.add_node(
                 object.index,
                 object=object
             )
+            ''' edge proximity '''
+            object = self.get_node_object(index)
+            node_edge_proximity = self.check_node_edge_proximity(pos=object.pos)
+            if node_edge_proximity is True:  # create new edges and delete old edge
+                distance, indexes = self.find_nearest_edge(pos=object.pos)
+                old_edge_object = self.get_edge_object(*indexes)
+                new_edge_object_1 = deepcopy(old_edge_object)
+                new_edge_object_2 = deepcopy(old_edge_object)
+                new_edge_object_1.length_actual = None
+                new_edge_object_2.length_actual = None
+                new_edge_object_1.pos_1 = object.pos
+                new_edge_object_2.pos_2 = object.pos
+                self.G.remove_edge(*indexes)
+                self.add(new_edge_object_1)
+                self.add(new_edge_object_2)
         else:  # return currently available node index
             distance, index = self.find_nearest_node(pos=object.pos)
         return index
@@ -58,6 +78,11 @@ class Environment(PureObject):
     
     def check_node_edge_proximity(self, pos: list):
         result = None
+        edges_distance = self.filter_edges_by_distance(pos)
+        if len(edges_distance) == 0:
+            result = False
+        else:
+            result = True
         return result
     
     def check_node_node_proximity(self, pos: list):
@@ -83,6 +108,7 @@ class Environment(PureObject):
         result = []  # list of [distance, index]
         for edge_indexes in self.all_edges():
             item = self.get_edge_object(*edge_indexes)
+            #print(item)
             distance = distance_point_to_line(pos, item.pos_1, item.pos_2)
             if distance is not None:
                 result.append([distance, edge_indexes])

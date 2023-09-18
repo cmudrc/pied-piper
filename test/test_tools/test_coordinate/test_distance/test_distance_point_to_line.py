@@ -19,6 +19,14 @@ class TestDistancePointToLineFunction(unittest.TestCase):
         distance = distance_point_to_line(point, line_point_1, line_point_2)
         self.assertEqual(distance, None)
 
+    def test_case_2(self):
+        point = [1, 1]
+        line_point_1 = [0.05, 0]
+        line_point_2 = [2, 2]
+        distance = distance_point_to_line(point, line_point_1, line_point_2)
+        self.assertAlmostEqual(distance, 0, places=1)
+
+
 
 if __name__ == "__main__":
     unittest.main()

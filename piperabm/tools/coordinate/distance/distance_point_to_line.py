@@ -29,16 +29,18 @@ def distance_point_to_line(
     c = np.cross(point - line_point_1, delta)
 
     distance_closest = np.hypot(h, np.linalg.norm(c))
+    #print(distance_closest)
 
     ''' Calculate the prependicular distance between point and line segment '''
     a = line_point_2 - line_point_1
     b = line_point_1 - point
 
     distance_perpendicular = np.linalg.norm(np.cross(a, b)) / np.linalg.norm(a)
+    #print(distance_perpendicular)
 
     ''' Check whether perpendicular is inside the line segment or not '''
-    if distance_closest == distance_perpendicular:
-        result = distance_perpendicular
+    if np.abs(distance_closest - distance_perpendicular) < 0.00000001:
+        result = (distance_perpendicular + distance_closest) / 2
     else:
         result = None
     
@@ -46,8 +48,8 @@ def distance_point_to_line(
 
 
 if __name__ == '__main__':
-    point = [0, 2]
-    line_point_1 = [0, 0]
-    line_point_2 = [2, 0]
+    point = [1, 1]
+    line_point_1 = [0.05, 0]
+    line_point_2 = [2, 2]
     distance = distance_point_to_line(point, line_point_1, line_point_2)
     print(distance)
