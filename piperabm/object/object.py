@@ -36,8 +36,12 @@ class PureObject:
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
-        """ Load object from a dictionary """
+        """ Deserialize object from a dictionary """
         print("NOT IMPLEMENTED YET")
+
+    def load(self, dictionary: dict) -> None:
+        """ Load object from a dictionary """
+        self.deserialize(dictionary)
 
     def create_delta(self, other) -> dict:
         """ Create delta between object and *other* """

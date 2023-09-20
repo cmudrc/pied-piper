@@ -1,6 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.environment.items.degradation import Degradation
-from piperabm.time import Date, date_serialize
+from piperabm.time import Date, date_serialize, date_deserialize
 from piperabm.tools.coordinate.distance import distance_point_to_point
 
 
@@ -8,8 +8,8 @@ class Road(PureObject):
 
     def __init__(
             self,
-            pos_1: list,
-            pos_2: list,
+            pos_1: list = None,
+            pos_2: list = None,
             name: str = '',
             date_start: Date = Date.today(),
             date_end: Date = None,
@@ -20,8 +20,8 @@ class Road(PureObject):
         self.environment = None  # to access environment information
         self.pos_1 = pos_1
         self.pos_2 = pos_2
-        self.index_1 = None
-        self.index_2 = None
+        self.index_1 = None  # will be updated once added to the environment
+        self.index_2 = None  # will be updated once added to the environment
         self.name = name
         self.date_start = date_start
         self.date_end = date_end
@@ -30,10 +30,6 @@ class Road(PureObject):
         self.degradation = degradation
         self.category = 'edge'
         self.type = 'road'
-
-    def find_index(self):
-        if self.environment is not None:
-            pass
     
     @property
     def length_linear(self):
@@ -66,6 +62,8 @@ class Road(PureObject):
         dictionary = {}
         dictionary['pos_1'] = self.pos_1
         dictionary['pos_2'] = self.pos_2
+        dictionary['index_1'] = self.index_1
+        dictionary['index_2'] = self.index_2
         dictionary['name'] = self.name
         dictionary['date_start'] = date_serialize(self.date_start)
         dictionary['date_end'] = date_serialize(self.date_end)
@@ -75,6 +73,20 @@ class Road(PureObject):
         dictionary['category'] = self.category
         dictionary['type'] = self.type
         return dictionary
+    
+    def deserialize(self, dictionary: dict) -> None:
+        self.pos_1 = dictionary['pos_1']
+        self.pos_2 = dictionary['pos_2']
+        self.index_1 = dictionary['index_1']
+        self.index_2 = dictionary['index_2']
+        self.name = dictionary['name']
+        self.date_start = date_deserialize(dictionary['date_start'])
+        self.date_end = date_deserialize(dictionary['date_end'])
+        self.length_actual = dictionary['length_actual']
+        self.roughness = dictionary['roughness']
+        self.degradation = Degradation().load(dictionary['degradation'])
+        self.category = dictionary['category']
+        self.type = dictionary['type']
 
 
 if __name__ == "__main__":

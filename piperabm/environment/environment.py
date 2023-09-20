@@ -1,13 +1,13 @@
 import networkx as nx
-import uuid
 from copy import deepcopy
 
 from piperabm.object import PureObject
+from piperabm.environment.query import Query
 from piperabm.environment.items import Junction
-from piperabm.tools.coordinate import distance_point_to_point, distance_point_to_line
+from piperabm.tools.coordinate import distance_point_to_point, distance_point_to_line, intersect_line_line
 
 
-class Environment(PureObject):
+class Environment(PureObject, Query):
 
     def __init__(
             self,
@@ -71,14 +71,11 @@ class Environment(PureObject):
             index_2,
             object=object
         )
-
-    def new_id(self) -> int:
-        """ Generate a new unique integer """
-        return uuid.uuid4().int
     
     def check_node_edge_proximity(self, pos: list):
         result = None
-        edges_distance = self.filter_edges_by_distance(pos)
+        edges_distance = self.calculate_edges_distance_from_node(pos)
+        edges_distance = self.filter_distances(edges_distance)
         if len(edges_distance) == 0:
             result = False
         else:
@@ -87,14 +84,25 @@ class Environment(PureObject):
     
     def check_node_node_proximity(self, pos: list):
         result = None
-        nodes_distance = self.filter_nodes_by_distance(pos)
+        nodes_distance = self.calculate_nodes_distance_from_node(pos)
+        nodes_distance = self.filter_distances(nodes_distance)
+        if len(nodes_distance) == 0:
+            result = False
+        else:
+            result = True
+        return result
+    
+    def check_edge_node_proximity(self, pos_1: list, pos_2: list):
+        result = None
+        nodes_distance = self.calculate_nodes_distance_from_edge(pos_1, pos_2)
+        nodes_distance = self.filter_distances(nodes_distance)
         if len(nodes_distance) == 0:
             result = False
         else:
             result = True
         return result
 
-    def calculate_nodes_distance(self, pos: list):
+    def calculate_nodes_distance_from_node(self, pos: list):
         """ Calculate nodes distance from pos """
         result = []  # list of [distance, index]
         for node_index in self.all_nodes():
@@ -103,56 +111,32 @@ class Environment(PureObject):
             result.append([distance, node_index])
         return result
     
-    def calculate_edges_distance(self, pos: list):
+    def calculate_edges_distance_from_node(self, pos: list):
         """ Calculate edges distance from pos """
         result = []  # list of [distance, index]
         for edge_indexes in self.all_edges():
             item = self.get_edge_object(*edge_indexes)
-            #print(item)
             distance = distance_point_to_line(pos, item.pos_1, item.pos_2)
             if distance is not None:
                 result.append([distance, edge_indexes])
         return result
-
-    def sort_nodes_by_distance(self, pos: list):
-        """ Sort all nodes based on their distance from pos """
-        nodes_distance = self.calculate_nodes_distance(pos)
-        return [[distance, index] for distance, index in sorted(nodes_distance)]
     
-    def sort_edges_by_distance(self, pos: list):
-        """ Sort all edges based on their distance from pos """
-        edges_distance = self.calculate_edges_distance(pos)
-        return [[distance, indexes] for distance, indexes in sorted(edges_distance)]
-
-    def filter_nodes_by_distance(self, pos: list):
-        """ Filter nodes closer than *self.proximity_radius* """
+    def calculate_nodes_distance_from_edge(self, pos_1: list, pos_2: list):
+        """ Calculate nodes distance from edge """
         result = []  # list of [distance, index]
-        nodes_distance = self.sort_nodes_by_distance(pos)
-        for element in nodes_distance:
-            distance = element[0]
-            node_index = element[1]
-            if distance < self.proximity_radius:
-                result.append([distance, node_index])
-            else:
-                break
+        for node_index in self.all_nodes():
+            item = self.get_node_object(node_index)
+            distance = distance_point_to_line(item.pos, pos_1, pos_2)
+            result.append([distance, node_index])
         return result
     
-    def filter_edges_by_distance(self, pos: list):
-        """ Filter edges closer than *self.proximity_radius* """
-        result = []  # list of [distance, index]
-        edges_distance = self.sort_edges_by_distance(pos)
-        for element in edges_distance:
-            distance = element[0]
-            edge_indexes = element[1]
-            if distance < self.proximity_radius:
-                result.append([distance, edge_indexes])
-            else:
-                break
-        return result
+    def calculate_edges_distance_from_edge(self, pos_1: list, pos_2: list):
+        pass
 
     def find_nearest_node(self, pos: list):
         """ Return index and distance of the closest nodes to the input pos """
-        nodes_distance = self.sort_nodes_by_distance(pos)
+        nodes_distance = self.calculate_nodes_distance_from_node(pos)
+        nodes_distance = self.sort_distances(nodes_distance)
         nearest_item = nodes_distance[0]
         distance = nearest_item[0]
         index = nearest_item[1]
@@ -160,37 +144,12 @@ class Environment(PureObject):
     
     def find_nearest_edge(self, pos: list):
         """ Return index and distance of the closest edge to the input pos """
-        edges_distance = self.sort_edges_by_distance(pos)
+        edges_distance = self.calculate_edges_distance_from_node(pos)
+        edges_distance = self.sort_distances(edges_distance)
         nearest_item = edges_distance[0]
         distance = nearest_item[0]
         indexes = nearest_item[1]
         return distance, indexes
-    
-    def get_node_object(self, index: int):
-        """ Return node object by its index """
-        result = None
-        if self.G.has_node(index):
-            node = self.G.nodes[index] 
-            result = node['object']
-        return result
-    
-    def get_edge_object(self, index_1: int, index_2: int):
-        """ Return edge object by its index_1 and index_2 """
-        result = None
-        if self.G.has_edge(index_1, index_2):
-            edge = self.G.edges[index_1, index_2]
-            result = edge['object']
-        return result
-    
-    def all_nodes(self) -> list:
-        """ Return a list of all nodes """
-        all = list(self.G.nodes())
-        return all
-    
-    def all_edges(self) -> list:
-        """ Return a list of all edges """
-        all = list(self.G.edges())
-        return all
 
 
 if __name__ == '__main__':

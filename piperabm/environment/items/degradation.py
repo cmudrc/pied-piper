@@ -26,6 +26,10 @@ class Degradation(PureObject):
         dictionary['current'] = self.current
         dictionary['total'] = self.total
         return dictionary
+    
+    def deserialize(self, dictionary: dict) -> None:
+        self.current = dictionary['current']
+        self.total = dictionary['total']
 
 
 if __name__ == "__main__":
