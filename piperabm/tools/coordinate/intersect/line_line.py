@@ -45,8 +45,17 @@ def intersect_line_line(
         distance_1 = distance_point_to_point(line_1_point_1, intersection)
         distance_2 = distance_point_to_point(line_1_point_2, intersection)
         total_distance = distance_point_to_point(line_1_point_1, line_1_point_2)
-        if distance_1 + distance_2 != total_distance:
+        val_1 = distance_1 + distance_2
+        val_2 = total_distance
+        err = 0.000000001
+        is_equal = False
+        if np.abs(val_1 - val_2) < err:
+            is_equal = True
+        if is_equal is False:
             intersection = None
+
+    if intersection is not None:
+        intersection = list(intersection)
     return intersection
 
 

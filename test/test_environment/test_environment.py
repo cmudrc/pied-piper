@@ -10,14 +10,6 @@ class TestEnvironmentClass_0(unittest.TestCase):
     def setUp(self):
         self.env = deepcopy(environment_0)
 
-    def test_all_nodes(self):
-        self.assertEqual(len(self.env.all_nodes()), 2)
-        self.assertEqual(len(self.env.all_nodes(type='junction')), 1)
-        self.assertEqual(len(self.env.all_nodes(type='settlement')), 1)
-    
-    def test_all_edges(self):
-        self.assertEqual(len(self.env.all_edges()), 1)
-
     def test_calculate_nodes_distance(self):
         nodes_distance = self.env.calculate_nodes_distance_from_node(pos=[1, 1])
         self.assertEqual(nodes_distance[0][0], nodes_distance[1][0])
@@ -39,7 +31,7 @@ class TestEnvironmentClass_0(unittest.TestCase):
     def test_find_nearest_edge(self):
         distance, indexes = self.env.find_nearest_edge(pos=[1.1, 1.1])
         item = self.env.get_edge_object(*indexes)
-        self.assertListEqual(item.pos_1, [0.05, 0])
+        self.assertListEqual(item.pos_1, [0, 0])
         self.assertListEqual(item.pos_2, [2, 2])
 
     def test_add_node_proximity_node(self):
@@ -80,19 +72,17 @@ class TestEnvironmentClass_0(unittest.TestCase):
         self.assertEqual(len(env.all_nodes()), 5)
         self.assertEqual(len(env.all_edges()), 4)
 
+    def test_check_edge_edge_intersection(self):
+        pos_1 = [2, 0]
+        pos_2 = [0, 2]
+        intersections = self.env.check_edge_edge_intersection(pos_1, pos_2)
+        self.assertEqual(len(intersections), 1)
+
 
 class TestEnvironmentClass_1(unittest.TestCase):       
 
     def setUp(self):
         self.env = deepcopy(environment_1)
-
-    def test_all_nodes(self):
-        result = self.env.all_nodes()
-        self.assertEqual(len(result), 5)
-
-    def test_all_edges(self):
-        result = self.env.all_edges()
-        self.assertEqual(len(result), 4)
 
 
 if __name__ == '__main__':

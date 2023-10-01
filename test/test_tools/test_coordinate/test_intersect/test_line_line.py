@@ -17,7 +17,7 @@ class TestLineLineFunction(unittest.TestCase):
             line_2_point_1,
             line_2_point_2
         )
-        self.assertListEqual(list(result), [1, 1])
+        self.assertListEqual(result, [1, 1])
 
     def test_case_1(self):
         """ Lines parallel to axes """
@@ -31,7 +31,7 @@ class TestLineLineFunction(unittest.TestCase):
             line_2_point_1,
             line_2_point_2
         )
-        self.assertListEqual(list(result), [1, 1])
+        self.assertListEqual(result, [1, 1])
 
     def test_case_2(self):
         """ Lines parallel to axes """

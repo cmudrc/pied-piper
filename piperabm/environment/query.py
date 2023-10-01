@@ -37,25 +37,22 @@ class Query:
         return result
     
     def new_id(self) -> int:
-        """ Generate a new unique integer """
+        """ Generate a new unique integer as id for graph items """
         return uuid.uuid4().int
     
     def sort_distances(self, distances: list):
-        """ Sort all elements based on their distance """
+        """ Sort elements based on their distance """
         # remove None values in distance part
         distances = [[distance, index] for distance, index in distances if distance is not None]
         return [[distance, index] for distance, index in sorted(distances)]
     
-    def filter_distances(self, distances: list, sorted=False):
-        """ Filter elements closer than *self.proximity_radius* """
-        if sorted is False:
-            distances = self.sort_distances(distances)
+    def filter_distances(self, distances: list):
+        """ Filter and sort elements closer than *self.proximity_radius* """
         result = []
         for element in distances:
             distance = element[0]
             index = element[1]
-            if distance < self.proximity_radius:
-                result.append([distance, index])
-            else:
-                break
-        return result
+            if distance is not None:
+                if distance < self.proximity_radius:
+                    result.append([distance, index])
+        return self.sort_distances(result)

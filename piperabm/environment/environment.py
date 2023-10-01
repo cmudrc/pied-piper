@@ -28,6 +28,13 @@ class Environment(PureObject, Query):
             result = self.add_edge(object)
         return result
 
+    def add_node_1(self, object):
+        distances_node = self.calculate_nodes_distance_from_node(pos=object.pos)
+        node_node_proximity = self.filter_distances(distances_node)
+
+
+        
+
     def add_node(self, object):
         """ Add new node and return the index """
         ''' node proximity '''
@@ -47,10 +54,13 @@ class Environment(PureObject, Query):
                 old_edge_object = self.get_edge_object(*indexes)
                 new_edge_object_1 = deepcopy(old_edge_object)
                 new_edge_object_2 = deepcopy(old_edge_object)
-                new_edge_object_1.length_actual = None
-                new_edge_object_2.length_actual = None
+                new_edge_object_1.length_actual = None ###
+                new_edge_object_2.length_actual = None ###
                 new_edge_object_1.pos_1 = object.pos
                 new_edge_object_2.pos_2 = object.pos
+                if old_edge_object.name != '':
+                    new_edge_object_1.name = old_edge_object.name + ' 1'
+                    new_edge_object_2.name = old_edge_object.name + ' 2'
                 self.G.remove_edge(*indexes)
                 self.add(new_edge_object_1)
                 self.add(new_edge_object_2)
@@ -64,14 +74,57 @@ class Environment(PureObject, Query):
         junction_2 = Junction(pos=object.pos_2)
         index_1 = self.add_node(junction_1)
         index_2 = self.add_node(junction_2)
+        junction_1 = self.get_node_object(index_1)
+        junction_2 = self.get_node_object(index_2)
+        object.pos_1 = junction_1.pos
+        object.pos_2 = junction_2.pos
         object.index_1 = index_1
         object.index_2 = index_2
-        self.G.add_edge(
-            index_1,
-            index_2,
-            object=object
-        )
-    
+        intersections = self.check_edge_edge_intersection(pos_1=junction_1.pos, pos_2=junction_2.pos)
+        if len(intersections) > 0:  # Intersetion with an edge
+            intersection = intersections[0][0]
+            junction_middle = Junction(pos=intersection)
+            index_middle = self.add_node(junction_middle)
+            #intersected_edge_indexes = intersections[0][1]
+            new_edge_object_3 = deepcopy(object)
+            new_edge_object_4 = deepcopy(object)
+            new_edge_object_3.length_actual = None ###
+            new_edge_object_4.length_actual = None ###
+            if object.name != '':
+                new_edge_object_3.name = object.name + ' 1'
+                new_edge_object_4.name = object.name + ' 2'
+            # *new_edge_object_3.pos_1* stays the same
+            new_edge_object_3.pos_2 = intersection
+            new_edge_object_4.pos_1 = intersection
+            # *new_edge_object_4.pos_2* stays the same
+            # *new_edge_object_3.index_1* stays the same
+            new_edge_object_3.index_2 = index_middle
+            new_edge_object_4.index_1 = index_middle
+            # *new_edge_object_4.index_2* stays the same
+            self.add_edge(new_edge_object_3)
+            self.add_edge(new_edge_object_4)
+        else:  # No intersection detected
+            self.G.add_edge(
+                index_1,
+                index_2,
+                object=object
+            )
+            '''
+            edge_node_proximity = self.check_edge_node_proximity(
+                pos_1=object.pos_1,
+                pos_2=object.pos_2
+            )
+            # edge_node_proximity = False
+            if edge_node_proximity is False:
+                self.G.add_edge(
+                    index_1,
+                    index_2,
+                    object=object
+                )
+            else:
+                print('eeeeeeddddd')
+            '''
+
     def check_node_edge_proximity(self, pos: list):
         result = None
         edges_distance = self.calculate_edges_distance_from_node(pos)
@@ -80,6 +133,21 @@ class Environment(PureObject, Query):
             result = False
         else:
             result = True
+        return result
+    
+    def check_edge_edge_intersection(self, pos_1, pos_2):
+        result = []
+        for indexes in self.all_edges():
+            item = self.get_edge_object(*indexes)
+            intersection = intersect_line_line(
+                line_1_point_1=pos_1,
+                line_1_point_2=pos_2,
+                line_2_point_1=item.pos_1,
+                line_2_point_2=item.pos_2
+            )
+            if intersection is not None:
+                if self.check_node_node_proximity(intersection) is False:
+                    result.append([intersection, indexes])
         return result
     
     def check_node_node_proximity(self, pos: list):
