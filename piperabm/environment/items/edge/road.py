@@ -1,41 +1,41 @@
-from piperabm.object import PureObject
+from piperabm.object import Item
 from piperabm.environment.items.degradation import Degradation
-from piperabm.time import Date, date_serialize, date_deserialize
+from piperabm.time import Date
 from piperabm.tools.coordinate.distance import distance_point_to_point
 
 
-class Road(PureObject):
+class Road(Item):
 
     def __init__(
             self,
             pos_1: list = None,
             pos_2: list = None,
             name: str = '',
-            date_start: Date = Date.today(),
+            date_start: Date = None,
             date_end: Date = None,
             length_actual: float = None,
             roughness: float = 1,
             degradation = Degradation()
         ):
+        super().__init__(
+            name=name,
+            date_start=date_start,
+            date_end=date_end
+        )
         self.environment = None  # to access environment information
         self.pos_1 = pos_1
         self.pos_2 = pos_2
-        self.index_1 = None  # will be updated once added to the environment
-        self.index_2 = None  # will be updated once added to the environment
-        self.name = name
-        self.date_start = date_start
-        self.date_end = date_end
         self.length_actual = length_actual
         self.roughness = roughness
         self.degradation = degradation
-        self.category = 'edge'
-        self.type = 'road'
+        self.category = "edge"
+        self.type = "road"
     
     @property
     def length_linear(self):
         """ Eucledian distance between two ends of the edge """
         result = None
-        if self.environment is not None:
+        if self.pos_1 is not None and self.pos_2 is not None:
             result = distance_point_to_point(self.pos_1, self.pos_2)
         return result
     
@@ -51,7 +51,7 @@ class Road(PureObject):
                     result = actual
                 else:
                     result = linear
-            else:  # when actual is None
+            else:  # when *actual* is None
                 result = linear
         else:
             if actual is not None:
@@ -59,38 +59,27 @@ class Road(PureObject):
         return result
     
     def serialize(self) -> dict:
-        dictionary = {}
-        dictionary['pos_1'] = self.pos_1
-        dictionary['pos_2'] = self.pos_2
-        dictionary['index_1'] = self.index_1
-        dictionary['index_2'] = self.index_2
-        dictionary['name'] = self.name
-        dictionary['date_start'] = date_serialize(self.date_start)
-        dictionary['date_end'] = date_serialize(self.date_end)
-        dictionary['length_actual'] = self.length_actual
-        dictionary['roughness'] = self.roughness
-        dictionary['degradation'] = self.degradation.serialize()
-        dictionary['category'] = self.category
-        dictionary['type'] = self.type
+        dictionary = super().serialize()
+        dictionary["pos_1"] = self.pos_1
+        dictionary["pos_2"] = self.pos_2
+        dictionary["length_actual"] = self.length_actual
+        dictionary["roughness"] = self.roughness
+        dictionary["degradation"] = self.degradation.serialize()
+        dictionary["category"] = self.category
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
-        self.pos_1 = dictionary['pos_1']
-        self.pos_2 = dictionary['pos_2']
-        self.index_1 = dictionary['index_1']
-        self.index_2 = dictionary['index_2']
-        self.name = dictionary['name']
-        self.date_start = date_deserialize(dictionary['date_start'])
-        self.date_end = date_deserialize(dictionary['date_end'])
-        self.length_actual = dictionary['length_actual']
-        self.roughness = dictionary['roughness']
-        self.degradation = Degradation().load(dictionary['degradation'])
-        self.category = dictionary['category']
-        self.type = dictionary['type']
+        super().deserialize(dictionary)
+        self.pos_1 = dictionary["pos_1"]
+        self.pos_2 = dictionary["pos_2"]
+        self.length_actual = dictionary["length_actual"]
+        self.roughness = dictionary["roughness"]
+        self.degradation = Degradation().deserialize(dictionary["degradation"])
+        self.category = dictionary["category"]
 
 
 if __name__ == "__main__":
     item = Road(
-        name='road'
+        name="road"
     )
-    print(item)
+    item.print

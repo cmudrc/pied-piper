@@ -1,7 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.environment.samples import environment_0, environment_1
+from piperabm.environment.samples import environment_0, environment_1, environment_2
+from piperabm.environment.items import Junction, Road
+from piperabm.time import Date
 
 
 class TestEnvironmentClass_0(unittest.TestCase):
@@ -9,27 +11,42 @@ class TestEnvironmentClass_0(unittest.TestCase):
     def setUp(self):
         self.env = deepcopy(environment_0)
 
-    def test_all_nodes(self):
-        self.assertEqual(len(self.env.all_nodes()), 2)
-        self.assertEqual(len(self.env.all_nodes(type='junction')), 1)
-        self.assertEqual(len(self.env.all_nodes(type='settlement')), 1)
+    def test_new_index(self):
+        self.assertNotEqual(self.env.new_index, self.env.new_index)
     
-    def test_all_edges(self):
-        self.assertEqual(len(self.env.all_edges()), 1)
+    def test_current_items(self):
+        items = self.env.current_items(
+            date_start=Date(2019, 12, 29),
+            date_end=Date(2019, 12, 30)
+        )
+        self.assertEqual(len(items), 0)
+        items = self.env.current_items(
+            date_start=Date(2020, 1, 1),
+            date_end=Date(2020, 1, 2)
+        )
+        self.assertEqual(len(items), 1)
+
+    def test_filter_category(self):
+        items = self.env.current_items(
+            date_start=Date(2020, 1, 1),
+            date_end=Date(2020, 1, 2)
+        )
+        filtered_items = self.env.filter_category(items, category='node')
+        self.assertEqual(len(filtered_items), 1)
+        filtered_items = self.env.filter_category(items, category='edge')
+        self.assertEqual(len(filtered_items), 0)
 
 
-class TestEnvironmentClass_1(unittest.TestCase):       
+class TestEnvironmentClass_1(unittest.TestCase):
 
     def setUp(self):
         self.env = deepcopy(environment_1)
 
-    def test_all_nodes(self):
-        result = self.env.all_nodes()
-        self.assertEqual(len(result), 5)
-
-    def test_all_edges(self):
-        result = self.env.all_edges()
-        self.assertEqual(len(result), 4)
+    def test_to_infrastrucure_graph(self):
+        date_start = Date(2020, 1, 1)
+        date_end = Date(2020, 1, 2)
+        infrastrucure = self.env.to_infrastrucure_graph(date_start, date_end)
+        print(infrastrucure.G)
 
 
 if __name__ == '__main__':

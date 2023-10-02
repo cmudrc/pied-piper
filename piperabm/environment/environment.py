@@ -1,230 +1,129 @@
 import networkx as nx
-from copy import deepcopy
+import uuid
 
 from piperabm.object import PureObject
-from piperabm.environment.query import Query
+from piperabm.environment.infrastructure import Infrastructure
 from piperabm.environment.items import Junction
 from piperabm.tools.coordinate import distance_point_to_point, distance_point_to_line, intersect_line_line
 
 
-class Environment(PureObject, Query):
+class Environment(PureObject):
 
     def __init__(
             self,
             proximity_radius: float = 0.1    
         ):
         super().__init__()
-        self.G = nx.Graph()
         self.society = None  # used for binding
+        self.library = {}  # {index: item} pairs
         self.proximity_radius = proximity_radius  # distance less than this amount is equivalent to zero
-        self.type = 'environment'
 
-    def add(self, object):
-        """ Add new item """
-        result = None
-        if object.category == 'node':
-            result = self.add_node(object)
-        elif object.category == 'edge':
-            result = self.add_edge(object)
-        return result
-
-    def add_node_1(self, object):
-        distances_node = self.calculate_nodes_distance_from_node(pos=object.pos)
-        node_node_proximity = self.filter_distances(distances_node)
-
-
-        
-
-    def add_node(self, object):
-        """ Add new node and return the index """
-        ''' node proximity '''
-        node_node_proximity = self.check_node_node_proximity(pos=object.pos)
-        if node_node_proximity is False:  # create new node
-            index = self.new_id()
-            object.index = index
-            self.G.add_node(
-                object.index,
-                object=object
-            )
-            ''' edge proximity '''
-            object = self.get_node_object(index)
-            node_edge_proximity = self.check_node_edge_proximity(pos=object.pos)
-            if node_edge_proximity is True:  # create new edges and delete old edge
-                distance, indexes = self.find_nearest_edge(pos=object.pos)
-                old_edge_object = self.get_edge_object(*indexes)
-                new_edge_object_1 = deepcopy(old_edge_object)
-                new_edge_object_2 = deepcopy(old_edge_object)
-                new_edge_object_1.length_actual = None ###
-                new_edge_object_2.length_actual = None ###
-                new_edge_object_1.pos_1 = object.pos
-                new_edge_object_2.pos_2 = object.pos
-                if old_edge_object.name != '':
-                    new_edge_object_1.name = old_edge_object.name + ' 1'
-                    new_edge_object_2.name = old_edge_object.name + ' 2'
-                self.G.remove_edge(*indexes)
-                self.add(new_edge_object_1)
-                self.add(new_edge_object_2)
-        else:  # return currently available node index
-            distance, index = self.find_nearest_node(pos=object.pos)
-        return index
-
-    def add_edge(self, object):
-        """ Add new edge """
-        junction_1 = Junction(pos=object.pos_1)
-        junction_2 = Junction(pos=object.pos_2)
-        index_1 = self.add_node(junction_1)
-        index_2 = self.add_node(junction_2)
-        junction_1 = self.get_node_object(index_1)
-        junction_2 = self.get_node_object(index_2)
-        object.pos_1 = junction_1.pos
-        object.pos_2 = junction_2.pos
-        object.index_1 = index_1
-        object.index_2 = index_2
-        intersections = self.check_edge_edge_intersection(pos_1=junction_1.pos, pos_2=junction_2.pos)
-        if len(intersections) > 0:  # Intersetion with an edge
-            intersection = intersections[0][0]
-            junction_middle = Junction(pos=intersection)
-            index_middle = self.add_node(junction_middle)
-            #intersected_edge_indexes = intersections[0][1]
-            new_edge_object_3 = deepcopy(object)
-            new_edge_object_4 = deepcopy(object)
-            new_edge_object_3.length_actual = None ###
-            new_edge_object_4.length_actual = None ###
-            if object.name != '':
-                new_edge_object_3.name = object.name + ' 1'
-                new_edge_object_4.name = object.name + ' 2'
-            # *new_edge_object_3.pos_1* stays the same
-            new_edge_object_3.pos_2 = intersection
-            new_edge_object_4.pos_1 = intersection
-            # *new_edge_object_4.pos_2* stays the same
-            # *new_edge_object_3.index_1* stays the same
-            new_edge_object_3.index_2 = index_middle
-            new_edge_object_4.index_1 = index_middle
-            # *new_edge_object_4.index_2* stays the same
-            self.add_edge(new_edge_object_3)
-            self.add_edge(new_edge_object_4)
-        else:  # No intersection detected
-            self.G.add_edge(
-                index_1,
-                index_2,
-                object=object
-            )
-            '''
-            edge_node_proximity = self.check_edge_node_proximity(
-                pos_1=object.pos_1,
-                pos_2=object.pos_2
-            )
-            # edge_node_proximity = False
-            if edge_node_proximity is False:
-                self.G.add_edge(
-                    index_1,
-                    index_2,
-                    object=object
-                )
-            else:
-                print('eeeeeeddddd')
-            '''
-
-    def check_node_edge_proximity(self, pos: list):
-        result = None
-        edges_distance = self.calculate_edges_distance_from_node(pos)
-        edges_distance = self.filter_distances(edges_distance)
-        if len(edges_distance) == 0:
-            result = False
-        else:
-            result = True
-        return result
+    @property
+    def new_index(self) -> int:
+        """ Generate a new unique integer as id for graph items """
+        return uuid.uuid4().int
     
-    def check_edge_edge_intersection(self, pos_1, pos_2):
-        result = []
-        for indexes in self.all_edges():
-            item = self.get_edge_object(*indexes)
-            intersection = intersect_line_line(
-                line_1_point_1=pos_1,
-                line_1_point_2=pos_2,
-                line_2_point_1=item.pos_1,
-                line_2_point_2=item.pos_2
-            )
-            if intersection is not None:
-                if self.check_node_node_proximity(intersection) is False:
-                    result.append([intersection, indexes])
-        return result
-    
-    def check_node_node_proximity(self, pos: list):
-        result = None
-        nodes_distance = self.calculate_nodes_distance_from_node(pos)
-        nodes_distance = self.filter_distances(nodes_distance)
-        if len(nodes_distance) == 0:
-            result = False
+    def add(self, item) -> None:
+        """
+        Add new item to library
+        """
+        if item.category == 'node':
+            item.index = self.new_index
+            self.library[item.index] = item
+        elif item.category == 'edge':
+            junction_1 = Junction(pos=item.pos_1)
+            junction_2 = Junction(pos=item.pos_2)
+            self.add(junction_1)
+            self.add(junction_2)
+            item.index = self.new_index
+            self.library[item.index] = item
         else:
-            result = True
-        return result
-    
-    def check_edge_node_proximity(self, pos_1: list, pos_2: list):
-        result = None
-        nodes_distance = self.calculate_nodes_distance_from_edge(pos_1, pos_2)
-        nodes_distance = self.filter_distances(nodes_distance)
-        if len(nodes_distance) == 0:
-            result = False
-        else:
-            result = True
-        return result
+            raise ValueError
 
-    def calculate_nodes_distance_from_node(self, pos: list):
-        """ Calculate nodes distance from pos """
+    def item(self, index: int):
+        """
+        Return items as object based on its index
+        """
+        return self.library[index]
+    
+    def current_items(self, date_start, date_end) -> list:
+        """
+        Return a list of current items index
+        """
+        current_items = []
+        for index in self.library:
+            item = self.library[index]
+            if item.exists(date_start, date_end):
+                current_items.append(index)
+        return current_items
+    
+    def to_infrastrucure_graph(self, date_start, date_end):
+        items = self.current_items(date_start, date_end)
+        infrastructure = Infrastructure()
+        for item_index in items:
+            item = self.item(item_index)
+            if item.category == 'node':
+                infrastructure.add_node(item.index)
+            elif item.category == 'edge':
+                index_1 = self.find_nearest_node(item.pos_1, items)
+                index_2 = self.find_nearest_node(item.pos_2, items)
+                infrastructure.add_edge(index_1, index_2, item.index)
+        # infrastructure.apply_grammar()
+        return infrastructure
+    
+    def find_nearest_node(self, pos: list, items: list) -> int:
+        distances = self.nodes_distance(pos, items)
+        distances = self.sort_distances(distances)
+        nearest_node_index = distances[0][1]
+        return nearest_node_index
+
+    def nodes_distance(self, pos: list, items: list) -> list:
+        """
+        Calculate nodes distance from *pos*
+        """
         result = []  # list of [distance, index]
-        for node_index in self.all_nodes():
-            item = self.get_node_object(node_index)
+        items = self.filter_category(items, category='node')
+        for index in items:
+            item = self.item(index)
             distance = distance_point_to_point(pos, item.pos)
-            result.append([distance, node_index])
+            result.append([distance, index])
         return result
     
-    def calculate_edges_distance_from_node(self, pos: list):
-        """ Calculate edges distance from pos """
-        result = []  # list of [distance, index]
-        for edge_indexes in self.all_edges():
-            item = self.get_edge_object(*edge_indexes)
-            distance = distance_point_to_line(pos, item.pos_1, item.pos_2)
-            if distance is not None:
-                result.append([distance, edge_indexes])
+    def sort_distances(self, distances: list) -> list:
+        # remove None values in distance part
+        #distances = [[distance, index] for distance, index in distances if distance is not None]
+        # sort elements based on distance
+        sorted_distances = [[distance, index] for distance, index in sorted(distances)]
+        return sorted_distances
+    
+    def filter_category(self, items: list, category: str):
+        """
+        Return a list of nodes from *items* that based on *category* value (node/edge)
+        """
+        result = []
+        for index in items:
+            item = self.item(index)
+            if item.category == category:
+                result.append(index)
         return result
     
-    def calculate_nodes_distance_from_edge(self, pos_1: list, pos_2: list):
-        """ Calculate nodes distance from edge """
-        result = []  # list of [distance, index]
-        for node_index in self.all_nodes():
-            item = self.get_node_object(node_index)
-            distance = distance_point_to_line(item.pos, pos_1, pos_2)
-            result.append([distance, node_index])
-        return result
-    
-    def calculate_edges_distance_from_edge(self, pos_1: list, pos_2: list):
-        pass
-
-    def find_nearest_node(self, pos: list):
-        """ Return index and distance of the closest nodes to the input pos """
-        nodes_distance = self.calculate_nodes_distance_from_node(pos)
-        nodes_distance = self.sort_distances(nodes_distance)
-        nearest_item = nodes_distance[0]
-        distance = nearest_item[0]
-        index = nearest_item[1]
-        return distance, index
-    
-    def find_nearest_edge(self, pos: list):
-        """ Return index and distance of the closest edge to the input pos """
-        edges_distance = self.calculate_edges_distance_from_node(pos)
-        edges_distance = self.sort_distances(edges_distance)
-        nearest_item = edges_distance[0]
-        distance = nearest_item[0]
-        indexes = nearest_item[1]
-        return distance, indexes
+    def serialize(self) -> dict:
+        dictionary = {}
+        # serialize library items
+        library_serialized = {}
+        for index in self.library:
+            item = self.item(index)
+            library_serialized[index] = item.serialize()
+        dictionary['library'] = library_serialized
+        dictionary['proximity radius'] = self.proximity_radius
+        return dictionary
 
 
 if __name__ == '__main__':
     from items import Junction
 
     env = Environment()
-    item_1 = Junction(name='sample', pos=[0, 0])
-    env.add_node(item_1)
-    print(env.all_nodes())
+    item = Junction(name='sample', pos=[0, 0])
+    env.add(item)
+    env.print
     

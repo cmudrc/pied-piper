@@ -1,50 +1,57 @@
 from pprint import pprint
 
-from piperabm.tools.symbols import SYMBOLS
 from piperabm.object.delta import Delta
 
 
 class PureObject:
     """
-    Pure object for the model
+    Pure object for the program
     """
 
     def __init__(self):
-        self.type = 'pure object'
+        self.type = "pure object"
 
     @property
     def print(self):
-        """ pretty print object """
+        """
+        "Pretty Print" the object
+        """
         pprint(self.__str__())
 
     def __str__(self) -> str:
-        """ show serialized format of object """
+        """
+        Show serialized format of object
+        """
         return str(self.serialize())
 
     def __eq__(self, other) -> bool:
-        """ Check equality for two objects """
+        """
+        Check equality for two objects
+        """
         result = False
         if self.serialize() == other.serialize() and \
-            self.serialize != {}:
+                self.serialize != {}:
             result = True
         return result
-    
+
     def serialize(self) -> dict:
-        """ Serialize object into a dictionary """
+        """
+        Serialize object into a dictionary
+        """
         dictionary = {}
         print("NOT IMPLEMENTED YET")
         return dictionary
-    
+
     def deserialize(self, dictionary: dict) -> None:
-        """ Deserialize object from a dictionary """
+        """
+        Deserialize object from a dictionary
+        """
         print("NOT IMPLEMENTED YET")
 
-    def load(self, dictionary: dict) -> None:
-        """ Load object from a dictionary """
-        self.deserialize(dictionary)
-
     def create_delta(self, other) -> dict:
-        """ Create delta between object and *other* """
+        """
+        Create delta between the *self* and *other*
+        """
         if not isinstance(other, dict):
             other = other.serialize()
         dictionary = self.serialize()
@@ -52,14 +59,16 @@ class PureObject:
         return delta
 
     def apply_delta(self, delta: dict) -> None:
-        """ Apply delta for the object """
+        """
+        Apply the *delta* to the *self*
+        """
         dictionary = self.serialize()
         dictionary_new = Delta.apply(dictionary, delta)
         self.deserialize(dictionary_new)
 
 
-if __name__ == '__main__':
-    
+if __name__ == "__main__":
+
     class Sample(PureObject):
 
         def __init__(self, value):
@@ -67,11 +76,11 @@ if __name__ == '__main__':
             self.value = value
 
         def serialize(self) -> dict:
-            return {'value': self.value}
-        
+            return {"value": self.value}
+
         def deserialize(self, dictionary: dict) -> None:
-            self.value = dictionary['value']
-        
+            self.value = dictionary["value"]
+
     s_1 = Sample(value=1)
     s_2 = Sample(value=2)
     delta = s_2.create_delta(s_1)

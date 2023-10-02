@@ -1,5 +1,5 @@
 from piperabm.environment import Environment
-from piperabm.environment.items import Junction, Settlement, Road
+from piperabm.environment.items import Settlement
 from piperabm.time import Date
     
 
@@ -7,25 +7,12 @@ environment = Environment(
     proximity_radius=0.1
 )
 
-junction = Junction(
-    name='Sample Junction',
-    pos=[0, 0]
-)
-environment.add(junction)
-
 settlement = Settlement(
-    name='Sample Settlement',
-    pos=[2, 2],
+    name="Sample Settlement",
+    pos=[0, 0],
     date_start=Date(2020, 1, 1)
 )
 environment.add(settlement)
-
-road = Road(
-    name='Sample Road',
-    pos_1=[0.05, 0],
-    pos_2=[2, 2]
-)
-environment.add(road)
 
 
 if __name__ == '__main__':
