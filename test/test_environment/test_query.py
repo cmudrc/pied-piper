@@ -46,7 +46,7 @@ class TestEnvironmentClass_1(unittest.TestCase):
         date_start = Date(2020, 1, 1)
         date_end = Date(2020, 1, 2)
         infrastrucure = self.env.to_infrastrucure_graph(date_start, date_end)
-        print(infrastrucure.G)
+        print(infrastrucure.all_edges())
 
 
 if __name__ == '__main__':

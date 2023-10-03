@@ -59,7 +59,7 @@ class Environment(PureObject):
     
     def to_infrastrucure_graph(self, date_start, date_end):
         items = self.current_items(date_start, date_end)
-        infrastructure = Infrastructure()
+        infrastructure = Infrastructure(environment=self)
         for item_index in items:
             item = self.item(item_index)
             if item.category == 'node':
