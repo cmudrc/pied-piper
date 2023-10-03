@@ -33,6 +33,24 @@ class Grammar:
                         
                         ''' finish '''
                         break
+    '''
+    def apply_grammars(self):
+        grammars = [
+            self.grammar_rule_1(),
+            self.grammar_rule_2(),
+            self.grammar_rule_3()
+        ]
+
+        anything_happened = None
+        while anything_happened is True or anything_happened is None:
+            for grammar in grammars:
+                anything_happened = self.grammar_rule_1()
+                if anything_happened is True: # start over
+                    self.apply_grammars()
+                elif anything_happened is False: # next rule
+                    grammar()
+    '''
+
         
     def grammar_rule_1(self):
         """
@@ -49,7 +67,7 @@ class Grammar:
 
                 ''' loop for the second node '''
                 for other_node_index in nodes:
-                    if other_node_index in self.all_nodes(): # to make sure it is not deleted in previous runs
+                    if other_node_index in self.all_nodes() and node_index in self.all_nodes(): # to make sure it is not deleted in previous runs
                         if node_index != other_node_index:
                             other_item = self.get_node_item(other_node_index)
 
@@ -90,7 +108,7 @@ class Grammar:
         """
 
         anything_happened = False
-
+        
         ''' loop for the node '''
         nodes = self.all_nodes()
         for node_index in nodes:
@@ -100,16 +118,25 @@ class Grammar:
                 ''' loop for the edge '''
                 edges = self.all_edges()
                 for edge_indexes in edges:
-                    if edge_indexes in self.all_edges(): # to make sure it is not deleted in previous runs
+                    if edge_indexes in self.all_edges() and node_index in self.all_nodes(): # to make sure it is not deleted in previous runs
                         edge_item = self.get_edge_item(*edge_indexes)
+                        #print(edge_item.pos_1, edge_item.pos_2)
 
                         ''' check the distance '''
                         distance = distance_point_to_line(node_item.pos, edge_item.pos_1, edge_item.pos_2)
+                        distance_1 = distance_point_to_point(node_item.pos, edge_item.pos_1)
+                        distance_2 = distance_point_to_point(node_item.pos, edge_item.pos_2)
                         if distance is not None:
                             if distance < self.proximity_radius:
-                                ''' update the items '''
-                                pass
-
+                                if distance_1 > self.proximity_radius and distance_2 > self.proximity_radius:
+                                    ''' update the items '''
+                                    # self.add_edge(edge_indexes[0], node_index, edge_item.index) ###### edge_item.index
+                                    # self.add_edge(node_index, edge_indexes[1], edge_item.index) ######
+                                    self.add_edge(edge_indexes[0], node_index, self.environment.new_index) #### index not available
+                                    self.add_edge(node_index, edge_indexes[1], self.environment.new_index) #### index not available
+                                    self.remove_edge(*edge_indexes)
+                                    anything_happened = True
+        
         return anything_happened
 
     def grammar_rule_3(self):

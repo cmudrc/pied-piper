@@ -68,7 +68,7 @@ class Environment(PureObject):
                 index_1 = self.find_nearest_node(item.pos_1, items)
                 index_2 = self.find_nearest_node(item.pos_2, items)
                 infrastructure.add_edge(index_1, index_2, item.index)
-        # infrastructure.apply_grammar()
+        #infrastructure.apply_grammars()
         return infrastructure
     
     def find_nearest_node(self, pos: list, items: list) -> int:
