@@ -8,6 +8,7 @@ class Grammar:
         Apply all grammars based on a decision tree
         if a rule is not yielding any change, it is ok to go the next rule
         if not, all grammars rules start over
+        if no next rule is available, the program is over.
         """
 
         anything_happened = None
@@ -33,24 +34,32 @@ class Grammar:
                         
                         ''' finish '''
                         break
+    
     '''
     def apply_grammars(self):
+        """
+        Apply all grammars based on a decision tree
+            if a rule is not yielding any changes, it is ok to go the next rule.
+            if not, all grammars rules start over.
+            if no next rule is available, the program is over.
+        """
+
         grammars = [
-            self.grammar_rule_1(),
-            self.grammar_rule_2(),
-            self.grammar_rule_3()
+            self.grammar_rule_1,
+            self.grammar_rule_2,
+            self.grammar_rule_3
         ]
 
         anything_happened = None
+        length = len(grammars)
         while anything_happened is True or anything_happened is None:
-            for grammar in grammars:
-                anything_happened = self.grammar_rule_1()
+            for i in range(length):
+                anything_happened = grammars[i]()
                 if anything_happened is True: # start over
                     self.apply_grammars()
                 elif anything_happened is False: # next rule
-                    grammar()
+                    pass
     '''
-
         
     def grammar_rule_1(self):
         """
