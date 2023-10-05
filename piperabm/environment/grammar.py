@@ -12,6 +12,7 @@ class Grammar:
             if not, all grammars rules start over.
             if no next rule is available, the program is over.
         """
+
         grammars = [
             self.grammar_rule_1,
             self.grammar_rule_2,
@@ -39,14 +40,14 @@ class Grammar:
         ''' loop for the first node '''
         for node_index in self.all_nodes:
             ''' check if index still exist and not removed in previous rounds '''
-            if self.has_item(node_index) is True:
+            if node_index in self.all_nodes:
                 node_item = self.get_item(node_index)
 
                 ''' loop for the second node '''
                 for other_node_index in self.all_nodes:
                     ''' check if indexes still exist and not removed in previous rounds '''
-                    if self.has_item(other_node_index) is True and \
-                    self.has_item(node_index) is True:
+                    if other_node_index in self.all_nodes and \
+                        node_index in self.all_nodes:
                         if node_index != other_node_index:
                             other_node_item = self.get_item(other_node_index)
 

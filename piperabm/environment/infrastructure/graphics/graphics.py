@@ -24,7 +24,7 @@ class Graphics:
         node_label_dict = {}
 
         for node_index in self.all_nodes():
-            item = self.get_node_item(node_index)
+            item = self.get_item(node_index)
 
             ''' index '''
             node_list.append(item.index)
@@ -44,7 +44,8 @@ class Graphics:
         edge_color_list = []
 
         for edge_indexes in self.all_edges():
-            item = self.get_edge_item(*edge_indexes)
+            edge_index = self.find_edge_index(*edge_indexes)
+            item = self.get_item(edge_index)
 
             ''' indexes '''
             edge_list.append(edge_indexes)

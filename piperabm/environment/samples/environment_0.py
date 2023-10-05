@@ -15,4 +15,4 @@ environment.add(settlement)
 
 
 if __name__ == '__main__':
-    environment.print
+    environment.show()

@@ -1,24 +1,33 @@
 import networkx as nx
 
-from piperabm.object import PureObject
-from piperabm.environment.grammar import Grammar
 from piperabm.environment.infrastructure.graphics import Graphics
 
 
-class Infrastructure(PureObject, Grammar, Graphics):
+class Infrastructure(Graphics):
 
     def __init__(self, environment):
         super().__init__()
         self.G = nx.Graph()
         self.environment = environment
+        self.create()
 
-    @property
-    def proximity_radius(self):
-        """
-        Retrieve *proximity_radius* from linked environment
-        """
-        return self.environment.proximity_radius
+    def create(self):
+        items = self.environment.all_items
+        for item_index in items:
+            item = self.get_item(item_index)
+            if item.category == 'node':
+                self.add_node(item.index)
+            elif item.category == 'edge':
+                index_1 = self.environment.find_nearest_node(item.pos_1, items)
+                index_2 = self.environment.find_nearest_node(item.pos_2, items)
+                self.add_edge(index_1, index_2, item.index)
 
+    def get_item(self, index: int):
+        """
+        Get an item object based on its index from environment library
+        """
+        return self.environment.get_item(index)
+    
     def add_node(self, item_index):
         """
         Add a new node
@@ -36,20 +45,13 @@ class Infrastructure(PureObject, Grammar, Graphics):
             index_2,
             index=item_index
         )
-
-    def get_node_item(self, index):
-        """
-        Get node object
-        """
-        return self.environment.item(index)
     
-    def get_edge_item(self, index_1, index_2):
+    def find_edge_index(self, index_1, index_2):
         """
-        Get edge object
+        Get edge index based on its index_1 and index_2 (both ends)
         """
         edge = self.G.edges[index_1, index_2]
-        index = edge['index']
-        return self.environment.item(index)
+        return edge['index']
     
     def all_nodes(self):
         """
@@ -63,55 +65,10 @@ class Infrastructure(PureObject, Grammar, Graphics):
         """
         return list(self.G.edges())
     
-    def remove_node(self, index):
-        """
-        Remove a node
-        """
-        self.G.remove_node(index)
-
-    def remove_edge(self, index_1, index_2):
-        """
-        Remove an edge
-        """
-        self.G.remove_edge(index_1, index_2)
-
-    def all_edges_linked_to_node(self, index):
-        """
-        Return all edges linkes to s specific node
-        """
-        return list(self.G.edges(index))
-
-    def replace_node(self, old_index, new_index):
-        """
-        Replace a node with other node and relocate all linked edges
-        """
-        linked_edges = self.all_edges_linked_to_node(old_index)
-        for edge in linked_edges:
-            index_1_old = edge[0]
-            index_2_old = edge[1]
-            index_1_new = None
-            index_2_new = None
-            item = self.get_edge_item(index_1_old, index_2_old)
-            item_index = item.index
-            if index_1_old == old_index:
-                index_1_new = new_index
-                index_2_new = index_2_old
-            elif index_2_old == old_index:
-                index_1_new = index_1_old
-                index_2_new = new_index
-            self.add_edge(index_1_new, index_2_new, item_index)
-            self.remove_edge(index_1_old, index_2_old)
-        self.remove_node(old_index)
-    
 
 if __name__ == "__main__":
 
-    from piperabm.environment.samples import environment_1 as env
-    from piperabm.time import Date
+    from piperabm.environment.samples import environment_2 as env
 
-
-    date_start = Date(2020, 1, 1)
-    date_end = Date(2020, 1, 2)
-    infrastructure = env.to_infrastrucure_graph(date_start, date_end)
-    infrastructure.apply_grammars()
+    infrastructure = env.to_infrastrucure_graph()
     infrastructure.show()

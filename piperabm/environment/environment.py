@@ -34,6 +34,7 @@ class Environment(PureObject, Query, Grammar):
         if item.category == 'node':
             item.index = self.new_index
             self.library[item.index] = item
+            self.apply_grammars()
         elif item.category == 'edge':
             junction_1 = Junction(pos=item.pos_1)
             junction_2 = Junction(pos=item.pos_2)
@@ -41,22 +42,12 @@ class Environment(PureObject, Query, Grammar):
             self.add(junction_2)
             item.index = self.new_index
             self.library[item.index] = item
+            self.apply_grammars()
         else:
             raise ValueError
     
-    def to_infrastrucure_graph(self, date_start, date_end):
-        items = self.current_items(date_start, date_end)
-        infrastructure = Infrastructure(environment=self)
-        for item_index in items:
-            item = self.item(item_index)
-            if item.category == 'node':
-                infrastructure.add_node(item.index)
-            elif item.category == 'edge':
-                index_1 = self.find_nearest_node(item.pos_1, items)
-                index_2 = self.find_nearest_node(item.pos_2, items)
-                infrastructure.add_edge(index_1, index_2, item.index)
-        #infrastructure.apply_grammars()
-        return infrastructure
+    def to_infrastrucure_graph(self):
+        return Infrastructure(environment=self)
     
     def find_nearest_node(self, pos: list, items: list) -> int:
         distances = self.nodes_distance(pos, items)
@@ -71,10 +62,14 @@ class Environment(PureObject, Query, Grammar):
         result = []  # list of [distance, index]
         items = self.filter_category(items, category='node')
         for index in items:
-            item = self.item(index)
+            item = self.get_item(index)
             distance = distance_point_to_point(pos, item.pos)
             result.append([distance, index])
         return result
+    
+    def show(self):
+        infrastructure = self.to_infrastrucure_graph()
+        infrastructure.show()
     
     def serialize(self) -> dict:
         dictionary = {}
@@ -96,9 +91,5 @@ if __name__ == '__main__':
     env.add(item)
     other = Junction(pos=[0.05, 0])
     env.add(other)
-    items = env.all_items
-    env.grammar_rule_1(items)
-    print(env.all_items)
-    env.grammar_rule_1(items)
-    #env.print
+    env.show()
     

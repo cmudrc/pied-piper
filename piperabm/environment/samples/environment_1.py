@@ -28,4 +28,4 @@ environment.add(road)
 
 
 if __name__ == '__main__':
-    environment.print
+    environment.show()
