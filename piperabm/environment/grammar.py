@@ -1,4 +1,6 @@
+from piperabm.environment.items import Road, Junction
 from piperabm.tools.coordinate.distance import distance_point_to_point, distance_point_to_line
+from piperabm.tools.coordinate.intersect import intersect_line_line
 
 
 class Grammar:
@@ -44,7 +46,7 @@ class Grammar:
         """
         grammars = [
             self.grammar_rule_1,
-            #self.grammar_rule_2,
+            self.grammar_rule_2,
             self.grammar_rule_3
         ]
 
@@ -84,7 +86,7 @@ class Grammar:
                             distance = distance_point_to_point(node_item.pos, other_node_item.pos)
                             if distance < self.proximity_radius:
 
-                                ''' update the nodes based on their types '''
+                                ''' update the items based on their types '''
                                 if node_item.type == 'junction' and other_node_item.type != 'junction':
                                     self.remove_item(node_item.index)
                                     anything_happened = True
@@ -95,7 +97,7 @@ class Grammar:
                                     self.remove_item(other_node_item.index)
                                     anything_happened = True
                                 elif node_item.type != 'junction' and other_node_item.type != 'junction':
-                                    print("close items are not resolved")
+                                    #print("close items are not resolved")
                                     anything_happened = False
                                     
         return anything_happened
@@ -110,12 +112,12 @@ class Grammar:
         ''' loop for the node '''
         for node_index in self.all_nodes:
             if node_index in self.all_nodes: # to make sure it is not deleted in previous runs
-                node_item = self.get_node_item(node_index)
+                node_item = self.get_item(node_index)
 
                 ''' loop for the edge '''
-                for edge_indexes in self.all_edges:
-                    if edge_indexes in self.all_edges and node_index in self.all_nodes: # to make sure it is not deleted in previous runs
-                        edge_item = self.get_edge_item(*edge_indexes)
+                for edge_index in self.all_edges:
+                    if edge_index in self.all_edges and node_index in self.all_nodes: # to make sure it is not deleted in previous runs
+                        edge_item = self.get_item(edge_index)
                         #print(edge_item.pos_1, edge_item.pos_2)
 
                         ''' check the distance '''
@@ -125,12 +127,14 @@ class Grammar:
                         if distance is not None:
                             if distance < self.proximity_radius:
                                 if distance_1 > self.proximity_radius and distance_2 > self.proximity_radius:
-                                    ''' update the items '''
-                                    # self.add_edge(edge_indexes[0], node_index, edge_item.index) ###### edge_item.index
-                                    # self.add_edge(node_index, edge_indexes[1], edge_item.index) ######
-                                    self.add_edge(edge_indexes[0], node_index, self.environment.new_index) #### index not available
-                                    self.add_edge(node_index, edge_indexes[1], self.environment.new_index) #### index not available
-                                    self.remove_edge(*edge_indexes)
+                                    
+                                    ''' update the items based on their types '''
+                                    if edge_item.type == 'road':
+                                        new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=node_item.pos)
+                                        new_edge_item_2 = Road(pos_1=node_item.pos, pos_2=edge_item.pos_2)
+                                    self.add(new_edge_item_1)
+                                    self.add(new_edge_item_2)
+                                    self.remove_item(edge_index)
                                     anything_happened = True
 
         return anything_happened
@@ -140,4 +144,51 @@ class Grammar:
         Check for edge to edge intersection
         """
         anything_happened = False
+
+        ''' loop for the first edge '''
+        for edge_index in self.all_edges:
+            if edge_index in self.all_edges: # to make sure it is not deleted in previous runs
+                edge_item = self.get_item(edge_index)
+
+                ''' loop for the second edge '''
+                for other_edge_index in self.all_edges:
+                    if edge_index != other_edge_index:
+                        if other_edge_index in self.all_edges and edge_index in self.all_edges: # to make sure it is not deleted in previous runs
+                            other_edge_item = self.get_item(other_edge_index)
+
+                            ''' check the intersections '''
+                            intersection = intersect_line_line(
+                                line_1_point_1=edge_item.pos_1,
+                                line_1_point_2=edge_item.pos_2,
+                                line_2_point_1=other_edge_item.pos_1,
+                                line_2_point_2=other_edge_item.pos_2
+                            )
+                            if intersection is not None:
+                                #print(intersection)
+                                if edge_item.type == 'road' and other_edge_item.type == 'road':
+                                    #junction = Junction(pos=intersection)
+                                    new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=intersection)
+                                    new_edge_item_2 = Road(pos_1=intersection, pos_2=edge_item.pos_2)
+                                    new_edge_item_3 = Road(pos_1=other_edge_item.pos_1, pos_2=intersection)
+                                    new_edge_item_4 = Road(pos_1=intersection, pos_2=other_edge_item.pos_2)
+                                    '''
+                                    print(junction.pos)
+                                    print(new_edge_item_1.pos_1)
+                                    print(new_edge_item_1.pos_2)
+                                    print(new_edge_item_2.pos_1)
+                                    print(new_edge_item_2.pos_2)
+                                    print(new_edge_item_3.pos_1)
+                                    print(new_edge_item_3.pos_2)
+                                    print(new_edge_item_4.pos_1)
+                                    print(new_edge_item_4.pos_2)
+                                    '''
+                                    self.add(new_edge_item_1)
+                                    self.add(new_edge_item_2)
+                                    self.add(new_edge_item_3)
+                                    self.add(new_edge_item_4)
+                                    #self.add(junction)
+                                    self.remove_item(edge_index)
+                                    self.remove_item(other_edge_index)
+                                    anything_happened = True
+
         return anything_happened
