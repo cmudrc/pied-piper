@@ -7,16 +7,16 @@ from piperabm.tools.coordinate.distance import distance_point_to_point
 class Road(Item):
 
     def __init__(
-            self,
-            pos_1: list = None,
-            pos_2: list = None,
-            name: str = '',
-            date_start: Date = None,
-            date_end: Date = None,
-            length_actual: float = None,
-            roughness: float = 1,
-            degradation = Degradation()
-        ):
+        self,
+        pos_1: list = None,
+        pos_2: list = None,
+        name: str = '',
+        date_start: Date = None,
+        date_end: Date = None,
+        length_actual: float = None,
+        roughness: float = 1,
+        degradation=Degradation()
+    ):
         super().__init__(
             name=name,
             date_start=date_start,
@@ -30,7 +30,7 @@ class Road(Item):
         self.degradation = degradation
         self.category = "edge"
         self.type = "road"
-    
+
     @property
     def length_linear(self):
         """ Eucledian distance between two ends of the edge """
@@ -38,7 +38,7 @@ class Road(Item):
         if self.pos_1 is not None and self.pos_2 is not None:
             result = distance_point_to_point(self.pos_1, self.pos_2)
         return result
-    
+
     @property
     def length(self):
         """ Compare and return the most appropriate definition of length """
@@ -57,7 +57,7 @@ class Road(Item):
             if actual is not None:
                 result = actual
         return result
-    
+
     def serialize(self) -> dict:
         dictionary = super().serialize()
         dictionary["pos_1"] = self.pos_1
@@ -67,7 +67,7 @@ class Road(Item):
         dictionary["degradation"] = self.degradation.serialize()
         dictionary["category"] = self.category
         return dictionary
-    
+
     def deserialize(self, dictionary: dict) -> None:
         super().deserialize(dictionary)
         self.pos_1 = dictionary["pos_1"]

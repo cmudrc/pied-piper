@@ -6,13 +6,13 @@ from piperabm.time import Date
 class Settlement(Item):
 
     def __init__(
-            self,
-            pos: list = None,
-            name: str = '',
-            date_start: Date = None,
-            date_end: Date = None,
-            degradation = Degradation()
-        ):
+        self,
+        pos: list = None,
+        name: str = '',
+        date_start: Date = None,
+        date_end: Date = None,
+        degradation=Degradation()
+    ):
         super().__init__(
             name=name,
             date_start=date_start,
@@ -31,7 +31,7 @@ class Settlement(Item):
         dictionary["degradation"] = self.degradation.serialize()
         dictionary["category"] = self.category
         return dictionary
-    
+
     def deserialize(self, dictionary: dict) -> None:
         super().deserialize(dictionary)
         self.pos = dictionary["pos"]

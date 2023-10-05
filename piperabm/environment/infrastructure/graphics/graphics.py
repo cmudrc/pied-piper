@@ -31,7 +31,7 @@ class Graphics:
 
             ''' pos '''
             pos_dict[node_index] = item.pos
- 
+
             ''' color '''
             color = style['node'][item.type]['color']
             node_color_list.append(color)

@@ -12,6 +12,9 @@ class Infrastructure(Graphics):
         self.create()
 
     def create(self):
+        """
+        Create graph *G* from *self.environment*
+        """
         items = self.environment.all_items
         for item_index in items:
             item = self.get_item(item_index)
@@ -27,7 +30,7 @@ class Infrastructure(Graphics):
         Get an item object based on its index from environment library
         """
         return self.environment.get_item(index)
-    
+
     def add_node(self, item_index):
         """
         Add a new node
@@ -45,26 +48,26 @@ class Infrastructure(Graphics):
             index_2,
             index=item_index
         )
-    
+
     def find_edge_index(self, index_1, index_2):
         """
         Get edge index based on its index_1 and index_2 (both ends)
         """
         edge = self.G.edges[index_1, index_2]
         return edge['index']
-    
+
     def all_nodes(self):
         """
         Return all nodes
         """
         return list(self.G.nodes())
-    
+
     def all_edges(self):
         """
         Return all edges
         """
         return list(self.G.edges())
-    
+
 
 if __name__ == "__main__":
 

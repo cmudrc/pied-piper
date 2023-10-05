@@ -1,4 +1,3 @@
-import networkx as nx
 import uuid
 
 from piperabm.object import PureObject
@@ -6,19 +5,19 @@ from piperabm.environment.query import Query
 from piperabm.environment.grammar import Grammar
 from piperabm.environment.infrastructure import Infrastructure
 from piperabm.environment.items import Junction
-from piperabm.tools.coordinate import distance_point_to_point, distance_point_to_line, intersect_line_line
 
 
 class Environment(PureObject, Query, Grammar):
 
     def __init__(
-            self,
-            proximity_radius: float  
-        ):
+        self,
+        proximity_radius: float
+    ):
         super().__init__()
         self.society = None  # used for binding
         self.library = {}  # {index: item} pairs
-        self.proximity_radius = proximity_radius  # distance less than this amount is equivalent to zero
+        # distance less than this amount is equivalent to zero
+        self.proximity_radius = proximity_radius
 
     @property
     def new_index(self) -> int:
@@ -26,7 +25,7 @@ class Environment(PureObject, Query, Grammar):
         Generate a new unique integer as id for graph items
         """
         return uuid.uuid4().int
-    
+
     def add(self, item) -> None:
         """
         Add new item to library
@@ -45,32 +44,21 @@ class Environment(PureObject, Query, Grammar):
             self.apply_grammars()
         else:
             raise ValueError
-    
-    def to_infrastrucure_graph(self):
-        return Infrastructure(environment=self)
-    
-    def find_nearest_node(self, pos: list, items: list) -> int:
-        distances = self.nodes_distance(pos, items)
-        distances = self.sort_distances(distances)
-        nearest_node_index = distances[0][1]
-        return nearest_node_index
 
-    def nodes_distance(self, pos: list, items: list) -> list:
+    @property
+    def infrastrucure(self):
         """
-        Calculate nodes distance from *pos*
+        Return infrastructure graph of items
         """
-        result = []  # list of [distance, index]
-        items = self.filter_category(items, category='node')
-        for index in items:
-            item = self.get_item(index)
-            distance = distance_point_to_point(pos, item.pos)
-            result.append([distance, index])
-        return result
-    
+        return Infrastructure(environment=self)
+
     def show(self):
-        infrastructure = self.to_infrastrucure_graph()
+        """
+        Show environment (infrastructure)
+        """
+        infrastructure = self.infrastrucure
         infrastructure.show()
-    
+
     def serialize(self) -> dict:
         dictionary = {}
         ''' serialize library items '''
@@ -82,6 +70,9 @@ class Environment(PureObject, Query, Grammar):
         dictionary['proximity radius'] = self.proximity_radius
         return dictionary
 
+    def deserialize(self, dictionary: dict) -> None:
+        pass
+
 
 if __name__ == '__main__':
     from items import Junction
@@ -92,4 +83,3 @@ if __name__ == '__main__':
     other = Junction(pos=[0.05, 0])
     env.add(other)
     env.show()
-    

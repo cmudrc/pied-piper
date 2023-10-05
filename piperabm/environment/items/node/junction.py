@@ -20,7 +20,7 @@ class Junction(Item):
         dictionary["pos"] = self.pos
         dictionary["category"] = self.category
         return dictionary
-    
+
     def deserialize(self, dictionary: dict) -> None:
         super().deserialize(dictionary)
         self.pos = dictionary["pos"]

@@ -20,13 +20,13 @@ class Degradation(PureObject):
     def factor(self):
         """ Calculate degradation factor """
         return self.current / self.total
-    
+
     def serialize(self) -> dict:
         dictionary = {}
         dictionary['current'] = self.current
         dictionary['total'] = self.total
         return dictionary
-    
+
     def deserialize(self, dictionary: dict) -> None:
         self.current = dictionary['current']
         self.total = dictionary['total']

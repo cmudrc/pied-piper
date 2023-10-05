@@ -1,12 +1,12 @@
 from copy import deepcopy
 
-from piperabm.object import Object
+from piperabm.object import PureObject
 from piperabm.resource import ResourceDelta
-from piperabm.unit import DT
+from piperabm.time import DeltaTime
 from piperabm.tools.symbols import SYMBOLS
 
 
-class Transportation(Object):
+class Transportation(PureObject):
 
     def __init__(
             self,
