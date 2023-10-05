@@ -2,113 +2,120 @@ import unittest
 from copy import deepcopy
 
 from piperabm.environment.samples import environment_0, environment_1
-from piperabm.environment.items import Junction, Settlement, Road
+from piperabm.environment.items import Junction, Road
 from piperabm.time import Date
 
 
 class TestGrammarRule1Class(unittest.TestCase):
 
+    def setUp(self):
+        self.date_start = Date(2020, 1, 1)
+        self.date_end = Date(2020, 1, 2)
+
     def test_0(self):
         """
-        A single settlement node
+        A single node
         """
-
         env = deepcopy(environment_0)
-        env_copy = deepcopy(env)
+        infrastrucure = env.to_infrastrucure_graph(self.date_start, self.date_end)
+        infrastrucure_copy = deepcopy(infrastrucure)
 
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
-        
-        ''' apply step by step '''
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        ''' apply rules step by step '''
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_1()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_1()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
-        ''' apply all '''
-        env_copy.apply_grammars()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        ''' apply all rules '''
+        infrastrucure_copy.apply_grammars()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
     def test_1(self):
         """
-        Add one junction node near an existing settlement node
+        Add one node near an existing node
         """
         env = deepcopy(environment_0)
         new_item = Junction(pos=[0, 0.05])
         env.add(new_item)
-        env_copy = deepcopy(env)
+        infrastrucure = env.to_infrastrucure_graph(self.date_start, self.date_end)
+        infrastrucure_copy = deepcopy(infrastrucure)
 
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 2)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        ''' apply rules step by step '''
+        self.assertEqual(len(infrastrucure.all_nodes()), 2)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_1()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_1()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
-        ''' apply step by step '''
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
-
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
-
-        ''' apply all '''
-        env_copy.apply_grammars()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        ''' apply all rules '''
+        infrastrucure_copy.apply_grammars()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
     def test_2(self):
         """
-        Add two junction nodes near an existing settlement node
+        Add two nodes near an existing node
         """
         env = deepcopy(environment_0)
         new_item_1 = Junction(pos=[0, 0.05])
         new_item_2 = Junction(pos=[0.05, 0])
         env.add(new_item_1)
         env.add(new_item_2)
-        env_copy = deepcopy(env)
+        infrastrucure = env.to_infrastrucure_graph(self.date_start, self.date_end)
+        infrastrucure_copy = deepcopy(infrastrucure)
 
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 3)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        # apply rules step by step
+        self.assertEqual(len(infrastrucure.all_nodes()), 3)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_1()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_1()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
-        ''' apply step by step '''
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        # apply all rules
+        infrastrucure_copy.apply_grammars()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
 
-        ''' apply all '''
-        env_copy.apply_grammars()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 1)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+class TestGrammarRule2Class(unittest.TestCase):
 
-    def test_3(self):
+    def setUp(self):
+        self.date_start = Date(2020, 1, 1)
+        self.date_end = Date(2020, 1, 2)
+
+    def test_0(self):
         """
-        Add one settlement node near an existing settlement node
+        A single node
         """
         env = deepcopy(environment_0)
-        new_item = Settlement(pos=[0, 0.05])
-        env.add(new_item)
-        env_copy = deepcopy(env)
+        infrastrucure = env.to_infrastrucure_graph(self.date_start, self.date_end)
+        infrastrucure_copy = deepcopy(infrastrucure)
 
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 2)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
+        # apply rules step by step
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_2()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
+        infrastrucure.grammar_rule_2()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 
-        ''' apply step by step '''
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 2)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
-
-        env.grammar_rule_1()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 2)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
-
-        ''' apply all '''
-        env_copy.apply_grammars()
-        self.assertEqual(len(env.filter_category(env.all_items, 'node')), 2)
-        self.assertEqual(len(env.filter_category(env.all_items, 'edge')), 0)
-
+        # apply all rules
+        infrastrucure_copy.apply_grammars()
+        self.assertEqual(len(infrastrucure.all_nodes()), 1)
+        self.assertEqual(len(infrastrucure.all_edges()), 0)
 '''
     def test_1(self):
         """

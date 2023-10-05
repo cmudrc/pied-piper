@@ -9,7 +9,8 @@ environment = Environment(
 
 settlement = Settlement(
     name="Sample Settlement",
-    pos=[0, 0]
+    pos=[0, 0],
+    date_start=Date(2020, 1, 1)
 )
 environment.add(settlement)
 

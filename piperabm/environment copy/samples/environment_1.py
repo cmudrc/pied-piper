@@ -15,7 +15,8 @@ environment.add(junction)
 
 settlement = Settlement(
     name='Sample Settlement',
-    pos=[2, 2]
+    pos=[2, 2],
+    date_start=Date(2020, 1, 1)
 )
 environment.add(settlement)
 
