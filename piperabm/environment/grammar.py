@@ -1,41 +1,9 @@
-from piperabm.environment.items import Road, Junction
+from piperabm.environment.items import Road
 from piperabm.tools.coordinate.distance import distance_point_to_point, distance_point_to_line
 from piperabm.tools.coordinate.intersect import intersect_line_line
 
 
 class Grammar:
-
-    def apply_grammars_old(self):
-        """
-        Apply all grammars based on a decision tree
-        if a rule is not yielding any change, it is ok to go the next rule
-        if not, all grammars rules start over
-        if no next rule is available, the program is over.
-        """
-
-        anything_happened = None
-        while anything_happened is True or anything_happened is None:
-
-            ''' rule 1 '''
-            anything_happened = self.grammar_rule_1()
-            if anything_happened is True: # start over
-                self.apply_grammars()
-            elif anything_happened is False: # next rule
-                
-                ''' rule 2 '''
-                anything_happened = self.grammar_rule_2()
-                if anything_happened is True: # start over
-                    self.apply_grammars()
-                elif anything_happened is False: # next rule
-                    
-                    ''' rule 3 '''
-                    anything_happened = self.grammar_rule_3()
-                    if anything_happened is True: # start over
-                        self.apply_grammars()
-                    elif anything_happened is False: # next rule
-                        
-                        ''' finish '''
-                        break
     
     def apply_grammars(self):
         """
@@ -124,18 +92,19 @@ class Grammar:
                         distance = distance_point_to_line(node_item.pos, edge_item.pos_1, edge_item.pos_2)
                         distance_1 = distance_point_to_point(node_item.pos, edge_item.pos_1)
                         distance_2 = distance_point_to_point(node_item.pos, edge_item.pos_2)
-                        if distance is not None:
-                            if distance < self.proximity_radius:
-                                if distance_1 > self.proximity_radius and distance_2 > self.proximity_radius:
+                        if distance is not None and \
+                            distance < self.proximity_radius and \
+                            distance_1 > self.proximity_radius and \
+                            distance_2 > self.proximity_radius:
                                     
-                                    ''' update the items based on their types '''
-                                    if edge_item.type == 'road':
-                                        new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=node_item.pos)
-                                        new_edge_item_2 = Road(pos_1=node_item.pos, pos_2=edge_item.pos_2)
-                                    self.add(new_edge_item_1)
-                                    self.add(new_edge_item_2)
-                                    self.remove_item(edge_index)
-                                    anything_happened = True
+                            ''' update the items based on their types '''
+                            if edge_item.type == 'road':
+                                new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=node_item.pos)
+                                new_edge_item_2 = Road(pos_1=node_item.pos, pos_2=edge_item.pos_2)
+                            self.add(new_edge_item_1)
+                            self.add(new_edge_item_2)
+                            self.remove_item(edge_index)
+                            anything_happened = True
 
         return anything_happened
 
@@ -163,30 +132,29 @@ class Grammar:
                                 line_2_point_1=other_edge_item.pos_1,
                                 line_2_point_2=other_edge_item.pos_2
                             )
-                            if intersection is not None:
-                                #print(intersection)
+                            distance_1_1 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_1)
+                            distance_1_2 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_2)
+                            distance_2_1 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_1)
+                            distance_2_2 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_2)
+                            point_to_point_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
+                            distance_1_2 = distance_point_to_line(edge_item.pos_1, other_edge_item.pos_1, other_edge_item.pos_2)
+                            distance_2_2 = distance_point_to_line(edge_item.pos_2, other_edge_item.pos_1, other_edge_item.pos_2)
+                            distance_1_1 = distance_point_to_line(other_edge_item.pos_1, edge_item.pos_1, edge_item.pos_2)
+                            distance_2_1 = distance_point_to_line(other_edge_item.pos_2, edge_item.pos_1, edge_item.pos_2)
+                            point_to_line_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
+                            if intersection is not None and \
+                                min(point_to_point_distances) > self.proximity_radius and \
+                                min(point_to_line_distances) > self.proximity_radius:
+
                                 if edge_item.type == 'road' and other_edge_item.type == 'road':
-                                    #junction = Junction(pos=intersection)
                                     new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=intersection)
                                     new_edge_item_2 = Road(pos_1=intersection, pos_2=edge_item.pos_2)
                                     new_edge_item_3 = Road(pos_1=other_edge_item.pos_1, pos_2=intersection)
                                     new_edge_item_4 = Road(pos_1=intersection, pos_2=other_edge_item.pos_2)
-                                    '''
-                                    print(junction.pos)
-                                    print(new_edge_item_1.pos_1)
-                                    print(new_edge_item_1.pos_2)
-                                    print(new_edge_item_2.pos_1)
-                                    print(new_edge_item_2.pos_2)
-                                    print(new_edge_item_3.pos_1)
-                                    print(new_edge_item_3.pos_2)
-                                    print(new_edge_item_4.pos_1)
-                                    print(new_edge_item_4.pos_2)
-                                    '''
                                     self.add(new_edge_item_1)
                                     self.add(new_edge_item_2)
                                     self.add(new_edge_item_3)
                                     self.add(new_edge_item_4)
-                                    #self.add(junction)
                                     self.remove_item(edge_index)
                                     self.remove_item(other_edge_index)
                                     anything_happened = True
