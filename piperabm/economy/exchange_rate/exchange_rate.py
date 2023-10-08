@@ -34,9 +34,12 @@ class ExchangeRate(PureObject):
         return rate
     
     def value(self, resource: Resource, target='wealth') -> float:
+        """
+        Calculate value of *resource* in terms of *target*
+        """
         return resource.amount * self.rate(source=resource.name, target=target)
     
-    def to_dict(self) -> list:
+    def serialize(self) -> list:
         G_prime = nx.Graph(self.G)
         dictionary = {}
         for edge in G_prime.edges():
@@ -47,8 +50,8 @@ class ExchangeRate(PureObject):
             }
         return dictionary
     
-    def from_dict(self, dictionary: list) -> None:
-        self.G = nx.DiGraph() # reset
+    def deserialize(self, dictionary: list) -> None:
+        self.G = nx.DiGraph()
         for item in dictionary:
             source = item
             target = dictionary[source]['to']

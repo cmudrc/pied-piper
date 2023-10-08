@@ -1,4 +1,7 @@
-# https://stats.stackexchange.com/questions/286141/lognormal-parameters-knowing-gdp-per-capita-gini-coefficient-and-quintile-share
+"""
+Source:
+https://stats.stackexchange.com/questions/286141/lognormal-parameters-knowing-gdp-per-capita-gini-coefficient-and-quintile-share
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,13 +32,13 @@ class GiniGenerator:
             self.average = average
         else:
             raise ValueError
-        self.sigma = self.sigma_calculate(gini=gini_index)
-        self.mu = self.mu_calculate(mean=self.average, sigma=self.sigma)
+        self.sigma = self.calculate_sigma(gini=gini_index)
+        self.mu = self.calculate_mu(mean=self.average, sigma=self.sigma)
 
-    def sigma_calculate(self, gini):
+    def calculate_sigma(self, gini):
         return 2 * erfinv(gini)
     
-    def mu_calculate(self, mean, sigma):
+    def calculate_mu(self, mean, sigma):
         val_1 = np.log(mean)
         val_2 = (sigma ** 2) / 2
         return val_1 - val_2
@@ -53,18 +56,12 @@ class GiniGenerator:
             )
 
         result = rvs()
-        if threashold is not None:
+        if threashold is not None:  # to ensure a sample having gini index within threashold
             while np.abs(gini_coefficient(result) - self.gini) > threashold:
                 result = rvs()
-        if n == 1:
+        if n == 1:  # when asked for a single value, a single value is returned instead of a list
             result = result[0]
         return result
-
-    def check_gini(self, x):
-        return gini_coefficient(x)
-
-    def mean(self, sample):
-        return sum(sample) / len(sample)
 
     def __str__(self):
         txt = ''
@@ -89,6 +86,8 @@ if __name__ == "__main__":
         average=average
     )
     sample = g.generate(1000)
+    #filtered = [s for s in sample if s<0]
+    #print(len(filtered))
 
     #g.show(income)
     #g.show(sample)
