@@ -5,7 +5,7 @@ from piperabm.tools.coordinate.intersect import intersect_line_line
 
 class Grammar:
     
-    def apply_grammars(self):
+    def apply_grammars(self, report=False):
         """
         Apply all grammars based on a decision tree
             if a rule is not yielding any changes, it is ok to go the next rule.
@@ -21,7 +21,11 @@ class Grammar:
 
         i = 0
         while True:
-            anything_happened = grammars[i]()
+            anything_happened, log = grammars[i]()
+
+            if report is True:
+                print(log)
+
             if anything_happened is True:
                 i = 0  # reset to the first grammar
             else:
@@ -36,6 +40,7 @@ class Grammar:
         """
 
         anything_happened = False
+        report = ['rule 1:']
 
         ''' loop for the first node '''
         for node_index in self.all_nodes:
@@ -58,18 +63,22 @@ class Grammar:
                                 ''' update the items based on their types '''
                                 if node_item.type == 'junction' and other_node_item.type != 'junction':
                                     self.remove_item(node_item.index)
+                                    report.append(str(node_item) + ' removed.')
                                     anything_happened = True
                                 elif node_item.type == 'junction' and other_node_item.type == 'junction':
                                     self.remove_item(node_item.index)
+                                    report.append(str(node_item) + ' removed.')
                                     anything_happened = True
                                 elif node_item.type != 'junction' and other_node_item.type == 'junction':
                                     self.remove_item(other_node_item.index)
+                                    report.append(str(other_node_item) + ' removed.')
                                     anything_happened = True
                                 elif node_item.type != 'junction' and other_node_item.type != 'junction':
                                     #print("close items are not resolved")
-                                    anything_happened = False
-                                    
-        return anything_happened
+                                    raise ValueError
+                                    #anything_happened = False
+
+        return anything_happened, report
 
     def grammar_rule_2(self):
         """
@@ -77,6 +86,7 @@ class Grammar:
         """
 
         anything_happened = False
+        report = ['rule 2:']
 
         ''' loop for the node '''
         for node_index in self.all_nodes:
@@ -103,17 +113,21 @@ class Grammar:
                                 new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=node_item.pos)
                                 new_edge_item_2 = Road(pos_1=node_item.pos, pos_2=edge_item.pos_2)
                             self.add(new_edge_item_1)
+                            report.append(str(new_edge_item_1) + ' added.')
                             self.add(new_edge_item_2)
+                            report.append(str(new_edge_item_2) + ' added.')
                             self.remove_item(edge_index)
+                            report.append(str(edge_item) + ' removed.')
                             anything_happened = True
 
-        return anything_happened
+        return anything_happened, report
 
     def grammar_rule_3(self):
         """
         Check for edge to edge intersection
         """
         anything_happened = False
+        report = ['rule 3:']
 
         ''' loop for the first edge '''
         for edge_index in self.all_edges:
@@ -153,11 +167,17 @@ class Grammar:
                                     new_edge_item_3 = Road(pos_1=other_edge_item.pos_1, pos_2=intersection)
                                     new_edge_item_4 = Road(pos_1=intersection, pos_2=other_edge_item.pos_2)
                                     self.add(new_edge_item_1)
+                                    report.append(str(new_edge_item_1) + ' added.')
                                     self.add(new_edge_item_2)
+                                    report.append(str(new_edge_item_2) + ' added.')
                                     self.add(new_edge_item_3)
+                                    report.append(str(new_edge_item_3) + ' added.')
                                     self.add(new_edge_item_4)
+                                    report.append(str(new_edge_item_4) + ' added.')
                                     self.remove_item(edge_index)
+                                    report.append(str(edge_item) + ' removed.')
                                     self.remove_item(other_edge_index)
+                                    report.append(str(other_edge_item) + ' removed.')
                                     anything_happened = True
 
-        return anything_happened
+        return anything_happened, report

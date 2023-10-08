@@ -13,12 +13,16 @@ class Degradation(PureObject):
         self.current = current
 
     def add(self, amount: int = 0):
-        """ Add usage """
+        """
+        Add usage
+        """
         self.current += amount
 
     @property
     def factor(self):
-        """ Calculate degradation factor """
+        """
+        Calculate degradation factor
+        """
         return self.current / self.total
 
     def serialize(self) -> dict:

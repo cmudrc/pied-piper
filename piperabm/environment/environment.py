@@ -33,7 +33,6 @@ class Environment(PureObject, Query, Grammar):
         if item.category == 'node':
             item.index = self.new_index
             self.library[item.index] = item
-            self.apply_grammars()
         elif item.category == 'edge':
             junction_1 = Junction(pos=item.pos_1)
             junction_2 = Junction(pos=item.pos_2)
@@ -41,8 +40,8 @@ class Environment(PureObject, Query, Grammar):
             self.add(junction_2)
             item.index = self.new_index
             self.library[item.index] = item
-            self.apply_grammars()
         else:
+            print('item not recognized')
             raise ValueError
 
     @property

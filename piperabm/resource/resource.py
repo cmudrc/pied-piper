@@ -15,6 +15,7 @@ class Resource(PureObject):
         super().__init__()
 
         self.name = name
+        self.type = 'resource'
 
         if max < 0:
             raise ValueError
