@@ -2,8 +2,8 @@ from piperabm.resource import Resource
 
 
 resource = Resource(
-    name='food',
-    amount=30,
+    name='water',
+    amount=40,
     max=100,
 )
 

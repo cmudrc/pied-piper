@@ -1,165 +1,117 @@
-from piperabm.object import Object
-from piperabm.resource.matter import Matter
-from piperabm.resource.container import Container
-from piperabm.resource.resource_delta import ResourceDelta
+from typing import Any
+from piperabm.object import PureObject
 from piperabm.tools.symbols import SYMBOLS
 
 
-class Resource(Object):
-    """
-    Represent resources located within physical storage unit (container)
-    """
+class Resource(PureObject):
 
-    def __init__(self):
+    def __init__(
+        self,
+        name: str = '',
+        amount: float = 0,
+        max: float = SYMBOLS['inf'],
+        min: float = 0
+    ):
         super().__init__()
-        self.db = {} # database
 
-    def add_container_object(self, name: str, container: Container):
-        """
-        Directly define a new resource by adding container object
-        """
-        self.db[name] = container
+        self.name = name
 
-    def create(self, name, amount=None, max=None, min=None):
-        """
-        Define new resource
-        """
-        matter = Matter(amount=amount)
-        container = Container(max=max, min=min)
-        container.add_matter_object(matter)
-        self.add_container_object(name, container)
+        if max < 0:
+            raise ValueError
+        self.max = max
 
-    def get_amount(self, name: str):
-        return self.db[name].matter.amount
+        if min < 0:
+            raise ValueError
+        self.min = min
 
-    def set_amount(self, name: str, amount: float):
-        self.db[name].matter.amount = amount
+        if self.max < self.min:
+            raise ValueError
 
-    def all_names(self) -> list:
-        """
-        Return all different resource names
-        """
-        return list(self.db.keys())
+        if amount is None:
+            amount = 0
+        self.amount = amount
 
-    def find_zeros(self, resource_names: list = []) -> list:
-        """
-        Find resources that have zero amount left
-        """
-        result = []
-        if len(resource_names) == 0: # check all
-            names_list = self.all_names()
-        else:
-            names_list = resource_names
-        for resource_name in names_list:
-            if self.__call__(resource_name) <= SYMBOLS['eps']:
-                result.append(resource_name)
+    @property
+    def source(self):
+        result = self.amount - self.min
+        if result < 0:
+            result = 0
         return result
     
-    def to_resource_delta(self) -> ResourceDelta:
-        """
-        Create an equivalent ResourceDelta object from current Resource object
-        Required for resource_sum module
-        """
-        resource_delta = ResourceDelta()
-        dictionary = self.to_dict()
-        new_dictionary = {}
-        for name in dictionary:
-            new_dictionary[name] = dictionary[name]['amount']
-        resource_delta.from_dict(new_dictionary)
-        return resource_delta
-    
-    def value(self, exchange_rate, target: str='wealth'):
-        return exchange_rate.value(self, target)
-    
     @property
-    def source(self) -> ResourceDelta:
-        result = {}
-        for resource in self.db:
-            container = self.db[resource]
-            result[resource] = container.source
-        return ResourceDelta(result)
-
-    @property
-    def demand(self) -> ResourceDelta:
-        result = {}
-        for resource in self.db:
-            container = self.db[resource]
-            result[resource] = container.demand
-        return ResourceDelta(result)
+    def demand(self):
+        return self.max - self.amount
     
-    def create_zeros(self, names: list):
-        for name in names:
-            self.create(name, amount=0)
-
-    def __call__(self, name: str):
-        return self.get_amount(name)
-    
-    def __gt__(self, other):
-        rd_self = self.to_resource_delta()
-        if isinstance(other, Resource):
-            rd_other = other.to_resource_delta()
-        elif isinstance(other, ResourceDelta):
-            rd_other = other
-        return rd_self > rd_other
-    
-    def __lt__(self, other):
-        rd_self = self.to_resource_delta()
-        if isinstance(other, Resource):
-            rd_other = other.to_resource_delta()
-        elif isinstance(other, ResourceDelta):
-            rd_other = other
-        return rd_self < rd_other
-    
-    def __add__(self, other):
-        if isinstance(other, ResourceDelta): # resource arithmetic
-            remainder = {}
-            for key in other.db:
-                if key in self.db:
-                    remainder[key] = self.db[key] + other.db[key]
-            return ResourceDelta(remainder)
-        else: # delta arithmetic
-            super().__add__(other)
-
-    def __sub__(self, other):
-        if isinstance(other, ResourceDelta): # resource arithmetic
-            remainder = {}
-            for key in other.db:
-                if key in self.db:
-                    remainder[key] = self.db[key] - other.db[key]
-            return ResourceDelta(remainder)
-        else: # delta arithmetic
-            return super().__sub__(other)
-
-    def __mul__(self, other):
-        if isinstance(other, (int, float)): # resource arithmetic
-            remainder = {}
-            for key in self.db:
-                resource = self.db[key]
-                remainder[key] = resource * other
-            return ResourceDelta(remainder)
+    def add(self, other) -> (int, float):
+        if isinstance(other, (int, float)):
+            new_amount = self.amount + other
+            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            return remainder
+        elif isinstance(other, Resource):
+            if other.name == '' or other.name == self.name:
+                return self.add(other.amount)
         
-    def __truediv__(self, other):
-        if isinstance(other, (int, float)): # resource arithmetic
-            remainder = {}
-            for key in self.db:
-                resource = self.db[key]
-                remainder[key] = resource / other
-            return ResourceDelta(remainder)
+    def sub(self, other) -> (int, float):
+        if isinstance(other, (int, float)):
+            new_amount = self.amount - other
+            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            return remainder
+        elif isinstance(other, Resource):
+            if other.name == '' or other.name == self.name:
+                return self.sub(other.amount)
 
-    def to_dict(self) -> dict:
-        dictionary = {}
-        for key in self.db:            
-            dictionary[key] = self.db[key].to_dict()
-        return dictionary
+    def mul(self, other) -> (int, float):
+        if isinstance(other, (int, float)):
+            new_amount = self.amount * other
+            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            return remainder
+        elif isinstance(other, Resource):
+            if other.name == '' or other.name == self.name:
+                return self.mul(other.amount)
+        
+    def truediv(self, other) -> (int, float):
+        if isinstance(other, (int, float)):
+            new_amount = self.amount / other
+            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            return remainder
+        elif isinstance(other, Resource):
+            if other.name == '' or other.name == self.name:
+                return self.truediv(other.amount)
     
-    def from_dict(self, dictionary: dict) -> None:
-        for key in dictionary:
-            container = Container()
-            container.from_dict(dictionary[key])
-            self.db[key] = container
-    
+    def serialize(self) -> dict:
+        return {
+            'name': self.name,
+            'max': self.max,
+            'min': self.min,
+            'amount': self.amount
+        }
+
+    def deserialize(self, dictionary: dict) -> None:
+        self.name = dictionary['name']
+        self.amount = dictionary['amount']
+        self.max = float(dictionary['max'])
+        self.min = dictionary['min']
+
+
+def calculate_remainder(amount, max, min):
+    if max < min:
+        raise ValueError
+    remainder = 0
+    if amount > max:
+        remainder = amount - max
+        amount = max
+    elif amount < min:
+        remainder = min - amount
+        amount = min
+    return amount, remainder
+
 
 if __name__ == "__main__":
-    resource = Resource()
-    resource.create(name='food', amount=6, max=10, min=1)
+    resource = Resource(
+        name='food',
+        amount=6,
+        max=10
+    )
+    remainder = resource.truediv(0.5)
     print(resource)
+    print(remainder)

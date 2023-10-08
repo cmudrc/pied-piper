@@ -1,9 +1,8 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import Resource, ResourceDelta
+from piperabm.resource import Resource
 from piperabm.resource.samples import resource_0
-from piperabm.resource.samples import resource_delta_0
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 
 
@@ -11,137 +10,72 @@ class TestResourceClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.resource = deepcopy(resource_0)
-        self.rate = resource_delta_0
-
-    def test_call(self):
-        resource = self.resource('food')
-        self.assertEqual(resource, 6)
-
-    def test_set_get(self):
-        self.resource.set_amount('food', 0)
-        self.assertEqual(self.resource.get_amount('food'), 0)
-
-    def test_all_resource_names(self):
-        names = self.resource.all_names()
-        expected_result = ['food', 'water', 'energy']
-        self.assertListEqual(names, expected_result)
-
-    def test_find_zeros(self):
-        zeros_names = self.resource.find_zeros()
-        expected_result = []
-        self.assertListEqual(zeros_names, expected_result)
-
-        self.resource.set_amount('food', 0)
-        zeros_names = self.resource.find_zeros()
-        expected_result = ['food']
-        self.assertListEqual(zeros_names, expected_result)
-
-    def test_to_resource_delta(self):
-        resource_delta = self.resource.to_resource_delta()
-        expected_result = ResourceDelta(
-            {'food': 6.0, 'water': 8.0, 'energy': 19.0}
+        self.other_resource = Resource(
+            name=self.resource.name,
+            amount=100
         )
-        self.assertEqual(resource_delta, expected_result)
+        self.exchange_rate = exchange_rate_0
 
-    def test_source(self):
-        resource_delta = self.resource.source
-        expected_result = ResourceDelta(
-            {'food': 6.0, 'water': 8.0, 'energy': 19.0}
-        )
-        self.assertEqual(resource_delta, expected_result)
+    def test_source_0(self):
+        source = self.resource.source
+        self.assertEqual(source, 30)
 
-    def test_demand(self):
-        resource_delta = self.resource.demand
-        expected_result = ResourceDelta(
-            {'food': 4.0, 'water': 12.0, 'energy': 6.0}
-        )
-        self.assertEqual(resource_delta, expected_result)
+    def test_demand_0(self):
+        demand = self.resource.demand
+        self.assertEqual(demand, 70)
+        
+    def test_source_1(self):
+        resource = deepcopy(self.resource)
+        resource.min = 50
+        source = resource.source
+        self.assertEqual(source, 0)
+
+    def test_demand_1(self):
+        resource = deepcopy(self.resource)
+        resource.min = 50
+        demand = self.resource.demand
+        self.assertEqual(demand, 70)
 
     def test_value(self):
-        value = self.resource.value(exchange_rate_0)
-        expected_result = {'food': 60.0, 'water': 16.0, 'energy': 76.0}
-        self.assertDictEqual(value, expected_result)
-
-    def test_gt(self):
-        self.assertTrue(self.resource > self.rate)
-        self.assertFalse(self.resource < self.rate)
-        self.assertTrue(self.rate < self.resource)
-        self.assertFalse(self.rate > self.resource)
-
-    def test_lt(self):
-        self.assertFalse(self.resource < self.rate)
-        self.assertTrue(self.resource > self.rate)
-        self.assertFalse(self.rate > self.resource)
-        self.assertTrue(self.rate < self.resource)
+        value = self.exchange_rate.value(self.resource)
+        self.assertEqual(value, 300)
 
     def test_add(self):
-        remainder = self.resource + self.rate
-        expected_resource = {
-            'food': {'max': 10, 'min': 0, 'amount': 10},
-            'water': {'max': 20, 'min': 0, 'amount': 12},
-            'energy': {'max': 25, 'min': 0, 'amount': 22},
-        }
-        self.assertDictEqual(self.resource.to_dict(), expected_resource)
-        expected_remainder = {'food': 2, 'water': 0, 'energy': 0}
-        self.assertDictEqual(remainder.to_dict(), expected_remainder)
+        resource = deepcopy(self.resource)
+        other_resource = deepcopy(self.other_resource)
+        remainder = resource.add(other_resource)
+        self.assertEqual(resource.amount, 100)
+        self.assertEqual(remainder, 30)
 
     def test_sub(self):
-        remainder = self.resource - self.rate
-        expected_resource = {
-            'food': {'max': 10, 'min': 0, 'amount': 0},
-            'water': {'max': 20, 'min': 0, 'amount': 4},
-            'energy': {'max': 25, 'min': 0, 'amount': 16},
-        }
-        self.assertDictEqual(self.resource.to_dict(), expected_resource)
-        expected_remainder = {'food': 0, 'water': 0, 'energy': 0}
-        self.assertDictEqual(remainder.to_dict(), expected_remainder)
-    
+        resource = deepcopy(self.resource)
+        other_resource = deepcopy(self.other_resource)
+        remainder = resource.sub(other_resource)
+        self.assertEqual(resource.amount, 0)
+        self.assertEqual(remainder, 70)
+
     def test_mul(self):
-        remainder = self.resource * 2
-        expected_resource = {
-            'food': {'max': 10, 'min': 0, 'amount': 10},
-            'water': {'max': 20, 'min': 0, 'amount': 16},
-            'energy': {'max': 25, 'min': 0, 'amount': 25},
-        }
-        self.assertDictEqual(self.resource.to_dict(), expected_resource)
-        expected_remainder = {'food': 2, 'water': 0, 'energy': 13}
-        self.assertDictEqual(remainder.to_dict(), expected_remainder)
+        resource = deepcopy(self.resource)
+        remainder = resource.mul(4)
+        self.assertEqual(resource.amount, 100)
+        self.assertEqual(remainder, 20)
 
     def test_truediv(self):
-        remainder = self.resource / 0.5
-        expected_resource = {
-            'food': {'max': 10, 'min': 0, 'amount': 10},
-            'water': {'max': 20, 'min': 0, 'amount': 16},
-            'energy': {'max': 25, 'min': 0, 'amount': 25},
-        }
-        self.assertDictEqual(self.resource.to_dict(), expected_resource)
-        expected_remainder = {'food': 2, 'water': 0, 'energy': 13}
-        self.assertDictEqual(remainder.to_dict(), expected_remainder)
+        resource = deepcopy(self.resource)
+        remainder = resource.truediv(3)
+        self.assertEqual(resource.amount, 10)
+        self.assertEqual(remainder, 0)
 
-    def test_dict(self):
-        dictionary = self.resource.to_dict()
-        expected_result = {
-            'food': {'max': 10, 'min': 0, 'amount': 6},
-            'water': {'max': 20, 'min': 0, 'amount': 8},
-            'energy': {'max': 25, 'min': 0, 'amount': 19}
-        }
-        self.assertEqual(dictionary, expected_result)
+    def test_serialize(self):
+        dictionary = self.resource.serialize()
+        expected_result = {'amount': 30, 'max': 100, 'min': 0, 'name': 'food'}
+        self.assertDictEqual(dictionary, expected_result)
+
+    def test_deserialize(self):
+        dictionary = {'amount': 30, 'max': 100, 'min': 0, 'name': 'food'}
         resource = Resource()
-        resource.from_dict(dictionary)
+        resource.deserialize(dictionary)
         self.assertEqual(resource, self.resource)
-
-    def test_delta(self):
-        resource_previous = deepcopy(self.resource)
-        self.resource + self.rate
-        delta = self.resource - resource_previous
-        expected_delta = {
-            'food': {'amount': 4},
-            'water': {'amount': 4},
-            'energy': {'amount': 3}
-        }
-        self.assertEqual(delta, expected_delta)
-        resource_previous + delta
-        self.assertEqual(resource_previous, self.resource)
 
 
 if __name__ == "__main__":

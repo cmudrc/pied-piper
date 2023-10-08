@@ -1,10 +1,10 @@
 import networkx as nx
 
-from piperabm.object import Object
-from piperabm.resource import Resource, ResourceDelta
+from piperabm.object import PureObject
+from piperabm.resource import Resource
 
 
-class ExchangeRate(Object):
+class ExchangeRate(PureObject):
     """
     Save exchange rates and calculate (target = rate * source)
     """
@@ -33,17 +33,8 @@ class ExchangeRate(Object):
                 rate *= self.G[nodes[i-1]][nodes[i]]['rate']
         return rate
     
-    def value(self, resource, target='wealth'):
-        if isinstance(resource, Resource):
-            resource = resource.to_resource_delta()
-        elif isinstance(resource, dict):
-            resource = ResourceDelta(resource)
-        if not isinstance(resource, ResourceDelta):
-            raise ValueError
-        result = {}
-        for name in resource.all_names():
-            result[name] = resource(name) * self.rate(source=name, target=target)
-        return result
+    def value(self, resource: Resource, target='wealth') -> float:
+        return resource.amount * self.rate(source=resource.name, target=target)
     
     def to_dict(self) -> list:
         G_prime = nx.Graph(self.G)
