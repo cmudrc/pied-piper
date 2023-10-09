@@ -16,7 +16,8 @@ class Grammar:
         grammars = [
             self.grammar_rule_1,
             self.grammar_rule_2,
-            self.grammar_rule_3
+            self.grammar_rule_3,
+            self.grammar_rule_4
         ]
 
         i = 0
@@ -179,5 +180,38 @@ class Grammar:
                                     self.remove_item(other_edge_index)
                                     report.append(str(other_edge_item) + ' removed.')
                                     anything_happened = True
+
+        return anything_happened, report
+    
+    def grammar_rule_4(self):
+        """
+        Check for edges having similar starting and ending points
+        """
+        anything_happened = False
+        report = ['rule 3:']
+
+        ''' loop for the first edge '''
+        for edge_index in self.all_edges:
+            if edge_index in self.all_edges: # to make sure it is not deleted in previous runs
+                edge_item = self.get_item(edge_index)
+
+                ''' loop for the second edge '''
+                for other_edge_index in self.all_edges:
+                    if edge_index != other_edge_index:
+                        if other_edge_index in self.all_edges and edge_index in self.all_edges: # to make sure it is not deleted in previous runs
+                            other_edge_item = self.get_item(other_edge_index)
+
+                            ''' check the similar starting and ending points '''
+                            distance_1_1 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_1)
+                            distance_1_2 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_2)
+                            distance_2_1 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_1)
+                            distance_2_2 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_2)
+                            point_to_point_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
+                            point_to_point_distances = sorted(point_to_point_distances)
+                            distances = point_to_point_distances[:2]
+                            if distances[0] < self.proximity_radius and \
+                                distances[1] < self.proximity_radius:
+                                self.remove_item(other_edge_index)
+                                report.append(str(other_edge_item) + ' removed.')
 
         return anything_happened, report

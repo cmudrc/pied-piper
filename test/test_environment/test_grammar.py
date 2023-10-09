@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.environment import Environment
 from piperabm.environment.samples import environment_0
-from piperabm.environment.items import Junction, Settlement, Road
+from piperabm.environment.items import Junction, Road
 
 
 class TestGrammarRule1Class(unittest.TestCase):
@@ -104,12 +104,24 @@ class TestGrammarRule1Class(unittest.TestCase):
         env.add(new_item_2)
         self.assertEqual(len(env.all_nodes), 4)
         self.assertEqual(len(env.all_edges), 2)
-        env.apply_grammars(report=True)
+        env.apply_grammars()
         self.assertEqual(len(env.all_nodes), 4)
-        #for edge in env.all_edges:
-        #    item = env.get_item(edge)
-        #    print(item.pos_1, item.pos_2, item.index)
         self.assertEqual(len(env.all_edges), 3)
+
+    def test_7(self):
+        """
+        Add two edges with same start and ending
+        """
+        env = Environment(proximity_radius=0.1)
+        new_item_1 = Road(pos_1=[-1.05, -1], pos_2=[1, 1])
+        new_item_2 = Road(pos_1=[-1, -1], pos_2=[1, 1])
+        env.add(new_item_1)
+        env.add(new_item_2)
+        self.assertEqual(len(env.all_nodes), 4)
+        self.assertEqual(len(env.all_edges), 2)
+        env.apply_grammars()
+        self.assertEqual(len(env.all_nodes), 2)
+        self.assertEqual(len(env.all_edges), 1)
 
 
 if __name__ == '__main__':
