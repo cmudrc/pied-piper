@@ -23,7 +23,7 @@ class Infrastructure(Graphics):
             elif item.category == 'edge':
                 index_1 = self.environment.find_nearest_node(item.pos_1, items)
                 index_2 = self.environment.find_nearest_node(item.pos_2, items)
-                self.add_edge(index_1, index_2, item.index)
+                self.add_edge(index_1, index_2, item.index, item.adjusted_length)
 
     def get_item(self, index: int):
         """
@@ -39,14 +39,16 @@ class Infrastructure(Graphics):
             item_index
         )
 
-    def add_edge(self, index_1, index_2, item_index):
+    def add_edge(self, index_1, index_2, item_index, adjusted_length):
         """
-        Add a new edge
+        Add a new edge, weight is used for path finding algorithm
         """
+
         self.G.add_edge(
             index_1,
             index_2,
-            index=item_index
+            index=item_index,
+            weight=adjusted_length
         )
 
     def find_edge_index(self, index_1, index_2):

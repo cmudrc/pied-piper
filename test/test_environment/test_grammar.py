@@ -12,7 +12,6 @@ class TestGrammarRule1Class(unittest.TestCase):
         """
         A single settlement node
         """
-
         env = deepcopy(environment_0)
         self.assertEqual(len(env.all_nodes), 1)
         self.assertEqual(len(env.all_edges), 0)
