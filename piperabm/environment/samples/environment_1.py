@@ -26,6 +26,8 @@ road = Road(
 )
 environment.add(road)
 
+environment.apply_grammars()
+
 
 if __name__ == '__main__':
     environment.show()

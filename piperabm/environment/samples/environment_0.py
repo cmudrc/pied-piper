@@ -13,6 +13,8 @@ settlement = Settlement(
 )
 environment.add(settlement)
 
+environment.apply_grammars()
+
 
 if __name__ == '__main__':
     environment.show()

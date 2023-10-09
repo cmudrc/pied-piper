@@ -79,10 +79,12 @@ class Query:
             result.append([distance, index])
         return result
 
-    def find_nearest_node(self, pos: list, items: list) -> int:
+    def find_nearest_node(self, pos: list, items: list = None) -> int:
         """
         Find the nearst node index to the *pos*
         """
+        if items is None:
+            items = self.all_nodes
         distances = self.nodes_distance(pos, items)
         distances = self.sort_distances(distances)
         nearest_node_index = distances[0][1]

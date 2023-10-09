@@ -12,7 +12,6 @@ class Grammar:
             if not, all grammars rules start over.
             if no next rule is available, the program is over.
         """
-
         grammars = [
             self.grammar_rule_1,
             self.grammar_rule_2,
@@ -28,7 +27,7 @@ class Grammar:
                 print(log)
 
             if anything_happened is True:
-                i = 0  # reset to the first grammar
+                i = 0  # reset to the loop
             else:
                 i += 1  # move to the next grammar
 

@@ -23,7 +23,8 @@ class Infrastructure(Graphics):
             elif item.category == 'edge':
                 index_1 = self.environment.find_nearest_node(item.pos_1, items)
                 index_2 = self.environment.find_nearest_node(item.pos_2, items)
-                self.add_edge(index_1, index_2, item.index, item.adjusted_length)
+                self.add_edge(index_1, index_2, item.index,
+                              item.adjusted_length)
 
     def get_item(self, index: int):
         """
@@ -41,14 +42,13 @@ class Infrastructure(Graphics):
 
     def add_edge(self, index_1, index_2, item_index, adjusted_length):
         """
-        Add a new edge, weight is used for path finding algorithm
+        Add a new edge, adjusted_length is used for path finding algorithm
         """
-
         self.G.add_edge(
             index_1,
             index_2,
             index=item_index,
-            weight=adjusted_length
+            adjusted_length=adjusted_length
         )
 
     def find_edge_index(self, index_1, index_2):
@@ -70,10 +70,46 @@ class Infrastructure(Graphics):
         """
         return list(self.G.edges())
 
+    def find_path(self, index_1, index_2):
+        """
+        Find the shortest path between index_1 and index_2
+        """
+
+        def convert_path_to_edge_index(path):
+            result = []
+            for i in range(len(path)-1):
+                index_1 = path[i]
+                index_2 = path[i+1]
+                edge_index = self.find_edge_index(index_1, index_2)
+                result.append(edge_index)
+            return result
+        
+        path = None
+
+        if nx.has_path(
+            self.G,
+            source=index_1,
+            target=index_2
+        ):
+            path = nx.dijkstra_path(
+                self.G,
+                source=index_1,
+                target=index_2,
+                weight='adjusted_length'
+            )
+
+        return convert_path_to_edge_index(path)
+    
+    def find_nearest_node(self, pos: list):
+        """
+        Find the nearst node index to the *pos*
+        """
+        return self.environment.find_nearest_node(pos)
+
 
 if __name__ == "__main__":
 
-    from piperabm.environment.samples import environment_2 as env
+    from piperabm.environment.samples import environment_2 as environment
 
-    infrastructure = env.to_infrastrucure_graph()
+    infrastructure = environment.infrastrucure
     infrastructure.show()
