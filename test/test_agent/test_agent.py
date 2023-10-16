@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.agent.samples import agent_0
-from piperabm.resource.samples import resource_delta_0 as resource_delta
+from piperabm.resources.samples import resource_delta_0 as resource_delta
 from piperabm.unit import DT
 
 

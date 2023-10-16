@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from piperabm.agent.brain import Brain
 from piperabm.object import Object
-from piperabm.resource import Resource, ResourceDelta
+from piperabm.resources import Resource, ResourceDelta
 from piperabm.transporation import Transportation
 from piperabm.actions import Queue
 from piperabm.unit import DT, Date, date_to_dict, date_from_dict
@@ -214,7 +214,7 @@ class Agent(Object):
 
 
 if __name__ == "__main__":
-    from piperabm.resource.samples import resource_0
+    from piperabm.resources.samples import resource_0
 
     agent = Agent(
         name='John',

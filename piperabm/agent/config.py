@@ -1,5 +1,5 @@
 from piperabm.transporation import Transportation
-from piperabm.resource import ResourceDelta
+from piperabm.resources import ResourceDelta
 from piperabm.unit import Unit
 
 

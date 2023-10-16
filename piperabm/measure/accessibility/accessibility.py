@@ -1,8 +1,8 @@
 from copy import deepcopy
 
 from piperabm.unit import DT
-from piperabm.resource import Resource
-from piperabm.resource import resource_sum
+from piperabm.resources import Resource
+from piperabm.resources import resource_sum
 
 try: from .graphics import Graphics
 except: from graphics import Graphics

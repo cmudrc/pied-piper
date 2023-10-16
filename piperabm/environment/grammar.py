@@ -27,7 +27,7 @@ class Grammar:
                 print(log)
 
             if anything_happened is True:
-                i = 0  # reset to the loop
+                i = 0  # reset the loop
             else:
                 i += 1  # move to the next grammar
 

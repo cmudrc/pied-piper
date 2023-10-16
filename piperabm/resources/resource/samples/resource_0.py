@@ -1,9 +1,9 @@
-from piperabm.resource import Resource
+from piperabm.resources.resource import Resource
 
 
 resource = Resource(
-    name='water',
-    amount=40,
+    name='food',
+    amount=30,
     max=100,
 )
 

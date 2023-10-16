@@ -2,7 +2,7 @@ import numpy as np
 
 from piperabm.unit import Date, DT
 from piperabm.actions.action import Action
-from piperabm.resource import resource_sum
+from piperabm.resources import resource_sum
 from piperabm.tools.coordinate import move_point
 from piperabm.transporation import Transportation
 

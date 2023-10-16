@@ -1,6 +1,6 @@
 from piperabm import Environment, Society, Model
 from piperabm.economy import Exchange
-from piperabm.resource import Resource
+from piperabm.resources import Resource
 from piperabm.measure import Accessibility, TravelLength
 from piperabm.unit import Date, DT
 

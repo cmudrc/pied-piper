@@ -1,6 +1,6 @@
 from piperabm import Society
 from piperabm.economy import Exchange
-from piperabm.resource import Resource
+from piperabm.resources import Resource
 
 from environment import env
 

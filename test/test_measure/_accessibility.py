@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resource import Resource
+from piperabm.resources import Resource
 from piperabm.measure import Accessibility
 from piperabm.unit import DT
 

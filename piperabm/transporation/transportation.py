@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from piperabm.object import PureObject
-from piperabm.resource import ResourceDelta
+from piperabm.resources import Resources, Resource
 from piperabm.time import DeltaTime
 from piperabm.tools.symbols import SYMBOLS
 
@@ -12,7 +12,7 @@ class Transportation(PureObject):
             self,
             name: str = None,
             speed: float = None,
-            fuel_rate=None
+            fuels_rate: Resources = None
     ):
         self.name = name
 
@@ -20,62 +20,58 @@ class Transportation(PureObject):
             speed = SYMBOLS['inf']
         self.speed = speed
 
-        if fuel_rate is None:
-            fuel_rate = ResourceDelta()
-            fuel_rate.create_zeros(['food', 'water', 'energy'])
-        if isinstance(fuel_rate, dict):
-            fuel_rate = ResourceDelta(fuel_rate)
-        if isinstance(fuel_rate, ResourceDelta):
-            self.fuel_rate = fuel_rate  # resource used for the transport
+        if fuels_rate is None:
+            fuels_rate = Resources()
+        self.fuels_rate = fuels_rate
+
+    def add_fuel_rate(self, rate: Resource):
+        self.fuels_rate.add_resource(rate)
 
     def how_long(self, length):
         """
         Calculate how long does it take to move by length amount.
         """
         result = None
-        speed = self.speed
-        if speed != 0:
+        if self.speed != 0:
             result = length / self.speed
         else:
             result = SYMBOLS['inf']
-        result = DT(seconds=result)
+        result = DeltaTime(seconds=result)
         return result
 
     def how_much_fuel(self, length):
         """
         Calculate the amount of required fuel
         """
-        t = self.how_long(length)
-        rate = deepcopy(self.fuel_rate)
-        rate * t.total_seconds()
-        return rate
+        fuels_rate = deepcopy(self.fuels_rate)
+        time = self.how_long(length)
+        fuels_rate.mul(time.total_seconds())
+        return fuels_rate
 
-    def to_dict(self) -> dict:
+    def serialize(self) -> dict:
         dictionary = {}
         dictionary['name'] = self.name
         dictionary['speed'] = self.speed
-        dictionary['fuel_rate'] = self.fuel_rate.to_dict()
+        dictionary['fuels_rate'] = self.fuels_rate.serialize()
         return dictionary
     
-    def from_dict(self, dictionary: dict) -> None:
+    def deserialize(self, dictionary: dict) -> None:
         self.name = dictionary['name']
         self.speed = float(dictionary['speed'])
-        fuel_rate = ResourceDelta()
-        fuel_rate.from_dict(dictionary['fuel_rate'])
-        self.fuel_rate = fuel_rate
+        fuel_rate_dictionary = dictionary['fuel_rate'] ############
 
 
 if __name__ == "__main__":
     from piperabm.transporation import Transportation
-    from piperabm.unit import Unit
-    
+    from piperabm.resources.samples import resources_1 as fuels_rate
+    #from piperabm.tools.unit import Unit
+
     transportation = Transportation(
-        name='vehicle',
-        speed=Unit(100, 'km/hour').to_SI(),
-        fuel_rate={
-            'food': Unit(0, 'kg/day').to_SI(),
-            'water': Unit(0, 'kg/day').to_SI(),
-            'energy': Unit(1, 'kg/day').to_SI(),
-        }
+        name="walk",
+        speed=1,
+        fuels_rate=fuels_rate
     )
-    print(transportation)
+
+    #print(transportation.how_long(1000))
+    fuels_rate = transportation.how_much_fuel(1000)
+    print(fuels_rate)

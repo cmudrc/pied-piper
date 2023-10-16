@@ -1,5 +1,5 @@
 from piperabm.agent import Agent
-from piperabm.resource import Resource
+from piperabm.resources import Resource
 from piperabm.unit import Date
 
 

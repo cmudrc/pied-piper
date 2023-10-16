@@ -1,4 +1,3 @@
-from typing import Any
 from piperabm.object import PureObject
 from piperabm.tools.symbols import SYMBOLS
 
@@ -43,10 +42,28 @@ class Resource(PureObject):
     def demand(self):
         return self.max - self.amount
     
+    @property
+    def is_empty(self):
+        result = False
+        if self.amount == 0:
+            result = True
+        return result
+    
+    @property
+    def is_full(self):
+        result = False
+        if self.amount == self.max:
+            result = True
+        return result
+    
     def add(self, other) -> (int, float):
         if isinstance(other, (int, float)):
             new_amount = self.amount + other
             self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            remainder = Resource(
+                name=self.name,
+                amount=remainder
+            )
             return remainder
         elif isinstance(other, Resource):
             if other.name == '' or other.name == self.name:
@@ -56,6 +73,10 @@ class Resource(PureObject):
         if isinstance(other, (int, float)):
             new_amount = self.amount - other
             self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            remainder = Resource(
+                name=self.name,
+                amount=remainder
+            )
             return remainder
         elif isinstance(other, Resource):
             if other.name == '' or other.name == self.name:
@@ -65,6 +86,10 @@ class Resource(PureObject):
         if isinstance(other, (int, float)):
             new_amount = self.amount * other
             self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            remainder = Resource(
+                name=self.name,
+                amount=remainder
+            )
             return remainder
         elif isinstance(other, Resource):
             if other.name == '' or other.name == self.name:
@@ -74,6 +99,10 @@ class Resource(PureObject):
         if isinstance(other, (int, float)):
             new_amount = self.amount / other
             self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            remainder = Resource(
+                name=self.name,
+                amount=remainder
+            )
             return remainder
         elif isinstance(other, Resource):
             if other.name == '' or other.name == self.name:

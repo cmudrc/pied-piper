@@ -1,7 +1,7 @@
 import networkx as nx
 
 from piperabm.object import PureObject
-from piperabm.resource import Resource
+from piperabm.resources.resource import Resource
 
 
 class ExchangeRate(PureObject):
@@ -11,9 +11,6 @@ class ExchangeRate(PureObject):
     def __init__(self):
         self.G = nx.DiGraph()
         super().__init__()
-
-    def __call__(self, source, target):
-        return self.rate(source, target)
 
     def add(self, source, target, rate):
         """
@@ -33,6 +30,9 @@ class ExchangeRate(PureObject):
                 rate *= self.G[nodes[i-1]][nodes[i]]['rate']
         return rate
     
+    def __call__(self, source, target):
+        return self.rate(source, target)
+    
     def value(self, resource: Resource, target='wealth') -> float:
         """
         Calculate value of *resource* in terms of *target*
@@ -40,7 +40,7 @@ class ExchangeRate(PureObject):
         return resource.amount * self.rate(source=resource.name, target=target)
     
     def serialize(self) -> list:
-        G_prime = nx.Graph(self.G)
+        G_prime = nx.Graph(self.G)  # remove half of redundant entries
         dictionary = {}
         for edge in G_prime.edges():
             rate = self.rate(source=edge[0], target=edge[1])

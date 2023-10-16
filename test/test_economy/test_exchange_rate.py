@@ -4,7 +4,7 @@ from copy import deepcopy
 #from piperabm.resource import Resource
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
-from piperabm.resource.samples import resource_0, resource_delta_0
+from piperabm.resources.samples import resource_0, resource_delta_0
 
 
 class TestExchangeRateClass(unittest.TestCase):

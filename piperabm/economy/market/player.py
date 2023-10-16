@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from piperabm.resource import Resource
+from piperabm.resources import Resource
 
 
 class Player:
