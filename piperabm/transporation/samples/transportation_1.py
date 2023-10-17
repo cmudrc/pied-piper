@@ -1,17 +1,28 @@
 from piperabm.transporation import Transportation
-from piperabm.unit import Unit
+from piperabm.resources import Resources, Resource
+from piperabm.tools.unit import Unit
 
+
+food = Resource(
+    name="food",
+    amount=Unit(0, "kg/day").to_SI(),
+)
+water = Resource(
+    name="water",
+    amount=Unit(0, "kg/day").to_SI(),
+)
+energy = Resource(
+    name="energy",
+    amount=Unit(5, "kg/day").to_SI(),
+)
+fuels_rate = Resources(food, water, energy)
 
 transportation = Transportation(
-    name='vehicle',
-    speed=Unit(100, 'km/hour').to_SI(),
-    fuel_rate={
-        'food': Unit(0, 'kg/day').to_SI(),
-        'water': Unit(0, 'kg/day').to_SI(),
-        'energy': Unit(1, 'kg/day').to_SI(),
-    }
+    name="drive",
+    speed=Unit(30, "km/hour").to_SI(),
+    fuels_rate=fuels_rate
 )
 
 
 if __name__ == "__main__":
-    print(transportation)
+    transportation.print

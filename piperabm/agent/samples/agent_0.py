@@ -1,19 +1,16 @@
 from piperabm.agent import Agent
-from piperabm.resources import Resource
-from piperabm.unit import Date
+from piperabm.resources import Resources, Resource
 
 
-resource = Resource()
-resource.create('food', amount=20, max=100)
-resource.create('water', amount=30, max=100)
-resource.create('energy', amount=40, max=100)
+resources = Resources()
+food = Resource(name="food", amount=20, max=100)
+water = Resource(name="water", amount=30, max=100)
+energy = Resource(name="energy", amount=40, max=100)
 
 agent = Agent(
-    name='John',
-    origin=0,
-    start_date=Date(2020, 1, 2),
-    resource=resource,
-    balance=100,
+    name="John",
+    resources=resources,
+    balance=100
 )
 
 

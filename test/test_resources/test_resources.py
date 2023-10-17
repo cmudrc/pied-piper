@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.resources import Resources
+from piperabm.resources import Resources, Resource
 from piperabm.resources.samples import resources_0, resources_1
 
 
@@ -22,6 +22,16 @@ class TestResourceClass(unittest.TestCase):
         self.assertEqual(demand('food'), 70)
         self.assertEqual(demand('water'), 60)
         self.assertEqual(demand('energy'), 60)
+
+    def test_empty(self):
+        food = Resource(name='food', amount=0)
+        resources = Resources(food)
+        self.assertTrue(resources.is_all_zero)
+        water = Resource(name='water', amount=5)
+        resources.add_resource(water)
+        self.assertFalse(resources.is_all_zero)
+        result = resources.check_empty(['food', 'water'])
+        self.assertListEqual(result, ['food'])
     
     def test_add(self):
         resources = deepcopy(self.resources)
@@ -55,7 +65,7 @@ class TestResourceClass(unittest.TestCase):
         self.assertEqual(remainders('water'), 20)
         self.assertEqual(remainders('energy'), 20)
 
-    def test_mul(self):
+    def test_truediv(self):
         resources = deepcopy(self.resources)
         remainders = resources.truediv(2)
         self.assertEqual(resources('food'), 15)

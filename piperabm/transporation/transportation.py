@@ -62,16 +62,7 @@ class Transportation(PureObject):
 
 
 if __name__ == "__main__":
-    from piperabm.transporation import Transportation
-    from piperabm.resources.samples import resources_1 as fuels_rate
-    #from piperabm.tools.unit import Unit
+    from piperabm.transporation.samples import transportation_0 as transportation
 
-    transportation = Transportation(
-        name="walk",
-        speed=1,
-        fuels_rate=fuels_rate
-    )
-
-    #print(transportation.how_long(1000))
     fuels_rate = transportation.how_much_fuel(1000)
-    print(fuels_rate)
+    fuels_rate.print

@@ -1,4 +1,4 @@
-from piperabm.pure_object import PureObject
+from piperabm.object import PureObject
 
 
 class Decision(PureObject):

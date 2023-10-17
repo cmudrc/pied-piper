@@ -38,6 +38,30 @@ class Resources(PureObject):
             )
             result.add_resource(demand)
         return result
+    
+    def check_empty(self, names: list):
+        """
+        Check whether resources *names* are empty
+        """
+        result = []
+        for name in names:
+            is_empty = self.library[name].is_empty
+            if is_empty is True:
+                result.append(name)
+        return result
+    
+    @property
+    def is_all_zero(self):
+        """
+        Check whether all resources are zero        
+        """
+        result = True
+        for name in self.library:
+            is_empty = self.library[name].is_empty
+            if is_empty is False:
+                result = False
+                break
+        return result
 
     def add(self, other):
         if isinstance(other, Resources):

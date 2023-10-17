@@ -1,223 +1,157 @@
 from copy import deepcopy
 
-from piperabm.agent.brain import Brain
-from piperabm.object import Object
-from piperabm.resources import Resource, ResourceDelta
+#from piperabm.agent.brain import Brain
+from piperabm.object import PureObject
+from piperabm.resources import Resources
+from piperabm.time import DeltaTime, Date
 from piperabm.transporation import Transportation
-from piperabm.actions import Queue
-from piperabm.unit import DT, Date, date_to_dict, date_from_dict
+from piperabm.actions.queue import Queue
 from piperabm.agent.config import *
-from piperabm.tools import ElementExists
 
 
-class Agent(Object):
+class Agent(PureObject):
 
     def __init__(
         self,
         index = None,
-        environment = None,
         society = None,
-        name: str = '',
-        active: bool = True,
-        start_date: Date = None,
-        end_date: Date = None,
-        origin: int = None,
+        name: str = "",
+        home_index: int = None,
+        alive: bool = True,
         transportation: Transportation = None,
-        resource: Resource = None,
-        fuel_rate_idle: ResourceDelta = None,
-        income: float = 0,
+        resources: Resources = None,
+        fuels_rate_idle: Resources = None,
         balance: float = 0,
+        income: float = 0,
+        socioeconomic_status: float = 1,
     ):
         super().__init__()
-        ''' binding '''
+        """ binding """
         self.index = index
-        self.environment = environment
         self.society = society
 
-        ''' decision making '''
-        self.brain = Brain()
+        """ decision making """
+        #self.brain = Brain()
+        self.brain = None
 
-        ''' identity '''
+        """ identity """
         self.name = name
-        self.active = active
+        self.alive = alive
         self.death_reason = None
-        self.origin = origin
-        self.type = 'agent'
+        self.home_index = home_index
+        self.socioeconomic_status = socioeconomic_status
+        self.type = "agent"
 
-        ''' dates '''
-        if start_date is None:
-            start_date = Date.today()
-        self.start_date = start_date
-        self.end_date = end_date
+        """ transporation """
+        if transportation is None: transportation = WALK
+        self.transportation = transportation
 
-        ''' transporation '''
-        if transportation is None:
-            self.transportation = Walk()
-        else:
-            self.transportation = transportation
+        """ queue """
+        self.queue = Queue()
 
-        ''' queue '''
-        queue = Queue()
-        self.add_queue(queue)
+        """ resource """
+        if resources is None:
+            resources = deepcopy(RESOURCES_DEFAULT)
+        self.resources = resources
 
-        ''' resource '''
-        if resource is None:
-            self.resource = deepcopy(DEFAULT_RESOURCE)
-        else:
-            self.resource = resource
+        if fuels_rate_idle is None:
+            fuels_rate_idle = deepcopy(FUELS_RATE_HUMAN_IDLE)
+        self.fuels_rate_idle = fuels_rate_idle
 
-        if fuel_rate_idle is None:
-            self.fuel_rate_idle = deepcopy(HUMAN_IDLE_FUEL_RATE)
-        else:
-            self.fuel_rate_idle = fuel_rate_idle
+        if income < 0: raise ValueError
+        self.income = income
 
-        ''' wealth '''
-        if income >= 0:
-            self.income = income
-        if balance >= 0:
-            self.balance = balance
+        if balance < 0: raise ValueError
+        self.balance = balance
 
-    def add_queue(self, queue: Queue):
-        ''' bindings '''
-        queue.environment = self.environment
-        queue.society = self.society
-        queue.agent_index = self.index
-        self.queue = queue
-
-    @property
-    def alive(self) -> bool:
-        return self.active
-
-    def is_alive(self) -> bool:
+    def check_liveness(self) -> bool:
         """
         Check whether agent is alive
         """
-        result = None
         if self.alive is True:
-            result = True
-            resource_zeros = self.resource.find_zeros(VITAL_RESOURCES)
-            if len(resource_zeros) > 0:  # died
-                result = False
-                self.death_reason = resource_zeros
-                self.end_date = None  # deepcopy(self.current.start_date)
-        else:
-            result = False
-        return result
+            resources_zero = self.resources.check_empty(RESOURCES_VITAL)
+            if len(resources_zero) > 0:  # died
+                self.alive = False
+                self.death_reason = resources_zero[0]  # one reason is enough
+        return self.alive
     
     @property
     def source(self):
-        return self.resource.source
+        return self.resources.source
     
     @property
     def demand(self):
-        return self.resource.demand
+        return self.resources.demand
 
-    def update(self, start_date, end_date) -> None:
+    def update(self, date_start: Date = Date.today(), date_end: Date = Date.today()) -> None:
         """
-        Reduce the idle_fuel_consumption from agent's resource
+        Reduce the idle_fuel_consumption from agent"s resource
         """
-        if self.exists(start_date, end_date):
-            duration = end_date - start_date
+        if self.alive is True:
+            duration = date_end - date_start
+            other_rates = [] ###### from action in queue
+            self.balance += self.income * duration.total_seconds()
+            self.consume_resources(duration, other_rates)
+            self.check_liveness()
 
-            ''' idle fuel consumption '''
-            if self.alive is True:    
-                fuel_consumption = self.fuel_consumption_idle(duration)
-                self.resource - fuel_consumption
+        """ decide """
+        #if self.alive is True:  
+        #    self.brain.observe(self.index, self.environment, self.society)
+        #    actions = self.brain.decide()
+        #    self.queue.add(actions)
 
-            ''' income '''
-            if self.alive is True:
-                self.balance += self.income * duration.total_seconds()
-
-            ''' decide '''
-            if self.alive is True:  
-                self.brain.observe(self.index, self.environment, self.society)
-                actions = self.brain.decide()
-                self.queue.add(actions)
-
-    def fuel_consumption_idle(self, duration) -> ResourceDelta:
+    def consume_resources(self, duration, other_rates: list = []):
         """
         Create ResourceDelta object based on duration and fuel_rate
         """
-        if isinstance(duration, DT):
+        if isinstance(duration, DeltaTime):
             duration = duration.total_seconds()
-        rate = deepcopy(self.fuel_rate_idle)
-        rate * duration
-        return rate
+        total_consumption = deepcopy(self.fuels_rate_idle)
+        for other_rate in other_rates:
+            total_consumption.add(other_rate)
+        total_consumption.mul(duration)
+        remainder = self.resources.sub(total_consumption)
+        return remainder
 
-    def exists(self, start_date: Date, end_date: Date):
-        """
-        Check whether element exists in the time range
-        """
-        ee = ElementExists()
-        return ee.check(
-            item_start=self.start_date,
-            item_end=self.end_date,
-            time_start=start_date,
-            time_end=end_date
-        )
-
-    def __add__(self, other):
-        if isinstance(other, ResourceDelta):  # resource arithmetic
-            remaining = self.resource + other
-            self.active = self.is_alive()
-            return remaining
-        else:
-            super().__add__(other)  # delta arithmetic
-
-    def __sub__(self, other):
-        if isinstance(other, ResourceDelta):  # resource arithmetic
-            remaining = self.resource - other
-            self.active = self.is_alive()
-            return remaining
-        else:
-            super().__sub__(other)  # delta arithmetic
-
-    def to_dict(self) -> dict:
+    def serialize(self) -> dict:
         return {
-            'name': self.name,
-            'active': self.active,
-            'start_date': date_to_dict(self.start_date),
-            'end_date': date_to_dict(self.end_date),
-            'death_reason': self.death_reason,
-            'origin': self.origin,
-            'transportation': self.transportation.to_dict(),
-            'queue': self.queue.to_dict(),
-            'resource': self.resource.to_dict(),
-            'fuel_rate_idle': self.fuel_rate_idle.to_dict(),
-            'income': self.income,
-            'balance': self.balance,
-            'type': self.type
+            "name": self.name,
+            "alive": self.alive,
+            "death_reason": self.death_reason,
+            "home_index": self.home_index,
+            "transportation": self.transportation.serialize(),
+            "queue": self.queue.serialize(),
+            "resources": self.resources.serialize(),
+            "fuels_rate_idle": self.fuels_rate_idle.serialize(),
+            "balance": self.balance,
+            "income": self.income,
+            "type": self.type
         }
 
-    def from_dict(self, dictionary: dict) -> None:
-        self.name = dictionary['name']
-        self.active = dictionary['active']
-        self.start_date = date_from_dict(dictionary['start_date'])
-        self.end_date = date_from_dict(dictionary['end_date'])
-        self.death_reason = dictionary['death_reason']
-        self.origin = dictionary['origin']
-        transportation = Transportation()
-        transportation.from_dict(dictionary['transportation'])
-        self.transportation = transportation
-        queue = Queue()
-        queue.from_dict(dictionary['queue'])
-        self.add_queue(queue)
-        resource = Resource()
-        resource.from_dict(dictionary['resource'])
-        self.resource = resource
-        fuel_rate_idle = ResourceDelta()
-        fuel_rate_idle.from_dict(dictionary['fuel_rate_idle'])
-        self.fuel_rate_idle = fuel_rate_idle
-        self.income = dictionary['income']
-        self.balance = dictionary['balance']
-        self.type = dictionary['type']
+    def deserialize(self, dictionary: dict) -> None:
+        self.name = dictionary["name"]
+        self.alive = dictionary["alive"]
+        self.death_reason = dictionary["death_reason"]
+        self.home_index = dictionary["home_index"]
+        self.transportation = Transportation()
+        self.transportation.deserialize(dictionary["transportation"])
+        self.queue = Queue()
+        self.queue.deserialize(dictionary["queue"])
+        self.resources = Resources()
+        self.resources.deserialize(dictionary["resource"])
+        self.fuels_rate_idle = Resources()
+        self.fuels_rate_idle.deserialize(dictionary["fuels_rate_idle"])
+        self.balance = dictionary["balance"]
+        self.income = dictionary["income"]
+        self.type = dictionary["type"]
 
 
 if __name__ == "__main__":
-    from piperabm.resources.samples import resource_0
+    from piperabm.resources.samples import resources_0
 
     agent = Agent(
-        name='John',
-        resource=resource_0
+        name="John",
+        resources=resources_0
     )
-    print(agent)
+    agent.update()
+    agent.print

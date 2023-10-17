@@ -23,8 +23,12 @@ class Infrastructure(Graphics):
             elif item.category == 'edge':
                 index_1 = self.environment.find_nearest_node(item.pos_1, items)
                 index_2 = self.environment.find_nearest_node(item.pos_2, items)
-                self.add_edge(index_1, index_2, item.index,
-                              item.adjusted_length)
+                self.add_edge(
+                    index_1,
+                    index_2,
+                    item.index,
+                    item.adjusted_length
+                )
 
     def get_item(self, index: int):
         """
@@ -58,11 +62,20 @@ class Infrastructure(Graphics):
         edge = self.G.edges[index_1, index_2]
         return edge['index']
 
-    def all_nodes(self):
+    def all_nodes(self, type=None):
         """
         Return all nodes
         """
-        return list(self.G.nodes())
+        result = None
+        if type is None:
+            result = list(self.G.nodes())
+        else:
+            result = []
+            for index in self.all_nodes():
+                item = self.get_item(index)
+                if item.type == type:
+                    result.append(index)
+        return result
 
     def all_edges(self):
         """
@@ -98,7 +111,8 @@ class Infrastructure(Graphics):
                 weight='adjusted_length'
             )
 
-        return convert_path_to_edge_index(path)
+        #return convert_path_to_edge_index(path)
+        return path
     
     def find_nearest_node(self, pos: list):
         """
