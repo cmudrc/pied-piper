@@ -1,117 +1,46 @@
-import networkx as nx
+import uuid
 
-from piperabm.object import Object
-from piperabm.society.add import Add
-from piperabm.society.search import Search
-from piperabm.society.query import Query
-from piperabm.environment_old import Environment
-from piperabm.agent import Agent
-from piperabm.society.update import Update
-from piperabm.society.relationship.load import load_relationship
+from piperabm.object import PureObject
 from piperabm.economy import GiniGenerator, ExchangeRate
-from piperabm.society.current_graph import CurrentGraph
 
 
-class Society(Object, Add, Search, Query, Update):
+class Society(PureObject):
     """
     Represent society
     Manage agents and their relationships
     """
 
-    def __init__(self, environment: Environment = None, gini: float = 0, exchange_rate: ExchangeRate = None):
+    def __init__(
+            self,
+            gini: float = 0,
+            gdp_per_capita: float = 0,
+            exchange_rate: ExchangeRate = None
+        ):
         super().__init__()
-        environment.society = self
-        self.environment = environment
+        self.environment = None  # used for binding
         self.gini = gini
-        #self.gini_gen = GiniGenerator(gini, 1)
+        self.gdp_per_capita = gdp_per_capita
+        self.library = {}
+        self.gini_gen = GiniGenerator(gini, gdp_per_capita)
         self.exchange = exchange_rate
-        self.G = nx.Graph()
         self.type = 'society'
-        #self.log = Log(prefix='SOCIETY', indentation_depth=1)
 
-    def current_node(self, agent_index):
-        result = None
-        pos = self.get_agent_pos(agent_index)
-        for index in self.environment.all_indexes():
-            object = self.environment.get_node_object(index)
-            is_in = object.boundary.is_in(pos)
-            if is_in is True:
-                result = index
-                break
-        return result
-
-    def to_current_graph(self, start_date=None, end_date=None):
+    @property
+    def new_index(self) -> int:
         """
-        Convert the environment to "link_graph" object
+        Generate a new unique integer as id for graph items
         """
-        current_graph = CurrentGraph(society=self, start_date=start_date, end_date=end_date)
-        self.current = current_graph
-        return current_graph
-
-    def node_to_dict(self, index) -> dict:
-        dictionary = {}
-        dictionary['pos'] = self.get_node_pos(index)
-        agent = self.get_node_object(index)
-        dictionary['agent'] = agent.to_dict()
-        return dictionary
+        return uuid.uuid4().int
     
-    def node_from_dict(self, index, dictionary: dict) -> None:
-        pos = dictionary['pos']
-        agent = Agent()
-        agent.from_dict(dictionary['agent'])
-        self.add_node(index, pos, agent)
-
-    def edge_to_dict(self, index_start, index_end) -> dict:
-        dictionary = {}
-        dictionary['index_end'] = index_end
-        relationships = self.get_edge_object(index_start, index_end)
-        relationships_dictionary = {}
-        for relation in relationships:
-            relationships_dictionary[relation] = relationships[relation].to_dict()
-        dictionary['relationships'] = relationships_dictionary
-        return dictionary
-    
-    def edge_from_dict(self, index_start, dictionary: dict) -> None:
-        index_end = dictionary['index_end']
-        relationships_dictionary = dictionary['relationships']
-        relationships = {}
-        for key in relationships_dictionary:
-            relationships[key] = load_relationship(relationships_dictionary[key])
-        self.add_edge(index_start, index_end, relationships)
-
-    def to_dict(self) -> dict:
-        dictionary = {
-            'type': self.type,
-            'exchange_rate': None, ####
-            'nodes': {},
-            'edges': {}
-        }
-        indexes = self.all_indexes()    
-        for index in indexes:
-            node_dictionary = self.node_to_dict(index)
-            dictionary['nodes'][index] = node_dictionary
-        edges = self.all_edges()
-        for edge in edges:
-            index_start = edge[0]
-            index_end = edge[1]
-            edge_dictionary = self.edge_to_dict(index_start, index_end)
-            dictionary['edges'][index_start] = edge_dictionary
-        return dictionary
-    
-    def from_dict(self, dictionary: dict) -> None:
-        self.type = dictionary['type']
-        nodes = dictionary['nodes']
-        for index in nodes:
-            self.node_from_dict(index, nodes[index])
-        edges = dictionary['edges']
-        for index_start in edges:
-            self.edge_from_dict(index_start, edges[index_start])
-    
-    def show(self, filter='all'):
-        if self.current is not None:
-            self.current.show(filter)
+    def add(self, item) -> None:
+        """
+        Add new item to library
+        """    
+        if item.category == 'node':
+            item.index = self.new_index
+            self.library[item.index] = item
         
 
 if __name__ == "__main__":
     society = Society()
-    print(society)
+    society.print

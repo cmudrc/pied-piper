@@ -1,6 +1,7 @@
 import networkx as nx
 
 from piperabm.environment.infrastructure.graphics import Graphics
+from piperabm.environment.infrastructure.paths import Paths
 
 
 class Infrastructure(Graphics):
@@ -119,6 +120,13 @@ class Infrastructure(Graphics):
         Find the nearst node index to the *pos*
         """
         return self.environment.find_nearest_node(pos)
+
+    @property
+    def paths(self):
+        """
+        Return infrastructure graph of items
+        """
+        return Paths(infrastructure=self)
 
 
 if __name__ == "__main__":

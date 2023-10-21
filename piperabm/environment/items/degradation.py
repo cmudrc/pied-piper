@@ -32,8 +32,8 @@ class Degradation(PureObject):
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        self.current = dictionary['current']
-        self.total = dictionary['total']
+        self.current = float(dictionary['current'])
+        self.total = float(dictionary['total'])
 
 
 if __name__ == "__main__":

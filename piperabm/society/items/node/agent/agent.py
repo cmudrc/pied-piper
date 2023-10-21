@@ -6,7 +6,7 @@ from piperabm.resources import Resources
 from piperabm.time import DeltaTime, Date
 from piperabm.transporation import Transportation
 from piperabm.actions.queue import Queue
-from piperabm.agent.config import *
+from piperabm.society.items.node.agent.config import *
 
 
 class Agent(PureObject):

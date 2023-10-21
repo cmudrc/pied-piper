@@ -67,7 +67,7 @@ class Road(Item):
         """
         Calculate adjusted length based on physical length, roughness, and degradation factor
         """
-        return self.length * self.roughness * self.degradation.factor
+        return self.length * self.roughness * (1 - self.degradation.factor)
 
     def serialize(self) -> dict:
         dictionary = super().serialize()

@@ -4,14 +4,14 @@ from piperabm.object import PureObject
 from piperabm.environment.query import Query
 from piperabm.environment.grammar import Grammar
 from piperabm.environment.infrastructure import Infrastructure
-from piperabm.environment.items import Junction
+from piperabm.environment.items import Junction, Settlement, Road
 
 
 class Environment(PureObject, Query, Grammar):
 
     def __init__(
         self,
-        proximity_radius: float
+        proximity_radius: float = 0
     ):
         super().__init__()
         self.society = None  # used for binding
@@ -60,17 +60,35 @@ class Environment(PureObject, Query, Grammar):
 
     def serialize(self) -> dict:
         dictionary = {}
+        dictionary['proximity radius'] = self.proximity_radius
+
         ''' serialize library items '''
         library_serialized = {}
         for index in self.library:
             item = self.get_item(index)
             library_serialized[index] = item.serialize()
         dictionary['library'] = library_serialized
-        dictionary['proximity radius'] = self.proximity_radius
+
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        pass
+        self.proximity_radius = dictionary['proximity radius']
+
+        ''' deserialize library items '''
+        library_dictionary = dictionary['library']
+        for index in library_dictionary:
+            item_dictionary = library_dictionary[index]
+            type = item_dictionary['type']
+            if type == 'junction':
+                item = Junction()
+                item.deserialize(item_dictionary)
+            elif type == 'settlement':
+                item = Settlement()
+                item.deserialize(item_dictionary)
+            elif type == 'road':
+                item = Road()
+                item.deserialize(item_dictionary)
+            self.library[index] = item
 
 
 if __name__ == '__main__':

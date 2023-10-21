@@ -35,7 +35,8 @@ class Settlement(Item):
     def deserialize(self, dictionary: dict) -> None:
         super().deserialize(dictionary)
         self.pos = dictionary["pos"]
-        self.degradation = Degradation().deserialize(dictionary["degradation"])
+        self.degradation = Degradation()
+        self.degradation.deserialize(dictionary["degradation"])
         self.category = dictionary["category"]
 
 

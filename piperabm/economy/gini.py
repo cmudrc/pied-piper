@@ -61,6 +61,12 @@ class GiniGenerator:
                 result = rvs()
         if n == 1:  # when asked for a single value, a single value is returned instead of a list
             result = result[0]
+            if result < 0:
+                result = 0
+        else:
+            for value in result:
+                if value < 0:
+                    value = 0
         return result
 
     def __str__(self):
