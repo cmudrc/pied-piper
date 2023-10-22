@@ -14,6 +14,10 @@ class Resources(PureObject):
     def add_resource(self, resource: Resource):
         self.library[resource.name] = resource
 
+    @property
+    def names(self):
+        return self.library.keys()
+
     def __call__(self, name):
         return self.library[name].amount
 

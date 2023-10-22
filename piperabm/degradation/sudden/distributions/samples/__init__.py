@@ -1,1 +1,0 @@
-from .dirac_delta import dirac_delta_0 as distribution_0

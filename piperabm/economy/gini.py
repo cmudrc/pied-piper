@@ -23,16 +23,30 @@ def gini_coefficient(x):
 
 class GiniGenerator:
     
-    def __init__(self, gini_index: float, average: float):
+    def __init__(self, gini_index: float = None, average: float = None):
+        self.gini_index = 0.5  # default
+        self.average = 100  # default
+        if gini_index is not None and \
+            average is not None:
+            self.set_gini_index(gini_index)
+            self.set_average(average)
+
+    def set_gini_index(self, gini_index: float):
         if gini_index >= 0 and gini_index <= 1:
-            self.gini = gini_index
+            self.gini_index = gini_index
         else:
             raise ValueError
+        self.process()
+        
+    def set_average(self, average: float):
         if average > 0:
             self.average = average
         else:
             raise ValueError
-        self.sigma = self.calculate_sigma(gini=gini_index)
+        self.process()
+
+    def process(self):
+        self.sigma = self.calculate_sigma(gini=self.gini_index)
         self.mu = self.calculate_mu(mean=self.average, sigma=self.sigma)
 
     def calculate_sigma(self, gini):

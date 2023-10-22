@@ -1,0 +1,9 @@
+from copy import deepcopy
+
+from piperabm.society.agent.samples import agent_0
+from piperabm.model.samples import model_0
+
+
+model = deepcopy(model_0)
+agent = deepcopy(agent_0)
+model.add(agent_0)

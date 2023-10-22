@@ -1,7 +1,7 @@
 import networkx as nx
 
 from piperabm.object import PureObject
-from piperabm.resources.resource import Resource
+from piperabm.resources import Resource, Resources
 
 
 class ExchangeRate(PureObject):
@@ -29,33 +29,46 @@ class ExchangeRate(PureObject):
             if i != 0:
                 rate *= self.G[nodes[i-1]][nodes[i]]['rate']
         return rate
+
+    @property
+    def names(self):
+        """
+        Return name of all resources
+        """
+        return list(self.G.nodes())
     
     def __call__(self, source, target):
         return self.rate(source, target)
     
-    def value(self, resource: Resource, target='wealth') -> float:
+    def value(self, resources, target='wealth') -> float:
         """
         Calculate value of *resource* in terms of *target*
         """
-        return resource.amount * self.rate(source=resource.name, target=target)
+        result = None
+        if isinstance(resources, Resource):
+            resource = resources
+            result = resource.amount * self.rate(source=resource.name, target=target)
+        elif isinstance(resources, Resources):
+            result = 0
+            for name in resources.names:
+                resource = resources.library[name]
+                result += self.value(resource, target)
+        return result
     
-    def serialize(self) -> list:
-        G_prime = nx.Graph(self.G)  # remove half of redundant entries
+    def serialize(self) -> dict:
         dictionary = {}
-        for edge in G_prime.edges():
-            rate = self.rate(source=edge[0], target=edge[1])
-            dictionary[edge[0]] = {
-                'to': edge[1],
-                'rate': rate,
-            }
+        names = self.names
+        names.remove("wealth")
+        for name in names:
+            dictionary[name] = self.rate(source=name, target="wealth")
         return dictionary
     
-    def deserialize(self, dictionary: list) -> None:
+    def deserialize(self, dictionary: dict) -> None:
         self.G = nx.DiGraph()
-        for item in dictionary:
-            source = item
-            target = dictionary[source]['to']
-            rate = dictionary[source]['rate']
+        for name in dictionary:
+            source = name
+            target = "wealth"
+            rate = dictionary[source]
             self.add(source, target, rate)
 
 
