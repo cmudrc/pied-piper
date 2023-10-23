@@ -20,6 +20,9 @@ class Settlement(PureObject):
 
         self.category = "node"
         self.type = "settlement"
+        self.style = {
+            "color": "b",
+        }
 
     def serialize(self) -> dict:
         dictionary = {}

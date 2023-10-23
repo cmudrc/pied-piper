@@ -16,7 +16,6 @@ class Agent(PureObject):
         index = None,
         name: str = "",
         home: int = None,
-        alive: bool = True,
         transportation: Transportation = None,
         resources: Resources = None,
         fuels_rate_idle: Resources = None,
@@ -35,12 +34,18 @@ class Agent(PureObject):
 
         """ identity """
         self.name = name
-        self.alive = alive
+        self.alive = True
         self.death_reason = None
         self.home = home
         self.socioeconomic_status = socioeconomic_status
         self.type = "agent"
         self.category = "node"
+        self.style = {
+            "color": {
+                "alive": "g",
+                "dead": "r",
+            },
+        }
 
         """ transporation """
         if transportation is None: transportation = WALK
@@ -85,8 +90,9 @@ class Agent(PureObject):
 
     def update(self, date_start: Date = Date.today(), date_end: Date = Date.today()) -> None:
         """
-        Reduce the idle_fuel_consumption from agent"s resource
+        Update agent in time
         """
+        """ consumption and income """
         if self.alive is True:
             duration = date_end - date_start
             other_rates = [] ###### from action in queue

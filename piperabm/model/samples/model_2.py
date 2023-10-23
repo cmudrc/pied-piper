@@ -53,6 +53,6 @@ road_4 = Road(
 model.add(road_4)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     model.print
     #model.show()

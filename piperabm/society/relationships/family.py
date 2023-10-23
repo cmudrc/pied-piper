@@ -14,6 +14,7 @@ class Family(PureObject):
         self.index_2 = index_2
         self.home_index = home_index
         self.type = "family"
+        self.category = "edge"
 
     def serialize(self) -> dict:
         dictionary = {}

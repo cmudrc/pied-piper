@@ -17,6 +17,9 @@ class Junction(PureObject):
 
         self.category = "node"
         self.type = "junction"
+        self.style = {
+            "color": "b",
+        }
 
     def serialize(self) -> dict:
         dictionary = {}

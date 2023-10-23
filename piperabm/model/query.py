@@ -14,12 +14,18 @@ class Query:
     
     @property
     def infrastructure_types(self):
+        """
+        Return all item types related to infrastructure
+        """
         result = self.valid_types["infrastructure"]["node"] + \
         self.valid_types["infrastructure"]["edge"]
         return result
     
     @property
     def society_types(self):
+        """
+        Return all item types related to society
+        """
         result = self.valid_types["society"]["node"] + \
         self.valid_types["society"]["edge"]
         return result
@@ -61,6 +67,9 @@ class Query:
         return result
     
     def find_agents_in_same_home(self, home_index):
+        """
+        Return all agent indexes sharing the same home
+        """
         result = []
         all = self.all_agents
         for index in all:
@@ -68,21 +77,43 @@ class Query:
             if agent.home == home_index:
                 result.append(index)
         return result
+    
+    def find_by_name(self, name: str, items=None):
+        """
+        Find an item based on its name
+        """
+        result = None
+        if items is None:
+            items = self.all
+        for index in items:
+            item = self.get(index)
+            if item.name == name:
+                result = index
+        return result
 
     @property
     def all_environment_nodes(self):
+        """
+        Return index of all environment nodes
+        """
         types = self.valid_types["infrastructure"]["node"]
         items = self.filter(types=types)
         return items
     
     @property
     def all_environment_edges(self):
+        """
+        Return index of all environment edges
+        """
         types = self.valid_types["infrastructure"]["edge"]
         items = self.filter(types=types)
         return items
     
     @property
     def all_alive_agents(self):
+        """
+        Return index of all alive agents
+        """
         result = []
         items = self.all_agents
         for index in items:
@@ -93,6 +124,9 @@ class Query:
 
     @property
     def all_dead_agents(self):
+        """
+        Return index of all dead agents
+        """
         result = []
         items = self.all_agents
         for index in items:
@@ -103,12 +137,18 @@ class Query:
 
     @property
     def all_agents(self):
+        """
+        Return index of all alive and dead agents combined
+        """
         types = self.valid_types["society"]["node"]
         items = self.filter(types=types)
         return items
 
     @property
     def all(self):
+        """
+        Return all items indexes
+        """
         return self.library.keys()
     
     def distances(self, pos: list, items: list) -> list:

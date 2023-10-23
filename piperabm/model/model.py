@@ -68,22 +68,22 @@ class Model(PureObject, Query, InfrastructureGrammar):
         """
         if item.type in self.infrastructure_types:
             if item.category == "node":
-                item.index = self.new_index
-                item.model = self
-                self.library[item.index] = item
+                item.index = self.new_index  # new index
+                item.model = self  # binding
+                self.library[item.index] = item  # adding to library
             elif item.category == "edge":
                 junction_1 = Junction(pos=item.pos_1)
                 junction_2 = Junction(pos=item.pos_2)
                 self.add(junction_1)
                 self.add(junction_2)
-                item.index = self.new_index
-                item.model = self
-                self.library[item.index] = item
+                item.index = self.new_index  # new index
+                item.model = self  # binding
+                self.library[item.index] = item  # adding to library
 
         elif item.type in self.society_types:
             if item.category == "node":
-                item.index = self.new_index
-                item.model = self
+                item.index = self.new_index  # new index
+                item.model = self  # binding
                 settlements = self.filter(types="settlement")
                 if item.home is None:
                     item.home = random.choice(settlements)
@@ -91,7 +91,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
                     if item.home not in settlements:
                         raise ValueError
                 families = self.find_agents_in_same_home(item.home)
-                self.library[item.index] = item
+                self.library[item.index] = item  # adding to library
                 for family in families:
                     relationship = Family(
                         index_1=item.index,
@@ -99,10 +99,18 @@ class Model(PureObject, Query, InfrastructureGrammar):
                         home_index=item.home
                     )
                     self.add(relationship)
-            if item.category == "edge":
-                item.index = self.new_index
-                item.model = self
-                self.library[item.index] = item
+            elif item.category == "edge":
+                item.index = self.new_index  # new index
+                item.model = self  # binding
+                self.library[item.index] = item  # adding to library
+
+    def update(self):
+        agents = self.all_alive_agents
+        date_start = self.current_date
+        date_end = date_start + self.step_size
+        for agent in agents:
+            agent.update(date_start, date_end)
+        self.current_date = date_end
 
     @property
     def infrastrucure(self):
@@ -115,14 +123,12 @@ class Model(PureObject, Query, InfrastructureGrammar):
     def serialize(self) -> dict:
         dictionary = {}
         dictionary["proximity radius"] = self.proximity_radius
-
-        # Serialize library items
+        """ serialize library items """
         library_serialized = {}
         for index in self.library:
             item = self.get(index)
             library_serialized[index] = item.serialize()
         dictionary["library"] = library_serialized
-        
         dictionary["step_size"] = self.step_size.total_seconds()
         dictionary["current_date"] = date_serialize(self.current_date)
         dictionary["exchange_rate"] = self.exchange_rate.serialize()
@@ -130,8 +136,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
     
     def deserialize(self, dictionary: dict) -> None:
         self.proximity_radius = dictionary["proximity radius"]
-
-        # Deserialize library items
+        """ deserialize library items """
         library_dictionary = dictionary["library"]
         for index in library_dictionary:
             item_dictionary = library_dictionary[index]
@@ -146,7 +151,6 @@ class Model(PureObject, Query, InfrastructureGrammar):
                 item = Road()
                 item.deserialize(item_dictionary)
             self.library[index] = item
-
         self.step_size = DeltaTime(seconds=dictionary["step_size"])
         self.current_date = date_deserialize(dictionary["current_date"])
         self.exchange_rate = ExchangeRate()
