@@ -1,6 +1,7 @@
 import networkx as nx
 
 from piperabm.object import PureObject
+from piperabm.resources import Resource, Resources
 
 
 class ExchangeRate(PureObject):
@@ -38,6 +39,21 @@ class ExchangeRate(PureObject):
     
     def __call__(self, source, target):
         return self.rate(source, target)
+    
+    def value(self, resources, target='wealth') -> float:
+        """
+        Calculate value of *resource* in terms of *target*
+        """
+        result = None
+        if isinstance(resources, Resource):
+            resource = resources
+            result = resource.amount * self.rate(source=resource.name, target=target)
+        elif isinstance(resources, Resources):
+            result = 0
+            for name in resources.names:
+                resource = resources.library[name]
+                result += self.value(resource, target)
+        return result
     
     def serialize(self) -> dict:
         dictionary = {}

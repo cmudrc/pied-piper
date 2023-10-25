@@ -1,5 +1,8 @@
+from copy import deepcopy
+
 from piperabm.object import PureObject
 from piperabm.resources import Resource
+from piperabm.economy import ExchangeRate
 
 
 class Resources(PureObject):
@@ -12,17 +15,36 @@ class Resources(PureObject):
                 self.add_resource(arg)
 
     def add_resource(self, resource: Resource):
-        self.library[resource.name] = resource
+        """
+        Add new resource to the library
+        """
+        if resource.name != '' and \
+            resource.name not in self.names:
+            self.library[resource.name] = resource
+        else:
+            raise ValueError
 
     @property
     def names(self):
+        """
+        Return name of all resources
+        """
         return self.library.keys()
 
     def __call__(self, name):
         return self.library[name].amount
+    
+    def get(self, name):
+        """
+        Get the resource object based on its name
+        """
+        return self.library[name]
 
     @property
     def source(self):
+        """
+        Calculate source
+        """
         result = Resources()
         for name in self.library:
             source = Resource(
@@ -34,6 +56,9 @@ class Resources(PureObject):
     
     @property
     def demand(self):
+        """
+        Calcualte ideal demand
+        """
         result = Resources()
         for name in self.library:
             demand = Resource(
@@ -42,6 +67,53 @@ class Resources(PureObject):
             )
             result.add_resource(demand)
         return result
+    
+    def demands_actual(self, exchange_rate: ExchangeRate, balance: float):
+        """
+        Calculate actual demand that is limited by the *balance*
+        """
+        demands = self.demand
+        values = demands.value(exchange_rate)
+        total = values.sum
+        shares = deepcopy(values)
+        shares.truediv(total)
+        shares.mul(balance)
+        real_demands = shares.values_to_amount(exchange_rate)
+        for name in self.names:
+            demand = demands.get(name)
+            real_demand = real_demands.get(name)
+            demand.cutoff(real_demand.amount)
+        return demands
+    
+    def value(self, exchange_rate: ExchangeRate):
+        """
+        Calculate monetary value of resources based on exchange rate
+        """
+        result = Resources()
+        for name in self.names:
+            resource = self.get(name)
+            value = resource.value(exchange_rate)
+            result.add_resource(value)
+        return result
+
+    def values_to_amount(self, exchange_rate: ExchangeRate):
+        """
+        Calculate equivalent amount of resources when the initial unit was money
+        """
+        result = Resources()
+        for name in self.names:
+            resource = self.get(name)
+            resource_amount = resource.value_to_amount(exchange_rate)
+            result.add_resource(resource_amount)
+        return result
+    
+    def cutoff(self, amount: float):
+        """
+        Limit the amount
+        """
+        for name in self.names:
+            resource = self.get(name)
+            resource.cutoff(amount)
     
     def check_empty(self, names: list):
         """
@@ -54,6 +126,29 @@ class Resources(PureObject):
                 result.append(name)
         return result
     
+    @property
+    def sum(self):
+        """
+        Return total amount
+        """
+        result = 0
+        for name in self.names:
+            result += self.__call__(name)
+        return result
+
+    @property
+    def biggest(self):
+        """
+        Return biggest resource name
+        """
+        biggest_name = None
+        biggest_amount = None
+        for name in self.names:
+            if biggest_amount is None or self.__call__(name) > biggest_amount:
+                biggest_name = name
+                biggest_amount = self.__call__(name)
+        return biggest_name
+
     @property
     def is_all_zero(self):
         """

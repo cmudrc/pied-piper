@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.tools.symbols import SYMBOLS
+from piperabm.economy import ExchangeRate
 
 
 class Resource(PureObject):
@@ -33,6 +34,9 @@ class Resource(PureObject):
 
     @property
     def source(self):
+        """
+        Calculate source
+        """
         result = self.amount - self.min
         if result < 0:
             result = 0
@@ -40,10 +44,37 @@ class Resource(PureObject):
     
     @property
     def demand(self):
+        """
+        Calcualte ideal demand
+        """
         return self.max - self.amount
     
+    def value(self, exchange_rate: ExchangeRate):
+        """
+        Calculate monetary value of resources based on exchange rate
+        """
+        amount = self.amount * exchange_rate.rate(source=self.name, target="wealth")
+        return Resource(name=self.name, amount=amount)
+    
+    def value_to_amount(self, exchange_rate: ExchangeRate):
+        """
+        Calculate equivalent amount of resources when the initial unit was money
+        """
+        amount = self.amount / exchange_rate.rate(source=self.name, target="wealth")
+        return Resource(name=self.name, amount=amount)
+    
+    def cutoff(self, amount: float):
+        """
+        If amount is higher than cutoff, it will be equal to cutoff
+        """
+        if self.amount > amount:
+            self.amount = amount
+
     @property
     def is_empty(self):
+        """
+        Check if the resource is empty
+        """
         result = False
         if self.amount == 0:
             result = True
@@ -51,6 +82,9 @@ class Resource(PureObject):
     
     @property
     def is_full(self):
+        """
+        Check if the resource is full
+        """
         result = False
         if self.amount == self.max:
             result = True
@@ -124,6 +158,9 @@ class Resource(PureObject):
 
 
 def calculate_remainder(amount, max, min):
+    """
+    Calculate remainder of resource arithmetics
+    """
     if max < min:
         raise ValueError
     remainder = 0

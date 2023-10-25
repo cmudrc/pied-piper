@@ -15,6 +15,7 @@ class TestInfrastructureClass(unittest.TestCase):
 
     def test_find_path(self):
         all_nodes = self.infrastrucure.all_nodes()
+        print(all_nodes)
         index_1 = self.infrastrucure.find_nearest_node(pos=[-60, 40], items=all_nodes)
         index_2 = self.infrastrucure.find_nearest_node(pos=[200, 20], items=all_nodes)
         path = self.infrastrucure.find_path(index_1, index_2)

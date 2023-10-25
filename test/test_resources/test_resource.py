@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from piperabm.resources import Resource
 from piperabm.resources.resource.samples import resource_0
+from piperabm.economy.exchange_rate.samples import exchange_rate_0
 
 
 class TestResourceClass(unittest.TestCase):
@@ -13,6 +14,10 @@ class TestResourceClass(unittest.TestCase):
             name=self.resource.name,
             amount=100
         )
+
+    def test_cutoff(self):
+        self.resource.cutoff(amount=10)
+        self.assertEqual(self.resource.amount, 10)
 
     def test_is_empty_full(self):
         self.assertFalse(self.resource.is_empty)
@@ -37,6 +42,10 @@ class TestResourceClass(unittest.TestCase):
         resource.min = 50
         demand = self.resource.demand
         self.assertEqual(demand, 70)
+
+    def test_value(self):
+        value = self.resource.value(exchange_rate_0)
+        self.assertEqual(value.amount, 300)
 
     def test_add(self):
         resource = deepcopy(self.resource)

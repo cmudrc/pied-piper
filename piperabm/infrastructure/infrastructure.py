@@ -1,13 +1,12 @@
 import networkx as nx
 
-from piperabm.infrastructure.graphics import Graphics
 from piperabm.infrastructure.paths import Paths
 
 
-class Infrastructure(Graphics):
+class Infrastructure:
 
     def __init__(self, model):
-        super().__init__()
+        #super().__init__()
         self.G = nx.Graph()
         self.model = model
         self.create()

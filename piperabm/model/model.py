@@ -18,7 +18,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
         proximity_radius: float = 0,
         step_size=None,
         current_date: Date = Date.today(),
-        exchange_rate: ExchangeRate=None
+        exchange_rate: ExchangeRate = None
     ):
         super().__init__()
         self.library = {}
@@ -108,9 +108,14 @@ class Model(PureObject, Query, InfrastructureGrammar):
         agents = self.all_alive_agents
         date_start = self.current_date
         date_end = date_start + self.step_size
-        for agent in agents:
+        for index in agents:
+            agent = self.get(index)
             agent.update(date_start, date_end)
         self.current_date = date_end
+
+    def run(self, n: int = 1):
+        for _ in range(n):
+            self.update()
 
     @property
     def infrastrucure(self):
@@ -133,7 +138,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
         dictionary["current_date"] = date_serialize(self.current_date)
         dictionary["exchange_rate"] = self.exchange_rate.serialize()
         return dictionary
-    
+
     def deserialize(self, dictionary: dict) -> None:
         self.proximity_radius = dictionary["proximity radius"]
         """ deserialize library items """

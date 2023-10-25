@@ -1,9 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.agent.samples import agent_0
-from piperabm.resources.samples import resource_delta_0 as resource_delta
-from piperabm.unit import DT
+from piperabm.society.agent.samples import agent_0
+from piperabm.resources.samples import resources_0
+from piperabm.time import DeltaTime, Date
 
 
 class TestAgentClass(unittest.TestCase):
@@ -11,6 +11,18 @@ class TestAgentClass(unittest.TestCase):
     def setUp(self):
         self.agent = deepcopy(agent_0)
 
+    def test_update(self):
+        self.assertTrue(self.agent.alive)
+        balance_initial = self.agent.balance
+        date_start = Date.today()
+        date_end = date_start + DeltaTime(days=8)
+        self.agent.update(date_start, date_end)
+        self.assertFalse(self.agent.alive)
+        self.assertEqual(self.agent.death_reason, "water")
+        balance_final = self.agent.balance
+        self.assertLess(balance_initial, balance_final)
+
+    '''
     def test_add_resource(self):
         remaining = self.agent + resource_delta
         expected_result = {
@@ -41,7 +53,7 @@ class TestAgentClass(unittest.TestCase):
         self.assertFalse(self.agent.alive)
         self.assertFalse(remaining.is_all_zero())
         self.assertListEqual(self.agent.death_reason, ['water'])
-    
+    '''
     
 if __name__ == "__main__":
     unittest.main()
