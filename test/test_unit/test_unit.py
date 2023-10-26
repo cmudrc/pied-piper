@@ -1,6 +1,7 @@
 import unittest
 
-from piperabm.unit import Unit, Date
+from piperabm.tools.unit import Unit
+from piperabm.time import Date
 
 
 class TestUnitClass(unittest.TestCase):

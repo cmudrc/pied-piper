@@ -21,8 +21,8 @@ class Infrastructure:
         #    self.G.add_node(item_index)
         for item_index in all_edges:
             item = self.model.get(item_index)
-            index_1 = self.model.find_nearest_node(item.pos_1, all_nodes)
-            index_2 = self.model.find_nearest_node(item.pos_2, all_nodes)
+            index_1, _ = self.model.find_nearest_node(item.pos_1, all_nodes)
+            index_2, _ = self.model.find_nearest_node(item.pos_2, all_nodes)
             self.G.add_edge(
                 index_1,
                 index_2,

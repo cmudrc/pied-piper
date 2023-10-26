@@ -53,6 +53,12 @@ class TestResourceClass(unittest.TestCase):
         self.assertAlmostEqual(demands_actual("water"), 0, places=2)
         self.assertAlmostEqual(demands_actual("energy"), 0, places=2)
 
+    def test_max(self):
+        resources_max = self.resources.max
+        self.assertEqual(resources_max("food"), 100)
+        self.assertEqual(resources_max("water"), 100)
+        self.assertEqual(resources_max("energy"), 100)
+
     def test_value(self):
         values = self.resources.value(exchange_rate_0)
         self.assertEqual(values("food"), 300)

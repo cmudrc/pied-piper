@@ -85,6 +85,20 @@ class Resources(PureObject):
             demand.cutoff(real_demand.amount)
         return demands
     
+    @property
+    def max(self):
+        """
+        Calcualte maximum possible
+        """
+        result = Resources()
+        for name in self.library:
+            resource_max = Resource(
+                name=name,
+                amount=self.library[name].max
+            )
+            result.add_resource(resource_max)
+        return result
+
     def value(self, exchange_rate: ExchangeRate):
         """
         Calculate monetary value of resources based on exchange rate

@@ -9,6 +9,7 @@ from piperabm.infrastructure import Infrastructure, Junction, Settlement, Road
 from piperabm.society import Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
+from piperabm.measure import Measure
 
 
 class Model(PureObject, Query, InfrastructureGrammar):
@@ -28,6 +29,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
         if exchange_rate is None:
             exchange_rate = deepcopy(exchange_rate_0)  # default
         self.exchange_rate = exchange_rate
+        self.measure = Measure(self)
         self.valid_types = {
             "infrastructure": {
                 "node": [
@@ -122,7 +124,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
         """
         Return infrastructure graph of items
         """
-        self.apply_infrastructure_grammars(report=False)
+        self.apply_infrastructure_grammars(report=True)
         return Infrastructure(model=self)
 
     def serialize(self) -> dict:

@@ -147,6 +147,36 @@ class InfrastructureGrammar:
                                 line_2_point_1=other_edge_item.pos_1,
                                 line_2_point_2=other_edge_item.pos_2
                             )
+                            ### new 
+                            if intersection is not None:
+                                distance_1 = distance_point_to_point(edge_item.pos_1, intersection)
+                                distance_2 = distance_point_to_point(edge_item.pos_1, intersection)
+                                distance_3 = distance_point_to_point(intersection, other_edge_item.pos_1)
+                                distance_4 = distance_point_to_point(intersection, other_edge_item.pos_2)
+                                distances = [distance_1, distance_2, distance_3, distance_4]
+                                if min(distances) > self.proximity_radius:
+                                    print(edge_item.pos_1, edge_item.pos_2)
+                                    print(other_edge_item.pos_1, other_edge_item.pos_2)
+                                    print('----------')
+                                    if edge_item.type == 'road' and other_edge_item.type == 'road':
+                                        new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=intersection)
+                                        new_edge_item_2 = Road(pos_1=intersection, pos_2=edge_item.pos_2)
+                                        new_edge_item_3 = Road(pos_1=other_edge_item.pos_1, pos_2=intersection)
+                                        new_edge_item_4 = Road(pos_1=intersection, pos_2=other_edge_item.pos_2)
+                                        self.add(new_edge_item_1)
+                                        report.append(str(new_edge_item_1) + ' added.')
+                                        self.add(new_edge_item_2)
+                                        report.append(str(new_edge_item_2) + ' added.')
+                                        self.add(new_edge_item_3)
+                                        report.append(str(new_edge_item_3) + ' added.')
+                                        self.add(new_edge_item_4)
+                                        report.append(str(new_edge_item_4) + ' added.')
+                                        self.remove(edge_index)
+                                        report.append(str(edge_item) + ' removed.')
+                                        self.remove(other_edge_index)
+                                        report.append(str(other_edge_item) + ' removed.')
+                                        anything_happened = True
+                            '''
                             distance_1_1 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_1)
                             distance_1_2 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_2)
                             distance_2_1 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_1)
@@ -157,10 +187,11 @@ class InfrastructureGrammar:
                             distance_1_1 = distance_point_to_line(other_edge_item.pos_1, edge_item.pos_1, edge_item.pos_2)
                             distance_2_1 = distance_point_to_line(other_edge_item.pos_2, edge_item.pos_1, edge_item.pos_2)
                             point_to_line_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
+                            #point_to_line_distances = [distance for distance in point_to_line_distances if distance is not None]
                             if intersection is not None and \
                                 min(point_to_point_distances) > self.proximity_radius and \
                                 min(point_to_line_distances) > self.proximity_radius:
-
+                            
                                 if edge_item.type == 'road' and other_edge_item.type == 'road':
                                     new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=intersection)
                                     new_edge_item_2 = Road(pos_1=intersection, pos_2=edge_item.pos_2)
@@ -179,6 +210,7 @@ class InfrastructureGrammar:
                                     self.remove(other_edge_index)
                                     report.append(str(other_edge_item) + ' removed.')
                                     anything_happened = True
+                            '''
 
         return anything_happened, report
     
