@@ -121,6 +121,21 @@ class TestGrammarRule1Class(unittest.TestCase):
         model.apply_infrastructure_grammars()
         self.assertEqual(len(model.all_environment_nodes), 2)
         self.assertEqual(len(model.all_environment_edges), 1)
+
+    def test_8(self):
+        """
+        Add two edges with same start and ending
+        """
+        model = Model(proximity_radius=0.1)
+        new_item_1 = Road(pos_1=[-1.05, -1], pos_2=[1, 1])
+        new_item_2 = Road(pos_1=[-1, -1], pos_2=[1, 1])
+        model.add(new_item_1)
+        model.add(new_item_2)
+        self.assertEqual(len(model.all_environment_nodes), 4)
+        self.assertEqual(len(model.all_environment_edges), 2)
+        model.apply_infrastructure_grammars()
+        self.assertEqual(len(model.all_environment_nodes), 2)
+        self.assertEqual(len(model.all_environment_edges), 1)
     
 
 if __name__ == "__main__":

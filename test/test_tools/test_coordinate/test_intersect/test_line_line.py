@@ -158,6 +158,20 @@ class TestLineLineFunction(unittest.TestCase):
             line_2_point_2
         )
         self.assertEqual(result, [1, 1])
+
+    def test_case_11(self):
+        """ Lines crossing on one end of an edge """
+        line_1_point_1 = [0, 0]
+        line_1_point_2 = [2, 0]
+        line_2_point_1 = [2, 2]
+        line_2_point_2 = [2, -2]
+        result = intersect_line_line(
+            line_1_point_1,
+            line_1_point_2,
+            line_2_point_1,
+            line_2_point_2
+        )
+        self.assertEqual(result, [2, 0])
         
 
 if __name__ == '__main__':

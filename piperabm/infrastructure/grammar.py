@@ -155,6 +155,11 @@ class InfrastructureGrammar:
                                 distance_4 = distance_point_to_point(intersection, other_edge_item.pos_2)
                                 distances = [distance_1, distance_2, distance_3, distance_4]
                                 if min(distances) > self.proximity_radius:
+                                    distance_1_2 = distance_point_to_line(edge_item.pos_1, other_edge_item.pos_1, other_edge_item.pos_2)
+                                    distance_2_2 = distance_point_to_line(edge_item.pos_2, other_edge_item.pos_1, other_edge_item.pos_2)
+                                    distance_1_1 = distance_point_to_line(other_edge_item.pos_1, edge_item.pos_1, edge_item.pos_2)
+                                    distance_2_1 = distance_point_to_line(other_edge_item.pos_2, edge_item.pos_1, edge_item.pos_2)
+                                    point_to_line_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
                                     print(edge_item.pos_1, edge_item.pos_2)
                                     print(other_edge_item.pos_1, other_edge_item.pos_2)
                                     print('----------')
