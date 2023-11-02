@@ -9,7 +9,7 @@ from piperabm.tools.lattice.conditions import *
 
 class Lattice:
 
-    def __init__(self, x, y, target=None):
+    def __init__(self, x, y):
         self.len_x = x
         self.len_y = y
         self.G = nx.grid_2d_graph(self.len_x, self.len_y)
@@ -21,9 +21,6 @@ class Lattice:
             condition_4,
             condition_5,
         ]
-        if target is None:
-            target = self.distribution
-        self.target = self.normalize(target)
 
     @property
     def nodes(self):
@@ -32,6 +29,17 @@ class Lattice:
     @property
     def edges(self):
         return list(self.G.edges())
+    
+    @property
+    def not_edges(self):
+        edges = []
+        current_edges = self.edges
+        full_lattice = Lattice(self.len_x, self.len_y)
+        all_possible_edges = full_lattice.edges
+        for edge in all_possible_edges:
+            if edge not in current_edges:
+                edges.append(edge)
+        return edges
     
     def remove_node(self, node):
         self.G.remove_node(node)
@@ -44,6 +52,19 @@ class Lattice:
 
     def has_edge(self, node_1, node_2):
         return self.G.has_edge(node_1, node_2)
+    
+    @property
+    def components(self):
+        all_components = nx.number_connected_components(self.G)
+        return all_components - len(self.isolated_nodes)
+    
+    @property
+    def is_connected(self):
+        return self.components == 1
+
+    @property
+    def isolated_nodes(self):
+        return [node for node, degree in dict(self.G.degree()).items() if degree == 0]
     
     def neighbor_value(self, node, neighbor):
         result = None
@@ -64,8 +85,8 @@ class Lattice:
             node[1] < self.len_y and \
             node[1] >= 0: # within the range
             
-            result = np.zeros([3, 3]) # corners are 0
-            result[1, 1] = 1 # center is 1
+            result = np.zeros([3, 3]) # corners are always 0
+            result[1, 1] = 1 # center is always 1
 
             neighbor = (node[0]-1, node[1])
             result[0, 1] = self.neighbor_value(node, neighbor)
@@ -126,12 +147,26 @@ class Lattice:
             dictionary[key] /= total
         return dictionary
     
-    def MSE(self):
+    @property
+    def total_length(self):
+        return len(self.edges)
+    
+    @property
+    def max_length(self):
+        horizontal = (self.len_x - 1) * self.len_y
+        vertical = self.len_x * (self.len_y - 1)
+        return horizontal + vertical
+    
+    @property
+    def length_ratio(self):
+        return self.total_length / self.max_length
+    
+    def RMSE(self, target):
         errors = []
         distribution = self.distribution
         names = self.condition_names
         for name in names:
-            error = distribution[name] - self.target[name]
+            error = distribution[name] - target[name]
             errors.append(error)
         errors_squared = [x**2 for x in errors]
         return (sum(errors_squared) / len(errors_squared)) ** 0.5
@@ -143,15 +178,34 @@ class Lattice:
             result.append(condition.name)
         return result
     
-    def optimize(self):
-        threashold = 0.05
-        while self.MSE() > threashold:
-            new_lattice = deepcopy(self)
-            edge = random.choice(new_lattice.edges)
-            new_lattice.remove_edge(*edge)
-            if new_lattice.MSE() < self.MSE():
-                self.remove_edge(*edge)
-                #print(edge, ' removed.')
+    def generate(self, x_size, y_size, threashold=0.1):
+        result = None
+        target_distribution = self.distribution
+        target_length_ratio = self.length_ratio
+        if self.is_connected is False: # only generate when connected
+            return result
+
+        lattice = Lattice(x_size, y_size)
+        while lattice.RMSE(target_distribution) > threashold:
+            if lattice.length_ratio > target_length_ratio: # remove edge
+                edges = lattice.edges
+                edge = random.choice(edges)
+                test_lattice = deepcopy(lattice)
+                test_lattice.remove_edge(*edge)
+                if test_lattice.RMSE(target_distribution) < lattice.RMSE(target_distribution) and \
+                    test_lattice.is_connected:
+                    lattice.remove_edge(*edge)
+                    print(edge, " removed.")
+            else: # add edge
+                edges = lattice.not_edges
+                edge = random.choice(edges)
+                test_lattice = deepcopy(lattice)
+                test_lattice.add_edge(*edge)
+                if test_lattice.RMSE(target_distribution) < lattice.RMSE(target_distribution) and \
+                    test_lattice.is_connected:
+                    lattice.add_edge(*edge)
+                    print(edge, " added.")
+        return lattice
 
     def show(self):
         pos_dictionary = {}
@@ -160,8 +214,10 @@ class Lattice:
             pos_dictionary[node] = node
         nx.draw(
             self.G,
-            pos=pos_dictionary
+            pos=pos_dictionary,
+            node_size=1
         )
+        plt.gca().set_aspect("equal")
         plt.show()
 
 

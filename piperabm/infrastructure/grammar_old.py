@@ -34,10 +34,6 @@ class InfrastructureGrammar:
             if i == len(grammars):
                 break  # exit if all grammars are applied without any changes
 
-    def check_grammar_rule_1(self, node_item, other_node_item):
-        distance = distance_point_to_point(node_item.pos, other_node_item.pos)
-        return distance < 2 * self.proximity_radius
-
     def infrastructure_grammar_rule_1(self):
         """
         Check for node to node proximity
@@ -61,7 +57,8 @@ class InfrastructureGrammar:
                             other_node_item = self.get(other_node_index)
 
                             ''' check the distance '''
-                            if self.check_grammar_rule_1(node_item, other_node_item):
+                            distance = distance_point_to_point(node_item.pos, other_node_item.pos)
+                            if distance < self.proximity_radius:
 
                                 ''' update the items based on their types '''
                                 if node_item.type == 'junction' and other_node_item.type != 'junction':
@@ -83,15 +80,6 @@ class InfrastructureGrammar:
 
         return anything_happened, report
 
-    def check_grammar_rule_2(self, node_item, edge_item):
-        distance = distance_point_to_line(node_item.pos, edge_item.pos_1, edge_item.pos_2)
-        distance_1 = distance_point_to_point(node_item.pos, edge_item.pos_1)
-        distance_2 = distance_point_to_point(node_item.pos, edge_item.pos_2)
-        return distance is not None and \
-            distance < self.proximity_radius and \
-            distance_1 > self.proximity_radius and \
-            distance_2 > self.proximity_radius
-
     def infrastructure_grammar_rule_2(self):
         """
         Check for node to edge proximity
@@ -112,7 +100,13 @@ class InfrastructureGrammar:
                         #print(edge_item.pos_1, edge_item.pos_2)
 
                         ''' check the distance '''
-                        if self.check_grammar_rule_2(node_item, edge_item):
+                        distance = distance_point_to_line(node_item.pos, edge_item.pos_1, edge_item.pos_2)
+                        distance_1 = distance_point_to_point(node_item.pos, edge_item.pos_1)
+                        distance_2 = distance_point_to_point(node_item.pos, edge_item.pos_2)
+                        if distance is not None and \
+                            distance < self.proximity_radius and \
+                            distance_1 > self.proximity_radius and \
+                            distance_2 > self.proximity_radius:
                                     
                             ''' update the items based on their types '''
                             if edge_item.type == 'road':
@@ -127,9 +121,6 @@ class InfrastructureGrammar:
                             anything_happened = True
 
         return anything_happened, report
-
-    def check_grammar_rule_3(self, node_item, edge_item):
-        pass
 
     def infrastructure_grammar_rule_3(self):
         """
@@ -228,17 +219,6 @@ class InfrastructureGrammar:
 
         return anything_happened, report
     
-    def check_grammar_rule_4(self, edge_item, other_edge_item):
-        distance_1_1 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_1)
-        distance_1_2 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_2)
-        distance_2_1 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_1)
-        distance_2_2 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_2)
-        point_to_point_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
-        point_to_point_distances = sorted(point_to_point_distances)
-        distances = point_to_point_distances[:2]
-        return distances[0] < self.proximity_radius and \
-            distances[1] < self.proximity_radius
-
     def infrastructure_grammar_rule_4(self):
         """
         Check for edges having similar starting and ending points
@@ -258,7 +238,15 @@ class InfrastructureGrammar:
                             other_edge_item = self.get(other_edge_index)
 
                             ''' check the similar starting and ending points '''
-                            if self.check_grammar_rule_4(edge_item, other_edge_item):
+                            distance_1_1 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_1)
+                            distance_1_2 = distance_point_to_point(edge_item.pos_1, other_edge_item.pos_2)
+                            distance_2_1 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_1)
+                            distance_2_2 = distance_point_to_point(edge_item.pos_2, other_edge_item.pos_2)
+                            point_to_point_distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
+                            point_to_point_distances = sorted(point_to_point_distances)
+                            distances = point_to_point_distances[:2]
+                            if distances[0] < self.proximity_radius and \
+                                distances[1] < self.proximity_radius:
                                 self.remove(other_edge_index)
                                 report.append(str(other_edge_item) + ' removed.')
 
