@@ -5,6 +5,7 @@ import random
 from copy import deepcopy
 
 from piperabm.tools.lattice.conditions import *
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Lattice:
@@ -178,15 +179,19 @@ class Lattice:
             result.append(condition.name)
         return result
     
-    def generate(self, x_size, y_size, threashold=0.1):
+    def generate(self, x_size, y_size, threashold=0.1, max_steps=None):
         result = None
         target_distribution = self.distribution
         target_length_ratio = self.length_ratio
-        if self.is_connected is False: # only generate when connected
+        if self.is_connected is False: # only generate when dealing with connected graph
             return result
+        if max_steps is None:
+            max_steps = SYMBOLS['inf']
 
         lattice = Lattice(x_size, y_size)
-        while lattice.RMSE(target_distribution) > threashold:
+        counter = 0
+        while lattice.RMSE(target_distribution) > threashold and \
+            counter < max_steps:
             if lattice.length_ratio > target_length_ratio: # remove edge
                 edges = lattice.edges
                 edge = random.choice(edges)
@@ -205,6 +210,8 @@ class Lattice:
                     test_lattice.is_connected:
                     lattice.add_edge(*edge)
                     print(edge, " added.")
+            counter += 1
+        print("steps: ", counter)
         return lattice
 
     def show(self):
@@ -215,7 +222,7 @@ class Lattice:
         nx.draw(
             self.G,
             pos=pos_dictionary,
-            node_size=1
+            node_size=5
         )
         plt.gca().set_aspect("equal")
         plt.show()

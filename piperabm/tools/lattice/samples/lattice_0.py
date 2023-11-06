@@ -18,3 +18,5 @@ lattice.remove_edge((1, 0), (1, 1))
 
 if __name__ == "__main__":
     lattice.show()
+    #print(lattice.distribution)
+    #print(lattice.length_ratio)
