@@ -36,10 +36,10 @@ class Grammar:
         while True:
             rule = rules[i]
             anything_happened = rule.apply()
-            log = None
+            #log = None
 
-            if report is True:
-                print(log)
+            #if report is True:
+            #    print(log)
 
             if anything_happened is True:
                 i = 0  # reset the loop

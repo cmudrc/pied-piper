@@ -1,5 +1,7 @@
 import numpy as np
 
+from piperabm.tools.coordinate.distance import distance_point_to_point
+
 
 def intersect_line_line(
     line_1_point_1: list,
@@ -35,12 +37,26 @@ def intersect_line_line(
 
     if denominator != 0: # check for parallel lines
         intersection = (numerator / denominator.astype(float)) * delta_line_2 + line_2_point_1
-        intersection = list(intersection)
+    
+    if intersection is not None: # check whether intersection is within the segments
+        distance_1 = distance_point_to_point(line_1_point_1, intersection)
+        distance_2 = distance_point_to_point(line_1_point_2, intersection)
+        total_distance = distance_point_to_point(line_1_point_1, line_1_point_2)
+        val_1 = distance_1 + distance_2
+        val_2 = total_distance
+        err = 0.000000001
+        is_equal = False
+        if np.abs(val_1 - val_2) < err:
+            is_equal = True
+        if is_equal is False:
+            intersection = None
 
+    if intersection is not None:
+        intersection = list(intersection)
     return intersection
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     line_1_point_1 = [1, 0]
     line_1_point_2 = [1, 2]
     line_2_point_1 = [0, 1]

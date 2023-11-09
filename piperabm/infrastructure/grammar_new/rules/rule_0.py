@@ -1,5 +1,5 @@
 from piperabm.infrastructure.grammar_new.rules.rule import Rule
-from piperabm.tools.coordinate.distance import distance_point_to_point
+from piperabm.tools.coordinate.distance import point_to_point
 
 
 class Rule_0(Rule):
@@ -12,7 +12,7 @@ class Rule_0(Rule):
         super().__init__(model, name)
 
     def check(self, node_item, other_node_item):
-        distance = distance_point_to_point(node_item.pos, other_node_item.pos)
+        distance = point_to_point(node_item.pos, other_node_item.pos)
         return distance < self.proximity_radius
     
     def apply(self):
