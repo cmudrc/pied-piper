@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.model import Model
 from piperabm.infrastructure import Junction, Road
-from piperabm.infrastructure.grammar_new.rules import Rule_1
+from piperabm.infrastructure.grammar.rules import Rule_1
 
 
 class TestGrammarRule1CheckClass(unittest.TestCase):
@@ -51,7 +51,7 @@ class TestGrammarRule1ApplyClass(unittest.TestCase):
         item = Road(pos_1=[0, 0], pos_2=[10, 0])
         self.model.add(item)
 
-    def test_0(self):
+    def test_apply(self):
         model = deepcopy(self.model)
         item = Junction(pos=[3, 0.5])
         model.add(item)

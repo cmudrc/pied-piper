@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def intersect_line_line(
+def line_line(
     line_1_point_1: list,
     line_1_point_2: list,
     line_2_point_1: list,
@@ -45,5 +45,5 @@ if __name__ == "__main__":
     line_1_point_2 = [1, 2]
     line_2_point_1 = [0, 1]
     line_2_point_2 = [2, 1]
-    point = intersect_line_line(line_1_point_1, line_1_point_2, line_2_point_1, line_2_point_2)
+    point = line_line(line_1_point_1, line_1_point_2, line_2_point_1, line_2_point_2)
     print(point)

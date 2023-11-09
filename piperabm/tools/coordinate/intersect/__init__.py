@@ -1,2 +1,1 @@
-from .line_line import intersect_line_line
-from .line_circle import intersect_line_circle
+from .line_line import line_line

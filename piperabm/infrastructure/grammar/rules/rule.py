@@ -28,7 +28,7 @@ class Rule:
     def check(self):
         print("NOT IMPLEMENTED YET.")
 
-    def apply(self):
+    def apply(self, report=False):
         print("NOT IMPLEMENTED YET.")
 
     

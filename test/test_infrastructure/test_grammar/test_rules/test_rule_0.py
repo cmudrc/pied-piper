@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.model import Model
 from piperabm.infrastructure import Junction
-from piperabm.infrastructure.grammar_new.rules import Rule_0
+from piperabm.infrastructure.grammar.rules import Rule_0
 
 
 class TestGrammarRule0CheckClass(unittest.TestCase):
@@ -41,7 +41,7 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         item = Junction(pos=[0, 0]) 
         self.model.add(item)
 
-    def test_0(self):
+    def test_apply_0(self):
         """
         Two nodes close to each other
         """
@@ -53,7 +53,7 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         rule.apply()
         self.assertEqual(len(model.all_environment_nodes), 1)
 
-    def test_1(self):
+    def test_apply_1(self):
         """
         Two nodes far from each other
         """
@@ -65,7 +65,7 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         rule.apply()
         self.assertEqual(len(model.all_environment_nodes), 2)
 
-    def test_2(self):
+    def test_apply_2(self):
         """
         Three nodes close to each other.
         """

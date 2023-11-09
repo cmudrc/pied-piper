@@ -1,4 +1,4 @@
-from piperabm.infrastructure.grammar_new.rules import *
+from piperabm.infrastructure.grammar.rules import *
 
 
 class Grammar:
