@@ -1,3 +1,6 @@
+from piperabm.infrastructure.grammar_new.rules import *
+
+
 class Grammar:
 
     def __init__(self, model):
@@ -24,16 +27,16 @@ class Grammar:
             if not, all grammars rules start over.
             if no next rule is available, the program is over.
         """
-        grammars = [
-            rule_1,
-            rule_2,
-            rule_3,
-            rule_4,
+        rules = [
+            Rule_0(self.model),
+            Rule_1(self.model),
         ]
 
         i = 0
         while True:
-            anything_happened, log = grammars[i]()
+            rule = rules[i]
+            anything_happened = rule.apply()
+            log = None
 
             if report is True:
                 print(log)
@@ -43,5 +46,5 @@ class Grammar:
             else:
                 i += 1  # move to the next grammar
 
-            if i == len(grammars):
+            if i == len(rules):
                 break  # exit if all grammars are applied without any changes

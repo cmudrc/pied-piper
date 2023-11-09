@@ -1,8 +1,12 @@
 class Rule:
 
-    def __init__(self, model=None, check=None):
-        self.check = check
+    def __init__(self, model, name: str):
         self.model = model
+        self.name = name
+
+    @property
+    def proximity_radius(self):
+        return self.model.proximity_radius
 
     @property
     def nodes(self):
@@ -27,10 +31,4 @@ class Rule:
     def apply(self):
         print("NOT IMPLEMENTED YET.")
 
-
-if __name__ == "__main__":
-    def fun(a):
-        return a > 0
     
-    r = Rule(check=fun)
-    print(r.check(4))
