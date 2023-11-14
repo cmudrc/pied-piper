@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from piperabm.infrastructure.graphics.style import style
+from piperabm.model.graphics.style import style
 
 
 class Graphics:

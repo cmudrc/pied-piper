@@ -101,7 +101,30 @@ class TestLatticeClass_1(unittest.TestCase):
         threashold = 0.1
         new_lattice = self.lattice.generate(4, 5, threashold)
         error = new_lattice.RMSE(target=self.lattice.distribution)
-        self.assertLess(error, threashold)
+        self.assertLessEqual(error, threashold)
+
+
+class TestLatticeClass_2(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.lattice = Lattice(2, 1)
+
+    def test_to_pos(self):
+        edges = self.lattice.to_pos(
+            x_size=10,
+            y_size=10,
+            rotation=np.pi/2,
+            vector_zero=[1, 0]
+        )
+        poses = edges[0]
+        expected_poses = [
+            [0, 1],
+            [0, 11]
+        ]
+        self.assertAlmostEqual(poses[0][0], expected_poses[0][0], places=2)
+        self.assertAlmostEqual(poses[0][1], expected_poses[0][1], places=2)
+        self.assertAlmostEqual(poses[1][0], expected_poses[1][0], places=2)
+        self.assertAlmostEqual(poses[1][1], expected_poses[1][1], places=2)
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ class Grammar:
     def remove(self, index):
         self.model.remove(index)
     
-    def apply(self, report=True):
+    def apply(self, report=False):
         """
         Apply all grammars based on a decision tree
             if a rule is not yielding any changes, it is ok to go the next rule.
@@ -30,16 +30,16 @@ class Grammar:
         rules = [
             Rule_0(self.model),
             Rule_1(self.model),
+            Rule_2(self.model),
+            Rule_3(self.model),
         ]
 
         i = 0
         while True:
             rule = rules[i]
-            anything_happened = rule.apply()
-            #log = None
-
-            #if report is True:
-            #    print(log)
+            if report is True:
+                print(rule.name + ":")
+            anything_happened = rule.apply(report=report)
 
             if anything_happened is True:
                 i = 0  # reset the loop

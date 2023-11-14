@@ -1,1 +1,1 @@
-from .grammar import Grammar as InfrastructureGrammar
+from .grammar import Grammar

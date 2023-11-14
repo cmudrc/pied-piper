@@ -5,6 +5,7 @@ import random
 from copy import deepcopy
 
 from piperabm.tools.lattice.conditions import *
+from piperabm.tools.coordinate import rotate_point, move_point
 from piperabm.tools.symbols import SYMBOLS
 
 
@@ -213,6 +214,27 @@ class Lattice:
             counter += 1
         print("steps: ", counter)
         return lattice
+    
+    def to_pos(
+        self,
+        x_size: float = 1,
+        y_size: float = 1,
+        rotation: float = 0,
+        vector_zero: list = [0, 0]
+    ):
+        result = []
+        edges = self.edges
+        for edge in edges:
+            pos_1 = np.array([edge[0][0] * x_size, edge[0][1] * y_size])
+            pos_2 = np.array([edge[1][0] * x_size, edge[1][1] * y_size])
+            pos_1 = move_point(pos_1, vector_zero)
+            pos_2 = move_point(pos_2, vector_zero)
+            pos_1 = list(pos_1)
+            pos_2 = list(pos_2)
+            pos_1 = rotate_point(pos_1, rotation)
+            pos_2 = rotate_point(pos_2, rotation)
+            result.append([pos_1, pos_2])
+        return result
 
     def show(self):
         pos_dictionary = {}
@@ -230,6 +252,7 @@ class Lattice:
 
 if __name__ == "__main__":
     target = {0: 0.08333333333333333, 1: 0.0, 2: 0.3333333333333333, 3: 0.25, 4: 0.3333333333333333, 5: 0.0}
-    lattice = Lattice(5, 5, target)
-    lattice.optimize()
-    lattice.show()
+    lattice = Lattice(2, 3)
+    lattice.to_pos()
+    #lattice.show()
+

@@ -43,6 +43,14 @@ class Rule_2(Rule):
         return result
     
     def apply(self, report=False):
+
+        def create_name(old_item, new_index):
+            new_name = ""
+            old_name = old_item.name
+            if old_name != "":
+                new_name = old_name + " " + str(new_index)
+            return new_name
+
         anything_happened = False
         for edge_index in self.edges:
             for other_edge_index in self.edges:
@@ -59,10 +67,30 @@ class Rule_2(Rule):
                                 print(">>> remove: " + str(edge_item))
                                 print(">>> remove: " + str(other_edge_item))
 
-                            new_edge_item_1 = Road(pos_1=edge_item.pos_1, pos_2=intersection)
-                            new_edge_item_2 = Road(pos_1=intersection, pos_2=edge_item.pos_2)
-                            new_edge_item_3 = Road(pos_1=other_edge_item.pos_1, pos_2=intersection)
-                            new_edge_item_4 = Road(pos_1=intersection, pos_2=other_edge_item.pos_2)
+                            new_edge_item_1 = Road(
+                                pos_1=edge_item.pos_1,
+                                pos_2=intersection,
+                                name=create_name(edge_item, 1),
+                                roughness=edge_item.roughness
+                            )
+                            new_edge_item_2 = Road(
+                                pos_1=intersection,
+                                pos_2=edge_item.pos_2,
+                                name=create_name(edge_item, 2),
+                                roughness=edge_item.roughness
+                            )
+                            new_edge_item_3 = Road(
+                                pos_1=other_edge_item.pos_1,
+                                pos_2=intersection,
+                                name=create_name(other_edge_item, 1),
+                                roughness=other_edge_item.roughness
+                            )
+                            new_edge_item_4 = Road(
+                                pos_1=intersection,
+                                pos_2=other_edge_item.pos_2,
+                                name=create_name(other_edge_item, 2),
+                                roughness=other_edge_item.roughness
+                            )
                             self.add(new_edge_item_1)
                             self.add(new_edge_item_2)
                             self.add(new_edge_item_3)
@@ -78,6 +106,7 @@ class Rule_2(Rule):
                                 print(">>> add: " + str(new_edge_item_4))
 
                             anything_happened = True
+                            break
 
             if anything_happened is True:
                 break    

@@ -51,7 +51,7 @@ class TestGrammarRule1ApplyClass(unittest.TestCase):
         item = Road(pos_1=[0, 0], pos_2=[10, 0])
         self.model.add(item)
 
-    def test_apply(self):
+    def test_apply_0(self):
         model = deepcopy(self.model)
         item = Junction(pos=[3, 0.5])
         model.add(item)
@@ -62,6 +62,21 @@ class TestGrammarRule1ApplyClass(unittest.TestCase):
         self.assertEqual(len(model.all_environment_nodes), 7)
         self.assertEqual(len(model.all_environment_edges), 2)
 
+    def test_apply_1(self):
+        model = deepcopy(self.model)
+        item = Junction(pos=[3, 0.5])
+        model.add(item)
+        item = Junction(pos=[7, -0.5])
+        model.add(item)
+        self.assertEqual(len(model.all_environment_nodes), 4)
+        self.assertEqual(len(model.all_environment_edges), 1)
+        rule = Rule_1(model)
+        rule.apply()
+        self.assertEqual(len(model.all_environment_nodes), 8)
+        self.assertEqual(len(model.all_environment_edges), 2)
+        rule.apply()
+        self.assertEqual(len(model.all_environment_nodes), 12)
+        self.assertEqual(len(model.all_environment_edges), 3)
 
 if __name__ == "__main__":
     unittest.main()

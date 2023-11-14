@@ -3,7 +3,7 @@ import random
 
 from piperabm.object import PureObject
 from piperabm.model.query import Query
-from piperabm.infrastructure.grammar import InfrastructureGrammar
+from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
 from piperabm.infrastructure import Infrastructure, Junction, Settlement, Road
 from piperabm.society import Family
@@ -12,7 +12,7 @@ from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.measure import Measure
 
 
-class Model(PureObject, Query, InfrastructureGrammar):
+class Model(PureObject, Query):
 
     def __init__(
         self,
@@ -124,7 +124,8 @@ class Model(PureObject, Query, InfrastructureGrammar):
         """
         Return infrastructure graph of items
         """
-        self.apply_infrastructure_grammars(report=True)
+        grammar = Grammar(model=self)
+        grammar.apply()
         return Infrastructure(model=self)
 
     def serialize(self) -> dict:
@@ -143,7 +144,7 @@ class Model(PureObject, Query, InfrastructureGrammar):
 
     def deserialize(self, dictionary: dict) -> None:
         self.proximity_radius = dictionary["proximity radius"]
-        """ deserialize library items """
+        """ Deserialize library items """
         library_dictionary = dictionary["library"]
         for index in library_dictionary:
             item_dictionary = library_dictionary[index]
