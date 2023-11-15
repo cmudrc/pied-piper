@@ -19,6 +19,7 @@ class Junction(PureObject):
         self.type = "junction"
         self.style = {
             "color": "b",
+            "radius": 0,
         }
 
     def serialize(self) -> dict:

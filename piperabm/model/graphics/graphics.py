@@ -9,6 +9,10 @@ class Graphics:
     Add graphical representation, extends another class
     """
 
+    def __init__(self, infrastructure=None, society=None):
+        self.infrastructure = infrastructure
+        self.society = society
+
     def to_plt(self, ax=None):
         """
         Add elements to plt

@@ -49,11 +49,13 @@ if __name__ == "__main__":
     #_, log = model.infrastructure_grammar_rule_2()
     #model.infrastructure_grammar_rule_1()
     #print(log)
-    print(len(model.all_environment_nodes))
-    print(len(model.all_environment_edges))
+    #print(len(model.all_environment_nodes))
+    #print(len(model.all_environment_edges))
     #model.infrastructure_grammar_rule_3()
-    #infrastrucure = model.infrastrucure
+    infrastrucure = model.infrastrucure
+    print(infrastrucure.all_nodes())
+    
     #infrastrucure.show
-    print(len(model.all_environment_nodes))
-    print(len(model.all_environment_edges))
+    #print(len(model.all_environment_nodes))
+    #print(len(model.all_environment_edges))
     #model.print

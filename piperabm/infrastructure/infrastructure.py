@@ -6,7 +6,6 @@ from piperabm.infrastructure.paths import Paths
 class Infrastructure:
 
     def __init__(self, model):
-        #super().__init__()
         self.G = nx.Graph()
         self.model = model
         self.create()
@@ -17,8 +16,6 @@ class Infrastructure:
         """
         all_nodes = self.model.all_environment_nodes
         all_edges = self.model.all_environment_edges
-        #for item_index in all_nodes:
-        #    self.G.add_node(item_index)
         for item_index in all_edges:
             item = self.model.get(item_index)
             index_1, _ = self.model.find_nearest_node(item.pos_1, all_nodes)

@@ -3,6 +3,7 @@ import random
 
 from piperabm.object import PureObject
 from piperabm.model.query import Query
+from piperabm.model.graphics import Graphics
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
 from piperabm.infrastructure import Infrastructure, Junction, Settlement, Road
@@ -127,6 +128,9 @@ class Model(PureObject, Query):
         grammar = Grammar(model=self)
         grammar.apply()
         return Infrastructure(model=self)
+    
+    def show(self):
+        infrastructure = self.infrastrucure
 
     def serialize(self) -> dict:
         dictionary = {}
