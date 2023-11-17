@@ -186,3 +186,13 @@ class Query:
         nearest_node_index = distances[0][1]
         nearest_node_distance = distances[0][0]
         return nearest_node_index, nearest_node_distance
+    
+    def find_nearest_nodes(self, pos: list, items: list = None, k: int = 1) -> int:
+        """
+        Find the *k* nearst node index to the *pos*
+        """
+        if items is None:
+            raise ValueError
+        distances = self.distances(pos, items)
+        distances = self.sort_distances(distances)
+        return distances[:k]

@@ -73,6 +73,19 @@ class TestTrackClass(unittest.TestCase):
         expected_result = 3600 * self.factor
         self.assertEqual(duration.total_seconds(), expected_result)
 
+    def test_total_fuel(self):
+        track = deepcopy(self.track)
+        total_fuel = track.total_fuel
+        self.assertAlmostEqual(total_fuel('food'), 0.083, places=2)
+        self.assertAlmostEqual(total_fuel('water'), 0.042, places=2)
+        self.assertAlmostEqual(total_fuel('energy'), 0, places=2)
+
+        track.adjustment_factor = self.factor
+        total_fuel = track.total_fuel
+        self.assertAlmostEqual(total_fuel('food'), 0.166, places=2)
+        self.assertAlmostEqual(total_fuel('water'), 0.084, places=2)
+        self.assertAlmostEqual(total_fuel('energy'), 0, places=2)
+
     def test_pos_progress(self):
         track_1 = deepcopy(self.track)
         track_2 = deepcopy(self.track)

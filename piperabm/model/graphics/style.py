@@ -12,7 +12,6 @@ node_style = {
 edge_style = {
     'road': {
         'color': 'b',
-        
     },
 }
 

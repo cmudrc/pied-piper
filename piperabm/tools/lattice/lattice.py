@@ -2,7 +2,9 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+import json
 from copy import deepcopy
+import os
 
 from piperabm.tools.lattice.conditions import *
 from piperabm.tools.coordinate import rotate_point, move_point
@@ -11,7 +13,7 @@ from piperabm.tools.symbols import SYMBOLS
 
 class Lattice:
 
-    def __init__(self, x, y):
+    def __init__(self, x: int = 1, y: int = 1):
         self.len_x = x
         self.len_y = y
         self.G = nx.grid_2d_graph(self.len_x, self.len_y)
@@ -235,6 +237,34 @@ class Lattice:
             pos_2 = rotate_point(pos_2, rotation)
             result.append([pos_1, pos_2])
         return result
+    
+    def save(self, path, filename: str = "sample"):
+        data = self.serialize()
+        format = "." + "json"
+        filename += format
+        filepath = os.path.join(path, filename)
+        with open(filepath, "w") as f:
+            json.dump(data, f)
+    
+    def load(self, path, filename: str = "sample"):
+        format = "." + "json"
+        filename += format
+        filepath = os.path.join(path, filename)
+        with open(filepath, "r") as f:
+            data = json.load(f)
+        self.deserialize(data)
+
+    def serialize(self):
+        dictionary = {}
+        dictionary["len_x"] = self.len_x
+        dictionary["len_y"] = self.len_y
+        dictionary["G"] = nx.node_link_data(self.G)
+        return dictionary
+    
+    def deserialize(self, dictionary):
+        self.len_x = dictionary["len_x"]
+        self.len_y = dictionary["len_y"]
+        self.G = nx.node_link_graph(dictionary["G"])
 
     def show(self):
         pos_dictionary = {}

@@ -1,4 +1,5 @@
 import networkx as nx
+import numpy as np
 
 from piperabm.infrastructure.paths import Paths
 
@@ -101,6 +102,28 @@ class Infrastructure:
         Return infrastructure graph of items
         """
         return Paths(infrastructure=self)
+    
+    def principal_vectors(self):
+        vectors = []
+        nodes = self.all_nodes()
+        for node_index in nodes:
+            neighbors = self.neighbor_vectors(node_index)
+            main = self.get(node_index)
+            main_pos = np.array(main.pos)
+            for element in neighbors:
+                neighbor_index = element[1]
+                neighbor = self.get(neighbor_index)
+                neighbor_pos = np.array(neighbor.pos)
+                vector = neighbor_pos - main_pos
+                vectors.append(vector)
+        return vectors
+
+    def neighbor_vectors(self, index):
+        nodes = self.all_nodes()
+        nodes.remove(index)
+        item = self.get(index)
+        neighbors = self.model.find_nearest_nodes(item.pos, nodes, 4)
+        return neighbors
 
 
 if __name__ == "__main__":

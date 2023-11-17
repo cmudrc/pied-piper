@@ -58,6 +58,13 @@ class Track(PureObject):
         """
         return self.transportation.how_long(length=self.length_adjusted)
     
+    @property
+    def total_fuel(self):
+        """
+        Total amount of fuel of movement on the track
+        """
+        return self.transportation.how_much_fuel(length=self.length_adjusted)
+    
     def pos(self, delta_time):
         if isinstance(delta_time, DeltaTime):
             delta_time = delta_time.total_seconds()

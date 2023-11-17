@@ -1,6 +1,9 @@
 from piperabm.tools.lattice import Lattice
+import os
 
 
+'''
+# Create:
 lattice = Lattice(3, 4)
 
 # Horizontal removals:
@@ -15,8 +18,15 @@ lattice.remove_edge((0, 0), (0, 1))
 lattice.remove_edge((0, 1), (0, 2))
 lattice.remove_edge((1, 0), (1, 1))
 
+path = os.path.dirname(os.path.realpath(__file__))
+lattice.save(path, filename="lattice_0")
+'''
+
+# Load:
+lattice = Lattice()
+path = os.path.dirname(os.path.realpath(__file__))
+lattice.load(path, filename="lattice_0")
+
 
 if __name__ == "__main__":
     lattice.show()
-    #print(lattice.distribution)
-    #print(lattice.length_ratio)

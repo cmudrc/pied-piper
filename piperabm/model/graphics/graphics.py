@@ -13,59 +13,41 @@ class Graphics:
         self.infrastructure = infrastructure
         self.society = society
 
-    def to_plt(self, ax=None):
+    def infrastructure_to_plt(self):
         """
-        Add elements to plt
+        Draw infrastructure
         """
-
-        if ax is None:
-            ax = plt.gca()
-
-        ''' draw nodes '''
-        node_list = []
+        """ Nodes """
+        nodes = self.infrastructure.all_nodes()
         pos_dict = {}
         node_color_list = []
         node_label_dict = {}
-
-        for node_index in self.all_nodes():
-            item = self.get_item(node_index)
-
-            ''' index '''
-            node_list.append(item.index)
-
-            ''' pos '''
+        for node_index in nodes:
+            item = self.infrastructure.get(node_index)
+            """ pos """
             pos_dict[node_index] = item.pos
-
-            ''' color '''
+            """ color """
             color = style['node'][item.type]['color']
             node_color_list.append(color)
-
-            ''' label '''
+            """ label """
             node_label_dict[node_index] = item.name
 
-        ''' draw edges '''
-        edge_list = []
+        edges = self.infrastructure.all_edges()
         edge_color_list = []
-
-        for edge_indexes in self.all_edges():
-            edge_index = self.find_edge_index(*edge_indexes)
-            item = self.get_item(edge_index)
-
-            ''' indexes '''
-            edge_list.append(edge_indexes)
-
-            ''' color '''
+        for edge_indexes in edges:
+            edge_index = self.infrastructure.find_edge_index(*edge_indexes)
+            item = self.infrastructure.get(edge_index)
+            """ color """
             color = style['edge'][item.type]['color']
             edge_color_list.append(color)
 
-        ''' add to plt '''
         nx.draw_networkx(
-            self.G,
-            nodelist=node_list,
+            self.infrastructure.G,
+            nodelist=nodes,
             pos=pos_dict,
             node_color=node_color_list,
             labels=node_label_dict,
-            edgelist=edge_list,
+            edgelist=edges,
             edge_color=edge_color_list
         )
 
@@ -73,5 +55,6 @@ class Graphics:
         """
         Show the graph using matplotlib
         """
-        self.to_plt()
+        plt.gca().set_aspect("equal")
+        self.infrastructure_to_plt()
         plt.show()

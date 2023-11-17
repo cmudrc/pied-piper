@@ -130,7 +130,8 @@ class Model(PureObject, Query):
         return Infrastructure(model=self)
     
     def show(self):
-        infrastructure = self.infrastrucure
+        graphics = Graphics(self.infrastrucure)
+        graphics.show()
 
     def serialize(self) -> dict:
         dictionary = {}
@@ -173,4 +174,5 @@ if __name__ == "__main__":
     model = Model()
     item = Junction(name="sample", pos=[0, 0])
     model.add(item)
+    #model.show()
     model.print

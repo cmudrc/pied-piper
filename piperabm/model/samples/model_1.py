@@ -25,8 +25,7 @@ road = Road(
 )
 model.add(road)
 
-#model.apply_infrastructure_grammars()
 
 if __name__ == "__main__":
     model.print
-    #environment.show()
+    #model.show()
