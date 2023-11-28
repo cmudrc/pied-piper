@@ -107,7 +107,7 @@ class Infrastructure:
         vectors = []
         nodes = self.all_nodes()
         for node_index in nodes:
-            neighbors = self.neighbor_vectors(node_index)
+            neighbors = self.neighbor_vectors(node_index, num=None)
             main = self.get(node_index)
             main_pos = np.array(main.pos)
             for element in neighbors:
@@ -118,11 +118,16 @@ class Infrastructure:
                 vectors.append(vector)
         return vectors
 
-    def neighbor_vectors(self, index):
+    def neighbor_vectors(self, index, num=None):
         nodes = self.all_nodes()
         nodes.remove(index)
+        if num is None:
+            num = len(nodes)
+        else:
+            if num > len(nodes):
+                raise ValueError
         item = self.get(index)
-        neighbors = self.model.find_nearest_nodes(item.pos, nodes, 4)
+        neighbors = self.model.find_nearest_nodes(item.pos, nodes, num)
         return neighbors
 
 

@@ -46,15 +46,13 @@ if __name__ == "__main__":
 
     def unit_vectors(x_values, y_values):
         data = np.column_stack((x_values, y_values))
-        pca = PCA(n_components=2)
-        pca.fit(data)
-        principal_components = pca.components_
-        print(principal_components)
-
-
-        transformed_data = pca.transform(data)
+        #pca = PCA(n_components=2)
+        #pca.fit(data)
+        #print(pca.components_)
+        #transformed_data = pca.transform(data)
         #print("Transformed Data:\n", transformed_data)
-        data = transformed_data.T
+        #data = transformed_data.T
+        data = data.T
         plt.gca().set_aspect("equal")
         plt.scatter(data[0], data[1])
         plt.show()
