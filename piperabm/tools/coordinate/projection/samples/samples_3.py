@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from piperabm.tools.coordinate.projection.flatten import Flatten, deg_to_rad
+from piperabm.tools.coordinate.projection.flatten import Flatten, deg_to_rad, rad_to_deg
+
 
 latitude_0 = deg_to_rad(70)
 longitude_0 = deg_to_rad(150)
-DELTA = deg_to_rad(10)
+DELTA = deg_to_rad(1)
 radius = 6378
 projection = Flatten(latitude_0, longitude_0, radius)
 
@@ -34,7 +35,7 @@ ys = []
 for latitude in latitudes:
     for longitude in longitudes:
         x, y = longitude, latitude
-        xs.append(x)
-        ys.append(y)
+        xs.append(rad_to_deg(x))
+        ys.append(rad_to_deg(y))
 plt.scatter(xs, ys)
 plt.show()

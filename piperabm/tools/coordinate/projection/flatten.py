@@ -35,7 +35,7 @@ class Flatten:
             if sin_theta > 1:
                 sin_theta = 1
             theta = np.arcsin(sin_theta)
-            
+
         return alpha, theta
     
     def calculate_latitude_longitude_prime(self, alpha, theta):
@@ -75,20 +75,19 @@ def rad_to_deg(rad):
 
 
 if __name__ == "__main__":
-    #latitude_0 = deg_to_rad(71.297671)
-    #longitude_0 = deg_to_rad(-156.767303)
-    latitude_0 = deg_to_rad(45)
-    longitude_0 = deg_to_rad(0)
+    from piperabm.tools.coordinate.distance import point_to_point
+    latitude_0 = deg_to_rad(71.297671)
+    longitude_0 = deg_to_rad(-156.767303)
     radius = 6378000
     projection = Flatten(latitude_0, longitude_0, radius)
 
-    #latitude = deg_to_rad(71.303646)
-    #longitude = deg_to_rad(-156.729171)
-    latitude = deg_to_rad(45)
-    longitude = deg_to_rad(0)
-    alpha, theta = projection.calcualte_alpha_theta(latitude, longitude)
-    print("alpha: ", rad_to_deg(alpha), ", theta: ", rad_to_deg(theta))
-    latitude_prime, longitude_prime = projection.calculate_latitude_longitude_prime(alpha, theta)
-    print("latitude_prime: ", rad_to_deg(latitude_prime), ", longitude_prime: ", rad_to_deg(longitude_prime))
+    latitude = deg_to_rad(71.303646)
+    longitude = deg_to_rad(-156.729171)
     x, y = projection.convert(latitude, longitude)
     print(x, y)
+    distance_projected = point_to_point([x, y], [0, 0])
+    print(distance_projected)
+
+    alpha, theta = projection.calcualte_alpha_theta(latitude, longitude)
+    distance_actual = alpha * radius
+    print(distance_actual)
