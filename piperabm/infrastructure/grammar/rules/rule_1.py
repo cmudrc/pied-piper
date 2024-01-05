@@ -58,10 +58,9 @@ if __name__ == "__main__":
     from piperabm.infrastructure import Junction
 
     model = Model(proximity_radius=1)
-    item = Road(pos_1=[0, 0], pos_2=[10, 0])
-    model.add(item)
-    item = Junction(pos=[5, 0.5])
-    model.add(item)
+    item_1 = Road(pos_1=[0, 0], pos_2=[10, 0])
+    item_2 = Junction(pos=[5, 0.5])
+    model.add(item_1, item_2)
 
     rule = Rule_1(model)
     rule.apply(report=True)

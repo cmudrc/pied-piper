@@ -53,14 +53,14 @@ class Resource(PureObject):
         """
         Calculate monetary value of resources based on exchange rate
         """
-        amount = self.amount * exchange_rate.rate(source=self.name, target="wealth")
+        amount = self.amount * exchange_rate.rate(source=self.name, target="currency")
         return Resource(name=self.name, amount=amount)
     
     def value_to_amount(self, exchange_rate: ExchangeRate):
         """
         Calculate equivalent amount of resources when the initial unit was money
         """
-        amount = self.amount / exchange_rate.rate(source=self.name, target="wealth")
+        amount = self.amount / exchange_rate.rate(source=self.name, target="currency")
         return Resource(name=self.name, amount=amount)
     
     def cutoff(self, amount: float):

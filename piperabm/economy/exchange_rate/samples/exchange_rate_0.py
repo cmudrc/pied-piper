@@ -2,9 +2,9 @@ from piperabm.economy import ExchangeRate
 
 
 exchange_rate = ExchangeRate()
-exchange_rate.add("food", "wealth", 10)
-exchange_rate.add("water", "wealth", 2)
-exchange_rate.add("energy", "wealth", 4)
+exchange_rate.add(source="food", target="currency", rate=1)
+exchange_rate.add(source="water", target="currency", rate=1)
+exchange_rate.add(source="energy", target="currency", rate=1)
 
 
 if __name__ == "__main__":

@@ -32,6 +32,7 @@ class Grammar:
             Rule_1(self.model),
             Rule_2(self.model),
             Rule_3(self.model),
+            Rule_4(self.model),
         ]
 
         i = 0

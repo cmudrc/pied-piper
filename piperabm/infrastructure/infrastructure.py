@@ -13,10 +13,12 @@ class Infrastructure:
 
     def create(self):
         """
-        Create graph *G* from *self.environment*
+        Create graph *G* from *self.model*
         """
         all_nodes = self.model.all_environment_nodes
         all_edges = self.model.all_environment_edges
+        for item_index in all_nodes:
+            self.G.add_node(item_index)
         for item_index in all_edges:
             item = self.model.get(item_index)
             index_1, _ = self.model.find_nearest_node(item.pos_1, all_nodes)
@@ -135,6 +137,6 @@ if __name__ == "__main__":
 
     from piperabm.model.samples import model_1 as model
 
-    infrastructure = model.infrastrucure
+    infrastructure = model.infrastructure
     print(infrastructure.G)
     #infrastructure.show()

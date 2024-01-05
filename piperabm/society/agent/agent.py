@@ -38,14 +38,10 @@ class Agent(PureObject):
         self.death_reason = None
         self.home = home
         self.socioeconomic_status = socioeconomic_status
-        self.type = "agent"
+        
+        self.section = "society"
         self.category = "node"
-        self.style = {
-            "color": {
-                "alive": "g",
-                "dead": "r",
-            },
-        }
+        self.type = "agent"
 
         """ transporation """
         if transportation is None: transportation = WALK

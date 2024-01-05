@@ -27,5 +27,5 @@ model.add(road)
 
 
 if __name__ == "__main__":
-    model.print
-    #model.show()
+    #model.print
+    model.show()

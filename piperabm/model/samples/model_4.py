@@ -23,7 +23,7 @@ for road in roads:
 if __name__ == "__main__":
     import numpy as np
     import matplotlib.pyplot as plt
-    infrastrucure = model.infrastrucure
+    infrastrucure = model.infrastructure
     vectors = np.array(infrastrucure.principal_vectors())
     transposed = vectors.T
     x = transposed[0]

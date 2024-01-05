@@ -1,0 +1,1 @@
+EARTH_RADIUS = 6378000  # meters

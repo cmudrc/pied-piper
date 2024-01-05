@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.tools.coordinate.projection.flatten import Flatten, deg_to_rad,rad_to_deg
+from piperabm.tools.coordinate.projection.spherical_to_cartesian import SphericalToCartesian, deg_to_rad,rad_to_deg
 
 
 class TestFlattenClass_0(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestFlattenClass_0(unittest.TestCase):
         radius = 1
         latitude_0 = deg_to_rad(0)
         longitude_0 = deg_to_rad(0)
-        self.projection = Flatten(latitude_0, longitude_0, radius)
+        self.projection = SphericalToCartesian(latitude_0, longitude_0, radius)
 
     def test_0(self):
         latitude = deg_to_rad(0)
@@ -102,7 +102,7 @@ class TestFlattenClass_1(unittest.TestCase):
         radius = 1
         latitude_0 = deg_to_rad(45)
         longitude_0 = deg_to_rad(45)
-        self.projection = Flatten(latitude_0, longitude_0, radius)
+        self.projection = SphericalToCartesian(latitude_0, longitude_0, radius)
 
     def test_0(self):
         latitude = deg_to_rad(45)

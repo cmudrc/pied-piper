@@ -143,6 +143,15 @@ class Query:
         types = self.valid_types["society"]["node"]
         items = self.filter(types=types)
         return items
+    
+    @property
+    def all_relationships(self):
+        """
+        Return index of all relationships between agents
+        """
+        types = self.valid_types["society"]["edge"]
+        items = self.filter(types=types)
+        return items
 
     @property
     def all(self):

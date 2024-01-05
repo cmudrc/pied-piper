@@ -15,12 +15,9 @@ class Junction(PureObject):
         self.pos = pos
         self.name = name
 
+        self.section = "infrastructure"
         self.category = "node"
         self.type = "junction"
-        self.style = {
-            "color": "b",
-            "radius": 0,
-        }
 
     def serialize(self) -> dict:
         dictionary = {}

@@ -1,0 +1,80 @@
+import numpy as np
+
+
+class rotate:
+
+    @staticmethod
+    def x(vector, angle_degrees, rotate="axis"):
+        """
+        Rotate a 3D vector around the x-axis by a given angle in degrees.
+        """
+        vector, angle_radians, factor = preprocess(vector, angle_degrees, rotate)
+
+        # Rotation matrix around x-axis
+        rotation_matrix = np.array([
+            [1, 0, 0],
+            [0, np.cos(angle_radians), factor * np.sin(angle_radians)],
+            [0, -1 * factor * np.sin(angle_radians), np.cos(angle_radians)]
+        ])
+
+        return np.dot(rotation_matrix, vector)
+    
+
+    @staticmethod
+    def y(vector, angle_degrees, rotate="axis"):
+        """
+        Rotate a 3D vector around the y-axis by a given angle in degrees.
+        """
+        vector, angle_radians, factor = preprocess(vector, angle_degrees, rotate)
+
+        # Rotation matrix around y-axis
+        rotation_matrix = np.array([
+            [np.cos(angle_radians), 0, -1 * factor * np.sin(angle_radians)],
+            [0, 1, 0],
+            [factor * np.sin(angle_radians), 0, np.cos(angle_radians)]
+        ])
+
+        return np.dot(rotation_matrix, vector)
+
+
+    @staticmethod
+    def z(vector, angle_degrees, rotate="axis"):
+        """
+        Rotate a 3D vector around the z-axis by a given angle in degrees.
+        
+        :param vector: A numpy array or list representing a 3D vector.
+        :param angle_degrees: The angle of rotation in degrees.
+        :return: Rotated vector.
+        """
+        vector, angle_radians, factor = preprocess(vector, angle_degrees, rotate)
+
+        # Rotation matrix around z-axis
+        rotation_matrix = np.array([
+            [np.cos(angle_radians), factor * np.sin(angle_radians), 0],
+            [-1 * factor * np.sin(angle_radians),  np.cos(angle_radians), 0],
+            [0,                     0,                      1]
+        ])
+
+        return np.dot(rotation_matrix, vector)
+
+
+def preprocess(vector, angle_degrees, rotate="axis"):
+    if isinstance(vector, list):
+        vector = np.array(vector)
+
+    if rotate == "axis":
+        factor = 1
+    elif rotate == "vector":
+        factor = -1
+
+    angle_radians = np.radians(angle_degrees)
+    return vector, angle_radians, factor
+
+
+if __name__ == "__main__":
+    vector = np.array([0, 1, 0])
+    angle_degrees = 45
+    rotated_vector = rotate.x(vector, angle_degrees, rotate='axis')
+
+    print(f"Original Vector: {vector}")
+    print(f"Rotated Vector: {rotated_vector}")

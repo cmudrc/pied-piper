@@ -6,39 +6,45 @@ from piperabm.model.graphics.style import style
 
 class Graphics:
     """
-    Add graphical representation, extends another class
+    Add graphical representation
     """
 
-    def __init__(self, infrastructure=None, society=None):
-        self.infrastructure = infrastructure
-        self.society = society
+    def __init__(self, model):
+        self.infrastructure = model.infrastructure
+        self.society = model.society
 
     def infrastructure_to_plt(self):
         """
         Draw infrastructure
         """
-        """ Nodes """
+        # Nodes
+        infrastructure_style = style['infrastructure']
         nodes = self.infrastructure.all_nodes()
         pos_dict = {}
         node_color_list = []
+        node_size_list = []
         node_label_dict = {}
         for node_index in nodes:
             item = self.infrastructure.get(node_index)
-            """ pos """
+            # Position
             pos_dict[node_index] = item.pos
-            """ color """
-            color = style['node'][item.type]['color']
+            # Color
+            color = infrastructure_style['node'][item.type]['color']
             node_color_list.append(color)
-            """ label """
+            # Size
+            size = infrastructure_style['node'][item.type]['radius']
+            node_size_list.append(size)
+            # Label
             node_label_dict[node_index] = item.name
+        font_size = 8 #
 
         edges = self.infrastructure.all_edges()
         edge_color_list = []
         for edge_indexes in edges:
             edge_index = self.infrastructure.find_edge_index(*edge_indexes)
             item = self.infrastructure.get(edge_index)
-            """ color """
-            color = style['edge'][item.type]['color']
+            # Color
+            color = infrastructure_style['edge'][item.type]['color']
             edge_color_list.append(color)
 
         nx.draw_networkx(
@@ -46,9 +52,35 @@ class Graphics:
             nodelist=nodes,
             pos=pos_dict,
             node_color=node_color_list,
+            node_size=node_size_list,
             labels=node_label_dict,
+            font_size=font_size,
             edgelist=edges,
             edge_color=edge_color_list
+        )
+
+    def society_to_plt(self):
+        society_style = style['society']
+        agents = self.society.agents
+        xs = []
+        ys = []
+        for index in agents:
+            item = self.society.get(index)
+            pos = item.pos
+            xs.append(pos[0])
+            ys.append(pos[1])
+
+        agent_color = society_style["node"]["agent"]["color"]
+        agent_shape = society_style["node"]["agent"]["shape"]
+        agent_size = society_style["node"]["agent"]["size"]
+
+        ax = plt.gca()
+        ax.scatter(
+            xs,
+            ys,
+            color=agent_color,
+            s=agent_size,
+            marker=agent_shape,
         )
 
     def show(self):
@@ -57,4 +89,5 @@ class Graphics:
         """
         plt.gca().set_aspect("equal")
         self.infrastructure_to_plt()
+        self.society_to_plt()
         plt.show()

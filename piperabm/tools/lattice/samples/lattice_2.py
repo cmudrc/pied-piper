@@ -1,7 +1,8 @@
 import os
 
-'''
+
 # Create:
+'''
 import random
 
 from piperabm.tools.lattice.samples import lattice_0 as target_lattice

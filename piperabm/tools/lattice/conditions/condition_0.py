@@ -1,5 +1,5 @@
 from piperabm.tools.lattice.conditions.condition import Condition
-import numpy as np
+
 
 filter = [
     [0, 0, 0,],

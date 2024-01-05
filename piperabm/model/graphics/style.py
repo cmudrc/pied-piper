@@ -1,21 +1,43 @@
-node_style = {
-    'settlement': {
-        'color': 'b',
-        'radius': 5,
+# Infrastructure
+NODE_ITEM_DEFAULT_RADIUS = 25
+infrastructure_node_style = {
+    "settlement": {
+        "color": "b",    
+    "radius": NODE_ITEM_DEFAULT_RADIUS,
     },
-    'junction': {
-        'color': 'b',
-        'radius': 0,
+    "junction": {
+        "color": "k",
+        "radius": 5,
+    },
+    "market": {
+        "color": "g",
+        "radius": NODE_ITEM_DEFAULT_RADIUS,
+    }
+}
+infrastructure_edge_style = {
+    "road": {
+        "color": "k",
     },
 }
 
-edge_style = {
-    'road': {
-        'color': 'b',
-    },
+# Society
+society_node_style = {
+    "agent": {
+        "color": "r",
+        "shape": "x",
+        "size": NODE_ITEM_DEFAULT_RADIUS,
+    }
 }
+society_edge_style = {}
+
 
 style = {
-    'node': node_style,
-    'edge': edge_style,
+    "infrastructure": {
+        "node": infrastructure_node_style,
+        "edge": infrastructure_edge_style,
+    },
+    "society": {
+        "node": society_node_style,
+        "edge": society_edge_style,
+    },
 }

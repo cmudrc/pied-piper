@@ -7,7 +7,7 @@ class Settlement(PureObject):
     def __init__(
         self,
         pos: list = None,
-        name: str = '',
+        name: str = "",
         degradation=Degradation()
     ):
         super().__init__()
@@ -18,11 +18,9 @@ class Settlement(PureObject):
         self.name = name
         self.degradation = degradation
 
+        self.section = "infrastructure"
         self.category = "node"
         self.type = "settlement"
-        self.style = {
-            "color": "b",
-        }
 
     def serialize(self) -> dict:
         dictionary = {}

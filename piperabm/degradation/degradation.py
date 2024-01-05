@@ -18,12 +18,27 @@ class Degradation(PureObject):
         """
         self.current += amount
 
+    def sub(self, amount: int = 0):
+        """
+        Sub usage
+        """
+        if amount <= self.current:
+            self.add(-amount)
+        else:
+            raise ValueError
+
     @property
     def factor(self):
         """
         Calculate degradation factor
         """
-        return self.current / self.total
+        return self.function(self.current, self.total)
+    
+    def function(self, current, total):
+        """
+        Default function
+        """
+        return current / total
 
     def serialize(self) -> dict:
         dictionary = {}

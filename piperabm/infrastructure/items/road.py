@@ -25,11 +25,9 @@ class Road(PureObject):
         self.roughness = roughness
         self.degradation = degradation
 
+        self.section = "infrastructure"
         self.category = "edge"
         self.type = "road"
-        self.style = {
-            "color": "b",
-        }
 
     @property
     def length_linear(self):

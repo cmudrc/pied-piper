@@ -1,1 +1,1 @@
-from .flatten import Flatten
+from .latlong_xy import latlong_to_xy, xy_to_latlong

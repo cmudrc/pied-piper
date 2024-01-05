@@ -13,7 +13,10 @@ model.add(agent_1)
 
 if __name__ == "__main__":
     #model.print
+    '''
     model.run(100)
     print(model.all_alive_agents)
     model.run(900)
     print(model.all_alive_agents)
+    '''
+    model.show()

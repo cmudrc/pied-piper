@@ -6,14 +6,24 @@ from piperabm.model.query import Query
 from piperabm.model.graphics import Graphics
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
-from piperabm.infrastructure import Infrastructure, Junction, Settlement, Road
-from piperabm.society import Family
+from piperabm.infrastructure import Infrastructure, Junction, Settlement, Market, Road
+from piperabm.society import Society, Agent, Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.measure import Measure
 
 
-class Model(PureObject, Query):
+valid_items = (
+    Junction,
+    Settlement,
+    Market,
+    Road,
+    Agent,
+    Family,
+)
+
+
+class Model(PureObject, Query, Graphics):
 
     def __init__(
         self,
@@ -31,26 +41,22 @@ class Model(PureObject, Query):
             exchange_rate = deepcopy(exchange_rate_0)  # default
         self.exchange_rate = exchange_rate
         self.measure = Measure(self)
-        self.valid_types = {
+        self.valid_types = Model.extract_valid_types(valid_items)  # recognizable items list
+
+    def extract_valid_types(valid_items):
+        valid_types = {
             "infrastructure": {
-                "node": [
-                    "junction",
-                    "settlement",
-                ],
-                "edge": [
-                    "road",
-                ],
+                "node": [],
+                "edge": [],
             },
             "society": {
-                "node": [
-                    "agent",
-                ],
-                "edge": [
-                    "family",
-                    "friend",
-                ],
+                "node": [],
+                "edge": [],
             },
         }
+        for item in valid_items:
+            valid_types[item().section][item().category].append(item().type)
+        return valid_types
 
     def set_step_size(self, step_size):
         """
@@ -65,15 +71,19 @@ class Model(PureObject, Query):
         else:
             raise ValueError
 
-    def add(self, item) -> None:
+    def add(self, *items) -> None:
         """
-        Add new item to library
+        Add new item(s) to library
         """
-        if item.type in self.infrastructure_types:
+
+        def add_infrastructure_item(self, item) -> None:
+            """
+            Add new infrastructure item to library
+            """
             if item.category == "node":
                 item.index = self.new_index  # new index
                 item.model = self  # binding
-                self.library[item.index] = item  # adding to library
+                self.library[item.index] = item  # add to library
             elif item.category == "edge":
                 junction_1 = Junction(pos=item.pos_1)
                 junction_2 = Junction(pos=item.pos_2)
@@ -81,15 +91,20 @@ class Model(PureObject, Query):
                 self.add(junction_2)
                 item.index = self.new_index  # new index
                 item.model = self  # binding
-                self.library[item.index] = item  # adding to library
+                self.library[item.index] = item  # add to library
 
-        elif item.type in self.society_types:
+        def add_society_item(self, item) -> None:
+            """
+            Add new society item to library
+            """
             if item.category == "node":
                 item.index = self.new_index  # new index
                 item.model = self  # binding
                 settlements = self.filter(types="settlement")
                 if item.home is None:
                     item.home = random.choice(settlements)
+                    home = self.get(item.home)
+                    item.pos = home.pos
                 else:
                     if item.home not in settlements:
                         raise ValueError
@@ -107,6 +122,18 @@ class Model(PureObject, Query):
                 item.model = self  # binding
                 self.library[item.index] = item  # adding to library
 
+        for item in items:
+            if isinstance(item, list):
+                for element in item:
+                    self.add(element)
+            elif isinstance(item, valid_items):
+                if item.section == "infrastructure":
+                    add_infrastructure_item(self, item)
+                elif item.section == "society":
+                    add_society_item(self, item)
+            else:  # item not recognized
+                raise ValueError
+
     def update(self):
         agents = self.all_alive_agents
         date_start = self.current_date
@@ -121,7 +148,7 @@ class Model(PureObject, Query):
             self.update()
 
     @property
-    def infrastrucure(self):
+    def infrastructure(self):
         """
         Return infrastructure graph of items
         """
@@ -129,8 +156,15 @@ class Model(PureObject, Query):
         grammar.apply()
         return Infrastructure(model=self)
     
+    @property
+    def society(self):
+        """
+        Return society graph of items
+        """
+        return Society(model=self)
+    
     def show(self):
-        graphics = Graphics(self.infrastrucure)
+        graphics = Graphics(self)
         graphics.show()
 
     def serialize(self) -> dict:

@@ -2,8 +2,8 @@ from piperabm.tools.lattice import Lattice
 import os
 
 
-'''
 # Create:
+'''
 lattice = Lattice(3, 4)
 
 # Horizontal removals:

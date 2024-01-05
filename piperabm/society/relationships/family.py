@@ -13,8 +13,10 @@ class Family(PureObject):
         self.index_1 = index_1
         self.index_2 = index_2
         self.home_index = home_index
-        self.type = "family"
+
+        self.section = "society"
         self.category = "edge"
+        self.type = "family"
 
     def serialize(self) -> dict:
         dictionary = {}
