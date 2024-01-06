@@ -1,97 +1,52 @@
 import unittest
+from copy import deepcopy
 
-from piperabm.object import Object
-from piperabm.tools.symbols import SYMBOLS
+from piperabm.object import PureObject
 
 
 class TestObjectClass(unittest.TestCase):
 
     def setUp(self) -> None:
         
-        class A(Object):
+        class A(PureObject):
 
             def __init__(self, val=None):
                 super().__init__()
                 self.val = val
             
-            def to_dict(self) -> dict:
+            def serialize(self) -> dict:
                 dictionary = {}
                 dictionary['val'] = self.val
                 return dictionary
 
-            def from_dict(self, dictionary: dict) -> None:
+            def deserialize(self, dictionary: dict) -> None:
                 self.val = dictionary['val']
         
-        self.A = A(val=5)
-        self.A_new = A(val=7)
-
         self.ClassA = A
+        self.a = self.ClassA(val=5)
+        self.a_new = self.ClassA(val=7)
     
     def test_str(self):
-        txt = self.A.__str__()
-        expected_result = "{'val': 5}"
-        self.assertEqual(txt, expected_result)
+        txt = str(self.a)
+        self.assertEqual(txt, "{'val': 5}")
 
-    def test_dict(self):
-        dictionary = self.A.to_dict()
-        expected_result = {'val': 5}
-        self.maxDiff = None
-        self.assertDictEqual(dictionary, expected_result)
-        new_A = self.ClassA()
-        new_A.from_dict(dictionary)
-        new_dictionary = new_A.to_dict()
-        expected_result = {'val': 5}
-        self.assertDictEqual(new_dictionary, expected_result)
-        self.assertEqual(self.A, new_A)
+    def test_serialize(self):
+        dictionary = self.a.serialize()
+        self.assertDictEqual(dictionary, {'val': 5})
 
-    def test_add_0(self):
-        delta = {'val': 2}
-        self.A + delta
-        self.assertEqual(self.A.val, 7)
+    def test_deserialize(self):
+        new_instance = self.ClassA()
+        new_instance.deserialize(dictionary={'val': 5})
+        self.assertDictEqual(new_instance.serialize(), {'val': 5})
 
-    def test_add_1(self):
-        delta = {'val': 0}
-        self.A + delta
-        self.assertEqual(self.A.val, 5)
+    def test_create_delta(self):
+        delta = self.a_new.create_delta(old=self.a)
+        self.assertDictEqual(delta, {'val': 2})
 
-    def test_add_2(self):
-        delta = {'val': -2}
-        self.A + delta
-        self.assertEqual(self.A.val, 3)
-
-    def test_sub(self):
-        delta = self.A_new - self.A
-        self.assertEqual(delta, {'val': 2})
-
-    def test_mul_0(self):
-        delta = {'val': 2}
-        self.A * delta
-        self.assertEqual(self.A.val, 10)
-
-    def test_mul_1(self):
-        delta = {'val': 0}
-        self.A * delta
-        self.assertEqual(self.A.val, 0)
-
-    def test_mul_2(self):
-        delta = {'val': -2}
-        self.A * delta
-        self.assertEqual(self.A.val, -10)
-
-    def test_truediv_0(self):
-        delta = {'val': 2}
-        self.A / delta
-        self.assertEqual(self.A.val, 2.5)
-
-    def test_truediv_1(self):
-        delta = {'val': 0}
-        self.A / delta
-        self.assertEqual(self.A.val, SYMBOLS['inf'])
-
-    def test_truediv_2(self):
-        delta = {'val': -2}
-        self.A / delta
-        self.assertEqual(self.A.val, -2.5)
+    def test_apply_delta(self):
+        a = deepcopy(self.a)
+        a.apply_delta(delta={'val': 2})
+        self.assertEqual(a, self.a_new)
 
 
 if __name__ == "__main__":

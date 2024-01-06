@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from piperabm.object.delta.simple_variables.bool import DeltaBool
 from piperabm.object.delta.simple_variables.float import DeltaFloat
 from piperabm.object.delta.simple_variables.str import DeltaStr
@@ -8,34 +10,34 @@ class Delta:
     Create and apply delta for variables
     """
 
-    def create(main, other):
+    def create(old_variable, new_variable):
         """ Create delta for variables """
         result = None
-        if isinstance(main, bool) or isinstance(other, bool):
-            result = DeltaBool.create(main, other)
-        elif isinstance(main, (float, int)) or isinstance(other, (float, int)):
-            result = DeltaFloat.create(main, other)
-        elif isinstance(main, str) or isinstance(other, str):
-            result = DeltaStr.create(main, other)
-        elif isinstance(main, dict) or isinstance(other, dict):
-            result = DeltaDict.create(main, other)
-        elif isinstance(main, list) or isinstance(other, list):
-            result = DeltaList.create(main, other)
+        if isinstance(old_variable, bool) or isinstance(new_variable, bool):
+            result = DeltaBool.create(old_variable, new_variable)
+        elif isinstance(old_variable, (float, int)) or isinstance(new_variable, (float, int)):
+            result = DeltaFloat.create(old_variable, new_variable)
+        elif isinstance(old_variable, str) or isinstance(new_variable, str):
+            result = DeltaStr.create(old_variable, new_variable)
+        elif isinstance(old_variable, dict) or isinstance(new_variable, dict):
+            result = DeltaDict.create(old_variable, new_variable)
+        elif isinstance(old_variable, list) or isinstance(new_variable, list):
+            result = DeltaList.create(old_variable, new_variable)
         return result
     
-    def apply(main, delta):
+    def apply(old_variable, delta):
         """ Apply delta to variables """
         result = None
-        if isinstance(main, bool) or isinstance(delta, bool):
-            result = DeltaBool.apply(main, delta)
-        elif isinstance(main, (float, int)) or isinstance(delta, (float, int)):
-            result = DeltaFloat.apply(main, delta)
-        elif isinstance(main, str) or isinstance(delta, str):
-            result = DeltaStr.apply(main, delta)
-        elif isinstance(main, dict) or isinstance(delta, dict):
-            result = DeltaDict.apply(main, delta)
-        elif isinstance(main, list) or isinstance(delta, list):
-            result = DeltaList.apply(main, delta)
+        if isinstance(old_variable, bool) or isinstance(delta, bool):
+            result = DeltaBool.apply(old_variable, delta)
+        elif isinstance(old_variable, (float, int)) or isinstance(delta, (float, int)):
+            result = DeltaFloat.apply(old_variable, delta)
+        elif isinstance(old_variable, str) or isinstance(delta, str):
+            result = DeltaStr.apply(old_variable, delta)
+        elif isinstance(old_variable, dict) or isinstance(delta, dict):
+            result = DeltaDict.apply(old_variable, delta)
+        elif isinstance(old_variable, list) or isinstance(delta, list):
+            result = DeltaList.apply(old_variable, delta)
         return result
 
 
@@ -44,43 +46,41 @@ class DeltaDict:
     Create and apply delta for dictionary variable
     """
 
-    def create(main: dict, other: dict) -> dict:
+    def create(old_variable: dict, new_variable: dict) -> dict:
         """ Create delta for dictionary variable """
         delta = None
-        if main is not None:
-            if other is not None:
+        if old_variable is not None and len(old_variable) != 0:
+            if new_variable is not None:
                 delta = {}
-                for key in other:
-                    other_value = other[key]
-                    if key in main:
-                        main_value = main[key]
+                for key in new_variable:
+                    new_variable_value = new_variable[key]
+                    if key in old_variable:
+                        old_variable_value = old_variable[key]
                     else:
-                        main_value = None
-                    delta_val = Delta.create(main_value, other_value)
+                        old_variable_value = None
+                    delta_val = Delta.create(old_variable_value, new_variable_value)
                     if delta_val is not None:
                         delta[key] = delta_val
-                if len(delta) == 0:
-                    delta = None
-        else:  # when *main* is None
-            delta = other
+        else:  # when *old_variable* is None
+            delta = new_variable
         return delta
 
-    def apply(main: dict, delta: dict) -> dict:
+    def apply(old_variable: dict, delta: dict) -> dict:
         """ Apply delta to dictionary variable """
-        if main is not None:
-            other = main
+        if old_variable is not None:
+            new_variable = deepcopy(old_variable)
             if delta is not None:
                 for key in delta:
                     delta_val = delta[key]
-                    if key in main:
-                        main_val = main[key]
-                        new_val = Delta.apply(main_val, delta_val)
+                    if key in old_variable:
+                        old_variable_val = old_variable[key]
+                        new_val = Delta.apply(old_variable_val, delta_val)
                     else:
                         new_val = delta_val
-                    other[key] = new_val
-        else:  # when *main* is None
-            other = delta
-        return other
+                    new_variable[key] = new_val
+        else:  # when *old_variable* is None
+            new_variable = deepcopy(delta)
+        return new_variable
     
 
 class DeltaList:
@@ -89,36 +89,36 @@ class DeltaList:
     work with lists after converting them into dictionaries
     """
 
-    def create(main: list, other: list) -> list:
+    def create(old_variable: list, new_variable: list) -> list:
         """ Create delta for list variable """
         delta = None
-        if main is not None:
-            if other is not None:
-                main_dict = DeltaList.list_to_dict(main)
-                other_dict = DeltaList.list_to_dict(other)
-                delta_dict = DeltaDict.create(main_dict, other_dict)
+        if old_variable is not None:
+            if new_variable is not None:
+                old_variable_dict = DeltaList.list_to_dict(old_variable)
+                new_variable_dict = DeltaList.list_to_dict(new_variable)
+                delta_dict = DeltaDict.create(old_variable_dict, new_variable_dict)
                 delta = DeltaList.dict_to_list(delta_dict)
             else:
-                delta = main
+                delta = old_variable
         else:
-            delta = other
+            delta = new_variable
         return delta
     
-    def apply(main: list, delta: list) -> list:
+    def apply(old_variable: list, delta: list) -> list:
         """ Apply delta to list variable """
         if delta == []: delta = None  # empty and None are the same
-        if main is not None:
-            #other = main
+        if old_variable is not None:
+            #new_variable = old_variable
             if delta is not None:
                 delta_dict = DeltaList.list_to_dict(delta)
-                main_dict = DeltaList.list_to_dict(main)
-                other_dict = DeltaDict.apply(main_dict, delta_dict)
-                other = DeltaList.dict_to_list(other_dict)
+                old_variable_dict = DeltaList.list_to_dict(old_variable)
+                new_variable_dict = DeltaDict.apply(old_variable_dict, delta_dict)
+                new_variable = DeltaList.dict_to_list(new_variable_dict)
             else:  # when *delta* is None
-                other = main
-        else:  # when *main* is None
-            other = delta
-        return other
+                new_variable = old_variable
+        else:  # when *old_variable* is None
+            new_variable = delta
+        return new_variable
     
     def list_to_dict(input: list) -> dict:
         """ Convert list to dictionary """
@@ -130,13 +130,14 @@ class DeltaList:
     def dict_to_list(input: dict) -> list:
         """ Convert dictionary to list """
         result = []
-        for i in input:
-            result.append(input[i])
+        if input is not None:
+            for i in input:
+                result.append(input[i])
         return result
 
 
 if __name__ == '__main__':
-    main = {
+    old_variable = {
         'd': {
             'a': 'a',
             'b': 2,
@@ -155,5 +156,5 @@ if __name__ == '__main__':
         },
         'e': [{'b': 3}]
     }
-    result = Delta.apply(main, delta)
-    print(result)
+    delta = Delta.apply(old_variable, delta)
+    print(delta)

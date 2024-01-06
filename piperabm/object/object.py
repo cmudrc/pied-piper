@@ -48,14 +48,14 @@ class PureObject:
         """
         print("NOT IMPLEMENTED YET")
 
-    def create_delta(self, other) -> dict:
+    def create_delta(self, old) -> dict:
         """
         Create delta between the *self* and *other*
         """
-        if not isinstance(other, dict):
-            other = other.serialize()
-        dictionary = self.serialize()
-        delta = Delta.create(other, dictionary)
+        if not isinstance(old, dict):
+            old = old.serialize()
+        new = self.serialize()
+        delta = Delta.create(old, new)
         return delta
 
     def apply_delta(self, delta: dict) -> None:

@@ -6,36 +6,48 @@ from piperabm.object.delta.simple_variables.str import DeltaStr
 class TestDeltaStrClass(unittest.TestCase):
 
     def test_create(self):
-        var_old = 'John'
-        var_new = 'Peter'
-        delta = DeltaStr.create(var_old, var_new)
+        old_variable = 'John'
+        new_variable = 'Peter'
+        delta = DeltaStr.create(old_variable, new_variable)
         self.assertEqual(delta, 'Peter')
+        self.assertEqual(old_variable, 'John')
+        self.assertEqual(new_variable, 'Peter')
 
-        var_old = 'John'
-        var_new = 'John'
-        delta = DeltaStr.create(var_old, var_new)
+        old_variable = 'John'
+        new_variable = 'John'
+        delta = DeltaStr.create(old_variable, new_variable)
         self.assertEqual(delta, None)
+        self.assertEqual(old_variable, 'John')
+        self.assertEqual(new_variable, 'John')
 
-        var_old = None
-        var_new = 'John'
-        delta = DeltaStr.create(var_old, var_new)
+        old_variable = None
+        new_variable = 'John'
+        delta = DeltaStr.create(old_variable, new_variable)
         self.assertEqual(delta, 'John')
+        self.assertEqual(old_variable, None)
+        self.assertEqual(new_variable, 'John')
 
     def test_apply(self):
-        var_old = 'John'
+        old_variable = 'John'
         delta = 'Peter'
-        delta = DeltaStr.apply(var_old, delta)
+        new_variable = DeltaStr.apply(old_variable, delta)
+        self.assertEqual(new_variable, 'Peter')
+        self.assertEqual(old_variable, 'John')
         self.assertEqual(delta, 'Peter')
 
-        var_old = 'John'
+        old_variable = 'John'
         delta = None
-        delta = DeltaStr.apply(var_old, delta)
-        self.assertEqual(delta, 'John')
+        new_variable = DeltaStr.apply(old_variable, delta)
+        self.assertEqual(new_variable, 'John')
+        self.assertEqual(old_variable, 'John')
+        self.assertEqual(delta, None)
 
-        var_old = None
+        old_variable = None
         delta = 'John'
-        delta = DeltaStr.apply(var_old, delta)
-        self.assertEqual(delta, 'John')    
+        new_variable = DeltaStr.apply(old_variable, delta)
+        self.assertEqual(new_variable, 'John')
+        self.assertEqual(old_variable, None)
+        self.assertEqual(delta, 'John') 
 
 
 if __name__ == '__main__':

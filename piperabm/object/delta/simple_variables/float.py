@@ -1,38 +1,41 @@
+from copy import deepcopy
+
+
 class DeltaFloat:
     """
     Create and apply delta for float (and integer) variable
     """
 
-    def create(main: float, other: float):
+    def create(old_variable: float, new_variable: float):
         """ Create delta for float variable """
         delta = None
-        if main is not None:
-            if other is not None:
-                if other != main:
-                    delta = other - main
+        if old_variable is not None:
+            if new_variable is not None:
+                if new_variable != old_variable:
+                    delta = new_variable - old_variable
                 else:
                     delta = None
-            else: # when *other* is None
+            else: # when *new_variable* is None
                 delta = None
-        else:  # when *main* is None
-            delta = other
+        else:  # when *old_variable* is None
+            delta = new_variable
         return delta
 
-    def apply(main: float, delta: float = None):
+    def apply(old_variable: float, delta: float = None):
         """ Apply delta to float variable """
-        other = None
-        if main is not None:
+        new_variable = None
+        if old_variable is not None:
             if delta is not None:
-                other = main + delta
+                new_variable = old_variable + delta
             else:  # when *delta* is None
-                other = main
-        else:  # when *main* is None
-            other = delta
-        return other
+                new_variable = deepcopy(old_variable)
+        else:  # when *old_variable* is None
+            new_variable = deepcopy(delta)
+        return new_variable
 
 
 if __name__ == "__main__":
-    main = 2
-    other = 5
-    result = DeltaFloat.create(main, other)
-    print(result)
+    old_variable = 2
+    new_variable = 5
+    delta = DeltaFloat.create(old_variable, new_variable)
+    print(delta)

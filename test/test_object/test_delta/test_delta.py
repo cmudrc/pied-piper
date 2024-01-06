@@ -4,7 +4,128 @@ from piperabm.object.delta import Delta
 from piperabm.object.delta.delta import DeltaList, DeltaDict
 
 
+class TestDeltaDictClass_Simple(unittest.TestCase):
+
+    def test_create(self):
+        old_variable = {'a': 2, 'b': 'sample'}
+        new_variable = {'a': 3, 'b': 'sample'}
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertDictEqual(delta, {'a': 1})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(new_variable, {'a': 3, 'b': 'sample'})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        new_variable = {'a': 2, 'b': 'sample'}
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertDictEqual(delta, {})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+
+        old_variable = None
+        new_variable = {'a': 2, 'b': 'sample'}
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertDictEqual(delta, {'a': 2, 'b': 'sample'})
+        self.assertEqual(old_variable, None)
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        new_variable = None
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertEqual(delta, None)
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertEqual(new_variable, None)
+
+        old_variable = {}
+        new_variable = {'a': 2, 'b': 'sample'}
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertDictEqual(delta, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {})
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        new_variable = {}
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertDictEqual(delta, {})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(new_variable, {})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        new_variable = {'a': 2, 'c': 3, 'b': 'sample'}
+        delta = DeltaDict.create(old_variable, new_variable)
+        self.assertEqual(delta, {'c': 3})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(new_variable, {'a': 2, 'c': 3, 'b': 'sample'})
+
+    def test_apply(self):
+        old_variable = {'a': 2, 'b': 'sample'}
+        delta = {'a': 1}
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'a': 3, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(delta, {'a': 1})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        delta = {}
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(delta, {})
+
+        old_variable = None
+        delta = {'a': 2, 'b': 'sample'}
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+        self.assertEqual(old_variable, None)
+        self.assertDictEqual(delta, {'a': 2, 'b': 'sample'})  
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        delta = None
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertEqual(delta, None)
+
+        old_variable = {}
+        delta = {'a': 2, 'b': 'sample'}
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {})
+        self.assertDictEqual(delta, {'a': 2, 'b': 'sample'})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        delta = {}
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertDictEqual(delta, {})
+
+        old_variable = {'a': 2, 'b': 'sample'}
+        delta = {'c': 3, 'b': 'sample'}
+        new_variable = DeltaDict.apply(old_variable, delta)
+        self.assertDictEqual(new_variable, {'c': 3, 'a': 2, 'b': 'sample'})
+        self.assertDictEqual(old_variable, {'a': 2, 'b': 'sample'})
+        self.assertEqual(delta, {'c': 3, 'b': 'sample'})
+        
+
 class TestDeltaDictClass(unittest.TestCase):
+
+    def test_1(self):
+        var_old = {}
+        delta = {
+            'a': 'b',
+            'b': 1,
+            'c': True,
+            'd': {
+                'a': 'b',
+                'b': 1,
+                'c': True,
+            },
+            'e': [{'b': 3}]
+        }
+        var_new = Delta.apply(var_old, delta)
+        self.assertDictEqual(var_new, delta)
+        created_delta = Delta.create({}, var_new)
+        self.assertDictEqual(delta, created_delta)
 
     def test_create_delta(self):
         var_old = {
@@ -144,29 +265,13 @@ class TestDeltaDictClass(unittest.TestCase):
         updated_var = Delta.apply(var_old, delta)
         self.assertDictEqual(var_new, updated_var)
 
-class TestDeltaListClass_1(unittest.TestCase):
 
-    def setUp(self) -> None:
-        self.pos_old = [1, 1]
-        self.pos_new = [2, 3]
-        self.delta = [1, 2]
-    
-    def test_create_delta(self):
-        delta = DeltaList.create(self.pos_old, self.pos_new)
-        self.assertListEqual(delta, self.delta)
-
-    def test_apply_delta(self):
-        pos_new = DeltaList.apply(self.pos_old, self.delta)
-        self.assertListEqual(pos_new, self.pos_new)
-
-
-class TestDeltaListClass_2(unittest.TestCase):
+class TestDeltaListClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.list_old = [3, True, 'Peter']
-        self.list_new = [2, False, 'John']
-        #self.delta = {0: -1, 1: False, 2: 'John'}
-        self.delta = [-1, False, 'John']
+        self.list_new = [2, False, 'John', 'New']
+        self.delta = [-1, False, 'John', 'New']
     
     def test_create_delta(self):
         delta = DeltaList.create(self.list_old, self.list_new)

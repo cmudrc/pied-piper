@@ -1,2 +1,2 @@
 from .object import PureObject
-from .item import Item
+from .delta import Delta
