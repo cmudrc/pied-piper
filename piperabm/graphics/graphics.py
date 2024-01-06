@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from piperabm.model.graphics.style import style
+from piperabm.graphics.style import style
 
 
 class Graphics:
@@ -9,9 +9,9 @@ class Graphics:
     Add graphical representation
     """
 
-    def __init__(self, model):
-        self.infrastructure = model.infrastructure
-        self.society = model.society
+    def __init__(self, infrastructure=None, society=None):
+        self.infrastructure = infrastructure
+        self.society = society
 
     def infrastructure_to_plt(self):
         """
@@ -88,6 +88,8 @@ class Graphics:
         Show the graph using matplotlib
         """
         plt.gca().set_aspect("equal")
-        self.infrastructure_to_plt()
-        self.society_to_plt()
+        if self.infrastructure is not None:
+            self.infrastructure_to_plt()
+        if self.society is not None:
+            self.society_to_plt()
         plt.show()

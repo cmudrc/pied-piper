@@ -3,7 +3,7 @@ import random
 
 from piperabm.object import PureObject
 from piperabm.model.query import Query
-from piperabm.model.graphics import Graphics
+from piperabm.graphics import Graphics
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
 from piperabm.infrastructure import Infrastructure, Junction, Settlement, Market, Road
@@ -164,7 +164,10 @@ class Model(PureObject, Query, Graphics):
         return Society(model=self)
     
     def show(self):
-        graphics = Graphics(self)
+        graphics = Graphics(
+            infrastructure=self.infrastructure,
+            society=self.society
+        )
         graphics.show()
 
     def serialize(self) -> dict:

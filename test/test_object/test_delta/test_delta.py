@@ -135,8 +135,16 @@ class TestDeltaDictClass(unittest.TestCase):
         var_new = Delta.apply(var_old, delta)
         self.assertDictEqual(var_new, var_old)
 
+    def test_delta_new(self):
+        var_old = {'a': 1}
+        var_new = {'a': 3, 'b': 4}
+        delta = Delta.create(var_old, var_new)
+        expected_result = {'a': 2, 'b':4}
+        self.assertDictEqual(delta, expected_result)
+        updated_var = Delta.apply(var_old, delta)
+        self.assertDictEqual(var_new, updated_var)
 
-class TestDeltaListClass(unittest.TestCase):
+class TestDeltaListClass_1(unittest.TestCase):
 
     def setUp(self) -> None:
         self.pos_old = [1, 1]
@@ -152,7 +160,7 @@ class TestDeltaListClass(unittest.TestCase):
         self.assertListEqual(pos_new, self.pos_new)
 
 
-class TestDeltaListClass(unittest.TestCase):
+class TestDeltaListClass_2(unittest.TestCase):
 
     def setUp(self) -> None:
         self.list_old = [3, True, 'Peter']

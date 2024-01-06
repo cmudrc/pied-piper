@@ -2,6 +2,7 @@ import networkx as nx
 import numpy as np
 
 from piperabm.infrastructure.paths import Paths
+from piperabm.graphics import Graphics
 
 
 class Infrastructure:
@@ -65,18 +66,7 @@ class Infrastructure:
         """
         Find the shortest path between index_1 and index_2
         """
-        '''
-        def convert_path_to_edge_index(path):
-            result = []
-            for i in range(len(path)-1):
-                index_1 = path[i]
-                index_2 = path[i+1]
-                edge_index = self.find_edge_index(index_1, index_2)
-                result.append(edge_index)
-            return result
-        '''
         path = None
-
         if nx.has_path(
             self.G,
             source=index_1,
@@ -88,8 +78,6 @@ class Infrastructure:
                 target=index_2,
                 weight="adjusted_length"
             )
-
-        #return convert_path_to_edge_index(path)
         return path
     
     def find_nearest_node(self, pos: list, items: list):
@@ -105,11 +93,14 @@ class Infrastructure:
         """
         return Paths(infrastructure=self)
     
-    def principal_vectors(self):
+    def principal_vectors(self, num=None):
+        """
+        Calculate connecting vectors between n nearest nodes
+        """
         vectors = []
         nodes = self.all_nodes()
         for node_index in nodes:
-            neighbors = self.neighbor_vectors(node_index, num=None)
+            neighbors = self.neighbor_vectors(node_index, num)
             main = self.get(node_index)
             main_pos = np.array(main.pos)
             for element in neighbors:
@@ -121,6 +112,9 @@ class Infrastructure:
         return vectors
 
     def neighbor_vectors(self, index, num=None):
+        """
+        Find and return index of n nearest nodes
+        """
         nodes = self.all_nodes()
         nodes.remove(index)
         if num is None:
@@ -131,12 +125,15 @@ class Infrastructure:
         item = self.get(index)
         neighbors = self.model.find_nearest_nodes(item.pos, nodes, num)
         return neighbors
+    
+    def show(self):
+        graphics = Graphics(infrastructure=self)
+        graphics.show()
 
 
 if __name__ == "__main__":
 
-    from piperabm.model.samples import model_1 as model
+    from piperabm.model.samples import model_2 as model
 
     infrastructure = model.infrastructure
-    print(infrastructure.G)
-    #infrastructure.show()
+    infrastructure.show()

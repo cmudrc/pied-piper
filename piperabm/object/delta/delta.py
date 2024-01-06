@@ -50,13 +50,15 @@ class DeltaDict:
         if main is not None:
             if other is not None:
                 delta = {}
-                for key in main:
-                    main_value = main[key]
-                    if key in other:
-                        other_value = other[key]
-                        delta_val = Delta.create(main_value, other_value)
-                        if delta_val is not None:
-                            delta[key] = delta_val
+                for key in other:
+                    other_value = other[key]
+                    if key in main:
+                        main_value = main[key]
+                    else:
+                        main_value = None
+                    delta_val = Delta.create(main_value, other_value)
+                    if delta_val is not None:
+                        delta[key] = delta_val
                 if len(delta) == 0:
                     delta = None
         else:  # when *main* is None
