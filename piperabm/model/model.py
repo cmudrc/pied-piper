@@ -11,6 +11,7 @@ from piperabm.society import Society, Agent, Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.measure import Measure
+from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.config.settings import *
 
 
@@ -158,6 +159,22 @@ class Model(PureObject, Query, Graphics):
         """
         return Society(model=self)
     
+    def save(self, path):
+        filename = self.name
+        if not jsh.exists(path, filename):
+            data = [{}]
+            jsh.save(data, path, filename)
+        data = jsh.load(path, filename)
+        previous_entry = data[-1]
+        delta = self.create_delta(previous_entry)
+        jsh.append(delta, path, filename)
+
+    def load(self, path, filename):
+        if jsh.exists(path, filename):
+            deltas = jsh.load(path, filename)
+        for delta in deltas:
+            self.apply_delta(delta)
+    
     def show(self):
         graphics = Graphics(
             infrastructure=self.infrastructure,
@@ -192,20 +209,6 @@ class Model(PureObject, Query, Graphics):
                     item = valid_item()
                     break
             item.deserialize(item_dictionary)
-            '''
-            if type == "junction":
-                item = Junction()
-                item.deserialize(item_dictionary)
-            elif type == "settlement":
-                item = Settlement()
-                item.deserialize(item_dictionary)
-            elif type == "market":
-                item = Market()
-                item.deserialize(item_dictionary)
-            elif type == "road":
-                item = Road()
-                item.deserialize(item_dictionary)
-            '''
             self.library[int(index)] = item
         self.step_size = DeltaTime(seconds=dictionary["step_size"])
         self.current_date = date_deserialize(dictionary["current_date"])
