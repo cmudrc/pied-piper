@@ -3,7 +3,8 @@ from piperabm.infrastructure import Settlement
     
 
 model = Model(
-    proximity_radius=0.1
+    proximity_radius=0.1,
+    name="Sample Model 00"
 )
 
 settlement = Settlement(

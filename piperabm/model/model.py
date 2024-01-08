@@ -29,17 +29,21 @@ class Model(PureObject, Query, Graphics):
         self,
         proximity_radius: float = 0,
         step_size=None,
-        current_date: Date = Date.today(),
-        exchange_rate: ExchangeRate = None
+        current_date: Date = None,
+        exchange_rate: ExchangeRate = None,
+        name: str = "sample"
     ):
         super().__init__()
         self.library = {}
         self.proximity_radius = proximity_radius
         self.set_step_size(step_size)
+        if current_date is None:
+            current_date = Date(year=2000, month=1, day=1)
         self.current_date = current_date
         if exchange_rate is None:
             exchange_rate = deepcopy(exchange_rate_0)  # default
         self.exchange_rate = exchange_rate
+        self.name = name
         self.measure = Measure(self)
         self.valid_types = Model.extract_valid_types(valid_items)  # recognizable items list
 
@@ -182,6 +186,7 @@ class Model(PureObject, Query, Graphics):
         dictionary["step_size"] = self.step_size.total_seconds()
         dictionary["current_date"] = date_serialize(self.current_date)
         dictionary["exchange_rate"] = self.exchange_rate.serialize()
+        dictionary["name"] = self.name
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
@@ -197,6 +202,9 @@ class Model(PureObject, Query, Graphics):
             elif type == "settlement":
                 item = Settlement()
                 item.deserialize(item_dictionary)
+            elif type == "market":
+                item = Market()
+                item.deserialize(item_dictionary)
             elif type == "road":
                 item = Road()
                 item.deserialize(item_dictionary)
@@ -205,6 +213,7 @@ class Model(PureObject, Query, Graphics):
         self.current_date = date_deserialize(dictionary["current_date"])
         self.exchange_rate = ExchangeRate()
         self.exchange_rate.deserialize(dictionary["exchange_rate"])
+        self.name = dictionary["name"]
 
 
 if __name__ == "__main__":

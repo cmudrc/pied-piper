@@ -127,6 +127,44 @@ class TestDeltaDictClass(unittest.TestCase):
         created_delta = Delta.create({}, var_new)
         self.assertDictEqual(delta, created_delta)
 
+    def test_2(self):
+        """
+        Only one entry has changed in the depth of dictionary
+        """
+        var_old = {
+            'float': 1,
+            'bool': False,
+            'str': 'John',
+            'dict': {
+                'float': 1,
+                'bool': False,
+                'str': 'John',
+                'dict': {
+                    'float': 1,
+                    'bool': False,
+                    'str': 'John',
+                }
+            }
+        }
+        var_new = {
+            'float': 1,
+            'bool': False,
+            'str': 'John',
+            'dict': {
+                'float': 1,
+                'bool': False,
+                'str': 'John',
+                'dict': {
+                    'float': 2,
+                    'bool': False,
+                    'str': 'John',
+                }
+            }
+        }
+        delta = DeltaDict.create(var_old, var_new)
+        expected_result = {'dict': {'dict': {'float': 1}}}
+        self.assertDictEqual(delta, expected_result)
+
     def test_create_delta(self):
         var_old = {
             'float': 1,

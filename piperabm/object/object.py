@@ -52,7 +52,7 @@ class PureObject:
         """
         Create delta between the *self* and *other*
         """
-        if not isinstance(old, dict):
+        if not isinstance(old, (dict, list, int, float, bool, str)):
             old = old.serialize()
         new = self.serialize()
         delta = Delta.create(old, new)

@@ -59,10 +59,13 @@ class DeltaDict:
                     else:
                         old_variable_value = None
                     delta_val = Delta.create(old_variable_value, new_variable_value)
-                    if delta_val is not None:
+                    if delta_val is not None and \
+                        delta_val != {} and \
+                        delta_val != []:
                         delta[key] = delta_val
+                    #delta[key] = delta_val
         else:  # when *old_variable* is None
-            delta = new_variable
+            delta = deepcopy(new_variable)
         return delta
 
     def apply(old_variable: dict, delta: dict) -> dict:
@@ -101,7 +104,7 @@ class DeltaList:
             else:
                 delta = old_variable
         else:
-            delta = new_variable
+            delta = deepcopy(new_variable)
         return delta
     
     def apply(old_variable: list, delta: list) -> list:
@@ -117,7 +120,7 @@ class DeltaList:
             else:  # when *delta* is None
                 new_variable = old_variable
         else:  # when *old_variable* is None
-            new_variable = delta
+            new_variable = deepcopy(delta)
         return new_variable
     
     def list_to_dict(input: list) -> dict:

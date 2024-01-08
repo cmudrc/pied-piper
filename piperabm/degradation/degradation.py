@@ -1,4 +1,5 @@
 from piperabm.object import PureObject
+from piperabm.tools.symbols import serialize_symbol
 
 
 class Degradation(PureObject):
@@ -43,7 +44,7 @@ class Degradation(PureObject):
     def serialize(self) -> dict:
         dictionary = {}
         dictionary['current'] = self.current
-        dictionary['total'] = self.total
+        dictionary['total'] = serialize_symbol(self.total)
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
