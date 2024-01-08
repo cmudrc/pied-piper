@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.resources import Resource
 from piperabm.resources.resource.samples import resource_0
-from piperabm.economy.exchange_rate.samples import exchange_rate_0
+from piperabm.economy.exchange_rate.samples import exchange_rate_1 as exchange_rate
 
 
 class TestResourceClass(unittest.TestCase):
@@ -44,7 +44,7 @@ class TestResourceClass(unittest.TestCase):
         self.assertEqual(demand, 70)
 
     def test_value(self):
-        value = self.resource.value(exchange_rate_0)
+        value = self.resource.value(exchange_rate)
         self.assertEqual(value.amount, 300)
 
     def test_add(self):

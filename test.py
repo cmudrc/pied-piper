@@ -2,4 +2,4 @@ from test import Test
 
 
 test = Test()
-test.run(target='all')
+test.run(target='resources')

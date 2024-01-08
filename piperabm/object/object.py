@@ -4,32 +4,32 @@ from piperabm.object.delta import Delta
 
 
 class PureObject:
-    """
+    '''
     Pure object for the program
-    """
+    '''
 
-    type = "pure object"
+    type = 'pure object'
 
     def __init__(self):
         pass
 
     @property
     def print(self):
-        """
+        '''
         "Pretty Print" the object
-        """
+        '''
         pprint(self.__str__())
 
     def __str__(self) -> str:
-        """
+        '''
         Show serialized format of object
-        """
+        '''
         return str(self.serialize())
 
     def __eq__(self, other) -> bool:
-        """
+        '''
         Check equality for two objects
-        """
+        '''
         result = False
         if self.serialize() == other.serialize() and \
                 self.serialize != {}:
@@ -37,23 +37,23 @@ class PureObject:
         return result
 
     def serialize(self) -> dict:
-        """
+        '''
         Serialize object into a dictionary
-        """
+        '''
         dictionary = {}
-        print("NOT IMPLEMENTED YET")
+        print('NOT IMPLEMENTED YET')
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        """
+        '''
         Deserialize object from a dictionary
-        """
-        print("NOT IMPLEMENTED YET")
+        '''
+        print('NOT IMPLEMENTED YET')
 
     def create_delta(self, old) -> dict:
-        """
+        '''
         Create delta between the *self* and *other*
-        """
+        '''
         if not isinstance(old, (dict, list, int, float, bool, str)):
             old = old.serialize()
         new = self.serialize()
@@ -61,15 +61,15 @@ class PureObject:
         return delta
 
     def apply_delta(self, delta: dict) -> None:
-        """
+        '''
         Apply the *delta* to the *self*
-        """
+        '''
         dictionary = self.serialize()
         dictionary_new = Delta.apply(dictionary, delta)
         self.deserialize(dictionary_new)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     class Sample(PureObject):
 
@@ -78,10 +78,10 @@ if __name__ == "__main__":
             self.value = value
 
         def serialize(self) -> dict:
-            return {"value": self.value}
+            return {'value': self.value}
 
         def deserialize(self, dictionary: dict) -> None:
-            self.value = dictionary["value"]
+            self.value = dictionary['value']
 
     s_1 = Sample(value=1)
     s_2 = Sample(value=2)

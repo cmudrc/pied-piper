@@ -10,5 +10,5 @@ resource_5 = deepcopy(resource_5)
 resources = Resources(resource_3, resource_4, resource_5)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     resources.print

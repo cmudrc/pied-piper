@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from piperabm.resources import Resources, Resource
 from piperabm.resources.samples import resources_0, resources_1
-from piperabm.economy.exchange_rate.samples import exchange_rate_0
+from piperabm.economy.exchange_rate.samples import exchange_rate_1 as exchange_rate
 
 
 class TestResourceClass(unittest.TestCase):
@@ -30,7 +30,7 @@ class TestResourceClass(unittest.TestCase):
         '''
         balance = 3000
         demands = self.resources.demand
-        demands_actual = self.resources.demands_actual(exchange_rate_0, balance)
+        demands_actual = self.resources.demands_actual(exchange_rate, balance)
         self.assertEqual(demands, demands_actual)
 
     def test_demand_actual_1(self):
@@ -38,7 +38,7 @@ class TestResourceClass(unittest.TestCase):
         When the balance is a demand barrier
         '''
         balance = 100
-        demands_actual = self.resources.demands_actual(exchange_rate_0, balance)
+        demands_actual = self.resources.demands_actual(exchange_rate, balance)
         self.assertAlmostEqual(demands_actual('food'), 6.60, places=2)
         self.assertAlmostEqual(demands_actual('water'), 5.66, places=2)
         self.assertAlmostEqual(demands_actual('energy'), 5.66, places=2)
@@ -48,7 +48,7 @@ class TestResourceClass(unittest.TestCase):
         When the balance is a demand barrier
         '''
         balance = 0
-        demands_actual = self.resources.demands_actual(exchange_rate_0, balance)
+        demands_actual = self.resources.demands_actual(exchange_rate, balance)
         self.assertAlmostEqual(demands_actual('food'), 0, places=2)
         self.assertAlmostEqual(demands_actual('water'), 0, places=2)
         self.assertAlmostEqual(demands_actual('energy'), 0, places=2)
@@ -60,7 +60,7 @@ class TestResourceClass(unittest.TestCase):
         self.assertEqual(resources_max('energy'), 100)
 
     def test_value(self):
-        values = self.resources.value(exchange_rate_0)
+        values = self.resources.value(exchange_rate)
         self.assertEqual(values('food'), 300)
         expected_total = 300 + 80 + 160
         self.assertEqual(values.sum, expected_total)
@@ -71,7 +71,7 @@ class TestResourceClass(unittest.TestCase):
 
     def test_cutoff(self):
         demands = self.resources.demand
-        values = demands.value(exchange_rate_0)
+        values = demands.value(exchange_rate)
         values.cutoff(100)
         self.assertEqual(values('food'), 100)
 

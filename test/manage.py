@@ -2,9 +2,9 @@ import unittest
 
 
 class Test:
-    """
+    '''
     Run tests in batch
-    """
+    '''
 
     def __init__(self, TEST_DIR='test'):
         self.TEST_DIR = TEST_DIR
@@ -27,7 +27,6 @@ class Test:
         self.runner.run(suite)
     
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     test = Test()
-    #test.run(target='all')
-    test.run('move')
+    test.run(target='all')

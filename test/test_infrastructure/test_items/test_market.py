@@ -17,6 +17,7 @@ class TestMarketClass(unittest.TestCase):
         expected_result = {
             'pos': [0, 0],
             'name': 'Sample',
+            'resources': {'food': {'name': 'food', 'max': 'inf', 'min': 0, 'amount': 0}, 'water': {'name': 'water', 'max': 'inf', 'min': 0, 'amount': 0}, 'energy': {'name': 'energy', 'max': 'inf', 'min': 0, 'amount': 0}},
             'degradation': {'current': 0, 'total': 'inf'},
             'section': 'infrastructure',
             'category': 'node',
