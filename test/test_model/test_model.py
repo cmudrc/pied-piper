@@ -10,12 +10,11 @@ from piperabm.tools.file_manager import JsonHandler as jsh
 class TestModelClass_0(unittest.TestCase):
 
     def setUp(self):
+        self.maxDiff = None
         self.model = deepcopy(model_0)
         nodes = self.model.all_environment_nodes
         self.node = nodes[0]
-        self.maxDiff = None
         self.deltas = [
-            {},
             {
                 'proximity radius': 0.1,
                 'library': {str(self.node): {'pos': [0, 0], 'name': 'Sample Settlement', 'degradation': {'current': 0, 'total': 'inf'}, 'section': 'infrastructure', 'category': 'node', 'type': 'settlement'}},
@@ -35,50 +34,38 @@ class TestModelClass_0(unittest.TestCase):
         model_new.deserialize(dictionary)
         dictionary_new = model_new.serialize()
         self.assertDictEqual(dictionary, dictionary_new)
-    '''
-    def test_apply_delta(self):
-        model = deepcopy(self.model)
 
-        settlement = model.get(self.node)
-        self.assertEqual(settlement.degradation.current, 0)
-
-        delta = {'library': {str(self.node): {'degradation': {'current': 10}}}}
-        model.apply_delta(delta)
-
-        settlement = model.get(self.node)
-        self.assertEqual(settlement.degradation.current, 10)
-    '''
     def test_create_delta(self):
         model = deepcopy(self.model)
-        deltas = []
 
-        delta = self.deltas[0]
-        deltas.append(delta)
-
-        delta = model.create_delta(deltas[-1])
-        expected_result = self.deltas[1]
+        delta = model.create_delta(self.deltas[0])
+        expected_result = {}
         self.assertDictEqual(delta, expected_result)
+
+        ''' delta creation '''
+        deltas = []
+        delta = model.serialize()  # first element in deltas is a serialization
         deltas.append(delta)
 
         settlement = model.get(self.node)
         settlement.degradation.add(10)
 
-        delta = model.create_delta(deltas[-1])
-        expected_result = self.deltas[2]
-        self.assertDictEqual(delta, expected_result)
+        delta = model.create_delta(self.deltas[0])  # the others are delta
         deltas.append(delta)
+        
+        for i, delta in enumerate(deltas):
+            self.assertDictContainsSubset(delta, self.deltas[i])
 
     def test_apply_delta(self):
         model = Model()
+        ''' first delta is deserialized '''
+        model.deserialize(self.deltas[0])
+        self.assertEqual(model, self.model)
+        ''' second delta and so on are applied'''
         model.apply_delta(self.deltas[1])
-        print(model)
-        model.apply_delta(self.deltas[2])
-        print(model)
-        #for delta in self.deltas:
-        #    model.apply_delta(delta)
-        #print(model)
+        settlement = model.get(self.node)
+        self.assertEqual(settlement.degradation.current, 10)
 
-    '''
     def test_save_load(self):
         model = deepcopy(self.model)
         path = os.path.dirname(os.path.realpath(__file__))
@@ -93,8 +80,7 @@ class TestModelClass_0(unittest.TestCase):
         filename = self.model.name
         new_model.load(path, filename)
         jsh.remove(path, filename)
-        self.assertEqual(model.serialize(), new_model.serialize())
-    '''
+        self.assertEqual(model, new_model)
 
 
 

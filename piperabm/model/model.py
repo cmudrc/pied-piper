@@ -160,22 +160,42 @@ class Model(PureObject, Query, Graphics):
         return Society(model=self)
     
     def save(self, path):
+        """
+        Save the model based on delta creation to a file
+        """
         filename = self.name
         if not jsh.exists(path, filename):
-            data = [{}]
+            data = [self.serialize()]
             jsh.save(data, path, filename)
-        data = jsh.load(path, filename)
-        previous_entry = data[-1]
-        delta = self.create_delta(previous_entry)
-        jsh.append(delta, path, filename)
+        else:
+            data = jsh.load(path, filename)
+            previous_entry = data[-1]
+            delta = self.create_delta(previous_entry)
+            jsh.append(delta, path, filename)
+
+    def remove_save(self, path):
+        """
+        Remove save file
+        """
+        filename = self.name
+        jsh.remove(path, filename)
 
     def load(self, path, filename):
+        """
+        Load the model based on deltas in a file
+        """
         if jsh.exists(path, filename):
             deltas = jsh.load(path, filename)
-        for delta in deltas:
-            self.apply_delta(delta)
+        for i, delta in enumerate(deltas):
+            if i == 0:
+                self.deserialize(delta)
+            else:
+                self.apply_delta(delta)
     
     def show(self):
+        """
+        Show the graphical representation of current state of model
+        """
         graphics = Graphics(
             infrastructure=self.infrastructure,
             society=self.society
