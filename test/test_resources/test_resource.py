@@ -85,5 +85,5 @@ class TestResourceClass(unittest.TestCase):
         self.assertEqual(resource, self.resource)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

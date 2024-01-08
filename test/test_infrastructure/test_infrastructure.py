@@ -7,7 +7,7 @@ from piperabm.model.samples import model_2
 class TestInfrastructureClass(unittest.TestCase):
 
     def setUp(self):
-        self.infrastrucure = deepcopy(model_2.infrastrucure)
+        self.infrastrucure = deepcopy(model_2.infrastructure)
 
     def test_create(self):
         self.assertEqual(len(self.infrastrucure.all_nodes()), 5)
@@ -21,8 +21,8 @@ class TestInfrastructureClass(unittest.TestCase):
         self.assertEqual(len(path), 4)
         for node_index in path:
             item = self.infrastrucure.get(node_index)
-            self.assertEqual(item.category, "node")
+            self.assertEqual(item.category, 'node')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

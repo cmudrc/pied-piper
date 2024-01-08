@@ -8,10 +8,14 @@ from piperabm.society.agent.config import *
 
 class Market(PureObject):
 
+    section = 'infrastructure'
+    category = 'node'
+    type = 'market'
+
     def __init__(
         self,
         pos: list = None,
-        name: str = "",
+        name: str = '',
         resources: Resources = None,
         degradation=Degradation()
     ):
@@ -26,6 +30,32 @@ class Market(PureObject):
         self.resources = resources
         self.degradation = degradation
 
-        self.section = "infrastructure"
-        self.category = "node"
-        self.type = "market"
+    def serialize(self) -> dict:
+        dictionary = {}
+        dictionary['pos'] = self.pos
+        dictionary['name'] = self.name
+        dictionary['resources'] = self.resources.serialize()
+        dictionary['degradation'] = self.degradation.serialize()
+        dictionary['section'] = self.section
+        dictionary['category'] = self.category
+        dictionary['type'] = self.type
+        return dictionary
+
+    def deserialize(self, dictionary: dict) -> None:
+        self.pos = dictionary['pos']
+        self.name = dictionary['name']
+        self.resources = Resources()
+        self.resources.deserialize(dictionary['resources'])
+        self.degradation = Degradation()
+        self.degradation.deserialize(dictionary['degradation'])
+        self.section = dictionary['section']
+        self.category = dictionary['category']
+        self.type = dictionary['type']
+
+
+if __name__ == '__main__':
+    item = Market(
+        name='Sample',
+        pos=[0, 0]
+    )
+    item.print

@@ -8,8 +8,10 @@ class PureObject:
     Pure object for the program
     """
 
+    type = "pure object"
+
     def __init__(self):
-        self.type = "pure object"
+        pass
 
     @property
     def print(self):

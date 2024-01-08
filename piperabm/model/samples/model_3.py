@@ -11,7 +11,7 @@ model.add(agent_0)
 model.add(agent_1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     #model.print
     '''
     model.run(100)

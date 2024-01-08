@@ -42,9 +42,9 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         self.model.add(item)
 
     def test_apply_0(self):
-        """
+        '''
         Two nodes close to each other
-        """
+        '''
         model = deepcopy(self.model)
         item = Junction(pos=[0, 0])
         model.add(item)
@@ -54,9 +54,9 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         self.assertEqual(len(model.all_environment_nodes), 1)
 
     def test_apply_1(self):
-        """
+        '''
         Two nodes far from each other
-        """
+        '''
         model = deepcopy(self.model)
         item = Junction(pos=[3, 3])
         model.add(item)
@@ -66,9 +66,9 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         self.assertEqual(len(model.all_environment_nodes), 2)
 
     def test_apply_2(self):
-        """
+        '''
         Three nodes close to each other.
-        """
+        '''
         model = deepcopy(self.model)
         item = Junction(pos=[0.1, 0])
         model.add(item)
@@ -84,5 +84,5 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         self.assertEqual(len(model.all_environment_nodes), 1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

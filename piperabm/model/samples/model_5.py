@@ -22,7 +22,7 @@ for road in roads:
     model.add(road)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     import numpy as np
     import matplotlib.pyplot as plt
     from random import uniform
@@ -50,15 +50,15 @@ if __name__ == "__main__":
         #pca.fit(data)
         #print(pca.components_)
         #transformed_data = pca.transform(data)
-        #print("Transformed Data:\n", transformed_data)
+        #print('Transformed Data:\n', transformed_data)
         #data = transformed_data.T
         data = data.T
-        plt.gca().set_aspect("equal")
+        plt.gca().set_aspect('equal')
         plt.scatter(data[0], data[1])
         plt.show()
 
         # Print the variance explained by each component
-        #print("Variance explained by each component:", pca.explained_variance_ratio_)
+        #print('Variance explained by each component:', pca.explained_variance_ratio_)
 
     unit_vectors(new_xs, new_ys)
 

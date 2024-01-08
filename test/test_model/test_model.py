@@ -14,7 +14,6 @@ class TestModelClass_0(unittest.TestCase):
 
     def test_serialization(self):
         dictionary = self.model.serialize()
-        #print(dictionary)
         model_new = Model()
         model_new.deserialize(dictionary)
         dictionary_new = model_new.serialize()
@@ -26,26 +25,11 @@ class TestModelClass_0(unittest.TestCase):
         settlement = model.get(self.node)
         self.assertEqual(settlement.degradation.current, 0)
 
-        delta = {'library': {self.node: {'degradation': {'current': 10}}}}
+        delta = {'library': {str(self.node): {'degradation': {'current': 10}}}}
         model.apply_delta(delta)
 
         settlement = model.get(self.node)
         self.assertEqual(settlement.degradation.current, 10)
-    '''
-    def test_create_delta(self):
-        model = deepcopy(self.model)
-        previous_serialized = model.serialize()
-
-        delta = model.create_delta(previous_serialized)
-        self.assertEqual(delta, {})
-
-        settlement = model.get(self.node)
-        settlement.degradation.add(10)
-
-        delta = model.create_delta(previous_serialized)
-        expected_result = {'library': {self.node: {'degradation': {'current': 10}}}}
-        self.assertDictEqual(delta, expected_result)
-    '''
 
     def test_create_delta(self):
         self.maxDiff = None
@@ -58,7 +42,7 @@ class TestModelClass_0(unittest.TestCase):
         delta = model.create_delta(deltas[-1])
         expected_result = {
             'proximity radius': 0.1,
-            'library': {self.node: {'pos': [0, 0], 'name': 'Sample Settlement', 'degradation': {'current': 0, 'total': 'inf'}, 'category': 'node', 'type': 'settlement'}},
+            'library': {str(self.node): {'pos': [0, 0], 'name': 'Sample Settlement', 'degradation': {'current': 0, 'total': 'inf'}, 'section': 'infrastructure', 'category': 'node', 'type': 'settlement'}},
             'step_size': 3600.0,
             'current_date': {'year': 2000, 'month': 1, 'day': 1, 'hour': 0, 'minute': 0, 'second': 0},
             'exchange_rate': {'food': 1, 'water': 1, 'energy': 1},
@@ -72,11 +56,10 @@ class TestModelClass_0(unittest.TestCase):
 
         delta = model.create_delta(deltas[-1])
         expected_result = {
-            'library': {self.node: {'degradation': {'current': 10}}}
+            'library': {str(self.node): {'degradation': {'current': 10}}}
         }
         self.assertDictEqual(delta, expected_result)
         deltas.append(delta)
-        
 
 
 '''
@@ -101,5 +84,5 @@ class TestModelClass_3(unittest.TestCase):
 '''
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

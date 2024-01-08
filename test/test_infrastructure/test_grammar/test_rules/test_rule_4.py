@@ -72,5 +72,5 @@ class TestGrammarRule4ApplyClass(unittest.TestCase):
         self.assertEqual(len(model.all_environment_edges), 2)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

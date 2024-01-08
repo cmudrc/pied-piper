@@ -11,16 +11,7 @@ from piperabm.society import Society, Agent, Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.measure import Measure
-
-
-valid_items = (
-    Junction,
-    Settlement,
-    Market,
-    Road,
-    Agent,
-    Family,
-)
+from piperabm.config.settings import *
 
 
 class Model(PureObject, Query, Graphics):
@@ -181,7 +172,7 @@ class Model(PureObject, Query, Graphics):
         library_serialized = {}
         for index in self.library:
             item = self.get(index)
-            library_serialized[index] = item.serialize()
+            library_serialized[str(index)] = item.serialize()
         dictionary["library"] = library_serialized
         dictionary["step_size"] = self.step_size.total_seconds()
         dictionary["current_date"] = date_serialize(self.current_date)
@@ -191,11 +182,17 @@ class Model(PureObject, Query, Graphics):
 
     def deserialize(self, dictionary: dict) -> None:
         self.proximity_radius = dictionary["proximity radius"]
-        """ Deserialize library items """
+        # Deserialize library
         library_dictionary = dictionary["library"]
         for index in library_dictionary:
             item_dictionary = library_dictionary[index]
             type = item_dictionary["type"]
+            for valid_item in valid_items:
+                if valid_item.type == type:
+                    item = valid_item()
+                    break
+            item.deserialize(item_dictionary)
+            '''
             if type == "junction":
                 item = Junction()
                 item.deserialize(item_dictionary)
@@ -208,7 +205,8 @@ class Model(PureObject, Query, Graphics):
             elif type == "road":
                 item = Road()
                 item.deserialize(item_dictionary)
-            self.library[index] = item
+            '''
+            self.library[int(index)] = item
         self.step_size = DeltaTime(seconds=dictionary["step_size"])
         self.current_date = date_deserialize(dictionary["current_date"])
         self.exchange_rate = ExchangeRate()

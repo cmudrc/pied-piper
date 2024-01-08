@@ -20,7 +20,7 @@ for road in roads:
     model.add(road)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     import numpy as np
     import matplotlib.pyplot as plt
     infrastrucure = model.infrastructure

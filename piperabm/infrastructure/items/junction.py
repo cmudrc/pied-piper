@@ -3,6 +3,10 @@ from piperabm.object import PureObject
 
 class Junction(PureObject):
 
+    section = 'infrastructure'
+    category = 'node'
+    type = 'junction'
+
     def __init__(
         self,
         pos: list = None,
@@ -15,28 +19,26 @@ class Junction(PureObject):
         self.pos = pos
         self.name = name
 
-        self.section = "infrastructure"
-        self.category = "node"
-        self.type = "junction"
-
     def serialize(self) -> dict:
         dictionary = {}
-        dictionary["pos"] = self.pos
-        dictionary["name"] = self.name
-        dictionary["category"] = self.category
-        dictionary["type"] = self.type
+        dictionary['pos'] = self.pos
+        dictionary['name'] = self.name
+        dictionary['section'] = self.section
+        dictionary['category'] = self.category
+        dictionary['type'] = self.type
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        self.pos = dictionary["pos"]
-        self.name = dictionary["name"]
-        self.category = dictionary["category"]
-        self.type = dictionary["type"]
+        self.pos = dictionary['pos']
+        self.name = dictionary['name']
+        self.section = dictionary['section']
+        self.category = dictionary['category']
+        self.type = dictionary['type']
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     item = Junction(
-        name="sample",
+        name='Sample',
         pos=[0, 0]
     )
     item.print
