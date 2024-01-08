@@ -8,7 +8,8 @@ class TestJunctionClass(unittest.TestCase):
     def setUp(self):
         self.junction = Junction(
             pos=[0, 0],
-            name='Sample'
+            name='Sample',
+            index=0
         )
         self.maxDiff = None
 
@@ -17,6 +18,7 @@ class TestJunctionClass(unittest.TestCase):
         expected_result = {
             'pos': [0, 0],
             'name': 'Sample',
+            'index': 0,
             'section': 'infrastructure',
             'category': 'node',
             'type': 'junction'

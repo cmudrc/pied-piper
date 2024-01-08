@@ -8,7 +8,8 @@ class TestMarketClass(unittest.TestCase):
     def setUp(self):
         self.market = Market(
             pos=[0, 0],
-            name='Sample'
+            name='Sample',
+            index=0
         )
         self.maxDiff = None
 
@@ -19,6 +20,7 @@ class TestMarketClass(unittest.TestCase):
             'name': 'Sample',
             'resources': {'food': {'name': 'food', 'max': 'inf', 'min': 0, 'amount': 0}, 'water': {'name': 'water', 'max': 'inf', 'min': 0, 'amount': 0}, 'energy': {'name': 'energy', 'max': 'inf', 'min': 0, 'amount': 0}},
             'degradation': {'current': 0, 'total': 'inf'},
+            'index': 0,
             'section': 'infrastructure',
             'category': 'node',
             'type': 'market'

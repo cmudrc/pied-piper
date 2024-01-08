@@ -12,7 +12,8 @@ class Settlement(PureObject):
         self,
         pos: list = None,
         name: str = '',
-        degradation=Degradation()
+        degradation: Degradation = None,
+        index: int = None
     ):
         super().__init__()
         
@@ -20,13 +21,17 @@ class Settlement(PureObject):
 
         self.pos = pos
         self.name = name
+        if degradation is None:
+            degradation = Degradation()
         self.degradation = degradation
+        self.index = index
 
     def serialize(self) -> dict:
         dictionary = {}
         dictionary['pos'] = self.pos
         dictionary['name'] = self.name
         dictionary['degradation'] = self.degradation.serialize()
+        dictionary['index'] = self.index
         dictionary['section'] = self.section
         dictionary['category'] = self.category
         dictionary['type'] = self.type
@@ -37,6 +42,7 @@ class Settlement(PureObject):
         self.name = dictionary['name']
         self.degradation = Degradation()
         self.degradation.deserialize(dictionary['degradation'])
+        self.index = dictionary['index']
         self.section = dictionary['section']
         self.category = dictionary['category']
         self.type = dictionary['type']

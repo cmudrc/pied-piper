@@ -8,7 +8,8 @@ class TestSettlementClass(unittest.TestCase):
     def setUp(self):
         self.settlement = Settlement(
             pos=[0, 0],
-            name='Sample'
+            name='Sample',
+            index=0
         )
         self.maxDiff = None
 
@@ -18,6 +19,7 @@ class TestSettlementClass(unittest.TestCase):
             'pos': [0, 0],
             'name': 'Sample',
             'degradation': {'current': 0, 'total': 'inf'},
+            'index': 0,
             'section': 'infrastructure',
             'category': 'node',
             'type': 'settlement'

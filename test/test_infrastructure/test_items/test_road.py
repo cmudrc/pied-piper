@@ -9,7 +9,8 @@ class TestRoadClass(unittest.TestCase):
         self.road = Road(
             pos_1=[0, 0],
             pos_2=[3, 4],
-            name='Sample'
+            name='Sample',
+            index=0
         )
         self.maxDiff = None
 
@@ -22,6 +23,7 @@ class TestRoadClass(unittest.TestCase):
             'length_actual': None,
             'roughness': 1,
             'degradation': {'current': 0, 'total': 'inf'},
+            'index': 0,
             'section': 'infrastructure',
             'category': 'edge',
             'type': 'road'

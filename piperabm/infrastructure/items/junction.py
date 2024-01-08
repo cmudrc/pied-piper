@@ -10,7 +10,8 @@ class Junction(PureObject):
     def __init__(
         self,
         pos: list = None,
-        name: str = ''
+        name: str = '',
+        index: int = None
     ):
         super().__init__()
 
@@ -18,11 +19,13 @@ class Junction(PureObject):
 
         self.pos = pos
         self.name = name
+        self.index = index
 
     def serialize(self) -> dict:
         dictionary = {}
         dictionary['pos'] = self.pos
         dictionary['name'] = self.name
+        dictionary['index'] = self.index
         dictionary['section'] = self.section
         dictionary['category'] = self.category
         dictionary['type'] = self.type
@@ -31,6 +34,7 @@ class Junction(PureObject):
     def deserialize(self, dictionary: dict) -> None:
         self.pos = dictionary['pos']
         self.name = dictionary['name']
+        self.index = dictionary['index']
         self.section = dictionary['section']
         self.category = dictionary['category']
         self.type = dictionary['type']

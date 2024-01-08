@@ -17,7 +17,8 @@ class Market(PureObject):
         pos: list = None,
         name: str = '',
         resources: Resources = None,
-        degradation=Degradation()
+        degradation: Degradation = None,
+        index: int = None
     ):
         super().__init__()
         
@@ -28,7 +29,10 @@ class Market(PureObject):
         if resources is None:
             resources = deepcopy(RESOURCES_DEFAULT)
         self.resources = resources
+        if degradation is None:
+            degradation = Degradation()
         self.degradation = degradation
+        self.index = index
 
     def serialize(self) -> dict:
         dictionary = {}
@@ -36,6 +40,7 @@ class Market(PureObject):
         dictionary['name'] = self.name
         dictionary['resources'] = self.resources.serialize()
         dictionary['degradation'] = self.degradation.serialize()
+        dictionary['index'] = self.index
         dictionary['section'] = self.section
         dictionary['category'] = self.category
         dictionary['type'] = self.type
@@ -48,6 +53,7 @@ class Market(PureObject):
         self.resources.deserialize(dictionary['resources'])
         self.degradation = Degradation()
         self.degradation.deserialize(dictionary['degradation'])
+        self.index = dictionary['index']
         self.section = dictionary['section']
         self.category = dictionary['category']
         self.type = dictionary['type']
