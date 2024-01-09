@@ -119,6 +119,12 @@ class TestTrackClass(unittest.TestCase):
         pos = self.track_2.pos(delta_time, transportation)
         self.assertListEqual(pos, [5000, 0])
 
+    def test_serialization(self):
+        dictionary = self.track_1.serialize()
+        track = Track()
+        track.deserialize(dictionary)
+        self.assertEqual(self.track_1, track)
+
 
 if __name__ == "__main__":
     unittest.main()

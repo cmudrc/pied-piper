@@ -51,6 +51,18 @@ class Tracks(PureObject):
     def pos(self, delta_time, transportation) -> list:
         active_track, remainder_time = self.find_active_track(delta_time, transportation)
         return active_track.pos(remainder_time, transportation)
+    
+    def serialize(self):
+        dictionary = []
+        for track in self.library:
+            dictionary.append(track.serialize())
+        return dictionary
+
+    def deserialize(self, dictionary) -> None:
+        for track_dictionary in dictionary:
+            track = Track()
+            track.deserialize(track_dictionary)
+            self.add(track)
 
 
 if __name__ == '__main__':
@@ -67,5 +79,6 @@ if __name__ == '__main__':
         pos_end=[40, 30]
     )
     tracks = Tracks([track_0, track_1])
-    print(tracks.duration(transporation))
+    #print(tracks.duration(transporation))
+    tracks.print
 

@@ -20,11 +20,19 @@ class Track(PureObject):
         super().__init__()
         self.pos_start = pos_start
         self.pos_end = pos_end
-        self.length_real = point_to_point(self.pos_start, self.pos_end)
-        if adjustment_factor < 0:
+        if adjustment_factor > 0:
+            self.adjustment_factor = adjustment_factor
+        else:
             raise ValueError
-        self.length_adjusted = self.length_real * adjustment_factor
     
+    @property
+    def length_real(self):
+        return point_to_point(self.pos_start, self.pos_end)
+    
+    @property
+    def length_adjusted(self):
+        return self.length_real * self.adjustment_factor
+
     @property
     def vector(self):
         """
@@ -74,15 +82,14 @@ class Track(PureObject):
         dictionary = {}
         dictionary['pos_start'] = self.pos_start
         dictionary['pos_end'] = self.pos_end
-        dictionary['length_real'] = self.length_real
-        dictionary['length_adjusted'] = self.length_adjusted
+        dictionary['adjustment_factor'] = self.adjustment_factor
+        dictionary['type'] = self.type
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
         self.pos_start = dictionary['pos_start']
         self.pos_end = dictionary['pos_end']
-        self.length_real = dictionary['length_real']
-        self.length_adjusted = dictionary['length_adjusted']
+        self.adjustment_factor = dictionary['adjustment_factor']
 
 
 if __name__ == '__main__':
@@ -94,7 +101,7 @@ if __name__ == '__main__':
         pos_end=[100, 100],
         adjustment_factor=1
     )
-    delta_time = 60
-    pos = track.pos(delta_time, transportation)
-    print(pos)
-    #track.print
+    #delta_time = 60
+    #pos = track.pos(delta_time, transportation)
+    #print(pos)
+    track.print

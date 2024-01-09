@@ -9,17 +9,18 @@ class Action(PureObject):
     def __init__(
         self,
         date_start: Date = None,
-        duration = None
+        duration = 0
     ):
         super().__init__()
         if date_start is None:
-            date_start = Date.today()
+            date_start = Date(2000, 1, 1)  # default
         if duration is None:
             duration = 0
         if isinstance(duration, (float, int)):
             duration = DeltaTime(seconds=duration)
         self.date_start = date_start
         self.date_end = self.date_start + duration
+        self.done = False
 
     @property
     def duration(self):
@@ -39,12 +40,14 @@ class Action(PureObject):
         dictionary = {}
         dictionary['date_start'] = date_serialize(self.date_start)
         dictionary['date_end'] = date_serialize(self.date_end)
+        dictionary['done'] = self.done
         dictionary['type'] = self.type
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
         self.date_start = date_deserialize(dictionary['date_start'])
         self.date_end = date_deserialize(dictionary['date_end'])
+        self.done = dictionary['done']
         self.type = dictionary['type']
 
 
