@@ -9,11 +9,11 @@ class Move(Action):
         self,
         agent=None,
         date_start: Date = None,
-        path: list = None,
+        tracks: list = None,
         transportation: Transportation = None
     ):
         self.agent = agent
-        total_adjusted_length = path
+        total_adjusted_length = tracks
         duration = transportation.how_long(total_adjusted_length)
         self.fuels = transportation.how_much_fuel(total_adjusted_length)
         super().__init__(

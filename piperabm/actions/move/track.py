@@ -2,73 +2,59 @@ import numpy as np
 
 from piperabm.object import PureObject
 from piperabm.tools.coordinate.distance import point_to_point
+from piperabm.tools.linear_algebra import vector
 from piperabm.transporation import Transportation
 from piperabm.time import DeltaTime
 
 
 class Track(PureObject):
 
+    type = 'track'
+
     def __init__(
         self,
         pos_start: list = None,
         pos_end: list = None,
-        adjustment_factor: float = 1,
-        transportation: Transportation = None
+        adjustment_factor: float = 1
     ):
         super().__init__()
         self.pos_start = np.array(pos_start)
         self.pos_end = np.array(pos_end)
+        self.length_real = point_to_point(self.pos_start, self.pos_end)
         if adjustment_factor < 0:
             raise ValueError
-        self.adjustment_factor = adjustment_factor
-        self.transportation = transportation
-    
-    @property
-    def length(self):
-        """
-        Physical length of track
-        """
-        return point_to_point(self.pos_start, self.pos_end)
-
-    @property
-    def length_adjusted(self):
-        """
-        Adjusted length of track
-        """
-        return self.length * self.adjustment_factor
+        self.length_adjusted = self.length_real * adjustment_factor
     
     @property
     def vector(self):
         """
         Movement vector
         """
-        return self.pos_end - self.pos_start
+        return vector(self.pos_start, self.pos_end)
     
     @property
     def unit_vector(self):
         """
         Unit vector showing the direction of movement
         """
-        return self.vector / self.length
+        return self.vector / self.length_real
     
-    @property
-    def duration(self):
+    def duration(self, transportation: Transportation):
         """
         Duration of movement on the track
         """
-        return self.transportation.how_long(length=self.length_adjusted)
+        return transportation.how_long(length=self.length_adjusted)
     
-    @property
-    def total_fuel(self):
+    def total_fuel(self, transportation: Transportation):
         """
         Total amount of fuel of movement on the track
         """
-        return self.transportation.how_much_fuel(length=self.length_adjusted)
+        return transportation.how_much_fuel(length=self.length_adjusted)
     
-    def pos(self, delta_time):
+    def pos(self, delta_time, transportation):
         if isinstance(delta_time, DeltaTime):
             delta_time = delta_time.total_seconds()
-        progress = delta_time / self.duration.total_seconds()
+        progress = delta_time / self.duration(transportation).total_seconds()
         return self.pos_by_progress(progress)
 
     def pos_by_progress(self, progress: float) -> list:
@@ -81,7 +67,7 @@ class Track(PureObject):
         if progress < 0:
             progress = 0
         
-        result = np.array(self.pos_start) + self.unit_vector * progress * self.length
+        result = np.array(self.pos_start) + self.unit_vector * progress * self.length_real
         return list(result)
 
     def serialize(self):

@@ -5,6 +5,8 @@ from piperabm.time import DeltaTime
 
 class Tracks(PureObject):
 
+    type = 'tracks'
+
     def __init__(
         self,
         library: list = [],
