@@ -21,10 +21,15 @@ class Action(PureObject):
         self.date_start = date_start
         self.date_end = self.date_start + duration
         self.done = False
+        
+        self.agent = None  # Bilding
 
     @property
     def duration(self):
         return self.date_end - self.date_start
+    
+    def get(self, index):
+        self.agent.model.get(index)
     
     def progress(self, date: Date):
         result = None

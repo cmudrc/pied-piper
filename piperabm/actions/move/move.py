@@ -10,10 +10,8 @@ class Move(Action):
 
     def __init__(
         self,
-        agent = None,
         date_start: Date = None
     ):
-        self.agent = agent
         self.tracks = Tracks()
         super().__init__(
             date_start=date_start,
@@ -28,10 +26,25 @@ class Move(Action):
     @property
     def transportation(self):
         return self.agent.transportation
+    
+    def update(self, date):
+        """
+        Update status of action
+        """
+        pos = self.pos(date)
+        self.agent.pos = pos
+        if date > self.date_end:
+            self.done = True
+    
+    def pos(self, date):
+        """
+        Calcualte position based on date
+        """
+        delta_time = date - self.date_start
+        return self.tracks.pos(delta_time, self.transportation)
 
     def serialize(self) -> dict:
         dictionary = super().serialize()
-        dictionary['agent_index'] = self.agent
         dictionary['tracks'] = self.tracks.serialize()
         dictionary['type'] = self.type
         return dictionary
