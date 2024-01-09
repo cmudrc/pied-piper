@@ -18,8 +18,8 @@ class Track(PureObject):
         adjustment_factor: float = 1
     ):
         super().__init__()
-        self.pos_start = np.array(pos_start)
-        self.pos_end = np.array(pos_end)
+        self.pos_start = pos_start
+        self.pos_end = pos_end
         self.length_real = point_to_point(self.pos_start, self.pos_end)
         if adjustment_factor < 0:
             raise ValueError
@@ -72,31 +72,29 @@ class Track(PureObject):
 
     def serialize(self):
         dictionary = {}
-        dictionary["pos_start"] = self.pos_start
-        dictionary["pos_end"] = self.pos_end
-        dictionary["adjustment_factor"] = self.adjustment_factor
-        dictionary["transportation"] = self.transportation.serialize()
+        dictionary['pos_start'] = self.pos_start
+        dictionary['pos_end'] = self.pos_end
+        dictionary['length_real'] = self.length_real
+        dictionary['length_adjusted'] = self.length_adjusted
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
-        self.pos_start = dictionary["pos_start"]
-        self.pos_end = dictionary["pos_end"]
-        self.adjustment_factor = dictionary["adjustment_factor"]
-        self.transportation = Transportation()
-        self.transportation.deserialize(dictionary["transportation"])
+        self.pos_start = dictionary['pos_start']
+        self.pos_end = dictionary['pos_end']
+        self.length_real = dictionary['length_real']
+        self.length_adjusted = dictionary['length_adjusted']
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     from piperabm.transporation.samples import transportation_0 as transportation
 
     track = Track(
         pos_start=[0, 0],
         pos_end=[100, 100],
-        transportation=transportation,
         adjustment_factor=1
     )
     delta_time = 60
-    pos = track.pos(delta_time)
+    pos = track.pos(delta_time, transportation)
     print(pos)
     #track.print

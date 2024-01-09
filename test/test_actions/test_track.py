@@ -1,5 +1,4 @@
 import unittest
-from copy import deepcopy
 
 from piperabm.actions.move.track import Track
 from piperabm.transporation.samples import transportation_0 as transportation
