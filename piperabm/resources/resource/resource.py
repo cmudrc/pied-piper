@@ -5,6 +5,8 @@ from piperabm.economy import ExchangeRate
 
 class Resource(PureObject):
 
+    type = 'resource'
+
     def __init__(
         self,
         name: str = '',
@@ -15,7 +17,6 @@ class Resource(PureObject):
         super().__init__()
 
         self.name = name
-        self.type = 'resource'
 
         if max < 0:
             raise ValueError

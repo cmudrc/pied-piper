@@ -4,6 +4,8 @@ from piperabm.time import Date, DeltaTime, date_serialize, date_deserialize
 
 class Action(PureObject):
 
+    type = 'action'
+
     def __init__(
         self,
         date_start: Date = None,
@@ -18,7 +20,6 @@ class Action(PureObject):
             duration = DeltaTime(seconds=duration)
         self.date_start = date_start
         self.date_end = self.date_start + duration
-        self.type = "action"
 
     @property
     def duration(self):

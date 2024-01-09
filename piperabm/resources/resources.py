@@ -7,6 +7,8 @@ from piperabm.economy import ExchangeRate
 
 class Resources(PureObject):
 
+    type = 'resources'
+
     def __init__(self, *args):
         super().__init__()
         self.library = {}

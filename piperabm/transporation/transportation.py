@@ -1,7 +1,8 @@
 from copy import deepcopy
 
 from piperabm.object import PureObject
-from piperabm.resources import Resources, Resource
+from piperabm.resources import Resources
+from piperabm.resources.samples import resources_0 as default_fuel_rate
 from piperabm.time import DeltaTime
 from piperabm.tools.symbols import SYMBOLS
 
@@ -21,11 +22,8 @@ class Transportation(PureObject):
         self.speed = speed
 
         if fuels_rate is None:
-            fuels_rate = Resources()
+            fuels_rate = deepcopy(default_fuel_rate)
         self.fuels_rate = fuels_rate
-
-    def add_fuel_rate(self, rate: Resource):
-        self.fuels_rate.add_resource(rate)
 
     def how_long(self, length):
         """
@@ -58,11 +56,12 @@ class Transportation(PureObject):
     def deserialize(self, dictionary: dict) -> None:
         self.name = dictionary['name']
         self.speed = float(dictionary['speed'])
-        fuel_rate_dictionary = dictionary['fuel_rate'] ############
+        self.fuels_rate = Resources()
+        self.fuels_rate.deserialize(dictionary['fuels_rate'])
 
 
-if __name__ == "__main__":
-    from piperabm.transporation.samples import transportation_0 as transportation
+if __name__ == '__main__':
+    from piperabm.transporation.samples import transportation_0 as walk
 
-    fuels_rate = transportation.how_much_fuel(1000)
+    fuels_rate = walk.how_much_fuel(1000)
     fuels_rate.print

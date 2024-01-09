@@ -2,15 +2,15 @@ import unittest
 from copy import deepcopy
 
 from piperabm.resources import Resources, Resource
-from piperabm.resources.samples import resources_0, resources_1
+from piperabm.resources.samples import resources_1, resources_2
 from piperabm.economy.exchange_rate.samples import exchange_rate_1 as exchange_rate
 
 
 class TestResourceClass(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.resources = deepcopy(resources_0)
-        self.other_resources = deepcopy(resources_1)
+        self.resources = deepcopy(resources_1)
+        self.other_resources = deepcopy(resources_2)
 
     def test_source(self):
         sources = self.resources.source

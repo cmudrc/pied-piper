@@ -1,12 +1,11 @@
 from copy import deepcopy
 
-from piperabm.resources import Resources
-from piperabm.resources.resource.samples import resource_0, resource_1, resource_2
+from piperabm.resources import Resource, Resources
 
 
-resource_0 = deepcopy(resource_0)
-resource_1 = deepcopy(resource_1)
-resource_2 = deepcopy(resource_2)
+resource_0 = Resource(name='food', amount=0)
+resource_1 = Resource(name='water', amount=0)
+resource_2 = Resource(name='energy', amount=0)
 resources = Resources(resource_0, resource_1, resource_2)
 
 
