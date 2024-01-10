@@ -1,6 +1,5 @@
 from piperabm.actions.action import Action
 from piperabm.actions.move.tracks import Tracks
-from piperabm.transporation import Transportation
 from piperabm.time import Date
 
 

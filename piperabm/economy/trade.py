@@ -94,7 +94,7 @@ class Trade:
 
         total_sources = total_resources(players_sources_values)
         total_demands = total_resources(players_demands_values)
-        print(total_sources, total_demands)
+        #print(total_sources, total_demands)
 
         # Create possible transactions
         for name in self.resource_names:

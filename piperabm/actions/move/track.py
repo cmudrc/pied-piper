@@ -59,7 +59,7 @@ class Track(PureObject):
         """
         return transportation.how_much_fuel(length=self.length_adjusted)
     
-    def pos(self, delta_time, transportation):
+    def pos(self, delta_time, transportation: Transportation):
         if isinstance(delta_time, DeltaTime):
             delta_time = delta_time.total_seconds()
         progress = delta_time / self.duration(transportation).total_seconds()

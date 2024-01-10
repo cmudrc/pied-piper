@@ -34,7 +34,7 @@ class TestJsonHandlerClass(unittest.TestCase):
         data = jsh.load(path, filename)
         expected_result = {
             'proximity radius': 0.1,
-            'library': {str(self.node): {'pos': [0, 0], 'name': 'Sample Settlement', 'degradation': {'current': 0, 'total': 'inf'}, 'section': 'infrastructure', 'category': 'node', 'type': 'settlement'}},
+            'library': {str(self.node): {'pos': [0, 0], 'name': 'Sample Settlement', 'degradation': {'current': 0, 'total': 'inf'}, 'index': self.node, 'section': 'infrastructure', 'category': 'node', 'type': 'settlement'}},
             'step_size': 3600.0,
             'current_date': {'year': 2000, 'month': 1, 'day': 1, 'hour': 0, 'minute': 0, 'second': 0},
             'exchange_rate': {'food': 1, 'water': 1, 'energy': 1},

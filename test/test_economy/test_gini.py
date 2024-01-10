@@ -19,7 +19,7 @@ class TestGiniGen(unittest.TestCase):
         gg = self.gini_generator
         sample = gg.generate(1000, threashold=0.01)
         sample_gini = gini_coefficient(sample)
-        result = sample_gini / gg.gini
+        result = sample_gini / gg.gini_index
         self.assertAlmostEqual(result, 1, places=0)
         sample_mean = sum(sample) / len(sample)
         result = sample_mean / gg.average
@@ -34,7 +34,7 @@ class TestGiniGen(unittest.TestCase):
             sample.append(single_sample)
         #print(sample[:50])
         sample_gini = gini_coefficient(sample)
-        result = sample_gini / gg.gini
+        result = sample_gini / gg.gini_index
         self.assertAlmostEqual(result, 1, places=0)
         sample_mean = sum(sample) / len(sample)
         result = sample_mean / gg.average

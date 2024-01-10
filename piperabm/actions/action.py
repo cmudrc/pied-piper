@@ -30,6 +30,15 @@ class Action(PureObject):
     
     def get(self, index):
         self.agent.model.get(index)
+
+    def is_current(self, date):
+        result = None
+        progress = self.progress(date)
+        if progress > 0 and progress < 1:
+            result = True
+        else:
+            result = False
+        return result
     
     def progress(self, date: Date):
         result = None

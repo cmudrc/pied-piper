@@ -71,7 +71,7 @@ class GiniGenerator:
 
         result = rvs()
         if threashold is not None:  # to ensure a sample having gini index within threashold
-            while np.abs(gini_coefficient(result) - self.gini) > threashold:
+            while np.abs(gini_coefficient(result) - self.gini_index) > threashold:
                 result = rvs()
         if n == 1:  # when asked for a single value, a single value is returned instead of a list
             result = result[0]

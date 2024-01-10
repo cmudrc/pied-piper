@@ -203,7 +203,7 @@ class Lattice:
                 if test_lattice.RMSE(target_distribution) < lattice.RMSE(target_distribution) and \
                     test_lattice.is_connected:
                     lattice.remove_edge(*edge)
-                    print(edge, " removed.")
+                    #print(edge, " removed.")
             else: # add edge
                 edges = lattice.not_edges
                 edge = random.choice(edges)
@@ -212,9 +212,9 @@ class Lattice:
                 if test_lattice.RMSE(target_distribution) < lattice.RMSE(target_distribution) and \
                     test_lattice.is_connected:
                     lattice.add_edge(*edge)
-                    print(edge, " added.")
+                    #print(edge, " added.")
             counter += 1
-        print("steps: ", counter)
+        #print("steps: ", counter)
         return lattice
     
     def to_pos(

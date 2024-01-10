@@ -8,7 +8,7 @@ from piperabm.model.samples import model_0
 from piperabm.time import Date, DeltaTime
 
 
-class TestMoveClass_0(unittest.TestCase):
+class TestMoveClass(unittest.TestCase):
 
     def setUp(self):
         model = deepcopy(model_0)

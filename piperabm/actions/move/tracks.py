@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.actions.move.track import Track
+from piperabm.transporation import Transportation
 from piperabm.time import DeltaTime
 
 
@@ -22,13 +23,13 @@ class Tracks(PureObject):
             for track in tracks:
                 self.add(track)
 
-    def duration(self, transportation):
+    def duration(self, transportation: Transportation):
         total = 0
         for track in self.library:
             total += track.duration(transportation).total_seconds()
         return DeltaTime(seconds=total)
 
-    def find_active_track(self, delta_time, transportation) -> Track:
+    def find_active_track(self, delta_time, transportation: Transportation) -> Track:
         if isinstance(delta_time, DeltaTime):
             delta_time = delta_time.total_seconds()
         active_track = None
@@ -48,18 +49,22 @@ class Tracks(PureObject):
                     break
         return active_track, remainder_time
 
-    def pos(self, delta_time, transportation) -> list:
+    def pos(self, delta_time, transportation: Transportation) -> list:
         active_track, remainder_time = self.find_active_track(delta_time, transportation)
         return active_track.pos(remainder_time, transportation)
     
     def serialize(self):
-        dictionary = []
+        dictionary = {}
+        library_serialized = []
         for track in self.library:
-            dictionary.append(track.serialize())
+            library_serialized.append(track.serialize())
+        dictionary['library'] = library_serialized
+        dictionary['type'] = self.type
         return dictionary
 
     def deserialize(self, dictionary) -> None:
-        for track_dictionary in dictionary:
+        library_serialized = dictionary['library']
+        for track_dictionary in library_serialized:
             track = Track()
             track.deserialize(track_dictionary)
             self.add(track)
