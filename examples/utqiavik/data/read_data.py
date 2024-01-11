@@ -1,7 +1,7 @@
 from piperabm.tools.coordinate.projection import latlong_to_xy
 
 
-def read(streets, labels, latitude_0, longitude_0):
+def read_data(streets, labels, latitude_0, longitude_0):
 
     def create_segments(ls):
         result = []
@@ -47,3 +47,15 @@ def read(streets, labels, latitude_0, longitude_0):
                 }
                 result.append(entry)
     return result
+
+
+if __name__ == '__main__':
+
+    from labels import labels
+    from streets import streets
+
+    latitude_0 = 0
+    longitude_0 = 0
+
+    data = read_data(streets, labels, latitude_0, longitude_0)
+    print(data[:5])
