@@ -8,7 +8,6 @@ from piperabm.model.samples import model_2 as model
 
 
 path = os.path.dirname(os.path.realpath(__file__))
-filename = model.name
 
 model.remove_save(path)  # clean previous save
 

@@ -148,9 +148,12 @@ class Model(PureObject, Query, Graphics):
         """
         Return infrastructure graph of items
         """
+        self.apply_grammars()
+        return Infrastructure(model=self)
+    
+    def apply_grammars(self):
         grammar = Grammar(model=self)
         grammar.apply()
-        return Infrastructure(model=self)
     
     @property
     def society(self):
