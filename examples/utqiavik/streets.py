@@ -7,7 +7,7 @@ Each street is a dictionary including the name of street and list of point label
 streets = [
     {
         'name': 'Stevenson St',
-        'paths': [[1, 2, 3, 4]],
+        'paths': [[1, 2, 3, 4, 91, 92, 89, 90]],
     },
     {
         'name': 'Boxer St',
@@ -23,7 +23,7 @@ streets = [
     },
     {
         'name': 'Laura Madison St',
-        'paths': [[28, 29, 30, 31, 32, 33, 34, 35, 36]],
+        'paths': [[97, 28, 29, 30, 31, 32, 33, 34, 35, 36, 86]],
     },
     {
         'name': 'North Star St',
@@ -39,11 +39,11 @@ streets = [
     },
     {
         'name': 'Yugit St',
-        'paths': [[56, 75, 76, 64, 65, 66, 67]],
+        'paths': [[56, 75, 76, 64, 65, 66, 67, 79]],
     },
     {
         'name': 'Sanatu St',
-        'paths': [[68, 69]],
+        'paths': [[68, 69, 80]],
     },
     {
         'name': 'Iigu St',
@@ -51,7 +51,7 @@ streets = [
     },
     {
         'name': 'Ahgeak St',
-        'paths': [[72, 73]],
+        'paths': [[72, 73, 81]],
     },
     {
         'name': 'Tahak St',
@@ -79,7 +79,7 @@ streets = [
     },
     {
         'name': 'Ahmoagak Ave',
-        'paths': [[11, 18, 26, 34, 44, 52, 59, 65]],
+        'paths': [[91, 11, 18, 26, 34, 44, 52, 59, 65]],
     },
     {
         'name': 'Uula St',
@@ -91,6 +91,26 @@ streets = [
     },
     {
         'name': 'Utiqtuq St',
-        'paths': [[55, 54, 61, 62]],
+        'paths': [[77, 55, 54, 61, 62, 78]],
+    },
+    {
+        'name': 'Kaleak St',
+        'paths': [[82, 83]],
+    },
+    {
+        'name': 'Sakeagak St',
+        'paths': [[81, 82]],
+    },
+    {
+        'name': 'Kignak St',
+        'paths': [[77, 78, 79, 80]],
+    },
+    {
+        'name': 'Cakeatter Rd',
+        'paths': [[84, 83, 85, 86, 87, 88, 90]],
+    },
+    {
+        'name': 'Brower Rd',
+        'paths': [[1, 93, 94, 95, 96, 97]],
     },
 ]
