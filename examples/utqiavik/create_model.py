@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     from examples.utqiavik.data.coordinates import coordinates
     from data.streets import streets
-    from data.labels import map_4 as permitted_labels
+    from data.labels import map_1 as permitted_labels
 
     model = create_model(streets, coordinates, permitted_labels)
     model.show()
