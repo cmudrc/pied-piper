@@ -1,7 +1,7 @@
 from piperabm.tools.coordinate.projection import latlong_to_xy
 
 
-def read_data(streets, labels, latitude_0, longitude_0):
+def read_data(streets, coordinates, latitude_0, longitude_0, permitted_labels='all'):
 
     def create_segments(ls):
         result = []
@@ -19,43 +19,49 @@ def read_data(streets, labels, latitude_0, longitude_0):
         for path in paths:
             segments = create_segments(path)
             for segment in segments:
-                # Convert point 1
-                latlong_1 = labels[segment[0]]
-                latitude_1 = latlong_1[0]
-                longitude_1 = latlong_1[1]
-                x_1, y_1 = latlong_to_xy(
-                    latitude_0,
-                    longitude_0,
-                    latitude_1,
-                    longitude_1
-                )
-                # Convert point 2
-                latlong_2 = labels[segment[1]]
-                latitude_2 = latlong_2[0]
-                longitude_2 = latlong_2[1]
-                x_2, y_2 = latlong_to_xy(
-                    latitude_0,
-                    longitude_0,
-                    latitude_2,
-                    longitude_2
-                )
-                # Create entry
-                entry = {
-                    'name': name,
-                    'pos_1': [x_1, y_1],
-                    'pos_2': [x_2, y_2]
-                }
-                result.append(entry)
+                if permitted_labels == 'all' or \
+                    (
+                        segment[0] in permitted_labels and \
+                        segment[1] in permitted_labels
+                    ):
+                    # Convert point 1
+                    latlong_1 = coordinates[segment[0]]
+                    latitude_1 = latlong_1[0]
+                    longitude_1 = latlong_1[1]
+                    x_1, y_1 = latlong_to_xy(
+                        latitude_0,
+                        longitude_0,
+                        latitude_1,
+                        longitude_1
+                    )
+                    # Convert point 2
+                    latlong_2 = coordinates[segment[1]]
+                    latitude_2 = latlong_2[0]
+                    longitude_2 = latlong_2[1]
+                    x_2, y_2 = latlong_to_xy(
+                        latitude_0,
+                        longitude_0,
+                        latitude_2,
+                        longitude_2
+                    )
+                    # Create entry
+                    entry = {
+                        'name': name,
+                        'pos_1': [x_1, y_1],
+                        'pos_2': [x_2, y_2]
+                    }
+                    result.append(entry)
     return result
 
 
 if __name__ == '__main__':
 
-    from labels import labels
+    from examples.utqiavik.data.coordinates import coordinates
     from streets import streets
+    from labels import map_1 as permitted_labels
 
     latitude_0 = 0
     longitude_0 = 0
 
-    data = read_data(streets, labels, latitude_0, longitude_0)
+    data = read_data(streets, coordinates, latitude_0, longitude_0, permitted_labels)
     print(data[:5])
