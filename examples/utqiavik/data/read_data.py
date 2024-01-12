@@ -2,8 +2,14 @@ from piperabm.tools.coordinate.projection import latlong_to_xy
 
 
 def read_data(streets, coordinates, latitude_0, longitude_0, permitted_labels='all'):
+    """
+    Read data from files and convert latitude/longitude to x,y only for permitted labels
+    """
 
     def create_segments(ls):
+        """
+        Split path to segments
+        """
         result = []
         for i in range(1, len(ls)):
             entry = []
@@ -19,6 +25,7 @@ def read_data(streets, coordinates, latitude_0, longitude_0, permitted_labels='a
         for path in paths:
             segments = create_segments(path)
             for segment in segments:
+                # Check permitted labels
                 if permitted_labels == 'all' or \
                     (
                         segment[0] in permitted_labels and \

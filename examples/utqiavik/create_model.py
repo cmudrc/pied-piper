@@ -5,6 +5,10 @@ from data.read_data import read_data
 
 
 def create_model(streets, labels, permitted_labels='all'):
+    """
+    Construct model using data from files
+    """
+    
     latitude_0 = 71.30
     longitude_0 = -156.75
 

@@ -1,3 +1,7 @@
+"""
+Lists containing labels in each map
+"""
+
 map_1 = [
     1,
     2,
