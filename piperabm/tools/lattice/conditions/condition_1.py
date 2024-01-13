@@ -13,6 +13,6 @@ condition = Condition(
 )
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     for filter in condition.filters:
         print(filter)

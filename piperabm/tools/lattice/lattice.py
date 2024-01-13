@@ -27,14 +27,23 @@ class Lattice:
 
     @property
     def nodes(self):
+        """
+        Return all nodes index
+        """
         return list(self.G.nodes())
     
     @property
     def edges(self):
+        """
+        Return all nodes index
+        """
         return list(self.G.edges())
     
     @property
     def not_edges(self):
+        """
+        Return all missing edges from the imperfect lattice
+        """
         edges = []
         current_edges = self.edges
         full_lattice = Lattice(self.len_x, self.len_y)
@@ -45,31 +54,55 @@ class Lattice:
         return edges
     
     def remove_node(self, node):
+        """
+        Remove node by index
+        """
         self.G.remove_node(node)
     
     def remove_edge(self, node_1, node_2):
+        """
+        Remove edge by index
+        """
         self.G.remove_edge(node_1, node_2)
 
     def add_edge(self, node_1, node_2):
+        """
+        Add edge between nodes
+        """
         self.G.add_edge(node_1, node_2)
 
     def has_edge(self, node_1, node_2):
+        """
+        Check whether edge exists between nodes
+        """
         return self.G.has_edge(node_1, node_2)
     
     @property
     def components(self):
+        """
+        Calculate number of components in lattice structure
+        """
         all_components = nx.number_connected_components(self.G)
         return all_components - len(self.isolated_nodes)
     
     @property
     def is_connected(self):
+        """
+        Check if the lattice is connected
+        """
         return self.components == 1
 
     @property
     def isolated_nodes(self):
+        """
+        Return list of isolated nodes
+        """
         return [node for node, degree in dict(self.G.degree()).items() if degree == 0]
     
     def neighbor_value(self, node, neighbor):
+        """
+        Calculate neighbor values to create shape matrix of each node
+        """
         result = None
         # out of margins are 0
         if neighbor[0] < 0 or \
@@ -82,6 +115,9 @@ class Lattice:
         return result
         
     def shape_matrix(self, node):
+        """
+        Create shape matrix of each node
+        """
 
         if node[0] < self.len_x and \
             node[0] >= 0 and \
@@ -109,6 +145,9 @@ class Lattice:
             raise ValueError
         
     def find_condition(self, shape_matrix):
+        """
+        Find condition name of each node based on its shape matrix
+        """
         result = None
         for condition in self.conditions:
             output = condition.check(shape_matrix)
@@ -119,6 +158,9 @@ class Lattice:
     
     @property
     def shape(self):
+        """
+        Create shape matrix of all nodes
+        """
         result = []
         for i in range(self.len_x):
             row = []
@@ -131,6 +173,9 @@ class Lattice:
     
     @property
     def distribution(self):
+        """
+        Return distribution of conditions of node shapes in lattice
+        """
         result = {}
         for condition in self.conditions:
             result[condition.name] = 0
@@ -143,6 +188,9 @@ class Lattice:
         return self.normalize(result)
     
     def normalize(self, dictionary):
+        """
+        Normalize dictionary values
+        """
         total = 0
         for key in dictionary:
             total += dictionary[key]
@@ -152,16 +200,25 @@ class Lattice:
     
     @property
     def total_length(self):
+        """
+        Number of all existing edges
+        """
         return len(self.edges)
     
     @property
     def max_length(self):
+        """
+        Number of possible edges in a perfect lattice with similar size
+        """
         horizontal = (self.len_x - 1) * self.len_y
         vertical = self.len_x * (self.len_y - 1)
         return horizontal + vertical
     
     @property
     def length_ratio(self):
+        """
+        Ratio between current number of edges and maximally possible numebr of edges
+        """
         return self.total_length / self.max_length
     
     def RMSE(self, target):
@@ -176,12 +233,18 @@ class Lattice:
 
     @property
     def condition_names(self):
+        """
+        Return all condition names
+        """
         result = []
         for condition in self.conditions:
             result.append(condition.name)
         return result
     
     def generate(self, x_size, y_size, threashold=0.1, max_steps=None):
+        """
+        Generate a new lattice structure with a new shape that resembles the lattice
+        """
         result = None
         target_distribution = self.distribution
         target_length_ratio = self.length_ratio
@@ -224,6 +287,9 @@ class Lattice:
         unit: str = 'degree',
         vector_zero: list = [0, 0]
     ):
+        """
+        Convert lattice edge to pos data
+        """
         result = []
         edges = self.edges
         for edge in edges:
@@ -239,10 +305,16 @@ class Lattice:
         return result
     
     def save(self, path, filename: str = 'sample'):
+        """
+        Save lattice to file
+        """
         data = self.serialize()
         jsh.save(data, path, filename)
     
     def load(self, path, filename: str = 'sample'):
+        """
+        Load lattice from file
+        """
         data = jsh.load(path, filename)
         self.deserialize(data)
 

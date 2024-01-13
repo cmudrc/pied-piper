@@ -11,6 +11,49 @@ class TestLatticeClass_0(unittest.TestCase):
     def setUp(self) -> None:
         self.lattice = Lattice(2, 3)
 
+    def test_nodes(self):
+        nodes = self.lattice.nodes
+        expected_result = [
+            (0, 0),
+            (0, 1),
+            (0, 2),
+            (1, 0),
+            (1, 1),
+            (1, 2)
+        ]
+        self.assertListEqual(nodes, expected_result)
+
+    def test_edges(self):
+        edges = self.lattice.edges
+        expected_result = [
+            ((0, 0), (1, 0)),
+            ((0, 0), (0, 1)),
+            ((0, 1), (1, 1)),
+            ((0, 1), (0, 2)),
+            ((0, 2), (1, 2)),
+            ((1, 0), (1, 1)),
+            ((1, 1), (1, 2))
+        ]
+        self.assertListEqual(edges, expected_result)
+
+    def test_to_pos(self):
+        edges = self.lattice.to_pos(
+            x_size=10,
+            y_size=10,
+            angle=np.pi/2,
+            unit='radian',
+            vector_zero=[1, 0]
+        )
+        poses = edges[0]
+        expected_poses = [
+            [0, 1],
+            [0, 11]
+        ]
+        self.assertAlmostEqual(poses[0][0], expected_poses[0][0], places=2)
+        self.assertAlmostEqual(poses[0][1], expected_poses[0][1], places=2)
+        self.assertAlmostEqual(poses[1][0], expected_poses[1][0], places=2)
+        self.assertAlmostEqual(poses[1][1], expected_poses[1][1], places=2)
+
     def test_shape(self):
         shape = self.lattice.shape
         expected_result = [
@@ -104,29 +147,5 @@ class TestLatticeClass_1(unittest.TestCase):
         self.assertLessEqual(error, threashold)
 
 
-class TestLatticeClass_2(unittest.TestCase):
-
-    def setUp(self) -> None:
-        self.lattice = Lattice(2, 1)
-
-    def test_to_pos(self):
-        edges = self.lattice.to_pos(
-            x_size=10,
-            y_size=10,
-            angle=np.pi/2,
-            unit='radian',
-            vector_zero=[1, 0]
-        )
-        poses = edges[0]
-        expected_poses = [
-            [0, 1],
-            [0, 11]
-        ]
-        self.assertAlmostEqual(poses[0][0], expected_poses[0][0], places=2)
-        self.assertAlmostEqual(poses[0][1], expected_poses[0][1], places=2)
-        self.assertAlmostEqual(poses[1][0], expected_poses[1][0], places=2)
-        self.assertAlmostEqual(poses[1][1], expected_poses[1][1], places=2)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
