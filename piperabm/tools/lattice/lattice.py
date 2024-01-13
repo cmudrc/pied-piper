@@ -2,14 +2,12 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-import json
 from copy import deepcopy
-import os
 
 from piperabm.tools.lattice.conditions import *
-#from piperabm.tools.coordinate import rotate_point, move_point
 from piperabm.tools.coordinate import rotate
 from piperabm.tools.symbols import SYMBOLS
+from piperabm.tools.file_manager import JsonHandler as jsh
 
 
 class Lattice:
@@ -204,7 +202,7 @@ class Lattice:
                 if test_lattice.RMSE(target_distribution) < lattice.RMSE(target_distribution) and \
                     test_lattice.is_connected:
                     lattice.remove_edge(*edge)
-                    #print(edge, " removed.")
+                    #print(edge, ' removed.')
             else: # add edge
                 edges = lattice.not_edges
                 edge = random.choice(edges)
@@ -213,9 +211,9 @@ class Lattice:
                 if test_lattice.RMSE(target_distribution) < lattice.RMSE(target_distribution) and \
                     test_lattice.is_connected:
                     lattice.add_edge(*edge)
-                    #print(edge, " added.")
+                    #print(edge, ' added.')
             counter += 1
-        #print("steps: ", counter)
+        #print('steps: ', counter)
         return lattice
     
     def to_pos(
@@ -233,46 +231,32 @@ class Lattice:
             pos_2 = np.array([edge[1][0] * x_size, edge[1][1] * y_size])
             pos_1 = pos_1 + np.array(vector_zero)
             pos_2 = pos_2 + np.array(vector_zero)
-            #pos_1 = move_point(pos_1, vector_zero)
-            #pos_2 = move_point(pos_2, vector_zero)
-            #pos_1 = list(pos_1)
-            #pos_2 = list(pos_2)
-            pos_1 = rotate.z(pos_1, angle, unit, rotate='vector')
+            pos_1 = rotate.z(pos_1, angle, unit, rotate='vector', ndarray=False)
             pos_1 = pos_1[:2]
-            #pos_1 = rotate_point(pos_1, rotation)
-            pos_2 = rotate.z(pos_2, angle, unit, rotate='vector')
+            pos_2 = rotate.z(pos_2, angle, unit, rotate='vector', ndarray=False)
             pos_2 = pos_2[:2]
-            #pos_2 = rotate_point(pos_2, rotation)
             result.append([pos_1, pos_2])
         return result
     
-    def save(self, path, filename: str = "sample"):
+    def save(self, path, filename: str = 'sample'):
         data = self.serialize()
-        format = "." + "json"
-        filename += format
-        filepath = os.path.join(path, filename)
-        with open(filepath, "w") as f:
-            json.dump(data, f)
+        jsh.save(data, path, filename)
     
-    def load(self, path, filename: str = "sample"):
-        format = "." + "json"
-        filename += format
-        filepath = os.path.join(path, filename)
-        with open(filepath, "r") as f:
-            data = json.load(f)
+    def load(self, path, filename: str = 'sample'):
+        data = jsh.load(path, filename)
         self.deserialize(data)
 
     def serialize(self):
         dictionary = {}
-        dictionary["len_x"] = self.len_x
-        dictionary["len_y"] = self.len_y
-        dictionary["G"] = nx.node_link_data(self.G)
+        dictionary['len_x'] = self.len_x
+        dictionary['len_y'] = self.len_y
+        dictionary['G'] = nx.node_link_data(self.G)
         return dictionary
     
     def deserialize(self, dictionary):
-        self.len_x = dictionary["len_x"]
-        self.len_y = dictionary["len_y"]
-        self.G = nx.node_link_graph(dictionary["G"])
+        self.len_x = dictionary['len_x']
+        self.len_y = dictionary['len_y']
+        self.G = nx.node_link_graph(dictionary['G'])
 
     def show(self):
         pos_dictionary = {}
@@ -284,13 +268,10 @@ class Lattice:
             pos=pos_dictionary,
             node_size=5
         )
-        plt.gca().set_aspect("equal")
+        plt.gca().set_aspect('equal')
         plt.show()
 
 
-if __name__ == "__main__":
-    target = {0: 0.08333333333333333, 1: 0.0, 2: 0.3333333333333333, 3: 0.25, 4: 0.3333333333333333, 5: 0.0}
+if __name__ == '__main__':
     lattice = Lattice(2, 3)
-    lattice.to_pos()
-    #lattice.show()
-
+    lattice.show()
