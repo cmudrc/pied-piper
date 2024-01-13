@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.tools.coordinate.distance import point_to_line
+from piperabm.tools.coordinate.distance.point_to_line import point_to_line
 
 
 class TestDistancePointToLineFunction(unittest.TestCase):
@@ -15,7 +15,9 @@ class TestDistancePointToLineFunction(unittest.TestCase):
         """
         point = [-3, 4]
         distance = point_to_line(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 4, places=2)
+        self.assertEqual(distance, 4)
+        distance = point_to_line(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, -4])
 
     def test_case_boundary(self):
         """
@@ -23,7 +25,9 @@ class TestDistancePointToLineFunction(unittest.TestCase):
         """
         point = [0, 4]
         distance = point_to_line(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 4, places=2)
+        self.assertEqual(distance, 4)
+        distance = point_to_line(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, -4])
 
     def test_case_in(self):
         """
@@ -31,24 +35,30 @@ class TestDistancePointToLineFunction(unittest.TestCase):
         """
         point = [1, 4]
         distance = point_to_line(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 4, places=2)
+        self.assertEqual(distance, 4)
+        distance = point_to_line(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, -4])
 
     def test_case_on_in(self):
         """
-        The point is on the segment
+        The point is on line, on the segment
         """
         point = [1, 0]
         distance = point_to_line(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 0, places=2)
+        self.assertEqual(distance, 0)
+        distance = point_to_line(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, 0])
 
     def test_case_on_out(self):
         """
-        The point is on the line
+        The point is on the line, out of the segment
         """
         point = [-1, 0]
         distance = point_to_line(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 0, places=2)
+        self.assertEqual(distance, 0)
+        distance = point_to_line(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, 0])
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

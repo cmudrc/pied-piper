@@ -1,6 +1,6 @@
 import uuid
 
-from piperabm.tools.coordinate import point_to_point
+from piperabm.tools.coordinate import distance as ds
 
 
 class Query:
@@ -168,7 +168,7 @@ class Query:
         for index in items:
             item = self.get(index)
             if item.category == "node":
-                distance = point_to_point(pos, item.pos)
+                distance = ds.point_to_point(pos, item.pos)
                 result.append([distance, index])
         return result
 

@@ -1,5 +1,1 @@
-from .point_to_point import point_to_point
-from .point_to_line import point_to_line
-from .point_to_line_segment import point_to_line_segment
-from .point_to_line_segment_vector import point_to_line_segment_vector
-from .vector_magnitude import vector_magnitude
+from .distance import distance

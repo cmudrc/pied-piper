@@ -1,7 +1,7 @@
 import numpy as np
 
 from piperabm.object import PureObject
-from piperabm.tools.coordinate.distance import point_to_point
+from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.linear_algebra import vector
 from piperabm.transporation import Transportation
 from piperabm.time import DeltaTime
@@ -27,7 +27,10 @@ class Track(PureObject):
     
     @property
     def length_real(self):
-        return point_to_point(self.pos_start, self.pos_end)
+        return ds.point_to_point(
+            point_1=self.pos_start,
+            point_2=self.pos_end
+        )
     
     @property
     def length_adjusted(self):
@@ -38,7 +41,7 @@ class Track(PureObject):
         """
         Movement vector
         """
-        return vector(self.pos_start, self.pos_end)
+        return ds.point_to_point(self.pos_start, self.pos_end, vector=True, ndarray=True)
     
     @property
     def unit_vector(self):

@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.tools.coordinate.distance import point_to_line_segment
+from piperabm.tools.coordinate.distance.point_to_line_segment import point_to_line_segment
 
 
 class TestDistancePointToLineSegmentFunction(unittest.TestCase):
@@ -15,7 +15,13 @@ class TestDistancePointToLineSegmentFunction(unittest.TestCase):
         """
         point = [-3, 4]
         distance = point_to_line_segment(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 5, places=2)
+        self.assertEqual(distance, 5)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [3, -4])
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True)
+        self.assertEqual(distance, None)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True, vector=True)
+        self.assertEqual(distance, None)
 
     def test_case_boundary(self):
         """
@@ -23,7 +29,13 @@ class TestDistancePointToLineSegmentFunction(unittest.TestCase):
         """
         point = [0, 4]
         distance = point_to_line_segment(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 4, places=2)
+        self.assertEqual(distance, 4)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, -4])
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True)
+        self.assertEqual(distance, 4)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True, vector=True)
+        self.assertListEqual(distance, [0, -4])
 
     def test_case_in(self):
         """
@@ -31,7 +43,13 @@ class TestDistancePointToLineSegmentFunction(unittest.TestCase):
         """
         point = [1, 4]
         distance = point_to_line_segment(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 4, places=2)
+        self.assertEqual(distance, 4)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, -4])
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True)
+        self.assertEqual(distance, 4)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True, vector=True)
+        self.assertListEqual(distance, [0, -4])
 
     def test_case_on_in(self):
         """
@@ -39,7 +57,13 @@ class TestDistancePointToLineSegmentFunction(unittest.TestCase):
         """
         point = [1, 0]
         distance = point_to_line_segment(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 0, places=2)
+        self.assertEqual(distance, 0)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [0, 0])
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True)
+        self.assertEqual(distance, 0)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True, vector=True)
+        self.assertListEqual(distance, [0, 0])
 
     def test_case_on_out(self):
         """
@@ -47,8 +71,14 @@ class TestDistancePointToLineSegmentFunction(unittest.TestCase):
         """
         point = [-1, 0]
         distance = point_to_line_segment(point, self.line_point_1, self.line_point_2)
-        self.assertAlmostEqual(distance, 1, places=2)
+        self.assertEqual(distance, 1)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, vector=True)
+        self.assertListEqual(distance, [1, 0])
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True)
+        self.assertEqual(distance, None)
+        distance = point_to_line_segment(point, self.line_point_1, self.line_point_2, perpendicular_only=True, vector=True)
+        self.assertEqual(distance, None)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

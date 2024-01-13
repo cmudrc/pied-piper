@@ -1,38 +1,75 @@
 import numpy as np
 
+from piperabm.tools.linear_algebra import vector as vc
+
 
 def point_to_line_segment(
-    point: list,
-    line_point_1: list,
-    line_point_2: list
-):
-    """
-    Calculate perpendicular distance between point and line segment
-    """
-    point = np.array(point)
-    line_point_1 = np.array(line_point_1)
-    line_point_2 = np.array(line_point_2)
+        point,
+        line_point_1,
+        line_point_2,
+        perpendicular_only: bool = False,
+        vector: bool = False,
+        ndarray: bool = False
+    ):
+    result = None
 
-    # Normalized tangent vector
-    delta_vector = line_point_2 - line_point_1
-    delta = np.divide(delta_vector, np.linalg.norm(delta_vector))
+    x = point[0]
+    y = point[1]
+    x1 = line_point_1[0]
+    y1 = line_point_1[1]
+    x2 = line_point_2[0]
+    y2 = line_point_2[1]
 
-    # Signed parallel distance components
-    s = np.dot(line_point_1 - point, delta)
-    t = np.dot(point - line_point_2, delta)
+    A = x - x1
+    B = y - y1
+    C = x2 - x1
+    D = y2 - y1
 
-    # Clamped parallel distance
-    h = np.maximum.reduce([s, t, 0])
+    dot = A * C + B * D
+    len_sq = C * C + D * D
+    param = -1
+    if len_sq != 0:  # in case of 0 length line
+        param = dot / len_sq
 
-    # Perpendicular distance component
-    c = np.cross(point - line_point_1, delta)
+    xx = None
+    yy = None
+    if perpendicular_only is False:
+        if param < 0:
+            xx = x1
+            yy = y1
+        elif param > 1:
+            xx = x2
+            yy = y2
+        else:
+            xx = x1 + param * C
+            yy = y1 + param * D
+    elif perpendicular_only is True:
+        if param <= 1 and \
+            param >= 0:
+            xx = x1 + param * C
+            yy = y1 + param * D
+        
+    if xx is not None and \
+        yy is not None:
+        dx = xx - x
+        dy = yy - y
+        result = [dx, dy]
+    
+    if result is not None:
+        if vector is True:
+            if ndarray is True:
+                result = np.array(result)
+            else:
+                pass
+        else:
+            result = vc.magnitude(result)
 
-    return np.hypot(h, np.linalg.norm(c))
+    return result
 
 
 if __name__ == "__main__":
     point = [-3, 4]
     line_point_1 = [0, 0]
     line_point_2 = [2, 0]
-    distance = point_to_line_segment(point, line_point_1, line_point_2)
-    print(distance)
+    vector = point_to_line_segment(point, line_point_1, line_point_2)
+    print(vector)

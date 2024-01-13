@@ -1,5 +1,4 @@
-from .distance import *
+from .distance import distance
 from .intersect import *
 
-from .move import move_coordinate, move_point
-from .rotate import rotate_coordinate, rotate_point
+from .rotate import rotate

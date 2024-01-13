@@ -1,22 +1,24 @@
-import numpy as np
+from piperabm.tools.linear_algebra.refine import refine
+from piperabm.tools.linear_algebra import vector as vc
 
 
-def point_to_point(
-    point_1,
-    point_2
-):
-    """
-    Calculate the Euclidean distance between two points
-    """
-    if isinstance(point_1, list):
-        point_1 = np.array(point_1)
-    if isinstance(point_2, list):
-        point_2 = np.array(point_2)
-    return np.sqrt(np.sum(np.square(point_2 - point_1)))
+def point_to_point(point_1, point_2, vector=False, ndarray=False):
+    result = None
+    point_1 = refine(point_1)
+    point_2 = refine(point_2)
+    
+    if vector is True:
+        result = point_2 - point_1
+        if ndarray is False:
+            result = list(result)
+    else:
+        result = vc.magnitude(point_to_point(point_1, point_2, vector=True, ndarray=True))
+
+    return result
 
 
-if __name__ == "__main__":
-    point_1 = [0, 3]
-    point_2 = [4, 0]
+if __name__ == '__main__':
+    point_1 = [0, 0]
+    point_2 = [3, 4]
     distance = point_to_point(point_1, point_2)
     print(distance)

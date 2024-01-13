@@ -2,7 +2,9 @@ import numpy as np
 
 from piperabm.infrastructure.grammar.rules.rule import Rule
 from piperabm.infrastructure import Road
-from piperabm.tools.coordinate.distance import point_to_line_segment_vector, vector_magnitude
+from piperabm.tools.coordinate import distance as ds
+from piperabm.tools.linear_algebra import vector as vc
+#from piperabm.tools.coordinate.distance import point_to_line_segment_vector, vector_magnitude
 
 
 class Rule_4(Rule):
@@ -23,18 +25,19 @@ class Rule_4(Rule):
             distances = []
             for edge_index in self.edges:
                 edge_item = self.get(edge_index)
-                distance_vector = point_to_line_segment_vector(
+                distance_vector = ds.point_to_line(
                     point=node_item.pos,
-                    line=[edge_item.pos_1, edge_item.pos_2]
+                    line=[edge_item.pos_1, edge_item.pos_2],
+                    segment=True,
+                    vector=True
                 )
                 distances.append([edge_index, distance_vector])
-            #print(distances)
 
             smallest_distance = None
             
             for element in distances:
                 distance_vector = element[1]
-                distance = vector_magnitude(distance_vector)
+                distance = vc.magnitude(distance_vector)
                 if smallest_distance is None:
                     smallest_distance = distance
                     smallest_distance_vector = distance_vector

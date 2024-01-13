@@ -1,6 +1,6 @@
 from piperabm.infrastructure.grammar.rules.rule import Rule
 from piperabm.infrastructure import Road
-from piperabm.tools.coordinate.distance import point_to_point, point_to_line_segment
+from piperabm.tools.coordinate import distance as ds
 
 
 class Rule_1(Rule):
@@ -13,9 +13,19 @@ class Rule_1(Rule):
         super().__init__(model, name)
 
     def check(self, node_item, edge_item):
-        distance = point_to_line_segment(node_item.pos, edge_item.pos_1, edge_item.pos_2)
-        distance_1 = point_to_point(node_item.pos, edge_item.pos_1)
-        distance_2 = point_to_point(node_item.pos, edge_item.pos_2)
+        distance = ds.point_to_line(
+            point=node_item.pos,
+            line=[edge_item.pos_1, edge_item.pos_2],
+            segment=True
+        )
+        distance_1 = ds.point_to_point(
+            point_1=node_item.pos,
+            point_2=edge_item.pos_1
+        )
+        distance_2 = ds.point_to_point(
+            point_1=node_item.pos,
+            point_2=edge_item.pos_2
+        )
         return distance is not None and \
             distance < self.proximity_radius and \
             distance_1 > self.proximity_radius and \

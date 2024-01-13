@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from piperabm.tools.coordinate.rotate import rotate_coordinate
+from piperabm.tools.coordinate import rotate
 
 
 class TestRotateCoordinateFunction(unittest.TestCase):

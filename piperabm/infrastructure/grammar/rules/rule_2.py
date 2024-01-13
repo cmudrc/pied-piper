@@ -1,6 +1,6 @@
 from piperabm.infrastructure.grammar.rules.rule import Rule
 from piperabm.infrastructure import Road
-from piperabm.tools.coordinate.distance import point_to_point, point_to_line, point_to_line_segment
+from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.coordinate.intersect import line_line
 
 
@@ -19,10 +19,10 @@ class Rule_2(Rule):
 
         # Check if the edges are not parallel
         if intersection is not None:
-            distance_1 = point_to_point(intersection, edge_item.pos_1)
-            distance_2 = point_to_point(intersection, edge_item.pos_2)
-            other_distance_1 = point_to_point(intersection, other_edge_item.pos_1)
-            other_distance_2 = point_to_point(intersection, other_edge_item.pos_2)
+            distance_1 = ds.point_to_point(intersection, edge_item.pos_1)
+            distance_2 = ds.point_to_point(intersection, edge_item.pos_2)
+            other_distance_1 = ds.point_to_point(intersection, other_edge_item.pos_1)
+            other_distance_2 = ds.point_to_point(intersection, other_edge_item.pos_2)
             length = edge_item.length_linear
             other_length = other_edge_item.length_linear
 

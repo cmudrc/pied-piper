@@ -1,6 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.degradation import Degradation
-from piperabm.tools.coordinate.distance import point_to_point
+from piperabm.tools.coordinate import distance as ds
 
 
 class Road(PureObject):
@@ -40,7 +40,7 @@ class Road(PureObject):
         '''
         result = None
         if self.pos_1 is not None and self.pos_2 is not None:
-            result = point_to_point(self.pos_1, self.pos_2)
+            result = ds.point_to_point(self.pos_1, self.pos_2)
         return result
 
     @property

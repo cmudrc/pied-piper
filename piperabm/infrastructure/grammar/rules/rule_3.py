@@ -1,5 +1,5 @@
 from piperabm.infrastructure.grammar.rules.rule import Rule
-from piperabm.tools.coordinate.distance import point_to_point
+from piperabm.tools.coordinate import distance as ds
 
 
 class Rule_3(Rule):
@@ -12,10 +12,22 @@ class Rule_3(Rule):
         super().__init__(model, name)
 
     def check(self, edge_item, other_edge_item):
-        distance_1_1 = point_to_point(edge_item.pos_1, other_edge_item.pos_1)
-        distance_1_2 = point_to_point(edge_item.pos_1, other_edge_item.pos_2)
-        distance_2_1 = point_to_point(edge_item.pos_2, other_edge_item.pos_1)
-        distance_2_2 = point_to_point(edge_item.pos_2, other_edge_item.pos_2)
+        distance_1_1 = ds.point_to_point(
+            point_1=edge_item.pos_1,
+            point_2=other_edge_item.pos_1
+        )
+        distance_1_2 = ds.point_to_point(
+            point_1=edge_item.pos_1,
+            point_2=other_edge_item.pos_2
+        )
+        distance_2_1 = ds.point_to_point(
+            point_1=edge_item.pos_2,
+            point_2=other_edge_item.pos_1
+        )
+        distance_2_2 = ds.point_to_point(
+            point_1=edge_item.pos_2,
+            point_2=other_edge_item.pos_2
+        )
         distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
         distances = sorted(distances)
         distances = distances[:2]
