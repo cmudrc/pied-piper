@@ -7,7 +7,8 @@ from copy import deepcopy
 import os
 
 from piperabm.tools.lattice.conditions import *
-from piperabm.tools.coordinate import rotate_point, move_point
+#from piperabm.tools.coordinate import rotate_point, move_point
+from piperabm.tools.coordinate import rotate
 from piperabm.tools.symbols import SYMBOLS
 
 
@@ -221,7 +222,8 @@ class Lattice:
         self,
         x_size: float = 1,
         y_size: float = 1,
-        rotation: float = 0,
+        angle: float = 0,
+        unit: str = 'degree',
         vector_zero: list = [0, 0]
     ):
         result = []
@@ -229,12 +231,18 @@ class Lattice:
         for edge in edges:
             pos_1 = np.array([edge[0][0] * x_size, edge[0][1] * y_size])
             pos_2 = np.array([edge[1][0] * x_size, edge[1][1] * y_size])
-            pos_1 = move_point(pos_1, vector_zero)
-            pos_2 = move_point(pos_2, vector_zero)
-            pos_1 = list(pos_1)
-            pos_2 = list(pos_2)
-            pos_1 = rotate_point(pos_1, rotation)
-            pos_2 = rotate_point(pos_2, rotation)
+            pos_1 = pos_1 + np.array(vector_zero)
+            pos_2 = pos_2 + np.array(vector_zero)
+            #pos_1 = move_point(pos_1, vector_zero)
+            #pos_2 = move_point(pos_2, vector_zero)
+            #pos_1 = list(pos_1)
+            #pos_2 = list(pos_2)
+            pos_1 = rotate.z(pos_1, angle, unit, rotate='vector')
+            pos_1 = pos_1[:2]
+            #pos_1 = rotate_point(pos_1, rotation)
+            pos_2 = rotate.z(pos_2, angle, unit, rotate='vector')
+            pos_2 = pos_2[:2]
+            #pos_2 = rotate_point(pos_2, rotation)
             result.append([pos_1, pos_2])
         return result
     

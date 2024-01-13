@@ -113,7 +113,8 @@ class TestLatticeClass_2(unittest.TestCase):
         edges = self.lattice.to_pos(
             x_size=10,
             y_size=10,
-            rotation=np.pi/2,
+            angle=np.pi/2,
+            unit='radian',
             vector_zero=[1, 0]
         )
         poses = edges[0]
