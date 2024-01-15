@@ -67,9 +67,9 @@ class TestLatticeClass_0(unittest.TestCase):
         self.assertEqual(self.lattice.max_length, 7)
         self.assertEqual(self.lattice.length_ratio, 1)
 
-    def test_not_edges(self):
-        not_edges = self.lattice.not_edges
-        self.assertEqual(len(not_edges), 0)
+    def test_missing_edges(self):
+        missing_edges = self.lattice.missing_edges
+        self.assertEqual(len(missing_edges), 0)
 
     def test_components(self):
         self.assertEqual(self.lattice.components, 1)
@@ -120,9 +120,9 @@ class TestLatticeClass_1(unittest.TestCase):
         self.assertEqual(self.lattice.max_length, 17)
         self.assertAlmostEqual(self.lattice.length_ratio, 9/17, places=2)
 
-    def test_not_edges(self):
-        not_edges = self.lattice.not_edges
-        self.assertEqual(len(not_edges), 8)
+    def test_missing_edges(self):
+        missing_edges = self.lattice.missing_edges
+        self.assertEqual(len(missing_edges), 8)
 
     def test_components(self):
         self.assertEqual(self.lattice.components, 1)

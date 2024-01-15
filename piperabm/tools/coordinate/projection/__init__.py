@@ -1,1 +1,1 @@
-from .latlong_xy import latlong_to_xy, xy_to_latlong
+from .latlong_xy import latlong_xy, xy_latlong

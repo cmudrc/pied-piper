@@ -40,7 +40,7 @@ class Lattice:
         return list(self.G.edges())
     
     @property
-    def not_edges(self):
+    def missing_edges(self):
         """
         Return all missing edges from the imperfect lattice
         """
@@ -267,7 +267,7 @@ class Lattice:
                     lattice.remove_edge(*edge)
                     #print(edge, ' removed.')
             else: # add edge
-                edges = lattice.not_edges
+                edges = lattice.missing_edges
                 edge = random.choice(edges)
                 test_lattice = deepcopy(lattice)
                 test_lattice.add_edge(*edge)

@@ -1,11 +1,15 @@
 import numpy as np
 
-from piperabm.tools.linear_algebra import normalize
+from piperabm.tools.linear_algebra import vector as vc
 
 
-def latlong_to_xyz(latitude_degree, longitude_degree, radius=1):
+def latlong_xyz(latitude_degree=0, longitude_degree=0, radius=1):
     """
-    Create a 3D vector based on longitude and latitude.
+    Convert geographic coordinates (latitude, longitude) to 3D Cartesian coordinates (x, y, z).
+
+    :param latitude_degree: The latitude of the point in degrees.
+    :param longitude_degree: The longitude of the point in degrees.
+    :return: A numpy array representing a vector (x, y, z).
     """
     # Convert angles to radians
     latitude_rad = np.radians(latitude_degree)
@@ -19,7 +23,7 @@ def latlong_to_xyz(latitude_degree, longitude_degree, radius=1):
     return np.array([x, y, z])
 
 
-def xyz_to_latlong(vector):
+def xyz_latlong(vector):
     """
     Convert 3D Cartesian coordinates (x, y, z) to geographic coordinates (latitude, longitude).
 
@@ -30,7 +34,7 @@ def xyz_to_latlong(vector):
         vector = np.array(vector)
 
     # Normalize the vector to ensure it has a magnitude of 1
-    x, y, z = normalize(vector)
+    x, y, z = vc.normalize(vector)
 
     # Calculate latitude and longitude
     latitude_degree = np.degrees(np.arcsin(z))
@@ -39,11 +43,11 @@ def xyz_to_latlong(vector):
     return latitude_degree, longitude_degree
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     latitude = 70
     longitude = -150
-    vector = latlong_to_xyz(latitude, longitude)
+    vector = latlong_xyz(latitude, longitude)
     print(vector)
-    latitude, longitude = xyz_to_latlong(vector)
+    latitude, longitude = xyz_latlong(vector)
     print(latitude, longitude)
     

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from piperabm.tools.coordinate.projection.latlong_xy import xy_to_latlong
+from piperabm.tools.coordinate.projection.latlong_xy import xy_latlong
 
 
 """
@@ -24,7 +24,7 @@ ys = ys_mesh.flatten()
 latitudes = []
 longitudes = []
 for i in range(num ** 2):
-    latitude, longitude = xy_to_latlong(latitude_0, longitude_0, xs[i], ys[i])
+    latitude, longitude = xy_latlong(latitude_0, longitude_0, xs[i], ys[i])
     latitudes.append(latitude)
     longitudes.append(longitude)
 

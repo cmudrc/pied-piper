@@ -6,7 +6,8 @@ from piperabm.tools.lattice.samples import lattice_0 as lattice
 poses = lattice.to_pos(
     x_size=10,
     y_size=10,
-    rotation=0.2,
+    angle=0.2,
+    unit='radian',
     vector_zero=[5, 5]
 )
 
