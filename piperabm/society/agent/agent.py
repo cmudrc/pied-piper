@@ -14,7 +14,7 @@ class Agent(PureObject):
     def __init__(
         self,
         index = None,
-        name: str = "",
+        name: str = '',
         home: int = None,
         transportation: Transportation = None,
         resources: Resources = None,
@@ -24,33 +24,33 @@ class Agent(PureObject):
         socioeconomic_status: float = 1,
     ):
         super().__init__()
-        """ binding """
-        self.index = index
-        self.model = None  # binding
+        """ Binding to the model """
+        self.model = None
 
-        """ decision making """
+        """ Decision making """
         #self.brain = Brain()
         self.brain = None
 
-        """ identity """
+        """ Identity """
+        self.index = index
         self.name = name
         self.alive = True
         self.death_reason = None
         self.home = home
         self.socioeconomic_status = socioeconomic_status
         
-        self.section = "society"
-        self.category = "node"
-        self.type = "agent"
+        self.section = 'society'
+        self.category = 'node'
+        self.type = 'agent'
 
-        """ transporation """
+        """ Transporation """
         if transportation is None: transportation = WALK
         self.transportation = transportation
 
-        """ queue """
+        """ Queue """
         self.queue = Queue()
 
-        """ resource """
+        """ Resources """
         if resources is None:
             resources = deepcopy(RESOURCES_DEFAULT)
         self.resources = resources
@@ -83,16 +83,20 @@ class Agent(PureObject):
     @property
     def demand(self):
         return self.resources.demand
+    
+    def utility(self, resource_name):
+        return self.resources(name=resource_name)
 
     def update(self, date_start: Date = Date.today(), date_end: Date = Date.today()) -> None:
         """
         Update agent in time
         """
-        """ consumption and income """
         if self.alive is True:
             duration = date_end - date_start
-            other_rates = [] ###### from action in queue
+            """ Income """
             self.balance += self.income * duration.total_seconds()
+            """ Consume resources """
+            other_rates = [] ###### from action in queue
             self.consume_resources(duration, other_rates)
             self.check_liveness()
 
@@ -104,7 +108,7 @@ class Agent(PureObject):
 
     def consume_resources(self, duration, other_rates: list = []):
         """
-        Create ResourceDelta object based on duration and fuel_rate
+        Create ResourceDelta object based on duration and fuel_rate(s)
         """
         if isinstance(duration, DeltaTime):
             duration = duration.total_seconds()
@@ -117,42 +121,42 @@ class Agent(PureObject):
 
     def serialize(self) -> dict:
         return {
-            "name": self.name,
-            "alive": self.alive,
-            "death_reason": self.death_reason,
-            "home": self.home,
-            "transportation": self.transportation.serialize(),
-            "queue": self.queue.serialize(),
-            "resources": self.resources.serialize(),
-            "fuels_rate_idle": self.fuels_rate_idle.serialize(),
-            "balance": self.balance,
-            "income": self.income,
-            "type": self.type
+            'name': self.name,
+            'alive': self.alive,
+            'death_reason': self.death_reason,
+            'home': self.home,
+            'transportation': self.transportation.serialize(),
+            'queue': self.queue.serialize(),
+            'resources': self.resources.serialize(),
+            'fuels_rate_idle': self.fuels_rate_idle.serialize(),
+            'balance': self.balance,
+            'income': self.income,
+            'type': self.type
         }
 
     def deserialize(self, dictionary: dict) -> None:
-        self.name = dictionary["name"]
-        self.alive = dictionary["alive"]
-        self.death_reason = dictionary["death_reason"]
-        self.home = dictionary["home"]
+        self.name = dictionary['name']
+        self.alive = dictionary['alive']
+        self.death_reason = dictionary['death_reason']
+        self.home = dictionary['home']
         self.transportation = Transportation()
-        self.transportation.deserialize(dictionary["transportation"])
+        self.transportation.deserialize(dictionary['transportation'])
         self.queue = Queue()
-        self.queue.deserialize(dictionary["queue"])
+        self.queue.deserialize(dictionary['queue'])
         self.resources = Resources()
-        self.resources.deserialize(dictionary["resource"])
+        self.resources.deserialize(dictionary['resource'])
         self.fuels_rate_idle = Resources()
-        self.fuels_rate_idle.deserialize(dictionary["fuels_rate_idle"])
-        self.balance = dictionary["balance"]
-        self.income = dictionary["income"]
-        self.type = dictionary["type"]
+        self.fuels_rate_idle.deserialize(dictionary['fuels_rate_idle'])
+        self.balance = dictionary['balance']
+        self.income = dictionary['income']
+        self.type = dictionary['type']
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from piperabm.resources.samples import resources_0
 
     agent = Agent(
-        name="John",
+        name='John',
         resources=resources_0
     )
     agent.update()

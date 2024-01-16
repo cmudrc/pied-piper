@@ -1,4 +1,4 @@
-from piperabm.tools.linear_algebra.array_arg_minmax import array_argmax
+from piperabm.BASEMENT.array_arg_minmax import array_argmax
 
 
 class Trade:

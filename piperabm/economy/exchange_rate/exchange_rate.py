@@ -28,6 +28,12 @@ class ExchangeRate(PureObject):
             if i != 0:
                 rate *= self.G[nodes[i-1]][nodes[i]]["rate"]
         return rate
+    
+    def price(self, name: str):
+        """
+        Return price of the source
+        """
+        return self.rate(source=name, target='currency')
 
     @property
     def names(self):

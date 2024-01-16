@@ -86,7 +86,7 @@ class Resources(PureObject):
             real_demand = real_demands.get(name)
             demand.cutoff(real_demand.amount)
         return demands
-    
+    '''
     @property
     def max(self):
         """
@@ -100,6 +100,10 @@ class Resources(PureObject):
             )
             result.add_resource(resource_max)
         return result
+    '''
+    def max(self, resource_name):
+        resource = self.get(resource_name)
+        return resource.max
 
     def value(self, exchange_rate: ExchangeRate):
         """
