@@ -16,6 +16,7 @@ class TestMatterClass(unittest.TestCase):
         dictionary = self.food_1.serialize()
         matter = Matter()
         matter.deserialize(dictionary)
+        self.assertEqual(self.food_1, matter)
 
     def test_value(self):
         value = self.food_1.value(exchange_rate)
@@ -73,17 +74,17 @@ class TestMatterClass(unittest.TestCase):
         self.assertEqual(result.amount, 60 * 15)
     
     def test_truediv_0(self):
-        """ Matter = Matter / (int, flaot) """
+        """ (int, flaot) = Matter / (int, flaot) """
         result = self.food_1 / 15
         self.assertEqual(self.food_1.amount, 60)
-        self.assertEqual(result.amount, 60 / 15)
+        self.assertEqual(result, 60 / 15)
 
     def test_truediv_1(self):
-        """ Matter = Matter / Matter """
+        """ (int, flaot) = Matter / Matter """
         result = self.food_1 / self.food_2
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(self.food_2.amount, 15)
-        self.assertEqual(result.amount, 60 / 15)
+        self.assertEqual(result, 60 / 15)
 
 
 if __name__ == '__main__':

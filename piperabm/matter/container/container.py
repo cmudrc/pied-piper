@@ -105,7 +105,7 @@ class Container(PureObject):
 
         if isinstance(other, (int, float)):
             new_amount = self.amount + other
-            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            self.matter.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
             remainder = Matter(
                 name=self.name,
                 amount=remainder
@@ -137,7 +137,7 @@ class Container(PureObject):
 
         if isinstance(other, (int, float)):
             new_amount = self.amount - other
-            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
+            self.matter.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
             remainder = Matter(
                 name=self.name,
                 amount=remainder
@@ -146,7 +146,7 @@ class Container(PureObject):
         
         elif isinstance(other, Matter):
             if other.name == self.name:
-                remainder = self.__add__(other.amount)
+                remainder = self.__sub__(other.amount)
                 return remainder
             else:
                 raise ValueError
@@ -169,17 +169,22 @@ class Container(PureObject):
     def __mul__(self, other):
 
         if isinstance(other, (int, float)):
-            self.amount *= other
-            self.min *= other
-            self.max *= other
-
+            return Container(
+                matter=Matter(
+                    name=self.name,
+                    amount=self.amount*other
+                ),
+                min=self.min*other,
+                max=self.max*other
+            )
+        
         else:
             raise ValueError
         
     def __truediv__(self, other):
 
         if isinstance(other, (int, float)):
-            self.__mul__(1 / other)
+            return self.__mul__(1 / other)
         
         elif isinstance(other, Matter):
             if other.name == self.name:

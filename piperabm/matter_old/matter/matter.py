@@ -31,15 +31,6 @@ class Container(PureObject):
         if self.max < self.min:
             raise ValueError
 
-        self.matter = Matter(name, amount)
-
-    @property
-    def name(self):
-        return self.matter.name
-    
-    @property
-    def amount(self):
-        return self.matter.amount
 
     @property
     def source(self):

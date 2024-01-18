@@ -91,8 +91,7 @@ class Matter(PureObject):
         
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
-            new_amount = self.amount / other
-            return Matter(name=self.name, amount=new_amount)
+            return self.amount / other
         elif isinstance(other, Matter):
             if other.name == self.name:
                 return self.__truediv__(other.amount)
