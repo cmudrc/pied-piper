@@ -3,7 +3,8 @@ from piperabm.matter import Matter
 
 matter = Matter(
     name='water',
-    amount=10
+    amount=70,
+    max=100,
 )
 
 

@@ -3,8 +3,7 @@ from piperabm.matter import Matter
 
 matter = Matter(
     name='energy',
-    amount=60,
-    max=100,
+    amount=5
 )
 
 

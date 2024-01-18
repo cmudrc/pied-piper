@@ -2,8 +2,9 @@ from piperabm.matter import Matter
 
 
 matter = Matter(
-    name='water',
-    amount=10
+    name='food',
+    amount=30,
+    max=100,
 )
 
 

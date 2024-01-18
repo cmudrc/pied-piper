@@ -1,2 +1,1 @@
-from .matter import Matter
 from .container import Container
