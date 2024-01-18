@@ -3,6 +3,9 @@ from piperabm.economy import ExchangeRate
 
 
 class DeltaMatter(PureObject):
+    """
+    Represent a change in matter
+    """
 
     type = 'delta matter'
 
@@ -20,7 +23,7 @@ class DeltaMatter(PureObject):
         """
         return self.amount * exchange_rate.price(name=self.name)
     
-    def of_value(self, value, exchange_rate: ExchangeRate):
+    def from_value(self, value, exchange_rate: ExchangeRate):
         """
         Amount based on value
         """
@@ -40,65 +43,53 @@ class DeltaMatter(PureObject):
         self.name = dictionary['name']
         self.amount = dictionary['amount']
 
-    def add(self, other):
+    def __add__(self, other):
         if isinstance(other, (int, float)):
             new_amount = self.amount + other
             return DeltaMatter(name=self.name, amount=new_amount)
         elif isinstance(other, DeltaMatter):
             if other.name == self.name:
-                return self.add(other.amount)
+                return self.__add__(other.amount)
             else:
                 raise ValueError
         else:
             raise ValueError
         
-    def sub(self, other):
+    def __sub__(self, other):
         if isinstance(other, (int, float)):
             new_amount = self.amount - other
             return DeltaMatter(name=self.name, amount=new_amount)
         elif isinstance(other, DeltaMatter):
             if other.name == self.name:
-                return self.sub(other.amount)
+                return self.__sub__(other.amount)
             else:
                 raise ValueError
         else:
             raise ValueError
         
-    def mul(self, other):
+    def __mul__(self, other):
         if isinstance(other, (int, float)):
             new_amount = self.amount * other
             return DeltaMatter(name=self.name, amount=new_amount)
         elif isinstance(other, DeltaMatter):
             if other.name == self.name:
-                return self.mul(other.amount)
+                return self.__mul__(other.amount)
             else:
                 raise ValueError
         else:
             raise ValueError
         
-    def truediv(self, other):
+    def __truediv__(self, other):
         if isinstance(other, (int, float)):
             new_amount = self.amount / other
             return DeltaMatter(name=self.name, amount=new_amount)
         elif isinstance(other, DeltaMatter):
             if other.name == self.name:
-                return self.truediv(other.amount)
+                return self.__truediv__(other.amount)
             else:
                 raise ValueError
         else:
             raise ValueError
-        
-    def __add__(self, other):
-        return self.add(other)
-    
-    def __sub__(self, other):
-        return self.sub(other)
-
-    def __mul__(self, other):
-        return self.mul(other)
-        
-    def __truediv__(self, other):
-        return self.truediv(other)
         
 
 if __name__ == '__main__':

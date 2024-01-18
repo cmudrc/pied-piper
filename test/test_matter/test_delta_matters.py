@@ -16,12 +16,69 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.delta_food = deepcopy(delta_matter_3)
         self.delta_water = deepcopy(delta_matter_4)
 
+    def test_value(self):
+        """ total values """
+        value = self.delta_matters_0.value(exchange_rate)
+        self.assertEqual(value, 90)
+
+        """ value by name """
+        values = self.delta_matters_0.value(exchange_rate, total=False)
+        expected_result = {
+            'food': 50,
+            'water': 12,
+            'energy': 28,
+        }
+        self.assertDictEqual(values, expected_result)
+
+    def test_from_values(self):
+        values = {
+            'food': 50,
+            'water': 12,
+            'energy': 28,
+        }
+        delta_matters = DeltaMatters()
+        delta_matters.from_values(values, exchange_rate)
+        self.assertEqual(delta_matters, self.delta_matters_0)
+
+    def test_amounts(self):
+        expected_result = {
+            'food': 8,
+            'water': 9,
+            'energy': 10,
+        }
+        self.assertEqual(self.delta_matters_1.amounts(), expected_result)
+
+    def test_from_amounts(self):
+        amounts = {
+            'food': 8,
+            'water': 9,
+            'energy': 10,
+        }
+        delta_matters = DeltaMatters()
+        delta_matters.from_amounts(amounts)
+        self.assertEqual(delta_matters, self.delta_matters_1)
+
     def test_serialization(self):
         dictionary = self.delta_matters_0.serialize()
         delta_matters = DeltaMatters()
         delta_matters.deserialize(dictionary)
 
-    def test_add(self):
+    def test_add_0(self):
+        """ DeltaMatters + dict """
+        dictionary = {
+            'food': 8,
+            'water': 9,
+            'energy': 10,
+        }
+        result = self.delta_matters_0 + dictionary
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(result('food'), 13)
+        self.assertEqual(result('water'), 15)
+        self.assertEqual(result('energy'), 17)
+
+    def test_add_1(self):
         """ DeltaMatters + DeltaMatter """
         result = self.delta_matters_0 + self.delta_food
         self.assertEqual(self.delta_matters_0('food'), 5)
@@ -32,6 +89,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 6)
         self.assertEqual(result('energy'), 7)
 
+    def test_add_2(self):
         """ DeltaMatters + DeltaMatters """
         result = self.delta_matters_0 + self.delta_matters_1
         self.assertEqual(self.delta_matters_0('food'), 5)
@@ -43,93 +101,6 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('food'), 13)
         self.assertEqual(result('water'), 15)
         self.assertEqual(result('energy'), 17)
-
-    def test_sub(self):
-        """ DeltaMatters - DeltaMatter """
-        result = self.delta_matters_0 - self.delta_food
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(self.delta_food.amount, 8)
-        self.assertEqual(result('food'), -3)
-        self.assertEqual(result('water'), 6)
-        self.assertEqual(result('energy'), 7)
-
-        """ DeltaMatters - DeltaMatters """
-        result = self.delta_matters_0 - self.delta_matters_1
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(self.delta_matters_1('food'), 8)
-        self.assertEqual(self.delta_matters_1('water'), 9)
-        self.assertEqual(self.delta_matters_1('energy'), 10)
-        self.assertEqual(result('food'), -3)
-        self.assertEqual(result('water'), -3)
-        self.assertEqual(result('energy'), -3)
-
-    def test_mul(self):
-        """ DeltaMatters * (int, flaot) """
-        result = self.delta_matters_0 * 8
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(result('food'), 40)
-        self.assertEqual(result('water'), 48)
-        self.assertEqual(result('energy'), 56)
-
-        """ DeltaMatters * DeltaMatter """
-        result = self.delta_matters_0 * self.delta_food
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(self.delta_food.amount, 8)
-        self.assertEqual(result('food'), 40)
-        self.assertEqual(result('water'), 6)
-        self.assertEqual(result('energy'), 7)
-
-        """ DeltaMatters * DeltaMatters """
-        result = self.delta_matters_0 * self.delta_matters_1
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(self.delta_matters_1('food'), 8)
-        self.assertEqual(self.delta_matters_1('water'), 9)
-        self.assertEqual(self.delta_matters_1('energy'), 10)
-        self.assertEqual(result('food'), 40)
-        self.assertEqual(result('water'), 54)
-        self.assertEqual(result('energy'), 70)
-
-    def test_truediv(self):
-        """ DeltaMatters / (int, flaot) """
-        result = self.delta_matters_0 / 8
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(result('food'), 5/8)
-        self.assertEqual(result('water'), 6/8)
-        self.assertEqual(result('energy'), 7/8)
-
-        """ DeltaMatters / DeltaMatter """
-        result = self.delta_matters_0 / self.delta_food
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(self.delta_food.amount, 8)
-        self.assertEqual(result('food'), 5/8)
-        self.assertEqual(result('water'), 6)
-        self.assertEqual(result('energy'), 7)
-
-        """ DeltaMatters / DeltaMatters """
-        result = self.delta_matters_0 / self.delta_matters_1
-        self.assertEqual(self.delta_matters_0('food'), 5)
-        self.assertEqual(self.delta_matters_0('water'), 6)
-        self.assertEqual(self.delta_matters_0('energy'), 7)
-        self.assertEqual(self.delta_matters_1('food'), 8)
-        self.assertEqual(self.delta_matters_1('water'), 9)
-        self.assertEqual(self.delta_matters_1('energy'), 10)
-        self.assertEqual(result('food'), 5/8)
-        self.assertEqual(result('water'), 6/9)
-        self.assertEqual(result('energy'), 7/10)
 
     def test_sum(self):
         """ sum() """
@@ -145,29 +116,142 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 15)
         self.assertEqual(result('energy'), 17)
 
-    def test_value(self):
-        """ total values """
-        value = self.delta_matters_0.value(exchange_rate)
-        self.assertEqual(value, 90)
-
-        """ value by name """
-        values = self.delta_matters_0.value(exchange_rate, total=False)
-        expected_result = {
-            'food': 50,
-            'water': 12,
-            'energy': 28,
+    def test_sub_0(self):
+        """ DeltaMatters - dict """
+        dictionary = {
+            'food': 8,
+            'water': 9,
+            'energy': 10,
         }
-        self.assertDictEqual(values, expected_result)
+        result = self.delta_matters_0 - dictionary
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(result('food'), -3)
+        self.assertEqual(result('water'), -3)
+        self.assertEqual(result('energy'), -3)
 
-    def test_of_values(self):
-        values = {
-            'food': 50,
-            'water': 12,
-            'energy': 28,
+    def test_sub_1(self):
+        """ DeltaMatters - DeltaMatter """
+        result = self.delta_matters_0 - self.delta_food
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(self.delta_food.amount, 8)
+        self.assertEqual(result('food'), -3)
+        self.assertEqual(result('water'), 6)
+        self.assertEqual(result('energy'), 7)
+
+    def test_sub_2(self):
+        """ DeltaMatters - DeltaMatters """
+        result = self.delta_matters_0 - self.delta_matters_1
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(self.delta_matters_1('food'), 8)
+        self.assertEqual(self.delta_matters_1('water'), 9)
+        self.assertEqual(self.delta_matters_1('energy'), 10)
+        self.assertEqual(result('food'), -3)
+        self.assertEqual(result('water'), -3)
+        self.assertEqual(result('energy'), -3)
+
+    def test_mul_0(self):
+        """ DeltaMatters * (int, flaot) """
+        result = self.delta_matters_0 * 8
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(result('food'), 40)
+        self.assertEqual(result('water'), 48)
+        self.assertEqual(result('energy'), 56)
+
+    def test_mul_1(self):
+        """ DeltaMatters * dict """
+        dictionary = {
+            'food': 8,
+            'water': 9,
+            'energy': 10,
         }
-        delta_matters = DeltaMatters()
-        delta_matters.of_values(values, exchange_rate)
-        self.assertEqual(delta_matters, self.delta_matters_0)
+        result = self.delta_matters_0 * dictionary
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(result('food'), 40)
+        self.assertEqual(result('water'), 54)
+        self.assertEqual(result('energy'), 70)
+
+    def test_mul_2(self):
+        """ DeltaMatters * DeltaMatter """
+        result = self.delta_matters_0 * self.delta_food
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(self.delta_food.amount, 8)
+        self.assertEqual(result('food'), 40)
+        self.assertEqual(result('water'), 6)
+        self.assertEqual(result('energy'), 7)
+
+    def test_mul_3(self):
+        """ DeltaMatters * DeltaMatters """
+        result = self.delta_matters_0 * self.delta_matters_1
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(self.delta_matters_1('food'), 8)
+        self.assertEqual(self.delta_matters_1('water'), 9)
+        self.assertEqual(self.delta_matters_1('energy'), 10)
+        self.assertEqual(result('food'), 40)
+        self.assertEqual(result('water'), 54)
+        self.assertEqual(result('energy'), 70)
+
+    def test_truediv_0(self):
+        """ DeltaMatters / (int, flaot) """
+        result = self.delta_matters_0 / 8
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(result('food'), 5/8)
+        self.assertEqual(result('water'), 6/8)
+        self.assertEqual(result('energy'), 7/8)
+
+    def test_truediv_1(self):
+        """ DeltaMatters * dict """
+        dictionary = {
+            'food': 8,
+            'water': 9,
+            'energy': 10,
+        }
+        result = self.delta_matters_0 / dictionary
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(result('food'), 5/8)
+        self.assertEqual(result('water'), 6/9)
+        self.assertEqual(result('energy'), 7/10)
+
+    def test_truediv_2(self):
+        """ DeltaMatters / DeltaMatter """
+        result = self.delta_matters_0 / self.delta_food
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(self.delta_food.amount, 8)
+        self.assertEqual(result('food'), 5/8)
+        self.assertEqual(result('water'), 6)
+        self.assertEqual(result('energy'), 7)
+
+    def test_truediv_3(self):
+        """ DeltaMatters / DeltaMatters """
+        result = self.delta_matters_0 / self.delta_matters_1
+        self.assertEqual(self.delta_matters_0('food'), 5)
+        self.assertEqual(self.delta_matters_0('water'), 6)
+        self.assertEqual(self.delta_matters_0('energy'), 7)
+        self.assertEqual(self.delta_matters_1('food'), 8)
+        self.assertEqual(self.delta_matters_1('water'), 9)
+        self.assertEqual(self.delta_matters_1('energy'), 10)
+        self.assertEqual(result('food'), 5/8)
+        self.assertEqual(result('water'), 6/9)
+        self.assertEqual(result('energy'), 7/10)
 
 
 if __name__ == '__main__':

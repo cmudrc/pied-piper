@@ -6,6 +6,9 @@ from piperabm.economy import ExchangeRate
 
 
 class DeltaMatters(PureObject):
+    """
+    A container to contain DeltaMatter objects
+    """
 
     type = 'delta matters'
 
@@ -14,9 +17,9 @@ class DeltaMatters(PureObject):
         self.library = {}
         for arg in args:
             if isinstance(arg, DeltaMatter):
-                self.add_delta_matter(arg)
+                self.add(arg)
 
-    def add_delta_matter(self, delta_matter: DeltaMatter):
+    def add(self, delta_matter: DeltaMatter):
         """
         Add new delta_resource to the library
         """
@@ -32,7 +35,7 @@ class DeltaMatters(PureObject):
         """
         for name in names:
             delta_matter = DeltaMatter(name)
-            self.add_delta_matter(delta_matter)
+            self.add(delta_matter)
 
     @property
     def names(self):
@@ -66,15 +69,33 @@ class DeltaMatters(PureObject):
             result = values
         return result
     
-    def of_values(self, values: dict, exchange_rate: ExchangeRate):
+    def from_values(self, values: dict, exchange_rate: ExchangeRate):
         """
         Calculate the amount of each delta_matter based on value and exchange rate
         """
         names = list(values)
         for name in names:
             delta_matter = DeltaMatter(name)
-            delta_matter.of_value(values[name], exchange_rate)
-            self.add_delta_matter(delta_matter)
+            delta_matter.from_value(values[name], exchange_rate)
+            self.add(delta_matter)
+
+    def amounts(self):
+        """
+        Convert to dictionary
+        """
+        result = {}
+        for name in self.names:
+            result[name] = self.__call__(name)
+        return result
+
+    def from_amounts(self, amounts: dict):
+        """
+        Load from dictionary
+        """
+        for name in amounts:
+            amount = amounts[name]
+            delta_matter = DeltaMatter(name, amount)
+            self.add(delta_matter)
 
     def serialize(self) -> dict:
         library_serialized = {}
@@ -94,10 +115,16 @@ class DeltaMatters(PureObject):
             item_serialized = library_serialized[name]
             item = DeltaMatter()
             item.deserialize(item_serialized)
-            self.add_delta_matter(item)
+            self.add(item)
 
-    def add(self, other):
-        if isinstance(other, DeltaMatter):
+    def __add__(self, other):
+
+        if isinstance(other, dict):
+            other_delta_matters = DeltaMatters()
+            other_delta_matters.from_amounts(other)
+            return self.__add__(other_delta_matters)
+        
+        elif isinstance(other, DeltaMatter):
             if other.name in self.names:
                 result = deepcopy(self)
                 result.library[other.name] = self.get(other.name) + other
@@ -106,17 +133,25 @@ class DeltaMatters(PureObject):
                 result = deepcopy(self)
                 result.library[other.name] = other
                 return result
+            
         elif isinstance(other, DeltaMatters):
             result = deepcopy(self)
             for name in other.names:
                 other_delta_matter = other.get(name)
-                result = result.add(other_delta_matter)
+                result = result.__add__(other_delta_matter)
             return result
+        
         else:
             raise ValueError
         
-    def sub(self, other):
-        if isinstance(other, DeltaMatter):
+    def __sub__(self, other):
+
+        if isinstance(other, dict):
+            other_delta_matters = DeltaMatters()
+            other_delta_matters.from_amounts(other)
+            return self.__sub__(other_delta_matters)
+        
+        elif isinstance(other, DeltaMatter):
             if other.name in self.names:
                 result = deepcopy(self)
                 result.library[other.name] = self.get(other.name) - other
@@ -125,21 +160,30 @@ class DeltaMatters(PureObject):
                 result = deepcopy(self)
                 result.library[other.name] = other * -1
                 return result
+            
         elif isinstance(other, DeltaMatters):
             result = deepcopy(self)
             for name in other.names:
                 other_delta_matter = other.get(name)
-                result = result.sub(other_delta_matter)
+                result = result.__sub__(other_delta_matter)
             return result
+        
         else:
             raise ValueError
         
-    def mul(self, other):
+    def __mul__(self, other):
+
         if isinstance(other, (int, float)):
             result = deepcopy(self)
             for name in self.names:
                 result.library[name] = self.get(name) * other
             return result
+        
+        elif isinstance(other, dict):
+            other_delta_matters = DeltaMatters()
+            other_delta_matters.from_amounts(other)
+            return self.__mul__(other_delta_matters)
+        
         elif isinstance(other, DeltaMatter):
             if other.name in self.names:
                 result = deepcopy(self)
@@ -148,21 +192,30 @@ class DeltaMatters(PureObject):
             else:
                 result = deepcopy(self)
                 return result
+            
         elif isinstance(other, DeltaMatters):
             result = deepcopy(self)
             for name in other.names:
                 other_delta_matter = other.get(name)
-                result = result.mul(other_delta_matter)
+                result = result.__mul__(other_delta_matter)
             return result
+        
         else:
             raise ValueError
         
-    def truediv(self, other):
+    def __truediv__(self, other):
+
         if isinstance(other, (int, float)):
             result = deepcopy(self)
             for name in self.names:
                 result.library[name] = self.get(name) / other
             return result
+        
+        elif isinstance(other, dict):
+            other_delta_matters = DeltaMatters()
+            other_delta_matters.from_amounts(other)
+            return self.__truediv__(other_delta_matters)
+        
         elif isinstance(other, DeltaMatter):
             if other.name in self.names:
                 result = deepcopy(self)
@@ -171,26 +224,16 @@ class DeltaMatters(PureObject):
             else:
                 result = deepcopy(self)
                 return result
+            
         elif isinstance(other, DeltaMatters):
             result = deepcopy(self)
             for name in other.names:
                 other_delta_matter = other.get(name)
-                result = result.truediv(other_delta_matter)
+                result = result.__truediv__(other_delta_matter)
             return result
+        
         else:
             raise ValueError
-        
-    def __add__(self, other):
-        return self.add(other)
-    
-    def __sub__(self, other):
-        return self.sub(other)
-
-    def __mul__(self, other):
-        return self.mul(other)
-        
-    def __truediv__(self, other):
-        return self.truediv(other)
         
 
 if __name__ == '__main__':

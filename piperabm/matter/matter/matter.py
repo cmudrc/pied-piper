@@ -5,6 +5,9 @@ from piperabm.tools.symbols import SYMBOLS, serialize_symbol
 
 
 class Matter(PureObject):
+    """
+    Represent matter (in a physical medium)
+    """
 
     type = 'matter'
 
@@ -53,9 +56,7 @@ class Matter(PureObject):
         """
         Calculate monetary value of matters based on exchange rate
         """
-        amount = self.amount * exchange_rate.price(self.name)
-        return amount
-        #return Matter(name=self.name, amount=amount)
+        return self.amount * exchange_rate.price(self.name)
 
     @property
     def is_empty(self):
@@ -77,6 +78,15 @@ class Matter(PureObject):
             result = True
         return result
     
+    def to_delta_matter(self):
+        """
+        Convert Matter object to DeltaMatter object
+        """
+        return DeltaMatter(
+            name=self.name,
+            amount=self.amount
+        )
+    
     def serialize(self) -> dict:
         return {
             'name': self.name,
@@ -94,29 +104,34 @@ class Matter(PureObject):
         self.max = float(dictionary['max'])
         self.min = dictionary['min']
 
-    def add(self, other):
+    def __add__(self, other):
+
         if isinstance(other, (int, float)):
             new_amount = self.amount + other
             self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
-            remainder = Matter(
+            remainder = DeltaMatter(
                 name=self.name,
                 amount=remainder
             )
             return remainder
+        
         elif isinstance(other, DeltaMatter):
             if other.name == self.name:
-                return self.add(other.amount)
+                return self.__add__(other.amount)
             else:
                 raise ValueError
+            
         elif isinstance(other, Matter):
             if other.name == self.name:
-                return self.add(other.amount)
+                return self.__add__(other.amount)
             else:
                 raise ValueError
+            
         else:
             raise ValueError
         
-    def sub(self, other) -> (int, float):
+    def __sub__(self, other):
+
         if isinstance(other, (int, float)):
             new_amount = self.amount - other
             self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
@@ -125,74 +140,51 @@ class Matter(PureObject):
                 amount=remainder
             )
             return remainder
-        elif isinstance(other, DeltaMatter):
-            if other.name == self.name:
-                return self.sub(other.amount)
-            else:
-                raise ValueError
-        elif isinstance(other, Matter):
-            if other.name == self.name:
-                return self.sub(other.amount)
-            else:
-                raise ValueError
-        else:
-            raise ValueError
-
-    def mul(self, other) -> (int, float):
-        if isinstance(other, (int, float)):
-            new_amount = self.amount * other
-            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
-            remainder = Matter(
-                name=self.name,
-                amount=remainder
-            )
-            return remainder
-        elif isinstance(other, DeltaMatter):
-            if other.name == self.name:
-                return self.mul(other.amount)
-            else:
-                raise ValueError
-        elif isinstance(other, Matter):
-            if other.name == self.name:
-                return self.mul(other.amount)
-            else:
-                raise ValueError
-        else:
-            raise ValueError
         
-    def truediv(self, other) -> (int, float):
-        if isinstance(other, (int, float)):
-            new_amount = self.amount / other
-            self.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
-            remainder = Matter(
-                name=self.name,
-                amount=remainder
-            )
-            return remainder
         elif isinstance(other, DeltaMatter):
             if other.name == self.name:
-                return self.truediv(other.amount)
+                return self.__sub__(other.amount)
             else:
                 raise ValueError
+            
         elif isinstance(other, Matter):
             if other.name == self.name:
-                return self.truediv(other.amount)
+                return self.__sub__(other.amount)
             else:
                 raise ValueError
+            
         else:
             raise ValueError
-            
-    def __add__(self, other):
-        return self.add(other)
-    
-    def __sub__(self, other):
-        return self.sub(other)
 
     def __mul__(self, other):
-        return self.mul(other)
+
+        if isinstance(other, (int, float)):
+            self.amount *= other
+            self.min *= other
+            self.max *= other
+
+        else:
+            raise ValueError
         
-    def __truediv__(self, other):
-        return self.truediv(other)
+    def __truediv__(self, other) -> (int, float):
+
+        if isinstance(other, (int, float)):
+            return self.amount / other
+        
+        elif isinstance(other, DeltaMatter):
+            if other.name == self.name:
+                return self.__truediv__(other.amount)
+            else:
+                raise ValueError
+            
+        elif isinstance(other, Matter):
+            if other.name == self.name:
+                return self.__truediv__(other.amount)
+            else:
+                raise ValueError
+            
+        else:
+            raise ValueError
 
 
 def calculate_remainder(amount, max, min):
