@@ -2,9 +2,9 @@ import unittest
 from copy import deepcopy
 
 from piperabm.matter import DeltaMatters
-from piperabm.matter.delta_matters import delta_matters_sum
+from piperabm.matter.matters import delta_matters_sum
 from piperabm.matter.delta_matter.samples import delta_matter_3, delta_matter_4
-from piperabm.matter.delta_matters.samples import delta_matters_0, delta_matters_1
+from piperabm.matter.matters.samples import delta_matters_0, delta_matters_1
 from piperabm.economy.exchange_rate.samples import exchange_rate_1 as exchange_rate
 
 

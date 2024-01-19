@@ -5,7 +5,7 @@ from piperabm.matter import Matters
 from piperabm.matter.matter.samples import matter_0
 from piperabm.matter.matters.samples import matters_0, matters_1
 from piperabm.matter.delta_matter.samples import delta_matter_0
-from piperabm.matter.delta_matters.samples import delta_matters_0
+from piperabm.matter.matters.samples import delta_matters_0
 from piperabm.economy.exchange_rate.samples import exchange_rate_1 as exchange_rate
 
 
