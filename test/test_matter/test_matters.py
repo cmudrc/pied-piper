@@ -157,7 +157,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('energy'), 80 - 5)
     
     def test_mul_0(self):
-        """ Matters = Matters * (int, flaot) """
+        """ Matters = Matters * (int, float) """
         result = self.matters_1 * 10
         self.assertEqual(self.matters_1('food'), 60)
         self.assertEqual(self.matters_1('water'), 70)
@@ -206,7 +206,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('energy'), 80 * 5)
 
     def test_truediv_0(self):
-        """ Matters = Matters / (int, flaot) """
+        """ Matters = Matters / (int, float) """
         result = self.matters_1 / 10
         self.assertEqual(self.matters_1('food'), 60)
         self.assertEqual(self.matters_1('water'), 70)

@@ -25,7 +25,7 @@ class TestMatterClass(unittest.TestCase):
         self.assertEqual(self.food_container_1, container)
 
     def test_add_0(self):
-        """ Matter = Container + (int, flaot) """
+        """ Matter = Container + (int, float) """
         remainder = self.food_container_1 + 60
         self.assertEqual(self.food_container_1.amount, 100)
         self.assertEqual(remainder.amount, 20)
@@ -47,7 +47,7 @@ class TestMatterClass(unittest.TestCase):
         self.assertEqual(new_container.max, 100 + 50)
     
     def test_sub_0(self):
-        """ Matter = Container - (int, flaot) """
+        """ Matter = Container - (int, float) """
         remainder = self.food_container_1 - 80
         self.assertEqual(self.food_container_1.amount, 0)
         self.assertEqual(remainder.amount, 80 - 60)
@@ -68,7 +68,7 @@ class TestMatterClass(unittest.TestCase):
         self.assertEqual(new_container.max, 100 - 50)
     
     def test_mul(self):
-        """ Container = Container * (int, flaot) """
+        """ Container = Container * (int, float) """
         new_container = self.food_container_1 * 10
         self.assertEqual(self.food_container_1.amount, 60)
         self.assertEqual(new_container.amount, 60 * 10)
@@ -76,7 +76,7 @@ class TestMatterClass(unittest.TestCase):
         self.assertEqual(new_container.max, 100 * 10)
     
     def test_truediv_0(self):
-        """ Container = Container / (int, flaot) """
+        """ Container = Container / (int, float) """
         new_container = self.food_container_1 / 10
         self.assertEqual(self.food_container_1.amount, 60)
         self.assertEqual(new_container.amount, 60 / 10)

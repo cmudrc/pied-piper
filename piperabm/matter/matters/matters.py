@@ -20,6 +20,8 @@ class Matters(PureObject):
                 self.add(arg)
             elif isinstance(arg, list):
                 self.zeros(names=arg)
+            elif isinstance(arg, dict):
+                self.from_amounts(arg)
 
     def add(self, matter: Matter):
         """
