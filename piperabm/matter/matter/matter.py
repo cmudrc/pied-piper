@@ -31,12 +31,18 @@ class Matter(PureObject):
         self.amount = value / price
 
     def dict(self):
+        """
+        Return dictionary representation
+        """
         return {
             'name': self.name,
             'amount': self.amount,
         }
     
     def from_dict(self, dictionary: dict):
+        """
+        Load from dictionary representation
+        """
         self.name = dictionary['name']
         self.amount = dictionary['amount']
 
@@ -55,11 +61,15 @@ class Matter(PureObject):
 
     def __add__(self, other):
         if isinstance(other, (int, float)):
+            """ Matter = Matter + (int, flaot) """
             new_amount = self.amount + other
-            return Matter(name=self.name, amount=new_amount)
+            new_matter = Matter(name=self.name, amount=new_amount)
+            return new_matter
         elif isinstance(other, Matter):
+            """ Matter = Matter + Matter """
             if other.name == self.name:
-                return self.__add__(other.amount)
+                new_matter = self.__add__(other.amount)
+                return new_matter
             else:
                 raise ValueError
         else:
@@ -67,11 +77,15 @@ class Matter(PureObject):
         
     def __sub__(self, other):
         if isinstance(other, (int, float)):
+            """ Matter = Matter - (int, flaot) """
             new_amount = self.amount - other
-            return Matter(name=self.name, amount=new_amount)
+            new_matter = Matter(name=self.name, amount=new_amount)
+            return new_matter
         elif isinstance(other, Matter):
+            """ Matter = Matter - Matter """
             if other.name == self.name:
-                return self.__sub__(other.amount)
+                new_matter = self.__sub__(other.amount)
+                return new_matter
             else:
                 raise ValueError
         else:
@@ -79,11 +93,14 @@ class Matter(PureObject):
         
     def __mul__(self, other):
         if isinstance(other, (int, float)):
+            """ Matter = Matter * (int, flaot) """
             new_amount = self.amount * other
             return Matter(name=self.name, amount=new_amount)
         elif isinstance(other, Matter):
+            """ Matter = Matter * Matter """
             if other.name == self.name:
-                return self.__mul__(other.amount)
+                new_amount = self.__mul__(other.amount)
+                return new_amount
             else:
                 raise ValueError
         else:
@@ -91,10 +108,14 @@ class Matter(PureObject):
         
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
-            return self.amount / other
+            """ (int, flaot) = Matter / (int, flaot) """
+            ratio = self.amount / other
+            return ratio
         elif isinstance(other, Matter):
             if other.name == self.name:
-                return self.__truediv__(other.amount)
+                """ (int, flaot) = Matter / Matter """
+                ratio = self.__truediv__(other.amount)
+                return ratio
             else:
                 raise ValueError
         else:
@@ -102,8 +123,8 @@ class Matter(PureObject):
         
 
 if __name__ == '__main__':
-    delta_matter = Matter(
+    matter = Matter(
         name='food',
         amount=5
     )
-    delta_matter.print
+    matter.print

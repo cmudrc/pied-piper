@@ -102,8 +102,8 @@ class Container(PureObject):
         self.min = dictionary['min']
 
     def __add__(self, other):
-
         if isinstance(other, (int, float)):
+            """ Matter = Container + (int, flaot) """
             new_amount = self.amount + other
             self.matter.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
             remainder = Matter(
@@ -111,15 +111,15 @@ class Container(PureObject):
                 amount=remainder
             )
             return remainder
-        
         elif isinstance(other, Matter):
+            """ Matter = Container + Matter """
             if other.name == self.name:
                 remainder = self.__add__(other.amount)
                 return remainder
             else:
                 raise ValueError
-            
         elif isinstance(other, Container):
+            """ Container = Container + Container """
             if other.name == self.name:
                 new_container = Container(
                     matter=self.matter+other.matter,
@@ -129,13 +129,12 @@ class Container(PureObject):
                 return new_container
             else:
                 raise ValueError
-            
         else:
             raise ValueError
         
     def __sub__(self, other):
-
         if isinstance(other, (int, float)):
+            """ Matter = Container - (int, flaot) """
             new_amount = self.amount - other
             self.matter.amount, remainder = calculate_remainder(new_amount, self.max, self.min)
             remainder = Matter(
@@ -143,14 +142,13 @@ class Container(PureObject):
                 amount=remainder
             )
             return remainder
-        
         elif isinstance(other, Matter):
+            """ Matter = Container - Matter """
             if other.name == self.name:
                 remainder = self.__sub__(other.amount)
                 return remainder
             else:
                 raise ValueError
-        
         elif isinstance(other, Container):
             """ Container = Container - Container """
             if other.name == self.name:
@@ -162,49 +160,51 @@ class Container(PureObject):
                 return new_container
             else:
                 raise ValueError
-            
         else:
             raise ValueError
 
     def __mul__(self, other):
-
         if isinstance(other, (int, float)):
-            return Container(
-                matter=Matter(
-                    name=self.name,
-                    amount=self.amount*other
-                ),
+            """ Container = Container * (int, flaot) """
+            new_matter = Matter(
+                name=self.name,
+                amount=self.amount*other
+            )
+            new_container = Container(
+                matter=new_matter,
                 min=self.min*other,
                 max=self.max*other
             )
-        
+            return new_container
         else:
             raise ValueError
         
     def __truediv__(self, other):
-
         if isinstance(other, (int, float)):
-            return self.__mul__(1 / other)
-        
+            """ Container = Container / (int, flaot) """
+            new_container = self.__mul__(1 / other)
+            return new_container
         elif isinstance(other, Matter):
+            """ (int, float) = Container / Matter """
             if other.name == self.name:
-                return self.amount / other.amount
+                ratio = self.amount / other.amount
+                return ratio
             else:
                 raise ValueError
-            
         elif isinstance(other, Container):
+            """ (int, float) = Container / Container """
             if other.name == self.name:
-                return self.__truediv__(other.matter)
+                ratio = self.__truediv__(other.matter)
+                return ratio
             else:
                 raise ValueError
-            
         else:
             raise ValueError
 
 
 def calculate_remainder(amount, max, min):
     """
-    Calculate remainder of Matter arithmetics
+    Calculate remainder
     """
     if max < min:
         raise ValueError
@@ -229,6 +229,3 @@ if __name__ == '__main__':
         min=2
     )
     container.print
-    #remainder = matter + 5
-    #print(matter)
-    #print(remainder)

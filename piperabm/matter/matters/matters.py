@@ -120,13 +120,14 @@ class Matters(PureObject):
             self.add(item)
     
     def __add__(self, other):
-
         if isinstance(other, dict):
+            """ Matters = Matters + dict """
             other_matters = Matters()
             other_matters.from_amounts(other)
-            return self.__add__(other_matters)
-        
+            new_matters = self.__add__(other_matters)
+            return new_matters
         elif isinstance(other, Matter):
+            """ Matters = Matters + Matter """
             if other.name in self.names:
                 result = deepcopy(self)
                 result.library[other.name] = self.get(other.name) + other
@@ -135,25 +136,24 @@ class Matters(PureObject):
                 result = deepcopy(self)
                 result.library[other.name] = other
                 return result
-            
         elif isinstance(other, Matters):
+            """ Matters = Matters + Matters """
             result = deepcopy(self)
             for name in other.names:
                 other_matter = other.get(name)
                 result = result.__add__(other_matter)
             return result
-        
         else:
             raise ValueError
     
     def __sub__(self, other):
-
         if isinstance(other, dict):
+            """ Matters = Matters - dict """
             other_matters = Matters()
             other_matters.from_amounts(other)
             return self.__sub__(other_matters)
-        
         elif isinstance(other, Matter):
+            """ Matters = Matters - Matter """
             if other.name in self.names:
                 result = deepcopy(self)
                 result.library[other.name] = self.get(other.name) - other
@@ -162,82 +162,79 @@ class Matters(PureObject):
                 result = deepcopy(self)
                 result.library[other.name] = other
                 return result
-            
         elif isinstance(other, Matters):
+            """ Matters = Matters - Matters """
             result = deepcopy(self)
             for name in other.names:
                 other_matter = other.get(name)
                 result = result.__sub__(other_matter)
             return result
-        
         else:
             raise ValueError
       
     def __mul__(self, other):
-
         if isinstance(other, (int, float)):
+            """ Matters = Matters * (int, flaot) """
             result = Matters()
             for name in self.names:
                 new_amount = self.__call__(name) * other
                 matter = Matter(name, new_amount)
                 result.add(matter)
             return result
-        
         elif isinstance(other, dict):
+            """ Matters = Matters * dict """
             result = Matters()
             for name in other:
                 new_amount = self.__call__(name) * other[name]
                 matter = Matter(name, new_amount)
                 result.add(matter)
             return result
-        
         elif isinstance(other, Matter):
+            """ Matters = Matters * Matter """
             result = deepcopy(self)
             if other.name in self.names:
                 result.library[other.name] = self.get(other.name) * other
             return result
-            
         elif isinstance(other, Matters):
+            """ Matters = Matters * Matters """
             result = deepcopy(self)
             for name in other.names:
                 other_delta_matter = other.get(name)
                 result = result.__mul__(other_delta_matter)
             return result
-        
         else:
             raise ValueError
     
     def __truediv__(self, other):
-
         if isinstance(other, (int, float)):
+            """ Matters = Matters / (int, flaot) """
             result = Matters()
             for name in self.names:
                 new_amount = self.__call__(name) / other
                 matter = Matter(name, new_amount)
                 result.add(matter)
             return result
-        
         elif isinstance(other, dict):
+            """ Matters = Matters / dict """
             result = Matters()
             for name in other:
                 new_amount = self.__call__(name) / other[name]
                 matter = Matter(name, new_amount)
                 result.add(matter)
             return result
-        
         elif isinstance(other, Matter):
+            """ (int, float) = Matters / Matter """
             if other.name in self.names:
                 return self.get(other.name).amount / other.amount
             else:
                 return 0
-            
         elif isinstance(other, Matters):
+            """ dict = Matters / Matters """
             result = {}
             for name in other.names:
                 other_matter = other.get(name)
                 result[name] = self.__truediv__(other_matter)
             return result
-        
         else:
             raise ValueError
         
