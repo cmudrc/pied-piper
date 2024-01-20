@@ -2,7 +2,7 @@ from copy import deepcopy
 
 #from piperabm.agent.brain import Brain
 from piperabm.object import PureObject
-from piperabm.resources import Resources
+from piperabm.matter import Containers, Matters
 from piperabm.time import DeltaTime, Date
 from piperabm.transporation import Transportation
 from piperabm.actions.queue import Queue
@@ -17,8 +17,8 @@ class Agent(PureObject):
         name: str = '',
         home: int = None,
         transportation: Transportation = None,
-        resources: Resources = None,
-        fuels_rate_idle: Resources = None,
+        resources: Containers = None,
+        fuels_rate_idle: Matters = None,
         balance: float = 0,
         income: float = 0,
         socioeconomic_status: float = 1,
@@ -65,7 +65,7 @@ class Agent(PureObject):
         if balance < 0: raise ValueError
         self.balance = balance
 
-    def check_liveness(self) -> bool:
+    def is_alive(self) -> bool:
         """
         Check whether agent is alive
         """
@@ -75,7 +75,7 @@ class Agent(PureObject):
                 self.alive = False
                 self.death_reason = resources_zero[0]  # one reason is enough
         return self.alive
-    
+    '''
     @property
     def source(self):
         return self.resources.source
@@ -83,11 +83,11 @@ class Agent(PureObject):
     @property
     def demand(self):
         return self.resources.demand
-    
+    '''
     def utility(self, resource_name):
         return self.resources(name=resource_name)
 
-    def update(self, date_start: Date = Date.today(), date_end: Date = Date.today()) -> None:
+    def update(self, date_start: Date, date_end: Date) -> None:
         """
         Update agent in time
         """
@@ -96,27 +96,28 @@ class Agent(PureObject):
             """ Income """
             self.balance += self.income * duration.total_seconds()
             """ Consume resources """
-            other_rates = [] ###### from action in queue
-            self.consume_resources(duration, other_rates)
-            self.check_liveness()
+            other_rates = [] ###### from action in queue , other_rates
+            self.consume_resources(duration)
+            self.is_alive()
 
         """ decide """
-        #if self.alive is True:  
+        if self.alive is True:
+            pass 
         #    self.brain.observe(self.index, self.environment, self.society)
         #    actions = self.brain.decide()
         #    self.queue.add(actions)
 
-    def consume_resources(self, duration, other_rates: list = []):
+    def consume_resources(self, duration):
         """
         Create ResourceDelta object based on duration and fuel_rate(s)
+        , other_rates: list = []
         """
         if isinstance(duration, DeltaTime):
             duration = duration.total_seconds()
-        total_consumption = deepcopy(self.fuels_rate_idle)
-        for other_rate in other_rates:
-            total_consumption.add(other_rate)
-        total_consumption.mul(duration)
-        remainder = self.resources.sub(total_consumption)
+        fuels = self.fuels_rate_idle * duration
+        #for other_rate in other_rates:
+        #    total_consumption.add(other_rate)
+        remainder = self.resources - fuels
         return remainder
 
     def serialize(self) -> dict:
@@ -143,9 +144,9 @@ class Agent(PureObject):
         self.transportation.deserialize(dictionary['transportation'])
         self.queue = Queue()
         self.queue.deserialize(dictionary['queue'])
-        self.resources = Resources()
+        self.resources = Containers()
         self.resources.deserialize(dictionary['resource'])
-        self.fuels_rate_idle = Resources()
+        self.fuels_rate_idle = Matters()
         self.fuels_rate_idle.deserialize(dictionary['fuels_rate_idle'])
         self.balance = dictionary['balance']
         self.income = dictionary['income']
@@ -153,11 +154,12 @@ class Agent(PureObject):
 
 
 if __name__ == '__main__':
-    from piperabm.resources.samples import resources_0
+
+    from piperabm.matter.containers.samples import containers_0 as resources
 
     agent = Agent(
-        name='John',
-        resources=resources_0
+        name='Sample',
+        resources=resources
     )
     agent.update()
     agent.print

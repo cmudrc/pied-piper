@@ -1,19 +1,14 @@
 from piperabm.society import Agent
-from piperabm.resources import Resources, Resource
+from piperabm.matter.containers.samples import containers_0 as resources
 
-
-food = Resource(name='food', amount=20, max=100)
-water = Resource(name='water', amount=30, max=100)
-energy = Resource(name='energy', amount=40, max=100)
-resources = Resources(food, water, energy)
 
 agent = Agent(
-    name='John',
+    name='Peter',
     resources=resources,
-    balance=100,
-    income=100 / (24*3600*30)
+    balance=200,
+    income=200 / (24*60*600*30) # monthly
 )
 
 
 if __name__ == '__main__':
-    agent.print
+   agent.print

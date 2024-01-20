@@ -18,6 +18,18 @@ class TestContainerClass(unittest.TestCase):
         value = self.food_container_1.value(exchange_rate)
         self.assertEqual(value, 60 * 10)
 
+    def test_is_empty(self):
+        container = deepcopy(self.food_container_1)
+        self.assertFalse(container.is_empty)
+        container.matter.amount = 0
+        self.assertTrue(container.is_empty)
+
+    def test_is_full(self):
+        container = deepcopy(self.food_container_1)
+        self.assertFalse(container.is_full)
+        container.matter.amount = container.max
+        self.assertTrue(container.is_full)
+
     def test_serialization(self):
         dictionary = self.food_container_1.serialize()
         container = Container()

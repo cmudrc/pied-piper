@@ -61,6 +61,23 @@ class Containers(PureObject):
             result = values
         return result
     
+    def check_empty(self, names: list='all'):
+        """
+        Check whether *names* are empty
+        """
+        result = []
+        if names == 'all':
+            names = self.names
+        for name in names:
+            if name in self.names:
+                container = self.get(name)
+                is_empty = container.is_empty
+                if is_empty is True:
+                    result.append(name)
+            else:
+                result.append(name)
+        return result
+    
     def serialize(self) -> dict:
         library_serialized = {}
         for name in self.names:

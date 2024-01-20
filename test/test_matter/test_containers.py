@@ -39,6 +39,11 @@ class TestContainersClass(unittest.TestCase):
         self.assertEqual(matters('water'), 70)
         self.assertEqual(matters('energy'), 80)
 
+    def test_check_empty(self):
+        names = ['air', 'food']
+        result = self.containers_1.check_empty(names)
+        self.assertListEqual(result, ['air'])
+
     def test_serialization(self):
         dictionary = self.containers_1.serialize()
         containers = Containers()

@@ -71,7 +71,7 @@ class Container(PureObject):
         Check if the Matter is empty
         """
         result = False
-        if self.amount == 0:
+        if self.amount <= SYMBOLS['eps']:
             result = True
         return result
     
