@@ -4,7 +4,7 @@ from piperabm.matter.matter.samples import matter_3
 
 container = Container(
     matter=matter_3,
-    max=50,
+    max=20,
 )
 
 

@@ -27,13 +27,13 @@ class TestMatterClass(unittest.TestCase):
         matter.from_value(600, exchange_rate)
         self.assertEqual(matter.amount, 60)
     
-    def test_add_0(self):
+    def test_add_int_float(self):
         """ Matter = Matter + (int, float) """
         result = self.food_1 + 15
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(result.amount, 60 + 15)
 
-    def test_add_1(self):
+    def test_add_matter(self):
         """ Matter = Matter + Matter """
         result = self.food_1 + self.food_2
         self.assertEqual(self.food_1.amount, 60)
@@ -47,39 +47,39 @@ class TestMatterClass(unittest.TestCase):
         result = sum(matter_list, start)
         self.assertEqual(result.amount, 60 + 15)
     
-    def test_sub_0(self):
+    def test_sub_int_float(self):
         """ Matter = Matter - (int, float) """
         result = self.food_1 - 15
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(result.amount, 60 - 15)
 
-    def test_sub_1(self):
+    def test_sub_matter(self):
         """ Matter = Matter - Matter """
         result = self.food_1 - self.food_2
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(self.food_2.amount, 15)
         self.assertEqual(result.amount, 60 - 15)
     
-    def test_mul_0(self):
+    def test_mul_int_float(self):
         """ Matter = Matter * (int, float) """
         result = self.food_1 * 15
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(result.amount, 60 * 15)
 
-    def test_mul_1(self):
+    def test_mul_matter(self):
         """ Matter = Matter * Matter """
         result = self.food_1 * self.food_2
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(self.food_2.amount, 15)
         self.assertEqual(result.amount, 60 * 15)
     
-    def test_truediv_0(self):
+    def test_truediv_int_float(self):
         """ (int, float) = Matter / (int, float) """
         result = self.food_1 / 15
         self.assertEqual(self.food_1.amount, 60)
         self.assertEqual(result, 60 / 15)
 
-    def test_truediv_1(self):
+    def test_truediv_matter(self):
         """ (int, float) = Matter / Matter """
         result = self.food_1 / self.food_2
         self.assertEqual(self.food_1.amount, 60)

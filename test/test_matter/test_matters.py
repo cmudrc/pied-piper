@@ -3,12 +3,12 @@ from copy import deepcopy
 
 from piperabm.matter import Matters
 from piperabm.matter.matters import matters_sum
-from piperabm.matter.matter.samples import matter_3, matter_4
 from piperabm.matter.matters.samples import matters_0, matters_1
+from piperabm.matter.matter.samples import matter_3, matter_4
 from piperabm.economy.exchange_rate.samples import exchange_rate_1 as exchange_rate
 
 
-class TestDeltaMattersClass(unittest.TestCase):
+class TestMattersClass(unittest.TestCase):
     
     def setUp(self) -> None:
         self.matters_1 = deepcopy(matters_0)
@@ -64,7 +64,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         matters.deserialize(dictionary)
         self.assertEqual(self.matters_1, matters)
     
-    def test_add_0(self):
+    def test_add_dict(self):
         """ Matters = Matters + dict """
         dictionary = {
             'food': 15,
@@ -79,7 +79,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 + 10)
         self.assertEqual(result('energy'), 80 + 5)
 
-    def test_add_1(self):
+    def test_add_matter(self):
         """ Matters = Matters + Matter """
         result = self.matters_1 + self.food
         self.assertEqual(self.matters_1('food'), 60)
@@ -90,7 +90,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70)
         self.assertEqual(result('energy'), 80)
 
-    def test_add_2(self):
+    def test_add_matters(self):
         """ Matters = Matters + Matters """
         result = self.matters_1 + self.matters_2
         self.assertEqual(self.matters_1('food'), 60)
@@ -117,7 +117,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 + 10)
         self.assertEqual(result('energy'), 80 + 5)
     
-    def test_sub_0(self):
+    def test_sub_dict(self):
         """ Matters = Matters - dict """
         dictionary = {
             'food': 15,
@@ -132,7 +132,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 - 10)
         self.assertEqual(result('energy'), 80 - 5)
 
-    def test_sub_1(self):
+    def test_sub_matter(self):
         """ Matters = Matters - Matter """
         result = self.matters_1 - self.food
         self.assertEqual(self.matters_1('food'), 60)
@@ -143,7 +143,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70)
         self.assertEqual(result('energy'), 80)
 
-    def test_sub_2(self):
+    def test_sub_matters(self):
         """ Matters = Matters - Matters """
         result = self.matters_1 - self.matters_2
         self.assertEqual(self.matters_1('food'), 60)
@@ -156,7 +156,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 - 10)
         self.assertEqual(result('energy'), 80 - 5)
     
-    def test_mul_0(self):
+    def test_mul_int_float(self):
         """ Matters = Matters * (int, float) """
         result = self.matters_1 * 10
         self.assertEqual(self.matters_1('food'), 60)
@@ -166,7 +166,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 * 10)
         self.assertEqual(result('energy'), 80 * 10)
     
-    def test_mul_1(self):
+    def test_mul_dict(self):
         """ Matters = Matters * dict """
         dictionary = {
             'food': 15,
@@ -181,7 +181,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 * 10)
         self.assertEqual(result('energy'), 80 * 5)
 
-    def test_mul_2(self):
+    def test_mul_matter(self):
         """ Matters = Matters * Matter """
         result = self.matters_1 * self.food
         self.assertEqual(self.matters_1('food'), 60)
@@ -192,7 +192,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70)
         self.assertEqual(result('energy'), 80)
     
-    def test_mul_3(self):
+    def test_mul_matters(self):
         """ Matters = Matters * Matters """
         result = self.matters_1 * self.matters_2
         self.assertEqual(self.matters_1('food'), 60)
@@ -205,7 +205,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 * 10)
         self.assertEqual(result('energy'), 80 * 5)
 
-    def test_truediv_0(self):
+    def test_truediv_int_float(self):
         """ Matters = Matters / (int, float) """
         result = self.matters_1 / 10
         self.assertEqual(self.matters_1('food'), 60)
@@ -215,7 +215,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 / 10)
         self.assertEqual(result('energy'), 80 / 10)
     
-    def test_truediv_1(self):
+    def test_truediv_dict(self):
         """ Matters = Matters / dict """
         dictionary = {
             'food': 15,
@@ -230,7 +230,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(result('water'), 70 / 10)
         self.assertEqual(result('energy'), 80 / 5)
     
-    def test_truediv_2(self):
+    def test_truediv_matter(self):
         """ (int, float) = Matters / Matter """
         ratio = self.matters_1 / self.food
         self.assertEqual(self.matters_1('food'), 60)
@@ -239,7 +239,7 @@ class TestDeltaMattersClass(unittest.TestCase):
         self.assertEqual(self.food.amount, 15)
         self.assertEqual(ratio, 60 / 15)
 
-    def test_truediv_3(self):
+    def test_truediv_matters(self):
         """ dict = Matters / Matters """
         ratios = self.matters_1 / self.matters_2
         self.assertEqual(self.matters_1('food'), 60)

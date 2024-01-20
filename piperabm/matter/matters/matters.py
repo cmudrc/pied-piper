@@ -225,7 +225,7 @@ class Matters(PureObject):
                 result.add(matter)
             return result
         elif isinstance(other, Matter):
-            """ (int, float) = Matters / Matter """
+            """ dict = Matters / Matter """
             if other.name in self.names:
                 return self.get(other.name).amount / other.amount
             else:
