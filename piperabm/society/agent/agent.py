@@ -1,11 +1,13 @@
 from copy import deepcopy
 
-#from piperabm.agent.brain import Brain
 from piperabm.object import PureObject
 from piperabm.matter import Containers, Matters
 from piperabm.time import DeltaTime, Date
-from piperabm.transporation import Transportation
+from piperabm.transportation import Transportation
 from piperabm.actions.queue import Queue
+from piperabm.time import date_serialize, date_deserialize
+#from piperabm.agent.brain import Brain
+from piperabm.tools.coordinate import distance as ds
 from piperabm.society.agent.config import *
 
 
@@ -37,6 +39,7 @@ class Agent(PureObject):
         self.alive = True
         self.death_reason = None
         self.home = home
+        self.last_time_home = None
         self.socioeconomic_status = socioeconomic_status
         
         self.section = 'society'
@@ -46,9 +49,11 @@ class Agent(PureObject):
         """ Transporation """
         if transportation is None: transportation = WALK
         self.transportation = transportation
+        self.pos = None
 
         """ Queue """
         self.queue = Queue()
+        self.queue.agent = self  # Bilding
 
         """ Resources """
         if resources is None:
@@ -65,7 +70,7 @@ class Agent(PureObject):
         if balance < 0: raise ValueError
         self.balance = balance
 
-    def is_alive(self) -> bool:
+    def check_alive(self) -> bool:
         """
         Check whether agent is alive
         """
@@ -75,6 +80,23 @@ class Agent(PureObject):
                 self.alive = False
                 self.death_reason = resources_zero[0]  # one reason is enough
         return self.alive
+
+    def is_home(self) -> bool:
+        """
+        Check whether agent is alive
+        """
+        result = None
+        if self.home is None:
+            print('home index not defined')
+        else:
+            home = self.model.get(self.home)
+            distance = ds.point_to_point(home.pos, self.pos)
+            if distance <= self.model.proximity_distance:
+                result = True
+            else:
+                result = False
+        return result
+            
     '''
     @property
     def source(self):
@@ -89,16 +111,17 @@ class Agent(PureObject):
 
     def update(self, date_start: Date, date_end: Date) -> None:
         """
-        Update agent in time
+        Update agent
         """
         if self.alive is True:
             duration = date_end - date_start
             """ Income """
             self.balance += self.income * duration.total_seconds()
             """ Consume resources """
-            other_rates = [] ###### from action in queue , other_rates
-            self.consume_resources(duration)
-            self.is_alive()
+            other_rates = [] ###### from action in queue
+            self.consume_resources(duration) # , other_rates
+            self.queue.update(date_start, date_end)
+            self.check_alive()
 
         """ decide """
         if self.alive is True:
@@ -126,7 +149,9 @@ class Agent(PureObject):
             'alive': self.alive,
             'death_reason': self.death_reason,
             'home': self.home,
+            'last_time_home': date_serialize(self.last_time_home),
             'transportation': self.transportation.serialize(),
+            'pos': self.pos,
             'queue': self.queue.serialize(),
             'resources': self.resources.serialize(),
             'fuels_rate_idle': self.fuels_rate_idle.serialize(),
@@ -140,8 +165,10 @@ class Agent(PureObject):
         self.alive = dictionary['alive']
         self.death_reason = dictionary['death_reason']
         self.home = dictionary['home']
+        self.last_time_home = date_deserialize(dictionary['last_time_home'])
         self.transportation = Transportation()
         self.transportation.deserialize(dictionary['transportation'])
+        self.pos = dictionary['pos']
         self.queue = Queue()
         self.queue.deserialize(dictionary['queue'])
         self.resources = Containers()
@@ -161,5 +188,4 @@ if __name__ == '__main__':
         name='Sample',
         resources=resources
     )
-    agent.update()
     agent.print

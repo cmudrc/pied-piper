@@ -22,6 +22,6 @@ class TestAgentClass(unittest.TestCase):
         balance_final = deepcopy(self.agent.balance)
         self.assertLess(balance_initial, balance_final)
 
-    
+
 if __name__ == '__main__':
     unittest.main()

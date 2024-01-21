@@ -9,9 +9,12 @@ class Move(Action):
 
     def __init__(
         self,
+        transportation,
         date_start: Date = None
     ):
+        self.current_progress = 0
         self.tracks = Tracks()
+        self.transportation = transportation
         super().__init__(
             date_start=date_start,
             duration=0
@@ -22,18 +25,37 @@ class Move(Action):
         duration = self.tracks.duration(self.transportation)
         self.date_end = self.date_start + duration
 
+    #@property
+    #def transportation(self):
+    #    return self.agent.transportation
+    
     @property
-    def transportation(self):
-        return self.agent.transportation
+    def done(self):
+        result = False
+        if self.current_progress == 1:
+            result = True
+        return result
     
     def update(self, date):
         """
         Update status of action
         """
+        new_progress = self.progress(date)
+        if new_progress < self.current_progress:
+            raise ValueError
+        delta_progress = new_progress - self.current_progress
+        duration = self.duration * delta_progress
+        fuels = self.transportation.fuels_by_duration(duration)
+        self.agent.resources - fuels
         pos = self.pos(date)
         self.agent.pos = pos
-        if date > self.date_end:
-            self.done = True
+        self.current_progress = new_progress
+        #return {'pos': pos, 'consumption': fuels}
+
+        
+        #if date > self.date_end:
+        #    self.done = True
+        
     
     def pos(self, date):
         """

@@ -1,7 +1,7 @@
 import unittest
 
 from piperabm.actions.move.track import Track
-from piperabm.transporation.samples import transportation_0 as transportation
+from piperabm.transportation.samples import transportation_0 as transportation
 
 
 class TestTrackClass(unittest.TestCase):

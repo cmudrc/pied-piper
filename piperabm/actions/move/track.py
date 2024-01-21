@@ -3,7 +3,7 @@ import numpy as np
 from piperabm.object import PureObject
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.linear_algebra import vector
-from piperabm.transporation import Transportation
+from piperabm.transportation import Transportation
 from piperabm.time import DeltaTime
 
 
@@ -54,7 +54,7 @@ class Track(PureObject):
         """
         Duration of movement on the track
         """
-        return transportation.how_long(length=self.length_adjusted)
+        return transportation.duration_by_length(length=self.length_adjusted)
     
     def total_fuel(self, transportation: Transportation):
         """
@@ -80,6 +80,16 @@ class Track(PureObject):
         
         result = np.array(self.pos_start) + self.unit_vector * progress * self.length_real
         return list(result)
+    
+    def reverse(self):
+        """
+        Create an inverse track
+        """
+        return Track(
+            pos_start=self.pos_end,
+            pos_end=self.pos_start,
+            adjustment_factor=self.adjustment_factor
+        )
 
     def serialize(self):
         dictionary = {}
@@ -97,7 +107,7 @@ class Track(PureObject):
 
 if __name__ == '__main__':
 
-    from piperabm.transporation.samples import transportation_0 as transportation
+    from piperabm.transportation.samples import transportation_0 as transportation
 
     track = Track(
         pos_start=[0, 0],

@@ -1,6 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.actions.move.track import Track
-from piperabm.transporation import Transportation
+from piperabm.transportation import Transportation
 from piperabm.time import DeltaTime
 
 
@@ -53,6 +53,18 @@ class Tracks(PureObject):
         active_track, remainder_time = self.find_active_track(delta_time, transportation)
         return active_track.pos(remainder_time, transportation)
     
+    def reverse(self):
+        """
+        Create an inverse track
+        """
+        reversed_tracks = []
+        for track in self.library:
+            new_track = track.reverse
+            reversed_track = new_track.reverse()
+            reversed_tracks.append(reversed_track)
+        reversed_tracks.reverse()
+        return Tracks(reversed_tracks)
+
     def serialize(self):
         dictionary = {}
         library_serialized = []
@@ -73,7 +85,7 @@ class Tracks(PureObject):
 if __name__ == '__main__':
 
     from piperabm.actions.move.track import Track
-    from piperabm.transporation.samples import transportation_0 as transporation
+    from piperabm.transportation.samples import transportation_0 as transporation
 
     track_0 = Track(
         pos_start=[0, 0],

@@ -3,6 +3,7 @@ from copy import deepcopy
 from piperabm.object import PureObject
 from piperabm.matter.matter import Matter
 from piperabm.economy import ExchangeRate
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Matters(PureObject):
@@ -212,7 +213,10 @@ class Matters(PureObject):
             """ Matters = Matters / (int, flaot) """
             result = Matters()
             for name in self.names:
-                new_amount = self.__call__(name) / other
+                if other == 0:
+                    new_amount = SYMBOLS['inf']
+                else:
+                    new_amount = self.__call__(name) / other
                 matter = Matter(name, new_amount)
                 result.add(matter)
             return result
@@ -220,7 +224,10 @@ class Matters(PureObject):
             """ Matters = Matters / dict """
             result = Matters()
             for name in other:
-                new_amount = self.__call__(name) / other[name]
+                if other[name] == 0:
+                    new_amount = SYMBOLS['inf']
+                else:
+                    new_amount = self.__call__(name) / other[name]
                 matter = Matter(name, new_amount)
                 result.add(matter)
             return result

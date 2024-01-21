@@ -20,8 +20,7 @@ class Action(PureObject):
             duration = DeltaTime(seconds=duration)
         self.date_start = date_start
         self.date_end = self.date_start + duration
-        self.done = False
-        
+        #self.done = False
         self.agent = None  # Bilding
 
     @property

@@ -15,7 +15,7 @@ from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.config.settings import *
 
 
-class Model(PureObject, Query, Graphics):
+class Model(PureObject, Query):
 
     def __init__(
         self,
@@ -80,6 +80,7 @@ class Model(PureObject, Query, Graphics):
                 item.index = self.new_index  # new index
                 item.model = self  # binding
                 self.library[item.index] = item  # add to library
+
             elif item.category == "edge":
                 junction_1 = Junction(pos=item.pos_1)
                 junction_2 = Junction(pos=item.pos_2)
@@ -95,15 +96,18 @@ class Model(PureObject, Query, Graphics):
             """
             if item.category == "node":
                 item.index = self.new_index  # new index
+
                 item.model = self  # binding
+
                 settlements = self.filter(types="settlement")
                 if item.home is None:
                     item.home = random.choice(settlements)
-                    home = self.get(item.home)
-                    item.pos = home.pos
                 else:
                     if item.home not in settlements:
                         raise ValueError
+                home = self.get(item.home)
+                item.pos = home.pos
+
                 families = self.find_agents_in_same_home(item.home)
                 self.library[item.index] = item  # adding to library
                 for family in families:
@@ -113,6 +117,7 @@ class Model(PureObject, Query, Graphics):
                         home_index=item.home
                     )
                     self.add(relationship)
+                    
             elif item.category == "edge":
                 item.index = self.new_index  # new index
                 item.model = self  # binding
