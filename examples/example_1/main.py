@@ -5,11 +5,12 @@ from piperabm.actions.move import Move
 from piperabm.time import Date, DeltaTime
 from piperabm.society.agent.samples import agent_0
 from piperabm.graphics import Animation
+import os
 
 
 """ Setup model """
 model.current_date = Date(2000, 1, 1)
-model.set_step_size(DeltaTime(minutes=1))
+model.set_step_size(DeltaTime(seconds=10))
 
 
 """ Create move action """
@@ -52,16 +53,12 @@ agent.queue.add(move)
 
 
 """ Run model """
-animation = Animation()
+path = os.path.dirname(os.path.realpath(__file__))
+animation = Animation(path)
 #agent.resources.print
-for i in range(3):
-    model.run(1)
-    #agent.resources.print
-    #ag.print
+for _ in range(26):
     fig = model.fig()
     animation.add_figure(fig)
-
+    model.update()
+#agent.resources.print
 animation.render()
-    #date = date_start + DeltaTime(minutes=3)
-    #result = move.update(date)
-    #print(move.current_progress)
