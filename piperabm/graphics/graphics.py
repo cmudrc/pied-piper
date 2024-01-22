@@ -83,13 +83,18 @@ class Graphics:
             marker=agent_shape,
         )
 
-    def show(self):
-        """
-        Show the graph using matplotlib
-        """
+    def fig(self):
+        plt.clf()
         plt.gca().set_aspect("equal")
         if self.infrastructure is not None:
             self.infrastructure_to_plt()
         if self.society is not None:
             self.society_to_plt()
+        return plt.gcf()
+
+    def show(self):
+        """
+        Show the graph using matplotlib
+        """
+        fig = self.fig()
         plt.show()

@@ -210,6 +210,13 @@ class Model(PureObject, Query):
         )
         graphics.show()
 
+    def fig(self):
+        graphics = Graphics(
+            infrastructure=self.infrastructure,
+            society=self.society
+        )
+        return graphics.fig()
+
     def serialize(self) -> dict:
         dictionary = {}
         dictionary["proximity radius"] = self.proximity_radius

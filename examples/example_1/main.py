@@ -4,6 +4,7 @@ from piperabm.actions.move.tracks import Tracks
 from piperabm.actions.move import Move
 from piperabm.time import Date, DeltaTime
 from piperabm.society.agent.samples import agent_0
+from piperabm.graphics import Animation
 
 
 """ Setup model """
@@ -51,13 +52,16 @@ agent.queue.add(move)
 
 
 """ Run model """
-agent.resources.print
-model.run(3)
-agent.resources.print
-#ag.print
-#model.show()
+animation = Animation()
+#agent.resources.print
+for i in range(3):
+    model.run(1)
+    #agent.resources.print
+    #ag.print
+    fig = model.fig()
+    animation.add_figure(fig)
 
-
-#date = date_start + DeltaTime(minutes=3)
-#result = move.update(date)
-#print(move.current_progress)
+animation.render()
+    #date = date_start + DeltaTime(minutes=3)
+    #result = move.update(date)
+    #print(move.current_progress)
