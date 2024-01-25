@@ -6,48 +6,53 @@ from piperabm.model.query import Query
 from piperabm.graphics import Graphics
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
-from piperabm.infrastructure import Infrastructure, Junction, Settlement, Market, Road
-from piperabm.society import Society, Agent, Family
+from piperabm.infrastructure import Infrastructure, Junction
+from piperabm.society import Society, Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.measure import Measure
 from piperabm.tools.file_manager import JsonHandler as jsh
+from piperabm.tools.stats import gini
 from piperabm.config.settings import *
+
 
 
 class Model(PureObject, Query):
 
     def __init__(
         self,
-        proximity_radius: float = 0,
-        step_size=None,
-        current_date: Date = None,
-        exchange_rate: ExchangeRate = None,
-        name: str = "sample"
+        proximity_radius: (int, float) = 0,
+        step_size: (int, float, DeltaTime) = DeltaTime(hours=1),
+        current_date: Date = Date(year=2000, month=1, day=1),
+        exchange_rate: ExchangeRate = deepcopy(exchange_rate_0),
+        gini_index: (int, float) = 0,
+        average_income: (int, float) = 0,  # Currency / month
+        name: str = 'sample'
     ):
         super().__init__()
-        self.library = {}
+
         self.proximity_radius = proximity_radius
         self.set_step_size(step_size)
-        if current_date is None:
-            current_date = Date(year=2000, month=1, day=1)
         self.current_date = current_date
-        if exchange_rate is None:
-            exchange_rate = deepcopy(exchange_rate_0)  # default
         self.exchange_rate = exchange_rate
+        self.gini_index = gini_index
+        #self.socio_economic_status_distribution = gini.lognorm(gini_index)
+        self.average_income = average_income
         self.name = name
+
+        self.library = {}
         self.measure = Measure(self)
         self.valid_types = Model.extract_valid_types(valid_items)  # recognizable items list
 
     def extract_valid_types(valid_items):
         valid_types = {
-            "infrastructure": {
-                "node": [],
-                "edge": [],
+            'infrastructure': {
+                'node': [],
+                'edge': [],
             },
-            "society": {
-                "node": [],
-                "edge": [],
+            'society': {
+                'node': [],
+                'edge': [],
             },
         }
         for item in valid_items:
@@ -58,48 +63,53 @@ class Model(PureObject, Query):
         """
         Set step size
         """
-        if step_size is None:
-            step_size = DeltaTime(hours=1)  # default
         if isinstance(step_size, (float, int)):
             step_size = DeltaTime(seconds=step_size)
-        if isinstance(step_size, DeltaTime):
+        elif isinstance(step_size, DeltaTime):
             self.step_size = step_size
         else:
             raise ValueError
+        
+    def is_unique(self, index) -> bool:
+        result = True
+        if index in self.all:
+            result = False
+        return result
 
     def add(self, *items) -> None:
         """
-        Add new item(s) to library
+        Add new item(s) to model
         """
+
+        def add_to_library(self, item):
+            """ Add new item to library """
+            if item.index == None or \
+                self.is_unique(item.index) is False:
+                item.index = self.new_index  # New index
+            item.model = self  # Binding
+            self.library[item.index] = item
 
         def add_infrastructure_item(self, item) -> None:
             """
-            Add new infrastructure item to library
+            Add new infrastructure item to model
             """
-            if item.category == "node":
-                item.index = self.new_index  # new index
-                item.model = self  # binding
-                self.library[item.index] = item  # add to library
+            if item.category == 'node':
+                add_to_library(self, item)
 
-            elif item.category == "edge":
+            elif item.category == 'edge':
                 junction_1 = Junction(pos=item.pos_1)
                 junction_2 = Junction(pos=item.pos_2)
                 self.add(junction_1)
                 self.add(junction_2)
-                item.index = self.new_index  # new index
-                item.model = self  # binding
-                self.library[item.index] = item  # add to library
+                add_to_library(self, item)
 
         def add_society_item(self, item) -> None:
             """
-            Add new society item to library
+            Add new society item to model
             """
-            if item.category == "node":
-                item.index = self.new_index  # new index
-
-                item.model = self  # binding
-
-                settlements = self.filter(types="settlement")
+            if item.category == 'node':
+                """ Home """
+                settlements = self.filter(types='settlement')
                 if item.home is None:
                     item.home = random.choice(settlements)
                 else:
@@ -107,9 +117,15 @@ class Model(PureObject, Query):
                         raise ValueError
                 home = self.get(item.home)
                 item.pos = home.pos
+                item.last_time_home = deepcopy(self.current_date)
 
+                """ Socio-economic status """
+                distribution = gini.lognorm(self.gini_index)
+                item.socioeconomic_status = distribution.rvs()
+
+                """ Relationships """
                 families = self.find_agents_in_same_home(item.home)
-                self.library[item.index] = item  # adding to library
+                add_to_library(self, item)
                 for family in families:
                     relationship = Family(
                         index_1=item.index,
@@ -118,7 +134,7 @@ class Model(PureObject, Query):
                     )
                     self.add(relationship)
                     
-            elif item.category == "edge":
+            elif item.category == 'edge':
                 item.index = self.new_index  # new index
                 item.model = self  # binding
                 self.library[item.index] = item  # adding to library
@@ -128,9 +144,9 @@ class Model(PureObject, Query):
                 for element in item:
                     self.add(element)
             elif isinstance(item, valid_items):
-                if item.section == "infrastructure":
+                if item.section == 'infrastructure':
                     add_infrastructure_item(self, item)
-                elif item.section == "society":
+                elif item.section == 'society':
                     add_society_item(self, item)
             else:  # item not recognized
                 raise ValueError
@@ -219,42 +235,45 @@ class Model(PureObject, Query):
 
     def serialize(self) -> dict:
         dictionary = {}
-        dictionary["proximity radius"] = self.proximity_radius
+        
         """ serialize library items """
         library_serialized = {}
         for index in self.library:
             item = self.get(index)
             library_serialized[str(index)] = item.serialize()
-        dictionary["library"] = library_serialized
-        dictionary["step_size"] = self.step_size.total_seconds()
-        dictionary["current_date"] = date_serialize(self.current_date)
-        dictionary["exchange_rate"] = self.exchange_rate.serialize()
-        dictionary["name"] = self.name
+        dictionary['library'] = library_serialized
+        dictionary['proximity radius'] = self.proximity_radius
+        dictionary['step_size'] = self.step_size.total_seconds()
+        dictionary['current_date'] = date_serialize(self.current_date)
+        dictionary['exchange_rate'] = self.exchange_rate.serialize()
+        dictionary['gini_index'] = self.gini_index
+        dictionary['average_income'] = self.average_income
+        dictionary['name'] = self.name
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        self.proximity_radius = dictionary["proximity radius"]
+        self.proximity_radius = dictionary['proximity radius']
         # Deserialize library
-        library_dictionary = dictionary["library"]
+        library_dictionary = dictionary['library']
         for index in library_dictionary:
             item_dictionary = library_dictionary[index]
-            type = item_dictionary["type"]
+            type = item_dictionary['type']
             for valid_item in valid_items:
                 if valid_item.type == type:
                     item = valid_item()
                     break
             item.deserialize(item_dictionary)
             self.library[int(index)] = item
-        self.step_size = DeltaTime(seconds=dictionary["step_size"])
-        self.current_date = date_deserialize(dictionary["current_date"])
+        self.step_size = DeltaTime(seconds=dictionary['step_size'])
+        self.current_date = date_deserialize(dictionary['current_date'])
         self.exchange_rate = ExchangeRate()
-        self.exchange_rate.deserialize(dictionary["exchange_rate"])
-        self.name = dictionary["name"]
+        self.exchange_rate.deserialize(dictionary['exchange_rate'])
+        self.name = dictionary['name']
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     model = Model()
-    item = Junction(name="sample", pos=[0, 0])
+    item = Junction(name='sample', pos=[0, 0])
     model.add(item)
     #model.show()
     model.print

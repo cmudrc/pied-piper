@@ -6,11 +6,17 @@ from scipy.special import erfinv
 from scipy.stats import lognorm
 import numpy as np
 
+from piperabm.tools.symbols import SYMBOLS
+
 
 class GiniLogNormal:
 
     def __init__(self, gini_index: float = 0, average: float = 1):
         self.average = average
+        if gini_index == 0:
+            gini_index = SYMBOLS['eps']
+        if gini_index < 0 or gini_index > 1:
+            raise ValueError
         self.gini = gini_index
 
     @property

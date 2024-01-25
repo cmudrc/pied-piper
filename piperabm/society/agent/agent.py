@@ -13,17 +13,17 @@ from piperabm.society.agent.config import *
 
 class Agent(PureObject):
 
+    section = 'society'
+    category = 'node'
+    type = 'agent'
+
     def __init__(
         self,
-        index = None,
         name: str = '',
-        home: int = None,
-        transportation: Transportation = None,
-        resources: Containers = None,
-        fuels_rate_idle: Matters = None,
-        balance: float = 0,
-        income: float = 0,
-        socioeconomic_status: float = 1,
+        transportation: Transportation = deepcopy(WALK),
+        resources: Containers = deepcopy(RESOURCES_DEFAULT),
+        fuels_rate_idle: Matters = deepcopy(FUELS_RATE_HUMAN_IDLE),
+        balance: float = deepcopy(BALANCE_DEFUALT)
     ):
         super().__init__()
         """ Binding to the model """
@@ -34,52 +34,52 @@ class Agent(PureObject):
         self.brain = None
 
         """ Identity """
-        self.index = index
+        self.index = None
         self.name = name
-        self.alive = True
-        self.death_reason = None
-        self.home = home
+        self.home = None
         self.last_time_home = None
-        self.socioeconomic_status = socioeconomic_status
-        
-        self.section = 'society'
-        self.category = 'node'
-        self.type = 'agent'
+        self.socioeconomic_status = None #socioeconomic_status: float = 1,
 
         """ Transporation """
-        if transportation is None: transportation = WALK
         self.transportation = transportation
-        self.pos = None
+        self.pos = None  # Will be defined based on home
 
         """ Queue """
         self.queue = Queue()
-        self.queue.agent = self  # Bilding
+        self.queue.agent = self  # Binding
 
         """ Resources """
-        if resources is None:
-            resources = deepcopy(RESOURCES_DEFAULT)
         self.resources = resources
 
-        if fuels_rate_idle is None:
-            fuels_rate_idle = deepcopy(FUELS_RATE_HUMAN_IDLE)
         self.fuels_rate_idle = fuels_rate_idle
-
-        if income < 0: raise ValueError
-        self.income = income
 
         if balance < 0: raise ValueError
         self.balance = balance
 
-    def check_alive(self) -> bool:
+    @property
+    def income(self):  # Currency / seconds
+        income_per_month = self.model.average_income # Monthly
+        income_per_seconds = income_per_month / (30 * 24 * 3600)
+        return income_per_seconds * self.socioeconomic_status
+
+    @property
+    def alive(self) -> bool:
         """
         Check whether agent is alive
         """
-        if self.alive is True:
-            resources_zero = self.resources.check_empty(RESOURCES_VITAL)
-            if len(resources_zero) > 0:  # died
-                self.alive = False
-                self.death_reason = resources_zero[0]  # one reason is enough
-        return self.alive
+        result = True
+        resources_zero = self.resources.check_empty(RESOURCES_VITAL)
+        if len(resources_zero) > 0:  # died
+            result = False
+        return result
+    
+    @property
+    def death_reason(self):
+        result = None
+        resources_zero = self.resources.check_empty(RESOURCES_VITAL)
+        if len(resources_zero) > 0:  # died
+            result = resources_zero[0]
+        return result
 
     def is_home(self) -> bool:
         """
@@ -146,8 +146,6 @@ class Agent(PureObject):
     def serialize(self) -> dict:
         return {
             'name': self.name,
-            'alive': self.alive,
-            'death_reason': self.death_reason,
             'home': self.home,
             'last_time_home': date_serialize(self.last_time_home),
             'transportation': self.transportation.serialize(),
@@ -156,7 +154,6 @@ class Agent(PureObject):
             'resources': self.resources.serialize(),
             'fuels_rate_idle': self.fuels_rate_idle.serialize(),
             'balance': self.balance,
-            'income': self.income,
             'type': self.type
         }
 

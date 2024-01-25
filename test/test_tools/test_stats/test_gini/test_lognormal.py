@@ -3,7 +3,21 @@ import unittest
 from piperabm.tools.stats import gini
 
 
-class TestGiniLogNormalClass(unittest.TestCase):
+class TestGiniLogNormalClass_0(unittest.TestCase):
+
+    def setUp(self):
+        self.distribution = gini.lognorm(
+            gini_index=0,
+            average=1
+        )
+
+    def test_generate(self):
+        size = 10
+        sample = self.distribution.rvs(size)
+        self.assertAlmostEqual(sum(sample), size, places=5)
+
+
+class TestGiniLogNormalClass_1(unittest.TestCase):
 
     def setUp(self):
         self.data = [100, 300, 500, 700, 900, 300, 500, 700, 500]

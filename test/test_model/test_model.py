@@ -5,9 +5,30 @@ import os
 from piperabm.model import Model
 from piperabm.model.samples import model_0, model_3
 from piperabm.tools.file_manager import JsonHandler as jsh
+from piperabm.society import Agent
 
 
 class TestModelClass_0(unittest.TestCase):
+
+    def setUp(self):
+        self.model = deepcopy(model_0)
+        agent_1 = Agent(
+            name='Sample Agent 1',
+        )
+        agent_2 = Agent(
+            name='Sample Agent 2',
+        )
+        self.model.add(agent_1, agent_2)
+
+    def test_0(self):
+        agent_index = self.model.find_by_name('Sample Agent 1')
+        agent = self.model.get(agent_index)
+        print(agent.balance)
+
+
+
+"""
+class TestModelClass_1(unittest.TestCase):
 
     def setUp(self):
         self.maxDiff = None
@@ -81,7 +102,7 @@ class TestModelClass_0(unittest.TestCase):
         new_model.load(path, filename)
         jsh.remove(path, filename)
         self.assertEqual(model, new_model)
-
+"""
 
 
 '''

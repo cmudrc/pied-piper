@@ -19,8 +19,7 @@ resources = Containers(food, water, energy)
 agent = Agent(
     name='John',
     resources=resources,
-    balance=100,
-    income=100 / (24*60*60*30)  # monthly
+    balance=100
 )
 
 

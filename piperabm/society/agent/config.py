@@ -32,6 +32,9 @@ water_rate_human_idle = Matter(name='water', amount=Unit(4, 'kg/day').to_SI())
 energy_rate_human_idle = Matter(name='energy', amount=Unit(0, 'kg/day').to_SI())
 FUELS_RATE_HUMAN_IDLE = Matters(food_rate_human_idle, water_rate_human_idle, energy_rate_human_idle)
 
+""" Initial balance """
+BALANCE_DEFUALT = 200
+
 """ trasportation """
 food_rate_walk = Matter(name='food', amount=Unit(2, 'kg/day').to_SI())
 water_rate_walk = Matter(name='water', amount=Unit(1, 'kg/day').to_SI())

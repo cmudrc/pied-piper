@@ -4,7 +4,8 @@ from piperabm.infrastructure import Settlement
 
 model = Model(
     proximity_radius=0.1,
-    name='Sample Model 00'
+    name='Sample Model 00',
+    average_income=1000
 )
 
 settlement = Settlement(
