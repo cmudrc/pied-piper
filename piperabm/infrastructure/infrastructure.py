@@ -40,6 +40,10 @@ class Infrastructure:
         """
         edge = self.G.edges[index_1, index_2]
         return edge['index']
+    
+    def adjusted_length(self, index_1, index_2):
+        edge = self.G.edges[index_1, index_2]
+        return edge['adjusted_length']
 
     def all_nodes(self, type=None):
         """

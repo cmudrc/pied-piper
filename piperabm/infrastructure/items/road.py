@@ -35,9 +35,9 @@ class Road(PureObject):
 
     @property
     def length_linear(self):
-        '''
+        """
         Eucledian distance between two ends of the edge
-        '''
+        """
         result = None
         if self.pos_1 is not None and self.pos_2 is not None:
             result = ds.point_to_point(self.pos_1, self.pos_2)
@@ -45,9 +45,9 @@ class Road(PureObject):
 
     @property
     def length(self):
-        '''
+        """
         Compare and return the most appropriate definition of length
-        '''
+        """
         result = None
         linear = self.length_linear
         actual = self.length_actual
@@ -66,9 +66,9 @@ class Road(PureObject):
     
     @property
     def adjusted_length(self):
-        '''
+        """
         Calculate adjusted length based on physical length, roughness, and degradation factor
-        '''
+        """
         return self.length * self.roughness * (1 - self.degradation.factor)
 
     def serialize(self) -> dict:

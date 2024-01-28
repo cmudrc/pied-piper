@@ -4,7 +4,7 @@ from piperabm.object import PureObject
 from piperabm.matter import Containers, Matters
 from piperabm.time import DeltaTime, Date
 from piperabm.transportation import Transportation
-from piperabm.actions.queue import Queue
+from piperabm.actions import ActionQueue
 from piperabm.time import date_serialize, date_deserialize
 #from piperabm.agent.brain import Brain
 from piperabm.tools.coordinate import distance as ds
@@ -45,7 +45,7 @@ class Agent(PureObject):
         self.pos = None  # Will be defined based on home
 
         """ Queue """
-        self.queue = Queue()
+        self.queue = ActionQueue()
         self.queue.agent = self  # Binding
 
         """ Resources """
@@ -109,19 +109,19 @@ class Agent(PureObject):
     def utility(self, resource_name):
         return self.resources(name=resource_name)
 
-    def update(self, date_start: Date, date_end: Date) -> None:
+    def update(self) -> None:
         """
         Update agent
         """
         if self.alive is True:
-            duration = date_end - date_start
+            duration = self.model.step_size.total_seconds()
             """ Income """
-            self.balance += self.income * duration.total_seconds()
+            self.balance += self.income * duration
             """ Consume resources """
-            other_rates = [] ###### from action in queue
+            #other_rates = [] ###### from action in queue
             self.consume_resources(duration) # , other_rates
-            self.queue.update(date_start, date_end)
-            self.check_alive()
+            self.queue.update()
+            #self.check_alive()
 
         """ decide """
         if self.alive is True:
@@ -166,7 +166,7 @@ class Agent(PureObject):
         self.transportation = Transportation()
         self.transportation.deserialize(dictionary['transportation'])
         self.pos = dictionary['pos']
-        self.queue = Queue()
+        self.queue = ActionQueue()
         self.queue.deserialize(dictionary['queue'])
         self.resources = Containers()
         self.resources.deserialize(dictionary['resource'])

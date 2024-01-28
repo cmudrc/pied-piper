@@ -1,16 +1,15 @@
 from piperabm.object import PureObject
-from piperabm.actions.move import Move
-from piperabm.time import Date
+from piperabm.actions import Move
+#from piperabm.time import Date
 
 
-class Queue(PureObject):
+class ActionQueue(PureObject):
 
     type = 'queue'
 
     def __init__(self):
         super().__init__()
         self.library = []
-
         self.agent = None  # Binding
 
     def add(self, actions):
@@ -19,7 +18,7 @@ class Queue(PureObject):
                 self.add(action)
         else:
             action = actions
-            action.agent = self.agent  # Binding
+            action.queue = self  # Binding
             self.library.append(action)
     '''
     def current(self, date):
@@ -39,9 +38,9 @@ class Queue(PureObject):
         return result
     '''
 
-    def update(self, date_start: Date, date_end: Date) -> None:
+    def update(self):
         last_move = self.library[-1]
-        last_move.update(date_end)
+        last_move.update()
 
     def serialize(self):
         dictionary = {}
@@ -58,9 +57,10 @@ class Queue(PureObject):
         for action_dictionary in library_serialized:
             if action_dictionary['type'] == 'move':
                 action = Move()
-            action.deserialize(action_dictionary) #### bindings?
-
+            action.queue = self  # Binding
+            action.deserialize(action_dictionary)
+    
 
 if __name__ == "__main__":
-    queue = Queue()
+    queue = ActionQueue()
     queue.print

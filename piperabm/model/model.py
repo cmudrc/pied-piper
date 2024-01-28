@@ -27,7 +27,7 @@ class Model(PureObject, Query):
         exchange_rate: ExchangeRate = deepcopy(exchange_rate_0),
         gini_index: (int, float) = 0,
         average_income: (int, float) = 0,  # Currency / month
-        name: str = 'sample'
+        name: str = "sample"
     ):
         super().__init__()
 
@@ -46,13 +46,13 @@ class Model(PureObject, Query):
 
     def extract_valid_types(valid_items):
         valid_types = {
-            'infrastructure': {
-                'node': [],
-                'edge': [],
+            "infrastructure": {
+                "node": [],
+                "edge": [],
             },
-            'society': {
-                'node': [],
-                'edge': [],
+            "society": {
+                "node": [],
+                "edge": [],
             },
         }
         for item in valid_items:
@@ -93,10 +93,10 @@ class Model(PureObject, Query):
             """
             Add new infrastructure item to model
             """
-            if item.category == 'node':
+            if item.category == "node":
                 add_to_library(self, item)
 
-            elif item.category == 'edge':
+            elif item.category == "edge":
                 junction_1 = Junction(pos=item.pos_1)
                 junction_2 = Junction(pos=item.pos_2)
                 self.add(junction_1)
@@ -107,9 +107,9 @@ class Model(PureObject, Query):
             """
             Add new society item to model
             """
-            if item.category == 'node':
+            if item.category == "node":
                 """ Home """
-                settlements = self.filter(types='settlement')
+                settlements = self.filter(types="settlement")
                 if item.home is None:
                     item.home = random.choice(settlements)
                 else:
@@ -134,7 +134,7 @@ class Model(PureObject, Query):
                     )
                     self.add(relationship)
                     
-            elif item.category == 'edge':
+            elif item.category == "edge":
                 item.index = self.new_index  # new index
                 item.model = self  # binding
                 self.library[item.index] = item  # adding to library
@@ -144,24 +144,23 @@ class Model(PureObject, Query):
                 for element in item:
                     self.add(element)
             elif isinstance(item, valid_items):
-                if item.section == 'infrastructure':
+                if item.section == "infrastructure":
                     add_infrastructure_item(self, item)
-                elif item.section == 'society':
+                elif item.section == "society":
                     add_society_item(self, item)
             else:  # item not recognized
                 raise ValueError
 
     def update(self):
         agents = self.all_alive_agents
-        date_start = self.current_date
-        date_end = date_start + self.step_size
         for index in agents:
             agent = self.get(index)
-            agent.update(date_start, date_end)
-        self.current_date = date_end
+            agent.update()
+        self.current_date += self.step_size
 
     def run(self, n: int = 1):
-        for _ in range(n):
+        for i in range(n):
+            print(f"Progress: {i / n * 100:.1f}% complete")
             self.update()
 
     @property
@@ -215,6 +214,13 @@ class Model(PureObject, Query):
                 self.deserialize(delta)
             else:
                 self.apply_delta(delta)
+
+    def fig(self):
+        graphics = Graphics(
+            infrastructure=self.infrastructure,
+            society=self.society
+        )
+        return graphics.fig()
     
     def show(self):
         """
@@ -226,13 +232,6 @@ class Model(PureObject, Query):
         )
         graphics.show()
 
-    def fig(self):
-        graphics = Graphics(
-            infrastructure=self.infrastructure,
-            society=self.society
-        )
-        return graphics.fig()
-
     def serialize(self) -> dict:
         dictionary = {}
         
@@ -241,39 +240,39 @@ class Model(PureObject, Query):
         for index in self.library:
             item = self.get(index)
             library_serialized[str(index)] = item.serialize()
-        dictionary['library'] = library_serialized
-        dictionary['proximity radius'] = self.proximity_radius
-        dictionary['step_size'] = self.step_size.total_seconds()
-        dictionary['current_date'] = date_serialize(self.current_date)
-        dictionary['exchange_rate'] = self.exchange_rate.serialize()
-        dictionary['gini_index'] = self.gini_index
-        dictionary['average_income'] = self.average_income
-        dictionary['name'] = self.name
+        dictionary["library"] = library_serialized
+        dictionary["proximity radius"] = self.proximity_radius
+        dictionary["step_size"] = self.step_size.total_seconds()
+        dictionary["current_date"] = date_serialize(self.current_date)
+        dictionary["exchange_rate"] = self.exchange_rate.serialize()
+        dictionary["gini_index"] = self.gini_index
+        dictionary["average_income"] = self.average_income
+        dictionary["name"] = self.name
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        self.proximity_radius = dictionary['proximity radius']
+        self.proximity_radius = dictionary["proximity radius"]
         # Deserialize library
-        library_dictionary = dictionary['library']
+        library_dictionary = dictionary["library"]
         for index in library_dictionary:
             item_dictionary = library_dictionary[index]
-            type = item_dictionary['type']
+            type = item_dictionary["type"]
             for valid_item in valid_items:
                 if valid_item.type == type:
                     item = valid_item()
                     break
             item.deserialize(item_dictionary)
             self.library[int(index)] = item
-        self.step_size = DeltaTime(seconds=dictionary['step_size'])
-        self.current_date = date_deserialize(dictionary['current_date'])
+        self.step_size = DeltaTime(seconds=dictionary["step_size"])
+        self.current_date = date_deserialize(dictionary["current_date"])
         self.exchange_rate = ExchangeRate()
-        self.exchange_rate.deserialize(dictionary['exchange_rate'])
-        self.name = dictionary['name']
+        self.exchange_rate.deserialize(dictionary["exchange_rate"])
+        self.name = dictionary["name"]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     model = Model()
-    item = Junction(name='sample', pos=[0, 0])
+    item = Junction(name="sample", pos=[0, 0])
     model.add(item)
     #model.show()
     model.print

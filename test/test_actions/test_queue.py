@@ -1,6 +1,6 @@
 import unittest
 
-from piperabm.actions.queue import Queue
+from piperabm.actions.action_queue import Queue
 from piperabm.actions.action import Action
 from piperabm.time import Date, DeltaTime
 

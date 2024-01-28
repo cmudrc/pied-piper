@@ -189,7 +189,7 @@ class Query:
         Find the nearst node index to the *pos*
         """
         if items is None:
-            raise ValueError
+            items = self.all
         distances = self.distances(pos, items)
         distances = self.sort_distances(distances)
         nearest_node_index = distances[0][1]
