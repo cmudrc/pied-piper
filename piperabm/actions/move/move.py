@@ -9,6 +9,7 @@ class Move(PureObject):
     def __init__(self, path: list = []):
         super().__init__()
         self.tracks = self.path_to_tracks(path)
+        self.usage = 1
         self.queue = None  # Binding
 
     def path_to_tracks(self, path):
@@ -21,20 +22,6 @@ class Move(PureObject):
                 track.action = self
                 tracks.append(track)
         return tracks
-#tracks.print
-
-    '''
-    def add(self, *tracks):
-        for track in tracks:
-            if isinstance(track, Track):
-                infrastructure = self.model.infrastructure
-                track.index = infrastructure.find_edge_index(
-                    index_1=track.index_start,
-                    index_2=track.index_end
-                )
-                track.action = self  # Binding
-                self.tracks.append(track)
-    '''
 
     def get(self, index):
         self.model.get(index)

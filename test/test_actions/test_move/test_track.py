@@ -1,130 +1,81 @@
 import unittest
+from copy import deepcopy
 
-from piperabm.actions.move.track import Track
-from piperabm.transportation.samples import transportation_0 as transportation
+from piperabm.model import Model
+from piperabm.infrastructure import Road, Settlement
+from piperabm.society import Agent
+from piperabm.actions import Move
 
 
 class TestTrackClass(unittest.TestCase):
 
     def setUp(self):
-        pos_start = [0, 0]
-        pos_end = [5000, 0]
-        self.track_1 = Track(
-            pos_start,
-            pos_end,
-            adjustment_factor = 1
-        )
-        self.track_2 = Track(
-            pos_start,
-            pos_end,
-            adjustment_factor = 2
+        self.model = Model(
+            proximity_radius=1,  # Meters
+            step_size=100,  # Seconds
+            average_income=100,  # Dollars per month
+            name="Sample Model"
         )
 
-    def test_length(self):
-        self.assertEqual(self.track_1.length_real, 5000)
-        self.assertEqual(self.track_1.length_adjusted, 5000)
-        self.assertEqual(self.track_2.length_real, 5000)
-        self.assertEqual(self.track_2.length_adjusted, 10000)
+        self.pos_start = [0, 0]
+        self.pos_end = [5000, 0]
+        road = Road(
+            pos_1=self.pos_start,
+            pos_2=self.pos_end,
+            roughness=2
+        )
+        settlement_1 = Settlement(pos=self.pos_start)
+        settlement_2 = Settlement(pos=self.pos_end)
+        self.model.add(road, settlement_1, settlement_2)
+        self.model.apply_grammars()
 
-    def test_vector(self):
-        expected_result = [5000, 0]
-        self.assertListEqual(list(self.track_1.vector), expected_result)
-        self.assertListEqual(list(self.track_2.vector), expected_result)
+        infrastructure = self.model.infrastructure
+        nodes = infrastructure.all_nodes(type='settlement')
+        index_start, _ = infrastructure.find_nearest_node(self.pos_start, items=nodes)
+        index_end, _ = infrastructure.find_nearest_node(self.pos_end, items=nodes)
+        path = infrastructure.find_path(index_start, index_end)
+        action = Move(path)
 
-    def test_unit_vector(self):
-        expected_result = [1, 0]
-        self.assertListEqual(list(self.track_1.unit_vector), expected_result)
-        self.assertListEqual(list(self.track_2.unit_vector), expected_result)
+        agent = Agent(name="Mr. Sample", balance=100)
+        agent.home = index_start
+        self.model.add(agent)
+        
+        self.model_idle = deepcopy(self.model)  # Agent won't move
 
-    def test_duration(self):
-        self.assertEqual(self.track_1.duration(transportation).total_seconds(), 3600)
-        self.assertEqual(self.track_2.duration(transportation).total_seconds(), 7200)
+        agents = self.model.all_agents
+        agent = self.model.get(agents[0])
+        agent.queue.add(action)
 
-    def test_total_fuel(self):
-        total_fuel = self.track_1.total_fuel(transportation)
-        self.assertAlmostEqual(total_fuel('food'), 0.083, places=2)
-        self.assertAlmostEqual(total_fuel('water'), 0.042, places=2)
-        self.assertAlmostEqual(total_fuel('energy'), 0, places=2)
+    def test_update(self):
+        agents_index = self.model.all_agents
+        agent_index = agents_index[0]
+        edges_index = self.model.all_environment_edges
+        edge_index = edges_index[0]
+        
+        agent = self.model.get(agent_index)
+        agent_idle = self.model_idle.get(agent_index)
+        road = self.model.get(edge_index)
+        road_idle = self.model_idle.get(edge_index)
 
-        total_fuel = self.track_2.total_fuel(transportation)
-        self.assertAlmostEqual(total_fuel('food'), 0.166, places=2)
-        self.assertAlmostEqual(total_fuel('water'), 0.084, places=2)
-        self.assertAlmostEqual(total_fuel('energy'), 0, places=2)
+        # Tests before run
+        self.assertListEqual(agent.pos, self.pos_start)
+        self.assertEqual(agent.balance, 100)
+        self.assertEqual(agent.resources('food'), agent_idle.resources('food'))
+        self.assertEqual(road.degradation.current, 0)
+
+        # Run the model
+        self.model.run(100, report=False)
+        self.model_idle.run(100, report=False)
+
+        # Tests after run
+        self.assertListEqual(agent.pos, self.pos_end)
+        self.assertLess(100, agent.balance)
+        self.assertLess(agent.resources('food'), agent_idle.resources('food'))
+        self.assertLess(road_idle.degradation.current, road.degradation.current)
+
+        #self.model.show()
+        #self.model_idle.show()
     
-    def test_pos_by_progress(self):
-        progress = -0.5
-        pos = self.track_1.pos_by_progress(progress)
-        self.assertListEqual(pos, [0, 0])
-        pos = self.track_2.pos_by_progress(progress)
-        self.assertListEqual(pos, [0, 0])
-
-        progress = 0
-        pos = self.track_1.pos_by_progress(progress)
-        self.assertListEqual(pos, [0, 0])
-        pos = self.track_2.pos_by_progress(progress)
-        self.assertListEqual(pos, [0, 0])
-
-        progress = 0.5
-        pos = self.track_1.pos_by_progress(progress)
-        self.assertListEqual(pos, [2500, 0])
-        pos = self.track_2.pos_by_progress(progress)
-        self.assertListEqual(pos, [2500, 0])
-
-        progress = 1
-        pos = self.track_1.pos_by_progress(progress)
-        self.assertListEqual(pos, [5000, 0])
-        pos = self.track_2.pos_by_progress(progress)
-        self.assertListEqual(pos, [5000, 0])
-
-        progress = 1.5
-        pos = self.track_1.pos_by_progress(progress)
-        self.assertListEqual(pos, [5000, 0])
-        pos = self.track_2.pos_by_progress(progress)
-        self.assertListEqual(pos, [5000, 0])
-
-    def test_pos(self):
-        delta_time = -1800
-        pos = self.track_1.pos(delta_time, transportation)
-        self.assertListEqual(pos, [0, 0])
-        pos = self.track_2.pos(delta_time, transportation)
-        self.assertListEqual(pos, [0, 0])
-
-        delta_time = 0
-        pos = self.track_1.pos(delta_time, transportation)
-        self.assertListEqual(pos, [0, 0])
-        pos = self.track_2.pos(delta_time, transportation)
-        self.assertListEqual(pos, [0, 0])
-
-        delta_time = 1800
-        pos = self.track_1.pos(delta_time, transportation)
-        self.assertListEqual(pos, [2500, 0])
-        pos = self.track_2.pos(delta_time, transportation)
-        self.assertListEqual(pos, [1250, 0])
-
-        delta_time = 3600
-        pos = self.track_1.pos(delta_time, transportation)
-        self.assertListEqual(pos, [5000, 0])
-        pos = self.track_2.pos(delta_time, transportation)
-        self.assertListEqual(pos, [2500, 0])
-
-        delta_time = 7200
-        pos = self.track_1.pos(delta_time, transportation)
-        self.assertListEqual(pos, [5000, 0])
-        pos = self.track_2.pos(delta_time, transportation)
-        self.assertListEqual(pos, [5000, 0])
-
-        delta_time = 10000
-        pos = self.track_1.pos(delta_time, transportation)
-        self.assertListEqual(pos, [5000, 0])
-        pos = self.track_2.pos(delta_time, transportation)
-        self.assertListEqual(pos, [5000, 0])
-
-    def test_serialization(self):
-        dictionary = self.track_1.serialize()
-        track = Track()
-        track.deserialize(dictionary)
-        self.assertEqual(self.track_1, track)
-
-
-if __name__ == "__main__":
+    
+if __name__ == '__main__':
     unittest.main()

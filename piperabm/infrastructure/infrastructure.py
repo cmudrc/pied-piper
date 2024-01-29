@@ -129,6 +129,58 @@ class Infrastructure:
         item = self.get(index)
         neighbors = self.model.find_nearest_nodes(item.pos, nodes, num)
         return neighbors
+
+    def xylim(self):
+        """
+        Calculate limits of axis that encompasses all nodes
+        """
+        x_min = None
+        x_max = None
+        y_min = None
+        y_max = None
+        for index in self.all_nodes():
+            node = self.get(index)
+            pos = node.pos
+            x = pos[0]
+            y = pos[1]
+            if x_min is None or \
+            x < x_min:
+                x_min = x
+            if x_max is None or \
+            x > x_max:
+                x_max = x
+            if y_min is None or \
+            y < y_min:
+                y_min = y
+            if y_max is None or \
+            y > y_max:
+                y_max = y
+        if x_min == x_max:
+            if y_min == y_max:
+                y_min -= 10
+                y_max += 10
+            delta_y = y_max - y_min
+            x_min -= delta_y / 2
+            x_max += delta_y / 2
+        if y_min == y_max:
+            if x_min == x_max:
+                x_min -= 10
+                x_max += 10
+            delta_x = x_max - x_min
+            y_min -= delta_x / 2
+            y_max += delta_x / 2
+        offset_ratio = 0.15
+        x_range = x_max - x_min
+        y_range = y_max - y_min
+        x_offset = x_range * offset_ratio
+        y_offset = y_range * offset_ratio
+        x_min -= x_offset
+        x_max += x_offset
+        y_min -= y_offset
+        y_max += y_offset
+        xlim = [x_min, x_max]
+        ylim = [y_min, y_max]
+        return xlim, ylim
     
     def show(self):
         graphics = Graphics(infrastructure=self)

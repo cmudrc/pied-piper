@@ -64,7 +64,7 @@ class Model(PureObject, Query):
         Set step size
         """
         if isinstance(step_size, (float, int)):
-            step_size = DeltaTime(seconds=step_size)
+            self.step_size = DeltaTime(seconds=step_size)
         elif isinstance(step_size, DeltaTime):
             self.step_size = step_size
         else:
@@ -158,9 +158,10 @@ class Model(PureObject, Query):
             agent.update()
         self.current_date += self.step_size
 
-    def run(self, n: int = 1):
+    def run(self, n: int = 1, report=True):
         for i in range(n):
-            print(f"Progress: {i / n * 100:.1f}% complete")
+            if report is True:
+                print(f"Progress: {i / n * 100:.1f}% complete")
             self.update()
 
     @property

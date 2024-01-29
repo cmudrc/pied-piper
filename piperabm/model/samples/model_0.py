@@ -14,6 +14,8 @@ settlement = Settlement(
 )
 model.add(settlement)
 
+model.apply_grammars()
+
 
 if __name__ == '__main__':
     #model.print

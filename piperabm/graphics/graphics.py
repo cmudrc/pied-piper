@@ -85,7 +85,11 @@ class Graphics:
 
     def fig(self):
         plt.clf()
-        plt.gca().set_aspect("equal")
+        ax = plt.gca()
+        ax.set_aspect("equal")
+        xlim, ylim = self.infrastructure.xylim()
+        ax.set_xlim(xlim)
+        ax.set_ylim(ylim)
         if self.infrastructure is not None:
             self.infrastructure_to_plt()
         if self.society is not None:

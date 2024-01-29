@@ -88,25 +88,10 @@ class Track(PureObject):
         Unit vector showing the direction of movement
         """
         return self.vector / self.length_real
-    '''
-    def duration(self, transportation: Transportation):
-        """
-        Duration of movement on the track
-        """
-        return transportation.duration_by_length(length=self.length_adjusted)
-    
-    def total_fuel(self, transportation: Transportation):
-        """
-        Total amount of fuel of movement on the track
-        """
-        return transportation.fuels_by_length(length=self.length_adjusted)
-    '''
+
     def length_real_remaining(self, pos):
         return ds.point_to_point(pos, self.pos_end)
-    '''    
-    def length_real_elapsed(self, pos):
-        return ds.point_to_point(pos, self.pos_start)
-    '''                           
+                       
     def update(self, delta_time, transportation: Transportation):
         excess_delta_time = 0
 
@@ -128,15 +113,20 @@ class Track(PureObject):
             
             # Update pos
             pos = np.array(pos_current) + delta_length * self.unit_vector
-            agent = self.agent
-            agent.pos = pos
+            self.agent.pos = list(pos)
+
+            # Update resources
+            fuels = transportation.fuels_by_length(delta_length) * adjustment_factor
+            self.agent.resources - fuels
 
             # Update progress
             self.progress = self.progress_by_pos(pos)
 
             # Update infrastructure after finishing track
             if self.done is True:
-                pass
+                edge_index = self.model.infrastructure.find_edge_index(self.index_start, self.index_end)
+                edge = self.model.get(edge_index)
+                edge.degradation.add(self.action.usage)
 
         return excess_delta_time
 

@@ -42,6 +42,8 @@ road_4 = Road(
 )
 model.add(road_1, road_2, road_3, road_4)
 
+model.apply_grammars()
+
 
 if __name__ == '__main__':
     #model.print
