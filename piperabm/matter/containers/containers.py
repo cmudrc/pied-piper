@@ -16,16 +16,20 @@ class Containers(PureObject):
         super().__init__()
         self.library = {}
         for arg in args:
-            if isinstance(arg, Container):
+            if isinstance(arg, (Container, Matter)):
                 self.add(arg)
 
-    def add(self, container: Container):
+    def add(self, item: (Container, Matter)):
         """
         Add new resource to the library
         """
-        name = container.name
+        name = item.name
         if name != '' and name is not None:
-            self.library[name] = container
+            if isinstance(item, Container):
+                self.library[name] = item
+            elif isinstance(item, Matter):
+                container = Container(item)
+                self.add(container)
         else:
             raise ValueError
 

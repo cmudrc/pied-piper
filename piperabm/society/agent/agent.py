@@ -2,12 +2,10 @@ from copy import deepcopy
 
 from piperabm.object import PureObject
 from piperabm.matter import Containers, Matters
-from piperabm.time import DeltaTime, Date
+from piperabm.time import DeltaTime
 from piperabm.transportation import Transportation
 from piperabm.actions import ActionQueue
-from piperabm.time import date_serialize, date_deserialize
 #from piperabm.agent.brain import Brain
-from piperabm.tools.coordinate import distance as ds
 from piperabm.society.agent.config import *
 
 
@@ -21,9 +19,10 @@ class Agent(PureObject):
         self,
         name: str = '',
         transportation: Transportation = deepcopy(WALK),
-        resources: Containers = deepcopy(RESOURCES_DEFAULT),
         fuels_rate_idle: Matters = deepcopy(FUELS_RATE_HUMAN_IDLE),
-        balance: float = deepcopy(BALANCE_DEFUALT)
+        socioeconomic_status: float = 1,
+        average_balance: float = deepcopy(BALANCE_DEFUALT),
+        average_resources: Containers = deepcopy(RESOURCES_DEFAULT)
     ):
         super().__init__()
         """ Binding to the model """
@@ -37,8 +36,8 @@ class Agent(PureObject):
         self.index = None
         self.name = name
         self.home = None
-        self.last_time_home = None
-        self.socioeconomic_status = None #socioeconomic_status: float = 1,
+        self.time_outside = DeltaTime(seconds=0)
+        self.socioeconomic_status = socioeconomic_status
 
         """ Transporation """
         self.transportation = transportation
@@ -49,10 +48,15 @@ class Agent(PureObject):
         self.queue.agent = self  # Binding
 
         """ Resources """
-        self.resources = resources
-
         self.fuels_rate_idle = fuels_rate_idle
+        self.set_resources(average_resources)
+        self.set_balance(average_balance)
+    
+    def set_resources(self, average_resources: Containers):
+        self.resources = average_resources * self.socioeconomic_status
 
+    def set_balance(self, average_balance: float):
+        balance = average_balance * self.socioeconomic_status
         if balance < 0: raise ValueError
         self.balance = balance
 
@@ -69,7 +73,7 @@ class Agent(PureObject):
         """
         result = True
         resources_zero = self.resources.check_empty(RESOURCES_VITAL)
-        if len(resources_zero) > 0:  # died
+        if len(resources_zero) > 0:  # Died
             result = False
         return result
     
@@ -77,77 +81,71 @@ class Agent(PureObject):
     def death_reason(self):
         result = None
         resources_zero = self.resources.check_empty(RESOURCES_VITAL)
-        if len(resources_zero) > 0:  # died
+        if len(resources_zero) > 0:  # Died
             result = resources_zero[0]
         return result
 
     def is_home(self) -> bool:
         """
-        Check whether agent is alive
+        Check whether agent is in home
         """
         result = None
         if self.home is None:
             print('home index not defined')
         else:
-            home = self.model.get(self.home)
-            distance = ds.point_to_point(home.pos, self.pos)
-            if distance <= self.model.proximity_distance:
+            if self.current_node == self.home:
                 result = True
             else:
                 result = False
         return result
-            
-    '''
-    @property
-    def source(self):
-        return self.resources.source
-    
-    @property
-    def demand(self):
-        return self.resources.demand
     '''
     def utility(self, resource_name):
         return self.resources(name=resource_name)
+    '''
+    @property
+    def current_node(self):
+        """
+        Return current node id based on current pos
+        """
+        result = None
+        infrastructure = self.model.infrastructure
+        items = infrastructure.all_nodes()
+        node_index, distance = infrastructure.find_nearest_node(self.pos, items)
+        if distance <= self.model.proximity_radius:
+            result = node_index
+        return result
 
     def update(self) -> None:
         """
         Update agent
         """
         if self.alive is True:
-            duration = self.model.step_size.total_seconds()
+            duration_object = self.model.step_size
+            duration = duration_object.total_seconds()
             """ Income """
             self.balance += self.income * duration
             """ Consume resources """
-            #other_rates = [] ###### from action in queue
-            self.consume_resources(duration) # , other_rates
+            fuels = self.fuels_rate_idle * duration
+            self.resources - fuels
             self.queue.update()
-            #self.check_alive()
+            """ How long it has been out of home? """
+            if self.is_home():
+                self.time_outside = DeltaTime(seconds=0)
+            else:
+                self.time_outside += duration_object
 
-        """ decide """
+        """ Decide """
         if self.alive is True:
-            pass 
-        #    self.brain.observe(self.index, self.environment, self.society)
-        #    actions = self.brain.decide()
-        #    self.queue.add(actions)
-
-    def consume_resources(self, duration):
-        """
-        Create ResourceDelta object based on duration and fuel_rate(s)
-        , other_rates: list = []
-        """
-        if isinstance(duration, DeltaTime):
-            duration = duration.total_seconds()
-        fuels = self.fuels_rate_idle * duration
-        #for other_rate in other_rates:
-        #    total_consumption.add(other_rate)
-        remainder = self.resources - fuels
-        return remainder
+            #self.brain.observe(self)
+            #actions = self.brain.decide()
+            actions = []
+            self.queue.add(actions)
 
     def serialize(self) -> dict:
         return {
             'name': self.name,
             'home': self.home,
-            'last_time_home': date_serialize(self.last_time_home),
+            'time_outside': self.time_outside.total_seconds(),
             'transportation': self.transportation.serialize(),
             'pos': self.pos,
             'queue': self.queue.serialize(),
@@ -162,7 +160,7 @@ class Agent(PureObject):
         self.alive = dictionary['alive']
         self.death_reason = dictionary['death_reason']
         self.home = dictionary['home']
-        self.last_time_home = date_deserialize(dictionary['last_time_home'])
+        self.time_outside = DeltaTime(seconds=dictionary['time_outside'])
         self.transportation = Transportation()
         self.transportation.deserialize(dictionary['transportation'])
         self.pos = dictionary['pos']

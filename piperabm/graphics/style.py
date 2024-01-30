@@ -23,7 +23,10 @@ infrastructure_edge_style = {
 # Society
 society_node_style = {
     "agent": {
-        "color": "r",
+        "color": {
+            "dead": "r",
+            "alive": "magenta",
+        },
         "shape": "x",
         "size": NODE_ITEM_DEFAULT_RADIUS,
     }

@@ -64,13 +64,20 @@ class Graphics:
         agents = self.society.agents
         xs = []
         ys = []
+        agent_color_list = []
         for index in agents:
             item = self.society.get(index)
             pos = item.pos
             xs.append(pos[0])
             ys.append(pos[1])
+            colors = society_style["node"]["agent"]["color"]
+            if item.alive is True:
+                color = colors['alive']
+            else:
+                color = colors['dead']
+            agent_color_list.append(color)
 
-        agent_color = society_style["node"]["agent"]["color"]
+        #agent_color = society_style["node"]["agent"]["color"]
         agent_shape = society_style["node"]["agent"]["shape"]
         agent_size = society_style["node"]["agent"]["size"]
 
@@ -78,7 +85,7 @@ class Graphics:
         ax.scatter(
             xs,
             ys,
-            color=agent_color,
+            color=agent_color_list,
             s=agent_size,
             marker=agent_shape,
         )

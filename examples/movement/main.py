@@ -1,16 +1,23 @@
 import os
 
 from piperabm.model.samples import model_2 as model
+from piperabm.society import Agent
 from piperabm.actions import Move
 from piperabm.time import Date, DeltaTime
-from piperabm.society.agent.samples import agent_0 as agent
+from piperabm.matter import Containers, Matter
+#from piperabm.society.agent.samples import agent_0 as agent
 from piperabm.graphics import Animation
 
 
 """ Setup model """
-model.current_date = Date(2000, 1, 1)
+food = Matter('food', 0.2)
+water = Matter('water', 0.2)
+energy = Matter('energy', 0.2)
+average_resources = Containers(food, water, energy)
+model.average_resources = average_resources
+model.average_income = 100
+model.gini_index = 0
 model.set_step_size(DeltaTime(seconds=10))  # seconds
-
 
 """ Create move action """
 infrastructure = model.infrastructure
@@ -23,6 +30,7 @@ path = infrastructure.find_path(index_start, index_end)
 action = Move(path)
 
 """ Add agent to model """
+agent = Agent()
 agent.home = index_start
 model.add(agent)
 
@@ -35,9 +43,11 @@ agent.queue.add(action)
 path = os.path.dirname(os.path.realpath(__file__))
 animation = Animation(path)
 #agent.resources.print
-for _ in range(26):
+for _ in range(30):
     fig = model.fig()
     animation.add_figure(fig)
     model.update()
 #agent.resources.print
-animation.render(framerate=5)
+animation.render(framerate=15)
+
+#model.show()

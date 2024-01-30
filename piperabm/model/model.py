@@ -10,10 +10,12 @@ from piperabm.infrastructure import Infrastructure, Junction
 from piperabm.society import Society, Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
+from piperabm.matter import Containers
 from piperabm.measure import Measure
 from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.tools.stats import gini
 from piperabm.config.settings import *
+from piperabm.society.agent.config import *
 
 
 
@@ -27,6 +29,8 @@ class Model(PureObject, Query):
         exchange_rate: ExchangeRate = deepcopy(exchange_rate_0),
         gini_index: (int, float) = 0,
         average_income: (int, float) = 0,  # Currency / month
+        average_balance: float = deepcopy(BALANCE_DEFUALT),
+        average_resources: Containers = deepcopy(RESOURCES_DEFAULT),
         name: str = "sample"
     ):
         super().__init__()
@@ -38,6 +42,8 @@ class Model(PureObject, Query):
         self.gini_index = gini_index
         #self.socio_economic_status_distribution = gini.lognorm(gini_index)
         self.average_income = average_income
+        self.average_balance = average_balance
+        self.average_resources = average_resources
         self.name = name
 
         self.library = {}
@@ -116,12 +122,13 @@ class Model(PureObject, Query):
                     if item.home not in settlements:
                         raise ValueError
                 home = self.get(item.home)
-                item.pos = home.pos
-                item.last_time_home = deepcopy(self.current_date)
+                item.pos = deepcopy(home.pos)
 
                 """ Socio-economic status """
                 distribution = gini.lognorm(self.gini_index)
                 item.socioeconomic_status = distribution.rvs()
+                item.set_balance(self.average_balance)
+                item.set_resources(self.average_resources)
 
                 """ Relationships """
                 families = self.find_agents_in_same_home(item.home)
