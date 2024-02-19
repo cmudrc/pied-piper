@@ -1,7 +1,7 @@
 from piperabm.tools.coordinate.projection import latlong_xy
 
 
-def read_data(streets, coordinates, latitude_0, longitude_0, permitted_labels='all'):
+def read_streets(streets, coordinates, latitude_0, longitude_0, permitted_labels='all'):
     """
     Read data from files and convert latitude/longitude to x,y only for permitted labels
     """
@@ -70,5 +70,5 @@ if __name__ == '__main__':
     latitude_0 = 0
     longitude_0 = 0
 
-    data = read_data(streets, coordinates, latitude_0, longitude_0, permitted_labels)
+    data = read_streets(streets, coordinates, latitude_0, longitude_0, permitted_labels)
     print(data[:5])

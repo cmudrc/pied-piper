@@ -1,7 +1,8 @@
 from piperabm.model import Model
 from piperabm.infrastructure import Road
 
-from data.read_data import read_data
+from data.streets.read_data import read_streets
+from data.settlements.generate_settlements import generate_settlements
 
 
 def create_model(streets, labels, permitted_labels='all'):
