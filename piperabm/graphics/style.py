@@ -1,5 +1,5 @@
 # Infrastructure
-NODE_ITEM_DEFAULT_RADIUS = 25
+NODE_ITEM_DEFAULT_RADIUS = 5
 infrastructure_node_style = {
     "settlement": {
         "color": "b",    
@@ -7,7 +7,7 @@ infrastructure_node_style = {
     },
     "junction": {
         "color": "k",
-        "radius": 5,
+        "radius": 0,
     },
     "market": {
         "color": "g",

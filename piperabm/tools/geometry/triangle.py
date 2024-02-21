@@ -31,7 +31,7 @@ class Triangle:
         # Calculate the random point's coordinates
         x = a * self.A[0] + b * self.B[0] + c * self.C[0]
         y = a * self.A[1] + b * self.B[1] + c * self.C[1]
-        return (x, y)
+        return [x, y]
     
     @property
     def weight(self):

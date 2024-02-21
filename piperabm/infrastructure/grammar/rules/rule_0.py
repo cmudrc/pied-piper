@@ -12,11 +12,16 @@ class Rule_0(Rule):
         super().__init__(model, name)
 
     def check(self, node_item, other_node_item):
-        distance = ds.point_to_point(
-            point_1=node_item.pos,
-            point_2=other_node_item.pos
-        )
-        return distance < self.proximity_radius
+        result = False
+        if node_item.type == "junction" or other_node_item.type == "junction":
+            #print(node_item.pos, other_node_item.pos)
+            distance = ds.point_to_point(
+                point_1=node_item.pos,
+                point_2=other_node_item.pos
+            )
+            if distance < self.proximity_radius:
+                result = True
+        return result
     
     def apply(self, report=False):
         anything_happened = False
@@ -27,31 +32,15 @@ class Rule_0(Rule):
                     other_node_item = self.get(other_node_index)
                     if self.check(node_item, other_node_item):
                         # Update the items based on their types
-
-                        if node_item.type == "junction" and other_node_item.type != "junction":
-                            if report is True:
-                                print(">>> remove: " + str(node_item))
-                            self.remove(node_item.index)
-                            anything_happened = True
-                            break
-
-                        elif node_item.type == "junction" and other_node_item.type == "junction":
-                            if report is True:
-                                print(">>> remove: " + str(node_item))
-                            self.remove(node_item.index)
-                            anything_happened = True
-                            break
-
-                        elif node_item.type != "junction" and other_node_item.type == "junction":
-                            if report is True:
-                                print(">>> remove: " + str(other_node_item))
-                            self.remove(other_node_item.index)
-                            anything_happened = True
-                            break
-
-                        elif node_item.type != "junction" and other_node_item.type != "junction":
-                            print("close items are not resolved")
-                            raise ValueError
+                        if node_item.type == 'junction':
+                            node_to_remove = node_item
+                        else:
+                            node_to_remove = other_node_item
+                        if report is True:
+                            print(">>> remove: " + str(node_to_remove))
+                        self.remove(node_to_remove.index)
+                        anything_happened = True
+                        break
                         
             if anything_happened is True:
                 break    

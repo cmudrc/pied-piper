@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.model import Model
-from piperabm.infrastructure import Junction
+from piperabm.infrastructure import Junction, Settlement
 from piperabm.infrastructure.grammar.rules import Rule_0
 
 
@@ -31,6 +31,18 @@ class TestGrammarRule0CheckClass(unittest.TestCase):
     def test_3(self):
         item = Junction(pos=[1.5, 0])
         result = self.rule.check(self.item, item)
+        self.assertFalse(result)
+
+    def test_4(self):
+        item = Settlement(pos=[0.5, 0.5])
+        result = self.rule.check(self.item, item)
+        self.assertTrue(result)
+
+    def test_5(self):
+        item_1 = Settlement(pos=[0, 0])
+        item_2 = Settlement(pos=[0.5, 0.5])
+        rule = Rule_0(self.model)
+        result = rule.check(item_1, item_2)
         self.assertFalse(result)
 
 

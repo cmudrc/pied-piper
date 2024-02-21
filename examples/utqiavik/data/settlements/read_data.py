@@ -1,7 +1,14 @@
 from piperabm.tools.coordinate.projection import latlong_xy
 
+try:
+    from coordinates import coordinates
+    from meshs import meshs
+except:
+    from .coordinates import coordinates
+    from .meshs import meshs
 
-def read_data(meshs, coordinates, latitude_0, longitude_0, permitted_labels='all'):
+
+def read_data(latitude_0, longitude_0, permitted_labels='all'):
     """
     Read data from files and convert latitude/longitude to x,y only for permitted labels
     """
@@ -28,13 +35,10 @@ def read_data(meshs, coordinates, latitude_0, longitude_0, permitted_labels='all
 
 
 if __name__ == "__main__":
-
-    from coordinates import coordinates
-    from meshs import meshs
     from labels import map_1 as permitted_labels
 
     latitude_0 = 0
     longitude_0 = 0
 
-    data = read_data(meshs, coordinates, latitude_0, longitude_0, permitted_labels)
+    data = read_data(latitude_0, longitude_0, permitted_labels)
     print(data[:5])
