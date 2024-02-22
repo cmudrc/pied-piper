@@ -23,12 +23,12 @@ class Model(PureObject, Query):
 
     def __init__(
         self,
-        proximity_radius: (int, float) = 0,
-        step_size: (int, float, DeltaTime) = DeltaTime(hours=1),
+        proximity_radius: float = 0,
+        step_size = DeltaTime(hours=1),
         current_date: Date = Date(year=2000, month=1, day=1),
         exchange_rate: ExchangeRate = deepcopy(exchange_rate_0),
-        gini_index: (int, float) = 0,
-        average_income: (int, float) = 0,  # Currency / month
+        gini_index: float = 0,
+        average_income: float = 0,  # Currency / month
         average_balance: float = deepcopy(BALANCE_DEFUALT),
         average_resources: Containers = deepcopy(RESOURCES_DEFAULT),
         name: str = "sample"
