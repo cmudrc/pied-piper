@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from piperabm.object import PureObject
-from piperabm.resources import Resources
+#from piperabm.resources import Resources
 from piperabm.degradation import Degradation
 from piperabm.society.agent.config import *
 
@@ -18,7 +18,7 @@ class Market(PureObject):
         name: str = '',
         resources: Resources = None,
         degradation: Degradation = None,
-        index: int = None
+        id: int = None
     ):
         super().__init__()
         
@@ -32,7 +32,7 @@ class Market(PureObject):
         if degradation is None:
             degradation = Degradation()
         self.degradation = degradation
-        self.index = index
+        self.id = id
 
     def serialize(self) -> dict:
         dictionary = {}

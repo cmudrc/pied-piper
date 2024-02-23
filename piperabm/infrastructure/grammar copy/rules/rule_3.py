@@ -7,28 +7,26 @@ class Rule_3(Rule):
     Condition for multi-edge
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, model):
         name = "rule 3"
-        super().__init__(infrastructure, name)
+        super().__init__(model, name)
 
-    def check(self, edge_id, other_edge_id):
-        edge_object = self.get(edge_id)
-        other_edge_object = self.get(other_edge_id)
+    def check(self, edge_item, other_edge_item):
         distance_1_1 = ds.point_to_point(
-            point_1=edge_object.pos_1,
-            point_2=other_edge_object.pos_1
+            point_1=edge_item.pos_1,
+            point_2=other_edge_item.pos_1
         )
         distance_1_2 = ds.point_to_point(
-            point_1=edge_object.pos_1,
-            point_2=other_edge_object.pos_2
+            point_1=edge_item.pos_1,
+            point_2=other_edge_item.pos_2
         )
         distance_2_1 = ds.point_to_point(
-            point_1=edge_object.pos_2,
-            point_2=other_edge_object.pos_1
+            point_1=edge_item.pos_2,
+            point_2=other_edge_item.pos_1
         )
         distance_2_2 = ds.point_to_point(
-            point_1=edge_object.pos_2,
-            point_2=other_edge_object.pos_2
+            point_1=edge_item.pos_2,
+            point_2=other_edge_item.pos_2
         )
         distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
         distances = sorted(distances)
@@ -38,19 +36,19 @@ class Rule_3(Rule):
     
     def apply(self, report=False):
         anything_happened = False
-        for edge_id in self.edges:
-            for other_edge_id in self.edges:
-                if edge_id != other_edge_id:
-                    if self.check(edge_id, other_edge_id):
+        for edge_index in self.edges:
+            for other_edge_index in self.edges:
+                if edge_index != other_edge_index:
+                    edge_item = self.get(edge_index)
+                    other_edge_item = self.get(other_edge_index)
 
+                    if self.check(edge_item, other_edge_item):
                         # Update the items based on their types
-                        if report is True:
-                            other_edge_object = self.get(other_edge_id)
-                            print(">>> remove: " + str(other_edge_object))
 
-                        self.model.remove(other_edge_id)
-                        ids = self.infrastructure.edge_ids(other_edge_id)
-                        self.infrastructure.remove_edge(*ids)
+                        if report is True:
+                            print(">>> remove: " + str(other_edge_item))
+
+                        self.remove(other_edge_index)
                         
                         anything_happened = True
 
@@ -69,5 +67,5 @@ if __name__ == "__main__":
     item_2 = Road(pos_1=[0, 0.5], pos_2=[9.5, 0])
     model.add(item_1, item_2)
 
-    rule = Rule_3(model.infrastructure)
+    rule = Rule_3(model)
     rule.apply(report=True)

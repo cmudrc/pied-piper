@@ -13,7 +13,7 @@ class Settlement(PureObject):
         pos: list = None,
         name: str = '',
         degradation: Degradation = None,
-        index: int = None
+        id: int = None
     ):
         super().__init__()
         
@@ -24,7 +24,7 @@ class Settlement(PureObject):
         if degradation is None:
             degradation = Degradation()
         self.degradation = degradation
-        self.index = index
+        self.id = id
 
     def serialize(self) -> dict:
         dictionary = {}

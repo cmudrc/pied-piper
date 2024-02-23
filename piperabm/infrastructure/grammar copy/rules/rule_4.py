@@ -12,22 +12,21 @@ class Rule_4(Rule):
     Condition for connecting isolated non-junction items to the rest
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, model):
         name = "rule 4"
-        super().__init__(infrastructure, name)
+        super().__init__(model, name)
 
-    def check(self, node_id):
+    def check(self, node_item):
         result = False
         smallest_distance_vector = None
-        node_object = self.get(node_id)
         # Has to be non-junction
-        if node_object.type != "junction":
+        if node_item.type != "junction":
             # Must be isolated
             distances = []
             for edge_index in self.edges:
                 edge_item = self.get(edge_index)
                 distance_vector = ds.point_to_line(
-                    point=node_object.pos,
+                    point=node_item.pos,
                     line=[edge_item.pos_1, edge_item.pos_2],
                     segment=True,
                     vector=True
@@ -55,16 +54,16 @@ class Rule_4(Rule):
     def apply(self, report=False):
         anything_happened = False
         for node_index in self.nodes:
-            node_object = self.get(node_index)
-            check_result, smallest_distance_vector = self.check(node_object)
+            node_item = self.get(node_index)
+            check_result, smallest_distance_vector = self.check(node_item)
             if check_result is True:
 
-                pos_1 = node_object.pos
+                pos_1 = node_item.pos
                 pos_2 = list(np.array(pos_1) + np.array(smallest_distance_vector))
-                object = Road(pos_1, pos_2)
-                self.model.add(object)
+                item = Road(pos_1, pos_2)
+                self.add(item)
                 if report is True:
-                    print(">>> add: " + str(object))
+                    print(">>> add: " + str(item))
                 
                 anything_happened = True
 

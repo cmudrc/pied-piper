@@ -1,32 +1,29 @@
 class Rule:
 
-    def __init__(self, infrastructure, name: str):
-        self.infrastructure = infrastructure
-        self.model = self.infrastructure.model
+    def __init__(self, model, name: str):
+        self.model = model
         self.name = name
 
     @property
     def proximity_radius(self):
-        return self.infrastructure.proximity_radius
+        return self.model.proximity_radius
 
     @property
     def nodes(self):
-        return self.infrastructure.nodes_id
+        return self.model.all_environment_nodes
     
     @property
     def edges(self):
-        return self.infrastructure.edges_id
+        return self.model.all_environment_edges
     
-    def get(self, id):
-        return self.infrastructure.get(id)
+    def get(self, index):
+        return self.model.get(index)
     
-    '''
     def remove(self, index):
         self.model.remove(index)
 
     def add(self, item):
         self.model.add(item)
-    '''
 
     def check(self):
         print("NOT IMPLEMENTED YET.")

@@ -1,8 +1,7 @@
 import unittest
-from copy import deepcopy
 
 from piperabm.model import Model
-from piperabm.infrastructure import Junction, Settlement
+from piperabm.infrastructure import Junction, Settlement, Road
 from piperabm.infrastructure.grammar.rules import Rule_0
 
 
@@ -10,39 +9,32 @@ class TestGrammarRule0CheckClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.model = Model(proximity_radius=1)
-        self.rule = Rule_0(self.model)
-        self.item = Junction(pos=[0, 0])
+        object = Settlement(pos=[0, 0])
+        object.id = 0
+        self.model.add(object)
 
     def test_0(self):
-        item = Junction(pos=[0, 0])
-        result = self.rule.check(self.item, item)
+        object = Junction(pos=[0, 0])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_0(self.model.infrastructure)
+        result = rule.check(node_id=0, other_node_id=1)
         self.assertTrue(result)
 
     def test_1(self):
-        item = Junction(pos=[0.5, 0.5])
-        result = self.rule.check(self.item, item)
-        self.assertTrue(result)
-
+        object = Junction(pos=[1, 0])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_0(self.model.infrastructure)
+        result = rule.check(node_id=0, other_node_id=1)
+        self.assertFalse(result)
+    
     def test_2(self):
-        item = Junction(pos=[1, 0])
-        result = self.rule.check(self.item, item)
-        self.assertFalse(result)
-
-    def test_3(self):
-        item = Junction(pos=[1.5, 0])
-        result = self.rule.check(self.item, item)
-        self.assertFalse(result)
-
-    def test_4(self):
-        item = Settlement(pos=[0.5, 0.5])
-        result = self.rule.check(self.item, item)
-        self.assertTrue(result)
-
-    def test_5(self):
-        item_1 = Settlement(pos=[0, 0])
-        item_2 = Settlement(pos=[0.5, 0.5])
-        rule = Rule_0(self.model)
-        result = rule.check(item_1, item_2)
+        object = Settlement(pos=[0.5, 0.5])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_0(self.model.infrastructure)
+        result = rule.check(node_id=0, other_node_id=1)
         self.assertFalse(result)
 
 
@@ -50,51 +42,74 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.model = Model(proximity_radius=1)
-        item = Junction(pos=[0, 0]) 
-        self.model.add(item)
+        object = Settlement(pos=[0, 0])
+        object.id = 0
+        self.model.add(object)
 
     def test_apply_0(self):
-        '''
+        """
         Two nodes close to each other
-        '''
-        model = deepcopy(self.model)
-        item = Junction(pos=[0, 0])
-        model.add(item)
-        self.assertEqual(len(model.all_environment_nodes), 2)
-        rule = Rule_0(model)
+        """
+        object = Junction(pos=[0, 0])
+        object.id = 1
+        self.model.add(object)
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
+        rule = Rule_0(self.model.infrastructure)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 1)
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0])
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 1)
+        rule.apply()
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0])
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 1)
 
     def test_apply_1(self):
-        '''
+        """
         Two nodes far from each other
-        '''
-        model = deepcopy(self.model)
-        item = Junction(pos=[3, 3])
-        model.add(item)
-        self.assertEqual(len(model.all_environment_nodes), 2)
-        rule = Rule_0(model)
+        """
+        object = Junction(pos=[2, 2])
+        object.id = 1
+        self.model.add(object)
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
+        self.assertEqual(len(self.model.all), 2)
+        rule = Rule_0(self.model.infrastructure)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 2)
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 2)
+        rule.apply()
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 2)
 
     def test_apply_2(self):
-        '''
+        """
         Three nodes close to each other.
-        '''
-        model = deepcopy(self.model)
-        item = Junction(pos=[0.1, 0])
-        model.add(item)
-        item = Junction(pos=[0, 0.1])
-        model.add(item)
-        self.assertEqual(len(model.all_environment_nodes), 3)
-        rule = Rule_0(model)
+        """
+        object = Junction(pos=[0.1, 0])
+        object.id = 1
+        self.model.add(object)
+        object = Junction(pos=[0, 0.1])
+        object.id = 2
+        self.model.add(object)
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1, 2])
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 3)
+        rule = Rule_0(self.model.infrastructure)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 2)
+        self.assertEqual(len(self.model.infrastructure.nodes_id), 2)
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 2)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 1)
+        self.assertEqual(len(self.model.infrastructure.nodes_id), 1)
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 1)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 1)
+        self.assertListEqual(self.model.infrastructure.nodes_id, [0])
+        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
+        self.assertEqual(len(self.model.all), 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

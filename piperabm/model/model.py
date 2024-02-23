@@ -1,12 +1,13 @@
 from copy import deepcopy
 import random
+import uuid
 
 from piperabm.object import PureObject
 from piperabm.model.query import Query
 from piperabm.graphics import Graphics
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
-from piperabm.infrastructure import Infrastructure, Junction
+from piperabm.infrastructure import Infrastructure, Junction, Road
 from piperabm.society import Society, Family
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
@@ -47,23 +48,8 @@ class Model(PureObject, Query):
         self.name = name
 
         self.library = {}
-        self.measure = Measure(self)
-        self.valid_types = Model.extract_valid_types(valid_items)  # recognizable items list
-
-    def extract_valid_types(valid_items):
-        valid_types = {
-            "infrastructure": {
-                "node": [],
-                "edge": [],
-            },
-            "society": {
-                "node": [],
-                "edge": [],
-            },
-        }
-        for item in valid_items:
-            valid_types[item().section][item().category].append(item().type)
-        return valid_types
+        self.infrastructure = Infrastructure(model=self)
+        #self.measure = Measure(self)
 
     def set_step_size(self, step_size):
         """
@@ -76,38 +62,82 @@ class Model(PureObject, Query):
         else:
             raise ValueError
         
-    def is_unique(self, index) -> bool:
-        result = True
-        if index in self.all:
-            result = False
+    def has_id(self, id) -> bool:
+        """
+        Check if the id already exists
+        """
+        result = False
+        if id in self.all:
+            result = True
         return result
+
+    @property
+    def new_id(self) -> int:
+        """
+        Generate a new unique integer as id for graph items
+        """
+        result = None
+        while True:
+            new_id = uuid.uuid4().int
+            if self.has_id(new_id) is False:
+                result = new_id
+                break
+        return result
+
+    def add_object_to_library(self, object):
+        """
+        Add new object to library
+        """
+        # ID
+        if object.id is None:
+            object.id = self.new_id
+        else:
+            if self.has_id(object.id) is True:
+                object.id = self.new_id
+        # Binding
+        object.model = self
+        # Add to library
+        self.library[object.id] = object
+        return object.id
+
+    def add_infrastructure_object(self, object) -> None:
+        """
+        Add new infrastructure object to model
+        """
+        if object.category == "node":
+            id = self.add_object_to_library(object)
+            self.infrastructure.add_node(id)
+            return id
+        elif object.category == "edge":
+            junction_1 = Junction(pos=object.pos_1)
+            junction_2 = Junction(pos=object.pos_2)
+            id_1 = self.add_infrastructure_object(junction_1)
+            id_2 = self.add_infrastructure_object(junction_2)
+            id = self.add_object_to_library(object)
+            self.infrastructure.add_edge(id_1, id_2, id)
+            return id
 
     def add(self, *items) -> None:
         """
         Add new item(s) to model
         """
+        for item in items:
+            if isinstance(item, list):
+                for element in item:
+                    self.add(element)
+            else:
+                if item.section == "infrastructure":
+                    self.add_infrastructure_object(item)
+                #elif item.section == "society":
+                #    add_society_item(self, item)
+                else:  # item not recognized
+                    raise ValueError
 
-        def add_to_library(self, item):
-            """ Add new item to library """
-            if item.index == None or \
-                self.is_unique(item.index) is False:
-                item.index = self.new_index  # New index
-            item.model = self  # Binding
-            self.library[item.index] = item
-
-        def add_infrastructure_item(self, item) -> None:
-            """
-            Add new infrastructure item to model
-            """
-            if item.category == "node":
-                add_to_library(self, item)
-
-            elif item.category == "edge":
-                junction_1 = Junction(pos=item.pos_1)
-                junction_2 = Junction(pos=item.pos_2)
-                self.add(junction_1)
-                self.add(junction_2)
-                add_to_library(self, item)
+    '''
+    def add(self, *items) -> None:
+        """
+        Add new item(s) to model
+        """
 
         def add_society_item(self, item) -> None:
             """
@@ -157,130 +187,15 @@ class Model(PureObject, Query):
                     add_society_item(self, item)
             else:  # item not recognized
                 raise ValueError
-
-    def update(self):
-        agents = self.all_alive_agents
-        for index in agents:
-            agent = self.get(index)
-            agent.update()
-        self.current_date += self.step_size
-
-    def run(self, n: int = 1, report=True):
-        for i in range(n):
-            if report is True:
-                print(f"Progress: {i / n * 100:.1f}% complete")
-            self.update()
-
-    @property
-    def infrastructure(self):
-        """
-        Return infrastructure graph of items
-        """
-        self.apply_grammars()
-        return Infrastructure(model=self)
-    
-    def apply_grammars(self):
-        grammar = Grammar(model=self)
-        grammar.apply()
-    
-    @property
-    def society(self):
-        """
-        Return society graph of items
-        """
-        return Society(model=self)
-    
-    def save(self, path):
-        """
-        Save the model based on delta creation to a file
-        """
-        filename = self.name
-        if not jsh.exists(path, filename):
-            data = [self.serialize()]
-            jsh.save(data, path, filename)
-        else:
-            data = jsh.load(path, filename)
-            previous_entry = data[-1]
-            delta = self.create_delta(previous_entry)
-            jsh.append(delta, path, filename)
-
-    def remove_save(self, path):
-        """
-        Remove save file
-        """
-        filename = self.name
-        jsh.remove(path, filename)
-
-    def load(self, path, filename):
-        """
-        Load the model based on deltas in a file
-        """
-        if jsh.exists(path, filename):
-            deltas = jsh.load(path, filename)
-        for i, delta in enumerate(deltas):
-            if i == 0:
-                self.deserialize(delta)
-            else:
-                self.apply_delta(delta)
-
-    def fig(self):
-        graphics = Graphics(
-            infrastructure=self.infrastructure,
-            society=self.society
-        )
-        return graphics.fig()
-    
-    def show(self):
-        """
-        Show the graphical representation of current state of model
-        """
-        graphics = Graphics(
-            infrastructure=self.infrastructure,
-            society=self.society
-        )
-        graphics.show()
-
-    def serialize(self) -> dict:
-        dictionary = {}
-        
-        """ serialize library items """
-        library_serialized = {}
-        for index in self.library:
-            item = self.get(index)
-            library_serialized[str(index)] = item.serialize()
-        dictionary["library"] = library_serialized
-        dictionary["proximity radius"] = self.proximity_radius
-        dictionary["step_size"] = self.step_size.total_seconds()
-        dictionary["current_date"] = date_serialize(self.current_date)
-        dictionary["exchange_rate"] = self.exchange_rate.serialize()
-        dictionary["gini_index"] = self.gini_index
-        dictionary["average_income"] = self.average_income
-        dictionary["name"] = self.name
-        return dictionary
-
-    def deserialize(self, dictionary: dict) -> None:
-        self.proximity_radius = dictionary["proximity radius"]
-        # Deserialize library
-        library_dictionary = dictionary["library"]
-        for index in library_dictionary:
-            item_dictionary = library_dictionary[index]
-            type = item_dictionary["type"]
-            for valid_item in valid_items:
-                if valid_item.type == type:
-                    item = valid_item()
-                    break
-            item.deserialize(item_dictionary)
-            self.library[int(index)] = item
-        self.step_size = DeltaTime(seconds=dictionary["step_size"])
-        self.current_date = date_deserialize(dictionary["current_date"])
-        self.exchange_rate = ExchangeRate()
-        self.exchange_rate.deserialize(dictionary["exchange_rate"])
-        self.name = dictionary["name"]
+    '''
 
 
 if __name__ == "__main__":
     model = Model()
-    item = Junction(name="sample", pos=[0, 0])
-    model.add(item)
+    object = Junction(name="sample", pos=[0, 0])
+    model.add_infrastructure_object(object)
+    object = Road(name="sample", pos_1=[0, 0], pos_2=[1, 1])
+    model.add_infrastructure_object(object)
     #model.show()
-    model.print
+    #model.print
+    print(model.infrastructure)

@@ -10,22 +10,32 @@ class TestGrammarRule3CheckClass(unittest.TestCase):
 
     def setUp(self) -> None:
         self.model = Model(proximity_radius=1)
-        self.rule = Rule_3(self.model)
-        self.item = Road(pos_1=[0, 0], pos_2=[10, 0])
+        object = Road(pos_1=[0, 0], pos_2=[10, 0])
+        object.id = 0
+        self.model.add(object)
 
     def test_on(self):
-        item = Road(pos_1=[0.5, 0], pos_2=[9.5, 0])
-        result = self.rule.check(item, self.item)
+        object = Road(pos_1=[0.5, 0], pos_2=[9.5, 0])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_3(self.model.infrastructure)
+        result = rule.check(edge_id=0, other_edge_id=1)
         self.assertTrue(result)
 
     def test_out(self):
-        item = Road(pos_1=[-3, 0], pos_2=[13, 0])
-        result = self.rule.check(item, self.item)
+        object = Road(pos_1=[-3, 0], pos_2=[13, 0])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_3(self.model.infrastructure)
+        result = rule.check(edge_id=0, other_edge_id=1)
         self.assertFalse(result)
 
     def test_in(self):
-        item = Road(pos_1=[3, 0], pos_2=[7, 0])
-        result = self.rule.check(item, self.item)
+        object = Road(pos_1=[3, 0], pos_2=[7, 0])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_3(self.model.infrastructure)
+        result = rule.check(edge_id=0, other_edge_id=1)
         self.assertFalse(result)
 
 
@@ -37,16 +47,18 @@ class TestGrammarRule3ApplyClass(unittest.TestCase):
         self.model.add(item)
 
     def test_apply(self):
-        model = deepcopy(self.model)
-        item = Road(pos_1=[0.5, 0], pos_2=[9.5, 0])
-        model.add(item)
-        self.assertEqual(len(model.all_environment_nodes), 4)
-        self.assertEqual(len(model.all_environment_edges), 2)
-        rule = Rule_3(model)
+        object = Road(pos_1=[0.5, 0], pos_2=[9.5, 0])
+        object.id = 1
+        self.model.add(object)
+        self.assertEqual(len(self.model.infrastructure.nodes_id), 4)
+        self.assertEqual(len(self.model.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.model.all), 4 + 2)
+        rule = Rule_3(self.model.infrastructure)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 4)
-        self.assertEqual(len(model.all_environment_edges), 1)
+        self.assertEqual(len(self.model.infrastructure.nodes_id), 4)
+        self.assertEqual(len(self.model.infrastructure.edges_id), 1)
+        self.assertEqual(len(self.model.all), 4 + 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

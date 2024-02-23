@@ -11,7 +11,7 @@ class Junction(PureObject):
         self,
         pos: list = None,
         name: str = '',
-        index: int = None
+        id: int = None
     ):
         super().__init__()
 
@@ -19,7 +19,7 @@ class Junction(PureObject):
 
         self.pos = pos
         self.name = name
-        self.index = index
+        self.id = id
 
     def serialize(self) -> dict:
         dictionary = {}

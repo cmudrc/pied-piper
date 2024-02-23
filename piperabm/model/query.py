@@ -1,17 +1,9 @@
-import uuid
-
 from piperabm.tools.coordinate import distance as ds
 
 
 class Query:
-
-    @property
-    def new_index(self) -> int:
-        """
-        Generate a new unique integer as id for graph items
-        """
-        return uuid.uuid4().int
     
+    '''
     @property
     def infrastructure_types(self):
         """
@@ -29,27 +21,29 @@ class Query:
         result = self.valid_types["society"]["node"] + \
         self.valid_types["society"]["edge"]
         return result
+    '''
 
-    def remove(self, index: int):
+    def remove(self, id: int):
         """
         Remove the item object based on its index
         """
-        del self.library[index]
+        del self.library[id]
 
-    def get(self, index: int):
+    def get(self, id: int):
         """
         Return the item as object based on its index
         """
-        return self.library[index]
+        return self.library[id]
     
-    def has(self, index: int, items=None):
+    def has(self, id: int, items=None):
         """
         Check if an item having *index* exists in *items*
         """
         if items is None:
             items = self.library.keys()
-        return index in items
+        return id in items
     
+    '''
     def filter(self, items=None, types=None):
         """
         Filter *items* based on their *types* and *category*
@@ -65,6 +59,7 @@ class Query:
                 item.type in types:
                 result.append(index)
         return result
+    '''
     
     def find_agents_in_same_home(self, home_index):
         """
@@ -91,6 +86,14 @@ class Query:
                 result = index
         return result
 
+    @property
+    def all(self):
+        """
+        Return all items indexes
+        """
+        return self.library.keys()
+
+    '''
     @property
     def all_environment_nodes(self):
         """
@@ -153,12 +156,7 @@ class Query:
         items = self.filter(types=types)
         return items
 
-    @property
-    def all(self):
-        """
-        Return all items indexes
-        """
-        return self.library.keys()
+
     
     def distances(self, pos: list, items: list) -> list:
         """
@@ -205,3 +203,4 @@ class Query:
         distances = self.distances(pos, items)
         distances = self.sort_distances(distances)
         return distances[:k]
+    '''

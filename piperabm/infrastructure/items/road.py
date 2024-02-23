@@ -17,7 +17,7 @@ class Road(PureObject):
         length_actual: float = None,
         roughness: float = 1,
         degradation: Degradation = None,
-        index: int = None
+        id: int = None
     ):
         super().__init__()
         
@@ -31,7 +31,7 @@ class Road(PureObject):
         if degradation is None:
             degradation = Degradation()
         self.degradation = degradation
-        self.index = index
+        self.id = id
 
     @property
     def length_linear(self):
@@ -79,7 +79,7 @@ class Road(PureObject):
         dictionary['length_actual'] = self.length_actual
         dictionary['roughness'] = self.roughness
         dictionary['degradation'] = self.degradation.serialize()
-        dictionary['index'] = self.index
+        dictionary['id'] = self.id
         dictionary['section'] = self.section
         dictionary['category'] = self.category
         dictionary['type'] = self.type
