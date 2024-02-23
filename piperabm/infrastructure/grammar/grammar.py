@@ -3,8 +3,8 @@ from piperabm.infrastructure.grammar.rules import *
 
 class Grammar:
 
-    def __init__(self, infrastructure):
-        self.infrastructure = infrastructure
+    def __init__(self, model):
+        self.model = model
     
     def apply(self, report=False):
         """
@@ -13,17 +13,14 @@ class Grammar:
             if not, all grammars rules start over.
             if no next rule is available, the program is over.
         """
-        '''
+
         rules = [
             Rule_0(self.model),
             Rule_1(self.model),
             Rule_2(self.model),
             Rule_3(self.model),
             Rule_4(self.model),
-        ]
-        '''
-        rules = [
-            Rule_0(self.infrastructure),
+            Rule_5(self.model),
         ]
 
         i = 0

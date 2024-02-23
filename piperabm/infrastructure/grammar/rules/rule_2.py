@@ -9,9 +9,9 @@ class Rule_2(Rule):
     Condition for edge to edge intersection
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, model):
         name = "rule 2"
-        super().__init__(infrastructure, name)
+        super().__init__(model, name)
 
     def check(self, edge_id, other_edge_id):
         result = False
@@ -45,34 +45,21 @@ class Rule_2(Rule):
         return result
     
     def apply(self, report=False):
-        '''
-        def create_name(old_item, new_index):
-            new_name = ""
-            old_name = old_item.name
-            if old_name != "":
-                new_name = old_name + " " + str(new_index)
-            return new_name
-        '''
         anything_happened = False
         for edge_id in self.edges:
             for other_edge_id in self.edges:
                 if edge_id != other_edge_id:
-                    if self.check(edge_id, other_edge_id):
-                        # Update the items based on their types
+                    if self.check(edge_id, other_edge_id) is True:
+                        # Update
                         edge_object = self.get(edge_id)
                         other_edge_object = self.get(other_edge_id)
-                        intersection = intersection = line_line(
-                            edge_object.pos_1,
-                            edge_object.pos_2,
-                            other_edge_object.pos_1,
-                            other_edge_object.pos_2
-                        )
                         if edge_object.type == other_edge_object.type:
-
-                            if report is True:
-                                print(">>> remove: " + str(edge_object))
-                                print(">>> remove: " + str(other_edge_object))
-
+                            intersection = intersection = line_line(
+                                edge_object.pos_1,
+                                edge_object.pos_2,
+                                other_edge_object.pos_1,
+                                other_edge_object.pos_2
+                            )
                             new_edge_object_1 = Road(
                                 pos_1=edge_object.pos_1,
                                 pos_2=intersection,
@@ -101,30 +88,26 @@ class Rule_2(Rule):
                                 roughness=other_edge_object.roughness,
                                 degradation=other_edge_object.degradation
                             )
-                            self.model.add(new_edge_object_1)
-                            self.model.add(new_edge_object_2)
-                            self.model.add(new_edge_object_3)
-                            self.model.add(new_edge_object_4)
-                            
-                            self.model.remove(edge_id)
-                            self.model.remove(other_edge_id)
-                            ids = self.infrastructure.edge_ids(edge_id)
-                            self.infrastructure.remove_edge(*ids)
-                            ids = self.infrastructure.edge_ids(other_edge_id)
-                            self.infrastructure.remove_edge(*ids)
-
+                            new_edge_id_1 = self.add(new_edge_object_1)
+                            new_edge_id_2 = self.add(new_edge_object_2)
+                            new_edge_id_3 = self.add(new_edge_object_3)
+                            new_edge_id_4 = self.add(new_edge_object_4)
+                            self.remove(edge_id)
+                            self.remove(other_edge_id)
+                            # Report
                             if report is True:
-                                print(">>> add: " + str(new_edge_object_1))
-                                print(">>> add: " + str(new_edge_object_2))
-                                print(">>> add: " + str(new_edge_object_3))
-                                print(">>> add: " + str(new_edge_object_4))
-
+                                print(">>> remove: " + str(edge_id))
+                                print(">>> remove: " + str(other_edge_id))
+                                print(">>> add: " + str(new_edge_id_1))
+                                print(">>> add: " + str(new_edge_id_2))
+                                print(">>> add: " + str(new_edge_id_3))
+                                print(">>> add: " + str(new_edge_id_4))
+                            # Inform an activity
                             anything_happened = True
                             break
-
+            # Inform an activity
             if anything_happened is True:
-                break    
-
+                break
         return anything_happened
     
 
@@ -136,5 +119,5 @@ if __name__ == "__main__":
     object_2 = Road(pos_1=[5, 5], pos_2=[5, -5])
     model.add(object_1, object_2)
 
-    rule = Rule_2(model.infrastructure)
+    rule = Rule_2(model)
     rule.apply(report=True)

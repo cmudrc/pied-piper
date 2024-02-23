@@ -68,15 +68,15 @@ class Model(PureObject, Query):
         """
         if object.category == "node":
             id = self.add_object_to_library(object)
+            #self.infrastructure.add_node(id)
             return id
         elif object.category == "edge":
             junction_1 = Junction(pos=object.pos_1)
             junction_2 = Junction(pos=object.pos_2)
             id_1 = self.add_infrastructure_object(junction_1)
             id_2 = self.add_infrastructure_object(junction_2)
-            object.id_1 = id_1
-            object.id_2 = id_2
             id = self.add_object_to_library(object)
+            #self.infrastructure.add_edge(id_1, id_2, id)
             return id
 
     def add(self, *items) -> None:

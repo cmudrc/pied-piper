@@ -67,18 +67,15 @@ class TestGrammarRule2ApplyClass(unittest.TestCase):
         object = Road(pos_1=[5, 5], pos_2=[5, -5])
         object.id = 1
         self.model.add(object)
-        self.assertEqual(len(self.model.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.model.infrastructure.edges_id), 2)
-        self.assertEqual(len(self.model.all), 4 + 2)
-        rule = Rule_2(self.model.infrastructure)
+        self.assertEqual(len(self.model.infrastructure_nodes), 4)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+        rule = Rule_2(self.model)
         rule.apply()
-        self.assertEqual(len(self.model.infrastructure.nodes_id), 12)
-        self.assertEqual(len(self.model.infrastructure.edges_id), 4)
-        self.assertEqual(len(self.model.all), 12 + 4)
+        self.assertEqual(len(self.model.infrastructure_nodes), 12)
+        self.assertEqual(len(self.model.infrastructure_edges), 4)
         rule.apply()
-        self.assertEqual(len(self.model.infrastructure.nodes_id), 12)
-        self.assertEqual(len(self.model.infrastructure.edges_id), 4)
-        self.assertEqual(len(self.model.all), 12 + 4)
+        self.assertEqual(len(self.model.infrastructure_nodes), 12)
+        self.assertEqual(len(self.model.infrastructure_edges), 4)
 
 
 if __name__ == "__main__":

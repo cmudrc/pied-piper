@@ -17,7 +17,7 @@ class TestGrammarRule0CheckClass(unittest.TestCase):
         object = Junction(pos=[0, 0])
         object.id = 1
         self.model.add(object)
-        rule = Rule_0(self.model.infrastructure)
+        rule = Rule_0(self.model)
         result = rule.check(node_id=0, other_node_id=1)
         self.assertTrue(result)
 
@@ -25,7 +25,7 @@ class TestGrammarRule0CheckClass(unittest.TestCase):
         object = Junction(pos=[1, 0])
         object.id = 1
         self.model.add(object)
-        rule = Rule_0(self.model.infrastructure)
+        rule = Rule_0(self.model)
         result = rule.check(node_id=0, other_node_id=1)
         self.assertFalse(result)
     
@@ -33,7 +33,7 @@ class TestGrammarRule0CheckClass(unittest.TestCase):
         object = Settlement(pos=[0.5, 0.5])
         object.id = 1
         self.model.add(object)
-        rule = Rule_0(self.model.infrastructure)
+        rule = Rule_0(self.model)
         result = rule.check(node_id=0, other_node_id=1)
         self.assertFalse(result)
 
@@ -53,16 +53,14 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         object = Junction(pos=[0, 0])
         object.id = 1
         self.model.add(object)
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
-        rule = Rule_0(self.model.infrastructure)
+        self.assertListEqual(self.model.infrastructure_nodes, [0, 1])
+        rule = Rule_0(self.model)
         rule.apply()
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0])
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 1)
+        self.assertListEqual(self.model.infrastructure_nodes, [0])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
         rule.apply()
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0])
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 1)
+        self.assertListEqual(self.model.infrastructure_nodes, [0])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
 
     def test_apply_1(self):
         """
@@ -71,17 +69,15 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         object = Junction(pos=[2, 2])
         object.id = 1
         self.model.add(object)
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
-        self.assertEqual(len(self.model.all), 2)
-        rule = Rule_0(self.model.infrastructure)
+        self.assertListEqual(self.model.infrastructure_nodes, [0, 1])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
+        rule = Rule_0(self.model)
         rule.apply()
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 2)
+        self.assertListEqual(self.model.infrastructure_nodes, [0, 1])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
         rule.apply()
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1])
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 2)
+        self.assertListEqual(self.model.infrastructure_nodes, [0, 1])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
 
     def test_apply_2(self):
         """
@@ -93,22 +89,29 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         object = Junction(pos=[0, 0.1])
         object.id = 2
         self.model.add(object)
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0, 1, 2])
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 3)
-        rule = Rule_0(self.model.infrastructure)
+        self.assertListEqual(self.model.infrastructure_nodes, [0, 1, 2])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
+        rule = Rule_0(self.model)
         rule.apply()
-        self.assertEqual(len(self.model.infrastructure.nodes_id), 2)
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 2)
+        self.assertEqual(len(self.model.infrastructure_nodes), 2)
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
         rule.apply()
-        self.assertEqual(len(self.model.infrastructure.nodes_id), 1)
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 1)
+        self.assertEqual(len(self.model.infrastructure_nodes), 1)
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
         rule.apply()
-        self.assertListEqual(self.model.infrastructure.nodes_id, [0])
-        self.assertEqual(len(self.model.infrastructure.edges_id), 0)
-        self.assertEqual(len(self.model.all), 1)
+        self.assertListEqual(self.model.infrastructure_nodes, [0])
+        self.assertEqual(len(self.model.infrastructure_edges), 0)
+
+    def test_apply_3(self):
+        """
+        Node id replacement
+        """
+        object = Road(pos_1=[0.1, 0], pos_2=[0, 0.1])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_0(self.model)
+        rule.apply()
+        self.assertTrue(0 in self.model.infrastructure_nodes)
 
 
 if __name__ == "__main__":

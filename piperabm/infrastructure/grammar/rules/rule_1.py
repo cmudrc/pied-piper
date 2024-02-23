@@ -8,9 +8,9 @@ class Rule_1(Rule):
     Condition for node to edge proximity
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, model):
         name = "rule 1"
-        super().__init__(infrastructure, name)
+        super().__init__(model, name)
 
     def check(self, node_id, edge_id):
         node_object = self.get(node_id)
@@ -38,31 +38,25 @@ class Rule_1(Rule):
         for node_id in self.nodes:
             for edge_id in self.edges:
                 if self.check(node_id, edge_id):
-                    # Update the items based on their types
+                    # Update
                     node_object = self.get(node_id)
                     edge_object = self.get(edge_id)
-
-                    if report is True:
-                        print(">>> remove: " + str(edge_object))
-
                     if edge_object.type == "road":
                         new_edge_object_1 = Road(pos_1=edge_object.pos_1, pos_2=node_object.pos)
                         new_edge_object_2 = Road(pos_1=node_object.pos, pos_2=edge_object.pos_2)
-                    self.model.add(new_edge_object_1)
-                    self.model.add(new_edge_object_2)
-                    self.model.remove(edge_id)
-                    ids = self.infrastructure.edge_ids(edge_id)
-                    self.infrastructure.remove_edge(*ids)
-
+                    new_edge_id_1 = self.add(new_edge_object_1)
+                    new_edge_id_2 = self.add(new_edge_object_2)
+                    self.remove(edge_id)
+                    # Report
                     if report is True:
-                        print(">>> add: " + str(new_edge_object_1))
-                        print(">>> add: " + str(new_edge_object_2))
-
+                        print(">>> add: " + str(new_edge_id_1))
+                        print(">>> add: " + str(new_edge_id_2))
+                        print(">>> remove: " + str(edge_id))
+                    # Inform an activity
                     anything_happened = True
-
+            # Inform an activity
             if anything_happened is True:
                 break
-
         return anything_happened
     
 
@@ -75,5 +69,5 @@ if __name__ == "__main__":
     object_2 = Junction(pos=[5, 0.5])
     model.add(object_1, object_2)
 
-    rule = Rule_1(model.infrastructure)
+    rule = Rule_1(model)
     rule.apply(report=True)

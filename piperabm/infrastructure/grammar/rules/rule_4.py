@@ -4,7 +4,6 @@ from piperabm.infrastructure.grammar.rules.rule import Rule
 from piperabm.infrastructure import Road
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.linear_algebra import vector as vc
-#from piperabm.tools.coordinate.distance import point_to_line_segment_vector, vector_magnitude
 
 
 class Rule_4(Rule):
@@ -12,9 +11,9 @@ class Rule_4(Rule):
     Condition for connecting isolated non-junction items to the rest
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, model):
         name = "rule 4"
-        super().__init__(infrastructure, name)
+        super().__init__(model, name)
 
     def check(self, node_id):
         result = False
@@ -54,23 +53,23 @@ class Rule_4(Rule):
     
     def apply(self, report=False):
         anything_happened = False
-        for node_index in self.nodes:
-            node_object = self.get(node_index)
-            check_result, smallest_distance_vector = self.check(node_object)
+        for node_id in self.nodes:
+            check_result, smallest_distance_vector = self.check(node_id)
             if check_result is True:
-
+                # Update
+                node_object = self.get(node_id)
                 pos_1 = node_object.pos
                 pos_2 = list(np.array(pos_1) + np.array(smallest_distance_vector))
                 object = Road(pos_1, pos_2)
-                self.model.add(object)
+                id_new = self.add(object)
+                # Report
                 if report is True:
-                    print(">>> add: " + str(object))
-                
+                    print(">>> add: " + str(id_new))
+                # Inform an activity
                 anything_happened = True
-
+            # Inform an activity
             if anything_happened is True:
-                break    
-
+                break
         return anything_happened
     
 

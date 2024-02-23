@@ -1,28 +1,48 @@
+import uuid
+
 from piperabm.tools.coordinate import distance as ds
 
 
 class Query:
-    
-    '''
-    @property
-    def infrastructure_types(self):
-        """
-        Return all item types related to infrastructure
-        """
-        result = self.valid_types["infrastructure"]["node"] + \
-        self.valid_types["infrastructure"]["edge"]
-        return result
-    
-    @property
-    def society_types(self):
-        """
-        Return all item types related to society
-        """
-        result = self.valid_types["society"]["node"] + \
-        self.valid_types["society"]["edge"]
-        return result
-    '''
 
+    def has_id(self, id) -> bool:
+        """
+        Check if the id already exists
+        """
+        result = False
+        if id in self.all:
+            result = True
+        return result
+
+    @property
+    def new_id(self) -> int:
+        """
+        Generate a new unique integer as id for graph items
+        """
+        result = None
+        while True:
+            new_id = uuid.uuid4().int
+            if self.has_id(new_id) is False:
+                result = new_id
+                break
+        return result
+
+    def add_object_to_library(self, object):
+        """
+        Add new object to library
+        """
+        # ID
+        if object.id is None:
+            object.id = self.new_id
+        else:
+            if self.has_id(object.id) is True:
+                object.id = self.new_id
+        # Binding
+        object.model = self
+        # Add to library
+        self.library[object.id] = object
+        return object.id
+    
     def remove(self, id: int):
         """
         Remove the item object based on its index
@@ -43,24 +63,83 @@ class Query:
             items = self.library.keys()
         return id in items
     
-    '''
-    def filter(self, items=None, types=None):
+    @property
+    def all(self):
         """
-        Filter *items* based on their *types* and *category*
+        Return all items indexes
+        """
+        return self.library.keys()
+    
+    def filter(self, ids=None, type=None, section=None, category=None):
+        """
+        Filter *ids* based on their *type*, *section*, and *category*
         """
         result = []
-        if items is None:
-            items = self.all
-        if isinstance(types, str):
-            types = [types]
-        for index in items:
-            item = self.get(index)
-            if types is None or \
-                item.type in types:
-                result.append(index)
+        if ids is None:
+            ids = self.all
+        for id in ids:
+            check = []
+            object = self.get(id)
+            if type is None or \
+            object.type == type:
+                check.append(True)
+            else:
+                check.append(False)
+            if section is None or \
+            object.section == section:
+                check.append(True)
+            else:
+                check.append(False)
+            if category is None or \
+            object.category == category:
+                check.append(True)
+            else:
+                check.append(False)
+            if False not in check:
+                result.append(id)
+        return result
+    
+    @property
+    def infrastructure_nodes(self):
+        """
+        Return id of all infrastructure nodes id
+        """
+        return self.filter(section="infrastructure", category="node")
+    
+    @property
+    def infrastructure_edges(self):
+        """
+        Return id of all infrastructure edges id
+        """
+        return self.filter(section="infrastructure", category="edge")
+    
+    @property
+    def society_nodes(self):
+        """
+        Return id of all society nodes id
+        """
+        return self.filter(section="society", category="node")
+    
+    @property
+    def society_edges(self):
+        """
+        Return id of all society edges id
+        """
+        return self.filter(section="society", category="edge")
+
+    def find_by_name(self, name: str, ids=None):
+        """
+        Find an item based on its name
+        """
+        result = []
+        if ids is None:
+            ids = self.all
+        for id in ids:
+            object = self.get(id)
+            if object.name == name:
+                result.append(id)
         return result
     '''
-    
     def find_agents_in_same_home(self, home_index):
         """
         Return all agent indexes sharing the same home
@@ -72,46 +151,9 @@ class Query:
             if agent.home == home_index:
                 result.append(index)
         return result
-    
-    def find_by_name(self, name: str, items=None):
-        """
-        Find an item based on its name
-        """
-        result = None
-        if items is None:
-            items = self.all
-        for index in items:
-            item = self.get(index)
-            if item.name == name:
-                result = index
-        return result
-
-    @property
-    def all(self):
-        """
-        Return all items indexes
-        """
-        return self.library.keys()
-
     '''
-    @property
-    def all_environment_nodes(self):
-        """
-        Return index of all environment nodes
-        """
-        types = self.valid_types["infrastructure"]["node"]
-        items = self.filter(types=types)
-        return items
     
-    @property
-    def all_environment_edges(self):
-        """
-        Return index of all environment edges
-        """
-        types = self.valid_types["infrastructure"]["edge"]
-        items = self.filter(types=types)
-        return items
-    
+    '''
     @property
     def all_alive_agents(self):
         """
@@ -155,8 +197,6 @@ class Query:
         types = self.valid_types["society"]["edge"]
         items = self.filter(types=types)
         return items
-
-
     
     def distances(self, pos: list, items: list) -> list:
         """

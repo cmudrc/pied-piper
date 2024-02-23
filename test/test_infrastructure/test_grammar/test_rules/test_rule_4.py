@@ -17,7 +17,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         object = Settlement(pos=[5, 4])
         object.id = 1
         self.model.add(object)
-        rule = Rule_4(self.model.infrastructure)
+        rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
         self.assertTrue(result)
         self.assertListEqual(smallest_distance_vector, [0, -4])
@@ -26,7 +26,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         object = Settlement(pos=[5, 1])
         object.id = 1
         self.model.add(object)
-        rule = Rule_4(self.model.infrastructure)
+        rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
         self.assertFalse(result)
         self.assertListEqual(smallest_distance_vector, [0, -1])
@@ -35,7 +35,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         object = Settlement(pos=[5, 0])
         object.id = 1
         self.model.add(object)
-        rule = Rule_4(self.model.infrastructure)
+        rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
         self.assertFalse(result)
         self.assertListEqual(smallest_distance_vector, [0, 0])
@@ -44,7 +44,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         object = Settlement(pos=[-2, 0])
         object.id = 1
         self.model.add(object)
-        rule = Rule_4(self.model.infrastructure)
+        rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
         self.assertTrue(result)
         self.assertListEqual(smallest_distance_vector, [2, 0])
@@ -53,7 +53,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         object = Settlement(pos=[-1, 0])
         object.id = 1
         self.model.add(object)
-        rule = Rule_4(self.model.infrastructure)
+        rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
         self.assertFalse(result)
         self.assertListEqual(smallest_distance_vector, [1, 0])
@@ -62,7 +62,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         object = Settlement(pos=[-2, -2])
         object.id = 1
         self.model.add(object)
-        rule = Rule_4(self.model.infrastructure)
+        rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
         self.assertTrue(result)
         self.assertListEqual(smallest_distance_vector, [2, 2])
@@ -75,18 +75,18 @@ class TestGrammarRule4ApplyClass(unittest.TestCase):
         object = Road(pos_1=[0, 0], pos_2=[10, 0])
         object.id = 0
         self.model.add(object)
-    '''
+    
     def test_apply(self):
         object = Settlement(pos=[5, 4])
         object.id = 1
         self.model.add(object)
-        self.assertEqual(len(self.model.all_environment_nodes), 3)
-        self.assertEqual(len(model.all_environment_edges), 1)
-        rule = Rule_4(model)
+        self.assertEqual(len(self.model.infrastructure_nodes), 3)
+        self.assertEqual(len(self.model.infrastructure_edges), 1)
+        rule = Rule_4(self.model)
         rule.apply()
-        self.assertEqual(len(model.all_environment_nodes), 5)
-        self.assertEqual(len(model.all_environment_edges), 2)
-    '''  
+        self.assertEqual(len(self.model.infrastructure_nodes), 5)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+     
 
 if __name__ == "__main__":
     unittest.main()

@@ -25,6 +25,8 @@ class Road(PureObject):
 
         self.pos_1 = pos_1
         self.pos_2 = pos_2
+        self.id_1 = None
+        self.id_2 = None
         self.name = name
         self.length_actual = length_actual
         self.roughness = roughness

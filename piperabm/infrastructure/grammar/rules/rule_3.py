@@ -7,11 +7,12 @@ class Rule_3(Rule):
     Condition for multi-edge
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, model):
         name = "rule 3"
-        super().__init__(infrastructure, name)
+        super().__init__(model, name)
 
     def check(self, edge_id, other_edge_id):
+        result = False
         edge_object = self.get(edge_id)
         other_edge_object = self.get(other_edge_id)
         distance_1_1 = ds.point_to_point(
@@ -33,30 +34,27 @@ class Rule_3(Rule):
         distances = [distance_1_1, distance_1_2, distance_2_1, distance_2_2]
         distances = sorted(distances)
         distances = distances[:2]
-        return distances[0] < self.proximity_radius and \
-            distances[1] < self.proximity_radius
+        if distances[0] < self.proximity_radius and \
+        distances[1] < self.proximity_radius:
+            result = True
+        return result
     
     def apply(self, report=False):
         anything_happened = False
         for edge_id in self.edges:
             for other_edge_id in self.edges:
                 if edge_id != other_edge_id:
-                    if self.check(edge_id, other_edge_id):
-
-                        # Update the items based on their types
+                    if self.check(edge_id, other_edge_id) is True:
+                        # Update
+                        self.remove(other_edge_id)
+                        # Report
                         if report is True:
-                            other_edge_object = self.get(other_edge_id)
-                            print(">>> remove: " + str(other_edge_object))
-
-                        self.model.remove(other_edge_id)
-                        ids = self.infrastructure.edge_ids(other_edge_id)
-                        self.infrastructure.remove_edge(*ids)
-                        
+                            print(">>> remove: " + str(other_edge_id))
+                        # Inform an activity
                         anything_happened = True
-
+            # Inform an activity
             if anything_happened is True:
-                break    
-
+                break
         return anything_happened
     
 
@@ -69,5 +67,5 @@ if __name__ == "__main__":
     item_2 = Road(pos_1=[0, 0.5], pos_2=[9.5, 0])
     model.add(item_1, item_2)
 
-    rule = Rule_3(model.infrastructure)
+    rule = Rule_3(model)
     rule.apply(report=True)
