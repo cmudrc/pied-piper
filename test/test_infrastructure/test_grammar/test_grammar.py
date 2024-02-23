@@ -83,5 +83,5 @@ class TestInfrastructureGrammarClass_3(unittest.TestCase):
         self.assertEqual(len(self.model.infrastructure_edges), 3)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

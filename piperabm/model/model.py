@@ -47,8 +47,8 @@ class Model(PureObject, Query):
         self.average_resources = average_resources
         self.name = name
 
+        self.baked = True
         self.library = {}
-        self.infrastructure = Infrastructure(model=self)
         #self.measure = Measure(self)
 
     def set_step_size(self, step_size):
@@ -79,21 +79,32 @@ class Model(PureObject, Query):
             id = self.add_object_to_library(object)
             return id
 
-    def add(self, *items) -> None:
+    def add(self, *objects) -> None:
         """
         Add new item(s) to model
         """
-        for item in items:
-            if isinstance(item, list):
-                for element in item:
-                    self.add(element)
-            else:
-                if item.section == "infrastructure":
-                    self.add_infrastructure_object(item)
-                #elif item.section == "society":
-                #    add_society_item(self, item)
-                else:  # item not recognized
-                    raise ValueError
+        for object in objects:
+            if object.section == "infrastructure":
+                self.add_infrastructure_object(object)
+            elif object.section == "society":
+                pass
+            #    self.add_society_object(object)
+            else:  # Onject not recognized
+                raise ValueError
+            self.baked = False
+
+    @property
+    def infrastructure(self):
+        if self.baked is True:
+            return Infrastructure(model=self)
+        else:
+            print("First bake the model")
+            return None
+
+    def bake(self):
+        grammar = Grammar(model=self)
+        grammar.apply()
+        self.baked = True
 
 
 if __name__ == "__main__":
@@ -103,4 +114,5 @@ if __name__ == "__main__":
     model.add(object_1, object_2)
     #model.show()
     #model.print
-    print(model.infrastructure)
+    model.bake()
+    print(model.baked)

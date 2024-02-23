@@ -8,7 +8,6 @@ from piperabm.graphics import Graphics
 class Infrastructure:
 
     def __init__(self, model=None):
-        self.G = nx.Graph()
         self.model = model
         '''
         self.lim = {
@@ -22,6 +21,19 @@ class Infrastructure:
             },
         }
         '''
+        self.create()
+
+    def create(self):
+        self.G = nx.Graph()
+        for id in self.model.infrastructure_nodes:
+            self.add_node(id)
+        for id in self.model.infrastructure_edges:
+            object = self.get(id)
+            self.add_edge(
+                id_1=object.id_1,
+                id_2=object.id_2,
+                id=id
+            )
 
     def get(self, id: int):
         """
@@ -33,18 +45,11 @@ class Infrastructure:
     def proximity_radius(self):
         return self.model.proximity_radius
 
-    def _add_node(self, id: int):
+    def add_node(self, id: int):
         """
         Add a node based on its id (unsafe)
         """
         self.G.add_node(id)
-
-    def add_node(self, id: int):
-        """
-        Add a node based on its id (safe)
-        """
-        # Update xylim
-        self._add_node(id)
 
     def add_edge(self, id_1: int, id_2: int, id: int):
         """
