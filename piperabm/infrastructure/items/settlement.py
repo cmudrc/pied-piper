@@ -4,14 +4,14 @@ from piperabm.degradation import Degradation
 
 class Settlement(PureObject):
 
-    section = 'infrastructure'
-    category = 'node'
-    type = 'settlement'
+    section = "infrastructure"
+    category = "node"
+    type = "settlement"
 
     def __init__(
         self,
         pos: list = None,
-        name: str = '',
+        name: str = "",
         degradation: Degradation = None,
         id: int = None
     ):
@@ -28,29 +28,29 @@ class Settlement(PureObject):
 
     def serialize(self) -> dict:
         dictionary = {}
-        dictionary['pos'] = self.pos
-        dictionary['name'] = self.name
-        dictionary['degradation'] = self.degradation.serialize()
-        dictionary['index'] = self.index
-        dictionary['section'] = self.section
-        dictionary['category'] = self.category
-        dictionary['type'] = self.type
+        dictionary["pos"] = self.pos
+        dictionary["name"] = self.name
+        dictionary["degradation"] = self.degradation.serialize()
+        dictionary["id"] = self.id
+        dictionary["section"] = self.section
+        dictionary["category"] = self.category
+        dictionary["type"] = self.type
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        self.pos = dictionary['pos']
-        self.name = dictionary['name']
+        self.pos = dictionary["pos"]
+        self.name = dictionary["name"]
         self.degradation = Degradation()
-        self.degradation.deserialize(dictionary['degradation'])
-        self.index = dictionary['index']
-        self.section = dictionary['section']
-        self.category = dictionary['category']
-        self.type = dictionary['type']
+        self.degradation.deserialize(dictionary["degradation"])
+        self.id = int(dictionary["id"])
+        self.section = dictionary["section"]
+        self.category = dictionary["category"]
+        self.type = dictionary["type"]
 
 
-if __name__ == '__main__':
-    item = Settlement(
-        name='Sample',
+if __name__ == "__main__":
+    object = Settlement(
+        name="Sample",
         pos=[0, 0]
     )
-    item.print
+    object.print()

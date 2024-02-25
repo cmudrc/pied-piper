@@ -1,6 +1,10 @@
 """
 Lists containing mesh labels in each map
 """
+try:
+    from .coordinates import coordinates
+except:
+    from coordinates import coordinates
 
 map_1 = [
     1,
@@ -73,3 +77,21 @@ map_5 = [
     56,
     57,
 ]
+
+def filter_labels(
+        latitude_min,
+        latitude_max,
+        longitude_min,
+        longitude_max
+    ):
+    permitted_labels = []
+    for id in coordinates:
+        coordinate = coordinates[id]
+        latitude = coordinate[0]
+        longitude = coordinate[1]
+        if latitude >= latitude_min and \
+        latitude <= latitude_max and \
+        longitude >= longitude_min and \
+        longitude <= longitude_max:
+            permitted_labels.append(id)
+    return permitted_labels

@@ -18,7 +18,7 @@ class TestGrammarRule2CheckClass(unittest.TestCase):
         object = Road(pos_1=[5, 5], pos_2=[5, -5])
         object.id = 1
         self.model.add(object)
-        rule = Rule_2(self.model.infrastructure)
+        rule = Rule_2(self.model)
         result = rule.check(edge_id=0, other_edge_id=1)
         self.assertTrue(result)
 
@@ -26,7 +26,7 @@ class TestGrammarRule2CheckClass(unittest.TestCase):
         object = Road(pos_1=[0.5, 5], pos_2=[0.5, -5])
         object.id = 1
         self.model.add(object)
-        rule = Rule_2(self.model.infrastructure)
+        rule = Rule_2(self.model)
         result = rule.check(edge_id=0, other_edge_id=1)
         self.assertFalse(result)
 
@@ -34,7 +34,7 @@ class TestGrammarRule2CheckClass(unittest.TestCase):
         object = Road(pos_1=[-2, 5], pos_2=[-2, -5])
         object.id = 1
         self.model.add(object)
-        rule = Rule_2(self.model.infrastructure)
+        rule = Rule_2(self.model)
         result = rule.check(edge_id=0, other_edge_id=1)
         self.assertFalse(result)
 
@@ -42,7 +42,7 @@ class TestGrammarRule2CheckClass(unittest.TestCase):
         object = Road(pos_1=[2, -1], pos_2=[2, 11])
         object.id = 1
         self.model.add(object)
-        rule = Rule_2(self.model.infrastructure)
+        rule = Rule_2(self.model)
         result = rule.check(edge_id=0, other_edge_id=1)
         self.assertFalse(result)
 
@@ -50,7 +50,7 @@ class TestGrammarRule2CheckClass(unittest.TestCase):
         object = Road(pos_1=[2, 0], pos_2=[8, 0])
         object.id = 1
         self.model.add(object)
-        rule = Rule_2(self.model.infrastructure)
+        rule = Rule_2(self.model)
         result = rule.check(edge_id=0, other_edge_id=1)
         self.assertFalse(result)
 

@@ -1,3 +1,4 @@
+name = 'utqiavik'
 gini_index = 0.3
 income_per_capita = 3000
 location = {

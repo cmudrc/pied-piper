@@ -13,7 +13,6 @@ class PureObject:
     def __init__(self):
         pass
 
-    @property
     def print(self):
         """
         "Pretty Print" the object

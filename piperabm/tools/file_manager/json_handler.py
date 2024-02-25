@@ -4,59 +4,82 @@ import os
 
 class JsonHandler:
 
-    format = "." + "json"
+    def create_file_str(filename: str, format: str):
+        """
+        Create a string for file name by attaching format
+        """
+        return filename + "." + format
     
-    def save(data, path, filename: str = "sample"):
+    def create_filepath(path, filename: str, format: str):
         """
-        Save the data to file as json
+        Create full file path
         """
-        file = filename + JsonHandler.format
-        filepath = os.path.join(path, file)
-        with open(filepath, "w") as f:
+        file = JsonHandler.create_file_str(filename, format)
+        return os.path.join(path, file)
+    
+    def save(data, path, filename: str, format: str="json"):
+        """
+        Save the data to file as json using atomic file writing
+        """
+        filename_temp = filename + "_" + "temp"
+        filepath_main = JsonHandler.create_filepath(path, filename, format)
+        filepath_temp = JsonHandler.create_filepath(path, filename_temp, format)
+
+        # Write data to the temporary file, overwriting if it already exists
+        with open(filepath_temp, "w") as f:
             json.dump(data, f)
 
-    def load(path, filename: str = "sample"):
+        # Remove the main file if it exists to prevent errors on renaming
+        if os.path.exists(filepath_main):
+            os.remove(filepath_main)
+
+        # Rename the temporary file to the main file"s name
+        os.rename(filepath_temp, filepath_main)
+
+    def load(path, filename: str, format: str="json"):
         """
         Load the data from a file as json
         """
-        file = filename + JsonHandler.format
-        filepath = os.path.join(path, file)
-        with open(filepath, "r") as f:
-            data = json.load(f)
+        filepath = os.path.join(path, filename + "." + format)
+        try:
+            with open(filepath, "r") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            data = None
+            print(f"The file {filename} was not found.")
         return data
 
-    def append(entry, path, filename: str = "sample"):
+    def append(entry, path, filename: str, format: str="json"):
         """
         Add new entry to save file
         """
-        data = JsonHandler.load(path, filename)
-        data.append(entry)
-        JsonHandler.save(data, path, filename)
+        data = JsonHandler.load(path, filename, format)
+        if isinstance(data, list):
+            data.append(entry)
+        else:
+            print("Data is not list.")
+            raise ValueError
+        JsonHandler.save(data, path, filename, format)
 
-    def remove(path, filename: str = "sample"):
+    def remove(path, filename: str, format: str="json"):
         """
-        Remove the json file
+        Remove file if exists
         """
-        file = filename + JsonHandler.format
-        filepath = os.path.join(path, file)
-        if JsonHandler.exists(path, filename):
+        filepath = os.path.join(path, filename + "." + format)
+        if os.path.exists(filepath):
             os.remove(filepath)
-
-    def exists(path, filename: str = "sample"):
-        """
-        Check json file existance
-        """
-        file = filename + JsonHandler.format
-        filepath = os.path.join(path, file)
-        return os.path.exists(filepath)
 
 
 if __name__ == "__main__":
-    data = [{}]
+    data = []
     path = os.path.dirname(os.path.realpath(__file__))
     filename = "sample"
     JsonHandler.save(data, path, filename)
-    entry = {'a': 1}
+
+    data = JsonHandler.load(path, filename)
+    print(data)
+
+    entry = {"a": 1}
     JsonHandler.append(entry, path, filename)
     data = JsonHandler.load(path, filename)
     print(data)

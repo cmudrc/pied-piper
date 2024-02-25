@@ -25,10 +25,13 @@ class Rule:
     def replace_node(self, id, new_id):
         for edge_id in self.edges:
             object = self.get(edge_id)
+            node_object_new = self.get(new_id)
             if object.id_1 == id:
                 object.id_1 = new_id
+                object.pos_1 = node_object_new.pos
             elif object.id_2 == id:
                 object.id_2 = new_id
+                object.pos_2 = node_object_new.pos
 
     def add(self, object):
         return self.model.add_infrastructure_object(object)

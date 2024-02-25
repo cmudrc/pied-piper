@@ -15,7 +15,7 @@ class TestInfrastructureGrammarClass_0(unittest.TestCase):
         self.model.add(object_1, object_2, object_3)
 
     def test_apply(self):
-        grammar = Grammar(self.model)
+        grammar = Grammar(self.model, save=False)
         self.assertEqual(len(self.model.infrastructure_nodes), 6)
         self.assertEqual(len(self.model.infrastructure_edges), 3)
         grammar.apply()
@@ -35,7 +35,7 @@ class TestInfrastructureGrammarClass_1(unittest.TestCase):
         self.model.add(object_1, object_2, object_3, object_4)
 
     def test_apply(self):
-        grammar = Grammar(self.model)
+        grammar = Grammar(self.model, save=False)
         self.assertEqual(len(self.model.infrastructure_nodes), 8)
         self.assertEqual(len(self.model.infrastructure_edges), 4)
         grammar.apply()
@@ -58,7 +58,7 @@ class TestInfrastructureGrammarClass_2(unittest.TestCase):
         self.model.add(object_1, object_2, object_3, object_4, object_5, object_6)
 
     def test_apply(self):
-        grammar = Grammar(self.model)
+        grammar = Grammar(self.model, save=False)
         self.assertEqual(len(self.model.infrastructure_nodes), 4+8)
         self.assertEqual(len(self.model.infrastructure_edges), 6)
         grammar.apply()
@@ -75,7 +75,7 @@ class TestInfrastructureGrammarClass_3(unittest.TestCase):
         self.model.add(object_1, object_2)
 
     def test_apply(self):
-        grammar = Grammar(self.model)
+        grammar = Grammar(self.model, save=False)
         self.assertEqual(len(self.model.infrastructure_nodes), 3)
         self.assertEqual(len(self.model.infrastructure_edges), 1)
         grammar.apply()

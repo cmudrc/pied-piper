@@ -8,22 +8,15 @@ from piperabm.graphics import Graphics
 class Infrastructure:
 
     def __init__(self, model=None):
+        self.G = nx.Graph()
         self.model = model
-        '''
-        self.lim = {
-            'x': {
-                'min': None,
-                'max': None
-            },
-            'y': {
-                'min': None,
-                'max': None
-            },
-        }
-        '''
-        self.create()
+        if self.model is not None:
+            self.create()
 
     def create(self):
+        """
+        Create graph from model
+        """
         self.G = nx.Graph()
         for id in self.model.infrastructure_nodes:
             self.add_node(id)
@@ -34,6 +27,8 @@ class Infrastructure:
                 id_2=object.id_2,
                 id=id
             )
+        
+        self.margins = self.xylim()
 
     def get(self, id: int):
         """
@@ -47,7 +42,7 @@ class Infrastructure:
 
     def add_node(self, id: int):
         """
-        Add a node based on its id (unsafe)
+        Add a node based on its id
         """
         self.G.add_node(id)
 
@@ -58,6 +53,9 @@ class Infrastructure:
         self.G.add_edge(id_1, id_2, id=id)
 
     def remove_node(self, id: int):
+        """
+        Remove a node based on its id
+        """
         self.G.remove_node(id)
 
     def remove_edge(self, id_1: int, id_2: int):
@@ -174,65 +172,7 @@ class Infrastructure:
         Return infrastructure graph of items
         """
         return Paths(infrastructure=self)
-
-    
-    
-    def update_xylim(self, node_id):
-        x_min = self.lim['x']['min']
-        x_max = self.lim['x']['max']
-        y_min = self.lim['y']['min']
-        y_max = self.lim['y']['max']
-        node_object = self.get(node_id)
-        pos = node_object.pos
-        x = pos[0]
-        y = pos[1]
-
-        # Comparison
-        if x_min is None or \
-        x < x_min:
-            x_min = x
-        if x_max is None or \
-        x > x_max:
-            x_max = x
-        if y_min is None or \
-        y < y_min:
-            y_min = y
-        if y_max is None or \
-        y > y_max:
-            y_max = y
-
-        # Avoid thin rectangle
-        if x_min == x_max:
-            if y_min == y_max:
-                y_min -= 10
-                y_max += 10
-            delta_y = y_max - y_min
-            x_min -= delta_y / 2
-            x_max += delta_y / 2
-        if y_min == y_max:
-            if x_min == x_max:
-                x_min -= 10
-                x_max += 10
-            delta_x = x_max - x_min
-            y_min -= delta_x / 2
-            y_max += delta_x / 2
-
-        # Offset
-        offset_ratio = 0.15
-        x_range = x_max - x_min
-        y_range = y_max - y_min
-        x_offset = x_range * offset_ratio
-        y_offset = y_range * offset_ratio
-        x_min -= x_offset
-        x_max += x_offset
-        y_min -= y_offset
-        y_max += y_offset
-
-        # Update
-        self.lim['x']['min'] = x_min
-        self.lim['x']['max'] = x_max
-        self.lim['y']['min'] = y_min
-        self.lim['y']['max'] = y_max
+    '''
 
     def xylim(self):
         """
@@ -282,10 +222,16 @@ class Infrastructure:
         x_max += x_offset
         y_min -= y_offset
         y_max += y_offset
-        xlim = [x_min, x_max]
-        ylim = [y_min, y_max]
-        return xlim, ylim
-    '''
+        return {
+            'x': {
+                'min': x_min,
+                'max': x_max
+            },
+            'y': {
+                'min': y_min,
+                'max': y_max
+            },
+        }
     
     def show(self):
         graphics = Graphics(infrastructure=self)

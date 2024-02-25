@@ -5,15 +5,15 @@ from piperabm.tools.coordinate import distance as ds
 
 class Road(PureObject):
 
-    section = 'infrastructure'
-    category = 'edge'
-    type = 'road'
+    section = "infrastructure"
+    category = "edge"
+    type = "road"
 
     def __init__(
         self,
         pos_1: list = None,
         pos_2: list = None,
-        name: str = '',
+        name: str = "",
         length_actual: float = None,
         roughness: float = 1,
         degradation: Degradation = None,
@@ -75,36 +75,40 @@ class Road(PureObject):
 
     def serialize(self) -> dict:
         dictionary = {}
-        dictionary['pos_1'] = self.pos_1
-        dictionary['pos_2'] = self.pos_2
-        dictionary['name'] = self.name
-        dictionary['length_actual'] = self.length_actual
-        dictionary['roughness'] = self.roughness
-        dictionary['degradation'] = self.degradation.serialize()
-        dictionary['id'] = self.id
-        dictionary['section'] = self.section
-        dictionary['category'] = self.category
-        dictionary['type'] = self.type
+        dictionary["pos_1"] = self.pos_1
+        dictionary["pos_2"] = self.pos_2
+        dictionary["id_1"] = self.id_1
+        dictionary["id_2"] = self.id_2
+        dictionary["name"] = self.name
+        dictionary["length_actual"] = self.length_actual
+        dictionary["roughness"] = self.roughness
+        dictionary["degradation"] = self.degradation.serialize()
+        dictionary["id"] = self.id
+        dictionary["section"] = self.section
+        dictionary["category"] = self.category
+        dictionary["type"] = self.type
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
-        self.pos_1 = dictionary['pos_1']
-        self.pos_2 = dictionary['pos_2']
-        self.name = dictionary['name']
-        self.length_actual = dictionary['length_actual']
-        self.roughness = dictionary['roughness']
+        self.pos_1 = dictionary["pos_1"]
+        self.pos_2 = dictionary["pos_2"]
+        self.id_1 = int(dictionary["id_1"])
+        self.id_2 = int(dictionary["id_2"])
+        self.name = dictionary["name"]
+        self.length_actual = dictionary["length_actual"]
+        self.roughness = dictionary["roughness"]
         self.degradation = Degradation()
-        self.degradation.deserialize(dictionary['degradation'])
-        self.index = dictionary['index']
-        self.section = dictionary['section']
-        self.category = dictionary['category']
-        self.type = dictionary['type']
+        self.degradation.deserialize(dictionary["degradation"])
+        self.id = int(dictionary["id"])
+        self.section = dictionary["section"]
+        self.category = dictionary["category"]
+        self.type = dictionary["type"]
 
 
-if __name__ == '__main__':
-    item = Road(
+if __name__ == "__main__":
+    object = Road(
         pos_1=[0, 0],
         pos_2=[3, 4],
-        name='Sample'
+        name="Sample"
     )
-    item.print
+    object.print()

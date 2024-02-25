@@ -106,12 +106,16 @@ class TestGrammarRule0ApplyClass(unittest.TestCase):
         """
         Node id replacement
         """
-        object = Road(pos_1=[0.1, 0], pos_2=[0, 0.1])
+        object = Road(pos_1=[0.1, 0], pos_2=[10, 0])
         object.id = 1
         self.model.add(object)
         rule = Rule_0(self.model)
         rule.apply()
         self.assertTrue(0 in self.model.infrastructure_nodes)
+        road = self.model.get(1)
+        self.assertListEqual(road.pos_1, [0, 0])
+        self.assertEqual(road.id_1, 0)
+
 
 
 if __name__ == "__main__":

@@ -25,7 +25,7 @@ class Junction(PureObject):
         dictionary = {}
         dictionary['pos'] = self.pos
         dictionary['name'] = self.name
-        dictionary['index'] = self.index
+        dictionary['id'] = self.id
         dictionary['section'] = self.section
         dictionary['category'] = self.category
         dictionary['type'] = self.type
@@ -34,15 +34,15 @@ class Junction(PureObject):
     def deserialize(self, dictionary: dict) -> None:
         self.pos = dictionary['pos']
         self.name = dictionary['name']
-        self.index = dictionary['index']
+        self.id = int(dictionary['id'])
         self.section = dictionary['section']
         self.category = dictionary['category']
         self.type = dictionary['type']
 
 
 if __name__ == '__main__':
-    item = Junction(
+    object = Junction(
         name='Sample',
         pos=[0, 0]
     )
-    item.print
+    object.print()
