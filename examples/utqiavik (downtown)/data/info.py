@@ -5,5 +5,5 @@ location = {
     'latitude': 71.30,
     'longitude': -156.75,
 }
-proximity_radius = 10
+proximity_radius = 5
 settlements_num = 700

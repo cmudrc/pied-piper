@@ -44,9 +44,18 @@ class TestGrammarRule1CheckClass(unittest.TestCase):
         self.model.add(object)
         rule = Rule_1(self.model)
         result = rule.check(node_id=1, edge_id=0)
+        #self.assertFalse(result)
         self.assertTrue(result)
 
     def test_4(self):
+        object = Junction(pos=[3, 0.5])
+        object.id = 1
+        self.model.add(object)
+        rule = Rule_1(self.model)
+        result = rule.check(node_id=1, edge_id=0)
+        self.assertTrue(result)
+
+    def test_5(self):
         object = Settlement(pos=[3, 3])
         object.id = 1
         self.model.add(object)
@@ -54,7 +63,7 @@ class TestGrammarRule1CheckClass(unittest.TestCase):
         result = rule.check(node_id=1, edge_id=0)
         self.assertFalse(result)
     
-    def test_5(self):
+    def test_6(self):
         object = Settlement(pos=[-3, 3])
         object.id = 1
         self.model.add(object)
@@ -62,7 +71,7 @@ class TestGrammarRule1CheckClass(unittest.TestCase):
         result = rule.check(node_id=1, edge_id=0)
         self.assertFalse(result)
 
-    def test_5(self):
+    def test_7(self):
         object = Settlement(pos=[3, 1])
         object.id = 1
         self.model.add(object)

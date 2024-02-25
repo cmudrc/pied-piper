@@ -48,6 +48,7 @@ class Rule_4(Rule):
             if smallest_distance is not None: # When there is no roads available
                 if smallest_distance > self.proximity_radius:
                     result = True
+                #result = True
 
         return result, smallest_distance_vector
     

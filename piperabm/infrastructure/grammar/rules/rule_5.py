@@ -13,8 +13,12 @@ class Rule_5(Rule):
     def check(self, edge_id):
         result = False
         edge_object = self.get(edge_id)
-        if edge_object.length_linear < self.proximity_radius:
-            result = True
+        object_id_1 = self.get(edge_object.id_1)
+        object_id_2 = self.get(edge_object.id_2)
+        if object_id_1.type == 'junction' and \
+        object_id_2.type == 'junction':
+            if edge_object.length_linear < self.proximity_radius:
+                result = True
         return result
     
     def apply(self, report=False):

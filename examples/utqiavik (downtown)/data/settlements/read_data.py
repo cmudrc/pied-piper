@@ -2,10 +2,10 @@ from piperabm.tools.coordinate.projection import latlong_xy
 
 try:
     from coordinates import coordinates
-    from meshs import meshs
+    from meshes import meshes
 except:
     from .coordinates import coordinates
-    from .meshs import meshs
+    from .meshes import meshes
 
 
 def read_data(latitude_0, longitude_0, permitted_labels='all'):
@@ -14,10 +14,10 @@ def read_data(latitude_0, longitude_0, permitted_labels='all'):
     """
     result = []
 
-    for id in meshs:
+    for id in meshes:
         if permitted_labels == 'all' or \
         id in permitted_labels:
-            mesh = meshs[id]
+            mesh = meshes[id]
             triangle = []
             for point in mesh:
                 latlong = coordinates[point]

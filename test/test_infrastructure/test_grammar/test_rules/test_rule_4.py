@@ -76,8 +76,8 @@ class TestGrammarRule4ApplyClass(unittest.TestCase):
         object.id = 0
         self.model.add(object)
     
-    def test_apply(self):
-        object = Settlement(pos=[5, 4])
+    def test_apply_0(self):
+        object = Settlement(pos=[5, 5])
         object.id = 1
         self.model.add(object)
         self.assertEqual(len(self.model.infrastructure_nodes), 3)
@@ -86,6 +86,17 @@ class TestGrammarRule4ApplyClass(unittest.TestCase):
         rule.apply()
         self.assertEqual(len(self.model.infrastructure_nodes), 5)
         self.assertEqual(len(self.model.infrastructure_edges), 2)
+
+    def test_apply_1(self):
+        object = Settlement(pos=[5, 0.5])
+        object.id = 1
+        self.model.add(object)
+        self.assertEqual(len(self.model.infrastructure_nodes), 3)
+        self.assertEqual(len(self.model.infrastructure_edges), 1)
+        rule = Rule_4(self.model)
+        rule.apply()
+        self.assertEqual(len(self.model.infrastructure_nodes), 3)
+        self.assertEqual(len(self.model.infrastructure_edges), 1)
      
 
 if __name__ == "__main__":

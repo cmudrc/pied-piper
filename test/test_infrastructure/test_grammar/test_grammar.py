@@ -83,5 +83,24 @@ class TestInfrastructureGrammarClass_3(unittest.TestCase):
         self.assertEqual(len(self.model.infrastructure_edges), 3)
 
 
+class TestInfrastructureGrammarClass_4(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.model = Model(proximity_radius=1)
+        object_1 = Road(pos_1=[0, 0], pos_2=[10, 0])
+        object_1.id = 1
+        object_2 = Settlement(pos=[5, 0.5])
+        object_2.id = 2
+        self.model.add(object_1, object_2)
+
+    def test_apply(self):
+        grammar = Grammar(self.model, save=False)
+        self.assertEqual(len(self.model.infrastructure_nodes), 3)
+        self.assertEqual(len(self.model.infrastructure_edges), 1)
+        grammar.apply()
+        self.assertEqual(len(self.model.infrastructure_nodes), 3)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

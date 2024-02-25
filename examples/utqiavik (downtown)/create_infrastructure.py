@@ -61,7 +61,7 @@ if __name__ == '__main__':
         longitude_min,
         longitude_max
     )
-    settlements_permitted_labels = filter_street_labels(
+    settlements_permitted_labels = filter_settlement_labels(
         latitude_min,
         latitude_max,
         longitude_min,

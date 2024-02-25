@@ -19,11 +19,11 @@ class Graphics:
         """
         # Nodes
         infrastructure_style = style['infrastructure']
-        nodes = self.infrastructure.all_nodes()
         pos_dict = {}
         node_color_list = []
         node_size_list = []
         node_label_dict = {}
+        nodes = self.infrastructure.nodes_id
         for node_index in nodes:
             item = self.infrastructure.get(node_index)
             # Position
@@ -38,11 +38,11 @@ class Graphics:
             node_label_dict[node_index] = item.name
         font_size = 8 #
 
-        edges = self.infrastructure.all_edges()
         edge_color_list = []
-        for edge_indexes in edges:
-            edge_index = self.infrastructure.find_edge_index(*edge_indexes)
-            item = self.infrastructure.get(edge_index)
+        edges_ids = self.infrastructure.edges_ids
+        edges_id = self.infrastructure.edges_id
+        for edge_id in edges_id:
+            item = self.infrastructure.get(edge_id)
             # Color
             color = infrastructure_style['edge'][item.type]['color']
             edge_color_list.append(color)
@@ -55,7 +55,7 @@ class Graphics:
             node_size=node_size_list,
             labels=node_label_dict,
             font_size=font_size,
-            edgelist=edges,
+            edgelist=edges_ids,
             edge_color=edge_color_list
         )
 
@@ -94,7 +94,9 @@ class Graphics:
         plt.clf()
         ax = plt.gca()
         ax.set_aspect("equal")
-        xlim, ylim = self.infrastructure.xylim()
+        margins = self.infrastructure.margins
+        xlim = [margins['x']['min'], margins['x']['max']]
+        ylim = [margins['y']['min'], margins['y']['max']]
         ax.set_xlim(xlim)
         ax.set_ylim(ylim)
         if self.infrastructure is not None:

@@ -13,25 +13,30 @@ class Rule_1(Rule):
         super().__init__(model, name)
 
     def check(self, node_id, edge_id):
+        result = False
         node_object = self.get(node_id)
-        edge_object = self.get(edge_id)
-        distance = ds.point_to_line(
-            point=node_object.pos,
-            line=[edge_object.pos_1, edge_object.pos_2],
-            segment=True
-        )
-        distance_1 = ds.point_to_point(
-            point_1=node_object.pos,
-            point_2=edge_object.pos_1
-        )
-        distance_2 = ds.point_to_point(
-            point_1=node_object.pos,
-            point_2=edge_object.pos_2
-        )
-        return distance is not None and \
+        #if node_object.type == 'junction':
+        if True:
+            edge_object = self.get(edge_id)
+            distance = ds.point_to_line(
+                point=node_object.pos,
+                line=[edge_object.pos_1, edge_object.pos_2],
+                segment=True
+            )
+            distance_1 = ds.point_to_point(
+                point_1=node_object.pos,
+                point_2=edge_object.pos_1
+            )
+            distance_2 = ds.point_to_point(
+                point_1=node_object.pos,
+                point_2=edge_object.pos_2
+            )
+            if distance is not None and \
             distance < self.proximity_radius and \
             distance_1 > self.proximity_radius and \
-            distance_2 > self.proximity_radius
+            distance_2 > self.proximity_radius:
+                result = True
+        return result
     
     def apply(self, report=False):
         anything_happened = False
