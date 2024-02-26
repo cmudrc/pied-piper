@@ -1,3 +1,5 @@
+import time
+
 from piperabm.infrastructure.grammar.rules import *
 
 
@@ -29,6 +31,7 @@ class Grammar:
 
         i = 0
         while True:
+            #time.sleep(0.5)
             rule = rules[i]
             if report is True:
                 print(rule.name + ":")
@@ -43,4 +46,5 @@ class Grammar:
 
             if i == len(rules):
                 self.model.baked = True
+                self.model.save_initial()
                 break  # exit if all grammars are applied without any changes

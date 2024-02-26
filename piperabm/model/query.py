@@ -139,6 +139,16 @@ class Query:
             if object.name == name:
                 result.append(id)
         return result
+    
+    def is_isolated(self, node_id: int):
+        result = True
+        for edge_id in self.infrastructure_edges:
+            edge = self.get(edge_id)
+            if node_id == edge.id_1 or \
+            node_id == edge.id_2:
+                result = False
+                break
+        return result
     '''
     def find_agents_in_same_home(self, home_index):
         """

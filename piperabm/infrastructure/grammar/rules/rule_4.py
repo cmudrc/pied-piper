@@ -1,7 +1,7 @@
 import numpy as np
 
 from piperabm.infrastructure.grammar.rules.rule import Rule
-from piperabm.infrastructure import Road
+from piperabm.infrastructure import Road, Junction
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.linear_algebra import vector as vc
 
@@ -19,9 +19,10 @@ class Rule_4(Rule):
         result = False
         smallest_distance_vector = None
         node_object = self.get(node_id)
-        # Has to be non-junction
-        if node_object.type != "junction":
-            # Must be isolated
+        # Has to be non-junction and be isolated
+        if node_object.type != "junction" and \
+        self.model.is_isolated(node_id):
+            # Calculate distance_vectors from all edges
             distances = []
             for edge_index in self.edges:
                 edge_item = self.get(edge_index)
@@ -32,9 +33,8 @@ class Rule_4(Rule):
                     vector=True
                 )
                 distances.append([edge_index, distance_vector])
-
+            # Find the nearest edge
             smallest_distance = None
-            
             for element in distances:
                 distance_vector = element[1]
                 distance = vc.magnitude(distance_vector)
@@ -46,9 +46,9 @@ class Rule_4(Rule):
                     smallest_distance_vector = distance_vector
 
             if smallest_distance is not None: # When there is no roads available
-                if smallest_distance > self.proximity_radius:
-                    result = True
-                #result = True
+                #if smallest_distance > self.proximity_radius:
+                    #result = True
+                result = True
 
         return result, smallest_distance_vector
     
@@ -60,12 +60,18 @@ class Rule_4(Rule):
                 # Update
                 node_object = self.get(node_id)
                 pos_1 = node_object.pos
+                id_1 = node_object.id
                 pos_2 = list(np.array(pos_1) + np.array(smallest_distance_vector))
-                object = Road(pos_1, pos_2)
-                id_new = self.add(object)
+                junction = Junction(pos=pos_2)
+                id_2 = self.add(junction)
+                road = Road(pos_1=pos_1, pos_2=pos_2)
+                road.id_1 = id_1
+                road.id_2 = id_2
+                id = self.model.add_object_to_library(road)
                 # Report
                 if report is True:
-                    print(">>> add: " + str(id_new))
+                    print(">>> add: " + str(id_2))
+                    print(">>> add: " + str(id))
                 # Inform an activity
                 anything_happened = True
             # Inform an activity

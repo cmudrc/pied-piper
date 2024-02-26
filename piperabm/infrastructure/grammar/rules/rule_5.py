@@ -19,6 +19,8 @@ class Rule_5(Rule):
         object_id_2.type == 'junction':
             if edge_object.length_linear < self.proximity_radius:
                 result = True
+            if object_id_1 == object_id_2:
+                result = True
         return result
     
     def apply(self, report=False):

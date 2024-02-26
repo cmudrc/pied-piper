@@ -28,7 +28,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         self.model.add(object)
         rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
-        self.assertFalse(result)
+        self.assertTrue(result)
         self.assertListEqual(smallest_distance_vector, [0, -1])
 
     def test_2(self):
@@ -37,7 +37,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         self.model.add(object)
         rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
-        self.assertFalse(result)
+        self.assertTrue(result)
         self.assertListEqual(smallest_distance_vector, [0, 0])
 
     def test_3(self):
@@ -55,7 +55,7 @@ class TestGrammarRule4CheckClass(unittest.TestCase):
         self.model.add(object)
         rule = Rule_4(self.model)
         result, smallest_distance_vector = rule.check(node_id=1)
-        self.assertFalse(result)
+        self.assertTrue(result)
         self.assertListEqual(smallest_distance_vector, [1, 0])
 
     def test_4(self):
@@ -84,7 +84,10 @@ class TestGrammarRule4ApplyClass(unittest.TestCase):
         self.assertEqual(len(self.model.infrastructure_edges), 1)
         rule = Rule_4(self.model)
         rule.apply()
-        self.assertEqual(len(self.model.infrastructure_nodes), 5)
+        self.assertEqual(len(self.model.infrastructure_nodes), 4)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+        rule.apply()
+        self.assertEqual(len(self.model.infrastructure_nodes), 4)
         self.assertEqual(len(self.model.infrastructure_edges), 2)
 
     def test_apply_1(self):
@@ -95,8 +98,30 @@ class TestGrammarRule4ApplyClass(unittest.TestCase):
         self.assertEqual(len(self.model.infrastructure_edges), 1)
         rule = Rule_4(self.model)
         rule.apply()
-        self.assertEqual(len(self.model.infrastructure_nodes), 3)
+        self.assertEqual(len(self.model.infrastructure_nodes), 4)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+        rule.apply()
+        self.assertEqual(len(self.model.infrastructure_nodes), 4)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+
+    def test_apply_2(self):
+        object = Settlement(pos=[5, 1])
+        object.id = 1
+        self.model.add(object)
+        object = Settlement(pos=[4.5, 5])
+        object.id = 2
+        self.model.add(object)
+        self.assertEqual(len(self.model.infrastructure_nodes), 4)
         self.assertEqual(len(self.model.infrastructure_edges), 1)
+        rule = Rule_4(self.model)
+        rule.apply()
+        self.assertEqual(len(self.model.infrastructure_nodes), 5)
+        self.assertEqual(len(self.model.infrastructure_edges), 2)
+        rule.apply()
+        self.assertEqual(len(self.model.infrastructure_nodes), 6)
+        self.assertEqual(len(self.model.infrastructure_edges), 3)
+        #for id in self.model.infrastructure_edges:
+        #    print(self.model.get(id))
      
 
 if __name__ == "__main__":

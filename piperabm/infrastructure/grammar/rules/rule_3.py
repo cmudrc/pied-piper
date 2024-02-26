@@ -15,6 +15,19 @@ class Rule_3(Rule):
         result = False
         edge_object = self.get(edge_id)
         other_edge_object = self.get(other_edge_id)
+        
+        edge_id_1 = edge_object.id_1
+        edge_id_2 = edge_object.id_2
+        other_edge_id_1 = other_edge_object.id_1
+        other_edge_id_2 = other_edge_object.id_2
+
+        if edge_id_1 == other_edge_id_1 and \
+        edge_id_2 == other_edge_id_2:
+            result = True
+        elif edge_id_1 == other_edge_id_2 and \
+        edge_id_2 == other_edge_id_1:
+            result = True
+        '''
         distance_1_1 = ds.point_to_point(
             point_1=edge_object.pos_1,
             point_2=other_edge_object.pos_1
@@ -37,6 +50,7 @@ class Rule_3(Rule):
         if distances[0] < self.proximity_radius and \
         distances[1] < self.proximity_radius:
             result = True
+        '''
         return result
     
     def apply(self, report=False):

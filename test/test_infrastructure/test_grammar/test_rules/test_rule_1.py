@@ -1,5 +1,4 @@
 import unittest
-from copy import deepcopy
 
 from piperabm.model import Model
 from piperabm.infrastructure import Junction, Road, Settlement
@@ -44,8 +43,8 @@ class TestGrammarRule1CheckClass(unittest.TestCase):
         self.model.add(object)
         rule = Rule_1(self.model)
         result = rule.check(node_id=1, edge_id=0)
-        #self.assertFalse(result)
-        self.assertTrue(result)
+        self.assertFalse(result)
+        #self.assertTrue(result)
 
     def test_4(self):
         object = Junction(pos=[3, 0.5])

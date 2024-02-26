@@ -15,7 +15,8 @@ class Rule_0(Rule):
         result = False
         node_object = self.get(node_id)
         other_node_object = self.get(other_node_id)
-        if node_object.type == "junction" or other_node_object.type == "junction":
+        if node_object.type == "junction" and \
+        other_node_object.type == "junction":
             distance = ds.point_to_point(
                 point_1=node_object.pos,
                 point_2=other_node_object.pos

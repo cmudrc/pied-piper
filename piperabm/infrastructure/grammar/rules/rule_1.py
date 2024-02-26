@@ -15,8 +15,7 @@ class Rule_1(Rule):
     def check(self, node_id, edge_id):
         result = False
         node_object = self.get(node_id)
-        #if node_object.type == 'junction':
-        if True:
+        if node_object.type == 'junction':
             edge_object = self.get(edge_id)
             distance = ds.point_to_line(
                 point=node_object.pos,
