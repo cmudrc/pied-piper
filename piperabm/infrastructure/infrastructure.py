@@ -38,11 +38,11 @@ class Infrastructure:
         Get object
         """
         return self.model.get(id)
-    
+    '''
     @property
     def proximity_radius(self):
         return self.model.proximity_radius
-
+    '''
     def add_node(self, id: int):
         """
         Add a node based on its id

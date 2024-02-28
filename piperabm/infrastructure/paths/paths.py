@@ -36,6 +36,10 @@ class Paths:
                 if id_start != id_end:
                     path = self.infrastructure.find_path(id_start, id_end)
                     self.add_edge(path)
+
+    def path(self, id_start, id_end):
+        edge = self.G.edges[id_start, id_end]
+        return edge['path']
     '''
     def path_to_pos(self, path):
         """
@@ -71,5 +75,6 @@ if __name__ == "__main__":
 
     model.create_infrastructure()
     infrastructure = model.infrastructure
-    print(infrastructure.paths)
+    paths = infrastructure.paths
+    print(paths)
 
