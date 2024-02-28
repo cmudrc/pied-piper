@@ -1,5 +1,4 @@
 import networkx as nx
-import numpy as np
 
 from piperabm.infrastructure.paths import Paths
 from piperabm.graphics import Graphics
@@ -25,7 +24,8 @@ class Infrastructure:
             self.add_edge(
                 id_1=object.id_1,
                 id_2=object.id_2,
-                id=id
+                id=id,
+                adjusted_length=object.adjusted_length
             )
         
         self.margins = self.xylim()
@@ -46,11 +46,11 @@ class Infrastructure:
         """
         self.G.add_node(id)
 
-    def add_edge(self, id_1: int, id_2: int, id: int):
+    def add_edge(self, id_1: int, id_2: int, id: int, adjusted_length: float = None):
         """
         Add an edge based on its id_1 and id_2 (both ends), together with its id
         """
-        self.G.add_edge(id_1, id_2, id=id)
+        self.G.add_edge(id_1, id_2, id=id, adjusted_length=adjusted_length)
 
     def remove_node(self, id: int):
         """

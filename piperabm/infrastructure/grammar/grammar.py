@@ -33,8 +33,8 @@ class Grammar:
         while True:
             #time.sleep(0.5)
             rule = rules[i]
-            if report is True:
-                print(rule.name + ":")
+            #if report is True:
+            #    print(rule.name + ":")
             anything_happened = rule.apply(report=report)
 
             if anything_happened is True:
@@ -45,6 +45,8 @@ class Grammar:
                 i += 1  # move to the next grammar
 
             if i == len(rules):
+                #print("Baking is done")
                 self.model.baked = True
-                self.model.save_initial()
+                if self.save is True:
+                    self.model.save_initial()
                 break  # exit if all grammars are applied without any changes

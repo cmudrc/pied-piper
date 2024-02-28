@@ -1,9 +1,9 @@
-from piperabm.infrastructure.grammar.rules.rule import Rule
+from piperabm.infrastructure.grammar.rules.rule import Rule, Log
 
 
 class Rule_5(Rule):
     """
-    Condition for small edge removal
+    Condition for small edge removal between junctions
     """
 
     def __init__(self, model):
@@ -28,12 +28,18 @@ class Rule_5(Rule):
         for edge_id in self.edges:
             if self.check(edge_id):
                 # Update
+                # Log
+                if report is True:
+                    logs = []
+                    log = Log(self.model, edge_id, 'removed')
+                    logs.append(log)
                 self.remove(edge_id)
                 # Inform an activity
                 anything_happened = True
                 # Report
                 if report is True:
-                    print(">>> remove: " + str(edge_id))
+                    self.report(logs)
+                # Inform an activity
                 break
         return anything_happened
     

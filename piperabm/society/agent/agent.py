@@ -33,9 +33,10 @@ class Agent(PureObject):
         self.brain = None
 
         """ Identity """
-        self.index = None
+        self.id = None
         self.name = name
         self.home = None
+        self.current_node = None
         self.time_outside = DeltaTime(seconds=0)
         self.socioeconomic_status = socioeconomic_status
 
@@ -51,6 +52,8 @@ class Agent(PureObject):
         self.fuels_rate_idle = fuels_rate_idle
         self.set_resources(average_resources)
         self.set_balance(average_balance)
+        self.alive = True
+        self.death_reasons = None
     
     def set_resources(self, average_resources: Containers):
         self.resources = average_resources * self.socioeconomic_status
@@ -66,16 +69,16 @@ class Agent(PureObject):
         income_per_seconds = income_per_month / (30 * 24 * 3600)
         return income_per_seconds * self.socioeconomic_status
 
-    @property
-    def alive(self) -> bool:
+    def check_alive(self) -> bool:
         """
         Check whether agent is alive
         """
-        result = True
-        resources_zero = self.resources.check_empty(RESOURCES_VITAL)
-        if len(resources_zero) > 0:  # Died
-            result = False
-        return result
+        if self.alive is True:
+            resources_zero = self.resources.check_empty(RESOURCES_VITAL)
+            if len(resources_zero) > 0:  # Died
+                self.alive = False
+                self.death_reasons = resources_zero
+        return self.alive
     
     @property
     def death_reason(self):
@@ -91,7 +94,7 @@ class Agent(PureObject):
         """
         result = None
         if self.home is None:
-            print('home index not defined')
+            print('home index is not defined.')
         else:
             if self.current_node == self.home:
                 result = True
@@ -101,38 +104,36 @@ class Agent(PureObject):
     '''
     def utility(self, resource_name):
         return self.resources(name=resource_name)
-    '''
+    
     @property
     def current_node(self):
         """
         Return current node id based on current pos
         """
         result = None
-        infrastructure = self.model.infrastructure
+        infrastructure = self.model.infrastructure_nodes
         items = infrastructure.all_nodes()
         node_index, distance = infrastructure.find_nearest_node(self.pos, items)
         if distance <= self.model.proximity_radius:
             result = node_index
         return result
-
-    def update(self) -> None:
+    '''
+    def update(self, duration: DeltaTime) -> None:
         """
         Update agent
         """
         if self.alive is True:
-            duration_object = self.model.step_size
-            duration = duration_object.total_seconds()
             """ Income """
-            self.balance += self.income * duration
+            self.balance += self.income * duration.total_seconds()
             """ Consume resources """
-            fuels = self.fuels_rate_idle * duration
+            fuels = self.fuels_rate_idle * duration.total_seconds()
             self.resources - fuels
             self.queue.update()
             """ How long it has been out of home? """
             if self.is_home():
                 self.time_outside = DeltaTime(seconds=0)
             else:
-                self.time_outside += duration_object
+                self.time_outside += duration
 
         """ Decide """
         if self.alive is True:
@@ -142,23 +143,31 @@ class Agent(PureObject):
             self.queue.add(actions)
 
     def serialize(self) -> dict:
-        return {
-            'name': self.name,
-            'home': self.home,
-            'time_outside': self.time_outside.total_seconds(),
-            'transportation': self.transportation.serialize(),
-            'pos': self.pos,
-            'queue': self.queue.serialize(),
-            'resources': self.resources.serialize(),
-            'fuels_rate_idle': self.fuels_rate_idle.serialize(),
-            'balance': self.balance,
-            'type': self.type
-        }
+        dictionary = {}
+        dictionary['name'] = self.name
+        dictionary['id'] = self.id
+        dictionary['alive'] = self.alive
+        dictionary['death_reasons'] = self.death_reasons
+        dictionary['home'] = self.home
+        dictionary['time_outside'] = self.time_outside.total_seconds()
+        dictionary['transportation'] = self.transportation.serialize()
+        dictionary['pos'] = self.pos
+        dictionary['queue'] = self.queue.serialize()
+        dictionary['resources'] = self.resources.serialize()
+        dictionary['fuels_rate_idle'] = self.fuels_rate_idle.serialize()
+        dictionary['balance'] = self.balance
+        dictionary['type'] = self.type
+        dictionary['section'] = self.section
+        dictionary['category'] = self.category
+        return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
+        if dictionary['type'] != self.type:
+            raise ValueError
         self.name = dictionary['name']
+        self.id = int(dictionary["id"])
         self.alive = dictionary['alive']
-        self.death_reason = dictionary['death_reason']
+        self.death_reasons = dictionary['death_reasons']
         self.home = dictionary['home']
         self.time_outside = DeltaTime(seconds=dictionary['time_outside'])
         self.transportation = Transportation()
@@ -167,12 +176,10 @@ class Agent(PureObject):
         self.queue = ActionQueue()
         self.queue.deserialize(dictionary['queue'])
         self.resources = Containers()
-        self.resources.deserialize(dictionary['resource'])
+        self.resources.deserialize(dictionary['resources'])
         self.fuels_rate_idle = Matters()
         self.fuels_rate_idle.deserialize(dictionary['fuels_rate_idle'])
         self.balance = dictionary['balance']
-        self.income = dictionary['income']
-        self.type = dictionary['type']
 
 
 if __name__ == '__main__':
@@ -181,6 +188,8 @@ if __name__ == '__main__':
 
     agent = Agent(
         name='Sample',
-        resources=resources
+        average_resources=resources,
+        average_balance=1000,
+        socioeconomic_status=1,
     )
-    agent.print
+    agent.print()

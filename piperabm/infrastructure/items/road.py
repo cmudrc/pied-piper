@@ -86,10 +86,14 @@ class Road(PureObject):
         dictionary["id"] = self.id
         dictionary["section"] = self.section
         dictionary["category"] = self.category
-        dictionary["type"] = self.type
+        dictionary['type'] = self.type
+        dictionary['section'] = self.section
+        dictionary['category'] = self.category
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
+        if dictionary['type'] != self.type:
+            raise ValueError
         self.pos_1 = dictionary["pos_1"]
         self.pos_2 = dictionary["pos_2"]
         self.id_1 = int(dictionary["id_1"])
@@ -100,9 +104,6 @@ class Road(PureObject):
         self.degradation = Degradation()
         self.degradation.deserialize(dictionary["degradation"])
         self.id = int(dictionary["id"])
-        self.section = dictionary["section"]
-        self.category = dictionary["category"]
-        self.type = dictionary["type"]
 
 
 if __name__ == "__main__":

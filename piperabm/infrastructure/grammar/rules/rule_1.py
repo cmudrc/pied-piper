@@ -1,4 +1,4 @@
-from piperabm.infrastructure.grammar.rules.rule import Rule
+from piperabm.infrastructure.grammar.rules.rule import Rule, Log
 from piperabm.infrastructure import Road
 from piperabm.tools.coordinate import distance as ds
 
@@ -48,14 +48,33 @@ class Rule_1(Rule):
                     if edge_object.type == "road":
                         new_edge_object_1 = Road(pos_1=edge_object.pos_1, pos_2=node_object.pos)
                         new_edge_object_2 = Road(pos_1=node_object.pos, pos_2=edge_object.pos_2)
+                    # Add
                     new_edge_id_1 = self.add(new_edge_object_1)
                     new_edge_id_2 = self.add(new_edge_object_2)
+                    # Log
+                    if report is True:
+                        logs = []
+                        log = Log(self.model, new_edge_id_1, 'added')
+                        logs.append(log)
+                        object_1 = self.model.get(new_edge_id_1)
+                        log = Log(self.model, object_1.id_1, 'added')
+                        logs.append(log)
+                        log = Log(self.model, object_1.id_2, 'added')
+                        logs.append(log)
+                        log = Log(self.model, new_edge_id_2, 'added')
+                        logs.append(log)
+                        object_2 = self.model.get(new_edge_id_2)
+                        log = Log(self.model, object_2.id_1, 'added')
+                        logs.append(log)
+                        log = Log(self.model, object_2.id_2, 'added')
+                        logs.append(log)
+                        log = Log(self.model, edge_id, 'removed')
+                        logs.append(log)
+                    # Remove
                     self.remove(edge_id)
                     # Report
                     if report is True:
-                        print(">>> add: " + str(new_edge_id_1))
-                        print(">>> add: " + str(new_edge_id_2))
-                        print(">>> remove: " + str(edge_id))
+                        self.report(logs)
                     # Inform an activity
                     anything_happened = True
             # Inform an activity

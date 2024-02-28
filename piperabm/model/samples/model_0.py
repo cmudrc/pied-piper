@@ -14,9 +14,11 @@ settlement = Settlement(
 )
 model.add(settlement)
 
-model.apply_grammars()
+#model.apply_grammars()
 
 
 if __name__ == '__main__':
+    print(model.infrastructure)
+    pass
     #model.print
-    model.show()
+    #model.show()

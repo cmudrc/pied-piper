@@ -46,17 +46,5 @@ if __name__ == '__main__':
     model = create_model()
     model.path = os.path.dirname(os.path.realpath(__file__))
     model.save_initial()
-    '''
-    from data.streets.labels import map_1 as streets_permitted_labels
-    from data.settlements.labels import map_1 as settlements_permitted_labels
 
-
-    model = create_model(
-        streets_permitted_labels=streets_permitted_labels,
-        settlements_permitted_labels=settlements_permitted_labels   
-    )
-
-    #model = create_model()
-    model.show()
-    '''
     

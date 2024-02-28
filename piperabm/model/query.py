@@ -107,6 +107,17 @@ class Query:
         return self.filter(section="infrastructure", category="node")
     
     @property
+    def settlement_nodes(self):
+        """
+        Return id of all infrastructure nodes id
+        """
+        return self.filter(section="infrastructure", type='settlement')
+
+    @property
+    def settlements(self):
+        return self.settlement_nodes 
+    
+    @property
     def infrastructure_edges(self):
         """
         Return id of all infrastructure edges id
@@ -121,11 +132,19 @@ class Query:
         return self.filter(section="society", category="node")
     
     @property
+    def agents(self):
+        return self.society_nodes
+    
+    @property
     def society_edges(self):
         """
         Return id of all society edges id
         """
         return self.filter(section="society", category="edge")
+
+    @property
+    def relationships(self):
+        return self.society_edges
 
     def find_by_name(self, name: str, ids=None):
         """
@@ -149,19 +168,18 @@ class Query:
                 result = False
                 break
         return result
-    '''
-    def find_agents_in_same_home(self, home_index):
+
+    def find_agents_in_same_home(self, home_id):
         """
         Return all agent indexes sharing the same home
         """
         result = []
-        all = self.all_agents
-        for index in all:
-            agent = self.get(index)
-            if agent.home == home_index:
-                result.append(index)
+        all = self.agents
+        for id in all:
+            agent = self.get(id)
+            if agent.home == home_id:
+                result.append(id)
         return result
-    '''
     
     '''
     @property

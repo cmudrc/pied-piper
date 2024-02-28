@@ -1,4 +1,4 @@
-from piperabm.infrastructure.grammar.rules.rule import Rule
+from piperabm.infrastructure.grammar.rules.rule import Rule, Log
 from piperabm.infrastructure import Road
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.coordinate.intersect import line_line
@@ -88,20 +88,57 @@ class Rule_2(Rule):
                                 roughness=other_edge_object.roughness,
                                 degradation=other_edge_object.degradation
                             )
+                            # Add
                             new_edge_id_1 = self.add(new_edge_object_1)
                             new_edge_id_2 = self.add(new_edge_object_2)
                             new_edge_id_3 = self.add(new_edge_object_3)
                             new_edge_id_4 = self.add(new_edge_object_4)
+                            # Log
+                            if report is True:
+                                logs = []
+                                # new_edge_id_1
+                                log = Log(self.model, new_edge_id_1, 'added')
+                                logs.append(log)
+                                object = self.model.get(new_edge_id_1)
+                                log = Log(self.model, object.id_1, 'added')
+                                logs.append(log)
+                                log = Log(self.model, object.id_2, 'added')
+                                logs.append(log)
+                                # new_edge_id_2
+                                log = Log(self.model, new_edge_id_2, 'added')
+                                logs.append(log)
+                                object = self.model.get(new_edge_id_2)
+                                log = Log(self.model, object.id_1, 'added')
+                                logs.append(log)
+                                log = Log(self.model, object.id_2, 'added')
+                                logs.append(log)
+                                # new_edge_id_3
+                                log = Log(self.model, new_edge_id_3, 'added')
+                                logs.append(log)
+                                object = self.model.get(new_edge_id_3)
+                                log = Log(self.model, object.id_1, 'added')
+                                logs.append(log)
+                                log = Log(self.model, object.id_2, 'added')
+                                logs.append(log)
+                                # new_edge_id_4
+                                log = Log(self.model, new_edge_id_4, 'added')
+                                logs.append(log)
+                                object = self.model.get(new_edge_id_4)
+                                log = Log(self.model, object.id_1, 'added')
+                                logs.append(log)
+                                log = Log(self.model, object.id_2, 'added')
+                                logs.append(log)
+                                # edge_id
+                                log = Log(self.model, edge_id, 'removed')
+                                logs.append(log)
+                                # other_edge_id
+                                log = Log(self.model, other_edge_id, 'removed')
+                                logs.append(log)
                             self.remove(edge_id)
                             self.remove(other_edge_id)
                             # Report
                             if report is True:
-                                print(">>> remove: " + str(edge_id))
-                                print(">>> remove: " + str(other_edge_id))
-                                print(">>> add: " + str(new_edge_id_1))
-                                print(">>> add: " + str(new_edge_id_2))
-                                print(">>> add: " + str(new_edge_id_3))
-                                print(">>> add: " + str(new_edge_id_4))
+                                self.report(logs)
                             # Inform an activity
                             anything_happened = True
                             break

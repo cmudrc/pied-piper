@@ -1,5 +1,6 @@
-from piperabm.infrastructure.grammar.rules.rule import Rule
+from piperabm.infrastructure.grammar.rules.rule import Rule, Log
 from piperabm.tools.coordinate import distance as ds
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Rule_0(Rule):
@@ -23,6 +24,14 @@ class Rule_0(Rule):
             )
             if distance < self.proximity_radius:
                 result = True
+        elif (node_object.type != "junction" and other_node_object.type == "junction") or \
+        (node_object.type == "junction" and other_node_object.type != "junction"):
+            distance = ds.point_to_point(
+                point_1=node_object.pos,
+                point_2=other_node_object.pos
+            )
+            if distance <= SYMBOLS['eps']:
+                result = True
         return result
     
     def apply(self, report=False):
@@ -31,6 +40,7 @@ class Rule_0(Rule):
             for other_node_id in self.nodes:
                 if node_id != other_node_id:
                     if self.check(node_id, other_node_id):
+
                         # Update
                         node_object = self.get(node_id)
                         if node_object.type == "junction":
@@ -39,13 +49,19 @@ class Rule_0(Rule):
                         else:
                             node_id_remove = other_node_id
                             node_id_replacement = node_id
+                        if report is True:
+                            logs = []
+                            log = Log(self.model, node_id_remove, 'removed')
+                            logs.append(log)
                         self.replace_node(node_id_remove, node_id_replacement)
                         self.remove(node_id_remove)
+
                         # Inform an activity
                         anything_happened = True
+
                         # Report
                         if report is True:
-                            print(">>> remove: " + str(node_id_remove))
+                            self.report(logs)
                         break
             # Inform an activity     
             if anything_happened is True:

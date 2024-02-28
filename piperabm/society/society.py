@@ -15,8 +15,8 @@ class Society:
         """
         #all_nodes_alive = self.model.all_alive_agents
         #all_nodes_dead = self.model.all_dead_agents
-        all_nodes = self.model.all_agents
-        all_edges = self.model.all_relationships
+        all_nodes = self.model.agents
+        all_edges = self.model.relationships
         for item_index in all_nodes:
             self.G.add_node(item_index)
         for item_index in all_edges:

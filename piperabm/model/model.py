@@ -1,7 +1,6 @@
 from copy import deepcopy
 import random
 
-
 from piperabm.object import PureObject
 from piperabm.model.query import Query
 from piperabm.graphics import Graphics
@@ -9,16 +8,16 @@ from piperabm.infrastructure.grammar import Grammar
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
 from piperabm.infrastructure import Infrastructure, Junction, Road, Settlement
 from piperabm.infrastructure.items.deserialize import infrastructure_deserialize
-#from piperabm.society import Society, Family
+from piperabm.society import Society, Agent, Family
+from piperabm.society.deserialize import society_deserialize
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.matter import Containers
-#from piperabm.measure import Measure
+from piperabm.measure import Measure
 from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.tools.stats import gini
 #from piperabm.config.settings import *
 from piperabm.society.agent.config import *
-import os
 
 
 class Model(PureObject, Query):
@@ -45,7 +44,6 @@ class Model(PureObject, Query):
         self.current_date = current_date
         self.exchange_rate = exchange_rate
         self.gini_index = gini_index
-        #self.socio_economic_status_distribution = gini.lognorm(gini_index)
         self.average_income = average_income
         self.average_balance = average_balance
         self.average_resources = average_resources
@@ -54,7 +52,7 @@ class Model(PureObject, Query):
 
         self.baked = True
         self.library = {}
-        #self.measure = Measure(self)
+        self.measure = Measure(self)
 
     def set_step_size(self, step_size):
         """
@@ -91,7 +89,39 @@ class Model(PureObject, Query):
         """
         Add new society object to model
         """
-        pass
+        if object.category == "node":
+            """ Home """
+            settlements = self.settlement_nodes
+            if object.home is None:
+                object.home = random.choice(settlements)
+            else:
+                if object.home not in settlements:
+                    raise ValueError
+            object.current_node = deepcopy(object.home)
+            home = self.get(object.home)
+            object.pos = deepcopy(home.pos)
+
+            """ Socio-economic status """
+            distribution = gini.lognorm(self.gini_index)
+            object.socioeconomic_status = distribution.rvs()
+            object.set_balance(self.average_balance)
+            object.set_resources(self.average_resources)
+            id = self.add_object_to_library(object)
+
+            """ Relationships """
+            familiy_members = self.find_agents_in_same_home(object.home)
+            for family_id in familiy_members:
+                if family_id != object.id:
+                    relationship = Family(
+                        id_1=object.id,
+                        id_2=family_id,
+                        home_id=object.home
+                    )
+                    self.add(relationship)
+            return id
+                
+        elif object.category == "edge":
+            self.add_object_to_library(object)
 
     def add(self, *objects) -> None:
         """
@@ -112,6 +142,32 @@ class Model(PureObject, Query):
         else:
             print("First, bake the model.")
             return None
+        
+    @property
+    def society(self):
+        if self.baked is True:
+            return Society(model=self)
+        else:
+            print("First, bake the model.")
+            return None
+        
+    def generate_agents(self, num: int = 1):
+        for _ in range(num):
+            agent = Agent()
+            self.add(agent)
+
+    def update(self):
+        step_size = self.step_size
+        for id in self.agents:
+            agent = self.get(id)
+            agent.update(duration=step_size)
+        self.current_date += step_size
+
+    def run(self, n: int = 1, report=True):
+        for i in range(n):
+            #if report is True:
+            #    print(f"Progress: {i / n * 100:.1f}% complete")
+            self.update()
 
     def bake(self, save=True):
         """
@@ -136,6 +192,17 @@ class Model(PureObject, Query):
         filename = self.name + "_" + "initial"
         data = jsh.load(self.path, filename)
         self.deserialize(data)
+
+    def show(self):
+        """
+        Show the model
+        """
+        if self.baked is True:
+            graphics = Graphics(
+                infrastructure=self.infrastructure,
+                society=self.society
+            )
+            graphics.show()
     
     def serialize(self) -> dict:
         dictionary = {}
@@ -178,9 +245,9 @@ class Model(PureObject, Query):
         for id in library_dictionary:
             object_dictionary = library_dictionary[id]
             if object_dictionary["section"] == "infrastructure":
-                self.library[int(id)] = infrastructure_deserialize(object_dictionary)
-            #elif object_dictionary["section"] == "society":
-            #    self.library[int(id)] = society_deserialize(object_dictionary)
+                self.library[int(id)] = infrastructure_deserialize(object_dictionary, model=self)
+            elif object_dictionary["section"] == "society":
+                self.library[int(id)] = society_deserialize(object_dictionary, model=self)
 
 
 if __name__ == "__main__":
@@ -188,8 +255,11 @@ if __name__ == "__main__":
     object_1 = Settlement(name="sample", pos=[0, 0])
     object_2 = Road(name="sample", pos_1=[0, 0], pos_2=[10, 10])
     model.add(object_1, object_2)
-    #model.save_initial()
-    #model.show()
-    #model.print    
-    #model.bake(save=True)
-    #print(model.baked)
+    model.bake(save=False)
+    agent = Agent()
+    agent.id = 0
+    model.add(agent)
+    data = model.serialize()
+    #model.print()
+    #print(model.agents)
+    model.show()

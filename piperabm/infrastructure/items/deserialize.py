@@ -3,7 +3,7 @@ from piperabm.infrastructure.items.settlement import Settlement
 from piperabm.infrastructure.items.road import Road
 
 
-def infrastructure_deserialize(dictionary):
+def infrastructure_deserialize(dictionary, model):
     if dictionary["type"] == "junction":
         object = Junction()
     elif dictionary["type"] == "settlement":
@@ -11,4 +11,5 @@ def infrastructure_deserialize(dictionary):
     elif dictionary["type"] == "road":
         object = Road()
     object.deserialize(dictionary)
+    object.model = model
     return object

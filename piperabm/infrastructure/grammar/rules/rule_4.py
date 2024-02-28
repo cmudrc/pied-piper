@@ -1,6 +1,6 @@
 import numpy as np
 
-from piperabm.infrastructure.grammar.rules.rule import Rule
+from piperabm.infrastructure.grammar.rules.rule import Rule, Log
 from piperabm.infrastructure import Road, Junction
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.linear_algebra import vector as vc
@@ -68,10 +68,15 @@ class Rule_4(Rule):
                 road.id_1 = id_1
                 road.id_2 = id_2
                 id = self.model.add_object_to_library(road)
+                if report is True:
+                    logs = []
+                    log = Log(self.model, id_2, 'added')
+                    logs.append(log)
+                    log = Log(self.model, id, 'added')
+                    logs.append(log)
                 # Report
                 if report is True:
-                    print(">>> add: " + str(id_2))
-                    print(">>> add: " + str(id))
+                    self.report(logs)
                 # Inform an activity
                 anything_happened = True
             # Inform an activity

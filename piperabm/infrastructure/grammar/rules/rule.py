@@ -35,9 +35,55 @@ class Rule:
 
     def add(self, object):
         return self.model.add_infrastructure_object(object)
-
+    
+    def report(self, logs: list):
+        if len(logs) > 0:
+            print(">>>" + " " + self.name + ":")
+            for log in logs:
+                print(log)
+        
     def check(self):
         print("NOT IMPLEMENTED YET.")
 
     def apply(self, report=False):
         print("NOT IMPLEMENTED YET.")
+
+
+class Log:
+
+    def __init__(self, model, id, activity):
+        object = model.get(id)
+        self.object_info = self.create_object_info(object)
+        self.activity = activity
+
+    def create_object_info(self, object):
+        txt = object.category + " "
+        if object.category == 'node':
+            txt += "in" + " "
+            txt += str(object.pos)
+        elif object.category == 'edge':
+            txt += "between" + " "
+            txt += str(object.pos_1) + " and "
+            txt += str(object.pos_2)
+        return txt
+
+    def __str__(self):
+        return "#" + " " + self.activity + ":" + " " + self.object_info
+    
+
+if __name__ == "__main__":
+    from piperabm.model import Model
+    from piperabm.infrastructure import Settlement, Road
+
+    model = Model()
+    object_1 = Settlement(pos=[0, 0])
+    object_1.id = 1
+    model.add(object_1)
+    object_2 = Road(pos_1=[5, 5], pos_2=[10, 10])
+    object_2.id = 2
+    model.add(object_2)
+
+    log = Log(model, id=1, activity='add')
+    print(log)
+    log = Log(model, id=2, activity='add')
+    print(log)

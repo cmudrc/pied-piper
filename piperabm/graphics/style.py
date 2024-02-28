@@ -28,7 +28,7 @@ society_node_style = {
             "alive": "magenta",
         },
         "shape": "x",
-        "size": NODE_ITEM_DEFAULT_RADIUS,
+        "size": NODE_ITEM_DEFAULT_RADIUS * 1.5,
     }
 }
 society_edge_style = {}

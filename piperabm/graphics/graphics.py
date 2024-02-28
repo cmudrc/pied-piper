@@ -65,13 +65,13 @@ class Graphics:
         xs = []
         ys = []
         agent_color_list = []
-        for index in agents:
-            item = self.society.get(index)
-            pos = item.pos
+        for id in agents:
+            agent = self.society.get(id)
+            pos = agent.pos
             xs.append(pos[0])
             ys.append(pos[1])
             colors = society_style["node"]["agent"]["color"]
-            if item.alive is True:
+            if agent.alive is True:
                 color = colors['alive']
             else:
                 color = colors['dead']
@@ -94,12 +94,12 @@ class Graphics:
         plt.clf()
         ax = plt.gca()
         ax.set_aspect("equal")
-        margins = self.infrastructure.margins
-        xlim = [margins['x']['min'], margins['x']['max']]
-        ylim = [margins['y']['min'], margins['y']['max']]
-        ax.set_xlim(xlim)
-        ax.set_ylim(ylim)
         if self.infrastructure is not None:
+            margins = self.infrastructure.margins
+            xlim = [margins['x']['min'], margins['x']['max']]
+            ylim = [margins['y']['min'], margins['y']['max']]
+            ax.set_xlim(xlim)
+            ax.set_ylim(ylim)
             self.infrastructure_to_plt()
         if self.society is not None:
             self.society_to_plt()
