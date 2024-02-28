@@ -16,6 +16,7 @@ class Infrastructure:
         """
         Create graph from model
         """
+        # Create infrastructure
         self.G = nx.Graph()
         for id in self.model.infrastructure_nodes:
             self.add_node(id)
@@ -27,8 +28,10 @@ class Infrastructure:
                 id=id,
                 adjusted_length=object.adjusted_length
             )
-        
+        # Calculate infrastructure margins
         self.margins = self.xylim()
+        # Calculate paths graph
+        self.paths = self.create_paths()
 
     def get(self, id: int):
         """
@@ -51,7 +54,7 @@ class Infrastructure:
         Add an edge based on its id_1 and id_2 (both ends), together with its id
         """
         self.G.add_edge(id_1, id_2, id=id, adjusted_length=adjusted_length)
-
+    '''
     def remove_node(self, id: int):
         """
         Remove a node based on its id
@@ -63,6 +66,7 @@ class Infrastructure:
         Remove an edge based on its id_1 and id_2 (both ends)
         """
         self.G.remove_edge(id_1, id_2)
+    '''
 
     def edge_id(self, id_1: int, id_2: int):
         """
@@ -131,17 +135,10 @@ class Infrastructure:
         """
         return self.filter_type(type='settlement')
 
+    '''
     def edges_from_node(self, node_id):
         return list(self.G.edges(node_id, data=True))
-
     '''
-    def adjusted_length(self, id):
-        item = self.model.get(id)
-        return item.adjusted_length
-        edge = self.G.edges[index_1, index_2]
-        return edge['adjusted_length']
-
-
     def find_path(self, id_1, id_2):
         """
         Find the shortest path between id_1 and id_2
@@ -149,30 +146,30 @@ class Infrastructure:
         path = None
         if nx.has_path(
             self.G,
-            source=index_1,
-            target=index_2
+            source=id_1,
+            target=id_2
         ):
             path = nx.dijkstra_path(
                 self.G,
-                source=index_1,
-                target=index_2,
+                source=id_1,
+                target=id_2,
                 weight="adjusted_length"
             )
         return path
     
+    '''
     def find_nearest_node(self, pos: list, items: list):
         """
         Find the nearst node index to the *pos*
         """
         return self.model.find_nearest_node(pos, items)
+    '''
 
-    @property
-    def paths(self):
+    def create_paths(self):
         """
         Return infrastructure graph of items
         """
         return Paths(infrastructure=self)
-    '''
 
     def xylim(self):
         """
@@ -236,7 +233,7 @@ class Infrastructure:
     def show(self):
         graphics = Graphics(infrastructure=self)
         graphics.show()
-
+    '''
     def serialize(self):
         result = {}
         nodes = self.nodes_id
@@ -254,29 +251,14 @@ class Infrastructure:
             self.add_node(id_1)
             for id_2 in data[id_1]:
                 self.add_edge(id_1, id_2, data[id_1][id_2])
-
+    '''
     def __str__(self):
         return self.G.__str__()
 
 
 if __name__ == "__main__":
+    from piperabm.model.samples import model_1 as model
 
-    #from piperabm.model.samples import model_2 as model
-
-    #infrastructure = model.infrastructure
-    #infrastructure.show()
-    infrastructure = Infrastructure()
-    #infrastructure.add_node(1)
-    #infrastructure.add_node(2)
-    infrastructure.add_edge(1, 2, 3)
-    infrastructure.add_edge(4, 5, 6)
-    #infrastructure.add_edge(5, 4, 6)
-    #infrastructure.remove_node(4)
-    #print(infrastructure.edge_ids(3))
-    #print(infrastructure.nodes_id)
-    #print(infrastructure.edges_id)
-    #data = infrastructure.serialize()
-    #infrastructure.deserialize(data)
-    #data = infrastructure.serialize()
-    #print(data)
-    print(infrastructure.edges_from_node(1))
+    model.create_infrastructure()
+    infrastructure = model.infrastructure
+    print(infrastructure)

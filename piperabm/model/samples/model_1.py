@@ -1,33 +1,16 @@
 from piperabm.model import Model
-from piperabm.infrastructure.items import Junction, Settlement, Road
+from piperabm.infrastructure.items import Settlement, Road
     
 
-model = Model(
-    proximity_radius=0.1
-)
-
-junction = Junction(
-    name='Sample Junction',
-    pos=[0, 0]
-)
-model.add(junction)
-
-settlement = Settlement(
-    name='Sample Settlement',
-    pos=[-60, 40]
-)
-model.add(settlement)
-
-road = Road(
-    name='Sample Road',
-    pos_1=[0.05, 0],
-    pos_2=[-60, 40.05]
-)
-model.add(road)
-
-model.apply_grammars()
+model = Model(proximity_radius=0.1)
+road = Road(pos_1=[0, 0], pos_2=[-60, 40], name="road")
+settlement_1 = Settlement(pos=[5, 0], name="home 1")
+settlement_2 = Settlement(pos=[-60, 45], name="home 1")
+model.add(road, settlement_1, settlement_2)
+model.bake(save=False)
 
 
 if __name__ == '__main__':
-    #model.print
-    model.show()
+    model.create_infrastructure()
+    print(model.infrastructure)
+    #model.show()

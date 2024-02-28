@@ -52,6 +52,7 @@ class Model(PureObject, Query):
 
         self.baked = True
         self.library = {}
+        self.infrastructure = None
         self.measure = Measure(self)
 
     def set_step_size(self, step_size):
@@ -135,13 +136,11 @@ class Model(PureObject, Query):
             else:  # Onject not recognized
                 raise ValueError
 
-    @property
-    def infrastructure(self):
+    def create_infrastructure(self):
         if self.baked is True:
-            return Infrastructure(model=self)
+            self.infrastructure = Infrastructure(model=self)
         else:
             print("First, bake the model.")
-            return None
         
     @property
     def society(self):
@@ -157,6 +156,7 @@ class Model(PureObject, Query):
             self.add(agent)
 
     def update(self):
+        self.create_infrastructure()
         step_size = self.step_size
         for id in self.agents:
             agent = self.get(id)
@@ -259,7 +259,8 @@ if __name__ == "__main__":
     agent = Agent()
     agent.id = 0
     model.add(agent)
-    data = model.serialize()
+    #data = model.serialize()
     #model.print()
     #print(model.agents)
+    model.create_infrastructure()
     model.show()
