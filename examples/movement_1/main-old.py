@@ -10,11 +10,6 @@ from piperabm.matter import Containers, Matter
 from piperabm.graphics import Animation
 
 
-id_agent = 0
-id_start = 1
-id_end = 2
-
-
 """ Setup model """
 food = Matter('food', 0.2)
 water = Matter('water', 0.2)
@@ -37,39 +32,37 @@ road = Road(
     roughness=2
 )
 settlement_1 = Settlement(pos=pos_start, name="start")
-settlement_1.id = id_start
 settlement_2 = Settlement(pos=pos_end, name="end")
-settlement_2.id = id_end
 model.add(road, settlement_1, settlement_2)
 model.bake(save=False)
 
 """ Create move action """
 infrastructure = model.infrastructure
-ids = infrastructure.settlements_id
-path = infrastructure.find_path(id_start, id_end)
+nodes = infrastructure.all_nodes(type='settlement')
+index_start, _ = infrastructure.find_nearest_node(pos_start, items=nodes)
+index_end, _ = infrastructure.find_nearest_node(pos_end, items=nodes)
+path = infrastructure.find_path(index_start, index_end)
 action = Move(path)
 
 """ Add agent to model """
 agent = Agent()
-agent.home = id_start
-agent.id = id_agent
+agent.home = index_start
 model.add(agent)
 
 """ Add move action to agent within model """
-agent = model.get(id_agent)
+agents = model.agents
+agent = model.get(agents[0])
 agent.queue.add(action)
 
 """ Run model """
-animation = Animation(path=os.path.dirname(os.path.realpath(__file__)))
-#agent.resources.print()
-#model.show()
+path = os.path.dirname(os.path.realpath(__file__))
+animation = Animation(path)
+#agent.resources.print
 for _ in range(80):
-#for _ in range(10):
     fig = model.fig()
     animation.add_figure(fig)
     model.update()
-    #print(agent.pos)
-#agent.resources.print()
+#agent.resources.print
 animation.render(framerate=15)
-#print(agent.pos)
+
 #model.show()

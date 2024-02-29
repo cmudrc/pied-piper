@@ -11,6 +11,4 @@ model.bake(save=False)
 
 
 if __name__ == '__main__':
-    model.create_infrastructure()
-    print(model.infrastructure)
-    #model.show()
+    model.show()

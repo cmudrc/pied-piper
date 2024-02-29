@@ -20,10 +20,10 @@ class ActionQueue(PureObject):
             action.queue = self  # Binding
             self.library.append(action)
 
-    def update(self):
+    def update(self, duration):
         if len(self.library) > 0:
             last_move = self.library[-1]
-            last_move.update()
+            last_move.update(duration)
 
     def serialize(self):
         dictionary = {}

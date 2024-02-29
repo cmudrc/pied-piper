@@ -47,6 +47,7 @@ class Grammar:
             if i == len(rules):
                 #print("Baking is done")
                 self.model.baked = True
+                self.model.create_infrastructure()
                 if self.save is True:
                     self.model.save_initial()
                 break  # exit if all grammars are applied without any changes

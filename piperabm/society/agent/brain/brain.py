@@ -1,36 +1,25 @@
-from piperabm.agent.brain.decision import MovementDecision, TradingDecision
-from piperabm.object import Object
+from piperabm.object import PureObject
 
 
-class Brain(Object):
+class Brain(PureObject):
 
-    def __init__(self):
-        self.decisions = {
-            'movement': MovementDecision(),
-            'trading': TradingDecision()
-        }
-        self.observation = None
+    def __init__(self, agent):
+        self.agent = agent
 
-    def observe(self, agent_index, environment, society) -> dict:
-        """
-        Agent observe itself, environment and the society
-        """
-        observation = {
-            'index': agent_index,
-            'map': environment.current.to_path_graph(),
-            'self': None,
-            'others': None,
-        }
-        self.observation = observation
-        return observation
+    def observe(self):
+        self.id = self.agent.id
+        self.current_node = self.agent.current_node
+        self.model = self.agent.model
+        self.infrastructure = self.model.infrastructure
+        self.path = self.infrastructure.path
+        self.society = self.model.society
+
+    def possible_destinations(self):
+        return self.path.destinations(self.current_node, type='all')
     
-    def decide(self):
-        actions = []
-        actions.append(self.decisions['movement'].decide(self.observation))
-        actions.append(self.decisions['trading'].decide(self.observation))
-        return actions
+    def best_destination(self):
+        destinations = self.possible_destinations()
 
 
 if __name__ == "__main__":
-    brain = Brain()
-    print(brain)
+    pass

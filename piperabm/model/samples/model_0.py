@@ -9,7 +9,4 @@ model.bake(save=False)
 
 
 if __name__ == '__main__':
-    print(model.infrastructure)
-    pass
-    #model.print
-    #model.show()
+    model.show()

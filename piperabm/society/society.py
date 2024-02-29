@@ -15,16 +15,16 @@ class Society:
         """
         #all_nodes_alive = self.model.all_alive_agents
         #all_nodes_dead = self.model.all_dead_agents
-        all_nodes = self.model.agents
-        all_edges = self.model.relationships
-        for item_index in all_nodes:
-            self.G.add_node(item_index)
-        for item_index in all_edges:
-            item = self.model.get(item_index)
-            self.G.add_edge(item.index_1, item.index_2)
+        nodes_id = self.model.agents
+        edges_id = self.model.relationships
+        for id in nodes_id:
+            self.G.add_node(id)
+        for id in edges_id:
+            object = self.model.get(id)
+            self.G.add_edge(object.id_1, object.id_2)
 
-    def get(self, index: int):
-        return self.model.get(index)
+    def get(self, id: int):
+        return self.model.get(id)
     
     @property
     def agents(self):

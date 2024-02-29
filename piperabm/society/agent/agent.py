@@ -5,7 +5,7 @@ from piperabm.matter import Containers, Matters
 from piperabm.time import DeltaTime
 from piperabm.transportation import Transportation
 from piperabm.actions import ActionQueue
-#from piperabm.agent.brain import Brain
+from piperabm.society.agent.brain import Brain
 from piperabm.society.agent.config import *
 
 
@@ -29,8 +29,7 @@ class Agent(PureObject):
         self.model = None
 
         """ Decision making """
-        #self.brain = Brain()
-        self.brain = None
+        self.brain = Brain(agent=self)
 
         """ Identity """
         self.id = None
@@ -128,7 +127,7 @@ class Agent(PureObject):
             """ Consume resources """
             fuels = self.fuels_rate_idle * duration.total_seconds()
             self.resources - fuels
-            self.queue.update()
+            self.queue.update(duration)
             """ How long it has been out of home? """
             if self.is_home():
                 self.time_outside = DeltaTime(seconds=0)
@@ -137,7 +136,7 @@ class Agent(PureObject):
 
         """ Decide """
         if self.alive is True:
-            #self.brain.observe(self)
+            #self.brain.observe()
             #actions = self.brain.decide()
             actions = []
             self.queue.add(actions)

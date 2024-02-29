@@ -19,7 +19,8 @@ class Infrastructure:
         # Create infrastructure
         self.G = nx.Graph()
         for id in self.model.infrastructure_nodes:
-            self.add_node(id)
+            object = self.model.get(id)
+            self.add_node(id, type=object.type)
         for id in self.model.infrastructure_edges:
             object = self.get(id)
             self.add_edge(
@@ -38,35 +39,18 @@ class Infrastructure:
         Get object
         """
         return self.model.get(id)
-    '''
-    @property
-    def proximity_radius(self):
-        return self.model.proximity_radius
-    '''
-    def add_node(self, id: int):
+
+    def add_node(self, id: int, type):
         """
         Add a node based on its id
         """
-        self.G.add_node(id)
+        self.G.add_node(id, type=type)
 
     def add_edge(self, id_1: int, id_2: int, id: int, adjusted_length: float = None):
         """
         Add an edge based on its id_1 and id_2 (both ends), together with its id
         """
         self.G.add_edge(id_1, id_2, id=id, adjusted_length=adjusted_length)
-    '''
-    def remove_node(self, id: int):
-        """
-        Remove a node based on its id
-        """
-        self.G.remove_node(id)
-
-    def remove_edge(self, id_1: int, id_2: int):
-        """
-        Remove an edge based on its id_1 and id_2 (both ends)
-        """
-        self.G.remove_edge(id_1, id_2)
-    '''
 
     def edge_id(self, id_1: int, id_2: int):
         """
@@ -115,6 +99,12 @@ class Infrastructure:
         """
         return list(self.G.nodes())
     
+    def node_type(self, id):
+        """
+        Return node type
+        """
+        return self.G.nodes[id]['type']
+    
     def filter_type(self, type, nodes_id=None):
         """
         Filter a list of nodes id based on their type
@@ -123,8 +113,7 @@ class Infrastructure:
         if nodes_id is None:  # All nodes
             nodes_id = self.nodes_id
         for node_id in nodes_id:
-            node_object = self.get(node_id)
-            if node_object.type == type:
+            if self.node_type(node_id) == type:
                 result.append(node_id)
         return result
     
@@ -134,11 +123,24 @@ class Infrastructure:
         Return a list of all settlement nodes id
         """
         return self.filter_type(type='settlement')
+    
+    @property
+    def markets_id(self):
+        """
+        Return a list of all market nodes id
+        """
+        return self.filter_type(type='market')
+    
+    @property
+    def nonjunctions_id(self):
+        """
+        Return a list of all non-junction nodes id
+        """
+        nodes_id = self.nodes_id
+        settlements_id = self.filter_type(type='settlement', nodes_id=nodes_id)
+        markets_id = self.filter_type(type='market', nodes_id=nodes_id)
+        return settlements_id + markets_id
 
-    '''
-    def edges_from_node(self, node_id):
-        return list(self.G.edges(node_id, data=True))
-    '''
     def find_path(self, id_1, id_2):
         """
         Find the shortest path between id_1 and id_2
@@ -156,14 +158,6 @@ class Infrastructure:
                 weight="adjusted_length"
             )
         return path
-    
-    '''
-    def find_nearest_node(self, pos: list, items: list):
-        """
-        Find the nearst node index to the *pos*
-        """
-        return self.model.find_nearest_node(pos, items)
-    '''
 
     def create_paths(self):
         """
@@ -233,25 +227,7 @@ class Infrastructure:
     def show(self):
         graphics = Graphics(infrastructure=self)
         graphics.show()
-    '''
-    def serialize(self):
-        result = {}
-        nodes = self.nodes_id
-        for id_1 in nodes:
-            result[id_1] = {}
-            for id_2 in nodes:
-                edge_id = self.edge_id(id_1, id_2)
-                if edge_id is not None:
-                    result[id_1][id_2] = edge_id
-        return result
-    
-    def deserialize(self, data):
-        self.G = nx.Graph()
-        for id_1 in data:
-            self.add_node(id_1)
-            for id_2 in data[id_1]:
-                self.add_edge(id_1, id_2, data[id_1][id_2])
-    '''
+
     def __str__(self):
         return self.G.__str__()
 

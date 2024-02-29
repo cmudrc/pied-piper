@@ -13,7 +13,7 @@ from piperabm.society.deserialize import society_deserialize
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.matter import Containers
-from piperabm.measure import Measure
+#from piperabm.measure import Measure
 from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.tools.stats import gini
 #from piperabm.config.settings import *
@@ -49,11 +49,11 @@ class Model(PureObject, Query):
         self.average_resources = average_resources
         self.name = name
         self.path = path
-
         self.baked = True
         self.library = {}
         self.infrastructure = None
-        self.measure = Measure(self)
+        self.society = None
+        #self.measure = Measure(self)
 
     def set_step_size(self, step_size):
         """
@@ -90,6 +90,9 @@ class Model(PureObject, Query):
         """
         Add new society object to model
         """
+        if self.baked is False:
+            print("First, bake the model.")
+            raise ValueError
         if object.category == "node":
             """ Home """
             settlements = self.settlement_nodes
@@ -137,26 +140,37 @@ class Model(PureObject, Query):
                 raise ValueError
 
     def create_infrastructure(self):
+        """
+        Create infrastructure graph
+        """
         if self.baked is True:
             self.infrastructure = Infrastructure(model=self)
         else:
             print("First, bake the model.")
         
-    @property
-    def society(self):
+    def create_society(self):
+        """
+        Create society graph
+        """
         if self.baked is True:
-            return Society(model=self)
+            self.society = Society(model=self)
         else:
             print("First, bake the model.")
-            return None
         
     def generate_agents(self, num: int = 1):
+        """
+        Generate agents
+        """
         for _ in range(num):
             agent = Agent()
             self.add(agent)
 
     def update(self):
+        """
+        Update model for single step in time
+        """
         self.create_infrastructure()
+        self.create_society()
         step_size = self.step_size
         for id in self.agents:
             agent = self.get(id)
@@ -164,6 +178,9 @@ class Model(PureObject, Query):
         self.current_date += step_size
 
     def run(self, n: int = 1, report=True):
+        """
+        Update model for multiple steps in time
+        """
         for i in range(n):
             #if report is True:
             #    print(f"Progress: {i / n * 100:.1f}% complete")
@@ -182,6 +199,9 @@ class Model(PureObject, Query):
             print("Already baked.")
 
     def save_initial(self):
+        """
+        Save model as initial state
+        """
         data = self.serialize()
         filename = self.name + "_" + "initial"
         jsh.save(data, self.path, filename)
@@ -189,9 +209,22 @@ class Model(PureObject, Query):
         #print(filename + " saved.")
 
     def load_initial(self):
+        """
+        Load model as initial state
+        """
         filename = self.name + "_" + "initial"
         data = jsh.load(self.path, filename)
         self.deserialize(data)
+
+    def fig(self):
+        result = None
+        if self.baked is True:
+            graphics = Graphics(
+                infrastructure=self.infrastructure,
+                society=self.society
+            )
+            result = graphics.fig()
+        return result
 
     def show(self):
         """
@@ -262,5 +295,5 @@ if __name__ == "__main__":
     #data = model.serialize()
     #model.print()
     #print(model.agents)
-    model.create_infrastructure()
+    #model.create_infrastructure()
     model.show()

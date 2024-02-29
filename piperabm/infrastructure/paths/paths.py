@@ -6,14 +6,13 @@ class Paths:
     def __init__(self, infrastructure):
         self.G = nx.DiGraph()
         self.infrastructure = infrastructure
-        self.model = self.infrastructure.model
         self.create()
 
     def get(self, id: int):
         """
         Get an item object based on its index from environment library
         """
-        return self.model.get(id)
+        return self.infrastructure.get(id)
 
     def add_edge(self, path):
         """
@@ -23,14 +22,20 @@ class Paths:
             path[0],
             path[-1],
             path=path,
-            #adjusted_length=self.path_to_total_adjusted_length(path)
         )
+
+    @property
+    def nodes(self):
+        return self.infrastructure.nonjunctions_id
+    
+    def node_type(self, id):
+        return self.infrastructure.node_type(id)
 
     def create(self):
         """
         Create graph *G* from *self.infrastructure*
         """
-        nodes = self.model.settlement_nodes
+        nodes = self.nodes
         for id_start in nodes:
             for id_end in nodes:
                 if id_start != id_end:
@@ -40,32 +45,25 @@ class Paths:
     def path(self, id_start, id_end):
         edge = self.G.edges[id_start, id_end]
         return edge['path']
-    '''
-    def path_to_pos(self, path):
+    
+    def destinations(self, id_start, type='all'):
         """
-        Covert *path* to list of positions
+        Return id of nodes that can be id_end of an edge starting from id_start
         """
-        positions = []
-        for node_index in path:
-            node_item = self.get(node_index)
-            pos = node_item.pos
-            positions.append(pos)
-        return positions
-    '''
-    '''
-    def path_to_total_adjusted_length(self, path):
-        """
-        Convert *path* to total adjusted length
-        """
-        adjusted_lengths = []
-        for i in range(len(path)-1):
-            index_start = path[i]
-            index_end = path[i+1]
-            edge = self.infrastructure.G[index_start][index_end]
-            adjusted_length = edge['adjusted_length']
-            adjusted_lengths.append(adjusted_length)
-        return sum(adjusted_lengths)
-    '''
+        #result = list(self.G.predecessors(id_start))
+        if type == 'all':
+            nodes = self.nodes
+            nodes.remove(id_start)
+            result = nodes
+        else:
+            nodes = self.destinations(id_start, type='all')
+            filtered_nodes = []
+            for id in nodes:
+                if self.node_type(id) == type:
+                    filtered_nodes.append(id)
+            result = filtered_nodes
+        return result
+
     def __str__(self):
         return self.G.__str__()
 
@@ -77,4 +75,3 @@ if __name__ == "__main__":
     infrastructure = model.infrastructure
     paths = infrastructure.paths
     print(paths)
-

@@ -71,7 +71,14 @@ class Road(PureObject):
         """
         Calculate adjusted length based on physical length, roughness, and degradation factor
         """
-        return self.length * self.roughness * (1 - self.degradation.factor)
+        return self.length * self.adjustment_factor
+    
+    @property
+    def adjustment_factor(self):
+        """
+        Calculate adjustment factor based on roughness and degradation factor
+        """
+        return self.roughness * (1 - self.degradation.factor)
 
     def serialize(self) -> dict:
         dictionary = {}

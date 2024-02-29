@@ -12,14 +12,13 @@ class Track(PureObject):
 
     def __init__(
         self,
-        index_start: list = None,
-        index_end: list = None
+        id_start: list = None,
+        id_end: list = None
     ):
         super().__init__()
-        self.index_start = index_start
-        self.index_end = index_end
+        self.id_start = id_start
+        self.id_end = id_end
         self.progress = 0
-        self.index = None  # The link index
         self.action = None  # Binding
 
     @property
@@ -33,15 +32,26 @@ class Track(PureObject):
     @property
     def model(self):
         return self.agent.model
+    
+    @property
+    def infrastructure(self):
+        return self.model.infrastructure
+    
+    @property
+    def id(self):
+        """
+        Return edge id
+        """
+        return self.infrastructure.edge_id(self.id_start, self.id_end)
 
     @property
     def pos_start(self):
-        item = self.model.get(self.index_start)
+        item = self.model.get(self.id_start)
         return item.pos
 
     @property
     def pos_end(self):
-        item = self.model.get(self.index_end)
+        item = self.model.get(self.id_end)
         return item.pos
     
     @property
@@ -61,19 +71,25 @@ class Track(PureObject):
 
     @property
     def length_real(self):
-        return ds.point_to_point(
-            point_1=self.pos_start,
-            point_2=self.pos_end
-        )
+        object = self.model.get(self.id)
+        return object.length
+        #return ds.point_to_point(
+        #    point_1=self.pos_start,
+        #    point_2=self.pos_end
+        #)
     
     @property
     def length_adjusted(self):
-        infrastructure = self.model.infrastructure
-        return infrastructure.adjusted_length(self.index_start, self.index_end)
-
+        infrastructure = self.infrastructure
+        return infrastructure.adjusted_length(self.id_start, self.id_end)
+        #object = self.model.get(self.id)
+        #return object.adjusted_length
+    
     @property
     def adjustment_factor(self):
-        return self.length_adjusted / self.length_real
+        object = self.model.get(self.id)
+        return object.adjustment_factor
+        #return self.length_adjusted / self.length_real
 
     @property
     def vector(self):
@@ -124,8 +140,8 @@ class Track(PureObject):
 
             # Update infrastructure after finishing track
             if self.done is True:
-                edge_index = self.model.infrastructure.find_edge_index(self.index_start, self.index_end)
-                edge = self.model.get(edge_index)
+                #edge_index = self.model.infrastructure.find_edge_index(self.index_start, self.index_end)
+                edge = self.model.get(self.id)
                 edge.degradation.add(self.action.usage)
 
         return excess_delta_time

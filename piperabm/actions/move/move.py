@@ -62,11 +62,11 @@ class Move(PureObject):
                 break
         return result
     
-    def update(self):
+    def update(self, duration):
         """
         Update status of action
         """
-        delta_time = self.model.step_size
+        delta_time = duration
         while delta_time.total_seconds() > 0:
             track = self.active_track
             if track is not None:
