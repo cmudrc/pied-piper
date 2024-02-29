@@ -4,33 +4,30 @@ from piperabm.model import Model
 from piperabm.infrastructure import Road, Settlement
 from piperabm.society import Agent
 from piperabm.actions import Move
-from piperabm.time import Date, DeltaTime
 from piperabm.matter import Containers, Matter
-#from piperabm.society.agent.samples import agent_0 as agent
+from piperabm.time import Date, DeltaTime
 from piperabm.graphics import Animation
 
 
+""" Setup model """
 id_agent = 0
 id_start = 1
 id_end = 2
-
-
-""" Setup model """
-food = Matter('food', 0.2)
-water = Matter('water', 0.2)
-energy = Matter('energy', 0.2)
-average_resources = Containers(food, water, energy)
+pos_start = [0, 0]
+pos_end = [5000, 0]
+average_resources = Containers(
+    Matter('food', 0.2),
+    Matter('water', 0.2),
+    Matter('energy', 0.2)
+)
 model = Model(
     proximity_radius=1,  # Meters
     step_size=DeltaTime(seconds=100),  # Seconds
     current_date=Date(2000, 1, 1),
     average_income=100,  # Dollars per month
     average_resources=average_resources,
-    gini_index=0,
     name="Sample Model"
 )
-pos_start = [0, 0]
-pos_end = [5000, 0]
 road = Road(
     pos_1=pos_start,
     pos_2=pos_end,
@@ -45,7 +42,6 @@ model.bake(save=False)
 
 """ Create move action """
 infrastructure = model.infrastructure
-ids = infrastructure.settlements_id
 path = infrastructure.find_path(id_start, id_end)
 action = Move(path)
 
@@ -61,15 +57,8 @@ agent.queue.add(action)
 
 """ Run model """
 animation = Animation(path=os.path.dirname(os.path.realpath(__file__)))
-#agent.resources.print()
-#model.show()
 for _ in range(80):
-#for _ in range(10):
     fig = model.fig()
     animation.add_figure(fig)
     model.update()
-    #print(agent.pos)
-#agent.resources.print()
 animation.render(framerate=15)
-#print(agent.pos)
-#model.show()

@@ -78,14 +78,6 @@ class Agent(PureObject):
                 self.alive = False
                 self.death_reasons = resources_zero
         return self.alive
-    
-    @property
-    def death_reason(self):
-        result = None
-        resources_zero = self.resources.check_empty(RESOURCES_VITAL)
-        if len(resources_zero) > 0:  # Died
-            result = resources_zero[0]
-        return result
 
     def is_home(self) -> bool:
         """
@@ -121,6 +113,7 @@ class Agent(PureObject):
         """
         Update agent
         """
+        self.check_alive()
         if self.alive is True:
             """ Income """
             self.balance += self.income * duration.total_seconds()

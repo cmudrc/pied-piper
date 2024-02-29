@@ -1,5 +1,5 @@
 from piperabm.object import PureObject
-from piperabm.actions.move.track import Track
+from piperabm.actions.movement.track import Track
 
 
 class Move(PureObject):
@@ -73,6 +73,7 @@ class Move(PureObject):
                 delta_time = track.update(delta_time, self.transportation)
             else:
                 break
+        return delta_time
 
     def serialize(self) -> dict:
         dictionary = {}
@@ -97,4 +98,4 @@ class Move(PureObject):
 
 if __name__ == '__main__':
     move = Move()
-    move.print
+    move.print()
