@@ -3,7 +3,7 @@ import os
 from piperabm.model import Model
 from piperabm.infrastructure import Road, Settlement
 from piperabm.society import Agent
-from piperabm.actions import Move
+from piperabm.actions.movement import Move
 from piperabm.matter import Containers, Matter
 from piperabm.time import Date, DeltaTime
 from piperabm.graphics import Animation

@@ -1,5 +1,5 @@
 from piperabm.object import PureObject
-from piperabm.actions import Move
+from piperabm.actions.movement import Move, Stay
 
 
 class ActionQueue(PureObject):
@@ -19,6 +19,18 @@ class ActionQueue(PureObject):
             action = actions
             action.queue = self  # Binding
             self.library.append(action)
+
+    @property
+    def undone(self):
+        """
+        Find undone actions from end
+        """
+        undone_actions = []
+        for action in reversed(self.library):
+            if action.done:
+                break  # Stop the iteration if an action is done, as per the list's structure.
+            undone_actions.append(action)
+        return list(reversed(undone_actions))
 
     def update(self, duration):
         if len(self.library) > 0:
@@ -40,10 +52,12 @@ class ActionQueue(PureObject):
         for action_dictionary in library_serialized:
             if action_dictionary['type'] == 'move':
                 action = Move()
+            elif action_dictionary['type'] == 'stay':
+                action = Stay()
             action.queue = self  # Binding
             action.deserialize(action_dictionary)
     
 
 if __name__ == "__main__":
     queue = ActionQueue()
-    queue.print
+    queue.print()
