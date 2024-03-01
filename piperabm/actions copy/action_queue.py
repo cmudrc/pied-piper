@@ -11,18 +11,17 @@ class ActionQueue(PureObject):
         self.library = []
         self.agent = None  # Binding
 
-    def add(self, *actions):
+    def add(self, actions):
         """
         Add new action(s) to the queue
         """
-        for element in actions:
-            if isinstance(element, list):
-                for action in element:
-                    self.add(action)
-            else:
-                action = element
-                action.queue = self  # Binding
-                self.library.append(action)
+        if isinstance(actions, list):
+            for action in actions:
+                self.add(action)
+        else:
+            action = actions
+            action.queue = self  # Binding
+            self.library.append(action)
 
     @property
     def undones(self):
@@ -49,10 +48,9 @@ class ActionQueue(PureObject):
         return result
 
     def update(self, duration):
-        for action in self.undones:
-            duration = action.update(duration)
-            if duration.total_seconds() == 0:
-                break
+        if len(self.library) > 0:
+            last_move = self.library[-1]
+            last_move.update(duration)
 
     def serialize(self):
         dictionary = {}

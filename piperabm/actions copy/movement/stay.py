@@ -18,13 +18,11 @@ class Stay(PureObject):
         Update status of action
         """
         if duration >= self.remaining:
-            duration -= self.remaining
             self.remaining = DeltaTime(seconds=0)
             self.done = True
         else:
             self.remaining -= duration
-            duration = DeltaTime(seconds=0)
-        return duration
+        return self.remaining
     
     def serialize(self) -> dict:
         dictionary = {}

@@ -66,15 +66,15 @@ class Move(PureObject):
         """
         Update status of action
         """
-        excess_delta_time = duration
-        while excess_delta_time.total_seconds() > 0:
+        delta_time = duration
+        while delta_time.total_seconds() > 0:
             track = self.active_track
             if track is not None:
-                excess_delta_time = track.update(excess_delta_time, self.transportation)
+                delta_time = track.update(delta_time, self.transportation)
             else:
                 break
-            #print(excess_delta_time.total_seconds())
-        return excess_delta_time
+            print(delta_time.total_seconds())
+        return delta_time
 
     def serialize(self) -> dict:
         dictionary = {}

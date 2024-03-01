@@ -41,8 +41,7 @@ road_4 = Road(
     pos_2=[100, -180]
 )
 model.add(road_1, road_2, road_3, road_4)
-
-model.apply_grammars()
+model.bake(save=False)
 
 
 if __name__ == '__main__':
