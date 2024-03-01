@@ -92,6 +92,16 @@ class Infrastructure:
             result.append(id)
         return result
     
+    def adjusted_length(self, id_1: int, id_2: int):
+        """
+        Get edge id based on its id_1 and id_2 (both ends)
+        """
+        result = None
+        if self.G.has_edge(id_1, id_2):
+            edge = self.G.edges[id_1, id_2]
+            result = edge['adjusted_length']
+        return result
+
     @property
     def nodes_id(self):
         """

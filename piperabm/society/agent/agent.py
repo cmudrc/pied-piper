@@ -92,28 +92,19 @@ class Agent(PureObject):
             else:
                 result = False
         return result
+    
     '''
     def utility(self, resource_name):
         return self.resources(name=resource_name)
-    
-    @property
-    def current_node(self):
-        """
-        Return current node id based on current pos
-        """
-        result = None
-        infrastructure = self.model.infrastructure_nodes
-        items = infrastructure.all_nodes()
-        node_index, distance = infrastructure.find_nearest_node(self.pos, items)
-        if distance <= self.model.proximity_radius:
-            result = node_index
-        return result
     '''
+
     def update(self, duration: DeltaTime) -> None:
         """
         Update agent
         """
+        """ Check being alive """
         self.check_alive()
+        """ Update assets """
         if self.alive is True:
             """ Income """
             self.balance += self.income * duration.total_seconds()
@@ -126,13 +117,9 @@ class Agent(PureObject):
                 self.time_outside = DeltaTime(seconds=0)
             else:
                 self.time_outside += duration
-
         """ Decide """
         if self.alive is True:
-            #self.brain.observe()
-            #actions = self.brain.decide()
-            actions = []
-            self.queue.add(actions)
+            self.brain.decide()
 
     def serialize(self) -> dict:
         dictionary = {}

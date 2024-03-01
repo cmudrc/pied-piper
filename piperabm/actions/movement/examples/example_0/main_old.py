@@ -10,12 +10,7 @@ id_start = 1
 id_end = 2
 model.set_step_size(DeltaTime(seconds=1))
 
-
-""" Add agent to model """
-agent = Agent()
-agent.home = id_start
-agent.id = id_agent
-
+""" Create movement actions """
 infrastructure = model.infrastructure
 paths = infrastructure.paths
 action_1 = Stay(duration=DeltaTime(seconds=5))
@@ -24,9 +19,16 @@ action_2 = Move(path)
 action_3 = Stay(duration=DeltaTime(seconds=5))
 path = paths.path(id_end, id_start)
 action_4 = Move(path)
-agent.queue.add(action_1, action_2, action_3, action_4)
 
+""" Add agent to model """
+agent = Agent()
+agent.home = id_start
+agent.id = id_agent
 model.add(agent)
+
+""" Add move action to agent within model """
+agent = model.get(id_agent)
+agent.queue.add(action_1, action_2, action_3, action_4)
 
 
 if __name__ == "__main__":

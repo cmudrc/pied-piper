@@ -22,7 +22,28 @@ class Paths:
             path[0],
             path[-1],
             path=path,
+            adjusted_length=self.calculate_adjusted_length(path),
         )
+
+    def calculate_adjusted_length(self, path):
+        """
+        Total adjusted_length of path
+        """
+        total = 0
+        for i in range(1, len(path)):
+            segment = [path[i-1], path[i]]
+            total += self.infrastructure.adjusted_length(*segment)
+        return total
+    
+    def adjusted_length(self, id_start: int, id_end: int):
+        """
+        Get edge id based on its id_start and id_end (both ends)
+        """
+        result = None
+        if self.G.has_edge(id_start, id_end):
+            edge = self.G.edges[id_start, id_end]
+            result = edge['adjusted_length']
+        return result
 
     @property
     def nodes(self):
