@@ -43,6 +43,11 @@ class Move(PureObject):
         return self.agent.transportation
     
     @property
+    def destination(self):
+        last_track = self.tracks[-1]
+        return last_track.id_end
+    
+    @property
     def active_track(self):
         result = None
         for track in self.tracks:
@@ -66,12 +71,14 @@ class Move(PureObject):
         """
         Update status of action
         """
+        self.agent.current_node = None
         excess_delta_time = duration
         while excess_delta_time.total_seconds() > 0:
             track = self.active_track
             if track is not None:
                 excess_delta_time = track.update(excess_delta_time, self.transportation)
-            else:
+            else: # Action ended
+                self.agent.current_node = self.destination
                 break
             #print(excess_delta_time.total_seconds())
         return excess_delta_time

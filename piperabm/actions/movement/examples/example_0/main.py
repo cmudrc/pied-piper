@@ -36,4 +36,3 @@ if __name__ == "__main__":
     print(agent.pos)
     model.run(n=140)
     print(agent.pos)
-    #print(len(agent.queue.undones))

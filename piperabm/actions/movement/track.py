@@ -143,6 +143,7 @@ class Track(PureObject):
                 #edge_index = self.model.infrastructure.find_edge_index(self.index_start, self.index_end)
                 edge = self.model.get(self.id)
                 edge.degradation.add(self.action.usage)
+                #self.agent.current_node = self.id_end
 
         return excess_delta_time
 
