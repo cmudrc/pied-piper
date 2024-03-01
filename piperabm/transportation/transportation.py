@@ -14,9 +14,9 @@ class Transportation(PureObject):
     def __init__(
             self,
             name: str = None,
-            speed: (int, float) = SYMBOLS['inf'],
+            speed: float = SYMBOLS['inf'],
             fuels_rate: Matters = deepcopy(default_fuel_rate),
-            wear: (int, float) = 1,
+            wear: float = 1,
     ):
         self.name = name
         self.speed = speed

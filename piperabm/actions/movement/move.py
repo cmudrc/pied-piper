@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.actions.movement.track import Track
+from piperabm.time import DeltaTime
 
 
 class Move(PureObject):
@@ -67,6 +68,16 @@ class Move(PureObject):
                 break
         return result
     
+    @property
+    def remaining_time(self):
+        """
+        Estimate the remaining time to complete action
+        """
+        remainings = []
+        for track in self.tracks:
+            remainings.append(track.remaining_time)
+        return sum(remainings, start=DeltaTime(seconds=0))
+
     def update(self, duration):
         """
         Update status of action

@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.actions.movement import Move, Stay
+from piperabm.time import DeltaTime
 
 
 class ActionQueue(PureObject):
@@ -47,6 +48,18 @@ class ActionQueue(PureObject):
         else:
             result = True
         return result
+    
+    @property
+    def remaining_time(self):
+        """
+        Estimate the remaining time to complete undone tasks
+        """
+        remainings = []
+        undone_actions = self.undone
+        for action in undone_actions:
+            remaining = action.remaining_time
+            remainings.append(remaining)
+        return sum(remainings, start=DeltaTime(seconds=0))
 
     def update(self, duration):
         for action in self.undones:

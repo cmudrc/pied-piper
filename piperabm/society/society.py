@@ -86,6 +86,14 @@ class Society:
     def alive_agents(self):
         return self.filter_alive(alive=True)
     
+    def agents_in(self, id: int):
+        result = []
+        for agent_id in self.alive_agents:
+            object = self.get(agent_id)
+            if object.current_node == id:
+                result.append(agent_id)
+        return result
+    
     def node_alive(self, id: int):
         """
         Return node type

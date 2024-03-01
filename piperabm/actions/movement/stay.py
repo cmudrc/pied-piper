@@ -13,6 +13,13 @@ class Stay(PureObject):
         self.remaining = deepcopy(duration)
         self.done = False
 
+    @property
+    def remaining_time(self):
+        """
+        Estimate the remaining time to complete action
+        """
+        return self.remaining    
+
     def update(self, duration: DeltaTime):
         """
         Update status of action

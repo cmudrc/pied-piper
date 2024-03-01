@@ -73,23 +73,16 @@ class Track(PureObject):
     def length_real(self):
         object = self.model.get(self.id)
         return object.length
-        #return ds.point_to_point(
-        #    point_1=self.pos_start,
-        #    point_2=self.pos_end
-        #)
     
     @property
     def length_adjusted(self):
         infrastructure = self.infrastructure
         return infrastructure.adjusted_length(self.id_start, self.id_end)
-        #object = self.model.get(self.id)
-        #return object.adjusted_length
     
     @property
     def adjustment_factor(self):
         object = self.model.get(self.id)
         return object.adjustment_factor
-        #return self.length_adjusted / self.length_real
 
     @property
     def vector(self):
@@ -104,6 +97,13 @@ class Track(PureObject):
         Unit vector showing the direction of movement
         """
         return self.vector / self.length_real
+    
+    @property
+    def time_remaining(self):
+        pos_current = self.agent.pos
+        remaining_length = self.length_real_remaining(pos_current)
+        remaining_length_adjusted = remaining_length * self.adjustment_factor
+        return transportation.duration_by_length(remaining_length_adjusted)
 
     def length_real_remaining(self, pos):
         return ds.point_to_point(pos, self.pos_end)

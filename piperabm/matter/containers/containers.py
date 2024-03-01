@@ -19,7 +19,7 @@ class Containers(PureObject):
             if isinstance(arg, (Container, Matter)):
                 self.add(arg)
 
-    def add(self, item: (Container, Matter)):
+    def add(self, item):
         """
         Add new resource to the library
         """
@@ -268,4 +268,4 @@ if __name__ == '__main__':
     from piperabm.matter.container.samples import container_2 as energy
     
     containers = Containers(food, water, energy)
-    containers.print
+    containers.print()
