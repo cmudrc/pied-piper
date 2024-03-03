@@ -185,8 +185,8 @@ class Track(PureObject):
 
     def serialize(self):
         dictionary = {}
-        dictionary['index_start'] = self.index_start
-        dictionary['index_end'] = self.index_end
+        dictionary['id_start'] = self.id_start
+        dictionary['id_end'] = self.id_end
         dictionary['progress'] = self.progress
         dictionary['type'] = self.type
         return dictionary
@@ -194,8 +194,8 @@ class Track(PureObject):
     def deserialize(self, dictionary: dict) -> None:
         if dictionary['type'] != self.type:
             raise ValueError
-        self.index_start = dictionary['index_start']
-        self.index_end = dictionary['index_end']
+        self.id_start = dictionary['id_start']
+        self.id_end = dictionary['id_end']
         self.progress = dictionary['progress']
 
 

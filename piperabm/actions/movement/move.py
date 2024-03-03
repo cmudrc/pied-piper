@@ -111,7 +111,7 @@ class Move(PureObject):
         for track_serialized in tracks_serialized:
             track = Track()
             track.deserialize(track_serialized)
-            track.queue = self.queue
+            track.action = self  # Binding
             self.tracks.append(track)
 
 

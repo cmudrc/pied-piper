@@ -65,13 +65,20 @@ class PureObject:
         delta = Delta.create(old, new)
         return delta
 
-    def apply_delta(self, delta: dict) -> None:
+    def apply_delta_to_object(self, delta: dict) -> None:
         """
         Apply the *delta* to the *self*
         """
         dictionary = self.serialize()
         dictionary_new = Delta.apply(dictionary, delta)
         self.deserialize(dictionary_new)
+
+    def apply_deltas_to_object(self, deltas: list) -> None:
+        """
+        Apply the *delta* to the *self*
+        """
+        for delta in deltas:
+            self.apply_delta(delta)
 
 
 if __name__ == '__main__':
@@ -88,9 +95,9 @@ if __name__ == '__main__':
         def deserialize(self, dictionary: dict) -> None:
             self.value = dictionary['value']
 
-    s_1 = Sample(value=1)
-    s_2 = Sample(value=2)
+    s_1 = Sample(value=3)
+    s_2 = Sample(value=5)
     delta = s_2.create_delta(s_1)
     print(delta)
     s_1.apply_delta(delta)
-    s_1.print
+    s_1.print()

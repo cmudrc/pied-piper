@@ -32,8 +32,8 @@ class Agent(PureObject):
         self.brain = Brain(agent=self)
 
         """ Identity """
-        self.id = None
         self.name = name
+        self.id = None
         self.home = None
         self.current_node = None
         self.time_outside = DeltaTime(seconds=0)
@@ -125,16 +125,18 @@ class Agent(PureObject):
         dictionary = {}
         dictionary['name'] = self.name
         dictionary['id'] = self.id
-        dictionary['alive'] = self.alive
-        dictionary['death_reasons'] = self.death_reasons
         dictionary['home'] = self.home
+        dictionary['current_node'] = self.current_node
         dictionary['time_outside'] = self.time_outside.total_seconds()
+        dictionary['socioeconomic_status'] = self.socioeconomic_status
         dictionary['transportation'] = self.transportation.serialize()
         dictionary['pos'] = self.pos
         dictionary['queue'] = self.queue.serialize()
-        dictionary['resources'] = self.resources.serialize()
         dictionary['fuels_rate_idle'] = self.fuels_rate_idle.serialize()
+        dictionary['resources'] = self.resources.serialize()
         dictionary['balance'] = self.balance
+        dictionary['alive'] = self.alive
+        dictionary['death_reasons'] = self.death_reasons
         dictionary['type'] = self.type
         dictionary['section'] = self.section
         dictionary['category'] = self.category
@@ -144,21 +146,24 @@ class Agent(PureObject):
         if dictionary['type'] != self.type:
             raise ValueError
         self.name = dictionary['name']
-        self.id = int(dictionary["id"])
-        self.alive = dictionary['alive']
-        self.death_reasons = dictionary['death_reasons']
+        self.id = int(dictionary['id'])
         self.home = dictionary['home']
+        self.current_node = dictionary['current_node']
         self.time_outside = DeltaTime(seconds=dictionary['time_outside'])
+        self.socioeconomic_status = dictionary['socioeconomic_status']
         self.transportation = Transportation()
         self.transportation.deserialize(dictionary['transportation'])
         self.pos = dictionary['pos']
         self.queue = ActionQueue()
         self.queue.deserialize(dictionary['queue'])
-        self.resources = Containers()
-        self.resources.deserialize(dictionary['resources'])
+        self.queue.agent = self
         self.fuels_rate_idle = Matters()
         self.fuels_rate_idle.deserialize(dictionary['fuels_rate_idle'])
+        self.resources = Containers()
+        self.resources.deserialize(dictionary['resources'])
         self.balance = dictionary['balance']
+        self.alive = dictionary['alive']
+        self.death_reasons = dictionary['death_reasons']
 
 
 if __name__ == '__main__':

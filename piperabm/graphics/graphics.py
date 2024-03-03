@@ -12,6 +12,7 @@ class Graphics:
     def __init__(self, infrastructure=None, society=None):
         self.infrastructure = infrastructure
         self.society = society
+        self.font_size = 8
 
     def infrastructure_to_plt(self):
         """
@@ -36,7 +37,6 @@ class Graphics:
             node_size_list.append(size)
             # Label
             node_label_dict[node_index] = item.name
-        font_size = 8 #
 
         edge_color_list = []
         edges_ids = self.infrastructure.edges_ids
@@ -54,7 +54,7 @@ class Graphics:
             node_color=node_color_list,
             node_size=node_size_list,
             labels=node_label_dict,
-            font_size=font_size,
+            font_size=self.font_size,
             edgelist=edges_ids,
             edge_color=edge_color_list
         )

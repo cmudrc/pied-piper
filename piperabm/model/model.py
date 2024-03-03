@@ -15,9 +15,11 @@ from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.matter import Containers
 #from piperabm.measure import Measure
 from piperabm.tools.file_manager import JsonHandler as jsh
+from piperabm.tools.file_manager import JsonFile
 from piperabm.tools.stats import gini
 #from piperabm.config.settings import *
 from piperabm.society.agent.config import *
+from piperabm.object.delta import Delta
 
 
 class Model(PureObject, Query):
@@ -53,6 +55,7 @@ class Model(PureObject, Query):
         self.library = {}
         self.infrastructure = None
         self.society = None
+        self.old = None #
         #self.measure = Measure(self)
 
     def set_step_size(self, step_size):
@@ -165,26 +168,36 @@ class Model(PureObject, Query):
             agent = Agent()
             self.add(agent)
 
-    def update(self):
+    def update(self, save=False):
         """
         Update model for single step in time
         """
         self.create_infrastructure()
         self.create_society()
-        step_size = self.step_size
+        duration = self.step_size
         for id in self.agents:
             agent = self.get(id)
-            agent.update(duration=step_size)
-        self.current_date += step_size
+            agent.update(duration)
+        self.current_date += duration
+        # Delta handling
+        if save is True:
+            # Serialize
+            current = self.serialize()
+            # Create delta
+            delta = Delta.create(self.old, current)
+            # Save delta
+            self.save_delta(delta)
+            # Update self.old
+            self.old = current
 
-    def run(self, n: int = 1, report=True):
+    def run(self, n: int = 1, save=False, report=True):
         """
         Update model for multiple steps in time
         """
         for i in range(n):
-            #if report is True:
-            #    print(f"Progress: {i / n * 100:.1f}% complete")
-            self.update()
+            if report is True and n is not None:
+                print(f"Progress: {i / n * 100:.1f}% complete")
+            self.update(save)
 
     def bake(self, save=True):
         """
@@ -203,9 +216,10 @@ class Model(PureObject, Query):
         Save model as initial state
         """
         data = self.serialize()
+        self.old = data
         filename = self.name + "_" + "initial"
         jsh.save(data, self.path, filename)
-        print(Date.today())
+        #print(Date.today())
         #print(filename + " saved.")
 
     def load_initial(self):
@@ -213,8 +227,28 @@ class Model(PureObject, Query):
         Load model as initial state
         """
         filename = self.name + "_" + "initial"
-        data = jsh.load(self.path, filename)
+        file = JsonFile(self.path, filename)
+        data = file.load()
         self.deserialize(data)
+        self.create_infrastructure()
+        self.create_society()
+
+    def save_delta(self, delta):
+        filename = self.name + "_" + "deltas"
+        deltas_file = JsonFile(self.path, filename)
+        if deltas_file.exists() is False:
+            deltas = []
+            deltas_file.save(deltas)
+        deltas_file.append(delta)
+
+    def load_deltas(self):
+        filename = self.name + "_" + "deltas"
+        deltas_file = JsonFile(self.path, filename)
+        return deltas_file.load()
+    
+    def apply_deltas(self):
+        deltas = self.load_deltas()
+        self.apply_deltas_to_object(deltas)
 
     def fig(self):
         result = None
@@ -281,6 +315,7 @@ class Model(PureObject, Query):
                 self.library[int(id)] = infrastructure_deserialize(object_dictionary, model=self)
             elif object_dictionary["section"] == "society":
                 self.library[int(id)] = society_deserialize(object_dictionary, model=self)
+        self.old = dictionary
 
 
 if __name__ == "__main__":

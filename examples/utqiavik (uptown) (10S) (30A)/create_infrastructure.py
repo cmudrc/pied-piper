@@ -31,7 +31,6 @@ def create_model(
         )
         model.add(road)
 
-    #settlements_data = generate_settlements(300, latitude_0, longitude_0, permitted_labels=settlements_permitted_labels)
     settlements_data = generate_settlements(settlements_num, latitude_0, longitude_0, permitted_labels=settlements_permitted_labels)
     for settlement_data in settlements_data:
         settlement = Settlement(pos=settlement_data)
