@@ -19,7 +19,7 @@ from piperabm.tools.file_manager import JsonFile
 from piperabm.tools.stats import gini
 #from piperabm.config.settings import *
 from piperabm.society.agent.config import *
-from piperabm.object.delta import Delta
+from piperabm.tools import Delta
 
 
 class Model(PureObject, Query):

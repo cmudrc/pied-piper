@@ -1,7 +1,5 @@
 import pprint
 
-from piperabm.object.delta import Delta
-
 
 class PureObject:
     """
@@ -54,7 +52,7 @@ class PureObject:
         Deserialize object from a dictionary
         """
         print('NOT IMPLEMENTED YET')
-
+'''
     def create_delta(self, old) -> dict:
         """
         Create delta between the *self* and *other*
@@ -79,7 +77,7 @@ class PureObject:
         """
         for delta in deltas:
             self.apply_delta(delta)
-
+'''
 
 if __name__ == '__main__':
 
