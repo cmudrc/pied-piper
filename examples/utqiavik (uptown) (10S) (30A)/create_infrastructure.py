@@ -66,4 +66,4 @@ if __name__ == '__main__':
     )
     model = create_model(streets_permitted_labels, settlements_permitted_labels)
     model.path = os.path.dirname(os.path.realpath(__file__))
-    model.save_initial()
+    model.bake()

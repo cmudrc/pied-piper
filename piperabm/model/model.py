@@ -347,8 +347,5 @@ if __name__ == "__main__":
     agent = Agent()
     agent.id = 0
     model.add(agent)
-    #data = model.serialize()
-    #model.print()
-    #print(model.agents)
-    #model.create_infrastructure()
-    model.show()
+    #model.show()
+    print(model)

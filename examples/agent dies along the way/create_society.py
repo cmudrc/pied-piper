@@ -21,14 +21,4 @@ agent.queue.add(action)
 """ Add agent to model """
 model.add(agent)
 
-""" Add move action to agent within model """
-#agent = model.get(id_agent)
-
-agent = model.get(0)
-print(agent.queue)
-
 model.save_initial()
-model.load_initial()
-
-agent = model.get(0)
-print(agent.queue)

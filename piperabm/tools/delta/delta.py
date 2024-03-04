@@ -146,7 +146,6 @@ class DeltaDict:
                 var = delta[terminology['value']]
         elif isinstance(delta, list):
             for action in delta:
-                print(action) ###########
                 key = action[terminology['key']]
                 command = action[terminology['command']]
                 if command == terminology['add']:
