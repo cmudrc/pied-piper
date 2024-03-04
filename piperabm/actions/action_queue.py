@@ -78,14 +78,16 @@ class ActionQueue(PureObject):
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
+        if dictionary['type'] != self.type:
+            raise ValueError
         library_serialized = dictionary['library']
-        for action_dictionary in library_serialized:
-            if action_dictionary['type'] == 'move':
+        for action_serialized in library_serialized:
+            if action_serialized['type'] == 'move':
                 action = Move()
-            elif action_dictionary['type'] == 'stay':
+            elif action_serialized['type'] == 'stay':
                 action = Stay()
             action.queue = self  # Binding
-            action.deserialize(action_dictionary)
+            action.deserialize(action_serialized)
     
 
 if __name__ == "__main__":

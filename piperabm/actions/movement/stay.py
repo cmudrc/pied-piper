@@ -6,6 +6,8 @@ from piperabm.time import DeltaTime
 
 class Stay(PureObject):
 
+    type = 'stay'
+
     def __init__(self, duration: DeltaTime = None):
         super().__init__()
         self.queue = None  # Binding

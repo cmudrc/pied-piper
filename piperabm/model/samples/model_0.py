@@ -4,6 +4,7 @@ from piperabm.infrastructure import Settlement
 
 model = Model(proximity_radius=0.1)
 settlement = Settlement(name='Sample Settlement', pos=[0, 0])
+settlement.id = 0
 model.add(settlement)
 model.bake(save=False)
 

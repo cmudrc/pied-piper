@@ -172,23 +172,26 @@ class Model(PureObject, Query):
         """
         Update model for single step in time
         """
+        # Delta handling
+        if save is True:
+            old = self.serialize()
+
+        # Prepare model
         self.create_infrastructure()
         self.create_society()
         duration = self.step_size
+
+        # Update elements
         for id in self.agents:
             agent = self.get(id)
             agent.update(duration)
         self.current_date += duration
+
         # Delta handling
         if save is True:
-            # Serialize
             current = self.serialize()
-            # Create delta
-            delta = Delta.create(self.old, current)
-            # Save delta
-            self.save_delta(delta)
-            # Update self.old
-            self.old = current
+            delta = Delta.create(old, current)
+            self.append_delta(delta)
 
     def run(self, n: int = 1, save=False, report=True):
         """
@@ -197,7 +200,7 @@ class Model(PureObject, Query):
         for i in range(n):
             if report is True and n is not None:
                 print(f"Progress: {i / n * 100:.1f}% complete")
-            self.update(save)
+            self.update(save=save)
 
     def bake(self, save=True):
         """
@@ -220,7 +223,6 @@ class Model(PureObject, Query):
         filename = self.name + "_" + "initial"
         jsh.save(data, self.path, filename)
         #print(Date.today())
-        #print(filename + " saved.")
 
     def load_initial(self):
         """
@@ -233,7 +235,10 @@ class Model(PureObject, Query):
         self.create_infrastructure()
         self.create_society()
 
-    def save_delta(self, delta):
+    def append_delta(self, delta):
+        """
+        Create and append new delta to file
+        """
         filename = self.name + "_" + "deltas"
         deltas_file = JsonFile(self.path, filename)
         if deltas_file.exists() is False:
@@ -242,14 +247,29 @@ class Model(PureObject, Query):
         deltas_file.append(delta)
 
     def load_deltas(self):
+        """
+        Load deltas from file
+        """
         filename = self.name + "_" + "deltas"
         deltas_file = JsonFile(self.path, filename)
         return deltas_file.load()
     
+    def apply_delta(self, delta) -> None:
+        """
+        Apply the *delta* to the *self*
+        """
+        dictionary = self.serialize()
+        dictionary_new = Delta.apply(dictionary, delta)
+        self.deserialize(dictionary_new)
+    
     def apply_deltas(self):
+        """
+        Load deltas from file and apply them all
+        """
         deltas = self.load_deltas()
-        self.apply_deltas_to_object(deltas)
-
+        for delta in deltas:
+            self.apply_delta(delta)
+        
     def fig(self):
         result = None
         if self.baked is True:

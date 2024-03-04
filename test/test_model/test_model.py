@@ -3,11 +3,12 @@ from copy import deepcopy
 import os
 
 from piperabm.model import Model
-from piperabm.model.samples import model_0, model_3
+from piperabm.model.samples import model_0
 from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.society import Agent
+from piperabm.tools import Delta
 
-
+'''
 class TestModelClass_0(unittest.TestCase):
 
     def setUp(self):
@@ -24,6 +25,36 @@ class TestModelClass_0(unittest.TestCase):
         agent_index = self.model.find_by_name('Sample Agent 1')
         agent = self.model.get(agent_index)
         print(agent.balance)
+'''
+
+class TestDeltaSave(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.model = deepcopy(model_0)
+
+    def test_delta(self):
+        model = deepcopy(self.model)
+        deltas = []
+        # Delta 0
+        old = model.serialize()
+        object = model.get(0)
+        object.pos = [1, 0]
+        new = model.serialize()
+        delta = Delta.create(old, new)
+        deltas.append(delta)
+        # Delta 1
+        old = model.serialize()
+        object = model.get(0)
+        object.pos = [1, 2]
+        new = model.serialize()
+        delta = Delta.create(old, new)
+        deltas.append(delta)
+        # Apply deltas
+        model_old = deepcopy(self.model)
+        for delta in deltas:
+            model_old.apply_delta(delta)
+        object = model_old.get(0)
+        self.assertListEqual(object.pos, [1, 2])
 
 
 

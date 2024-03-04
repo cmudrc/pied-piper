@@ -32,6 +32,24 @@ class TestDeltaClass_List(unittest.TestCase):
         self.assertEqual(new_variable, None)
         self.assertEqual(updated_variable, new_variable)
 
+    def test_3(self):
+        old_variable = []
+        new_variable = [1, 2]
+        delta = Delta.create(old_variable, new_variable)
+        updated_variable = Delta.apply(old_variable, delta)
+        self.assertListEqual(old_variable, [])
+        self.assertListEqual(new_variable, [1, 2])
+        self.assertListEqual(updated_variable, new_variable)
+
+    def test_3(self):
+        old_variable = [1, 2]
+        new_variable = []
+        delta = Delta.create(old_variable, new_variable)
+        updated_variable = Delta.apply(old_variable, delta)
+        self.assertListEqual(old_variable, [1, 2])
+        self.assertListEqual(new_variable, [])
+        self.assertListEqual(updated_variable, new_variable)
+
 
 if __name__ == '__main__':
     unittest.main()
