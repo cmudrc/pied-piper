@@ -8,4 +8,4 @@ matters = Matters(food, water, energy)
 
 
 if __name__ == '__main__':
-    matters.print
+    print(matters)

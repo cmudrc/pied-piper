@@ -14,7 +14,7 @@ from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.matter import Containers
 #from piperabm.measure import Measure
-from piperabm.tools.file_manager import JsonHandler as jsh
+#from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.tools.file_manager import JsonFile
 from piperabm.tools.stats import gini
 #from piperabm.config.settings import *
@@ -55,7 +55,6 @@ class Model(PureObject, Query):
         self.library = {}
         self.infrastructure = None
         self.society = None
-        self.old = None #
         #self.measure = Measure(self)
 
     def set_step_size(self, step_size):
@@ -219,9 +218,9 @@ class Model(PureObject, Query):
         Save model as initial state
         """
         data = self.serialize()
-        self.old = data
         filename = self.name + "_" + "initial"
-        jsh.save(data, self.path, filename)
+        file = JsonFile(self.path, filename)
+        file.save(data)
         #print(Date.today())
 
     def load_initial(self):
@@ -335,7 +334,6 @@ class Model(PureObject, Query):
                 self.library[int(id)] = infrastructure_deserialize(object_dictionary, model=self)
             elif object_dictionary["section"] == "society":
                 self.library[int(id)] = society_deserialize(object_dictionary, model=self)
-        self.old = dictionary
 
 
 if __name__ == "__main__":

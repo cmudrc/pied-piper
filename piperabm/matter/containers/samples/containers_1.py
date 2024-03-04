@@ -8,4 +8,4 @@ containers = Containers(food, water, energy)
 
 
 if __name__ == '__main__':
-    containers.print
+    print(containers)

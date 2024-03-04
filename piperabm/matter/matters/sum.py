@@ -19,4 +19,4 @@ if __name__ == '__main__':
 
     delta_matters_list = [delta_matters_0, delta_matters_1]
     result = matters_sum(delta_matters_list)
-    result.print
+    print(result)

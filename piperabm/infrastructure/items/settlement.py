@@ -52,4 +52,4 @@ if __name__ == "__main__":
         name="Sample",
         pos=[0, 0]
     )
-    object.print()
+    print(object)

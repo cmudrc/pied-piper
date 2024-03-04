@@ -119,4 +119,4 @@ if __name__ == "__main__":
         pos_2=[3, 4],
         name="Sample"
     )
-    object.print()
+    print(object)

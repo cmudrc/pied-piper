@@ -1,7 +1,6 @@
 from piperabm.object import PureObject
-#from piperabm.actions.movement import Move, Stay
 from piperabm.time import DeltaTime
-from piperabm.actions.movement.deserialize import action_deserialize
+from piperabm.actions.deserialize import action_deserialize
 
 
 class ActionQueue(PureObject):
@@ -83,16 +82,7 @@ class ActionQueue(PureObject):
             raise ValueError
         library_serialized = dictionary['library']
         for action_serialized in library_serialized:
-            action = action_deserialize(action_serialized, self)
-            '''
-            if action_serialized['type'] == 'move':
-                action = Move()
-            elif action_serialized['type'] == 'stay':
-                action = Stay()
-            action.queue = self  # Binding
-            
-            action.deserialize(action_serialized)
-            '''
+            action = action_deserialize(action_serialized, queue=self)
             self.library.append(action)
     
 

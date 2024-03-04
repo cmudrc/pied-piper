@@ -11,6 +11,7 @@ class PureObject:
     def __init__(self):
         pass
 
+    '''
     def print(self):
         """
         "Pretty Print" the object
@@ -22,6 +23,7 @@ class PureObject:
             compact=True,
             width=100,
         )
+    '''
 
     def __str__(self) -> str:
         """

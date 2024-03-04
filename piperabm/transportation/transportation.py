@@ -105,6 +105,6 @@ if __name__ == '__main__':
     from piperabm.transportation.samples import transportation_0 as walk
 
     fuels_rate = walk.fuels_by_length(1000)
-    fuels_rate.print
+    print(fuels_rate)
     d = {'a': 1, 'b': 2, 'c': float('inf')}
     print(min(d))

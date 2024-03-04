@@ -255,4 +255,4 @@ if __name__ == '__main__':
     from piperabm.matter.matter.samples import matter_2 as energy
     
     matters = Matters(food, water, energy)
-    matters.print
+    print(matters)

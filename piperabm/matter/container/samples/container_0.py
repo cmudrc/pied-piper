@@ -9,4 +9,4 @@ container = Container(
 
 
 if __name__ == '__main__':
-    container.print
+    print(container)

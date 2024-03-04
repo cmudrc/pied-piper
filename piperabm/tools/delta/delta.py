@@ -1,6 +1,9 @@
 from copy import deepcopy
-#from piperabm.tools.delta.terminology import terminology_short as terminology
-from piperabm.tools.delta.terminology import terminology_full as terminology
+
+from piperabm.tools.delta.terminology import terminology_short as terminology
+""" For debugging """
+#from piperabm.tools.delta.terminology import terminology_full as terminology
+
 
 class Delta:
 

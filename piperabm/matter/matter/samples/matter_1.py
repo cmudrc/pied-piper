@@ -8,4 +8,4 @@ matter = Matter(
 
 
 if __name__ == '__main__':
-    matter.print
+    print(matter)

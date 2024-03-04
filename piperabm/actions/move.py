@@ -1,5 +1,5 @@
 from piperabm.object import PureObject
-from piperabm.actions.movement.track import Track
+from piperabm.actions.track import Track
 from piperabm.time import DeltaTime
 
 

@@ -228,4 +228,4 @@ if __name__ == '__main__':
         max=10,
         min=2
     )
-    container.print
+    print(container)

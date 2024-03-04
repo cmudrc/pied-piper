@@ -127,4 +127,4 @@ if __name__ == '__main__':
         name='food',
         amount=5
     )
-    matter.print
+    print(matter)
