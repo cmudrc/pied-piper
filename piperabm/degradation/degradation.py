@@ -39,7 +39,7 @@ class Degradation(PureObject):
         """
         Default function
         """
-        return current / total
+        return 1 + (current / total)
 
     def serialize(self) -> dict:
         dictionary = {}

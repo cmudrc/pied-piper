@@ -14,7 +14,6 @@ from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
 from piperabm.matter import Containers
 #from piperabm.measure import Measure
-#from piperabm.tools.file_manager import JsonHandler as jsh
 from piperabm.tools.file_manager import JsonFile
 from piperabm.tools.stats import gini
 #from piperabm.config.settings import *
@@ -159,12 +158,12 @@ class Model(PureObject, Query):
         else:
             print("First, bake the model.")
         
-    def generate_agents(self, num: int = 1):
+    def generate_agents(self, num: int = 1, **kwargs):
         """
         Generate agents
         """
         for _ in range(num):
-            agent = Agent()
+            agent = Agent(**kwargs)
             self.add(agent)
 
     def update(self, save=False):
@@ -200,6 +199,7 @@ class Model(PureObject, Query):
             if report is True and n is not None:
                 print(f"Progress: {i / n * 100:.1f}% complete")
             self.update(save=save)
+        self.save_final()
 
     def bake(self, save=True):
         """
@@ -210,6 +210,7 @@ class Model(PureObject, Query):
             grammar = Grammar(model=self, save=save)
             grammar.apply()
             self.baked = True
+            self.save_final()
         else:
             print("Already baked.")
 
@@ -223,16 +224,38 @@ class Model(PureObject, Query):
         file.save(data)
         #print(Date.today())
 
+    def save_final(self):
+        """
+        Save model as final state
+        """
+        data = self.serialize()
+        filename = self.name + "_" + "final"
+        file = JsonFile(self.path, filename)
+        file.save(data)
+
     def load_initial(self):
         """
-        Load model as initial state
+        Load model's initial state
         """
         filename = self.name + "_" + "initial"
         file = JsonFile(self.path, filename)
         data = file.load()
         self.deserialize(data)
-        self.create_infrastructure()
-        self.create_society()
+        if self.baked is True:
+            self.create_infrastructure()
+            self.create_society()
+
+    def load_final(self):
+        """
+        Load model's final state
+        """
+        filename = self.name + "_" + "final"
+        file = JsonFile(self.path, filename)
+        data = file.load()
+        self.deserialize(data)
+        if self.baked is True:
+            self.create_infrastructure()
+            self.create_society()
 
     def append_delta(self, delta):
         """

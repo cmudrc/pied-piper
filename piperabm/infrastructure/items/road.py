@@ -31,7 +31,7 @@ class Road(PureObject):
         self.length_actual = length_actual
         self.roughness = roughness
         if degradation is None:
-            degradation = Degradation()
+            degradation = Degradation(total=100)
         self.degradation = degradation
         self.id = id
 
@@ -78,7 +78,7 @@ class Road(PureObject):
         """
         Calculate adjustment factor based on roughness and degradation factor
         """
-        return self.roughness * (1 - self.degradation.factor)
+        return self.roughness * self.degradation.factor
 
     def serialize(self) -> dict:
         dictionary = {}

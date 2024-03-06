@@ -98,8 +98,7 @@ class Track(PureObject):
         """
         return self.vector / self.length_real
     
-    @property
-    def time_remaining(self):
+    def remaining_time(self, transportation: Transportation):
         pos_current = self.agent.pos
         remaining_length = self.length_real_remaining(pos_current)
         remaining_length_adjusted = remaining_length * self.adjustment_factor
@@ -140,10 +139,8 @@ class Track(PureObject):
 
             # Update infrastructure after finishing track
             if self.done is True:
-                #edge_index = self.model.infrastructure.find_edge_index(self.index_start, self.index_end)
                 edge = self.model.get(self.id)
                 edge.degradation.add(self.action.usage)
-                #self.agent.current_node = self.id_end
 
         return excess_delta_time
 

@@ -109,13 +109,46 @@ class Query:
     @property
     def settlement_nodes(self):
         """
-        Return id of all infrastructure nodes id
+        Return id of all settlement nodes id
         """
         return self.filter(section="infrastructure", type='settlement')
+    
+    @property
+    def junction_nodes(self):
+        """
+        Return id of all junction nodes id
+        """
+        return self.filter(section="infrastructure", type='junction')
+    
+    @property
+    def market_nodes(self):
+        """
+        Return id of all market nodes id
+        """
+        return self.filter(section="infrastructure", type='market')
+    
+    @property
+    def road_edges(self):
+        """
+        Return id of all road edges id
+        """
+        return self.filter(section="infrastructure", type='road')
 
     @property
     def settlements(self):
-        return self.settlement_nodes 
+        return self.settlement_nodes
+    
+    @property
+    def junctions(self):
+        return self.junction_nodes
+    
+    @property
+    def markets(self):
+        return self.market_nodes
+    
+    @property
+    def roads(self):
+        return self.road_edges
     
     @property
     def infrastructure_edges(self):
@@ -145,6 +178,13 @@ class Query:
     @property
     def relationships(self):
         return self.society_edges
+    
+    @property
+    def family_edges(self):
+        """
+        Return id of all road edges id
+        """
+        return self.filter(section="society", type='family')
 
     def find_by_name(self, name: str, ids=None):
         """

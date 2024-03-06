@@ -43,7 +43,12 @@ class Brain(PureObject):
             # Observe
             self.observe()
             # Choose destination
-            destination = self.best_destination()
+            if self.agent.time_outside >= self.agent.max_time_outside:
+                # Has to return home
+                destination = self.agent.home
+            else:
+                # Choose a destination outside
+                destination = self.best_destination()
             if destination is not None:
                 # Create actions
                 action_1 = Move(self.paths.path(
@@ -51,7 +56,10 @@ class Brain(PureObject):
                         id_end=destination
                     )
                 )
-                action_2 = Stay(DeltaTime(hours=2))
+                action_1.queue = self.queue
+                duration = action_1.remaining_time
+                stay_duration = self.agent.max_time_outside - duration
+                action_2 = Stay(stay_duration)
                 actions = [action_1, action_2]
                 self.queue.add(actions)
 
@@ -70,7 +78,6 @@ class Brain(PureObject):
         scores = {}
         for destination in destinations:
             scores[destination] = self.destination_score(id=destination)
-        #destination = destinations[0] ##########
         if len(destinations) > 0:
             destination = max(scores, key=scores.get)
         return destination

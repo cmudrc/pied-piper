@@ -1,6 +1,6 @@
 import os
 
-from load import model
+from load_initial import model
 from piperabm.graphics import Animation
 
 
@@ -12,3 +12,12 @@ for delta in deltas:
     animation.add_figure(fig)
     model.apply_delta(delta)
 animation.render(framerate=15)
+'''
+ids = model.infrastructure_edges
+degs = []
+for id in ids:
+    object = model.get(id)
+    deg = object.degradation.factor
+    degs.append(deg)
+print(max(degs))
+'''

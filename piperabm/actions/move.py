@@ -75,7 +75,7 @@ class Move(PureObject):
         """
         remainings = []
         for track in self.tracks:
-            remainings.append(track.remaining_time)
+            remainings.append(track.remaining_time(self.transportation))
         return sum(remainings, start=DeltaTime(seconds=0))
 
     def update(self, duration):
@@ -91,7 +91,6 @@ class Move(PureObject):
             else: # Action ended
                 self.agent.current_node = self.destination
                 break
-            #print(excess_delta_time.total_seconds())
         return excess_delta_time
 
     def serialize(self) -> dict:
@@ -117,4 +116,4 @@ class Move(PureObject):
 
 if __name__ == '__main__':
     move = Move()
-    move.print()
+    print(move)

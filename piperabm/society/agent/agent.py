@@ -22,7 +22,8 @@ class Agent(PureObject):
         fuels_rate_idle: Matters = deepcopy(FUELS_RATE_HUMAN_IDLE),
         socioeconomic_status: float = 1,
         average_balance: float = deepcopy(BALANCE_DEFUALT),
-        average_resources: Containers = deepcopy(RESOURCES_DEFAULT)
+        average_resources: Containers = deepcopy(RESOURCES_DEFAULT),
+        max_time_outside: DeltaTime = DeltaTime(hours=1),
     ):
         super().__init__()
         """ Binding to the model """
@@ -37,6 +38,7 @@ class Agent(PureObject):
         self.home = None
         self.current_node = None
         self.time_outside = DeltaTime(seconds=0)
+        self.max_time_outside = max_time_outside
         self.socioeconomic_status = socioeconomic_status
 
         """ Transporation """
@@ -128,6 +130,7 @@ class Agent(PureObject):
         dictionary['home'] = self.home
         dictionary['current_node'] = self.current_node
         dictionary['time_outside'] = self.time_outside.total_seconds()
+        dictionary['max_time_outside'] = self.max_time_outside.total_seconds()
         dictionary['socioeconomic_status'] = self.socioeconomic_status
         dictionary['transportation'] = self.transportation.serialize()
         dictionary['pos'] = self.pos
@@ -150,6 +153,7 @@ class Agent(PureObject):
         self.home = dictionary['home']
         self.current_node = dictionary['current_node']
         self.time_outside = DeltaTime(seconds=dictionary['time_outside'])
+        self.max_time_outside = DeltaTime(seconds=dictionary['max_time_outside'])
         self.socioeconomic_status = dictionary['socioeconomic_status']
         self.transportation = Transportation()
         self.transportation.deserialize(dictionary['transportation'])
@@ -176,4 +180,4 @@ if __name__ == '__main__':
         average_balance=1000,
         socioeconomic_status=1,
     )
-    agent.print()
+    print(agent)
