@@ -23,3 +23,6 @@ if __name__ == "__main__":
 
     print(">>> society edges:")
     print("family: " + str(len(model.family_edges)))
+    
+    #model.print()
+    #model.show()
