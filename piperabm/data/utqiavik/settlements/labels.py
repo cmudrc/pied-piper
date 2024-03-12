@@ -1,12 +1,9 @@
 """
 Lists containing mesh labels in each map
 """
-try:
-    from .coordinates import coordinates
-    from .meshes import meshes
-except:
-    from coordinates import coordinates
-    from meshes import meshes
+
+from piperabm.data.utqiavik.settlements.data import coordinates, meshes
+
 
 map_1 = [
     1,
@@ -80,7 +77,7 @@ map_5 = [
     57,
 ]
 
-def filter_labels(
+def filter_settlement_meshes_labels(
         latitude_min,
         latitude_max,
         longitude_min,
@@ -104,3 +101,23 @@ def filter_labels(
         mesh[2] in permitted_coordinate_labels:
             permitted_labels.append(id)
     return permitted_labels
+
+
+if __name__ == "__main__":
+    """ Uptown """
+    point_1_latitude, point_1_longitude = 71.322109, -156.688674
+    point_2_latitude, point_2_longitude = 71.333940, -156.665691
+
+    latitude_min = min([point_1_latitude, point_2_latitude])
+    latitude_max = max([point_1_latitude, point_2_latitude])
+    longitude_min = min([point_1_longitude, point_2_longitude])
+    longitude_max = max([point_1_longitude, point_2_longitude])
+
+    settlement_meshes_permitted_labels = filter_settlement_meshes_labels(
+        latitude_min,
+        latitude_max,
+        longitude_min,
+        longitude_max
+    )
+
+    print(len(settlement_meshes_permitted_labels))

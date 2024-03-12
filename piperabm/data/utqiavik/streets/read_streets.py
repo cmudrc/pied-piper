@@ -1,11 +1,6 @@
 from piperabm.tools.coordinate.projection import latlong_xy
 
-try:
-    from coordinates import coordinates
-    from streets import streets
-except:
-    from .coordinates import coordinates
-    from .streets import streets
+from piperabm.data.utqiavik.streets.data import coordinates, streets
 
 
 def read_streets(latitude_0, longitude_0, permitted_labels='all'):

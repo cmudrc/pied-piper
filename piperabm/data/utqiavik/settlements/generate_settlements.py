@@ -1,12 +1,8 @@
 from piperabm.tools.geometry import Triangle, Patch
-
-try:
-    from read_data import read_data
-except:
-    from .read_data import read_data
+from piperabm.data.utqiavik.settlements.read_data import read_data
 
 
-def generate_settlements(num, latitude_0, longitude_0, permitted_labels='all'):
+def generate_settlements(settlements_num, latitude_0, longitude_0, permitted_labels='all'):
     patch = Patch()
     triangles = read_data(latitude_0, longitude_0, permitted_labels)
     for triangle in triangles:
@@ -15,7 +11,7 @@ def generate_settlements(num, latitude_0, longitude_0, permitted_labels='all'):
         point_3 = triangle[2]
         patch.add(Triangle(point_1, point_2, point_3))
     points = []
-    for _ in range(num):
+    for _ in range(settlements_num):
         points.append(patch.random_point())
     return points
 

@@ -2,10 +2,8 @@
 Lists containing labels in each map
 """
 
-try:
-    from .coordinates import coordinates
-except:
-    from coordinates import coordinates
+from piperabm.data.utqiavik.streets.data import coordinates
+
 
 map_1 = [
     1,
@@ -245,7 +243,7 @@ map_5 = [
     207,
 ]
 
-def filter_labels(
+def filter_street_labels(
         latitude_min,
         latitude_max,
         longitude_min,
@@ -262,3 +260,23 @@ def filter_labels(
         longitude <= longitude_max:
             permitted_labels.append(id)
     return permitted_labels
+
+
+if __name__ == "__main__":
+    """ Uptown """
+    point_1_latitude, point_1_longitude = 71.322109, -156.688674
+    point_2_latitude, point_2_longitude = 71.333940, -156.665691
+
+    latitude_min = min([point_1_latitude, point_2_latitude])
+    latitude_max = max([point_1_latitude, point_2_latitude])
+    longitude_min = min([point_1_longitude, point_2_longitude])
+    longitude_max = max([point_1_longitude, point_2_longitude])
+
+    streets_permitted_labels = filter_street_labels(
+        latitude_min,
+        latitude_max,
+        longitude_min,
+        longitude_max
+    )
+
+    print(len(streets_permitted_labels))

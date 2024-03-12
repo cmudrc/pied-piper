@@ -32,7 +32,7 @@ class Infrastructure:
         # Calculate infrastructure margins
         self.margins = self.xylim()
         # Calculate paths graph
-        self.paths = self.create_paths()
+        #self.paths = self.create_paths()
 
     def get(self, id: int):
         """
@@ -179,25 +179,25 @@ class Infrastructure:
         """
         Calculate limits of axis that encompasses all nodes
         """
-        x_min = None
-        x_max = None
-        y_min = None
-        y_max = None
+        x_min = 0
+        x_max = 0
+        y_min = 0
+        y_max = 0
         for node_id in self.nodes_id:
             node_object = self.get(node_id)
             pos = node_object.pos
             x = pos[0]
             y = pos[1]
-            if x_min is None or \
+            if x_min == 0 or \
             x < x_min:
                 x_min = x
-            if x_max is None or \
+            if x_max == 0 or \
             x > x_max:
                 x_max = x
-            if y_min is None or \
+            if y_min == 0 or \
             y < y_min:
                 y_min = y
-            if y_max is None or \
+            if y_max == 0 or \
             y > y_max:
                 y_max = y
         if x_min == x_max:

@@ -1,11 +1,6 @@
 from piperabm.tools.coordinate.projection import latlong_xy
 
-try:
-    from coordinates import coordinates
-    from meshes import meshes
-except:
-    from .coordinates import coordinates
-    from .meshes import meshes
+from piperabm.data.utqiavik.settlements.data import coordinates, meshes
 
 
 def read_data(latitude_0, longitude_0, permitted_labels='all'):
