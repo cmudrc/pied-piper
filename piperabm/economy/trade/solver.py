@@ -70,12 +70,12 @@ class Solver:
         """
         # Update seller
         seller = self.library[transaction['seller']]
-        seller['currency'] += transaction['amount']
-        seller['resources'][transaction['resource']] -= transaction['amount'] / self.prices[transaction['resource']]
+        seller['currency'] += transaction['amount'] * transaction['price']
+        seller['resources'][transaction['resource']] -= transaction['amount']
         # Update buyer
         buyer = self.library[transaction['buyer']]
-        buyer['currency'] -= transaction['amount']
-        buyer['resources'][transaction['resource']] += transaction['amount'] / self.prices[transaction['resource']]        
+        buyer['currency'] -= transaction['amount'] * transaction['price']
+        buyer['resources'][transaction['resource']] += transaction['amount']      
 
     def solve(self):
         """
