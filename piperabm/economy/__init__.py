@@ -1,2 +1,2 @@
 from .exchange_rate import ExchangeRate
-#from .trade import Trade
+from .trade import Trade

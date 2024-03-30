@@ -45,6 +45,10 @@ class ExchangeRate(PureObject):
     def __call__(self, source, target):
         return self.rate(source, target)
     
+    @property
+    def prices(self):
+        return self.serialize()
+    
     def serialize(self) -> dict:
         dictionary = {}
         names = self.names

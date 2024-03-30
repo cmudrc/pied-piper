@@ -210,7 +210,8 @@ class Model(PureObject, Query):
             grammar = Grammar(model=self, save=save)
             grammar.apply()
             self.baked = True
-            self.save_final()
+            if save is True:
+                self.save_final()
         else:
             print("Already baked.")
 
