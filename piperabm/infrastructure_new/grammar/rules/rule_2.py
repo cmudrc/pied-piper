@@ -1,5 +1,6 @@
 from piperabm.infrastructure_new.grammar.rules.rule import Rule, Log
-from piperabm.infrastructure_new import Street, NeighborhoodAccess
+from piperabm.infrastructure_new.grammar.rules.rule_1 import Rule_1
+from piperabm.infrastructure_new import Junction, Street, NeighborhoodAccess
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.coordinate.intersect import line_line
 
@@ -10,7 +11,7 @@ class Rule_2(Rule):
     """
 
     def __init__(self, infrastructure):
-        name = "rule 0"
+        name = "rule 2"
         super().__init__(infrastructure, name)
 
     def check(self, edge_id, other_edge_id):
@@ -51,88 +52,18 @@ class Rule_2(Rule):
     
     def apply(self, edge_id, other_edge_id, intersection, report=False):
         logs = []
-
-        # Create new elements
-        edge_object = self.get(edge_id)
-        other_edge_object = self.get(other_edge_id)
-        new_edge_1_kwargs = {
-            'pos_1': edge_object.pos_1,
-            'pos_2': intersection,
-            'name': edge_object.name,
-            'roughness': edge_object.roughness,
-            'degradation': edge_object.degradation,
-        }
-        new_edge_2_kwargs = {
-            'pos_1': intersection,
-            'pos_2': edge_object.pos_2,
-            'name': edge_object.name,
-            'roughness': edge_object.roughness,
-            'degradation': edge_object.degradation,
-        }
-        new_edge_3_kwargs = {
-            'pos_1': other_edge_object.pos_1,
-            'pos_2': intersection,
-            'name': other_edge_object.name,
-            'roughness': other_edge_object.roughness,
-            'degradation': other_edge_object.degradation,
-        }
-        new_edge_4_kwargs = {
-            'pos_1': intersection,
-            'pos_2': other_edge_object.pos_2,
-            'name': other_edge_object.name,
-            'roughness': other_edge_object.roughness,
-            'degradation': other_edge_object.degradation,
-        }
-        if edge_object.type == "street":
-            new_edge_object_1 = Street()
-            new_edge_object_2 = Street()
-        elif edge_object.type == "neighborhood_access":
-            new_edge_object_1 = NeighborhoodAccess()
-            new_edge_object_2 = NeighborhoodAccess() 
-        else:
-            raise ValueError
-        new_edge_object_1.deserialize(new_edge_1_kwargs)
-        new_edge_object_2.deserialize(new_edge_2_kwargs)
-        if other_edge_object.type == "street":
-            new_edge_object_3 = Street()
-            new_edge_object_4 = Street()
-        elif other_edge_object.type == "neighborhood_access":
-            new_edge_object_3 = NeighborhoodAccess()
-            new_edge_object_4 = NeighborhoodAccess()
-        else:
-            raise ValueError
-        new_edge_object_3.deserialize(new_edge_3_kwargs)
-        new_edge_object_4.deserialize(new_edge_4_kwargs)
-
-        # Add
-        new_edge_id_1 = self.add(new_edge_object_1)
-        new_edge_id_2 = self.add(new_edge_object_2)
-        new_edge_id_3 = self.add(new_edge_object_3)
-        new_edge_id_4 = self.add(new_edge_object_4)
-
-        if report is True:
-            log = Log(self.infrastructure, new_edge_id_1, 'added')
-            logs.append(log)
-            log = Log(self.infrastructure, new_edge_id_2, 'added')
-            logs.append(log)
-            log = Log(self.infrastructure, new_edge_id_3, 'added')
-            logs.append(log)
-            log = Log(self.infrastructure, new_edge_id_4, 'added')
-            logs.append(log)
-            log = Log(self.infrastructure, edge_id, 'removed')
-            logs.append(log)
-            log = Log(self.infrastructure, other_edge_id, 'removed')
-            logs.append(log)
-
-        # Remove
-        self.infrastructure.remove_edge(edge_id)
-        self.infrastructure.delete_object(edge_id)
-        self.infrastructure.remove_edge(other_edge_id)
-        self.infrastructure.delete_object(other_edge_id)
+        object = Junction(pos=intersection)
+        new_node_id = self.add(object)
 
         # Report
         if report is True:
+            log = Log(self.infrastructure, new_node_id, 'added')
+            logs.append(log)
             self.report(logs)
+
+        rule_1 = Rule_1(self.infrastructure)
+        rule_1.apply(node_id=new_node_id, edge_id=edge_id, report=report)
+        rule_1.apply(node_id=new_node_id, edge_id=other_edge_id, report=report)
     
     def find(self, report=False):
         anything_happened = False
@@ -155,7 +86,7 @@ class Rule_2(Rule):
     
 
 if __name__ == "__main__":
-    
+
     from piperabm.infrastructure_new import Infrastructure, Street, NeighborhoodAccess
 
     infrastructure = Infrastructure(proximity_radius=1)

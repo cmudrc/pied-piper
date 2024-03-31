@@ -23,7 +23,7 @@ class TestGrammarRule2Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
         self.assertEqual(len(self.infrastructure.edges_id), 2)
         rule.apply(edge_id=edges[0], other_edge_id=edges[1], intersection=intersection)
-        self.assertEqual(len(self.infrastructure.nodes_id), 12)
+        self.assertEqual(len(self.infrastructure.nodes_id), 5)
         self.assertEqual(len(self.infrastructure.edges_id), 4)
 
     def test_passing_ends(self):

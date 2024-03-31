@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.tools.coordinate import distance as ds
+from piperabm.infrastructure_new.degradation import degradation_function
 
 
 class NeighborhoodAccess(PureObject):
@@ -13,7 +14,7 @@ class NeighborhoodAccess(PureObject):
         pos_1: list = None,
         pos_2: list = None,
         name: str = "",
-        roughness: float = 1,
+        difficulty: float = 2,
         degradation: float = 0,
     ):
         super().__init__()
@@ -23,7 +24,7 @@ class NeighborhoodAccess(PureObject):
         self.pos_1 = pos_1
         self.pos_2 = pos_2
         self.name = name
-        self.roughness = roughness
+        self.difficulty = difficulty
         self.degradation = degradation
 
     @property
@@ -41,14 +42,14 @@ class NeighborhoodAccess(PureObject):
         """
         Calculate adjusted length based on physical length, roughness, and degradation factor
         """
-        return self.length * self.roughness * (1 - self.degradation.factor)
+        return self.length * self.difficulty * degradation_function(self.degradation)
 
     def serialize(self) -> dict:
         dictionary = {}
         dictionary["pos_1"] = self.pos_1
         dictionary["pos_2"] = self.pos_2
         dictionary["name"] = self.name
-        dictionary["roughness"] = self.roughness
+        dictionary["difficulty"] = self.difficulty
         dictionary["degradation"] = self.degradation
         dictionary["type"] = self.type
         return dictionary
@@ -57,7 +58,7 @@ class NeighborhoodAccess(PureObject):
         self.pos_1 = dictionary["pos_1"]
         self.pos_2 = dictionary["pos_2"]
         self.name = dictionary["name"]
-        self.roughness = dictionary["roughness"]
+        self.difficulty = dictionary["difficulty"]
         self.degradation = dictionary["degradation"]
 
 
