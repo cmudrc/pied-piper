@@ -110,8 +110,8 @@ class TestInfrastructureGrammarClass_4(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         grammar.apply()
-        self.assertEqual(len(self.infrastructure.nodes_id), 5)
-        self.assertEqual(len(self.infrastructure.edges_id), 4)
+        self.assertEqual(len(self.infrastructure.nodes_id), 6)
+        self.assertEqual(len(self.infrastructure.edges_id), 5)
 
 
 class TestInfrastructureGrammarClass_5(unittest.TestCase):
@@ -130,8 +130,9 @@ class TestInfrastructureGrammarClass_5(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         grammar.apply()
-        self.assertEqual(len(self.infrastructure.nodes_id), 5)
-        self.assertEqual(len(self.infrastructure.edges_id), 4)
+        self.assertEqual(len(self.infrastructure.nodes_id), 6)
+        self.assertEqual(len(self.infrastructure.edges_id), 5)
+        #self.infrastructure.show()
 
 
 if __name__ == "__main__":

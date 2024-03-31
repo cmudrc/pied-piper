@@ -50,20 +50,58 @@ class Rule_1(Rule):
         else:
             print("object type not recognized.")
             raise ValueError
-        new_edge_id_1 = self.add(new_edge_object_1)
-        new_edge_id_2 = self.add(new_edge_object_2)
+        
+        edge_ids = self.infrastructure.edge_ids(edge_id)
+        edge_node_1 = self.get(edge_ids[0])
+        edge_node_2 = self.get(edge_ids[1])
+
+        new_id_1 = self.infrastructure.new_id
+        self.infrastructure.library[new_id_1] = new_edge_object_1
+        if edge_object.pos_1 == edge_node_1.pos:
+            id_1 = edge_ids[0]
+        elif edge_object.pos_1 == edge_node_2.pos:
+            id_1 = edge_ids[1]
+        self.infrastructure.G.add_edge(
+            id_1,
+            node_id,
+            id=new_id_1
+        )
+
+        new_id_2 = self.infrastructure.new_id
+        self.infrastructure.library[new_id_2] = new_edge_object_2
+        if edge_object.pos_2 == edge_node_1.pos:
+            id_2 = edge_ids[0]
+        elif edge_object.pos_2 == edge_node_2.pos:
+            id_2 = edge_ids[1]
+        self.infrastructure.G.add_edge(
+            node_id,
+            id_2,
+            id=new_id_2
+        )
+
+        #new_edge_id_1 = self.add(new_edge_object_1)
+        #new_edge_id_2 = self.add(new_edge_object_2)
 
         if report is True:
-            log = Log(self.infrastructure, new_edge_id_1, 'added')
+            log = Log(self.infrastructure, new_id_1, 'added')
             logs.append(log)
-            log = Log(self.infrastructure, new_edge_id_2, 'added')
+            log = Log(self.infrastructure, new_id_2, 'added')
             logs.append(log)
             log = Log(self.infrastructure, edge_id, 'removed')
             logs.append(log)
 
+        edge_ids = self.infrastructure.edge_ids(edge_id)
+
         # Remove
         self.infrastructure.remove_edge(edge_id)
         self.infrastructure.delete_object(edge_id)
+
+        # Replace extra nodes
+        edge_id_1 = edge_ids[0]
+        node_id_1 = self.get(edge_id_1)
+
+        edge_id_2 = edge_ids[1]
+        node_id_2 = self.get(edge_id_2)
 
         # Report
         if report is True:
@@ -89,7 +127,7 @@ class Rule_1(Rule):
     
 
 if __name__ == "__main__":
-    
+
     from piperabm.infrastructure_new import Infrastructure, Junction, Street
 
     infrastructure = Infrastructure(proximity_radius=1)

@@ -1,6 +1,6 @@
 from piperabm.tools.coordinate.projection import latlong_xy
 
-from piperabm.data.utqiavik.settlements.data import coordinates, meshes
+from piperabm.data.utqiavik.homes.data import coordinates, meshes
 
 
 def read_data(latitude_0, longitude_0, permitted_labels='all'):

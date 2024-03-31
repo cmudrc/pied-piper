@@ -23,7 +23,6 @@ class TestInfrastructureClass(unittest.TestCase):
         # New id
         new_node = Junction(pos=[0, 0])
         new_id = self.infrastructure.add(new_node)
-        print(new_id)
         # Replace
         self.infrastructure.replace_node(id, new_id)
         # Check
@@ -38,6 +37,12 @@ class TestInfrastructureClass(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.junctions), 4)
         self.assertEqual(len(self.infrastructure.streets), 2)
         self.assertEqual(len(self.infrastructure.library), 6)
+
+    def test_edges_closer_than(self):
+        edges_id = self.infrastructure.edges_closer_than(pos=[10, 1], max_distance=3)
+        self.assertEqual(len(edges_id), 1)
+        edges_id = self.infrastructure.edges_closer_than(pos=[10, 1], max_distance=13)
+        self.assertEqual(len(edges_id), 2)
 
 
 if __name__ == '__main__':

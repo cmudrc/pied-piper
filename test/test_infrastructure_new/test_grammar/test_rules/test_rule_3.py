@@ -23,7 +23,7 @@ class TestGrammarRule4Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         rule.apply(node_id=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.infrastructure.edges_id), 3)
     
     def test_1(self):
         object = Home(pos=[5, 4])
@@ -37,7 +37,7 @@ class TestGrammarRule4Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         rule.apply(node_id=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.infrastructure.edges_id), 3)
 
    
     def test_2(self):
@@ -52,7 +52,7 @@ class TestGrammarRule4Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         rule.apply(node_id=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.infrastructure.edges_id), 3)
 
     def test_3(self):
         object = Home(pos=[-2, 0])
@@ -66,7 +66,7 @@ class TestGrammarRule4Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         rule.apply(node_id=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.infrastructure.edges_id), 3)
 
     def test_4(self):
         object = Home(pos=[-1, 0])
@@ -80,7 +80,7 @@ class TestGrammarRule4Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         rule.apply(node_id=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.infrastructure.edges_id), 3)
 
     def test_5(self):
         object = Home(pos=[-2, -2])
@@ -94,7 +94,7 @@ class TestGrammarRule4Class(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.edges_id), 1)
         rule.apply(node_id=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
-        self.assertEqual(len(self.infrastructure.edges_id), 2)
+        self.assertEqual(len(self.infrastructure.edges_id), 3)
 
 
 if __name__ == "__main__":

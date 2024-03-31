@@ -3,8 +3,14 @@ from piperabm.infrastructure_new.grammar.rules import *
 
 class Grammar:
 
-    def __init__(self, infrastructure, save=False):
+    def __init__(self, infrastructure, search_radius: float = None, save: bool = False):
         self.infrastructure = infrastructure
+        if search_radius is not None and \
+        search_radius < self.infrastructure.proximity_radius:
+            print("search radius should be bigger than proximity radius")
+            raise ValueError
+        else:
+            self.search_radius = search_radius
         self.save = save
     
     def apply(self, report=False):
@@ -19,7 +25,7 @@ class Grammar:
             Rule_0(self.infrastructure),
             Rule_1(self.infrastructure),
             Rule_2(self.infrastructure),
-            Rule_3(self.infrastructure),
+            Rule_3(self.infrastructure, self.search_radius),
         ]
 
         if self.save is True:

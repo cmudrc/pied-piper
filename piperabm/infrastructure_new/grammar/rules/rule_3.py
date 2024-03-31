@@ -1,6 +1,7 @@
 import numpy as np
 
 from piperabm.infrastructure_new.grammar.rules.rule import Rule, Log
+from piperabm.infrastructure_new.grammar.rules.rule_1 import Rule_1
 from piperabm.infrastructure_new import Junction, NeighborhoodAccess
 from piperabm.tools.coordinate import distance as ds
 from piperabm.tools.linear_algebra import vector as vc
@@ -11,8 +12,9 @@ class Rule_3(Rule):
     Condition for connecting isolated non-junction items to the rest
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, infrastructure, search_radius: float = None):
         name = "rule 3"
+        self.search_radius = search_radius
         super().__init__(infrastructure, name)
 
     def check(self, node_id):
@@ -22,13 +24,22 @@ class Rule_3(Rule):
             result = True
         return result
 
-    def apply(self, node_id, report=False):
+    def apply(self, node_id, report: bool = False):
         logs = []
         node_object = self.get(node_id)
 
         # Find the smallest_distance_vector
         distances = []
-        for edge_id in self.infrastructure.edges_id:
+        edges_id = self.infrastructure.edges_id
+        if self.search_radius is None:
+            edges_id_nearby = edges_id
+        else:
+            edges_id_nearby = self.infrastructure.edges_closer_than(
+                pos=node_object.pos,
+                max_distance=self.search_radius,
+                edges_id=edges_id,
+            )
+        for edge_id in edges_id_nearby:
             edge_object = self.get(edge_id)
             distance_vector = ds.point_to_line(
                 point=node_object.pos,
@@ -36,16 +47,18 @@ class Rule_3(Rule):
                 segment=True,
                 vector=True
             )
-            #distances.append([edge_id, distance_vector])
-            distances.append(distance_vector)
+            distances.append([edge_id, distance_vector])
+            #distances.append(distance_vector)
         # Find the nearest edge
         smallest_distance = None
-        for distance_vector in distances:
+        target_edge = None
+        for edge_id, distance_vector in distances:
             distance = vc.magnitude(distance_vector)
             if smallest_distance is None or \
             distance < smallest_distance:
                 smallest_distance = distance
                 smallest_distance_vector = distance_vector
+                target_edge = edge_id
         
         # Create new objects
         pos_1 = node_object.pos
@@ -61,6 +74,10 @@ class Rule_3(Rule):
             id=new_id
         )
         
+        # Rule 1
+        rule_1 = Rule_1(self.infrastructure)
+        rule_1.apply(node_id=id, edge_id=target_edge, report=report)
+
         # Report
         if report is True:
             logs = []
@@ -88,7 +105,7 @@ class Rule_3(Rule):
     
 
 if __name__ == "__main__":
-    
+
     from piperabm.infrastructure_new import Infrastructure, Street, Home
 
     infrastructure = Infrastructure(proximity_radius=1)

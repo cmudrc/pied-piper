@@ -2,7 +2,7 @@
 Lists containing mesh labels in each map
 """
 
-from piperabm.data.utqiavik.settlements.data import coordinates, meshes
+from piperabm.data.utqiavik.homes.data import coordinates, meshes
 
 
 map_1 = [

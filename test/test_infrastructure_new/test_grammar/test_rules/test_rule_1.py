@@ -75,14 +75,14 @@ class TestGrammarRule1Class_0(unittest.TestCase):
         self.assertEqual(len(self.infrastructure.streets), 1)
         id_2 = self.infrastructure.streets[0]
         self.rule.apply(node_id=self.id_1, edge_id=id_2)
-        self.assertEqual(len(self.infrastructure.junctions), 7)
+        self.assertEqual(len(self.infrastructure.junctions), 3)
         self.assertEqual(len(self.infrastructure.streets), 2)
 
     def test_find(self):
         self.assertEqual(len(self.infrastructure.junctions), 3)
         self.assertEqual(len(self.infrastructure.streets), 1)
         self.rule.find()
-        self.assertEqual(len(self.infrastructure.junctions), 7)
+        self.assertEqual(len(self.infrastructure.junctions), 3)
         self.assertEqual(len(self.infrastructure.streets), 2)
         anything_happened = self.rule.find()
         self.assertFalse(anything_happened)
@@ -94,6 +94,7 @@ class TestGrammarRule1Class_0(unittest.TestCase):
         self.assertEqual(object_1.pos_2, [3, 0.5])
         self.assertEqual(object_2.pos_1, [3, 0.5])
         self.assertEqual(object_2.pos_2, [10, 0])
+        #self.infrastructure.show()
 
         
 if __name__ == "__main__":
