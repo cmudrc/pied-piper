@@ -36,11 +36,11 @@ class Rule_0(Rule):
         # Remove possible edge object between nodes
         edge_id = self.infrastructure.edge_id(node_id, other_node_id)
         if edge_id is not None:
-            self.infrastructure.remove_edge(edge_id)
-            self.infrastructure.delete_object(edge_id)
             if report is True:
                 log = Log(self.infrastructure, edge_id, 'removed')
                 logs.append(log)
+            self.infrastructure.remove_edge(edge_id)
+            self.infrastructure.delete_object(edge_id)
 
         # Find edges that will overlap after merging
         def end(edge_ids, id):
@@ -62,11 +62,11 @@ class Rule_0(Rule):
                 other_edge_ids_end = end(other_edge_ids, other_node_id)
                 if edge_ids_end == other_edge_ids_end:
                     other_edge_id = self.infrastructure.edge_id(*other_edge_ids)
-                    self.infrastructure.remove_edge(other_edge_id)
-                    self.infrastructure.delete_object(other_edge_id)
                     if report is True:
                         log = Log(self.infrastructure, other_edge_id, 'removed')
                         logs.append(log)
+                    self.infrastructure.remove_edge(other_edge_id)
+                    self.infrastructure.delete_object(other_edge_id)
 
         # Merge nodes
         node_object = self.get(node_id)
@@ -113,7 +113,7 @@ class Rule_0(Rule):
     
 
 if __name__ == "__main__":
-    
+
     from piperabm.infrastructure_new import Infrastructure, Street
 
     infrastructure = Infrastructure(proximity_radius=1)

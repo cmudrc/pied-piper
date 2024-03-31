@@ -14,6 +14,8 @@ from piperabm.infrastructure_new.style import infrastructure_style
 
 class Infrastructure(PureObject):
 
+    type = "infrastructure"
+
     def __init__(self, model=None, proximity_radius=1):
         super().__init__()
         self.G = nx.Graph()
@@ -281,6 +283,20 @@ class Infrastructure(PureObject):
         grammar.apply(report=report)
         print("Baking is done.")
 
+    @property
+    def stat(self):
+        result = {
+            'node': {
+                'junction': len(self.junctions),
+                'home': len(self.homes),
+            },
+            'edge': {
+                'street': len(self.streets),
+                'neighborhood_access': len(self.neighborhood_accesses),
+            },
+        }
+        return result
+
     def to_plt(self):
         # Nodes
         pos_dict = {}
@@ -341,6 +357,7 @@ class Infrastructure(PureObject):
         dictionaty['G'] = nx.to_dict_of_dicts(self.G)
         dictionaty['proximity_radius'] = self.proximity_radius
         dictionaty['baked'] = self.baked
+        dictionaty['type'] = self.type
         return dictionaty
 
     def deserialize(self, dictionaty):

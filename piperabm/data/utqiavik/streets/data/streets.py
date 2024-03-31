@@ -295,3 +295,7 @@ streets = [
         'paths': [[88, 89]],
     },
 ]
+
+
+if __name__ == "__main__":
+    print(len(streets))

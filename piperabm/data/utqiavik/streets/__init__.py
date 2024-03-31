@@ -1,2 +1,2 @@
 #from .labels import *
-#from .read_streets import read_streets
+from .add import add_streets_to_model

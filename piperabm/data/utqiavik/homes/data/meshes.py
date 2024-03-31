@@ -57,3 +57,7 @@ meshes = {
     56: [59, 60, 61],
     57: [59, 61, 62],
 }
+
+
+if __name__ == "__main__":
+    print(len(meshes))

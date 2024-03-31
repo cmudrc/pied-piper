@@ -3,7 +3,7 @@ from piperabm.tools.coordinate.projection import latlong_xy
 from piperabm.data.utqiavik.streets.data import coordinates, streets
 
 
-def read_streets(latitude_0, longitude_0, permitted_labels='all'):
+def read_streets(latitude_0, longitude_0, permitted_labels="all"):
     """
     Read data from files and convert latitude/longitude to x,y only for permitted labels
     """
@@ -22,13 +22,13 @@ def read_streets(latitude_0, longitude_0, permitted_labels='all'):
     
     result = []
     for street in streets:
-        name = street['name']
-        paths = street['paths']
+        name = street["name"]
+        paths = street["paths"]
         for path in paths:
             segments = create_segments(path)
             for segment in segments:
                 # Check permitted labels
-                if permitted_labels == 'all' or \
+                if permitted_labels == "all" or \
                     (
                         segment[0] in permitted_labels and \
                         segment[1] in permitted_labels
@@ -55,15 +55,16 @@ def read_streets(latitude_0, longitude_0, permitted_labels='all'):
                     )
                     # Create entry
                     entry = {
-                        'name': name,
-                        'pos_1': [x_1, y_1],
-                        'pos_2': [x_2, y_2]
+                        "name": name,
+                        "pos_1": [x_1, y_1],
+                        "pos_2": [x_2, y_2]
                     }
                     result.append(entry)
     return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+
     from labels import map_1 as permitted_labels
 
     latitude_0 = 0

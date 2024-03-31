@@ -17,3 +17,14 @@ def add_streets_to_model(model, streets_permitted_labels='all'):
         )
         model.add(street)
     return model
+
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure_new import Infrastructure
+    from piperabm.data.utqiavik.streets.labels import map_1 as permitted_labels
+
+    infrastructure = Infrastructure()
+    infrastructure = add_streets_to_model(infrastructure, streets_permitted_labels=permitted_labels)
+    infrastructure.bake()
+    infrastructure.show()

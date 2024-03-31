@@ -66,3 +66,7 @@ coordinates = {
     61: [71.327912, -156.669297],
     62: [71.330804, -156.668764],
 }
+
+
+if __name__ == "__main__":
+    print(len(coordinates))
