@@ -61,10 +61,8 @@ class Market(PureObject):
         self.pos = dictionary["pos"]
         self.name = dictionary["name"]
         self.degradation = dictionary["degradation"]
-        self.resources = Matter()
-        self.resources.deserialize(dictionary["resources"])
-        self.resources_influx = Matter()
-        self.resources_influx.deserialize(dictionary["resources_influx"])
+        self.resources = Matter(dictionary["resources"])
+        self.resources_influx = Matter(dictionary["resources_influx"])
 
 
 if __name__ == "__main__":

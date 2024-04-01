@@ -28,14 +28,17 @@ class Infrastructure(PureObject, Query, Graphics):
             proximity_radius: float = 1,
             search_radius: float = None
         ):
-        grammar = Grammar(
-            infrastructure=self,
-            save=save,
-            proximity_radius=proximity_radius,
-            search_radius=search_radius
-        )
-        grammar.apply(report=report)
-        print("Baking is done.")
+        if self.baked is False:
+            grammar = Grammar(
+                infrastructure=self,
+                save=save,
+                proximity_radius=proximity_radius,
+                search_radius=search_radius
+            )
+            grammar.apply(report=report)
+            print("baking is done.")
+        else:
+            print("already baked.")
 
     @property
     def stat(self):
@@ -51,6 +54,12 @@ class Infrastructure(PureObject, Query, Graphics):
             },
         }
         return result
+    
+    def show_stat(self):
+        stat = self.stat
+        for category in stat:
+            for name in stat[category]:
+                print("# " + name + ": " + str(stat[category][name]))
     
     def current(self):
         """

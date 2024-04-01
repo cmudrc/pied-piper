@@ -4,7 +4,7 @@ from info import proximity_radius, search_radius
 
 infrastructure.bake(
     save=True,
-    report=False,
+    report=True,
     proximity_radius=proximity_radius,
     search_radius=search_radius
 )
