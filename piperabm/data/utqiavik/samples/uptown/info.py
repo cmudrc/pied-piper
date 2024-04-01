@@ -9,6 +9,5 @@ latitude_max = max([point_1_latitude, point_2_latitude])
 longitude_min = min([point_1_longitude, point_2_longitude])
 longitude_max = max([point_1_longitude, point_2_longitude])
 
-settlements_num = 10
-
 proximity_radius = 3
+search_radius = 200

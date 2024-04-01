@@ -14,7 +14,7 @@ class NeighborhoodAccess(PureObject):
         pos_1: list = None,
         pos_2: list = None,
         name: str = "",
-        difficulty: float = 2,
+        difficulty: float = 1,
         degradation: float = 0,
     ):
         super().__init__()

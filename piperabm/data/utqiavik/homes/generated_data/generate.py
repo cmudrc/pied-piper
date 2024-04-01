@@ -1,5 +1,5 @@
 from piperabm.tools.geometry import Triangle, Patch
-from piperabm.data.utqiavik.homes.read_data import read_data
+from piperabm.data.utqiavik.homes.generated_data.read import read_triangles_data
 
 
 def generate_homes(
@@ -9,7 +9,7 @@ def generate_homes(
         permitted_labels = 'all'
     ):
     patch = Patch()
-    triangles = read_data(latitude_0, longitude_0, permitted_labels)
+    triangles = read_triangles_data(latitude_0, longitude_0, permitted_labels)
     for triangle in triangles:
         point_1 = triangle[0]
         point_2 = triangle[1]

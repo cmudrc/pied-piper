@@ -1,5 +1,4 @@
 from piperabm.object import PureObject
-from piperabm.degradation import Degradation
 
 
 class Home(PureObject):

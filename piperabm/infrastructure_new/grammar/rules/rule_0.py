@@ -8,9 +8,9 @@ class Rule_0(Rule):
     Condition for node to node proximity
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, infrastructure, proximity_radius: float = 1):
         name = "rule 0"
-        super().__init__(infrastructure, name)
+        super().__init__(infrastructure, name, proximity_radius)
 
     def check(self, node_id, other_node_id):
         result = False

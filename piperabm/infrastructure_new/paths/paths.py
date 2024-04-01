@@ -38,30 +38,12 @@ class Paths:
             edge = self.G.edges[id_start, id_end]
             result = edge['adjusted_length']
         return result
-    
-    def create_current_infrastructure(self, infrastructure):
-        G = nx.Graph()
-        nodes = infrastructure.nodes_id
-        for id in nodes:
-            object = infrastructure.get(id)
-            G.add_node(id)
-        edges_id = infrastructure.edges_id
-        for id in edges_id:
-            ids = infrastructure.edge_ids(id)
-            object = infrastructure.get(id)
-            G.add_edge(
-                ids[0],
-                ids[1],
-                id=id,
-                adjusted_length=object.adjusted_length
-            )
-        return G
 
     def create(self, infrastructure):
         """
         Create graph *self.G* from *self.infrastructure*
         """
-        current_infrastructure = self.create_current_infrastructure(infrastructure)
+        current_infrastructure = infrastructure.current()
         nodes = infrastructure.nonjunctions
         for id_start in nodes:
             for id_end in nodes:

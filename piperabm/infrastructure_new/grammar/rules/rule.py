@@ -1,12 +1,9 @@
 class Rule:
 
-    def __init__(self, infrastructure, name: str):
+    def __init__(self, infrastructure, name: str, proximity_radius: float = 1):
         self.infrastructure = infrastructure
         self.name = name
-
-    @property
-    def proximity_radius(self):
-        return self.infrastructure.proximity_radius
+        self.proximity_radius = proximity_radius
     
     def get(self, id):
         return self.infrastructure.get(id)

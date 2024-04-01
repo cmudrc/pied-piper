@@ -7,14 +7,14 @@ from piperabm.infrastructure_new.grammar.rules import Rule_2
 class TestGrammarRule2Class(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object = Street(pos_1=[0, 0], pos_2=[10, 0])
         self.infrastructure.add(object)
 
     def test_in(self):
         object = NeighborhoodAccess(pos_1=[5, 5], pos_2=[5, -5])
         self.infrastructure.add(object)
-        rule = Rule_2(self.infrastructure)
+        rule = Rule_2(self.infrastructure, proximity_radius=1)
         edges = self.infrastructure.edges_id
         # Check
         result, intersection = rule.check(edge_id=edges[0], other_edge_id=edges[1])
@@ -29,7 +29,7 @@ class TestGrammarRule2Class(unittest.TestCase):
     def test_passing_ends(self):
         object = NeighborhoodAccess(pos_1=[0.5, 5], pos_2=[0.5, -5])
         self.infrastructure.add(object)
-        rule = Rule_2(self.infrastructure)
+        rule = Rule_2(self.infrastructure, proximity_radius=1)
         edges = self.infrastructure.edges_id
         # Check
         result, intersection = rule.check(edge_id=edges[0], other_edge_id=edges[1])
@@ -38,7 +38,7 @@ class TestGrammarRule2Class(unittest.TestCase):
     def test_out(self):
         object = NeighborhoodAccess(pos_1=[-2, 5], pos_2=[-2, -5])
         self.infrastructure.add(object)
-        rule = Rule_2(self.infrastructure)
+        rule = Rule_2(self.infrastructure, proximity_radius=1)
         edges = self.infrastructure.edges_id
         # Check
         result, intersection = rule.check(edge_id=edges[0], other_edge_id=edges[1])
@@ -47,7 +47,7 @@ class TestGrammarRule2Class(unittest.TestCase):
     def test_parallel(self):
         object = NeighborhoodAccess(pos_1=[2, -1], pos_2=[2, 11])
         self.infrastructure.add(object)
-        rule = Rule_2(self.infrastructure)
+        rule = Rule_2(self.infrastructure, proximity_radius=1)
         edges = self.infrastructure.edges_id
         # Check
         result, intersection = rule.check(edge_id=edges[0], other_edge_id=edges[1])
@@ -56,7 +56,7 @@ class TestGrammarRule2Class(unittest.TestCase):
     def test_on(self):
         object = NeighborhoodAccess(pos_1=[2, 0], pos_2=[8, 0])
         self.infrastructure.add(object)
-        rule = Rule_2(self.infrastructure)
+        rule = Rule_2(self.infrastructure, proximity_radius=1)
         edges = self.infrastructure.edges_id
         # Check
         result, intersection = rule.check(edge_id=edges[0], other_edge_id=edges[1])

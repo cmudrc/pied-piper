@@ -1,17 +1,21 @@
 import os
 import csv
 
-#path: str, 
+from piperabm.tools.coordinate.projection import xy_latlong
+
+from piperabm.data.utqiavik.info import location
+
+
 def load(name: str = 'homes', format: str = 'csv'):
     path = os.path.dirname(os.path.realpath(__file__))
     filename = name + '.' + format
     filepath = os.path.join(path, filename)
-    points = []
+    locations = []
     with open(filepath, 'r', newline='\n') as file:
         reader = csv.reader(file)
         for row in reader:
-            points.append([float(row[0]), float(row[1])])
-    return points
+            locations.append([float(row[0]), float(row[1])])
+    return locations
 
 
 if __name__ == "__main__":

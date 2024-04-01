@@ -7,7 +7,7 @@ from piperabm.infrastructure_new.grammar.rules import Rule_1
 class TestGrammarRule1Class_Check(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object = Street(pos_1=[0, 0], pos_2=[10, 0])
         self.infrastructure.add(object)
 
@@ -15,7 +15,7 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
         object = Junction(pos=[0, 0])
         id_1 = self.infrastructure.add(object)
         id_2 = self.infrastructure.edges_id[0]
-        rule = Rule_1(self.infrastructure)
+        rule = Rule_1(self.infrastructure, proximity_radius=1)
         result = rule.check(node_id=id_1, edge_id=id_2)
         self.assertFalse(result)
     
@@ -23,7 +23,7 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
         object = Junction(pos=[-0.5, 0.5])
         id_1 = self.infrastructure.add(object)
         id_2 = self.infrastructure.edges_id[0]
-        rule = Rule_1(self.infrastructure)
+        rule = Rule_1(self.infrastructure, proximity_radius=1)
         result = rule.check(node_id=id_1, edge_id=id_2)
         self.assertFalse(result)
     
@@ -31,7 +31,7 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
         object = Junction(pos=[0.5, 0.5])
         id_1 = self.infrastructure.add(object)
         id_2 = self.infrastructure.edges_id[0]
-        rule = Rule_1(self.infrastructure)
+        rule = Rule_1(self.infrastructure, proximity_radius=1)
         result = rule.check(node_id=id_1, edge_id=id_2)
         self.assertFalse(result)
     
@@ -39,7 +39,7 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
         object = Home(pos=[3, 0.5])
         id_1 = self.infrastructure.add(object)
         id_2 = self.infrastructure.edges_id[0]
-        rule = Rule_1(self.infrastructure)
+        rule = Rule_1(self.infrastructure, proximity_radius=1)
         result = rule.check(node_id=id_1, edge_id=id_2)
         self.assertTrue(result) # Won't happen in run
     
@@ -47,7 +47,7 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
         object = Junction(pos=[3, 0.5])
         id_1 = self.infrastructure.add(object)
         id_2 = self.infrastructure.edges_id[0]
-        rule = Rule_1(self.infrastructure)
+        rule = Rule_1(self.infrastructure, proximity_radius=1)
         result = rule.check(node_id=id_1, edge_id=id_2)
         self.assertTrue(result)
     
@@ -55,7 +55,7 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
         object = Junction(pos=[3, 3])
         id_1 = self.infrastructure.add(object)
         id_2 = self.infrastructure.edges_id[0]
-        rule = Rule_1(self.infrastructure)
+        rule = Rule_1(self.infrastructure, proximity_radius=1)
         result = rule.check(node_id=id_1, edge_id=id_2)
         self.assertFalse(result)
 
@@ -63,12 +63,12 @@ class TestGrammarRule1Class_Check(unittest.TestCase):
 class TestGrammarRule1Class_0(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object_1 = Junction(pos=[3, 0.5])
         object_2 = Street(pos_1=[0, 0], pos_2=[10, 0])
         self.id_1 = self.infrastructure.add(object_1)
         self.infrastructure.add(object_2)
-        self.rule = Rule_1(self.infrastructure)
+        self.rule = Rule_1(self.infrastructure, proximity_radius=1)
 
     def test_apply(self):
         self.assertEqual(len(self.infrastructure.junctions), 3)

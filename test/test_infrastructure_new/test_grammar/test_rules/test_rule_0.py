@@ -7,12 +7,12 @@ from piperabm.infrastructure_new.grammar.rules import Rule_0
 class TestGrammarRule0Class_0(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object_1 = Street(pos_1=[0, 0.1], pos_2=[0, 10])
         object_2 = Street(pos_1=[0.1, 0], pos_2=[10, 0])
         self.infrastructure.add(object_1)
         self.infrastructure.add(object_2)
-        self.rule = Rule_0(self.infrastructure)
+        self.rule = Rule_0(self.infrastructure, proximity_radius=1)
         self.id_1 = self.infrastructure.find([0, 0.1])
         self.id_2 = self.infrastructure.find([0.1, 0])
         self.id_3 = self.infrastructure.find([0, 10])
@@ -52,14 +52,14 @@ class TestGrammarRule0Class_0(unittest.TestCase):
 class TestGrammarRule0Class_1(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object_1 = Street(pos_1=[0, 0.1], pos_2=[0, 10])
         object_2 = Street(pos_1=[0.1, 0], pos_2=[10, 0])
         object_3 = Street(pos_1=[0, 0.1], pos_2=[0.1, 0])
         self.infrastructure.add(object_1)
         self.infrastructure.add(object_2)
         self.infrastructure.add(object_3)
-        self.rule = Rule_0(self.infrastructure)
+        self.rule = Rule_0(self.infrastructure, proximity_radius=1)
 
     def test_find(self):
         self.assertEqual(len(self.infrastructure.junctions), 6)
@@ -88,14 +88,14 @@ class TestGrammarRule0Class_1(unittest.TestCase):
 class TestGrammarRule0Class_2(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object_1 = Street(pos_1=[0, 2], pos_2=[0, 10])
         object_2 = Street(pos_1=[2, 0], pos_2=[10, 0])
         object_3 = Street(pos_1=[0, 2], pos_2=[2, 0])
         self.infrastructure.add(object_1)
         self.infrastructure.add(object_2)
         self.infrastructure.add(object_3)
-        self.rule = Rule_0(self.infrastructure)
+        self.rule = Rule_0(self.infrastructure, proximity_radius=1)
 
     def test_find(self):
         self.assertEqual(len(self.infrastructure.junctions), 6)
@@ -113,12 +113,12 @@ class TestGrammarRule0Class_2(unittest.TestCase):
 class TestGrammarRule0Class_3(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.infrastructure = Infrastructure(proximity_radius=1)
+        self.infrastructure = Infrastructure()
         object_1 = Street(pos_1=[0.1, 0], pos_2=[0.5, 10])
         object_2 = Street(pos_1=[-0.1, 0], pos_2=[0, 10])
         self.infrastructure.add(object_1)
         self.infrastructure.add(object_2)
-        self.rule = Rule_0(self.infrastructure)
+        self.rule = Rule_0(self.infrastructure, proximity_radius=1)
         id_1 = self.infrastructure.find([0.1, 0])
         id_2 = self.infrastructure.find([-0.1, 0])
         self.rule.apply(id_1, id_2)

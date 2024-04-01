@@ -10,9 +10,9 @@ class Rule_2(Rule):
     Condition for edge to edge intersection
     """
 
-    def __init__(self, infrastructure):
+    def __init__(self, infrastructure, proximity_radius: float = 1):
         name = "rule 2"
-        super().__init__(infrastructure, name)
+        super().__init__(infrastructure, name, proximity_radius)
 
     def check(self, edge_id, other_edge_id):
         result = False

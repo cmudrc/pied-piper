@@ -12,7 +12,7 @@ class Rule_3(Rule):
     Condition for connecting isolated non-junction items to the rest
     """
 
-    def __init__(self, infrastructure, search_radius: float = None):
+    def __init__(self, infrastructure, proximity_radius: float = 1, search_radius: float = None):
         name = "rule 3"
         self.search_radius = search_radius
         super().__init__(infrastructure, name)
