@@ -116,6 +116,28 @@ class Model(PureObject, Graphics):
             deltas_file.save(deltas)
         deltas_file.append(delta)
 
+    def load_deltas(self, name: str = 'simulation', _from=None, _to=None):
+        deltas_file = JsonFile(self.path, filename=name)
+        deltas = deltas_file.load()
+        if _from is None:
+            _from = 0
+        if _to is None:
+            _to = len(deltas) # Apply all
+        return deltas[_from:_to]
+
+    def apply_delta(self, delta):
+        dictionary = self.serialize()
+        dictionary_new = Delta.apply(dictionary, delta)
+        self.deserialize(dictionary_new)
+
+    def apply_deltas(self, name: str = 'simulation', _from=None, _to=None):
+        """
+        Load deltas from file and apply the deltas between _from to _to
+        """
+        deltas = self.load_deltas(name, _from, _to)
+        for delta in deltas:
+            self.apply_delta(delta)
+
     def save(self, name: str = 'model'):
         """
         Load model to file
