@@ -16,5 +16,8 @@ def infrastructure_deserialize(dictionary):
         object = Street()
     elif dictionary["type"] == "neighborhood_access":
         object = NeighborhoodAccess()
+    else:
+        print("object not recognized")
+        raise ValueError
     object.deserialize(dictionary)
     return object

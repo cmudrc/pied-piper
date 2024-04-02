@@ -1,11 +1,12 @@
 from copy import deepcopy
 
 from piperabm.object import PureObject
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Matter(PureObject):
 
-    def __init__(self, matter: dict):
+    def __init__(self, matter: dict = {}):
         super().__init__()
         for name in matter:
             if matter[name] < 0:
@@ -18,7 +19,7 @@ class Matter(PureObject):
 
     def has_zero(self, names: list = None):
         """
-        Check whether any zero amount of a matter exists in names
+        Check whether any zero amount of a matter exists between names
         """
         results = []
         if names is None:
@@ -109,8 +110,14 @@ class Matter(PureObject):
         elif isinstance(other, dict):
             library = deepcopy(self.library)
             for name in other:
-                library[name] /= other[name]
+                if other[name] == 0:
+                    library[name] = SYMBOLS['inf']
+                else:
+                    library[name] /= other[name]
             return Matter(library)
+        elif isinstance(other, Matter):
+            other_library = deepcopy(other.library)
+            return self.__truediv__(other_library)
         else:
             raise ValueError
 
@@ -122,13 +129,13 @@ class Matter(PureObject):
 
     
 if __name__ == "__main__":
-    matter = Matter({"food": 1, "water": 2, "energy": 3})
+    matter = Matter({"food": 2, "water": 2, "energy": 3})
     other = Matter({"food": 1})
     #print(matter, other)
 
-    remainder = matter - other
-    print(matter.has_zero())
+    #remainder = matter - other
+    #print(matter.has_zero())
     #print(matter, other, remainder)
-    #new_matter = matter / 2
-    #print(new_matter)
+    new_matter = matter / other
+    print(new_matter)
 

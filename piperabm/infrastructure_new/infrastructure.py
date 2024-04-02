@@ -13,10 +13,10 @@ class Infrastructure(PureObject, Query, Graphics):
 
     type = "infrastructure"
 
-    def __init__(self, model=None):
+    def __init__(self):
         super().__init__()
         self.G = nx.Graph()
-        self.model = model # Bind
+        self.model = None # Bind
         self.library = {}
         self.baked = True
         self.path = None
@@ -24,6 +24,7 @@ class Infrastructure(PureObject, Query, Graphics):
     def bake(
             self,
             save: bool = False,
+            name: str = 'infrastructure',
             report: bool = False,
             proximity_radius: float = 1,
             search_radius: float = None
@@ -32,6 +33,7 @@ class Infrastructure(PureObject, Query, Graphics):
             grammar = Grammar(
                 infrastructure=self,
                 save=save,
+                name=name,
                 proximity_radius=proximity_radius,
                 search_radius=search_radius
             )
@@ -88,47 +90,45 @@ class Infrastructure(PureObject, Query, Graphics):
         """
         return Paths(infrastructure=self)
 
-    def save(self):
+    def save(self, name: str = 'infrastructure'):
         """
         Save infrastructure to file
         """
-        filename = 'infrastructure'
         data = self.serialize()
-        file = JsonFile(self.path, filename)
+        file = JsonFile(self.path, filename=name)
         file.save(data)
 
-    def load(self):
+    def load(self, name: str = 'infrastructure'):
         """
         Load infrastructure from file
         """
-        filename = 'infrastructure'
-        file = JsonFile(self.path, filename)
+        file = JsonFile(self.path, filename=name)
         data = file.load()
         self.deserialize(data)
 
     def serialize(self):
-        dictionaty = {}
+        dictionary = {}
         library_serialized = {}
         for id in self.all:
             object = self.get(id)
             library_serialized[id] = object.serialize()
-        dictionaty['library'] = library_serialized
-        dictionaty['G'] = nx.to_dict_of_dicts(self.G)
-        dictionaty['baked'] = self.baked
-        dictionaty['type'] = self.type
-        return dictionaty
+        dictionary['library'] = library_serialized
+        dictionary['G'] = nx.to_dict_of_dicts(self.G)
+        dictionary['baked'] = self.baked
+        dictionary['type'] = self.type
+        return dictionary
 
-    def deserialize(self, dictionaty):
-        library_serialized = dictionaty['library']
+    def deserialize(self, dictionary):
+        library_serialized = dictionary['library']
         for id in library_serialized:
             object = infrastructure_deserialize(library_serialized[id])
             self.library[int(id)] = object
         converted_dict_of_dicts = {
             int(outer_key): {int(inner_key): values for inner_key, values in outer_dict.items()}
-            for outer_key, outer_dict in dictionaty['G'].items()
+            for outer_key, outer_dict in dictionary['G'].items()
         }
         self.G = nx.from_dict_of_dicts(d=converted_dict_of_dicts)
-        self.baked = dictionaty['baked']
+        self.baked = dictionary['baked']
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.infrastructure_new import Infrastructure
+from piperabm.society_new import Society
 from piperabm.economy import ExchangeRate
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
 
@@ -42,19 +43,26 @@ class Model(PureObject):
             print("object not recognized")
             raise ValueError
         
-    def add(self, object, id: int = None):
-        if object.section == "infrastructure":
-            self.infrastructure.add(object=object, id=id)
-        elif object.type == "infrastructure":
+    def add(self, object):
+        if object.type == 'infrastructure':
             self.infrastructure = object
-            self.infrastructure.model = self
-            '''
-        elif object.section == "society":
-            self.society.add(object=object, id=id)
-            '''
+            self.infrastructure.model = self # Binding
+        elif object.type == 'society':
+            self.society = object
+            self.society.model = self # Binding
         else:
             print("object not recognized")
             raise ValueError
+            '''
+            try:
+                if object.section == "infrastructure":
+                    self.infrastructure.add(object=object, id=id)
+                elif object.section == "society":
+                    self.society.add(object=object, id=id)
+            except:
+                pass
+            '''
+
         
 
 if __name__ == "__main__":

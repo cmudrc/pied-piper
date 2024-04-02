@@ -1,8 +1,5 @@
-from copy import deepcopy
-
 from piperabm.object import PureObject
-from piperabm.matter import Matters, Containers
-from piperabm.matter.matters.samples import matters_1 as default_fuel_rate
+from piperabm.matter_new import Matter
 from piperabm.time import DeltaTime
 from piperabm.tools.symbols import SYMBOLS
 
@@ -15,8 +12,8 @@ class Transportation(PureObject):
             self,
             name: str = None,
             speed: float = SYMBOLS['inf'],
-            fuels_rate: Matters = deepcopy(default_fuel_rate),
-            wear: float = 1,
+            fuels_rate: Matter = Matter({'food': 0, 'water': 0, 'energy': 0}),
+            wear: float = 0,
     ):
         self.name = name
         self.speed = speed
@@ -64,11 +61,12 @@ class Transportation(PureObject):
         """
         How long can one move having *fuels*
         """
-        if isinstance(fuels, Containers):
-            fuels = fuels.to_matters()
-        rates = self.fuels_rate.amounts()
-        ratios = fuels / rates
-        ratios = ratios.amounts()
+        if isinstance(fuels, dict):
+            fuels = Matter(fuels)
+        if not isinstance(fuels, Matter):
+            raise ValueError
+        ratios = fuels / self.fuels_rate
+        ratios = ratios.library
         min_key = min(ratios, key=ratios.get)
         duration = ratios[min_key]
         return duration
@@ -95,8 +93,7 @@ class Transportation(PureObject):
             raise ValueError
         self.name = dictionary['name']
         self.speed = float(dictionary['speed'])
-        self.fuels_rate = Matters()
-        self.fuels_rate.deserialize(dictionary['fuels_rate'])
+        self.fuels_rate = Matter(dictionary['fuels_rate'])
         self.wear = dictionary['wear']
 
 
@@ -106,5 +103,5 @@ if __name__ == '__main__':
 
     fuels_rate = walk.fuels_by_length(1000)
     print(fuels_rate)
-    d = {'a': 1, 'b': 2, 'c': float('inf')}
-    print(min(d))
+    duration = walk.duration_by_fuels({'food': 1, 'water': 1, 'energy': 1})
+    print(duration)

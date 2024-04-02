@@ -8,4 +8,5 @@ infrastructure.bake()
 
 
 if __name__ == '__main__':
+    #print(infrastructure)
     infrastructure.show()

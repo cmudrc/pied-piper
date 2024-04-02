@@ -8,7 +8,8 @@ class Grammar:
             infrastructure,
             proximity_radius: float = 1,
             search_radius: float = None,
-            save: bool = False
+            save: bool = False,
+            name: str = "infrastructure"
         ):
         self.infrastructure = infrastructure
         if search_radius is not None and \
@@ -19,6 +20,7 @@ class Grammar:
             self.search_radius = search_radius
         self.proximity_radius = proximity_radius
         self.save = save
+        self.name = name
     
     def apply(self, report=False):
         """
@@ -36,7 +38,7 @@ class Grammar:
         ]
 
         if self.save is True:
-            self.infrastructure.save()
+            self.infrastructure.save(name=self.name)
 
         i = 0
         while True:
@@ -45,7 +47,7 @@ class Grammar:
 
             if anything_happened is True:
                 if self.save is True:
-                    self.infrastructure.save()
+                    self.infrastructure.save(name=self.name)
                 i = 0  # reset the loop
             else:
                 i += 1  # move to the next grammar
@@ -53,7 +55,7 @@ class Grammar:
             if i == len(rules): # Done
                 self.infrastructure.baked = True
                 if self.save is True:
-                    self.infrastructure.save()
+                    self.infrastructure.save(name=self.name)
                 break  # exit if all grammars are applied without any changes
 
 
@@ -61,7 +63,7 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure_new import Infrastructure, Home, Street
 
-    infrastructure = Infrastructure(proximity_radius=1)
+    infrastructure = Infrastructure()
     object_1 = Street(pos_1=[-10, 0], pos_2=[10, 0])
     object_2 = Street(pos_1=[0, -10], pos_2=[0, 10])
     object_3 = Home(pos=[5, 0.5])
