@@ -24,9 +24,6 @@ class Move(PureObject):
                 tracks.append(track)
         return tracks
 
-    def get(self, index):
-        self.model.get(index)
-
     @property
     def transportation(self):
         return self.agent.transportation
@@ -36,12 +33,12 @@ class Move(PureObject):
         return self.queue.agent
     
     @property
-    def model(self):
-        return self.agent.model
+    def society(self):
+        return self.agent.society
     
     @property
-    def transportation(self):
-        return self.agent.transportation
+    def model(self):
+        return self.society.model
     
     @property
     def destination(self):

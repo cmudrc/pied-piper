@@ -2,7 +2,7 @@ import os
 
 from piperabm.infrastructure_new import Infrastructure
 from piperabm.data.utqiavik.load import add_to_model
-from piperabm.data.utqiavik.samples.uptown.info import latitude_min, latitude_max, longitude_min, longitude_max
+from piperabm.data.utqiavik.samples.uptown.infrastructure.info import latitude_min, latitude_max, longitude_min, longitude_max
 
 
 infrastructure = Infrastructure()

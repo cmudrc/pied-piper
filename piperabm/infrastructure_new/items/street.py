@@ -38,11 +38,15 @@ class Street(PureObject):
         return result
     
     @property
+    def adjustment_factor(self):
+        return self.difficulty * degradation_function(self.degradation)
+    
+    @property
     def adjusted_length(self):
         """
         Calculate adjusted length based on physical length, difficulty, and degradation factor
         """
-        return self.length * self.difficulty * degradation_function(self.degradation)
+        return self.length * self.adjustment_factor
 
     def serialize(self) -> dict:
         dictionary = {}

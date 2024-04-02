@@ -19,7 +19,8 @@ class Agent(PureObject):
         transportation: Transportation = walk,
         fuels_rate_idle: Matter = Matter({'food': 1, 'water': 1, 'energy': 1}),
         socioeconomic_status: float = 1,
-        balance: float = 1,
+        balance: float = 0,
+        income: float = 0,
         resources: Matter = Matter({'food': 1, 'water': 1, 'energy': 1}),
         enough_resources: Matter = Matter({'food': 1, 'water': 1, 'energy': 1}),
         max_time_outside: DeltaTime = DeltaTime(hours=1),
@@ -50,9 +51,18 @@ class Agent(PureObject):
         self.resources = resources
         self.enough_resources = enough_resources
         self.balance = balance
+        self.income = income
         self.alive = True
         self.vital_resources = ['food', 'water']
         self.death_reasons = None
+
+    @property
+    def model(self):
+        return self.society.model
+
+    @property
+    def infrastructure(self):
+        return self.model.infrastructure
 
     def check_alive(self) -> bool:
         """
@@ -63,7 +73,7 @@ class Agent(PureObject):
             if len(resources_zero) > 0:  # Died
                 self.alive = False
                 self.death_reasons = resources_zero
-        return self.alive
+        #return self.alive
 
     def is_home(self) -> bool:
         """
@@ -99,24 +109,29 @@ class Agent(PureObject):
         """
         Update agent
         """
-        """ Check being alive """
+        # Check being alive
         self.check_alive()
-        """ Update assets """
+
+        # Update
         if self.alive is True:
-            """ Income """
+
+            # Income
             self.balance += self.income * duration.total_seconds()
-            """ Consume resources """
+
+            # Consume resources
             fuels = self.fuels_rate_idle * duration.total_seconds()
             self.resources - fuels
             self.queue.update(duration)
-            """ How long it has been out of home? """
+
+            # How long it has been out of home?
             if self.is_home():
                 self.time_outside = DeltaTime(seconds=0)
             else:
                 self.time_outside += duration
-        """ Decide """
-        if self.alive is True:
-            self.brain.decide()
+        
+            # Decide
+            if self.queue.done is True:
+                self.brain.decide()
 
     def serialize(self) -> dict:
         dictionary = {}
@@ -134,6 +149,7 @@ class Agent(PureObject):
         dictionary['resources'] = self.resources.library
         dictionary['enough_resources'] = self.enough_resources.library
         dictionary['balance'] = self.balance
+        dictionary['income'] = self.income
         dictionary['alive'] = self.alive
         dictionary['vital_resources'] = self.vital_resources
         dictionary['death_reasons'] = self.death_reasons
@@ -158,6 +174,7 @@ class Agent(PureObject):
         self.resources = Matter(dictionary['resources'])
         self.enough_resources = Matter(dictionary['enough_resources'])
         self.balance = dictionary['balance']
+        self.income = dictionary['income']
         self.alive = dictionary['alive']
         self.vital_resources = dictionary['vital_resources']
         self.death_reasons = dictionary['death_reasons']

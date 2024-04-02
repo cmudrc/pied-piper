@@ -6,3 +6,4 @@ location = {
 }
 
 homes_num = 1500
+population = 5000

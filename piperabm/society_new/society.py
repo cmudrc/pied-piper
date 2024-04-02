@@ -17,20 +17,12 @@ class Society(PureObject, Query):
 
     def __init__(
             self,
-            gini_index: float = 0,
-            average_income: float = 0,
-            average_balance: float = 0,
-            average_resources: Matter = Matter({'food': 1, 'water': 1, 'energy': 1}),
             exchange_rate: ExchangeRate = exchange_rate_0,
         ):
         super().__init__()
         self.G = nx.Graph()
         self.model = None # Bind
         self.library = {}
-        self.gini_index = gini_index
-        self.average_income = average_income
-        self.average_balance = average_balance
-        self.average_resources = average_resources
         self.exchange_rate = exchange_rate
         self.path = None
 
@@ -41,23 +33,42 @@ class Society(PureObject, Query):
             result = self.model.infrastructure
         return result
 
-    def generate_agents(self, num: int = 1):
+    def generate_agents(
+            self,
+            num: int = 1,
+            gini_index: float = 0,
+            average_income: float = 0,
+            average_balance: float = 0,
+            average_resources = Matter({'food': 1, 'water': 1, 'energy': 1}),):
         """
         Generate agents
         """
+        distribution = gini.lognorm(gini_index)
+        if isinstance(average_resources, dict):
+            average_resources = Matter(average_resources)
         for _ in range(num):
-            distribution = gini.lognorm(self.gini_index)
             socioeconomic_status = distribution.rvs()        
-            resources = self.average_resources * socioeconomic_status
-            enough_resources = self.average_resources * (10 * socioeconomic_status) ###
-            balance = self.average_balance * socioeconomic_status
+            resources = average_resources * socioeconomic_status
+            enough_resources = average_resources * (10 * socioeconomic_status) ###
+            balance = average_balance * socioeconomic_status
+            income = average_income * socioeconomic_status
             agent = Agent(
                 socioeconomic_status=socioeconomic_status,
                 resources=resources,
                 balance=balance,
-                enough_resources=enough_resources
+                enough_resources=enough_resources,
+                income=income,
             )
             self.add(agent)
+
+    @property
+    def gini_index(self):
+        data = []
+        for id in self.agents:
+            agent = self.get(id)
+            wealth = agent.balance + agent.resources.value(prices=self.exchange_rate.prices)
+            data.append(wealth)
+        return gini.coefficient(data)
     
     def edge_id(self, id_1: int, id_2: int):
         """
@@ -130,7 +141,8 @@ class Society(PureObject, Query):
         """
         Return node type
         """
-        return self.G.nodes[id]['alive']
+        agent = self.get(id)
+        return agent.alive
     
     def filter_alive(self, alive: bool, nodes_id: list = None):
         """
@@ -144,21 +156,27 @@ class Society(PureObject, Query):
                 result.append(node_id)
         return result
     
-    def save(self):
+    def save(self, name: str = 'society'):
         """
-        Save infrastructure to file
+        Save society to file
         """
-        filename = 'infrastructure'
+        if self.path is not None:
+            path = self.path
+        else:
+            path = self.model.path
         data = self.serialize()
-        file = JsonFile(self.path, filename)
+        file = JsonFile(path, filename=name)
         file.save(data)
 
-    def load(self):
+    def load(self, name: str = 'society'):
         """
-        Load infrastructure from file
+        Load society from file
         """
-        filename = 'infrastructure'
-        file = JsonFile(self.path, filename)
+        if self.path is not None:
+            path = self.path
+        else:
+            path = self.model.path
+        file = JsonFile(path, filename=name)
         data = file.load()
         self.deserialize(data)
 
@@ -170,10 +188,6 @@ class Society(PureObject, Query):
             library_serialized[id] = object.serialize()
         dictionary['library'] = library_serialized
         dictionary['G'] = nx.to_dict_of_dicts(self.G)
-        dictionary['gini_index'] = self.gini_index
-        dictionary['average_income'] = self.average_income
-        dictionary['average_balance'] = self.average_balance
-        dictionary['average_resources'] = self.average_resources
         dictionary['exchange_rate'] = self.exchange_rate.serialize()
         dictionary['type'] = self.type
         return dictionary
@@ -188,26 +202,10 @@ class Society(PureObject, Query):
             for outer_key, outer_dict in dictionary['G'].items()
         }
         self.G = nx.from_dict_of_dicts(d=converted_dict_of_dicts)   
-        self.gini_index = dictionary['gini_index']
-        self.average_income = dictionary['average_income']
-        self.average_balance = dictionary['average_balance']
-        self.average_resources = dictionary['average_resources']
         self.exchange_rate = ExchangeRate()
         self.exchange_rate.deserialize(dictionary['exchange_rate'])
 
 if __name__ == "__main__":
 
-    from piperabm.model_new import Model
-    from piperabm.infrastructure_new.samples import infrastructure_1 as infrastructure
-
-    model = Model()
-    model.add(infrastructure)
-    society = Society(
-        gini_index=0.3,
-        average_income=100,
-        average_balance=100,
-    )
-    model.add(society)
-    model.society.generate_agents(num=6)
-
-
+    society = Society()
+    print(society)

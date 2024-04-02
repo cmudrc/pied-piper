@@ -17,13 +17,21 @@ class Matter(PureObject):
     def names(self):
         return self.library.keys()
 
-    def has_zero(self, names: list = None):
+    def check_empty(self, names: list = None):
         """
         Check whether any zero amount of a matter exists between names
         """
         results = []
         if names is None:
             names = self.names
+        for name in names:
+            if name in self.library:
+                if self.library[name] < 0:
+                    results.append(name)
+            else:
+                results.append(name)
+        return results
+        '''
         for name in names:
             if name in self.library:
                 if self.library[name] > 0:
@@ -36,6 +44,7 @@ class Matter(PureObject):
             return True
         else:
             return False
+        '''
         
     def values(self, prices):
         result = {}

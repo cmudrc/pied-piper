@@ -94,15 +94,23 @@ class Infrastructure(PureObject, Query, Graphics):
         """
         Save infrastructure to file
         """
+        if self.path is not None:
+            path = self.path
+        else:
+            path = self.model.path
         data = self.serialize()
-        file = JsonFile(self.path, filename=name)
+        file = JsonFile(path, filename=name)
         file.save(data)
 
     def load(self, name: str = 'infrastructure'):
         """
         Load infrastructure from file
         """
-        file = JsonFile(self.path, filename=name)
+        if self.path is not None:
+            path = self.path
+        else:
+            path = self.model.path
+        file = JsonFile(path, filename=name)
         data = file.load()
         self.deserialize(data)
 

@@ -1,5 +1,3 @@
-name = 'utqiavik_uptown'
-
 # Boundary
 point_1_latitude, point_1_longitude = 71.322109, -156.688674
 point_2_latitude, point_2_longitude = 71.333940, -156.665691

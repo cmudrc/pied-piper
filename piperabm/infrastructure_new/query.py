@@ -140,6 +140,10 @@ class Query:
             result.append(id)
         return result
     
+    def object_type(self, id):
+        object = self.get(id)
+        return object.type
+    
     def filter_type(self, type, ids: list = None):
         """
         Filter a list of objects id based on their type

@@ -38,21 +38,25 @@ class Track(PureObject):
         return self.model.infrastructure
     
     @property
-    def id(self):
+    def edge_id(self):
         """
         Return edge id
         """
         return self.infrastructure.edge_id(self.id_start, self.id_end)
+    
+    @property
+    def edge_object(self):
+        return self.infrastructure.get(self.edge_id)
 
     @property
     def pos_start(self):
-        item = self.model.get(self.id_start)
-        return item.pos
+        object = self.infrastructure.get(self.id_start)
+        return object.pos
 
     @property
     def pos_end(self):
-        item = self.model.get(self.id_end)
-        return item.pos
+        object = self.infrastructure.get(self.id_end)
+        return object.pos
     
     @property
     def done(self):
@@ -71,18 +75,15 @@ class Track(PureObject):
 
     @property
     def length_real(self):
-        object = self.model.get(self.id)
-        return object.length
+        return self.edge_object.length
     
     @property
     def length_adjusted(self):
-        infrastructure = self.infrastructure
-        return infrastructure.adjusted_length(self.id_start, self.id_end)
+        return self.edge_object.adjusted_length
     
     @property
     def adjustment_factor(self):
-        object = self.model.get(self.id)
-        return object.adjustment_factor
+        return self.edge_object.adjustment_factor
 
     @property
     def vector(self):
@@ -139,8 +140,7 @@ class Track(PureObject):
 
             # Update infrastructure after finishing track
             if self.done is True:
-                edge = self.model.get(self.id)
-                edge.degradation.add(self.action.usage)
+                self.edge_object.degradation += self.action.usage
 
         return excess_delta_time
 
