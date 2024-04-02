@@ -1,8 +1,9 @@
 import networkx as nx
 
 from piperabm.object import PureObject
-from piperabm.society_new.agent import Agent
 from piperabm.society_new.query import Query
+from piperabm.society_new.graphics import Graphics
+from piperabm.society_new.agent import Agent
 from piperabm.matter_new import Matter
 from piperabm.economy import ExchangeRate
 from piperabm.economy.exchange_rate.samples import exchange_rate_0
@@ -11,7 +12,7 @@ from piperabm.society_new.deserialize import society_deserialize
 from piperabm.tools.file_manager import JsonFile
 
 
-class Society(PureObject, Query):
+class Society(PureObject, Query, Graphics):
 
     type = "society"
 
@@ -204,6 +205,7 @@ class Society(PureObject, Query):
         self.G = nx.from_dict_of_dicts(d=converted_dict_of_dicts)   
         self.exchange_rate = ExchangeRate()
         self.exchange_rate.deserialize(dictionary['exchange_rate'])
+
 
 if __name__ == "__main__":
 

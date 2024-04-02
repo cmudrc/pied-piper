@@ -1,4 +1,5 @@
 from piperabm.object import PureObject
+from piperabm.model_new.graphics import Graphics
 from piperabm.infrastructure_new import Infrastructure
 from piperabm.society_new import Society
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
@@ -6,7 +7,7 @@ from piperabm.tools import Delta
 from piperabm.tools.file_manager import JsonFile
 
 
-class Model(PureObject):
+class Model(PureObject, Graphics):
 
     type = "model"
 
@@ -114,6 +115,22 @@ class Model(PureObject):
             deltas = []
             deltas_file.save(deltas)
         deltas_file.append(delta)
+
+    def save(self, name: str = 'model'):
+        """
+        Load model to file
+        """
+        data = self.serialize()
+        file = JsonFile(self.path, filename=name)
+        file.save(data)
+
+    def load(self, name: str = 'model'):
+        """
+        Load model from file
+        """
+        file = JsonFile(self.path, filename=name)
+        data = file.load()
+        self.deserialize(data)
 
     def serialize(self) -> dict:
         dictionary = {}

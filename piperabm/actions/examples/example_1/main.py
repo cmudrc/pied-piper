@@ -37,8 +37,10 @@ if __name__ == "__main__":
     import os
 
     model.path = os.path.dirname(os.path.realpath(__file__))
-    
+
     # Run model
     print(agent.pos)
-    model.run(n=130, report=False)
+    #model.run(n=130, report=False)
+    model.run(n=80, report=False)
     print(agent.pos)
+    model.show()
