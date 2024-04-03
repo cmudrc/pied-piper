@@ -11,4 +11,5 @@ infrastructure.bake(
 
 
 if __name__ == "__main__":
+    print(infrastructure.baked_streets, infrastructure.baked_neighborhood)
     infrastructure.show_stat()

@@ -20,5 +20,5 @@ def point_to_point(point_1, point_2, vector=False, ndarray=False):
 if __name__ == '__main__':
     point_1 = [0, 0]
     point_2 = [3, 4]
-    distance = point_to_point(point_1, point_2)
+    distance = point_to_point(point_1, point_2, vector=True)
     print(distance)

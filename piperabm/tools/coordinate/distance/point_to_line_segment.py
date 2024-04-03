@@ -71,5 +71,5 @@ if __name__ == "__main__":
     point = [-3, 4]
     line_point_1 = [0, 0]
     line_point_2 = [2, 0]
-    vector = point_to_line_segment(point, line_point_1, line_point_2)
+    vector = point_to_line_segment(point, line_point_1, line_point_2, perpendicular_only=False)
     print(vector)

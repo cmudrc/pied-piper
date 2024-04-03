@@ -18,17 +18,8 @@ class Infrastructure(PureObject, Query, Graphics):
         self.G = nx.Graph()
         self.model = None # Bind
         self.library = {}
-        self.baked_streets = True
-        self.baked_neighborhood = True
+        self.baked = True
         self.path = None
-
-    @property
-    def baked(self):
-        result = False
-        if self.baked_streets is True and \
-        self.baked_neighborhood is True:
-            result = True
-        return result
 
     def bake(
             self,
@@ -131,8 +122,7 @@ class Infrastructure(PureObject, Query, Graphics):
             library_serialized[id] = object.serialize()
         dictionary['library'] = library_serialized
         dictionary['G'] = nx.to_dict_of_dicts(self.G)
-        dictionary['baked_streets'] = self.baked_streets
-        dictionary['baked_neighborhood'] = self.baked_neighborhood
+        dictionary['baked'] = self.baked
         dictionary['type'] = self.type
         return dictionary
 
@@ -146,16 +136,18 @@ class Infrastructure(PureObject, Query, Graphics):
             for outer_key, outer_dict in dictionary['G'].items()
         }
         self.G = nx.from_dict_of_dicts(d=converted_dict_of_dicts)
-        self.baked_streets = dictionary['baked_streets']
-        self.baked_neighborhood = dictionary['baked_neighborhood']
+        self.baked = dictionary['baked']
 
 
 if __name__ == "__main__":
 
     from piperabm.infrastructure_new import Street
 
-    infrastructure = Infrastructure()
+    infrastructure = Infrastructure(
+        model=None,
+        proximity_radius=1
+    )
     street = Street(pos_1=[0, 0], pos_2=[10, 10])
     infrastructure.add(street)
-    infrastructure.bake(proximity_radius=1)
+    infrastructure.bake()
     print(infrastructure)

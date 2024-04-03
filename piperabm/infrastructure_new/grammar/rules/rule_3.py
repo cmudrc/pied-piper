@@ -12,7 +12,7 @@ class Rule_3(Rule):
     Condition for connecting isolated non-junction items to the rest
     """
 
-    def __init__(self, infrastructure, proximity_radius: float = 1, search_radius: float = None):
+    def __init__(self, infrastructure, search_radius: float = None):
         name = "rule 3"
         self.search_radius = search_radius
         super().__init__(infrastructure, name)
@@ -41,50 +41,95 @@ class Rule_3(Rule):
             )
         for edge_id in edges_id_nearby:
             edge_object = self.get(edge_id)
+            # only perpendicular distance from edge
             distance_vector = ds.point_to_line(
                 point=node_object.pos,
                 line=[edge_object.pos_1, edge_object.pos_2],
                 segment=True,
                 vector=True
             )
-            distances.append([edge_id, distance_vector])
-            #distances.append(distance_vector)
+            if distance_vector is not None:
+                distances.append([edge_id, distance_vector])
+            else:
+                ids = self.infrastructure.edge_ids(edge_id)
+                node_object_1 = self.get(ids[0])
+                distance_vector_1 = ds.point_to_point(
+                    point_1=node_object.pos,
+                    point_2=node_object_1.pos,
+                    vector=True
+                )
+                node_object_2 = self.get(ids[0])
+                distance_vector_2 = ds.point_to_point(
+                    point_1=node_object.pos,
+                    point_2=node_object_2.pos,
+                    vector=True
+                )
+                distance_1 = vc.magnitude(distance_vector_1)
+                distance_2 = vc.magnitude(distance_vector_2)
+                if distance_1 < distance_2:
+                    distances.append([ids[0], distance_vector_1])
+                else:
+                    distances.append([ids[1], distance_vector_2])
+
         # Find the nearest edge
         smallest_distance = None
-        target_edge = None
-        for edge_id, distance_vector in distances:
+        target_id = None
+        for id, distance_vector in distances:
             distance = vc.magnitude(distance_vector)
             if smallest_distance is None or \
             distance < smallest_distance:
                 smallest_distance = distance
                 smallest_distance_vector = distance_vector
-                target_edge = edge_id
+                target_id = id
         
         # Create new objects
-        pos_1 = node_object.pos
-        pos_2 = list(np.array(pos_1) + np.array(smallest_distance_vector))
-        junction = Junction(pos=pos_2)
-        id = self.add(junction)
-        new_object = NeighborhoodAccess(pos_1=pos_1, pos_2=pos_2)
-        new_id = self.infrastructure.new_id
-        self.infrastructure.library[new_id] = new_object
-        self.infrastructure.G.add_edge(
-            id,
-            node_id,
-            id=new_id
-        )
-        
-        # Rule 1
-        rule_1 = Rule_1(self.infrastructure)
-        rule_1.apply(node_id=id, edge_id=target_edge, report=report)
+        target_object = self.get(target_id)
+        # Node as target
+        if target_object.category == 'node':
+            pos_1 = node_object.pos
+            pos_2 = target_object.pos
+            new_object = NeighborhoodAccess(pos_1=pos_1, pos_2=pos_2)
+            new_id = self.infrastructure.new_id
+            self.infrastructure.library[new_id] = new_object
+            self.infrastructure.G.add_edge(
+                target_id,
+                node_id,
+                id=new_id
+            )
+            # Report
+            if report is True:
+                logs = []
+                log = Log(self.infrastructure, new_id, 'added')
+                logs.append(log)
 
-        # Report
-        if report is True:
-            logs = []
-            log = Log(self.infrastructure, new_id, 'added')
-            logs.append(log)
-            log = Log(self.infrastructure, id, 'added')
-            logs.append(log)
+        # Edge as target
+        elif target_object.category == 'edge':
+            pos_1 = node_object.pos
+            pos_2 = list(np.array(pos_1) + np.array(smallest_distance_vector))
+            junction = Junction(pos=pos_2)
+            id = self.add(junction)
+            self.infrastructure.baked_streets = True
+            self.infrastructure.baked_neighborhood = True
+            new_object = NeighborhoodAccess(pos_1=pos_1, pos_2=pos_2)
+            new_id = self.infrastructure.new_id
+            self.infrastructure.library[new_id] = new_object
+            self.infrastructure.G.add_edge(
+                id,
+                node_id,
+                id=new_id
+            )
+            
+            # Rule 1
+            rule_1 = Rule_1(self.infrastructure)
+            rule_1.apply(node_id=id, edge_id=target_id, report=report)
+
+            # Report
+            if report is True:
+                logs = []
+                log = Log(self.infrastructure, new_id, 'added')
+                logs.append(log)
+                log = Log(self.infrastructure, id, 'added')
+                logs.append(log)
         
         # Report
         if report is True:

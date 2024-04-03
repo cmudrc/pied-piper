@@ -21,8 +21,22 @@ class Grammar:
         self.proximity_radius = proximity_radius
         self.save = save
         self.name = name
-    
+
     def apply(self, report=False):
+        if self.save is True:
+            self.infrastructure.save(name=self.name)
+
+        # Baking streets
+        if self.infrastructure.baked_streets is False:
+            self.apply_street_grammar(report=report)
+            self.infrastructure.baked_streets = True
+
+        # Baking neighborhood
+        if self.infrastructure.baked_neighborhood is False:
+            self.apply_neighborhood_grammar(report=report)
+            self.infrastructure.baked_neighborhood = True
+
+    def apply_street_grammar(self, report=False):
         """
         Apply all grammars based on a decision tree
             if a rule is not yielding any changes, it is ok to go the next rule.
@@ -34,11 +48,7 @@ class Grammar:
             Rule_0(self.infrastructure, self.proximity_radius),
             Rule_1(self.infrastructure, self.proximity_radius),
             Rule_2(self.infrastructure, self.proximity_radius),
-            Rule_3(self.infrastructure, self.proximity_radius, self.search_radius),
         ]
-
-        if self.save is True:
-            self.infrastructure.save(name=self.name)
 
         i = 0
         while True:
@@ -53,7 +63,29 @@ class Grammar:
                 i += 1  # move to the next grammar
 
             if i == len(rules): # Done
-                self.infrastructure.baked = True
+                if self.save is True:
+                    self.infrastructure.save(name=self.name)
+                break  # exit if all grammars are applied without any changes
+
+    def apply_neighborhood_grammar(self, report=False):
+
+        rules = [
+            Rule_3(self.infrastructure, search_radius=self.search_radius),
+        ]
+
+        i = 0
+        while True:
+            rule = rules[i]
+            anything_happened = rule.find(report=report)
+
+            if anything_happened is True:
+                if self.save is True:
+                    self.infrastructure.save(name=self.name)
+                i = 0  # reset the loop
+            else:
+                i += 1  # move to the next grammar
+
+            if i == len(rules): # Done
                 if self.save is True:
                     self.infrastructure.save(name=self.name)
                 break  # exit if all grammars are applied without any changes
@@ -72,3 +104,4 @@ if __name__ == "__main__":
     infrastructure.add(object_3)
     grammar = Grammar(infrastructure)
     grammar.apply(report=True)
+    print(infrastructure.baked)

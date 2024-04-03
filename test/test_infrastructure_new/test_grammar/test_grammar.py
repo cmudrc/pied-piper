@@ -89,9 +89,10 @@ class TestInfrastructureGrammarClass_3(unittest.TestCase):
         grammar = Grammar(self.infrastructure, proximity_radius=1)
         self.assertEqual(len(self.infrastructure.nodes_id), 3)
         self.assertEqual(len(self.infrastructure.edges_id), 1)
-        grammar.apply()
+        grammar.apply(report=False)
         self.assertEqual(len(self.infrastructure.nodes_id), 4)
         self.assertEqual(len(self.infrastructure.edges_id), 3)
+        #self.infrastructure.show()
 
 
 class TestInfrastructureGrammarClass_4(unittest.TestCase):

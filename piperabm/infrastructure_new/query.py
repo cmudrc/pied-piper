@@ -72,7 +72,8 @@ class Query:
             print("Object type not recognized.")
             raise ValueError
         # Baked
-        self.baked = False
+        self.baked_streets = False
+        self.baked_neighborhood = False
         return id
     
     def find(self, input, ids: list = None):
