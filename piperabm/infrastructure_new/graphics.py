@@ -54,5 +54,7 @@ class Graphics:
     def show(self):
         ax = plt.gca()
         ax.set_aspect("equal")
+        #mng = plt.get_current_fig_manager()
+        #mng.full_screen_toggle()
         self.to_plt()
         plt.show()

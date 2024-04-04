@@ -17,6 +17,10 @@ class Accessibility:
         return self.measures.model
     
     @property
+    def society(self):
+        return self.model.society
+    
+    @property
     def len(self):
         """
         Return number of entries
@@ -30,54 +34,44 @@ class Accessibility:
         """
         return list(self.library.keys())
     
-    def agent_resource_accessilibity(self, id, resource_name):
-        """
-        Return accessibility values for each agent and each resource
-        """
-        resources_values = self.library[id]
-        values = []
-        for resources_value in resources_values:
-            values.append(resources_value[resource_name])
-        return values
-    
-    def agent_resources_accessibility(self, id):
-        """
-        Return accessibility values for each agent and for all its resources
-        """
-        resources_values = self.library[id]
-        values = []
-        for resources_value in resources_values:
-            agent_resources_value = []
-            for resource_name in self.resource_names:
-                agent_resources_value.append(resources_value[resource_name])
-            values.append(average_geometric(agent_resources_value))
-        return values
-    
-    def agents_resource_accessibility(self, resource_name):
-        """
-        Return accessibility values for a resource for across agents
-        """
-        values = []
-        for i in range(self.len):
-            agent_resource_values = []
-            for id in self.agents:
-                agent_resource_values.append(self.library[id][i][resource_name])
-            values.append(average(agent_resource_values))
-        return values
-
-    def agents_resources_accessibility(self):
+    def accessibility(self, agents='all', resources='all'):
         """
         Return accessibility values for all resources for across agents
         """
         values = []
+
+        if agents == 'all':
+            ids = self.agents
+        elif isinstance(agents, list):
+            ids = agents
+        elif isinstance(agents, int):
+            ids = [agents]
+        elif agents is None:
+            ids = self.agents
+        else:
+            raise ValueError
+        
+        if resources == 'all':
+            resource_names = self.resource_names
+        elif isinstance(resources, list):
+            resource_names = resources
+        elif isinstance(resources, str) and \
+        resources != 'all':
+            resource_names = [resources]
+        elif resources is None:
+            resource_names = self.resource_names
+        else:
+            raise ValueError
+        
         for i in range(self.len):
             agent_resource_value = []
-            for resource_name in self.resource_names:
+            for resource_name in resource_names:
                 agent_resource_values = []
-                for id in self.agents:
-                    agent_resource_values.append(self.library[id][i][resource_name])
+                for agent_id in ids:
+                    agent_resource_values.append(self.library[agent_id][i][resource_name])
                 agent_resource_value.append(average(agent_resource_values))
             values.append(average_geometric(agent_resource_value))
+        
         return values
 
     @property
@@ -120,30 +114,33 @@ class Accessibility:
         Read current data from model
         """
         self.dates.append(self.model.current_date)
-        # There has to be one more members in date than accessibility values
-        if len(self.dates) > 1:
+        if len(self.dates) > 1: # There has to be one more members in date than accessibility values
             accessibility = None ###################
             self.values.append(accessibility)
     
-    def show(self, scale_y=False, average=True, id='all', resource_name='all'):
+    def show(self, scale_y=False, average=True, agents='all', resources='all'):
         """
         Show the data as plot
         """
+
+        def create_title(agents, resources):
+            title_name = ''
+            if isinstance(resources, str):
+                if resources == 'all':
+                    title_name = 'all resources'
+                else:
+                    title_name = resources
+            elif isinstance(resources, list):
+                for name in resources:
+                    title_name += name
+                    title_name += ', '
+                title_name = title_name[:-2]
+            result = self.name + " " + "of" + " " + title_name + " " + "over time"
+            return result
+
+        title = create_title(agents=agents, resources=resources)
         xs = self.xs
-        if id == 'all':
-            if resource_name == 'all':
-                ys = self.agents_resources_accessibility()
-                title = self.name + " " + "over time"
-            else:
-                ys = self.agents_resource_accessibility(resource_name)
-                title = resource_name + " " + self.name + " " + "over time"
-        else:
-            if resource_name == 'all':
-                ys = self.agent_resources_accessibility(id)
-                title = self.name + " " + "over time"
-            else:
-                ys = self.agent_resource_accessilibity(id, resource_name)
-                title = resource_name + " " + self.name + " " + "over time"
+        ys = self.accessibility(agents=agents, resources=resources)
 
         plt.plot(xs, ys)
 
@@ -277,14 +274,8 @@ if __name__ == "__main__":
         Date(2020, 1, 5),
         Date(2020, 1, 6),
     ]
-    #print(measure.agent_resource_accessilibity(id=1, resource_name='food'))
-    #print(measure.agent_resources_accessibility(id=1))
-    #print(measure.agents_resource_accessibility(resource_name='food'))
-    #print(measure.agents_resources_accessibility())
-    #print(measure.average)
-    #measure.show(resource_name='food')
-    #measure.show(resource_name='water')
-    #measure.show(resource_name='energy')
-    #measure.show(id=2)
-    #measure.show(resource_name='food', id=2)
-    #measure.show()
+
+    #print(measure.accessibility(agents=[1, 2], resources='food'))
+    #print(measure.accessibility(agents='all', resources='food'))
+    measure.show(agents=[1, 2], resources=['food', 'water'])
+

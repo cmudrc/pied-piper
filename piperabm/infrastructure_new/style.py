@@ -1,6 +1,6 @@
-FONT_SIZE = 8
+FONT_SIZE = 6
 
-NODE_ITEM_DEFAULT_RADIUS = 5
+NODE_ITEM_DEFAULT_RADIUS = 2
 
 infrastructure_node_style = {
     "home": {
@@ -13,7 +13,7 @@ infrastructure_node_style = {
     },
     "market": {
         "color": "g",
-        "radius": NODE_ITEM_DEFAULT_RADIUS,
+        "radius": NODE_ITEM_DEFAULT_RADIUS * 10,
     }
 }
 
@@ -22,7 +22,7 @@ infrastructure_edge_style = {
         "color": "k",
     },
     "neighborhood_access": {
-        "color": "g",
+        "color": "silver",
     },
 }
 
