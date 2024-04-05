@@ -41,22 +41,8 @@ class Accessibility:
         """
         Return accessibility values for all resources for across agents
         """
-        data = self.organize_data(agents, resources)
-        agents_values = []
-        for agent_id in data:
-            agent_data = data[agent_id]
-            agent_resources_value = []
-            for resource_name in agent_data:
-                agent_resources_value.append(agent_data[resource_name])
-            avg = average_list(agent_resources_value, method='geometric')
-            agents_values.append(avg)
-        values = average_list(agents_values, method='normal')
-        return values
-    
-    def organize_data(self, agents='all', resources='all'):
-        """
-        Return accessibility values for all resources for across agents
-        """
+        values = []
+
         if agents == 'all':
             ids = self.agents
         elif isinstance(agents, list):
@@ -80,26 +66,24 @@ class Accessibility:
         else:
             raise ValueError
         
-        result = {}
-        for agent_id in ids:
-            result[agent_id] = {}
+        for i in range(self.len):
+            agent_resource_value = []
             for resource_name in resource_names:
-                values = []
-                for i in range(self.len):
-                    value = self.extract(
+                agent_resource_values = []
+                for agent_id in ids:
+                    agent_resource_values.append(
+                        self.extract(
                             agent=agent_id,
                             resource=resource_name,
                             time_step=i
                         )
-                    values.append(value)
-                result[agent_id][resource_name] = values
-
-        return result
-
+                    )
+                agent_resource_value.append(average(agent_resource_values))
+            values.append(average_geometric(agent_resource_value))
+        
+        return values
+    
     def durations(self):
-        """
-        Return duration of step sizes
-        """
         result = []
         for i in range(self.len):
             delta_time = self.dates[i + 1] - self.dates[i]
@@ -133,11 +117,13 @@ class Accessibility:
         """
         Calculate average accessibility
         """
-        weights = []
+        accessibilities = []
         for i in range(self.len):
             delta_time = self.dates[i + 1] - self.dates[i]
-            weights.append(delta_time.total_seconds())
-        return average_weighted(values, weights)
+            accessibility_i = delta_time.total_seconds() * values[i]
+            accessibilities.append(accessibility_i)
+        duration = self.dates[-1] - self.dates[0]
+        return sum(accessibilities) / duration.total_seconds()
     
     def read(self):
         """
@@ -235,37 +221,6 @@ def average_geometric(values):
 
 def average(values):
     return sum(values) / len(values)
-
-
-def average_list(list_values, method='normal'):
-    """
-    list_values: a list of lists with similar lengths
-    method: normal or geometric average
-    """
-    def length(list_values):
-        return len(list_values[0])
-    
-    result = []
-
-    for i in range(length(list_values)):
-        values = []
-        for ls in list_values:
-            values.append(ls[i])
-        if method == 'normal':
-            average_value = average(values)
-        elif method == 'geometric':
-            average_value = average_geometric(values)
-        else:
-            raise ValueError
-        result.append(average_value)
-    return result
-
-def average_weighted(values, weights):
-    weighted_values = []
-    for i in range(len(values)):
-        weighted_value = values[i] * weights[i]
-        weighted_values.append(weighted_value)
-    return sum(weighted_values) / sum(weights)
 
     
 if __name__ == "__main__":
