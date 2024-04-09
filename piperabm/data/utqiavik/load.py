@@ -9,6 +9,7 @@ def add_to_model(
         streets: bool = True,
         homes: bool = True,
         markets: bool = True,
+        homes_count: bool = None,
         latitude_min: float = None,
         latitude_max: float = None,
         longitude_min: float = None,
@@ -57,6 +58,9 @@ def add_to_model(
             y_min=y_min,
             y_max=y_max
         )
+        if homes_count is not None:
+            if homes_count <= len(home_objects):
+                home_objects = home_objects[:homes_count]
         for object in home_objects:
             model.add(object)
 

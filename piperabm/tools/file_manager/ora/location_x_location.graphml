@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d5" for="edge" attr.name="degradation" attr.type="long" />
+  <key id="d4" for="node" attr.name="y" attr.type="double" />
+  <key id="d3" for="node" attr.name="x" attr.type="double" />
+  <key id="d2" for="node" attr.name="y" attr.type="long" />
+  <key id="d1" for="node" attr.name="x" attr.type="long" />
+  <key id="d0" for="node" attr.name="type" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="1">
+      <data key="d0">home</data>
+      <data key="d1">-60</data>
+      <data key="d2">40</data>
+    </node>
+    <node id="2">
+      <data key="d0">home</data>
+      <data key="d1">200</data>
+      <data key="d2">20</data>
+    </node>
+    <node id="3">
+      <data key="d0">home</data>
+      <data key="d1">100</data>
+      <data key="d2">-180</data>
+    </node>
+    <node id="289089150755078356526961922826005738224">
+      <data key="d0">junction</data>
+      <data key="d1">-60</data>
+      <data key="d2">40</data>
+    </node>
+    <node id="292128518859418255184360484872978210536">
+      <data key="d0">junction</data>
+      <data key="d1">200</data>
+      <data key="d2">20</data>
+    </node>
+    <node id="123700921503153210884276657123047475022">
+      <data key="d0">junction</data>
+      <data key="d1">100</data>
+      <data key="d2">-180</data>
+    </node>
+    <node id="321512342638359653788309769953605368909">
+      <data key="d0">junction</data>
+      <data key="d3">80.0</data>
+      <data key="d4">60.0</data>
+    </node>
+    <node id="39588335427409446054111837385979994108">
+      <data key="d0">junction</data>
+      <data key="d3">0.0</data>
+      <data key="d4">0.0</data>
+    </node>
+    <node id="246108066043570036883583006531565657770">
+      <data key="d0">junction</data>
+      <data key="d3">-60.0</data>
+      <data key="d4">40.0</data>
+    </node>
+    <node id="213775250917131827801363555275813371535">
+      <data key="d0">junction</data>
+      <data key="d3">200.0</data>
+      <data key="d4">20.0</data>
+    </node>
+    <node id="102641270860146575020590969398357751465">
+      <data key="d0">junction</data>
+      <data key="d3">100.0</data>
+      <data key="d4">-180.0</data>
+    </node>
+    <edge source="1" target="246108066043570036883583006531565657770">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="2" target="213775250917131827801363555275813371535">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="3" target="102641270860146575020590969398357751465">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="289089150755078356526961922826005738224" target="246108066043570036883583006531565657770">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="292128518859418255184360484872978210536" target="213775250917131827801363555275813371535">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="123700921503153210884276657123047475022" target="102641270860146575020590969398357751465">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="321512342638359653788309769953605368909" target="39588335427409446054111837385979994108">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="321512342638359653788309769953605368909" target="213775250917131827801363555275813371535">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="39588335427409446054111837385979994108" target="246108066043570036883583006531565657770">
+      <data key="d5">0</data>
+    </edge>
+    <edge source="39588335427409446054111837385979994108" target="102641270860146575020590969398357751465">
+      <data key="d5">0</data>
+    </edge>
+  </graph>
+</graphml>

@@ -49,12 +49,13 @@ class Paths:
             for id_end in nodes:
                 if id_start != id_end:
                     path = self.find_path(current_infrastructure, id_start, id_end)
-                    self.G.add_edge(
-                        path[0], # From
-                        path[-1], # To
-                        path=path,
-                        adjusted_length=self.calculate_adjusted_length(current_infrastructure, path),
-                    )
+                    if path is not None:
+                        self.G.add_edge(
+                            path[0], # From
+                            path[-1], # To
+                            path=path,
+                            adjusted_length=self.calculate_adjusted_length(current_infrastructure, path),
+                        )
 
     def find_path(self, current_infrastructure, id_start, id_end):
         """
@@ -72,6 +73,9 @@ class Paths:
                 target=id_end,
                 weight="adjusted_length"
             )
+        else:
+            pass
+            #print("no path found between " + str(id_start) + " and " + str(id_end))
         return path
 
     def path(self, id_start, id_end):
@@ -102,7 +106,7 @@ class Paths:
 
 if __name__ == "__main__":
 
-    from piperabm.infrastructure_new.samples import infrastructure_1 as infrastructure
+    from piperabm.infrastructure_new.samples import infrastructure_2 as infrastructure
 
     paths = Paths(infrastructure)
     print(paths.path(id_start=1, id_end=2))

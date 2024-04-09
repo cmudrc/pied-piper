@@ -50,6 +50,4 @@ infrastructure.bake(save=True, name='infrastructure_2')
 
 
 if __name__ == '__main__':
-    #infrastructure.save('infrastructure_2')
-    #print(infrastructure)
     infrastructure.show()

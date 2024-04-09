@@ -107,7 +107,7 @@ class Accessibility:
         return result
 
     @property
-    def xs(self):
+    def time_labels(self):
         """
         Convert dates to xs for plotting
         """
@@ -129,7 +129,7 @@ class Accessibility:
             xs.append(x_formatted)
         return xs
 
-    def average(self, values):
+    def calculate_average(self, values):
         """
         Calculate average accessibility
         """
@@ -138,6 +138,10 @@ class Accessibility:
             delta_time = self.dates[i + 1] - self.dates[i]
             weights.append(delta_time.total_seconds())
         return average_weighted(values, weights)
+    
+    def average(self, agents='all', resources='all'):
+        values = self.accessibility(agents, resources)
+        return self.calculate_average(values)
     
     def read(self):
         """
@@ -171,7 +175,7 @@ class Accessibility:
             return result
 
         title = create_title(agents=agents, resources=resources)
-        xs = self.xs
+        xs = self.time_labels
         ys = self.accessibility(agents=agents, resources=resources)
 
         plt.plot(xs, ys)
@@ -338,7 +342,5 @@ if __name__ == "__main__":
         Date(2020, 1, 6),
     ]
 
-    #print(measure.accessibility(agents=[1, 2], resources='food'))
-    #print(measure.accessibility(agents='all', resources='food'))
-    measure.show(agents=[1, 2], resources=['food', 'water'])
+    measure.show(agents='all', resources='all')
 

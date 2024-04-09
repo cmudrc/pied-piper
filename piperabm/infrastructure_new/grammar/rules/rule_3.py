@@ -20,7 +20,8 @@ class Rule_3(Rule):
     def check(self, node_id):
         result = False
         # Has to be isolated
-        if self.infrastructure.is_isolate(node_id):
+        if self.infrastructure.is_isolate(node_id) and \
+            len(self.infrastructure.edges_ids) > 0:
             result = True
         return result
 
@@ -46,7 +47,8 @@ class Rule_3(Rule):
                 point=node_object.pos,
                 line=[edge_object.pos_1, edge_object.pos_2],
                 segment=True,
-                vector=True
+                vector=True,
+                perpendicular_only=True,
             )
             if distance_vector is not None:
                 distances.append([edge_id, distance_vector])
@@ -58,7 +60,7 @@ class Rule_3(Rule):
                     point_2=node_object_1.pos,
                     vector=True
                 )
-                node_object_2 = self.get(ids[0])
+                node_object_2 = self.get(ids[1])
                 distance_vector_2 = ds.point_to_point(
                     point_1=node_object.pos,
                     point_2=node_object_2.pos,
@@ -70,7 +72,7 @@ class Rule_3(Rule):
                     distances.append([ids[0], distance_vector_1])
                 else:
                     distances.append([ids[1], distance_vector_2])
-
+                
         # Find the nearest edge
         smallest_distance = None
         target_id = None
@@ -92,8 +94,8 @@ class Rule_3(Rule):
             new_id = self.infrastructure.new_id
             self.infrastructure.library[new_id] = new_object
             self.infrastructure.G.add_edge(
-                target_id,
                 node_id,
+                target_id,
                 id=new_id
             )
             # Report
@@ -153,7 +155,7 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure_new import Infrastructure, Street, Home
 
-    infrastructure = Infrastructure(proximity_radius=1)
+    infrastructure = Infrastructure()
     object_1 = Street(pos_1=[0, 0], pos_2=[10, 0])
     object_2 = Home(pos=[5, 4])
     infrastructure.add(object_1)
