@@ -17,10 +17,8 @@ class Graphics:
         fig = self.fig()
         plt.show()
 
-    def animate(self, output_file='output', save_file='model', simulation_file='simulation', framerate=15):
+    def animate(self, output_file='output', simulation_file='simulation', framerate=15):
         animation = Animation(self.path)
-        # Load initial state
-        self.load(name=save_file)
         fig = self.fig()
         animation.add_figure(fig)
         # Deltas

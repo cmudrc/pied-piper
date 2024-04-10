@@ -1,5 +1,6 @@
 from piperabm.object import PureObject
 from piperabm.model_new.graphics import Graphics
+from piperabm.model_new.measures import Accessibility
 from piperabm.infrastructure_new import Infrastructure
 from piperabm.society_new import Society
 from piperabm.time import DeltaTime, Date, date_serialize, date_deserialize
@@ -153,6 +154,20 @@ class Model(PureObject, Graphics):
         file = JsonFile(self.path, filename=name)
         data = file.load()
         self.deserialize(data)
+
+    def measure(self, simulation_file='simulation'):
+        accessibility = Accessibility()
+        accessibility.model = self
+        measures = {
+            'accessibility': accessibility,
+        }
+        # Deltas
+        deltas = self.load_deltas(name=simulation_file)
+        measures['accessibility'].read() # initial state
+        for delta in deltas:
+            self.apply_delta(delta)
+            measures['accessibility'].read()
+        return measures
 
     def serialize(self) -> dict:
         dictionary = {}

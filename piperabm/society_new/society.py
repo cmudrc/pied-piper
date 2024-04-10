@@ -50,7 +50,7 @@ class Society(PureObject, Query, Graphics):
         for _ in range(num):
             socioeconomic_status = distribution.rvs()        
             resources = average_resources * socioeconomic_status
-            enough_resources = average_resources * (10 * socioeconomic_status) ###
+            enough_resources = average_resources * 10 ###
             balance = average_balance * socioeconomic_status
             income = average_income * socioeconomic_status
             agent = Agent(

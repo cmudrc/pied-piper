@@ -15,6 +15,10 @@ model = Model(
 
 
 if __name__ == "__main__":
+    #ids = model.society.agents
+    #a_1 = model.society.get(ids[0])
+    #a_2 = model.society.get(ids[5])
+    #print(a_1.accessibility, a_2.accessibility)
     model.show()
     #paths = model.infrastructure.paths()
     #print(paths.G)

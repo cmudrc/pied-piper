@@ -121,6 +121,8 @@ class Agent(PureObject):
             # Consume resources
             fuels = self.fuels_rate_idle * duration.total_seconds()
             self.resources - fuels
+
+            # Actions
             self.queue.update(duration)
 
             # How long it has been out of home?

@@ -9,12 +9,8 @@ class Accessibility:
     def __init__(self):
         self.library = {}
         self.dates = []
-        self.measures = None  # Binding
+        self.model = None  # Binding
         self.resource_names = ['food', 'water', 'energy']
-
-    @property
-    def model(self):
-        return self.measures.model
     
     @property
     def society(self):
@@ -41,8 +37,22 @@ class Accessibility:
         """
         Return accessibility values for all resources for across agents
         """
-        values = []
-
+        data = self.organize_data(agents, resources)
+        agents_values = []
+        for agent_id in data:
+            agent_data = data[agent_id]
+            agent_resources_value = []
+            for resource_name in agent_data:
+                agent_resources_value.append(agent_data[resource_name])
+            avg = average_list(agent_resources_value, method='geometric')
+            agents_values.append(avg)
+        values = average_list(agents_values, method='normal')
+        return values
+    
+    def organize_data(self, agents='all', resources='all'):
+        """
+        Return accessibility values for all resources for across agents
+        """
         if agents == 'all':
             ids = self.agents
         elif isinstance(agents, list):
@@ -66,24 +76,26 @@ class Accessibility:
         else:
             raise ValueError
         
-        for i in range(self.len):
-            agent_resource_value = []
+        result = {}
+        for agent_id in ids:
+            result[agent_id] = {}
             for resource_name in resource_names:
-                agent_resource_values = []
-                for agent_id in ids:
-                    agent_resource_values.append(
-                        self.extract(
+                values = []
+                for i in range(self.len):
+                    value = self.extract(
                             agent=agent_id,
                             resource=resource_name,
                             time_step=i
                         )
-                    )
-                agent_resource_value.append(average(agent_resource_values))
-            values.append(average_geometric(agent_resource_value))
-        
-        return values
-    
+                    values.append(value)
+                result[agent_id][resource_name] = values
+
+        return result
+
     def durations(self):
+        """
+        Return duration of step sizes
+        """
         result = []
         for i in range(self.len):
             delta_time = self.dates[i + 1] - self.dates[i]
@@ -91,7 +103,7 @@ class Accessibility:
         return result
 
     @property
-    def xs(self):
+    def time_labels(self):
         """
         Convert dates to xs for plotting
         """
@@ -113,17 +125,19 @@ class Accessibility:
             xs.append(x_formatted)
         return xs
 
-    def average(self, values):
+    def calculate_average(self, values):
         """
         Calculate average accessibility
         """
-        accessibilities = []
+        weights = []
         for i in range(self.len):
             delta_time = self.dates[i + 1] - self.dates[i]
-            accessibility_i = delta_time.total_seconds() * values[i]
-            accessibilities.append(accessibility_i)
-        duration = self.dates[-1] - self.dates[0]
-        return sum(accessibilities) / duration.total_seconds()
+            weights.append(delta_time.total_seconds())
+        return average_weighted(values, weights)
+    
+    def average(self, agents='all', resources='all'):
+        values = self.accessibility(agents, resources)
+        return self.calculate_average(values)
     
     def read(self):
         """
@@ -133,7 +147,10 @@ class Accessibility:
         if len(self.dates) > 1: # There has to be one more members in date than accessibility values
             for id in self.society.agents: ### all agents
                 agent = self.society.get(id)
-                accessibility =  agent.accessibility()
+                accessibility =  agent.accessibility
+                #print(accessibility) #############
+                if not id in self.library:
+                    self.library[id] = []
                 self.library[id].append(accessibility)
     
     def show(self, scale_y=False, average=True, agents='all', resources='all'):
@@ -157,7 +174,7 @@ class Accessibility:
             return result
 
         title = create_title(agents=agents, resources=resources)
-        xs = self.xs
+        xs = self.time_labels
         ys = self.accessibility(agents=agents, resources=resources)
 
         plt.plot(xs, ys)
@@ -221,6 +238,37 @@ def average_geometric(values):
 
 def average(values):
     return sum(values) / len(values)
+
+
+def average_list(list_values, method='normal'):
+    """
+    list_values: a list of lists with similar lengths
+    method: normal or geometric average
+    """
+    def length(list_values):
+        return len(list_values[0])
+    
+    result = []
+
+    for i in range(length(list_values)):
+        values = []
+        for ls in list_values:
+            values.append(ls[i])
+        if method == 'normal':
+            average_value = average(values)
+        elif method == 'geometric':
+            average_value = average_geometric(values)
+        else:
+            raise ValueError
+        result.append(average_value)
+    return result
+
+def average_weighted(values, weights):
+    weighted_values = []
+    for i in range(len(values)):
+        weighted_value = values[i] * weights[i]
+        weighted_values.append(weighted_value)
+    return sum(weighted_values) / sum(weights)
 
     
 if __name__ == "__main__":
@@ -293,7 +341,5 @@ if __name__ == "__main__":
         Date(2020, 1, 6),
     ]
 
-    #print(measure.accessibility(agents=[1, 2], resources='food'))
-    #print(measure.accessibility(agents='all', resources='food'))
-    measure.show(agents=[1, 2], resources=['food', 'water'])
+    measure.show(agents='all', resources='all')
 
