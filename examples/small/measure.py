@@ -13,4 +13,4 @@ ids = model.society.agents
 #print(accessibility.extract(agent=ids[50], resource='food', time_step=10))
 #data = accessibility.organize_data(agents=[ids[49], ids[50]], resources='food')
 #print(data.keys())
-accessibility.show(agents=ids[50], resources='food', average=False)
+accessibility.show(agents='all', resources='all', average=False)

@@ -26,7 +26,7 @@ class Matter(PureObject):
             names = self.names
         for name in names:
             if name in self.library:
-                if self.library[name] < 0:
+                if self.library[name] <= 0:
                     results.append(name)
             else:
                 results.append(name)
@@ -129,6 +129,9 @@ class Matter(PureObject):
             return self.__truediv__(other_library)
         else:
             raise ValueError
+        
+    def __call__(self, name: str):
+        return self.library[name]
 
     def serialize(self) -> dict:
         return self.library

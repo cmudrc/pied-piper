@@ -1,1 +1,1 @@
-from .paths import Paths
+from .paths_new import Paths
