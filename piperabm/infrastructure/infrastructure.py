@@ -7,7 +7,7 @@ from piperabm.tools.coordinate import distance as ds
 from piperabm.infrastructure.graphics import Graphics
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.infrastructure.heuristic_paths import HeuristicPaths
-from piperabm.tools.serializers import nx_serialize, nx_deserialize
+from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 
 class Infrastructure(Graphics):

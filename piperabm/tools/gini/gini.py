@@ -1,0 +1,20 @@
+from piperabm.tools.gini.gini_coefficient import gini_coefficient
+from piperabm.tools.gini.gini_lognormal import GiniLogNormal
+
+
+class gini:
+
+    def coefficient(sample):
+        return gini_coefficient(sample)
+    
+    def lognorm(gini_index: float = 0, average: float = 1):
+        return GiniLogNormal(gini_index, average)
+    
+
+if __name__ == "__main__":
+    incomes = [100, 300, 500, 700, 900, 300, 500, 700, 500]
+    gini_index = gini.coefficient(incomes)
+    average = sum(incomes) / len(incomes)
+    distribution = gini.lognorm(gini_index=gini_index, average=average)
+    sample = distribution.rvs(100)
+    print(gini.coefficient(sample) / gini_index)
