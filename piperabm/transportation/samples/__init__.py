@@ -1,2 +1,0 @@
-from .transportation_0 import transportation as transportation_0
-from .transportation_1 import transportation as transportation_1
