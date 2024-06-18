@@ -1,7 +1,7 @@
 import networkx as nx
 
 from piperabm.tools.coordinate import distance as ds
-from piperabm.tools.serializers import nx_serialize, nx_deserialize
+from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 
 class HeuristicPaths:
