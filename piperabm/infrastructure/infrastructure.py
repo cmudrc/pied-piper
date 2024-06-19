@@ -35,86 +35,6 @@ class Infrastructure(
         self.baked_neighborhood is True:
             result = True
         return result
-
-    def node_type(self, id):
-        return self.node_attr(id, 'type')
-    
-    def node_name(self, id):
-        return self.node_attr(id, 'name', None)
-    
-    def node_pos(self, id):
-        return [float(self.node_attr(id, 'x', None)), float(self.node_attr(id, 'y', None))]
-    
-    def pos(self, id):
-        """
-        Alias for node_pos method
-        """
-        return self.node_pos(id)
-
-    def edge_type(self, id=None, ids=None):
-        if id is not None and ids is None:
-            ids = self.edge_ids(id)
-        return self.G.edges[*ids].get('type', None)
-    
-    def edge_length(self, id: int = None, ids: list = None):
-        if id is not None and ids is None:
-            ids = self.edge_ids(id)
-        return float(self.G.edges[*ids].get('length', None))   
-    
-    def edge_degradation(self, id: int = None, ids: list = None, new_val: float = None):
-        if id is not None and ids is None:
-            ids = self.edge_ids(id)
-        if new_val is None:
-            return float(self.G.edges[*ids].get('degradation', None))
-        else:
-            self.G[ids[0]][ids[1]]['degradation'] = new_val
-    
-    def adjusted_length(self, id: int = None, ids: int = None, new_val: float = None):
-        if id is not None and ids is None:
-            ids = self.edge_ids(id)
-        if new_val is None:
-            return float(self.G[ids[0]][ids[1]]['adjusted_length'])
-        else:
-            self.G[ids[0]][ids[1]]['adjusted_length'] = new_val
-    
-    def balance(self, id: int, new_val: float = None):
-        if new_val is None:
-            return self.G.nodes[id].get('balance', None)
-        else:
-            self.G.nodes[id]['balance'] = new_val
-    
-    def food(self, id: int, new_val: float = None):
-        if new_val is None:
-            return float(self.G.nodes[id].get('food', None))
-        else:
-            if new_val < 0:
-                new_val = 0
-            self.G.nodes[id]['food'] = new_val
-
-    def water(self, id: int, new_val: float = None):
-        if new_val is None:
-            return float(self.G.nodes[id].get('water', None))
-        else:
-            if new_val < 0:
-                new_val = 0
-            self.G.nodes[id]['water'] = new_val
-
-    def energy(self, id: int, new_val: float = None):
-        if new_val is None:
-            return float(self.G.nodes[id].get('energy', None))
-        else:
-            if new_val < 0:
-                new_val = 0
-            self.G.nodes[id]['energy'] = new_val
-
-    def enough_food(self, id: int):
-        return self.G.nodes[id].get('enough_food', None)
-    
-    def enough_water(self, id: int):
-        return self.G.nodes[id].get('enough_water', None)
-
-    def enough_energy(self, id: int):
-        return self.G.nodes[id].get('enough_energy', None)
     
     def bake(
             self,
@@ -122,6 +42,9 @@ class Infrastructure(
             proximity_radius: float = 1,
             search_radius: float = None
         ):
+        """
+        Bake the network using grammar rules
+        """
         if self.baked is False:
             grammar = Grammar(
                 infrastructure=self,
@@ -148,10 +71,13 @@ class Infrastructure(
             self.edge_degradation(ids=edge_ids, new_val=new_degradation)
         '''
         # Update adjusted length
-        for edge_ids in self.edges_ids:
-            length = self.edge_length(ids=edge_ids)
-            degradation = self.edge_degradation(ids=edge_ids)
-            self.adjusted_length(ids=edge_ids, new_val=self.calculate_adjusted_length(length, degradation))
+        for ids in self.edges:
+            adjusted_length = self.calculate_adjusted_length(
+                length=self.get_edge_attribute(ids=ids, attribute='length'),
+                usage_impact=self.get_edge_attr(ids=ids, attr='usage_impact'),
+                weather_impact=self.get_edge_attr(ids=ids, attr='weather_impact')
+            )
+            self.set_edge_attribute(ids=ids, attribute='adjusted_length', value=adjusted_length)
 
     @property
     def stat(self):

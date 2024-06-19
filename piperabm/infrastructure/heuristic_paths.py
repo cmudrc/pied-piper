@@ -12,6 +12,9 @@ class HeuristicPaths:
         self.G = nx.Graph()  # Heuristic
 
     def estimated_distance(self, id_start, id_end):
+        """
+        Return estimated distance between two nodes
+        """
         edge = self.G.edges[id_start, id_end]
         result = edge['distance']
         return result
@@ -21,7 +24,7 @@ class HeuristicPaths:
         Create graph
         """
         self.G = nx.Graph()  # Reset
-        nodes = infrastructure.nodes_id
+        nodes = infrastructure.nodes
         for id_1 in nodes:
             for id_2 in nodes:
                 if id_1 == id_2:
@@ -52,9 +55,9 @@ if __name__ == "__main__":
     from piperabm.infrastructure import Infrastructure
 
     infrastructure = Infrastructure()
-    infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 0], id=0)
+    infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 0])
     infrastructure.add_home(pos=[0, 0], id=1)
     infrastructure.add_home(pos=[10, 0], id=2)
     infrastructure.bake()
-    #print(infrastructure.heuristic_paths)
+    print(infrastructure.heuristic_paths)
     print(infrastructure.heuristic_paths.estimated_distance(id_start=1, id_end=2))

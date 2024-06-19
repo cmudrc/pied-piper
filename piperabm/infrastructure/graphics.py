@@ -12,7 +12,7 @@ class Graphics:
         node_color_list = []
         node_size_list = []
         node_label_dict = {}
-        nodes = self.nodes_id
+        nodes = self.nodes
         for node_id in nodes:
             # Position
             pos_dict[node_id] = self.pos(node_id)
@@ -23,12 +23,12 @@ class Graphics:
             size = infrastructure_style['node'][self.node_type(node_id)]['radius']
             node_size_list.append(size)
             # Label
-            node_label_dict[node_id] = self.node_name(node_id)
+            node_label_dict[node_id] = self.get_node_attribute(id=node_id, attribute='name')
 
         # Edges
         edge_color_list = []
-        edges_ids = self.edges_ids
-        for edge_ids in edges_ids:
+        edges = self.edges
+        for edge_ids in edges:
             # Color
             color = infrastructure_style['edge'][self.edge_type(ids=edge_ids)]['color']
             edge_color_list.append(color)
@@ -42,7 +42,7 @@ class Graphics:
             node_size=node_size_list,
             labels=node_label_dict,
             font_size=infrastructure_style['font'],
-            edgelist=edges_ids,
+            edgelist=edges,
             edge_color=edge_color_list
         )
 

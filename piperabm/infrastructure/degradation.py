@@ -3,14 +3,27 @@ import numpy as np
 
 class Degradation:
 
-    def adjustment_factor(self, degradation: float) -> float:
-        k = 1000
-        return float(np.exp(degradation / k))
+    def adjustment_factor(self, usage_impact: float, weather_impact: float) -> float:
+        """
+        Calculate adjustment factor
+        """
+        coeff_usage = 1 / 1000
+        coeff_weather = 1
+        return 1 + (coeff_usage * usage_impact) + (coeff_weather * weather_impact)
 
-    def calculate_adjusted_length(self, length: float, degradation: float) -> float:
-        return length * self.adjustment_factor(degradation)
+    def calculate_adjusted_length(self, length: float, usage_impact: float, weather_impact: float) -> float:
+        """
+        Calculate adjusted length
+        """
+        return length * self.adjustment_factor(
+                    usage_impact=usage_impact,
+                    weather_impact=weather_impact
+                )
     
     def top_degraded_edges(self, percent: float = 0):
+        """
+        Filter most degradaded edges by their length percentage
+        """
         edges_ids = self.streets
         total_length = 0
         edges_info = []

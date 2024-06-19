@@ -5,6 +5,9 @@ from piperabm.tools.coordinate import distance as ds
 
 
 class Add:
+    """
+    Add new network elements
+    """
 
     def check_id(self, id):
         """
@@ -125,15 +128,19 @@ class Add:
         id_1 = self.add_junction(pos=pos_1)
         id_2 = self.add_junction(pos=pos_2)
         length = ds.point_to_point(pos_1, pos_2)
+        adjusted_length = self.calculate_adjusted_length(
+            length=length,
+            usage_impact=usage_impact,
+            weather_impact=weather_impact
+        )
         self.G.add_edge(
             id_1,
             id_2,
             name=name,
             length=length,
-            #adjusted_length=self.calculate_adjusted_length(length, degradation),
+            adjusted_length=adjusted_length,
             usage_impact=usage_impact,
             weather_impact=weather_impact,
-            adjusted_length=None,
             type=type,
         )
         self.baked_streets = False
@@ -156,15 +163,19 @@ class Add:
         """
         type = 'neighborhood_access'
         length = ds.point_to_point(self.pos(id_1), self.pos(id_2))
+        adjusted_length = self.calculate_adjusted_length(
+            length=length,
+            usage_impact=usage_impact,
+            weather_impact=weather_impact
+        )
         self.G.add_edge(
             id_1,
             id_2,
             name=name,
             length=length,
-            #adjusted_length=self.calculate_adjusted_length(length, degradation),
+            adjusted_length=adjusted_length,
             usage_impact=usage_impact,
             weather_impact=weather_impact,
-            adjusted_length=None,
             type=type
         )
         #self.baked_streets = False

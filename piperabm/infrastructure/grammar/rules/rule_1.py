@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from piperabm.tools.coordinate import distance as ds
 
 
@@ -40,43 +42,48 @@ class Rule1:
         return result
     
     def apply(self, node_id, edge_ids, report=False):
-        edge_type = self.infrastructure.edge_type(ids=edge_ids)
-        degradation = self.infrastructure.edge_degradation(ids=edge_ids)
-        length_1 = ds.point_to_point(
+        data = self.infrastructure.get_edge_attributes(ids=edge_ids)
+        #edge_type = self.infrastructure.edge_type(ids=edge_ids)
+        #degradation = self.infrastructure.edge_degradation(ids=edge_ids)
+        data_1 = deepcopy(data)
+        data_1['length'] = ds.point_to_point(
             self.infrastructure.pos(node_id),
             self.infrastructure.pos(edge_ids[0])
+        )
+        data_1['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
+            length=data_1['length'],
+            usage_impact=data_1['usage_impact'],
+            weather_impact=data_1['weather_impact']
         )
         self.infrastructure.G.add_edge(
             node_id,
             edge_ids[0],
-            id=self.infrastructure.new_id(),
-            length=length_1,
-            adjusted_length=self.infrastructure.calculate_adjusted_length(length_1, degradation),
-            type=edge_type,
-            degradation=degradation
+            **data_1
         )
-        length_2 = ds.point_to_point(
+        data_2 = deepcopy(data)
+        data_2['length'] = ds.point_to_point(
             self.infrastructure.pos(node_id),
             self.infrastructure.pos(edge_ids[1])
+        )
+        data_2['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
+            length=data_2['length'],
+            usage_impact=data_2['usage_impact'],
+            weather_impact=data_2['weather_impact']
         )
         self.infrastructure.G.add_edge(
             node_id,
             edge_ids[1],
-            id=self.infrastructure.new_id(),
-            length=length_2,
-            adjusted_length=self.infrastructure.calculate_adjusted_length(length_2, degradation),
-            type=edge_type,
-            degradation=degradation
+            **data_2
         )
         if report is True:
-            print(f">>> {edge_type} edge at positions {self.infrastructure.pos(node_id)} - {self.infrastructure.pos(edge_ids[0])} added.")
-            print(f">>> {edge_type} edge at positions {self.infrastructure.pos(node_id)} - {self.infrastructure.pos(edge_ids[1])} added.")
+            print(f">>> {data_1['type']} edge at positions {self.infrastructure.pos(node_id)} - {self.infrastructure.pos(edge_ids[0])} added.")
+            print(f">>> {data_2['type']} edge at positions {self.infrastructure.pos(node_id)} - {self.infrastructure.pos(edge_ids[1])} added.")
         self.infrastructure.remove_edge(ids=edge_ids, report=report)
 
     def find(self, report=False):
         anything_happened = False
         nodes = self.infrastructure.junctions
-        edges = self.infrastructure.edges_ids
+        edges = self.infrastructure.edges
         for node_id in nodes:
             for edge_ids in edges:
                 if self.check(node_id, edge_ids) is True:

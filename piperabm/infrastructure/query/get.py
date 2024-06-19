@@ -1,17 +1,44 @@
 class Get:
+    """
+    Get attributes from network elements
+    """
 
-    def get_node_attr(self, id: int, attr: str, default=None):
+    def get_node_attribute(self, id: int, attribute: str, default=None):
         """
-        Get node attributes from networkx graph
+        Get node attribute from networkx graph
         """
-        return self.G.nodes[id].get(attr, default)
+        return self.G.nodes[id].get(attribute, default)
     
-    def get_edge_attr(self, ids: list, attr: str, default=None):
+    def get_edge_attribute(self, ids: list, attribute: str, default=None):
         """
-        Get edge attributes from networkx graph
+        Get edge attribute from networkx graph
         """
-        return self.G.edges[*ids].get(attr, default)
+        return self.G.edges[*ids].get(attribute, default)
     
+    def get_node_attributes(self, id: list) -> dict:
+        """
+        Get all node attribute from networkx graph
+        """
+        return self.G.nodes[id]
+    
+    def get_edge_attributes(self, ids: list) -> dict:
+        """
+        Get all edge attribute from networkx graph
+        """
+        return self.G.get_edge_data(*ids)
+    
+    def pos(self, id: int):
+        """
+        Get node position
+        """
+        return [float(self.get_node_attribute(id, 'x', None)), float(self.get_node_attribute(id, 'y', None))]
+    
+    def node_type(self, id: int) -> str:
+        return self.get_node_attribute(id=id, attribute='type')
+
+    def edge_type(self, ids: list) -> str:
+        return self.get_edge_attribute(ids=ids, attribute='type')
+
     @property
     def nodes(self) -> list:
         """

@@ -21,13 +21,13 @@ class Rule3:
         result = False
         # Has to be isolated
         if self.infrastructure.is_isolate(node_id) and \
-            len(self.infrastructure.edges_ids) > 0:
+            len(self.infrastructure.edges) > 0:
             result = True
         return result
     
     def apply(self, node_id, report: bool = False):
         node_pos = self.infrastructure.pos(node_id)
-        edges_ids = self.infrastructure.edges_ids
+        edges_ids = self.infrastructure.edges
         distances_info = []
         # Filter edges
         if self.search_radius is None:
@@ -107,7 +107,6 @@ class Rule3:
             self.infrastructure.add_neighborhood_access(
                 node_id,
                 target_info['id'],
-                id=self.infrastructure.new_id(),
                 report=report
             )
         # Edge as target
@@ -118,7 +117,6 @@ class Rule3:
             self.infrastructure.add_neighborhood_access(
                 node_id,
                 new_node_id,
-                id=self.infrastructure.new_id(),
                 report=report
             )
             rule_1 = Rule1(self.infrastructure, proximity_radius=self.proximity_radius)
@@ -146,7 +144,7 @@ if __name__ == "__main__":
     from piperabm.infrastructure import Infrastructure
 
     infrastructure = Infrastructure()
-    infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 0], id=0)
+    infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 0])
     infrastructure.add_home(pos=[5, 4], id=1)
 
     rule = Rule3(infrastructure, proximity_radius=1, search_radius=None)

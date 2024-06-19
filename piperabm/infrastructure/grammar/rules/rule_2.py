@@ -33,8 +33,8 @@ class Rule2:
             distance_2 = ds.point_to_point(intersection, edge_pos_2)
             other_distance_1 = ds.point_to_point(intersection, other_edge_pos_1)
             other_distance_2 = ds.point_to_point(intersection, other_edge_pos_2)
-            length = self.infrastructure.edge_length(ids=edge_ids)
-            other_length = self.infrastructure.edge_length(ids=other_edge_ids)
+            length = self.infrastructure.get_edge_attribute(ids=edge_ids, attribute='length')
+            other_length = self.infrastructure.get_edge_attribute(ids=other_edge_ids, attribute='length')
 
             # Check if the intersection is inside the segments
             if distance_1 < length and \
@@ -60,7 +60,7 @@ class Rule2:
     
     def find(self, report=False):
         anything_happened = False
-        edges = self.infrastructure.edges_ids
+        edges = self.infrastructure.edges
         for edge_ids in edges:
             for other_edge_ids in edges:
                 if edge_ids != other_edge_ids:

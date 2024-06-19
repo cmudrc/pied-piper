@@ -1,14 +1,16 @@
 class Set:
+    """
+    Get attributes to network elements
+    """
 
-    def set_node_attr(self, id: int, attr: str, value=None) -> None:
+    def set_node_attribute(self, id: int, attribute: str, value=None) -> None:
         """
-        Set node attributes in networkx graph
+        Set node attribute in networkx graph
         """
-        self.G.nodes[id][attr] = value
+        self.G.nodes[id][attribute] = value
 
-    def set_edge_attr(self, ids: list, attr: str, value=None) -> None:
+    def set_edge_attribute(self, ids: list, attribute: str, value=None) -> None:
         """
-        Set edge attributes in networkx graph
+        Set edge attribute in networkx graph
         """
-        self.G[ids[0]][ids[1]][attr] = value
-
+        self.G[ids[0]][ids[1]][attribute] = value

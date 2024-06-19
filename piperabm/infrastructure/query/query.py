@@ -7,6 +7,9 @@ from piperabm.infrastructure.query.set import Set
 
 
 class Query(Add, Get, Set):
+    """
+    Query network elements
+    """
 
     def __init__(self):
         super().__init__()
@@ -46,7 +49,7 @@ class Query(Add, Get, Set):
         Replace a node with another node
         """
         # Find all adjacent edges
-        edges_ids = self.adjacents_ids(id)
+        edges_ids = self.edges_from(id)
         # Apply change to adjacent edges
         for edge_ids in edges_ids:
             # Create new edge
@@ -54,20 +57,20 @@ class Query(Add, Get, Set):
                 new_edge_ids = [new_id, edge_ids[1]]
             else:
                 new_edge_ids = [edge_ids[0], new_id]
-            type = self.edge_type(ids=edge_ids)
-            length = ds.point_to_point(
+            data = self.get_edge_attributes(ids=edge_ids)
+            data['length'] = ds.point_to_point(
                     self.pos(new_edge_ids[0]),
                     self.pos(new_edge_ids[1])
                 )
-            degradation = self.edge_degradation(ids=edge_ids)
+            data['adjusted_length'] = self.calculate_adjusted_length(
+                length=data['length'],
+                usage_impact=data['usage_impact'],
+                weather_impact=data['weather_impact']
+            )
             self.G.add_edge(
                 new_edge_ids[0],
                 new_edge_ids[1],
-                id=self.edge_id(*edge_ids),
-                length=length,
-                adjusted_length=self.calculate_adjusted_length(length, degradation),
-                type=type,
-                degradation=degradation,
+                **data
             )
             if report is True:
                 print(f">>> {type} edge at positions {self.pos(new_edge_ids[0])} - {self.pos(new_edge_ids[1])} added.")
