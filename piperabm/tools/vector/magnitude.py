@@ -4,7 +4,7 @@ import numpy as np
 def magnitude(vector):
     if vector is None:
         raise ValueError
-    return np.sqrt(np.sum(np.square(vector)))
+    return float(np.sqrt(np.sum(np.square(vector))))
 
 
 if __name__ == '__main__':

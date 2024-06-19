@@ -1,6 +1,6 @@
 import numpy as np
 
-from piperabm.tools.linear_algebra import vector as vc
+from piperabm.tools.vector import vector as vc
 
 
 def latlong_xyz(latitude_degree=0, longitude_degree=0, radius=1):

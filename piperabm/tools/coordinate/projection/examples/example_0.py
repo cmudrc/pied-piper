@@ -1,12 +1,12 @@
+"""
+10*10 grid of equally spaced points in xy plane are projected
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 from piperabm.tools.coordinate.projection.latlong_xy import xy_latlong
 
-
-"""
-10*10 grid of equally spaced points in xy plane are projected
-"""
 
 latitude_0 = 0
 longitude_0 = 0

@@ -5,6 +5,15 @@ Serialization for networkx objects that includes both node and edge attributes
 import networkx as nx
 
 
+terminology = {
+    'type': 't',
+    'nodes': 'n',
+    'edges': 'e',
+    'to': 't',
+    'attributes': 'a',
+}
+
+
 def nx_serialize(G) -> dict:
     """
     Serialize networkx object
@@ -22,19 +31,22 @@ def nx_serialize(G) -> dict:
         type = "MultiDiGraph"
     else:
         raise TypeError
-    result['type'] = type
+    result[terminology['type']] = type # Type
     
     # Nodes
     nodes_serialized = {}
     for node in G.nodes():
         nodes_serialized[node] = G.nodes[node]
-    result['nodes'] = nodes_serialized
+    result[terminology['nodes']] = nodes_serialized
 
     # Edges
     edges_serialized = {}
     for edge in G.edges():
-        edges_serialized[edge[0]] = {'to': edge[1], 'attr': G.edges[*edge]}
-    result['edges'] = edges_serialized
+        edges_serialized[edge[0]] = {
+            terminology['to']: edge[1], # To
+            terminology['attributes']: G.edges[*edge] # Attributes
+        }
+    result[terminology['edges']] = edges_serialized # Edges
 
     return result
 
@@ -43,32 +55,33 @@ def nx_deserialize(dictionary: dict):
     """
     Deserialize networkx object
     """
+
     # Type
-    if dictionary['type'] == "DiGraph":
+    if dictionary[terminology['type']] == "DiGraph":
         G = nx.DiGraph()
-    elif dictionary['type'] == "Graph":
+    elif dictionary[terminology['type']] == "Graph":
         G = nx.Graph()
-    elif dictionary['type'] == "MultiDiGraph":
+    elif dictionary[terminology['type']] == "MultiDiGraph":
         G = nx.MultiDiGraph()
-    elif dictionary['type'] == "MultiGraph":
+    elif dictionary[terminology['type']] == "MultiGraph":
         G = nx.MultiGraph()
     else:
         raise TypeError
     
     # Nodes
-    nodes_serialized = dictionary['nodes']
+    nodes_serialized = dictionary[terminology['nodes']]
     for node in nodes_serialized:
         G.add_node(node)
         for key in nodes_serialized[node]:
             G.nodes[node][key] = nodes_serialized[node][key]
 
     # Edge
-    edges_serialized = dictionary['edges']
+    edges_serialized = dictionary[terminology['edges']]
     for edge_from in edges_serialized:
         edge_serialized = edges_serialized[edge_from]
-        edge_to = edge_serialized['to']
-        edge_attr = edge_serialized['attr']
-        G.add_edge(edge_from, edge_to, **edge_attr)
+        edge_to = edge_serialized[terminology['to']]
+        edge_attributes = edge_serialized[terminology['attributes']]
+        G.add_edge(edge_from, edge_to, **edge_attributes)
     return G
 
 
@@ -78,7 +91,7 @@ if __name__ == "__main__":
     G.add_node(2, weight=2)
     G.add_edge(1, 2, weight=3)
     G_serialized = nx_serialize(G)
-    #print(G_serialized)
+    print(G_serialized)
     G_new = nx_deserialize(G_serialized)
     #print(nx_serialize(G_new))
     print("Test: ", nx_serialize(G_new) == G_serialized)

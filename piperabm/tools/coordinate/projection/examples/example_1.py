@@ -1,12 +1,12 @@
+"""
+10*10 grid of points (not equally spaced) having equal latitude and longitude difference on sphere are projected
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 from piperabm.tools.coordinate.projection.latlong_xy import latlong_xy
 
-
-"""
-10*10 grid of points (not equally spaced) having equal latitude and longitude difference on sphere are projected
-"""
 
 latitude_0 = 0
 longitude_0 = 0

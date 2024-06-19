@@ -1,7 +1,5 @@
 import numpy as np
 
-#from piperabm.tools.linear_algebra import refine
-
 
 class rotate:
 

@@ -62,20 +62,19 @@ class Infrastructure(
         """
         Update the network
         """
-        # Update degradation from climate change
-        '''
-        for edge_ids in self.streets_ids:
-            delta = self.model.thawing * duration
-            degradation = self.edge_degradation(ids=edge_ids)
-            new_degradation = degradation + delta
-            self.edge_degradation(ids=edge_ids, new_val=new_degradation)
-        '''
-        # Update adjusted length
-        for ids in self.edges:
+        # Update degradation from climate change (streets only)
+        rate = 0.00001
+        for ids in self.streets:
+            weather_impact = self.get_edge_attribute(ids=ids, attribute='weather_impact')
+            weather_impact += rate * duration
+            self.set_edge_attribute(ids=ids, attribute='weather_impact', value=weather_impact)
+
+        # Update adjusted length (streets only)
+        for ids in self.streets:
             adjusted_length = self.calculate_adjusted_length(
                 length=self.get_edge_attribute(ids=ids, attribute='length'),
-                usage_impact=self.get_edge_attr(ids=ids, attr='usage_impact'),
-                weather_impact=self.get_edge_attr(ids=ids, attr='weather_impact')
+                usage_impact=self.get_edge_attribute(ids=ids, attribute='usage_impact'),
+                weather_impact=self.get_edge_attribute(ids=ids, attribute='weather_impact')
             )
             self.set_edge_attribute(ids=ids, attribute='adjusted_length', value=adjusted_length)
 

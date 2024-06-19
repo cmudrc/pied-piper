@@ -23,5 +23,7 @@ infrastructure.bake()
 
 
 if __name__ == '__main__':
+    infrastructure.update(1000)
     print(infrastructure)
+    print(infrastructure.serialize())
     #infrastructure.show()

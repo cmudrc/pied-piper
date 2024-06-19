@@ -26,7 +26,7 @@ class Mercator:
         return latitude_degree, longitude_degree
     
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     latitude = 70
     longitude = -150
     radius = 6378

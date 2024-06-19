@@ -3,6 +3,9 @@ import os
 
 
 class JsonFile:
+    """
+    Json file handling
+    """
 
     def __init__(self, path, filename: str, format: str = "json"):
         if path is None:
@@ -102,6 +105,6 @@ if __name__ == "__main__":
 
     data = file.load()
     print("Test: ", data == [{"a": 1}])
-    
+
     file.remove()
     

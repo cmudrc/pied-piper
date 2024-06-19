@@ -6,6 +6,7 @@ class Delta:
     """
     Handle deltas for all variables
     """
+
     def create(old, new):
         """
         Create delta by comparing *old* and *new*
@@ -13,8 +14,8 @@ class Delta:
         if isinstance(old, np.floating) or isinstance(new, np.floating):
             old = float(old)
             new = float(new)
-            #print(old, new)
-            #raise ValueError
+            print(old, new)
+            raise ValueError
         
         if type(old) == type(new): # same type
             if old != new: # inequal and same type
