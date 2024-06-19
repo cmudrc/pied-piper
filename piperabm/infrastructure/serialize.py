@@ -2,8 +2,14 @@ from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 
 class Serialize:
+    """
+    Serialization methods
+    """
 
     def serialize(self):
+        """
+        Serialize
+        """
         dictionary = {}
         dictionary['G'] = nx_serialize(self.G)
         dictionary['heuristic_paths'] = self.heuristic_paths.serialize()
@@ -13,6 +19,9 @@ class Serialize:
         return dictionary
     
     def deserialize(self, dictionary):
+        """
+        Deserialize
+        """
         self.G = nx_deserialize(dictionary['G'])
         self.heuristic_paths.deserialize(dictionary['heuristic_paths'])
         self.baked_streets = dictionary['baked_streets']
