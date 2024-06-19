@@ -27,11 +27,11 @@ class Get:
         """
         return self.G.get_edge_data(*ids)
     
-    def pos(self, id: int):
+    def get_pos(self, id: int):
         """
         Get node position
         """
-        return [float(self.get_node_attribute(id, 'x', None)), float(self.get_node_attribute(id, 'y', None))]
+        return [self.get_node_attribute(id, 'x', None), self.get_node_attribute(id, 'y', None)]
     
     def node_type(self, id: int) -> str:
         return self.get_node_attribute(id=id, attribute='type')

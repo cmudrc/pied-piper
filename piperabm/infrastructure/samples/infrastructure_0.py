@@ -1,10 +1,10 @@
-from piperabm.model import Model
+import piperabm as pa
 
 
-model = Model()
+model = pa.Model()
 model.infrastructure.add_home(pos=[0, 0], id=0, name='home')
 model.infrastructure.bake()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     model.infrastructure.show()

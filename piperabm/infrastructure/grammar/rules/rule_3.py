@@ -113,7 +113,6 @@ class Rule3:
         elif target_info['type'] == 'edge':
             pos_1 = self.infrastructure.pos(node_id)
             pos_2 = list(np.array(pos_1) + np.array(target_info['vector']))
-            pos_2 = [float(num) for num in pos_2]  # Convert type from np.float64 to float
             new_node_id = self.infrastructure.add_junction(pos=pos_2, report=report)
             self.infrastructure.add_neighborhood_access(
                 node_id,

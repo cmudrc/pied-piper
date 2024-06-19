@@ -1,4 +1,5 @@
 import networkx as nx
+from random import shuffle
 
 from piperabm.tools import distance as ds
 from piperabm.infrastructure.query.add import Add
@@ -10,9 +11,6 @@ class Query(Add, Get, Set):
     """
     Query network elements
     """
-
-    def __init__(self):
-        super().__init__()
 
     def has_node(self, id: int) -> bool:
         """
@@ -96,6 +94,32 @@ class Query(Add, Get, Set):
             if self.node_type(id=id_2) == 'junction' and \
                 self.is_isolate(id=id_2):
                 self.remove_node(id=id_2)
+
+    def random_edges(self, percent: float = 0):
+        """
+        Filter random edges by their length percentage
+        """
+        edges_ids = self.streets
+        total_length = 0
+        edges_info = []
+        for edge_ids in edges_ids:
+            length = self.get_edge_attribute(ids=edge_ids, attribute='length')
+            total_length += length
+            edge_info = {
+                'ids': edge_ids,
+                'length': length
+            }
+            edges_info.append(edge_info)
+        remaining_length = (percent / 100) * total_length
+        result = []
+        shuffle(edges_info)
+        for edge_info in edges_info:
+            remaining_length -= edge_info['length']
+            if remaining_length < 0:
+                break
+            else:
+                result.append(edge_info['ids'])
+        return result
     
     def remove_edge(self, ids: list = None, report: bool = False):
         """
@@ -112,3 +136,12 @@ class Query(Add, Get, Set):
         if report is True:
             print(f">>> {self.node_type(id=id)} node at position {self.pos(id)} removed.")
         self.G.remove_node(id)
+
+    def pos(self, id: int, value: list = None):
+        """
+        Set and get for position
+        """
+        if value is None:
+            return self.get_pos(id=id)
+        else:
+            self.set_pos(id=id, value=value)

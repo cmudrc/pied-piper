@@ -1,7 +1,7 @@
-from piperabm.model import Model
+import piperabm as pa
 
 
-model = Model()
+model = pa.Model()
 model.infrastructure.add_market(
     pos=[40, -40],
     name='market',
@@ -20,5 +20,5 @@ model.infrastructure.add_street(pos_1=[0, 0], pos_2=[100, -180], name='street 4'
 model.infrastructure.bake()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     model.infrastructure.show()

@@ -25,11 +25,11 @@ class Degradation:
         total_length = 0
         edges_info = []
         for edge_ids in edges_ids:
-            length = self.edge_length(ids=edge_ids)
+            length = self.get_edge_attribute(ids=edge_ids, attribute='length')
             total_length += length
             edge_info = {
                 'ids': edge_ids,
-                'degradation': self.edge_degradation(ids=edge_ids),
+                'degradation': self.get_edge_attribute(ids=edge_ids, attribute='degradation'),
                 'length': length
             }
             edges_info.append(edge_info)

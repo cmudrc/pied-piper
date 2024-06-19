@@ -3,6 +3,7 @@ import random
 from copy import deepcopy
 import uuid
 
+from piperabm.society.serialize import Serialize
 #from piperabm.data.agents_info import *
 #from piperabm.data.utqiavik.info import *
 from piperabm.society.graphics import Graphics
@@ -13,7 +14,10 @@ from piperabm.tools.symbols import SYMBOLS
 from piperabm.tools import nx_serialize, nx_deserialize
 
 
-class Society(Graphics):
+class Society(
+    Graphics,
+    Serialize
+):
 
     type = "society"
 
@@ -22,7 +26,7 @@ class Society(Graphics):
             food_price: float = 1,
             water_price: float = 1,
             energy_price: float = 1,
-            average_income: float = average_income,
+            average_income: float = 1000,
         ):
         super().__init__()
         self.G = nx.DiGraph()
@@ -55,10 +59,10 @@ class Society(Graphics):
     def generate_agents(
             self,
             num: int = 1,
-            gini_index: float = gini_index,
-            average_food: float = average_food,
-            average_water: float = average_water,
-            average_energy: float = average_energy
+            gini_index: float = 0,
+            average_food: float = 10,
+            average_water: float = 10,
+            average_energy: float = 10
         ):
         """
         Generate agents
@@ -603,35 +607,6 @@ class Society(Graphics):
                 duration=stay_length
             )
             action_queue.add(stay)
-
-    def serialize(self) -> dict:
-        dictionary = {}
-        actions_serialized = {}
-        for id in self.actions:
-            action_queue = self.actions[id]
-            actions_serialized[id] = action_queue.serialize()
-        dictionary['actions'] = actions_serialized
-        dictionary['G'] = nx_serialize(self.G)
-        dictionary['food_price'] = self.food_price
-        dictionary['water_price'] = self.water_price
-        dictionary['energy_price'] = self.energy_price
-        dictionary['average_income'] = self.average_income
-        dictionary['type'] = self.type
-        return dictionary
-    
-    def deserialize(self, dictionary: dict) -> None:
-        actions_serialized = dictionary['actions']
-        self.actions = {}
-        for id in actions_serialized:
-            action_queue = ActionQueue(id)
-            action_queue.society = self # Binding
-            action_queue.deserialize(actions_serialized[id])
-            self.actions[id] = action_queue
-        self.G = nx_deserialize(dictionary['G'])
-        self.food_price = dictionary['food_price']
-        self.water_price = dictionary['water_price']
-        self.energy_price = dictionary['energy_price']
-        self.average_income = dictionary['average_income']
 
 
 if __name__ == "__main__":

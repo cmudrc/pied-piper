@@ -43,8 +43,8 @@ class Add:
             id,
             name=name,
             type=type,
-            x=pos[0],
-            y=pos[1]
+            x=float(pos[0]),
+            y=float(pos[1])
         )
         self.baked_streets = False
         self.baked_neighborhood = False
@@ -68,8 +68,8 @@ class Add:
             id,
             name=name,
             type=type,
-            x=pos[0],
-            y=pos[1]
+            x=float(pos[0]),
+            y=float(pos[1])
         )
         self.baked_streets = False
         self.baked_neighborhood = False
@@ -96,8 +96,8 @@ class Add:
             id,
             name=name,
             type=type,
-            x=pos[0],
-            y=pos[1],
+            x=float(pos[0]),
+            y=float(pos[1]),
             food=food,
             water=water,
             energy=energy,
