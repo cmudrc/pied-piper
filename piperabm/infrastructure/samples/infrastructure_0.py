@@ -1,3 +1,7 @@
+"""
+Single home in the middle of nowhere
+"""
+
 import piperabm as pa
 
 

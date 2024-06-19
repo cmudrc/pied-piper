@@ -137,11 +137,8 @@ class Query(Add, Get, Set):
             print(f">>> {self.node_type(id=id)} node at position {self.pos(id)} removed.")
         self.G.remove_node(id)
 
-    def pos(self, id: int, value: list = None):
+    def pos(self, id: int) -> list:
         """
         Set and get for position
         """
-        if value is None:
-            return self.get_pos(id=id)
-        else:
-            self.set_pos(id=id, value=value)
+        return self.get_pos(id=id)

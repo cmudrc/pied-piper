@@ -1,3 +1,7 @@
+"""
+Simple world
+"""
+
 import piperabm as pa
 
 

@@ -1,23 +1,26 @@
 import networkx as nx
 import random
 from copy import deepcopy
-import uuid
 
+from piperabm.society.query import Query
 from piperabm.society.serialize import Serialize
 #from piperabm.data.agents_info import *
 #from piperabm.data.utqiavik.info import *
 from piperabm.society.graphics import Graphics
 #from piperabm.economy import utility, trade_solver
 from piperabm.tools.gini import gini
-from piperabm.society.actions import ActionQueue, Move, Stay
+from piperabm.society.actions import Move, Stay
 from piperabm.tools.symbols import SYMBOLS
-from piperabm.tools import nx_serialize, nx_deserialize
 
 
 class Society(
-    Graphics,
-    Serialize
+    Query,
+    Serialize,
+    Graphics
 ):
+    """
+    Represent society network
+    """
 
     type = "society"
 
@@ -43,18 +46,6 @@ class Society(
         if self.model is not None:
             result = self.model.infrastructure
         return result
-    
-    def check_id(self, id):
-        if id is None:
-            id = self.new_id()
-        else:
-            if id in self.agents:
-                id = self.new_id()
-                print("id already exists. replaced with new id.")
-        return id
-
-    def new_id(self) -> int:
-        return uuid.uuid4().int
 
     def generate_agents(
             self,
@@ -87,48 +78,6 @@ class Society(
                 enough_energy=deepcopy(energy),
                 balance=balance
             )
-
-    def add_agent(
-        self,
-        home_id: int,
-        id: int = None,
-        socioeconomic_status: float = 1,
-        food: float = 1,
-        water: float = 1,
-        energy: float = 1,
-        enough_food: float = 1,
-        enough_water: float = 1,
-        enough_energy: float = 1,
-        balance: float = 1
-    ):
-        id = self.check_id(id)
-        self.actions[id] = ActionQueue(agent_id=id)
-        self.actions[id].society = self # Binding
-        pos = self.infrastructure.pos(id=home_id)
-        self.G.add_node(
-            id,
-            socioeconomic_status=socioeconomic_status,
-            home_id=home_id,
-            current_node=deepcopy(home_id),
-            x=pos[0],
-            y=pos[1],
-            food=food,
-            water=water,
-            energy=energy,
-            idle_food_rate=idle_food_rate,
-            idle_water_rate=idle_water_rate,
-            idle_energy_rate=idle_energy_rate,
-            enough_food=enough_food,
-            enough_water=enough_water,
-            enough_energy=enough_energy,
-            balance=balance,
-            alive=True,
-            speed=speed,
-            transportation_food_rate=transportation_food_rate,
-            transportation_water_rate=transportation_water_rate,
-            transportation_energy_rate=transportation_energy_rate,
-            max_time_outside=max_time_outside
-        )
 
     def pos(self, id: int, new_val: list = None):
         if new_val is None:
@@ -607,6 +556,35 @@ class Society(
                 duration=stay_length
             )
             action_queue.add(stay)
+
+    @property
+    def stat(self):
+        """
+        Return stats of the network
+        """
+        return {
+            'node': {
+                'alive': len(self.alives),
+                'dead': len(self.deads),
+                'total': len(self.agents),
+            },
+            'edge': {
+                'family': len(self.families),
+                'friend': len(self.friends),
+            },
+        }
+    
+    def __str__(self):
+        """
+        Return print-friendly stats of the network
+        """
+        stat = self.stat
+        txt = ''
+        for category in stat:
+            for name in stat[category]:
+                txt += f"# {name}: {str(stat[category][name])}" + "\n"
+        txt = txt[:-1]
+        return txt
 
 
 if __name__ == "__main__":

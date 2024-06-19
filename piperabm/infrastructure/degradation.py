@@ -1,12 +1,13 @@
 class Degradation:
+    """
+    Manage edge dergradation methods
+    """
 
     def adjustment_factor(self, usage_impact: float, weather_impact: float) -> float:
         """
         Calculate adjustment factor
         """
-        coeff_usage = 1 / 1000
-        coeff_weather = 1
-        return 1 + (coeff_usage * usage_impact) + (coeff_weather * weather_impact)
+        return 1 + (self.coeff_usage * usage_impact) + (self.coeff_weather * weather_impact)
 
     def calculate_adjusted_length(self, length: float, usage_impact: float, weather_impact: float) -> float:
         """

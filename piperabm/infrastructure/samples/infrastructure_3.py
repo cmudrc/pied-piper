@@ -7,6 +7,9 @@ import random
 import piperabm as pa
 
 
+random.seed(1)
+
+
 """ Info """
 homes_num = 10
 x_grid_size = 15
@@ -61,10 +64,10 @@ for i in range(homes_num):
 
 model.infrastructure.bake()
 
+# Random impact
 edges = model.infrastructure.random_edges(percent=imperfection_percentage)
 model.infrastructure.impact(edges=edges)
 
 
 if __name__ == "__main__":
-    #print(model.infrastructure.serialize())
     model.infrastructure.show()
