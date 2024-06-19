@@ -12,9 +12,9 @@ class Delta:
         Create delta by comparing *old* and *new*
         """
         if isinstance(old, np.floating) or isinstance(new, np.floating):
-            old = float(old)
-            new = float(new)
-            print(old, new)
+            #old = float(old)
+            #new = float(new)
+            #print(old, new)
             raise ValueError
         
         if type(old) == type(new): # same type
@@ -45,8 +45,8 @@ class Delta:
         """
         Apply *delta* to *old* variable
         """
-        #if isinstance(old, np.floating) or isinstance(delta, np.floating):
-        #    raise ValueError
+        if isinstance(old, np.floating) or isinstance(delta, np.floating):
+            raise ValueError
         
         if delta == "NOTHING": # equal and same type
             new = deepcopy(old)

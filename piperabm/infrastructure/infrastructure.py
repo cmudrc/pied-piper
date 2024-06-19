@@ -14,6 +14,9 @@ class Infrastructure(
     Serialize,
     Graphics
 ):
+    """
+    Represent infrastructure network
+    """
 
     type = 'infrastructure'
 

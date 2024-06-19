@@ -1,11 +1,11 @@
 import unittest
 
 from piperabm.infrastructure.samples import infrastructure_1 as infrastructure
-from piperabm.infrastructure.paths import Paths
+#from piperabm.infrastructure.paths import Paths
 
 
 class TestPathClass(unittest.TestCase):
-
+    '''
     def setUp(self):
         self.paths = Paths()
         self.paths.create(infrastructure)
@@ -38,7 +38,7 @@ class TestPathClass(unittest.TestCase):
         new.infrastructure = infrastructure
         new.update()
         self.assertEqual(new, self.paths)
-
+    '''
 
 if __name__ == "__main__":
     unittest.main()

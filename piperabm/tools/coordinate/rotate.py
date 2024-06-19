@@ -34,7 +34,7 @@ class rotate:
         result = np.dot(rotation_matrix, vector)
         
         if ndarray is False:
-            result = list(result)
+            result = [float(num) for num in result]  # Convert np.float64 to float explicitly
 
         return result
     
@@ -70,7 +70,7 @@ class rotate:
         result = np.dot(rotation_matrix, vector)
         
         if ndarray is False:
-            result = list(result)
+            result = [float(num) for num in result]  # Convert np.float64 to float explicitly
             
         return result
 
@@ -106,7 +106,7 @@ class rotate:
         result = np.dot(rotation_matrix, vector)
         
         if ndarray is False:
-            result = list(result)
+            result = [float(num) for num in result]  # Convert np.float64 to float explicitly
             
         return result
 
@@ -131,7 +131,7 @@ def preprocess(vector, angle, unit='degree', rotate='axis'):
     return vector, angle_radians, factor
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     vector = np.array([0, 1, 0])
     angle = 45
     rotated_vector = rotate.x(vector, angle, unit='degree', rotate='axis')
