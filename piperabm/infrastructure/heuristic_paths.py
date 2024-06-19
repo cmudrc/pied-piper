@@ -1,7 +1,7 @@
 import networkx as nx
 
-from piperabm.tools.coordinate import distance as ds
-from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
+from piperabm.tools import distance as ds
+from piperabm.tools import nx_serialize, nx_deserialize
 
 
 class HeuristicPaths:
@@ -59,5 +59,14 @@ if __name__ == "__main__":
     infrastructure.add_home(pos=[0, 0], id=1)
     infrastructure.add_home(pos=[10, 0], id=2)
     infrastructure.bake()
-    print(infrastructure.heuristic_paths)
+
+    # Test elements count
+    junctions = infrastructure.stat['node']['junction']
+    homes = infrastructure.stat['node']['home']
+    total_nodes = junctions + homes
+    print("Expected nodes: ", total_nodes)
+    print("Expected edges: ", (total_nodes + 1) * (total_nodes / 2))
+    print("Resulting nodes and edges: ", infrastructure.heuristic_paths)
+
+    # Test functionality
     print(infrastructure.heuristic_paths.estimated_distance(id_start=1, id_end=2))

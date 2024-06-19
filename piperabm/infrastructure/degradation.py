@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class Degradation:
 
     def adjustment_factor(self, usage_impact: float, weather_impact: float) -> float:

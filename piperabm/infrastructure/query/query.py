@@ -1,6 +1,6 @@
 import networkx as nx
 
-from piperabm.tools.coordinate import distance as ds
+from piperabm.tools import distance as ds
 from piperabm.infrastructure.query.add import Add
 from piperabm.infrastructure.query.get import Get
 from piperabm.infrastructure.query.set import Set

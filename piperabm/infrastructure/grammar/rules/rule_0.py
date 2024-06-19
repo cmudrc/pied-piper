@@ -1,4 +1,4 @@
-from piperabm.tools.coordinate import distance as ds
+from piperabm.tools import distance as ds
 
 
 class Rule0:

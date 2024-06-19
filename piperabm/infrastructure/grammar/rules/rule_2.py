@@ -1,5 +1,5 @@
-from piperabm.tools.coordinate import distance as ds
-from piperabm.tools.coordinate.intersect import line_line
+from piperabm.tools import distance as ds
+from piperabm.tools import intersect
 from piperabm.infrastructure.grammar.rules.rule_1 import Rule1
 
 
@@ -20,7 +20,7 @@ class Rule2:
         edge_pos_2 = self.infrastructure.pos(edge_ids[1])
         other_edge_pos_1 = self.infrastructure.pos(other_edge_ids[0])
         other_edge_pos_2 = self.infrastructure.pos(other_edge_ids[1])
-        intersection = line_line(
+        intersection = intersect.line_line(
             edge_pos_1,
             edge_pos_2,
             other_edge_pos_1,

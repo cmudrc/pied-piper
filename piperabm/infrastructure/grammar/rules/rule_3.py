@@ -1,7 +1,7 @@
 import numpy as np
 
-from piperabm.tools.coordinate import distance as ds
-from piperabm.tools.vector import vector as vc
+from piperabm.tools import distance as ds
+from piperabm.tools import vector as vc
 from piperabm.infrastructure.grammar.rules.rule_1 import Rule1
 
 

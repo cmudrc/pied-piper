@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from piperabm.tools.json_file import JsonFile
-from piperabm.tools.delta import Delta
+from piperabm.tools import JsonFile
+from piperabm.tools import Delta
 
 
 class Update:
