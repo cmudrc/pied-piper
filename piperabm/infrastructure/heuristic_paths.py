@@ -31,8 +31,8 @@ class HeuristicPaths:
                     distance = 0
                 else:
                     distance = ds.point_to_point(
-                        point_1=infrastructure.pos(id_1),
-                        point_2=infrastructure.pos(id_2)
+                        point_1=infrastructure.get_pos(id_1),
+                        point_2=infrastructure.get_pos(id_2)
                     )
                 self.G.add_edge(id_1, id_2, distance=distance)
     

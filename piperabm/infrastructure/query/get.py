@@ -18,62 +18,11 @@ class Get(NxGet):
     def edge_type(self, ids: list) -> str:
         return self.get_edge_attribute(ids=ids, attribute='type')
     
-    @property
-    def junctions(self) -> list:
-        """
-        Return all junction nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'junction']
-        except:
-            return []
-        
-    @property
-    def nonjunctions(self) -> list:
-        """
-        Return all nonjunction nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') != 'junction']
-        except:
-            return []
-        
-    @property
-    def homes(self) -> list:
-        """
-        Return all homes nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'home']
-        except:
-            return []
-
-    @property
-    def markets(self) -> list:
-        """
-        Return all market nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'market']
-        except:
-            return []
+    def get_length(self, ids: list) -> float:
+        return self.get_edge_attribute(ids=ids, attribute='length')
     
-    @property
-    def streets(self) -> list:
-        """
-        Return all street edges
-        """
-        try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'street']
-        except:
-            return []
+    def get_adjusted_length(self, ids: list) -> float:
+        return self.get_edge_attribute(ids=ids, attribute='adjusted_length')
     
-    @property
-    def neighborhood_accesses(self) -> list:
-        """
-        Return all neighborhood access edges
-        """
-        try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'neighborhood_access']
-        except:
-            return []
+    def get_usage_impact(self, ids: list) -> float:
+        return self.get_edge_attribute(ids=ids, attribute='usage_impact')

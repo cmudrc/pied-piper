@@ -26,7 +26,7 @@ class Rule3:
         return result
     
     def apply(self, node_id, report: bool = False):
-        node_pos = self.infrastructure.pos(node_id)
+        node_pos = self.infrastructure.get_pos(node_id)
         edges_ids = self.infrastructure.edges
         distances_info = []
         # Filter edges
@@ -44,8 +44,8 @@ class Rule3:
             distance_vector_edge = ds.point_to_line(
                 point=node_pos,
                 line=[
-                    self.infrastructure.pos(edge_ids[0]),
-                    self.infrastructure.pos(edge_ids[1])
+                    self.infrastructure.get_pos(edge_ids[0]),
+                    self.infrastructure.get_pos(edge_ids[1])
                 ],
                 segment=True,
                 vector=True,
@@ -62,7 +62,7 @@ class Rule3:
             id_1 = edge_ids[0]
             distance_vector_node_1 = ds.point_to_point(
                 point_1=node_pos,
-                point_2=self.infrastructure.pos(id_1),
+                point_2=self.infrastructure.get_pos(id_1),
                 vector=True
             )
             node_info_1 = {
@@ -74,7 +74,7 @@ class Rule3:
             id_2 = edge_ids[1]
             distance_vector_node_2 = ds.point_to_point(
                 point_1=node_pos,
-                point_2=self.infrastructure.pos(id_2),
+                point_2=self.infrastructure.get_pos(id_2),
                 vector=True
             )
             node_info_2 = {
@@ -111,7 +111,7 @@ class Rule3:
             )
         # Edge as target
         elif target_info['type'] == 'edge':
-            pos_1 = self.infrastructure.pos(node_id)
+            pos_1 = self.infrastructure.get_pos(node_id)
             pos_2 = list(np.array(pos_1) + np.array(target_info['vector']))
             new_node_id = self.infrastructure.add_junction(pos=pos_2, report=report)
             self.infrastructure.add_neighborhood_access(

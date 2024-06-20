@@ -15,7 +15,7 @@ class Graphics:
         nodes = self.nodes
         for node_id in nodes:
             # Position
-            pos_dict[node_id] = self.pos(node_id)
+            pos_dict[node_id] = self.get_pos(node_id)
             # Color
             color = infrastructure_style['node'][self.node_type(node_id)]['color']
             node_color_list.append(color)

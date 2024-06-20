@@ -1,3 +1,4 @@
+from .average import average
 from .coordinate import distance, intersect
 from .gini import gini
 from .vector import vector

@@ -52,7 +52,7 @@ class Add:
         id = self.check_id(id)
         self.actions[id] = ActionQueue(agent_id=id)
         self.actions[id].society = self # Binding
-        pos = self.infrastructure.pos(id=home_id)
+        pos = self.infrastructure.get_pos(id=home_id)
         self.G.add_node(
             id,
             name=name,

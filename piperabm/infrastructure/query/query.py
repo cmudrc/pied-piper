@@ -57,8 +57,8 @@ class Query(Add, Get, Set):
                 new_edge_ids = [edge_ids[0], new_id]
             data = self.get_edge_attributes(ids=edge_ids)
             data['length'] = ds.point_to_point(
-                    self.pos(new_edge_ids[0]),
-                    self.pos(new_edge_ids[1])
+                    self.get_pos(new_edge_ids[0]),
+                    self.get_pos(new_edge_ids[1])
                 )
             data['adjusted_length'] = self.calculate_adjusted_length(
                 length=data['length'],
@@ -71,7 +71,7 @@ class Query(Add, Get, Set):
                 **data
             )
             if report is True:
-                print(f">>> {type} edge at positions {self.pos(new_edge_ids[0])} - {self.pos(new_edge_ids[1])} added.")
+                print(f">>> {type} edge at positions {self.get_pos(new_edge_ids[0])} - {self.get_pos(new_edge_ids[1])} added.")
             # Remove old edge
             self.remove_edge(ids=edge_ids, report=report)
         # Remove old node
@@ -126,7 +126,7 @@ class Query(Add, Get, Set):
         Remove edge
         """
         if report is True:
-            print(f">>> {self.edge_type(ids=ids)} edge at {self.pos(ids[0])} - {self.pos(ids[1])} removed.")
+            print(f">>> {self.edge_type(ids=ids)} edge at {self.get_pos(ids[0])} - {self.get_pos(ids[1])} removed.")
         self.G.remove_edge(*ids)
 
     def remove_node(self, id: int, report: bool = False):
@@ -134,14 +134,16 @@ class Query(Add, Get, Set):
         Remove node
         """
         if report is True:
-            print(f">>> {self.node_type(id=id)} node at position {self.pos(id)} removed.")
+            print(f">>> {self.node_type(id=id)} node at position {self.get_pos(id)} removed.")
         self.G.remove_node(id)
 
+    '''
     def pos(self, id: int) -> list:
         """
         Set and get for position
         """
         return self.get_pos(id=id)
+    '''
     
     def nodes_closer_than(self, id: int, search_radius: float = 0, nodes: list = None, include_self: bool = True):
         if nodes is None:
@@ -155,3 +157,63 @@ class Query(Add, Get, Set):
                 else:
                     result.append(node_id)
         return result
+    
+    @property
+    def junctions(self) -> list:
+        """
+        Return all junction nodes
+        """
+        try:
+            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'junction']
+        except:
+            return []
+        
+    @property
+    def nonjunctions(self) -> list:
+        """
+        Return all nonjunction nodes
+        """
+        try:
+            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') != 'junction']
+        except:
+            return []
+        
+    @property
+    def homes(self) -> list:
+        """
+        Return all homes nodes
+        """
+        try:
+            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'home']
+        except:
+            return []
+
+    @property
+    def markets(self) -> list:
+        """
+        Return all market nodes
+        """
+        try:
+            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'market']
+        except:
+            return []
+    
+    @property
+    def streets(self) -> list:
+        """
+        Return all street edges
+        """
+        try:
+            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'street']
+        except:
+            return []
+    
+    @property
+    def neighborhood_accesses(self) -> list:
+        """
+        Return all neighborhood access edges
+        """
+        try:
+            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'neighborhood_access']
+        except:
+            return []

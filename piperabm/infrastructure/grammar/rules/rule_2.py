@@ -16,10 +16,10 @@ class Rule2:
 
     def check(self, edge_ids, other_edge_ids):
         result = False
-        edge_pos_1 = self.infrastructure.pos(edge_ids[0])
-        edge_pos_2 = self.infrastructure.pos(edge_ids[1])
-        other_edge_pos_1 = self.infrastructure.pos(other_edge_ids[0])
-        other_edge_pos_2 = self.infrastructure.pos(other_edge_ids[1])
+        edge_pos_1 = self.infrastructure.get_pos(edge_ids[0])
+        edge_pos_2 = self.infrastructure.get_pos(edge_ids[1])
+        other_edge_pos_1 = self.infrastructure.get_pos(other_edge_ids[0])
+        other_edge_pos_2 = self.infrastructure.get_pos(other_edge_ids[1])
         intersection = intersect.line_line(
             edge_pos_1,
             edge_pos_2,

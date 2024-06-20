@@ -20,8 +20,8 @@ class Rule0:
                 edge_constraint = False
         if edge_constraint is True:
             distance = ds.point_to_point(
-                point_1=self.infrastructure.pos(node_id),
-                point_2=self.infrastructure.pos(other_node_id)
+                point_1=self.infrastructure.get_pos(node_id),
+                point_2=self.infrastructure.get_pos(other_node_id)
             )
             if distance < self.proximity_radius:
                 result = True
@@ -33,8 +33,8 @@ class Rule0:
             self.infrastructure.remove_edge(ids=[node_id, other_node_id], report=report)
 
         # Merge nodes
-        pos_node = self.infrastructure.pos(node_id)
-        pos_other_node = self.infrastructure.pos(other_node_id)
+        pos_node = self.infrastructure.get_pos(node_id)
+        pos_other_node = self.infrastructure.get_pos(other_node_id)
         pos_new = [
             (pos_node[0] + pos_other_node[0]) / 2,
             (pos_node[1] + pos_other_node[1]) / 2,
@@ -51,7 +51,7 @@ class Rule0:
                 if node_id != other_node_id:
                     if self.check(node_id, other_node_id) is True:
                         if report is True:
-                            print(f"\n# {self.name} for nodes at {self.infrastructure.pos(node_id)} and {self.infrastructure.pos(other_node_id)}")
+                            print(f"\n# {self.name} for nodes at {self.infrastructure.get_pos(node_id)} and {self.infrastructure.get_pos(other_node_id)}")
                         self.apply(node_id, other_node_id, report=report)
                         # Inform an activity
                         anything_happened = True

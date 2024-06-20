@@ -12,84 +12,47 @@ class Get(NxGet):
         """
         return [self.get_node_attribute(id, 'x', None), self.get_node_attribute(id, 'y', None)]
     
-    def node_type(self, id: int) -> str:
+    def get_node_type(self, id: int) -> str:
         return self.get_node_attribute(id=id, attribute='type')
 
-    def edge_type(self, ids: list) -> str:
+    def get_edge_type(self, ids: list) -> str:
         return self.get_edge_attribute(ids=ids, attribute='type')
-
-    def edges_from(self, id: int) -> list:
-        """
-        All edges from a node
-        """
-        return list(self.G.edges(id))
     
-    @property
-    def agents(self) -> list:
-        """
-        Return all agent nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'agent']
-        except:
-            return []
-        
-    @property
-    def alives(self) -> list:
-        """
-        Return all alive agent nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'agent' and attr.get('alive') is True]
-        except:
-            return []
-        
-    @property
-    def deads(self) -> list:
-        """
-        Return all alive agent nodes
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'agent' and attr.get('alive') is False]
-        except:
-            return []
+    def get_resource(self, name: str, id: int) -> float:
+        return self.get_node_attribute(id=id, attribute=name)
+    
+    def get_enough_resource(self, name: str, id: int) -> float:
+        attribute = 'enough_' + name
+        return self.get_node_attribute(id=id, attribute=attribute)
+    
+    def get_idle_fuel_rate(self, name: str, id: int) -> float:
+        attribute = 'idle_' + name + '_rate'
+        return self.get_node_attribute(id=id, attribute=attribute)
 
-    @property
-    def families(self) -> list:
-        """
-        Return all family edges
-        """
-        try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'family']
-        except:
-            return []
-        
-    def agents_from(self, home_id: int) -> list:
-        """
-        Return all family edges
-        """
-        try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'agent' and attr.get('home_id') == home_id]
-        except:
-            return []
-        
-    @property
-    def friends(self) -> list:
-        """
-        Return all friend edges
-        """
-        try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'friend']
-        except:
-            return []
-        
-    @property
-    def neighbors(self) -> list:
-        """
-        Return all friend edges
-        """
-        try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'neighbor']
-        except:
-            return []
+    def get_transportation_fuel_rate(self, name: str, id: int) -> float:
+        attribute = 'transportation_' + name + '_rate'
+        return self.get_node_attribute(id=id, attribute=attribute)
 
+    def get_transportation_speed(self, id: int) -> float:
+        return self.get_node_attribute(id=id, attribute='speed')
+
+    def get_alive(self, id: str) -> bool:
+        return self.get_node_attribute(id=id, attribute='alive')
+    
+    def get_socioeconomic_status(self, id: str) -> bool:
+        return self.get_node_attribute(id=id, attribute='socioeconomic_statu')
+    
+    def get_income(self, id: str) -> float:
+        return self.get_socioeconomic_status(id=id) * self.average_income
+    
+    def get_current_node(self, id: str) -> int:
+        return self.get_node_attribute(id=id, attribute='current_node')
+    
+    def get_home_id(self, id: str) -> int:
+        return self.get_node_attribute(id=id, attribute='home_id')
+    
+    def get_balance(self, id: int) -> float:
+        return self.get_node_attribute(id=id, attribute='balance')
+    
+    def get_max_time_outside(self, id: int):
+        return self.get_node_attribute(id=id, attribute='max_time_outside')

@@ -84,118 +84,6 @@ class Society(
                 balance=balance
             )
 
-    def pos(self, id: int, new_val: list = None):
-        if new_val is None:
-            return [float(self.G.nodes[id].get('x', None)), float(self.G.nodes[id].get('y', None))]
-        else:
-            self.G.nodes[id]['x'] = float(new_val[0])
-            self.G.nodes[id]['y'] = float(new_val[1])
-        
-    def home_id(self, id: int):
-        return self.G.nodes[id].get('home_id', None)
-    
-    def get_current_node(self, id: int):
-        return self.G.nodes[id].get('current_node', None)
-        
-    def set_current_node(self, id: int, new_val: int = None):
-        self.G.nodes[id]['current_node'] = new_val
-
-    def is_home(self, id: int):
-        return self.home_id(id) == self.get_current_node(id)
-
-    def max_time_outside(self, id: int):
-        return self.G.nodes[id].get('max_time_outside', None)
-
-    def balance(self, id: int, new_val: float = None):
-        if new_val is None:
-            return self.G.nodes[id].get('balance', None)
-        else:
-            self.G.nodes[id]['balance'] = new_val
-    
-    def income(self, id: int):
-        return self.G.nodes[id].get('socioeconomic_status', None) * self.average_income
-    
-    def is_alive(self, id: int, new_val: bool = None):
-        if new_val is None:
-            val = self.G.nodes[id].get('alive', None)
-            if val is None:
-                raise ValueError
-            return val
-        else:
-            self.G.nodes[id]['alive'] = new_val
-    
-    def speed(self, id: int):
-        return self.G.nodes[id].get('speed', None)
-    
-    def transportation_food_rate(self, id: int):
-        return self.G.nodes[id].get('transportation_food_rate', None)
-    
-    def transportation_water_rate(self, id: int):
-        return self.G.nodes[id].get('transportation_water_rate', None)
-
-    def transportation_energy_rate(self, id: int):
-        return self.G.nodes[id].get('transportation_energy_rate', None)
-    
-    def idle_food_rate(self, id: int):
-        return self.G.nodes[id].get('idle_food_rate', None)
-    
-    def idle_water_rate(self, id: int):
-        return self.G.nodes[id].get('idle_water_rate', None)
-
-    def idle_energy_rate(self, id: int):
-        return self.G.nodes[id].get('idle_energy_rate', None)
-    
-    def enough_food(self, id: int):
-        return self.G.nodes[id].get('enough_food', None)
-    
-    def enough_water(self, id: int):
-        return self.G.nodes[id].get('enough_water', None)
-
-    def enough_energy(self, id: int):
-        return self.G.nodes[id].get('enough_energy', None)
-
-    def food(self, id: int, new_val: float = None):
-        if new_val is None:
-            return float(self.G.nodes[id].get('food', None))
-        else:
-            if new_val < 0:
-                new_val = 0
-                self.is_alive(id, new_val=False)
-            self.G.nodes[id]['food'] = new_val
-    
-    def water(self, id: int, new_val: float = None):
-        if new_val is None:
-            return float(self.G.nodes[id].get('water', None))
-        else:
-            if new_val < 0:
-                new_val = 0
-                self.is_alive(id, new_val=False)
-            self.G.nodes[id]['water'] = new_val
-    
-    def energy(self, id: int, new_val: float = None):
-        if new_val is None:
-            return float(self.G.nodes[id].get('energy', None))
-        else:
-            if new_val < 0:
-                new_val = 0
-                self.is_alive(id, new_val=False)
-            self.G.nodes[id]['energy'] = new_val
-
-    def resources_value(self, id: int) -> float:
-        """
-        Monetary value of resources that an agent possesses
-        """
-        food_value = self.food(id) * self.food_price
-        water_value = self.water(id) * self.water_price
-        energy_value = self.energy(id) * self.energy_price
-        return food_value + water_value + energy_value
-
-    def wealth(self, id: int) -> float:
-        """
-        Wealth of an agent
-        """
-        return self.balance(id) + self.resources_value(id)
-
     @property
     def gini_index(self) -> float:
         """
@@ -205,92 +93,6 @@ class Society(
         for id in self.agents:
             data.append(self.wealth(id))
         return gini.coefficient(data)
-    
-    def edge_id(self, id_1: int, id_2: int):
-        """
-        Get edge id based on its id_1 and id_2 (both ends)
-        """
-        result = None
-        if self.G.has_edge(id_1, id_2):
-            edge = self.G.edges[id_1, id_2]
-            result = edge['id']
-        return result
-    
-    def edge_ids(self, id: int):
-        """
-        Get edge id_1 and id_2 (both ends) based on its id
-        """
-        result = None
-        for id_1, id_2 in self.G.edges():
-            if self.edge_id(id_1, id_2) == id:
-                result = [id_1, id_2]
-                break
-        return result
-    
-    @property
-    def edges_ids(self):
-        """
-        Return all edges ids
-        """
-        return list(self.G.edges())
-
-    @property
-    def edges_id(self):
-        """
-        Return all edges id
-        """
-        result = []
-        edges = self.edges_ids
-        for ids in edges:
-            id = self.edge_id(*ids)
-            result.append(id)
-        return result
-    
-    @property
-    def nodes_id(self):
-        """
-        Return all nodes id
-        """
-        return list(self.G.nodes())
-    
-    @property
-    def agents(self):
-        """
-        List all agents
-        """
-        return self.nodes_id
-    
-    @property
-    def dead_agents(self):
-        """
-        List all dead agents
-        """
-        result = []
-        for agent in self.agents:
-            if self.is_alive(id=agent) is False:
-                result.append(agent)
-        return result
-    
-    @property
-    def alive_agents(self):
-        """
-        List all alive agents
-        """
-        result = []
-        for agent in self.agents:
-            if self.is_alive(id=agent) is True:
-                result.append(agent)
-        return result
-    
-    def agents_in(self, id: int):
-        """
-        Return a list of agents currently within a certain node
-        """
-        result = []
-        for agent in self.alive_agents:
-            if self.get_current_node(id=agent) == id:
-                result.append(agent)
-        return result
     
     def trade(self, agents: list, market: int = None):
         # Load data to solver
@@ -460,12 +262,6 @@ class Society(
         top_node = selected_node[0]
         top_score = selected_node[1]
         return top_node, top_score
-
-    def estimated_distance(self, agent_id, destination_id):
-        return self.infrastructure.heuristic_paths.estimated_distance(
-            id_start=self.get_current_node(id=agent_id),
-            id_end=destination_id
-        )
     
     def destination_score(self, agent_id, destination_id, is_market: bool):
         travel_duration = self.estimated_duration(agent_id, destination_id)
@@ -495,25 +291,25 @@ class Society(
         water = 0
         energy = 0
         for agent_id in agents:
-            food += self.food(id=agent_id)
-            water += self.water(id=agent_id)
-            energy += self.energy(id=agent_id)
+            food += self.get_food(id=agent_id)
+            water += self.get_water(id=agent_id)
+            energy += self.get_energy(id=agent_id)
         if is_market is True:
-            food += self.infrastructure.food(node_id)
-            water += self.infrastructure.water(node_id)
-            energy += self.infrastructure.energy(node_id)
+            food += self.infrastructure.get_food(node_id)
+            water += self.infrastructure.get_water(node_id)
+            energy += self.infrastructure.get_energy(node_id)
         return food, water, energy
     
+    def estimated_distance(self, agent_id, destination_id):
+        return self.infrastructure.heuristic_paths.estimated_distance(
+            id_start=self.get_current_node(id=agent_id),
+            id_end=destination_id
+        )
+
     def estimated_duration(self, agent_id, destination_id):
         estimated_distance = self.estimated_distance(agent_id, destination_id)
-        speed = self.speed(id=agent_id)
+        speed = self.get_speed(id=agent_id)
         return estimated_distance / speed
-    
-    def transportation_fuel(self, agent_id, duration):
-        fuel_food = self.transportation_food_rate(id=agent_id) * duration
-        fuel_water = self.transportation_water_rate(id=agent_id) * duration
-        fuel_energy = self.transportation_energy_rate(id=agent_id) * duration
-        return fuel_food, fuel_water, fuel_energy
     
     def path(self, agent_id, destination_id):
         result = None

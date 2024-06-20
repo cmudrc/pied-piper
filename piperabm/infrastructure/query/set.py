@@ -6,4 +6,11 @@ class Set(NxSet):
     Set attributes to network elements
     """
 
-    pass
+    def set_adjusted_length(self, ids: list, value: float) -> None:
+        self.set_edge_attribute(ids=ids, attribute='adjusted_length', value=value)
+    
+    def set_usage_impact(self, ids: list, value: float):
+        self.set_edge_attribute(ids=ids, attribute='usage_impact', value=value)
+
+    def set_resource(self, name: str, id: int, value: float):
+        pass

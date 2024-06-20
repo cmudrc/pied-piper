@@ -9,5 +9,5 @@ class Print:
         for category in stat:
             for name in stat[category]:
                 txt += f"# {name}: {str(stat[category][name])}" + "\n"
-        #txt = txt[:-1]
+        txt = txt[:-1]
         return txt

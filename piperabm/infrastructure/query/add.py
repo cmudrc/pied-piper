@@ -162,7 +162,7 @@ class Add:
         Add neighborhood access edge
         """
         type = 'neighborhood_access'
-        length = ds.point_to_point(self.pos(id_1), self.pos(id_2))
+        length = ds.point_to_point(self.get_pos(id_1), self.get_pos(id_2))
         adjusted_length = self.calculate_adjusted_length(
             length=length,
             usage_impact=usage_impact,
@@ -181,5 +181,5 @@ class Add:
         #self.baked_streets = False
         self.baked_neighborhood = False
         if report is True:
-            print(f">>> {type} edge at positions {self.pos(id_1)} - {self.pos(id_2)} added.")
+            print(f">>> {type} edge at positions {self.get_pos(id_1)} - {self.get_pos(id_2)} added.")
         return id

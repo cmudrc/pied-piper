@@ -18,8 +18,8 @@ class Rule1:
         result = False
         if node_id not in edge_ids:
             distance = ds.point_to_line(
-                point=self.infrastructure.pos(node_id),
-                line=[self.infrastructure.pos(edge_ids[0]), self.infrastructure.pos(edge_ids[1])],
+                point=self.infrastructure.get_pos(node_id),
+                line=[self.infrastructure.get_pos(edge_ids[0]), self.infrastructure.get_pos(edge_ids[1])],
                 segment=True,
                 perpendicular_only=True
             )
@@ -28,12 +28,12 @@ class Rule1:
                 result = True
                 '''
                 distance_1 = ds.point_to_point(
-                    point_1=self.infrastructure.pos(node_id),
-                    point_2=self.infrastructure.pos(edge_ids[0])
+                    point_1=self.infrastructure.get_pos(node_id),
+                    point_2=self.infrastructure.get_pos(edge_ids[0])
                 )
                 distance_2 = ds.point_to_point(
-                    point_1=self.infrastructure.pos(node_id),
-                    point_2=self.infrastructure.pos(edge_ids[1])
+                    point_1=self.infrastructure.get_pos(node_id),
+                    point_2=self.infrastructure.get_pos(edge_ids[1])
                 )
                 if distance_1 > self.proximity_radius and \
                 distance_2 > self.proximity_radius:
@@ -47,8 +47,8 @@ class Rule1:
         #degradation = self.infrastructure.edge_degradation(ids=edge_ids)
         data_1 = deepcopy(data)
         data_1['length'] = ds.point_to_point(
-            self.infrastructure.pos(node_id),
-            self.infrastructure.pos(edge_ids[0])
+            self.infrastructure.get_pos(node_id),
+            self.infrastructure.get_pos(edge_ids[0])
         )
         data_1['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
             length=data_1['length'],
@@ -62,8 +62,8 @@ class Rule1:
         )
         data_2 = deepcopy(data)
         data_2['length'] = ds.point_to_point(
-            self.infrastructure.pos(node_id),
-            self.infrastructure.pos(edge_ids[1])
+            self.infrastructure.get_pos(node_id),
+            self.infrastructure.get_pos(edge_ids[1])
         )
         data_2['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
             length=data_2['length'],
@@ -76,8 +76,8 @@ class Rule1:
             **data_2
         )
         if report is True:
-            print(f">>> {data_1['type']} edge at positions {self.infrastructure.pos(node_id)} - {self.infrastructure.pos(edge_ids[0])} added.")
-            print(f">>> {data_2['type']} edge at positions {self.infrastructure.pos(node_id)} - {self.infrastructure.pos(edge_ids[1])} added.")
+            print(f">>> {data_1['type']} edge at positions {self.infrastructure.get_pos(node_id)} - {self.infrastructure.get_pos(edge_ids[0])} added.")
+            print(f">>> {data_2['type']} edge at positions {self.infrastructure.get_pos(node_id)} - {self.infrastructure.get_pos(edge_ids[1])} added.")
         self.infrastructure.remove_edge(ids=edge_ids, report=report)
 
     def find(self, report=False):

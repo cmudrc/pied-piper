@@ -87,10 +87,11 @@ class Track(Print):
 
     @property
     def length(self):
-        return self.infrastructure.edge_length(ids=self.edge_ids)
+        return self.infrastructure.length(ids=self.edge_ids)
 
-    def adjusted_length(self, new_val: float = None):
-        return self.infrastructure.adjusted_length(ids=self.edge_ids, new_val=new_val)
+    def adjusted_length(self):
+        return self.infrastructure.get_adjusted_length(ids=self.edge_ids)
+        #return self.infrastructure.adjusted_length(ids=self.edge_ids, new_val=new_val)
 
     def update(self, duration: float, measure: bool = False):
         if duration <= self.remaining and \
@@ -111,24 +112,29 @@ class Track(Print):
             pos_old = deepcopy(self.pos())
             self.pos(new_val=self.pos_end)
             self.done = True
-            # Update degradation
-            degradation = self.infrastructure.edge_degradation(ids=self.edge_ids)
-            delta_degradation = self.action.usage
-            new_degradation = degradation + delta_degradation
-            self.infrastructure.edge_degradation(ids=self.edge_ids, new_val=new_degradation)
-            self.adjusted_length(self.infrastructure.calculate_adjusted_length(self.length, new_degradation))
+            # Update usage
+            usage_impact = self.infrastructure.get_usage_impact(ids=self.edge_ids)
+            delta = self.action.usage
+            new_usage_impact = usage_impact + delta
+            self.infrastructure.set_usage_impact(ids=self.edge_ids, value=new_usage_impact)
+            # Update adjusted_lengt
+            #self.infrastructure.set_adjusted_length(ids=self.edge_ids, value=self.infrastructure.calculate_adjusted_length(self.length, new_degradation))
             if measure is True:
                 pos_new = deepcopy(self.pos())
                 delta_length = ds.point_to_point(pos_old, pos_new)
         # Update fuel consumption
-        fuel_food, fuel_water, fuel_energy = \
-            self.society.transportation_fuel(self.agent_id, (duration - excess_duration))
-        new_food = self.society.food(self.agent_id) - fuel_food
-        new_water = self.society.water(self.agent_id) - fuel_water
-        new_energy = self.society.energy(self.agent_id) - fuel_energy
-        self.society.food(self.agent_id, new_val=new_food)
-        self.society.water(self.agent_id, new_val=new_water)
-        self.society.energy(self.agent_id, new_val=new_energy)
+        #fuel_food, fuel_water, fuel_energy = \
+        #    self.society.transportation_fuel(self.agent_id, (duration - excess_duration))
+        delta_t = duration - excess_duration
+        fuel_food = self.society.get_transportation_fuel_rate(name='food', id=self.agent_id) * delta_t
+        fuel_water = self.society.get_transportation_fuel_rate(name='water', id=self.agent_id) * delta_t
+        fuel_energy = self.society.get_transportation_fuel_rate(name='energy', id=self.agent_id) * delta_t
+        new_food = self.society.get_resource(name='food', id=self.agent_id) - fuel_food
+        new_water = self.society.get_resource(name='water', id=self.agent_id) - fuel_water
+        new_energy = self.society.get_resource(name='energy', id=self.agent_id) - fuel_energy
+        self.society.set_resource(name='food', id=self.agent_id, value=new_food)
+        self.society.set_resource(name='water', id=self.agent_id, value=new_water)
+        self.society.set_resource(name='energy', id=self.agent_id, value=new_energy)
         return excess_duration
     
     def reverse(self):
