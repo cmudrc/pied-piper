@@ -1,8 +1,9 @@
 from piperabm.society.actions.move import Move
 from piperabm.society.actions.stay import Stay
+from piperabm.tools.print.serialized import Print
 
 
-class ActionQueue:
+class ActionQueue(Print):
 
     type = 'queue'
 

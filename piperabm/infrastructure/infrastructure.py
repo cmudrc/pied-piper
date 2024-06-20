@@ -4,6 +4,7 @@ from piperabm.infrastructure.query import Query
 from piperabm.infrastructure.degradation import Degradation
 from piperabm.infrastructure.serialize import Serialize
 from piperabm.infrastructure.graphics import Graphics
+from piperabm.tools.print.stat import Print
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.infrastructure.heuristic_paths import HeuristicPaths
 
@@ -12,7 +13,8 @@ class Infrastructure(
     Query,
     Degradation,
     Serialize,
-    Graphics
+    Graphics,
+    Print
 ):
     """
     Represent infrastructure network
@@ -99,18 +101,6 @@ class Infrastructure(
                 'neighborhood_access': len(self.neighborhood_accesses),
             },
         }
-    
-    def __str__(self):
-        """
-        Return print-friendly stats of the network
-        """
-        stat = self.stat
-        txt = ''
-        for category in stat:
-            for name in stat[category]:
-                txt += f"# {name}: {str(stat[category][name])}" + "\n"
-        txt = txt[:-1]
-        return txt
 
 
 if __name__ == "__main__":

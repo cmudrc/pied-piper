@@ -7,6 +7,7 @@ from piperabm.society.serialize import Serialize
 #from piperabm.data.agents_info import *
 #from piperabm.data.utqiavik.info import *
 from piperabm.society.graphics import Graphics
+from piperabm.tools.print.stat import Print
 #from piperabm.economy import utility, trade_solver
 from piperabm.tools.gini import gini
 from piperabm.society.actions import Move, Stay
@@ -16,7 +17,8 @@ from piperabm.tools.symbols import SYMBOLS
 class Society(
     Query,
     Serialize,
-    Graphics
+    Graphics,
+    Print
 ):
     """
     Represent society network
@@ -577,18 +579,6 @@ class Society(
                 'neighbor': len(self.neighbors),
             },
         }
-    
-    def __str__(self):
-        """
-        Return print-friendly stats of the network
-        """
-        stat = self.stat
-        txt = ''
-        for category in stat:
-            for name in stat[category]:
-                txt += f"# {name}: {str(stat[category][name])}" + "\n"
-        txt = txt[:-1]
-        return txt
 
 
 if __name__ == "__main__":

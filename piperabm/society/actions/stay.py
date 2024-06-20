@@ -1,7 +1,9 @@
 from copy import deepcopy
 
+from piperabm.tools.print.serialized import Print
 
-class Stay:
+
+class Stay(Print):
 
     type = 'stay'
 

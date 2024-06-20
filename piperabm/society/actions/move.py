@@ -1,7 +1,8 @@
 from piperabm.society.actions.track import Track
+from piperabm.tools.print.serialized import Print
 
 
-class Move:
+class Move(Print):
 
     type = 'move'
 

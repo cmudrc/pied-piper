@@ -2,9 +2,10 @@ import numpy as np
 from copy import deepcopy
 
 from piperabm.tools.coordinate import distance as ds
+from piperabm.tools.print.serialized import Print
 
 
-class Track:
+class Track(Print):
 
     type = 'track'
 
