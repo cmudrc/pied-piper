@@ -1,9 +1,7 @@
 from copy import deepcopy
 
-from piperabm.object import PureObject
 
-
-class Stay(PureObject):
+class Stay:
 
     type = 'stay'
 

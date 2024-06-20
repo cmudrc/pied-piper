@@ -2,7 +2,7 @@ from piperabm.model.serialize import Serialize
 from piperabm.model.file import File
 from piperabm.model.update import Update
 from piperabm.infrastructure import Infrastructure
-#from piperabm.society import Society
+from piperabm.society import Society
 
 
 class Model(
@@ -26,8 +26,8 @@ class Model(
         self.step = 0
         self.infrastructure = Infrastructure()
         self.infrastructure.model = self # Binding
-        #self.society = Society()
-        #self.society.model = self # Binding
+        self.society = Society()
+        self.society.model = self # Binding
         self.name = name
         self.path = path # File saving
 

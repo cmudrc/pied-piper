@@ -1,10 +1,8 @@
-from piperabm.object import PureObject
-from piperabm.time import DeltaTime
 from piperabm.society.actions.move import Move
 from piperabm.society.actions.stay import Stay
 
 
-class ActionQueue(PureObject):
+class ActionQueue:
 
     type = 'queue'
 

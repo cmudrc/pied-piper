@@ -30,15 +30,17 @@ class Society(
             water_price: float = 1,
             energy_price: float = 1,
             average_income: float = 1000,
+            neighbor_radius: float = 0
         ):
         super().__init__()
-        self.G = nx.DiGraph()
+        self.G = nx.MultiGraph()
         self.model = None # Binding
         self.actions = {}
         self.food_price = food_price
         self.water_price = water_price
         self.energy_price = energy_price
         self.average_income = average_income
+        self.neighbor_radius = neighbor_radius
 
     @property
     def infrastructure(self):
@@ -53,7 +55,8 @@ class Society(
             gini_index: float = 0,
             average_food: float = 10,
             average_water: float = 10,
-            average_energy: float = 10
+            average_energy: float = 10,
+            average_balance: float = 0,
         ):
         """
         Generate agents
@@ -571,6 +574,7 @@ class Society(
             'edge': {
                 'family': len(self.families),
                 'friend': len(self.friends),
+                'neighbor': len(self.neighbors),
             },
         }
     

@@ -142,3 +142,16 @@ class Query(Add, Get, Set):
         Set and get for position
         """
         return self.get_pos(id=id)
+    
+    def nodes_closer_than(self, id: int, search_radius: float = 0, nodes: list = None, include_self: bool = True):
+        if nodes is None:
+            nodes = self.nodes
+        result = []
+        for node_id in nodes:
+            if search_radius >= self.heuristic_paths.estimated_distance(id_start=id, id_end=node_id):
+                if include_self is False:
+                    if node_id != id:
+                        result.append(node_id)
+                else:
+                    result.append(node_id)
+        return result

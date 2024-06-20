@@ -2,6 +2,8 @@ import uuid
 from copy import deepcopy
 
 from piperabm.society.actions import ActionQueue
+from piperabm.society.info import *
+from piperabm.tools import SYMBOLS
 
 
 class Add:
@@ -33,17 +35,19 @@ class Add:
         id: int = None,
         name: str = '',
         socioeconomic_status: float = 1,
-        food: float = 1,
-        water: float = 1,
-        energy: float = 1,
-        enough_food: float = 1,
-        enough_water: float = 1,
-        enough_energy: float = 1,
-        balance: float = 1
+        food: float = 0,
+        water: float = 0,
+        energy: float = 0,
+        enough_food: float = SYMBOLS['eps'],
+        enough_water: float = SYMBOLS['eps'],
+        enough_energy: float = SYMBOLS['eps'],
+        balance: float = 0
     ):
         """
         Add agent node
         """
+        if self.infrastructure.baked is False:
+            raise ValueError
         type = 'agent'
         id = self.check_id(id)
         self.actions[id] = ActionQueue(agent_id=id)
@@ -76,6 +80,22 @@ class Add:
             max_time_outside=max_time_outside
         )
         # Add family
+        family_members = self.agents_from(home_id=home_id)
+        for member in family_members:
+            if member != id:
+                self.add_family(id_1=id, id_2=member)
+        # Add neighbor
+        neighbor_homes = self.infrastructure.nodes_closer_than(
+            id=home_id,
+            search_radius=self.neighbor_radius,
+            nodes=self.infrastructure.homes,
+            include_self=False
+        )
+        for neighbor_home_id in neighbor_homes:
+            neighbors = self.agents_from(home_id=neighbor_home_id)
+            for neighbor in neighbors:
+                self.add_neighbor(id_1=id, id_2=neighbor)
+        
 
     def add_family(
         self,
@@ -83,27 +103,20 @@ class Add:
         id_2: int
     ):
         """
-        Add family edge (bidirectional)
+        Add family edge
         """
         type = 'family'
         home_id_1 = self.get_node_attribute(id=id_1, attribute='home_id')
         home_id_2 = self.get_node_attribute(id=id_1, attribute='home_id')
-        if home_id_1 != home_id_2:
-            raise ValueError
-        else:
+        if home_id_1 == home_id_2 and \
+        id_1 != id_2:
             home_id = home_id_1
-        self.G.add_edge(
-            id_1,
-            id_2,
-            type=type,
-            home_id=home_id
-        )
-        self.G.add_edge(
-            id_2,
-            id_1,
-            type=type,
-            home_id=home_id
-        )
+            self.G.add_edge(
+                id_1,
+                id_2,
+                type=type,
+                home_id=home_id
+            )
 
     def add_friend(
         self,
@@ -111,11 +124,30 @@ class Add:
         id_2: int
     ):
         """
-        Add friend edge (directional)
+        Add friend edge
         """
-        type = 'family'
-        self.G.add_friend(
+        type = 'friend'
+        self.G.add_edge(
             id_1,
             id_2,
             type=type
         )
+
+    def add_neighbor(
+        self,
+        id_1,
+        id_2
+    ):
+        """
+        Add neighbor edge
+        """
+        type = 'neighbor'
+        home_id_1 = self.get_node_attribute(id=id_1, attribute='home_id')
+        home_id_2 = self.get_node_attribute(id=id_2, attribute='home_id')
+        if home_id_1 != home_id_2 and \
+        id_1 != id_2:
+            self.G.add_edge(
+                id_1,
+                id_2,
+                type=type,
+            )

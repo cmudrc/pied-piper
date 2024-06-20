@@ -1,8 +1,7 @@
-from piperabm.object import PureObject
 from piperabm.society.actions.track import Track
 
 
-class Move(PureObject):
+class Move:
 
     type = 'move'
 

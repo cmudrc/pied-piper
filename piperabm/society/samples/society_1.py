@@ -1,4 +1,4 @@
-from piperabm.infrastructure.samples.infrastructure_1 import model
+from piperabm.infrastructure.samples import model_1 as model
 
 
 model.society.add_agent(home_id=1, socioeconomic_status=1, id=1)

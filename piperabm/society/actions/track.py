@@ -1,11 +1,10 @@
 import numpy as np
 from copy import deepcopy
 
-from piperabm.object import PureObject
 from piperabm.tools.coordinate import distance as ds
 
 
-class Track(PureObject):
+class Track:
 
     type = 'track'
 
