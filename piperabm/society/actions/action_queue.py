@@ -120,13 +120,28 @@ class ActionQueue(Print):
 
 if __name__ == "__main__":
 
-    from piperabm.society.samples import model_1 as model
+    from piperabm.infrastructure.samples import model_1 as model
+
 
     agent_id = 1
     destination_id = 2
+
+    model.society.average_income = 1
+    model.society.add_agent(
+        id=agent_id,
+        home_id=1,
+        socioeconomic_status=1,
+        food=100,
+        water=100,
+        energy=100,
+        enough_food=100,
+        enough_water=100,
+        enough_energy=100,
+        balance=1000
+    )
     model.society.go_and_comeback_and_stay(agent_id, destination_id)
-    print(model.society.actions[agent_id])
-    '''
+    #print(model.society.actions[agent_id])
+    
     print(model.society.get_pos(agent_id))
     model.update(duration=30)
     print(model.society.get_pos(agent_id))
@@ -136,4 +151,4 @@ if __name__ == "__main__":
     print(model.society.get_pos(agent_id))
     model.update(duration=300)
     print(model.society.get_pos(agent_id))
-    '''
+    

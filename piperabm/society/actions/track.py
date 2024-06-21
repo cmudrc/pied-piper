@@ -79,7 +79,10 @@ class Track(Print):
         return self.infrastructure.get_pos(id=self.id_end)
     
     def pos(self, new_val: list = None):
-        return self.society.pos(id=self.agent_id, new_val=new_val)
+        if new_val is None:
+            return self.society.get_pos(id=self.agent_id)
+        else:
+            self.society.set_pos(id=self.agent_id, value=new_val)
     
     @property
     def speed(self):
