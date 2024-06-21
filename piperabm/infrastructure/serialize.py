@@ -30,3 +30,10 @@ class Serialize:
         self.baked_streets = dictionary['baked_streets']
         self.baked_neighborhood = dictionary['baked_neighborhood']
         self.heuristic_paths.deserialize(dictionary['heuristic_paths'])
+
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure.samples import model_0 as model
+
+    print(model.infrastructure.serialize())

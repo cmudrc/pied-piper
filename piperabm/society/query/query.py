@@ -31,6 +31,24 @@ class Query(Add, Get, Set):
         water_value = self.get_resource(id=id, name='water') * self.water_price
         energy_value = self.get_resource(id=id, name='energy') * self.energy_price
         return food_value + water_value + energy_value
+    
+    def resources_in(self, node_id, is_market: bool):
+        """
+        All resources available in a node
+        """
+        agents = self.agents_in(id=node_id)
+        food = 0
+        water = 0
+        energy = 0
+        for agent_id in agents:
+            food += self.get_food(id=agent_id)
+            water += self.get_water(id=agent_id)
+            energy += self.get_energy(id=agent_id)
+        if is_market is True:
+            food += self.infrastructure.get_food(node_id)
+            water += self.infrastructure.get_water(node_id)
+            energy += self.infrastructure.get_energy(node_id)
+        return food, water, energy
 
     def wealth(self, id: int) -> float:
         """

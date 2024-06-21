@@ -1,0 +1,25 @@
+from piperabm.tools.print.stat import Print
+
+
+class Stat(Print):
+    """
+    Stats of the network
+    """
+    
+    @property
+    def stat(self):
+        """
+        Return stats of the network
+        """
+        return {
+            'node': {
+                'alive': len(self.alives),
+                'dead': len(self.deads),
+                'total': len(self.agents),
+            },
+            'edge': {
+                'family': len(self.families),
+                'friend': len(self.friends),
+                'neighbor': len(self.neighbors),
+            },
+        }

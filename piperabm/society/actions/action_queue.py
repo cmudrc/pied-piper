@@ -124,14 +124,16 @@ if __name__ == "__main__":
 
     agent_id = 1
     destination_id = 2
-    model.society.go_and_comeback(agent_id, destination_id)
-    
-    print(model.society.pos(agent_id))
+    model.society.go_and_comeback_and_stay(agent_id, destination_id)
+    print(model.society.actions[agent_id])
+    '''
+    print(model.society.get_pos(agent_id))
     model.update(duration=30)
-    print(model.society.pos(agent_id))
+    print(model.society.get_pos(agent_id))
     model.update(duration=30)
-    print(model.society.pos(agent_id))
+    print(model.society.get_pos(agent_id))
     model.update(duration=28700)
-    print(model.society.pos(agent_id))
+    print(model.society.get_pos(agent_id))
     model.update(duration=300)
-    print(model.society.pos(agent_id))
+    print(model.society.get_pos(agent_id))
+    '''

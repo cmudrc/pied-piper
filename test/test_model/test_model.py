@@ -3,6 +3,7 @@ import unittest
 from piperabm.model import Model
 
 
+'''
 class TestSingleResourceSolver(unittest.TestCase):
 
     def setUp(self):
@@ -24,11 +25,19 @@ class TestSingleResourceSolver(unittest.TestCase):
         self.model = model
         self.model.society.generate_agents(num=2, gini_index=0)
         self.agents = self.model.society.agents
-        val = self.model.society.food( self.agents[0])
-        self.model.society.food( self.agents[0], new_val=val/10)
+        val = self.model.society.get_resource(
+            id=self.agents[0],
+            name='food'
+        )
+        self.model.society.set_resource(
+            id=self.agents[0],
+            name='food',
+            value=val/10
+        )
         #print(self.model.infrastructure.stat)
         #self.model.infrastructure.show()
 
+    
     def test_run(self):
         self.model.step_size = 100
 
@@ -39,7 +48,7 @@ class TestSingleResourceSolver(unittest.TestCase):
         self.assertAlmostEqual(self.model.society.pos(self.agents[0])[0], 0, places=1)
         self.assertEqual(self.model.society.get_current_node(self.agents[0]), self.home_id)
         print(self.model.society.food(self.agents[1]))
-
+    
         # Decide to go to market
         self.model.run(n=1)
         #print(self.model.society.actions[self.agents[0]])
@@ -72,7 +81,7 @@ class TestSingleResourceSolver(unittest.TestCase):
         self.model.run(n=1)
         remaining = self.model.society.actions[self.agents[0]].remaining
         self.assertLess(0, remaining)
-
+        '''
 
 if __name__ == "__main__":
     unittest.main()

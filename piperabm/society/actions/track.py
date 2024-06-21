@@ -72,22 +72,22 @@ class Track(Print):
 
     @property
     def pos_start(self):
-        return self.infrastructure.pos(id=self.id_start)
+        return self.infrastructure.get_pos(id=self.id_start)
 
     @property
     def pos_end(self):
-        return self.infrastructure.pos(id=self.id_end)
+        return self.infrastructure.get_pos(id=self.id_end)
     
     def pos(self, new_val: list = None):
         return self.society.pos(id=self.agent_id, new_val=new_val)
     
     @property
     def speed(self):
-        return self.society.speed(id=self.agent_id)
+        return self.society.get_transportation_speed(id=self.agent_id)
 
     @property
     def length(self):
-        return self.infrastructure.length(ids=self.edge_ids)
+        return self.infrastructure.get_length(ids=self.edge_ids)
 
     def adjusted_length(self):
         return self.infrastructure.get_adjusted_length(ids=self.edge_ids)

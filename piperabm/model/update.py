@@ -77,9 +77,10 @@ class Update:
         self.step += 1
         self.time += duration
         self.infrastructure.update(duration)
-        #self.society.update(duration)
+        self.society.update(duration)
 
         # Charge Markets (resource influx)
+        '''
         markets = self.infrastructure.markets
         #num = len(markets)
         #food_price = self.society.food_price
@@ -93,7 +94,9 @@ class Update:
             self.infrastructure.food(id=id, new_val=enough_food)
             self.infrastructure.water(id=id, new_val=enough_water)
             self.infrastructure.energy(id=id, new_val=enough_energy)
-            '''
+        '''
+            
+        '''
             current_balance = self.infrastructure.balance(id=id)
             current_food = self.infrastructure.food(id=id)
             needed_food = enough_food - current_food
@@ -137,7 +140,7 @@ class Update:
                         actual_get_energy*energy_price
                     )
                 )
-            '''
+        '''
 
         # Create new current state and compare to previous one
         if save is True:

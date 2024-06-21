@@ -47,7 +47,7 @@ class Add:
         Add agent node
         """
         if self.infrastructure.baked is False:
-            raise ValueError
+            raise ValueError("Model is not baked.")
         type = 'agent'
         id = self.check_id(id)
         self.actions[id] = ActionQueue(agent_id=id)

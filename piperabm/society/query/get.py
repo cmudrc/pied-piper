@@ -40,7 +40,7 @@ class Get(NxGet):
         return self.get_node_attribute(id=id, attribute='alive')
     
     def get_socioeconomic_status(self, id: str) -> bool:
-        return self.get_node_attribute(id=id, attribute='socioeconomic_statu')
+        return self.get_node_attribute(id=id, attribute='socioeconomic_status')
     
     def get_income(self, id: str) -> float:
         return self.get_socioeconomic_status(id=id) * self.average_income

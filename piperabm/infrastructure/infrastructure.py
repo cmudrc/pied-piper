@@ -2,9 +2,11 @@ import networkx as nx
 
 from piperabm.infrastructure.query import Query
 from piperabm.infrastructure.degradation import Degradation
+from piperabm.infrastructure.path import Path
+from piperabm.infrastructure.update import Update
 from piperabm.infrastructure.serialize import Serialize
 from piperabm.infrastructure.graphics import Graphics
-from piperabm.tools.print.stat import Print
+from piperabm.infrastructure.stat import Stat
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.infrastructure.heuristic_paths import HeuristicPaths
 
@@ -12,9 +14,11 @@ from piperabm.infrastructure.heuristic_paths import HeuristicPaths
 class Infrastructure(
     Query,
     Degradation,
+    Path,
+    Update,
     Serialize,
     Graphics,
-    Print
+    Stat
 ):
     """
     Represent infrastructure network
@@ -23,7 +27,6 @@ class Infrastructure(
     type = 'infrastructure'
 
     def __init__(self):
-        super().__init__()
         self.G = nx.Graph()
         self.model = None # Binding
         self.coeff_usage = 0
@@ -64,43 +67,6 @@ class Infrastructure(
             self.heuristic_paths.create(infrastructure=self)
         else:
             print("already baked.")
-
-    def update(self, duration: float):
-        """
-        Update the network
-        """
-        # Update degradation from climate change (streets only)
-        rate = 0.00001
-        for ids in self.streets:
-            weather_impact = self.get_edge_attribute(ids=ids, attribute='weather_impact')
-            weather_impact += rate * duration
-            self.set_edge_attribute(ids=ids, attribute='weather_impact', value=weather_impact)
-
-        # Update adjusted length (streets only)
-        for ids in self.streets:
-            adjusted_length = self.calculate_adjusted_length(
-                length=self.get_edge_attribute(ids=ids, attribute='length'),
-                usage_impact=self.get_edge_attribute(ids=ids, attribute='usage_impact'),
-                weather_impact=self.get_edge_attribute(ids=ids, attribute='weather_impact')
-            )
-            self.set_edge_attribute(ids=ids, attribute='adjusted_length', value=adjusted_length)
-
-    @property
-    def stat(self):
-        """
-        Return stats of the network
-        """
-        return {
-            'node': {
-                'junction': len(self.junctions),
-                'home': len(self.homes),
-                'market': len(self.markets),
-            },
-            'edge': {
-                'street': len(self.streets),
-                'neighborhood_access': len(self.neighborhood_accesses),
-            },
-        }
 
 
 if __name__ == "__main__":
