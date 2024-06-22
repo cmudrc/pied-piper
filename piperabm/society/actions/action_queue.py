@@ -4,6 +4,9 @@ from piperabm.tools.print.serialized import Print
 
 
 class ActionQueue(Print):
+    """
+    Action queue to manage the to-do list
+    """
 
     type = 'queue'
 
@@ -30,6 +33,9 @@ class ActionQueue(Print):
                 self.library.append(action)
 
     def reset(self):
+        """
+        Reset the queue
+        """
         self.library = []
 
     @property
@@ -81,6 +87,9 @@ class ActionQueue(Print):
     
     @property
     def total_duration(self):
+        """
+        How long will the all tasks take?
+        """
         total = 0
         for action in self.library:
             duration = action.total_duration
@@ -88,12 +97,18 @@ class ActionQueue(Print):
         return total
 
     def update(self, duration, measure: bool = False):
+        """
+        Update the queue
+        """
         for action in self.undones:
             duration = action.update(duration, measure=measure)
             if duration == 0:
                 break
 
     def serialize(self):
+        """
+        Serialize
+        """
         dictionary = {}
         library_serialized = []
         for action in self.library:
@@ -105,6 +120,9 @@ class ActionQueue(Print):
         return dictionary
     
     def deserialize(self, dictionary: dict) -> None:
+        """
+        Deserialize
+        """
         if dictionary['type'] != self.type:
             raise ValueError
         library_serialized = dictionary['library']
@@ -121,7 +139,6 @@ class ActionQueue(Print):
 if __name__ == "__main__":
 
     from piperabm.infrastructure.samples import model_1 as model
-
 
     agent_id = 1
     destination_id = 2
@@ -142,13 +159,13 @@ if __name__ == "__main__":
     model.society.go_and_comeback_and_stay(agent_id, destination_id)
     #print(model.society.actions[agent_id])
     
-    print(model.society.get_pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=30)
-    print(model.society.get_pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=30)
-    print(model.society.get_pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=28700)
-    print(model.society.get_pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=300)
-    print(model.society.get_pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     
