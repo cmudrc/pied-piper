@@ -1,8 +1,11 @@
-from piperabm.society.actions.track import Track
+from piperabm.society.actions.action.move.track import Track
 from piperabm.tools.print.serialized import Print
 
 
 class Move(Print):
+    """
+    Move action
+    """
 
     type = 'move'
 
@@ -19,17 +22,36 @@ class Move(Print):
 
     @property
     def society(self):
+        """
+        Alias to access society
+        """
         return self.action_queue.society
     
     @property
     def model(self):
+        """
+        Alias to access model
+        """
         return self.society.model
     
     @property
     def infrastructure(self):
+        """
+        Alias to access infrastructure
+        """
         return self.model.infrastructure
+    
+    @property
+    def agent_id(self):
+        """
+        Alias to access agent id
+        """
+        return self.action_queue.agent_id
 
     def path_to_tracks(self, path):
+        """
+        Convert path to track segments
+        """
         tracks = []
         for i, _ in enumerate(path):
             if i != 0:
@@ -46,6 +68,9 @@ class Move(Print):
     
     @property
     def total_duration(self):
+        """
+        Return how long the action will take
+        """
         total = 0
         for track in self.tracks:
             total += track.total_duration
@@ -53,11 +78,17 @@ class Move(Print):
     
     @property
     def destination(self):
+        """
+        Destionation id
+        """
         last_track = self.tracks[-1]
         return last_track.id_end
     
     @property
     def active_track(self):
+        """
+        Return the track which is currently in progress
+        """
         result = None
         for track in self.tracks:
             #print(track.done)
@@ -68,6 +99,9 @@ class Move(Print):
     
     @property
     def done(self):
+        """
+        Check whether the action is already complete
+        """
         result = True
         for track in self.tracks:
             status = track.done
@@ -78,6 +112,9 @@ class Move(Print):
     
     @property
     def elapsed(self):
+        """
+        Return how long has been passed
+        """
         result = 0
         for track in self.tracks:
             result += track.elapsed
@@ -85,14 +122,13 @@ class Move(Print):
     
     @property
     def remaining(self):
+        """
+        Return how long is still remaining
+        """
         result = 0
         for track in self.tracks:
             result += track.remaining
         return result
-    
-    @property
-    def agent_id(self):
-        return self.action_queue.agent_id
     
     def reverse(self):
         reversed_tracks = []
@@ -123,6 +159,9 @@ class Move(Print):
         return excess_delta_time
 
     def serialize(self) -> dict:
+        """
+        Serialize
+        """
         dictionary = {}
         dictionary['type'] = self.type
         tracks_serialized = []
@@ -134,6 +173,9 @@ class Move(Print):
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
+        """
+        Deserialize
+        """
         tracks_serialized = dictionary['tracks']
         for track_serialized in tracks_serialized:
             track = Track(
@@ -146,7 +188,7 @@ class Move(Print):
         self.usage = dictionary['usage']
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     from piperabm.society.samples import model_1 as model
 

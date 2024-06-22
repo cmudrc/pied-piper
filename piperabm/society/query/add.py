@@ -1,7 +1,7 @@
 import uuid
 from copy import deepcopy
 
-from piperabm.society.actions import ActionQueue
+from piperabm.society.actions.queue import ActionQueue
 from piperabm.society.info import *
 from piperabm.tools import SYMBOLS
 

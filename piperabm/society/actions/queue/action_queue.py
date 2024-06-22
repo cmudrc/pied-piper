@@ -1,5 +1,5 @@
-from piperabm.society.actions.move import Move
-from piperabm.society.actions.stay import Stay
+from piperabm.society.actions.action import Move
+from piperabm.society.actions.action.stay.stay import Stay
 from piperabm.tools.print.serialized import Print
 
 
@@ -88,7 +88,7 @@ class ActionQueue(Print):
     @property
     def total_duration(self):
         """
-        How long will the all tasks take?
+        Return how long all the actions will take
         """
         total = 0
         for action in self.library:

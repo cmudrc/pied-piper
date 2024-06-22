@@ -1,6 +1,6 @@
 import random
 
-from piperabm.society.actions import Move, Stay
+from piperabm.society.actions.action import Move, Stay
 from piperabm.tools.symbols import SYMBOLS
 
 

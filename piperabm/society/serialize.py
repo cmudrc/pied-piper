@@ -1,4 +1,4 @@
-from piperabm.society.actions import ActionQueue
+from piperabm.society.actions.queue import ActionQueue
 from piperabm.tools import nx_serialize, nx_deserialize
 
 

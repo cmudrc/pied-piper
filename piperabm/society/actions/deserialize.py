@@ -1,5 +1,5 @@
-from piperabm.society.actions.move import Move
-from piperabm.society.actions.stay import Stay
+from piperabm.society.actions import Move
+from piperabm.society.actions.action.stay.stay import Stay
 
 
 def action_deserialize(dictionary, queue):

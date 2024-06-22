@@ -6,6 +6,9 @@ from piperabm.tools.print.serialized import Print
 
 
 class Track(Print):
+    """
+    Move action segments
+    """
 
     type = 'track'
 
@@ -21,6 +24,9 @@ class Track(Print):
         self.id_end = id_end
 
     def preprocess(self, kwargs: dict = None):
+        """
+        Calculate the neccessary pieces using the kwargs
+        """
         if kwargs is None:
             self.done = False
             self.elapsed = 0
@@ -34,7 +40,7 @@ class Track(Print):
             else:
                 self.unit_vector = None
                 self.adjustment_factor = None
-        else:
+        else: # Equivalent of deserialization
             self.done = kwargs['done']
             self.elapsed = kwargs['elapsed']
             self.remaining = kwargs['remaining']
@@ -48,55 +54,99 @@ class Track(Print):
 
     @property
     def action_queue(self):
+        """
+        Alias to access action queue
+        """
         return self.action.action_queue
     
     @property
     def society(self):
+        """
+        Alias to access society
+        """
         return self.action_queue.society
     
     @property
     def model(self):
+        """
+        Alias to access model
+        """
         return self.society.model
     
     @property
     def infrastructure(self):
+        """
+        Alias to access infrastructure
+        """
         return self.model.infrastructure
 
     @property
-    def agent_id(self):
+    def agent_id(self) -> int:
+        """
+        Alias to access agent id
+        """
         return self.action_queue.agent_id
 
     @property
-    def edge_ids(self):
+    def edge_ids(self) -> list:
+        """
+        Return corresponding edge ids
+        """
         return [self.id_start, self.id_end]
 
     @property
-    def pos_start(self):
+    def pos_start(self) -> list:
+        """
+        Starting node position
+        """
         return self.infrastructure.get_pos(id=self.id_start)
 
     @property
-    def pos_end(self):
+    def pos_end(self) -> list:
+        """
+        Ending node position
+        """
         return self.infrastructure.get_pos(id=self.id_end)
     
-    def pos(self, new_val: list = None):
+    def pos(self, new_val: list = None) -> list:
+        """
+        Return current agent position
+        """
         if new_val is None:
             return self.society.get_pos(id=self.agent_id)
         else:
             self.society.set_pos(id=self.agent_id, value=new_val)
     
     @property
-    def speed(self):
+    def speed(self) -> float:
+        """
+        Alias to access agent transportation speed
+        """
         return self.society.get_transportation_speed(id=self.agent_id)
 
     @property
-    def length(self):
+    def length(self) -> float:
+        """
+        Alias to access edge length
+        """
         return self.infrastructure.get_length(ids=self.edge_ids)
 
-    def adjusted_length(self):
+    def adjusted_length(self) -> float:
+        """
+        Alias to access edge adjusted length
+        """
         return self.infrastructure.get_adjusted_length(ids=self.edge_ids)
-        #return self.infrastructure.adjusted_length(ids=self.edge_ids, new_val=new_val)
+    
+    def set_usage_impact(self, value: float) -> None:
+        """
+        Alias to set usage_impact value
+        """
+        self.infrastructure.set_usage_impact(ids=self.edge_ids, value=value)
 
     def update(self, duration: float, measure: bool = False):
+        """
+        Update track
+        """
         if duration <= self.remaining and \
             self.unit_vector is not None:
             excess_duration = 0
@@ -119,8 +169,8 @@ class Track(Print):
             usage_impact = self.infrastructure.get_usage_impact(ids=self.edge_ids)
             delta = self.action.usage
             new_usage_impact = usage_impact + delta
-            self.infrastructure.set_usage_impact(ids=self.edge_ids, value=new_usage_impact)
-            # Update adjusted_lengt
+            self.set_usage_impact(value=new_usage_impact)
+            # Update adjusted_length
             #self.infrastructure.set_adjusted_length(ids=self.edge_ids, value=self.infrastructure.calculate_adjusted_length(self.length, new_degradation))
             if measure is True:
                 pos_new = deepcopy(self.pos())
@@ -141,6 +191,9 @@ class Track(Print):
         return excess_duration
     
     def reverse(self):
+        """
+        Create a reversed track
+        """
         reversed_track = Track(
             action=self.action,
             id_start=self.id_end,
@@ -150,6 +203,9 @@ class Track(Print):
         return reversed_track
 
     def serialize(self):
+        """
+        Serialize
+        """
         dictionary = {}
         dictionary['id_start'] = self.id_start
         dictionary['id_end'] = self.id_end
