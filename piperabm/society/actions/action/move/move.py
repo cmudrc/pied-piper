@@ -131,6 +131,9 @@ class Move(Print):
         return result
     
     def reverse(self):
+        """
+        Create a reversed move action
+        """
         reversed_tracks = []
         for track in self.tracks:
             reversed_tracks.append(track.reverse())
@@ -192,7 +195,7 @@ if __name__ == "__main__":
 
     from piperabm.society.samples import model_1 as model
 
-    agent_id = 1
+    agent_id = model.society.agents[0]
     destination_id = 2
     action_queue = model.society.actions[agent_id]
     path = model.society.path(agent_id, destination_id)
@@ -202,11 +205,13 @@ if __name__ == "__main__":
         usage=1
     )
     action_queue.add(move)
+    #print(move)
 
-    print(model.infrastructure.edge_degradation(0))
-    print(model.society.pos(agent_id))
+    street = model.infrastructure.streets[0]
+    print(f"usage impact: {model.infrastructure.get_usage_impact(ids=street)}")
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=28)
-    print(model.society.pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=28)
-    print(model.society.pos(agent_id))
-    print(model.infrastructure.edge_degradation(0))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+    print(f"usage impact: {model.infrastructure.get_usage_impact(ids=street)}")

@@ -35,7 +35,8 @@ class Track(Print):
             pos_start = self.pos_start
             pos_end = self.pos_end
             if pos_start != pos_end:
-                self.unit_vector = list(ds.point_to_point(self.pos_start, self.pos_end, vector=True, ndarray=True) / self.length)
+                unit_vector = list(ds.point_to_point(self.pos_start, self.pos_end, vector=True, ndarray=True) / self.length)
+                self.unit_vector = [float(i) for i in unit_vector]
                 self.adjustment_factor = self.adjusted_length() / self.length
             else:
                 self.unit_vector = None

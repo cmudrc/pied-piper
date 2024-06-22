@@ -4,6 +4,9 @@ from piperabm.tools.print.serialized import Print
 
 
 class Stay(Print):
+    """
+    Stay action
+    """
 
     type = 'stay'
 
@@ -31,6 +34,9 @@ class Stay(Print):
         return duration
     
     def serialize(self) -> dict:
+        """
+        Serialize
+        """
         dictionary = {}
         dictionary['type'] = self.type
         dictionary['total_duration'] = self.total_duration
@@ -40,6 +46,9 @@ class Stay(Print):
         return dictionary
 
     def deserialize(self, dictionary: dict) -> None:
+        """
+        Deserialize
+        """
         self.total_duration = dictionary['total_duration']
         self.elapsed = dictionary['elapsed']
         self.remaining = dictionary['remaining']

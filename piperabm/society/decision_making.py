@@ -49,7 +49,7 @@ class DecisionMaking:
 
     def estimated_duration(self, agent_id, destination_id):
         estimated_distance = self.estimated_distance(agent_id, destination_id)
-        speed = self.get_speed(id=agent_id)
+        speed = self.get_transportation_speed(id=agent_id)
         return estimated_distance / speed
     
     def path(self, agent_id: int, destination_id: int) -> list:
