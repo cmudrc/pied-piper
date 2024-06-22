@@ -58,7 +58,7 @@ class Stay(Print):
 if __name__ == '__main__':
 
     from piperabm.society.samples import model_1 as model
-    from piperabm.society.actions import Move
+    from piperabm.society.actions.action import Move
 
     agent_id = 1
     destination_id = 2
@@ -78,8 +78,8 @@ if __name__ == '__main__':
     )
     action_queue.add(move)
 
-    print(model.society.pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=4)
-    print(model.society.pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     model.update(duration=14)
-    print(model.society.pos(agent_id))
+    print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")

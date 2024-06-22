@@ -82,3 +82,16 @@ class Update:
                     'energy': utility_energy,
                 }
                 self.model.accessibility.add_utility(id, utility)
+
+
+if __name__ == "__main__":
+
+    from piperabm.model import Model
+
+    model = Model()
+    model.infrastructure.add_home(pos=[0, 0])
+    model.bake()
+    model.society.generate_agents(num=1)
+    print(f"deads: {len(model.society.deads)}")
+    model.society.update(1000000)
+    print(f"deads: {len(model.society.deads)}")

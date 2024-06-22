@@ -154,7 +154,4 @@ if __name__ == "__main__":
     model.infrastructure.add_home(pos=[0, 0])
     model.bake()
     model.society.generate_agents(num=1)
-    #model.society.update(1000000)
-    #print(len(model.society.dead_agents))
     print(model.society)
-    #print(model.society.serialize())

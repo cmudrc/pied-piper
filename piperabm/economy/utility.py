@@ -26,7 +26,7 @@ def utility(
 
 
 if __name__ == "__main__":
-    coeff = 0.1
+    coeff = 1
 
     resource = 7
     enough_resource = 10

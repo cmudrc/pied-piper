@@ -21,9 +21,13 @@ class gini:
     
 
 if __name__ == "__main__":
+    
+    from piperabm.tools.average import average as avg
+
     incomes = [100, 300, 500, 700, 900, 300, 500, 700, 500]
     gini_index = gini.coefficient(incomes)
     average = sum(incomes) / len(incomes)
     distribution = gini.lognorm(gini_index=gini_index, average=average)
-    sample = distribution.rvs(100)
-    print(gini.coefficient(sample) / gini_index)
+    sample = distribution.rvs(sample_size=100, percision=0.02)
+    print("Averages ratio: ", avg.arithmetic(values=sample) / avg.arithmetic(values=incomes))
+    print("Gini index ratio: ", gini.coefficient(sample) / gini_index)

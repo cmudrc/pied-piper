@@ -172,13 +172,11 @@ class Track(Print):
             new_usage_impact = usage_impact + delta
             self.set_usage_impact(value=new_usage_impact)
             # Update adjusted_length
-            #self.infrastructure.set_adjusted_length(ids=self.edge_ids, value=self.infrastructure.calculate_adjusted_length(self.length, new_degradation))
+            #self.infrastructure.update_adjusted_length(ids=self.edge_ids)
             if measure is True:
                 pos_new = deepcopy(self.pos())
                 delta_length = ds.point_to_point(pos_old, pos_new)
         # Update fuel consumption
-        #fuel_food, fuel_water, fuel_energy = \
-        #    self.society.transportation_fuel(self.agent_id, (duration - excess_duration))
         delta_t = duration - excess_duration
         fuel_food = self.society.get_transportation_fuel_rate(name='food', id=self.agent_id) * delta_t
         fuel_water = self.society.get_transportation_fuel_rate(name='water', id=self.agent_id) * delta_t

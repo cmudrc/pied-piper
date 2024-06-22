@@ -1,4 +1,4 @@
-from piperabm.tools import JsonFile
+from piperabm.tools.json_file import JsonFile
 
 
 class File:

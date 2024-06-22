@@ -66,7 +66,6 @@ class Query(Add, Get, Set):
             self.set_pos(id=id, value=value)
     '''
 
-
     def agents_in(self, id: int) -> list:
         """
         Return all agents in a certain node

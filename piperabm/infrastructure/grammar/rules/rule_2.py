@@ -1,5 +1,5 @@
-from piperabm.tools import distance as ds
-from piperabm.tools import intersect
+from piperabm.tools.coordinate import distance as ds
+from piperabm.tools.coordinate import intersect
 from piperabm.infrastructure.grammar.rules.rule_1 import Rule1
 
 

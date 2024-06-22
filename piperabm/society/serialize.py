@@ -1,5 +1,5 @@
-from piperabm.society.actions.queue import ActionQueue
-from piperabm.tools import nx_serialize, nx_deserialize
+from piperabm.society.actions.action_queue import ActionQueue
+from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 
 class Serialize:
@@ -35,3 +35,15 @@ class Serialize:
         self.water_price = dictionary['water_price']
         self.energy_price = dictionary['energy_price']
         self.average_income = dictionary['average_income']
+
+
+if __name__ == "__main__":
+    
+    from piperabm.model import Model
+
+    model = Model()
+    model.infrastructure.add_home(pos=[0, 0])
+    model.bake()
+    model.society.generate_agents(num=1)
+    society_serialized = model.society.serialize()
+    print(society_serialized)

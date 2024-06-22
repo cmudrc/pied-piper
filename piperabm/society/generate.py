@@ -22,10 +22,13 @@ class Generate:
         Generate agents
         """
         distribution = gini.lognorm(gini_index)
+        socioeconomic_status_values = distribution.rvs(
+            sample_size=num,
+            percision=0.03
+        )
         homes_id = self.infrastructure.homes
-        for _ in range(num):
+        for socioeconomic_status in socioeconomic_status_values:
             home_id = random.choice(homes_id)
-            socioeconomic_status = distribution.rvs()
             food = average_food * socioeconomic_status
             water = average_water * socioeconomic_status
             energy = average_energy * socioeconomic_status
@@ -41,3 +44,16 @@ class Generate:
                 enough_energy=deepcopy(energy),
                 balance=balance
             )
+
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure.samples import model_0 as model
+
+    model.society.generate_agents(
+        gini_index=0.45,
+        num=2,
+        average_balance=1000
+    )
+    print(model.society.gini_index)
+    

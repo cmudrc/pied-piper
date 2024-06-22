@@ -1,4 +1,4 @@
-from piperabm.tools import nx_serialize, nx_deserialize
+from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 
 class Serialize:

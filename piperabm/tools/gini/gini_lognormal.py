@@ -6,6 +6,7 @@ import numpy as np
 from scipy.special import erfinv
 from scipy.stats import lognorm
 
+from piperabm.tools.gini.gini_coefficient import gini_coefficient
 from piperabm.tools.symbols import SYMBOLS
 
 
@@ -34,12 +35,26 @@ class GiniLogNormal:
     def scale(self):
         return np.exp(self.mu)
     
-    def rvs(self, sample_size: int = 1):
+    def rvs(self, sample_size: int = 1, percision: float = 0.03):
         """
         Generate random sample
+        :sample_size: size of sample
+        :percision: maximum difference between sample gini index and desired gini index
         """
-        result = lognorm(s=self.sigma, scale=self.scale).rvs(sample_size)
-        result = [float(num) for num in result]  # Convert np.float64 to float explicitly
+        while True:
+            result = lognorm(s=self.sigma, scale=self.scale).rvs(sample_size)
+            if sample_size == 1:
+                break
+            else:
+                result = [float(num) for num in result]  # Convert np.float64 to float explicitly
+                diff = abs(gini_coefficient(result) - self.gini)
+                if diff <= percision:
+                    #print(gini_coefficient(result))
+                    #print(diff)
+                    break
+
+        
+
         if sample_size == 1:
             result = result[0]
         return result

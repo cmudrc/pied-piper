@@ -23,3 +23,14 @@ class Stat(Print):
                 'neighbor': len(self.neighbors),
             },
         }
+    
+
+if __name__ == "__main__":
+
+    from piperabm.model import Model
+
+    model = Model()
+    model.infrastructure.add_home(pos=[0, 0])
+    model.bake()
+    model.society.generate_agents(num=1)
+    print(model.society)
