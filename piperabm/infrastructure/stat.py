@@ -22,3 +22,13 @@ class Stat(Print):
                 'neighborhood_access': len(self.neighborhood_accesses),
             },
         }
+    
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure import Infrastructure
+
+    infrastructure = Infrastructure()
+    infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 10])
+    infrastructure.bake()
+    print(infrastructure)

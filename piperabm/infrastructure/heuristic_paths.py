@@ -5,6 +5,9 @@ from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 
 class HeuristicPaths:
+    """
+    A network to capture the Eucledean distance between all nodes
+    """
 
     type = "heuristic paths"
 
@@ -37,6 +40,9 @@ class HeuristicPaths:
                 self.G.add_edge(id_1, id_2, distance=distance)
     
     def serialize(self):
+        """
+        Serialize
+        """
         dictionary = {
             'G': nx_serialize(self.G),
             'type': self.type,
@@ -44,6 +50,9 @@ class HeuristicPaths:
         return dictionary
     
     def deserialize(self, dictionary):
+        """
+        Deserialize
+        """
         self.G = nx_deserialize(dictionary['G'])
 
     def __str__(self):

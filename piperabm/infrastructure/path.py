@@ -30,6 +30,5 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure.samples import model_1 as model
 
-    
     path = model.infrastructure.path(id_start=1, id_end=2)
     print(path)

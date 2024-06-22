@@ -20,3 +20,7 @@ society_style = {
     "node": society_node_style,
     "edge": society_edge_style,
 }
+
+
+if __name__ == "__main__":
+    print(society_style)

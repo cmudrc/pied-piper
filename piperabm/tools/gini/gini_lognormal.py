@@ -49,14 +49,7 @@ class GiniLogNormal:
                 result = [float(num) for num in result]  # Convert np.float64 to float explicitly
                 diff = abs(gini_coefficient(result) - self.gini)
                 if diff <= percision:
-                    #print(gini_coefficient(result))
-                    #print(diff)
                     break
-
-        
-
-        if sample_size == 1:
-            result = result[0]
         return result
 
 

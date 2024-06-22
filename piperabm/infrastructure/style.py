@@ -31,3 +31,7 @@ infrastructure_style = {
     "node": infrastructure_node_style,
     "edge": infrastructure_edge_style,
 }
+
+
+if __name__ == "__main__":
+    print(infrastructure_style)
