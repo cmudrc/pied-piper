@@ -1,0 +1,195 @@
+from copy import deepcopy
+
+from piperabm.model.measurement.accessibility import Accessibility
+from piperabm.model.measurement.travel_distance import TravelDistance
+from piperabm.tools.average import average as avg
+from piperabm.tools.json_file import JsonFile
+
+
+class Measurement:
+
+    type = "measurement"
+
+    def __init__(self, path=None, name: str = 'measurement'):
+        self.path = path
+        self.name = name
+        self.times = []
+        self.accessibility = Accessibility(measurement=self)
+        self.travel_distance = TravelDistance(measurement=self)
+        
+    @property
+    def len(self) -> int:
+        """
+        Return total number of entries
+        """
+        return len(self.times) - 1
+    
+    def add_time(self, value: float) -> None:
+        """
+        Add new point in time
+        """
+        self.times.append(deepcopy(value))
+
+    def filter_times(self, _from: int = None, _to: int = None) -> list:
+        """
+        Filter times list
+        """
+        times = self.times[1:]
+        if _from is None:
+            _from = 0
+        if _to is None:
+            _to = len(times)
+        return times[_from:_to]
+    
+    def delta_times(self, _from: int = None, _to: int = None) -> list:
+        """
+        Return delta times
+        """
+        times = self.times[1:]
+        if _from is None:
+            _from = 0
+        if _to is None:
+            _to = len(times)
+        result = []
+        for i in range(_from, _to):
+            delta = self.times[i + 1] - self.times[i]
+            result.append(delta)
+        return result
+
+    def add_accessibility(self, id: int, value: float) -> None:
+        """
+        Add new accessibility value
+        """
+        self.accessibility.add(id=id, value=value)
+    
+    def add_travel_distance(self, value: float) -> None:
+        """
+        Add new travel distance value
+        """
+        self.travel_distance.add(value=value)
+
+    '''
+    def measure(self, report=True, resume=True):
+        if resume is False:
+            file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
+            if file.exists() is True:
+                file.remove()
+            model = Model(path=self.path, name=self.name)
+            model.load_initial()
+            self.add_time(model.time) # First date entry
+            
+        elif resume is True:
+            file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
+            if file.exists() is False:
+                self.measure(report=report, resume=False)
+            else:
+                model = Model(path=self.path, name=self.name)
+                model.load_final()
+                self.load()
+
+        deltas = model.load_deltas()
+        previous = deepcopy(model)
+        n = len(deltas)
+        for i, delta in enumerate(deltas):
+            model.apply_delta(delta) # Push model forward
+            self.add_time(model.time)
+            total_travel = 0
+            for id in model.society.agents:
+                # accessibility
+                self.add_accessibility(
+                    id,
+                    accessibility=model.society.accessibility(id)
+                )
+                # travel distance
+                previous_pos = previous.society.get_pos(id)
+                current_pos = model.society.get_pos(id)
+                travel = ds.point_to_point(
+                    previous_pos,
+                    current_pos
+                )
+                total_travel += travel
+            self.add_travel_distance(total_travel)
+            previous = deepcopy(model) # Push previous forward
+            if report is True:
+                print(f"Progress: {i / n * 100:.1f}% complete")
+        self.save()
+
+    '''
+    def save(self):
+        """
+        Save to file
+        """
+        data = self.serialize()
+        file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
+        file.save(data)
+    
+    def load(self):
+        """
+        Load to file
+        """
+        file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
+        data = file.load()
+        self.deserialize(dictionary=data)
+
+    def serialize(self) -> dict:
+        """
+        Serialize
+        """
+        return {
+            'accessibility': self.accessibility.serialize(),
+            'travel_distance': self.travel_distance.serialize(),
+            'times': self.times,
+            'type': self.type,
+        }
+    
+    def deserialize(self, dictionary: dict) -> None:
+        """
+        Deerialize
+        """
+        self.accessibility.deserialize(dictionary['accessibility'])
+        self.travel_distance.deserialize(dictionary['travel_distances'])
+        self.times = dictionary['times']
+
+
+if __name__ == "__main__":
+    
+    from piperabm.model.measurement import Measurement
+
+    measure = Measurement()
+    hour = 3600
+    measure.add_time(0 * hour) # Base
+
+    # 1
+    measure.add_time(value=1*hour)
+    measure.add_accessibility(id=1, value={'food': 1, 'water': 1, 'energy': 1})
+    measure.add_accessibility(id=2, value={'food': 0.8, 'water': 0.7, 'energy': 0.6})
+    measure.add_travel_distance(value=1.1)
+    # 2
+    measure.add_time(value=2*hour)
+    measure.add_accessibility(id=1, value={'food': 0.9, 'water': 0.8, 'energy': 0.7})
+    measure.add_accessibility(id=2, value={'food': 0.5, 'water': 0.6, 'energy': 0.4})
+    measure.add_travel_distance(value=0.9)
+    # 3
+    measure.add_time(value=3*hour)
+    measure.add_accessibility(id=1, value={'food': 0.8, 'water': 0.7, 'energy': 0.6})
+    measure.add_accessibility(id=2, value={'food': 0.2, 'water': 0.4, 'energy': 0.3})
+    measure.add_travel_distance(value=0.3)
+    # 4
+    measure.add_time(value=4*hour)
+    measure.add_accessibility(id=1, value={'food': 0.7, 'water': 0.6, 'energy': 0.5})
+    measure.add_accessibility(id=2, value={'food': 0, 'water': 0.3, 'energy': 0.2})
+    measure.add_travel_distance(value=0.46)
+    # 5
+    measure.add_time(value=5*hour)
+    measure.add_accessibility(id=1, value={'food': 0.6, 'water': 0.5, 'energy': 0.4})
+    measure.add_accessibility(id=2, value={'food': 0, 'water': 0.3, 'energy': 0.2})
+    measure.add_travel_distance(value=0.2)
+
+    agents = 1
+    resources = 'food'
+    _from = 1
+    _to = 5
+    print(measure.travel_distance(_from=_from, _to=_to))
+    print(measure.accessibility(agents=agents, resources=resources, _from=_from, _to=_to))
+    print(measure.accessibility.average(agents=agents, resources=resources))
+    
