@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from piperabm.tools.average import average as avg
 
 
@@ -141,6 +143,18 @@ class Accessibility:
         values = self.__call__(agents=agents, resources=resources, _from=_from, _to=_to)
         weights = self.measurement.delta_times(_from=_from, _to=_to)
         return avg.arithmetic(values=values, weights=weights)
+    
+    def show(self, agents='all', resources='all', _from=None, _to=None):
+        """
+        Draw plot
+        """
+        plt.title("Accessibility")
+        xs = self.measurement.filter_times(_from=_from, _to=_to)
+        yx = self.__call__(agents=agents, resources=resources, _from=_from, _to=_to)
+        plt.plot(xs, yx, color='blue')
+        plt.xlabel("Time")
+        plt.ylabel("Accessibility")
+        plt.show()
 
     def serialize(self) -> dict:
         """
@@ -187,10 +201,10 @@ if __name__ == "__main__":
     measure.accessibility.add(id=1, value={'food': 0.6, 'water': 0.5, 'energy': 0.4})
     measure.accessibility.add(id=2, value={'food': 0, 'water': 0.3, 'energy': 0.2})
 
-    agents = 1
-    resources = ['food', 'water']
-    _from = 4
-    _to = 5
-    #print(measure.accessibility.sum_resources(agents=agents, resources=resources, _from=_from, _to=_to))
+    agents = 'all'
+    resources = 'all'
+    _from = None
+    _to = None
     print("accessibilities: ", measure.accessibility(agents=agents, resources=resources, _from=_from, _to=_to))
     print("average: ", measure.accessibility.average(agents=agents, resources=resources, _from=_from, _to=_to))
+    measure.accessibility.show(agents=agents, resources=resources, _from=_from, _to=_to)

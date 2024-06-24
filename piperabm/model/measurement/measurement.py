@@ -1,9 +1,10 @@
 from copy import deepcopy
 
+from piperabm.model import Model
 from piperabm.model.measurement.accessibility import Accessibility
 from piperabm.model.measurement.travel_distance import TravelDistance
-from piperabm.tools.average import average as avg
 from piperabm.tools.json_file import JsonFile
+from piperabm.tools.coordinate import distance as ds
 
 
 class Measurement:
@@ -68,39 +69,40 @@ class Measurement:
         """
         self.travel_distance.add(value=value)
 
-    '''
     def measure(self, report=True, resume=True):
-        if resume is False:
+        if resume is False:  # Restart the measurement
             file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
             if file.exists() is True:
-                file.remove()
+                file.remove()  # Delete the previous measurement if exists
             model = Model(path=self.path, name=self.name)
-            model.load_initial()
-            self.add_time(model.time) # First date entry
-            
-        elif resume is True:
+            model.load_initial()  # Load initial state of model
+            self.add_time(model.time)  # First date entry
+        elif resume is True:  # Continue the measurement
+            raise ValueError("Feature not tested yet.")
+            '''
             file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
-            if file.exists() is False:
+            if file.exists() is False:  # Restart the measurement if previous doesn't exist
                 self.measure(report=report, resume=False)
             else:
                 model = Model(path=self.path, name=self.name)
-                model.load_final()
-                self.load()
+                model.load_final()  # Load final state of model
+                self.load()  # Load final state of measurement
+            '''
 
         deltas = model.load_deltas()
         previous = deepcopy(model)
         n = len(deltas)
         for i, delta in enumerate(deltas):
-            model.apply_delta(delta) # Push model forward
+            model.apply_delta(delta) # Push model a single step forward
             self.add_time(model.time)
             total_travel = 0
             for id in model.society.agents:
-                # accessibility
+                # Accessibility
                 self.add_accessibility(
                     id,
                     accessibility=model.society.accessibility(id)
                 )
-                # travel distance
+                # Travel distance
                 previous_pos = previous.society.get_pos(id)
                 current_pos = model.society.get_pos(id)
                 travel = ds.point_to_point(
@@ -114,7 +116,6 @@ class Measurement:
                 print(f"Progress: {i / n * 100:.1f}% complete")
         self.save()
 
-    '''
     def save(self):
         """
         Save to file
@@ -147,7 +148,7 @@ class Measurement:
         Deerialize
         """
         self.accessibility.deserialize(dictionary['accessibility'])
-        self.travel_distance.deserialize(dictionary['travel_distances'])
+        self.travel_distance.deserialize(dictionary['travel_distance'])
         self.times = dictionary['times']
 
 
@@ -185,11 +186,11 @@ if __name__ == "__main__":
     measure.add_accessibility(id=2, value={'food': 0, 'water': 0.3, 'energy': 0.2})
     measure.add_travel_distance(value=0.2)
 
-    agents = 1
-    resources = 'food'
-    _from = 1
-    _to = 5
-    print(measure.travel_distance(_from=_from, _to=_to))
-    print(measure.accessibility(agents=agents, resources=resources, _from=_from, _to=_to))
-    print(measure.accessibility.average(agents=agents, resources=resources))
+    agents = 'all'
+    resources = 'all'
+    _from = None
+    _to = None
+    print("travel distances: ", measure.travel_distance(_from=_from, _to=_to))
+    print("accessibilities: ", measure.accessibility(agents=agents, resources=resources, _from=_from, _to=_to))
+    print("average: ", measure.accessibility.average(agents=agents, resources=resources))
     

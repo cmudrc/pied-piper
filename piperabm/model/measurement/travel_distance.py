@@ -83,7 +83,7 @@ if __name__ == "__main__":
     measure.add_time(value=5*hour)
     measure.travel_distance.add(value=0.2)
 
-    _from = 0
-    _to = 5
-    print(measure.travel_distance(_from=_from, _to=_to))
+    _from = None
+    _to = None
+    print("travel distances: ", measure.travel_distance(_from=_from, _to=_to))
     measure.travel_distance.show(_from=_from, _to=_to)

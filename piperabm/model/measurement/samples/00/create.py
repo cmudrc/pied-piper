@@ -5,7 +5,7 @@ from piperabm.model.measurement import Measurement
 
 path = os.path.dirname(os.path.realpath(__file__))
 
-measure = Measurement(path=path)
+measure = Measurement(path=path, name='model')
 hour = 3600
 measure.add_time(0 * hour) # Base
 
