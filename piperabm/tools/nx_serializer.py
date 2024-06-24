@@ -9,10 +9,16 @@ terminology = {
     'type': 't',
     'nodes': 'n',
     'edges': 'e',
-    'to': 't',
-    'attributes': 'a',
 }
 
+'''
+# Uncomment for debugging
+terminology = {
+    'type': 'type',
+    'nodes': 'nodes',
+    'edges': 'edges',
+}
+'''
 
 def nx_serialize(G) -> dict:
     """
@@ -21,31 +27,41 @@ def nx_serialize(G) -> dict:
     result = {}
 
     # Type
-    if isinstance(G, nx.DiGraph):
-        type = "DiGraph"
-    elif isinstance(G, nx.Graph):
-        type = "Graph"
+    if isinstance(G, nx.MultiDiGraph):
+        type = "MultiDiGraph"
+        multi = True
     elif isinstance(G, nx.MultiGraph):
         type = "MultiGraph"
-    elif isinstance(G, nx.MultiDiGraph):
-        type = "MultiDiGraph"
+        multi = True
+    elif isinstance(G, nx.DiGraph):
+        type = "DiGraph"
+        multi = False
+    elif isinstance(G, nx.Graph):
+        type = "Graph"
+        multi = False
     else:
         raise TypeError
     result[terminology['type']] = type # Type
-    
+
     # Nodes
     nodes_serialized = {}
     for node in G.nodes():
         nodes_serialized[node] = G.nodes[node]
     result[terminology['nodes']] = nodes_serialized
 
-    # Edges
+    # Edges 
     edges_serialized = {}
-    for edge in G.edges():
-        edges_serialized[edge[0]] = {
-            terminology['to']: edge[1], # To
-            terminology['attributes']: G.edges[*edge] # Attributes
-        }
+    if multi is False:
+        for u, v, data in G.edges(data=True):
+            edges_serialized[u] = {}
+            edges_serialized[u][v] = data
+    elif multi is True:
+        for u, v, key, data in G.edges(keys=True, data=True):
+            if u not in edges_serialized:
+                edges_serialized[u] = {}
+            if v not in edges_serialized[u]:
+                edges_serialized[u][v] = {}
+            edges_serialized[u][v][key] = data
     result[terminology['edges']] = edges_serialized # Edges
 
     return result
@@ -59,12 +75,16 @@ def nx_deserialize(dictionary: dict):
     # Type
     if dictionary[terminology['type']] == "DiGraph":
         G = nx.DiGraph()
+        multi = False
     elif dictionary[terminology['type']] == "Graph":
         G = nx.Graph()
+        multi = False
     elif dictionary[terminology['type']] == "MultiDiGraph":
         G = nx.MultiDiGraph()
+        multi = True
     elif dictionary[terminology['type']] == "MultiGraph":
         G = nx.MultiGraph()
+        multi = True
     else:
         raise TypeError
     
@@ -77,11 +97,18 @@ def nx_deserialize(dictionary: dict):
 
     # Edge
     edges_serialized = dictionary[terminology['edges']]
-    for edge_from in edges_serialized:
-        edge_serialized = edges_serialized[edge_from]
-        edge_to = edge_serialized[terminology['to']]
-        edge_attributes = edge_serialized[terminology['attributes']]
-        G.add_edge(edge_from, edge_to, **edge_attributes)
+    for u in edges_serialized:
+        edge_serialized_u = edges_serialized[u]
+        for v in edge_serialized_u:
+            if multi is False:
+                edge_attributes = edge_serialized_u[v]
+                G.add_edge(u, v, **edge_attributes)
+            elif multi is True:
+                edge_serialized_u_v = edge_serialized_u[v]
+                for key in edge_serialized_u_v:
+                    edge_attributes = edge_serialized_u_v[key]
+                    G.add_edge(u, v, **edge_attributes)
+
     return G
 
 
@@ -93,5 +120,5 @@ if __name__ == "__main__":
     G_serialized = nx_serialize(G)
     print(G_serialized)
     G_new = nx_deserialize(G_serialized)
-    #print(nx_serialize(G_new))
+    print(nx_serialize(G_new))
     print("Test: ", nx_serialize(G_new) == G_serialized)
