@@ -9,16 +9,12 @@ terminology = {
     'type': 't',
     'nodes': 'n',
     'edges': 'e',
+    'MultiDiGraph': 'MDG',
+    'MultiGraph': 'MG',
+    'DiGraph': 'DG',
+    'Graph': 'G'
 }
 
-'''
-# Uncomment for debugging
-terminology = {
-    'type': 'type',
-    'nodes': 'nodes',
-    'edges': 'edges',
-}
-'''
 
 def nx_serialize(G) -> dict:
     """
@@ -28,16 +24,16 @@ def nx_serialize(G) -> dict:
 
     # Type
     if isinstance(G, nx.MultiDiGraph):
-        type = "MultiDiGraph"
+        type = terminology["MultiDiGraph"]
         multi = True
     elif isinstance(G, nx.MultiGraph):
-        type = "MultiGraph"
+        type = terminology["MultiGraph"]
         multi = True
     elif isinstance(G, nx.DiGraph):
-        type = "DiGraph"
+        type = terminology["DiGraph"]
         multi = False
     elif isinstance(G, nx.Graph):
-        type = "Graph"
+        type = terminology["Graph"]
         multi = False
     else:
         raise TypeError
@@ -73,18 +69,18 @@ def nx_deserialize(dictionary: dict):
     """
 
     # Type
-    if dictionary[terminology['type']] == "DiGraph":
-        G = nx.DiGraph()
-        multi = False
-    elif dictionary[terminology['type']] == "Graph":
-        G = nx.Graph()
-        multi = False
-    elif dictionary[terminology['type']] == "MultiDiGraph":
+    if dictionary[terminology['type']] == terminology["MultiDiGraph"]:
         G = nx.MultiDiGraph()
         multi = True
-    elif dictionary[terminology['type']] == "MultiGraph":
+    elif dictionary[terminology['type']] == terminology["MultiGraph"]:
         G = nx.MultiGraph()
         multi = True
+    elif dictionary[terminology['type']] == terminology["DiGraph"]:
+        G = nx.DiGraph()
+        multi = False
+    elif dictionary[terminology['type']] == terminology["Graph"]:
+        G = nx.Graph()
+        multi = False
     else:
         raise TypeError
     
@@ -95,7 +91,7 @@ def nx_deserialize(dictionary: dict):
         for key in nodes_serialized[node]:
             G.nodes[node][key] = nodes_serialized[node][key]
 
-    # Edge
+    # Edges
     edges_serialized = dictionary[terminology['edges']]
     for u in edges_serialized:
         edge_serialized_u = edges_serialized[u]

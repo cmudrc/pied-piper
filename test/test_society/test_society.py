@@ -42,7 +42,7 @@ class TestSocietyClass_0(unittest.TestCase):
         #print(edges)
         attrs = self.model.society.get_edge_attributes(ids=edges[0])
         print(attrs)
-        #print(self.model.society.serialize())
+        print(self.model.society.serialize())
 
 
 class TestSocietyClass_2(unittest.TestCase):

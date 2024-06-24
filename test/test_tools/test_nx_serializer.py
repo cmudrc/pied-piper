@@ -5,7 +5,7 @@ import os
 from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 from piperabm.tools.json_file import JsonFile
 
-'''
+
 class TestNXSerializers_DiGraph(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -32,9 +32,9 @@ class TestNXSerializers_DiGraph(unittest.TestCase):
         file.remove()
         G_new_serialized = nx_serialize(G_new)
         self.assertDictEqual(G_serialized, G_new_serialized)
-'''
 
-class TestNXSerializers_MultiDi(unittest.TestCase):
+
+class TestNXSerializers_MultiDiGraph(unittest.TestCase):
 
     def setUp(self) -> None:
         self.G = nx.MultiDiGraph()
