@@ -13,14 +13,14 @@ model.name = name
 id_agent = 0
 model.society.add_agent(
     id=id_agent,
-    food=0.1,
-    water=0.1,
-    energy=0.1,
+    food=1,
+    water=1,
+    energy=1,
     balance=100
 )
 
 # Run
-model.run(n=100, save=True, resume=False, report=True, step_size=100)
+model.run(n=500, save=True, resume=False, report=True, step_size=100)
 
 # Measure
 measurement = pa.Measurement(path, name=name)

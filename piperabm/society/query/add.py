@@ -39,9 +39,6 @@ class Add:
         food: float = 0,
         water: float = 0,
         energy: float = 0,
-        enough_food: float = SYMBOLS['eps'],
-        enough_water: float = SYMBOLS['eps'],
-        enough_energy: float = SYMBOLS['eps'],
         balance: float = 0
     ):
         """
@@ -72,9 +69,9 @@ class Add:
             idle_food_rate=idle_food_rate,
             idle_water_rate=idle_water_rate,
             idle_energy_rate=idle_energy_rate,
-            enough_food=enough_food,
-            enough_water=enough_water,
-            enough_energy=enough_energy,
+            enough_food=deepcopy(food),
+            enough_water=deepcopy(water),
+            enough_energy=deepcopy(energy),
             balance=balance,
             alive=True,
             speed=speed,

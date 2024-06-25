@@ -7,28 +7,29 @@ class Update:
         """
         Update the network
         """
+        '''
         # Measure accessibility (first entry)
         if measure is True and self.model.accessibility.pristine is True:
             self.model.accessibility.add_date(self.model.date)
             self.model.accessibility.pristine = False
+        '''
 
-        #print(self.alive_agents)
         # Idle resource consumption & income
         for id in self.alives:
             # Food
             food = self.get_resource(id=id, name='food')
             food_rate = self.get_idle_fuel_rate(id=id, name='food')
-            new_food = food - food_rate * duration
+            new_food = food - (food_rate * duration)
             self.set_resource(id=id, name='food', value=new_food)
             # Water
             water = self.get_resource(id=id, name='water')
             water_rate = self.get_idle_fuel_rate(id=id, name='water')
-            new_water = water - water_rate * duration
+            new_water = water - (water_rate * duration)
             self.set_resource(id=id, name='water', value=new_water)
             # Energy
             energy = self.get_resource(id=id, name='energy')
             energy_rate = self.get_idle_fuel_rate(id=id, name='energy')
-            new_energy = energy - energy_rate * duration
+            new_energy = energy - (energy_rate * duration)
             self.set_resource(id=id, name='energy', value=new_energy)
             # Income
             balance = self.get_balance(id)
@@ -58,6 +59,7 @@ class Update:
                 self.trade(agents=agents)
         '''
 
+        '''
         # Measure accessibility
         if measure is True:
             date = self.model.date
@@ -72,6 +74,7 @@ class Update:
                     'energy': utility_energy,
                 }
                 self.model.accessibility.add_utility(id, utility)
+        '''
 
 
 if __name__ == "__main__":

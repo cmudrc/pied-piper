@@ -148,6 +148,8 @@ class TestActions_0(unittest.TestCase):
         acc_4 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
         self.assertLess(acc_4, acc_3) # accessibility
 
+        #print(acc_0, acc_1, acc_2, acc_3, acc_4)
+
 
 class TestActions_1(unittest.TestCase):
     """
@@ -236,6 +238,8 @@ class TestActions_1(unittest.TestCase):
         acc = self.model.society.accessibility(id=self.id_agent)
         acc_dead_continued = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
         self.assertEqual(acc_dead, acc_dead_continued) # accessibility
+
+        #print(acc_0, acc_dead, acc_dead_continued)
 
 if __name__ == "__main__":
     unittest.main()
