@@ -52,6 +52,9 @@ class TestActions_0(unittest.TestCase):
         energy_0 = self.model.society.get_resource(id=self.id_agent, name='energy')
         self.assertAlmostEqual(energy_0, 100) # resources energy
         self.assertEqual(self.model.infrastructure.get_usage_impact(ids=street), 0) # usage impact
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_0 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertNotEqual(acc_0, 0) # accessibility
 
         # On the way to the destination
         self.model.run(n=1, report=False, step_size=50) # run
@@ -72,6 +75,9 @@ class TestActions_0(unittest.TestCase):
             self.model.infrastructure.get_usage_impact(ids=street),
             0
         ) # usage impact
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_1 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertLess(acc_1, acc_0) # accessibility
 
         # Waiting in the destination
         self.model.run(n=1, report=False, step_size=50) # run
@@ -92,6 +98,9 @@ class TestActions_0(unittest.TestCase):
             self.model.infrastructure.get_usage_impact(ids=street),
             1
         ) # usage impact
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_2 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertLess(acc_2, acc_1) # accessibility
         
         # On the way to the home
         self.model.run(n=1, report=False, step_size=28650) # run
@@ -112,6 +121,9 @@ class TestActions_0(unittest.TestCase):
             self.model.infrastructure.get_usage_impact(ids=street),
             1
         ) # usage impact
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_3 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertLess(acc_3, acc_2) # accessibility
 
         # Ending (home)
         self.model.run(n=1, report=False, step_size=10000) # run
@@ -132,6 +144,9 @@ class TestActions_0(unittest.TestCase):
             self.model.infrastructure.get_usage_impact(ids=street),
             2
         ) # usage impact
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_4 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertLess(acc_4, acc_3) # accessibility
 
 
 class TestActions_1(unittest.TestCase):
@@ -171,6 +186,9 @@ class TestActions_1(unittest.TestCase):
             self.model.society.get_current_node(id=self.id_agent),
             None
         ) # current_node
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_0 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertNotEqual(acc_0, 0) # accessibility
 
         # Dead
         self.model.run(n=1, report=False, step_size=50) # run
@@ -189,6 +207,9 @@ class TestActions_1(unittest.TestCase):
         self.assertNotEqual(water_dead, 0) # resources water
         energy_dead = self.model.society.get_resource(id=self.id_agent, name='energy')
         self.assertNotEqual(energy_dead, 0) # resources energy
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_dead = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertEqual(acc_dead, 0) # accessibility
 
         # Dead (continued)
         self.model.run(n=1, report=False, step_size=1000) # run
@@ -212,7 +233,9 @@ class TestActions_1(unittest.TestCase):
             self.model.infrastructure.get_usage_impact(ids=street),
             0
         ) # usage impact
-
+        acc = self.model.society.accessibility(id=self.id_agent)
+        acc_dead_continued = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
+        self.assertEqual(acc_dead, acc_dead_continued) # accessibility
 
 if __name__ == "__main__":
     unittest.main()

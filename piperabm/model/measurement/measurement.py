@@ -100,7 +100,7 @@ class Measurement:
                 # Accessibility
                 self.add_accessibility(
                     id,
-                    accessibility=model.society.accessibility(id)
+                    value=model.society.accessibility(id)
                 )
                 # Travel distance
                 previous_pos = previous.society.get_pos(id)
@@ -110,7 +110,7 @@ class Measurement:
                     current_pos
                 )
                 total_travel += travel
-            self.add_travel_distance(total_travel)
+            self.add_travel_distance(value=total_travel)
             previous = deepcopy(model) # Push previous forward
             if report is True:
                 print(f"Progress: {i / n * 100:.1f}% complete")

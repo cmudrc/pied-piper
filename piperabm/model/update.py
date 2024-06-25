@@ -30,6 +30,9 @@ class Update:
                 initial_file = JsonFile(self.path, self.name + '_' + 'initial')
                 if initial_file.exists():
                     self.load_initial()
+                else:
+                    if save is True:
+                        self.save_initial()
             else:
                 # Load final state if exists
                 final_file = JsonFile(self.path, self.name + '_' + 'final')
@@ -59,7 +62,7 @@ class Update:
         else:
             for i in range(n):
                 if report is True:
-                    print(f"Progress: {i / n * 100:.1f}% complete")
+                    print(f"Progress: {(i + 1) / n * 100:.1f}% complete")
                 self.update(
                     duration=step_size,
                     save=save

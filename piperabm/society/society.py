@@ -8,6 +8,7 @@ from piperabm.society.serialize import Serialize
 from piperabm.society.graphics import Graphics
 from piperabm.society.stat import Stat
 from piperabm.tools.gini import gini
+from piperabm.economy import accessibility
 #from piperabm.economy import utility, trade_solver
 #from piperabm.data.agents_info import *
 #from piperabm.data.utqiavik.info import *
@@ -122,28 +123,19 @@ class Society(
         #return log
 
     
-    def utility_food(self, agent_id: int) -> float:
-        amount = self.food(agent_id)
-        enough_amount = self.enough_food(agent_id)
-        return utility(resource=amount, enough_resource=enough_amount)
-
-    def utility_water(self, agent_id: int) -> float:
-        amount = self.food(agent_id)
-        enough_amount = self.enough_water(agent_id)
-        return utility(resource=amount, enough_resource=enough_amount)
-        
-    def utility_energy(self, agent_id: int) -> float:
-        amount = self.food(agent_id)
-        enough_amount = self.enough_energy(agent_id)
-        return utility(resource=amount, enough_resource=enough_amount)
-    
-    def utility(self, agent_id: int):
-        return {
-            'food': self.utility_food(agent_id),
-            'water': self.utility_water(agent_id),
-            'energy': self.utility_energy(agent_id)
-        }
     '''
+    def accessibility_resource(self, id: int, name: str):
+        amount = self.get_resource(id=id, name=name)
+        enough_amount = self.get_enough_resource(id=id, name=name)
+        return accessibility(resource=amount, enough_resource=enough_amount)
+    
+    def accessibility(self, id: int) -> dict:
+        return {
+            'food': self.accessibility_resource(id=id, name='food'),
+            'water': self.accessibility_resource(id=id, name='water'),
+            'energy': self.accessibility_resource(id=id, name='energy')
+        }
+    
 
 
 if __name__ == "__main__":

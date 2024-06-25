@@ -9,32 +9,55 @@ class DecisionMaking:
     Methods related to agents' decision-making
     """
 
+    def possible_search_destinations(self, agent_id: int) -> list:
+        """
+        Return possible search destinations which are NOT market nodes
+        """
+        result = set()
+        # Friends
+        friends = self.ego(id=agent_id, type='friend')
+        friends_homes = []
+        for friend in friends:
+            friends_homes.append(self.get_home_id(id=friend))
+        result |= set(friends_homes)
+        # Neighbors
+        neighbors = self.ego(id=agent_id, type='neighbor')
+        neighbors_homes = []
+        for neighbor in neighbors:
+            neighbors_homes.append(self.get_home_id(id=neighbor))
+        result |= set(neighbors_homes)
+        return list(result)
+
     def select_top_destination(self, agent_id: int, destinations: list, is_market: bool):
         """
         Select top destination
         """
-        result = []
-        for node_id in destinations:
-            score = self.destination_score(agent_id, destination_id=node_id, is_market=is_market)
-            if score is not None:
-                result.append([node_id, score])
-        max_score = max(node[1] for node in result)
-        top_nodes = [node for node in result if node[1] == max_score]
-        selected_node = random.choice(top_nodes)
-        top_node = selected_node[0]
-        top_score = selected_node[1]
+        if len(destinations) > 0:
+            result = []
+            for node_id in destinations:
+                score = self.destination_score(agent_id, destination_id=node_id, is_market=is_market)
+                if score is not None:
+                    result.append([node_id, score])
+            max_score = max(node[1] for node in result)
+            top_nodes = [node for node in result if node[1] == max_score]
+            selected_node = random.choice(top_nodes)
+            top_node = selected_node[0]
+            top_score = selected_node[1]
+        else:
+            top_node, top_score = None, None
         return top_node, top_score
     
     def destination_score(self, agent_id, destination_id, is_market: bool) -> float:
         """
         Destination score
         """
+        # Calculate the estimated amount of fuel required
         travel_duration = self.estimated_duration(agent_id, destination_id)
         fuel_food = self.get_transportation_fuel_rate(id=agent_id, name='food') * travel_duration
         fuel_water = self.get_transportation_fuel_rate(id=agent_id, name='water') * travel_duration
         fuel_energy = self.get_transportation_fuel_rate(id=agent_id, name='energy') * travel_duration
-        
-        # When the agent has enough fuel
+
+        # Calculate the value of required fuel
         if fuel_food <= self.get_resource(id=agent_id, name='food') and \
             fuel_water <= self.get_resource(id=agent_id, name='water') and \
             fuel_energy <= self.get_resource(id=agent_id, name='energy'):
@@ -44,18 +67,18 @@ class DecisionMaking:
             total_fuel_value = fuel_value_food + fuel_value_water + fuel_value_energy
         else:
             total_fuel_value = SYMBOLS['inf']
-        #print(total_fuel_value)
         
         # Calculate the value of resources there
         food_there, water_there, energy_there = self.resources_in(node_id=destination_id, is_market=is_market)
         total_value_there = (food_there * self.food_price) + \
                             (water_there * self.water_price) + \
                             (energy_there * self.energy_price)
-        #print(total_value_there)
         
-        return total_value_there - total_fuel_value
+        score = total_value_there - total_fuel_value
+        
+        return score
     
-    def estimated_distance(self, agent_id, destination_id) -> float:
+    def estimated_distance(self, agent_id: int, destination_id: int) -> float:
         """
         Estimated distance between agent and destination
         """
@@ -77,15 +100,16 @@ class DecisionMaking:
         Path finding for agents
         """
         result = None
-        id_start = self.get_current_node(id=agent_id)
-        if id_start is not None:
-            result = self.infrastructure.path(
-                id_start=id_start,
-                id_end=destination_id
-            )
+        if destination_id is not None:
+            id_start = self.get_current_node(id=agent_id)
+            if id_start is not None:
+                result = self.infrastructure.path(
+                    id_start=id_start,
+                    id_end=destination_id
+                )
         return result
 
-    def go_and_comeback_and_stay(self, agent_id, destination_id) -> None:
+    def go_and_comeback_and_stay(self, agent_id: int, destination_id: int) -> None:
         """
         A complete daily cycle of choosing and going to a destination, waiting there for trade, and coming back home
         """
@@ -117,16 +141,40 @@ class DecisionMaking:
             )
             action_queue.add(stay)
 
+    def decide_destination(self, id: int) -> None:
+        """
+        Decide the destination
+        """
+        markets = self.infrastructure.markets
+        best_destination, _ = self.select_top_destination(agent_id=id, destinations=markets, is_market=True)
+        if best_destination is None:  # When market is not available
+            # Possible non-market destinations to search
+            best_destination, _ = self.select_top_destination(
+                agent_id=id,
+                destinations=self.possible_search_destinations(agent_id=id),
+                is_market=False
+            )
+        self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination)
+
 
 if __name__ == "__main__":
 
     from piperabm.infrastructure.samples import model_1 as model
 
+    agent_id = 0
+    home_id = 1
+    destination_id = 2
     model.society.add_agent(
-        home_id=1,
-        id=1
+        home_id=home_id,
+        id=agent_id,
+        food=10,
+        water=10,
+        energy=10
     )
-    #print(model.society.get_current_node(id=1))
-    #print(model.society.estimated_distance(agent_id=1, destination_id=2))
-    #print(model.society.estimated_duration(agent_id=1, destination_id=2))
-    print(model.society.destination_score(agent_id=1, destination_id=1, is_market=False))
+    print("current node: ", model.society.get_current_node(id=agent_id))
+    print("possible destinations: ", model.society.possible_search_destinations(agent_id=agent_id))
+    print("estimated distance: ", model.society.estimated_distance(agent_id=agent_id, destination_id=destination_id))
+    print("estimated duration: ", model.society.estimated_duration(agent_id=agent_id, destination_id=destination_id))
+    print("destination score: ", model.society.destination_score(agent_id=agent_id, destination_id=destination_id, is_market=True))
+    print("path: ", model.society.path(agent_id=agent_id, destination_id=destination_id))
+

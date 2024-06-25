@@ -1,4 +1,5 @@
 import uuid
+import random
 from copy import deepcopy
 
 from piperabm.society.actions.action_queue import ActionQueue
@@ -31,7 +32,7 @@ class Add:
     
     def add_agent(
         self,
-        home_id: int,
+        home_id: int = None,
         id: int = None,
         name: str = '',
         socioeconomic_status: float = 1,
@@ -52,6 +53,9 @@ class Add:
         id = self.check_id(id)
         self.actions[id] = ActionQueue(agent_id=id)
         self.actions[id].society = self # Binding
+        if home_id is None:
+            homes_id = self.infrastructure.homes
+            home_id = random.choice(homes_id)
         pos = self.infrastructure.get_pos(id=home_id)
         self.G.add_node(
             id,

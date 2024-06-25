@@ -55,6 +55,23 @@ class Query(Add, Get, Set):
         Wealth of an agent
         """
         return self.get_balance(id) + self.resources_value(id)
+    
+    def ego(self, id: int, type: str = None) -> list:
+        """
+        Return agent nodes in the ego network
+        """
+        connected_nodes = list(self.G.neighbors(id))  # Get all nodes connected to node_id
+        if type is not None:
+            # Filter connected nodes by the edge attribute 'type' equal to 'family'
+            result = []
+            for neighbor in connected_nodes:
+                edges = self.G.get_edge_data(id, neighbor)
+                for key, attr in edges.items():
+                    if attr.get('type') == type:
+                        result.append(neighbor)
+                        break  # If one edge meets the condition, we can stop checking further
+            connected_nodes = result
+        return connected_nodes
 
     def agents_in(self, id: int) -> list:
         """

@@ -42,19 +42,7 @@ class Update:
             if action_queue.done is True:
                 action_queue.reset()
                 # Decide
-                markets = self.infrastructure.markets
-                best_destination, _ = self.select_top_destination(agent_id=id, destinations=markets, is_market=True)
-                # When market is available
-                if best_destination is not None:
-                    self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination)
-                else:
-                    possible_destinations = self.infrastructure.filter_nodes_closer_than(
-                        id=self.get_current_node(id),
-                        nodes=self.infrastructure.homes,
-                        distace=100
-                    )
-                    best_destination, _ = self.select_top_destination(agent_id=id, destinations=possible_destinations, is_market=False)
-                    self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination)
+                self.decide_destination(id=id)
             # Execute
             action_queue.update(duration, measure=measure)
 

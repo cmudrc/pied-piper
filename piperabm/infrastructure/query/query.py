@@ -30,6 +30,7 @@ class Query(Add, Get, Set):
         """
         return nx.is_isolate(self.G, id)
     
+    '''
     def filter_nodes_closer_than(self, id: int, distance: float, nodes: list = None) -> list:
         """
         Filter *nodes* that are within the *distance* from *id*
@@ -41,7 +42,8 @@ class Query(Add, Get, Set):
             if distance >= self.heuristic_paths.estimated_distance(id_start=id, id_end=node_id):
                 result.append(node_id)
         return result
-    
+    '''
+        
     def replace_node(self, id: int, new_id: int, report: int = False) -> None:
         """
         Replace a node with another node
@@ -136,16 +138,11 @@ class Query(Add, Get, Set):
         if report is True:
             print(f">>> {self.node_type(id=id)} node at position {self.get_pos(id)} removed.")
         self.G.remove_node(id)
-
-    '''
-    def pos(self, id: int) -> list:
-        """
-        Set and get for position
-        """
-        return self.get_pos(id=id)
-    '''
     
-    def nodes_closer_than(self, id: int, search_radius: float = 0, nodes: list = None, include_self: bool = True):
+    def nodes_closer_than(self, id: int, search_radius: float = 0, nodes: list = None, include_self: bool = False):
+        """
+        Filter *nodes* that are within the *distance* from *id*
+        """
         if nodes is None:
             nodes = self.nodes
         result = []
