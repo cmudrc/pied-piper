@@ -1,12 +1,14 @@
 import unittest
+from copy import deepcopy
 
+from piperabm.society import Society
 from piperabm.infrastructure.samples import model_0, model_1, model_2
 
 
 class TestSocietyClass_0(unittest.TestCase):
 
     def setUp(self):
-        self.model = model_0
+        self.model = deepcopy(model_0)
         self.home_id = self.model.infrastructure.homes[0]
 
     def test_relationships(self):
@@ -37,18 +39,11 @@ class TestSocietyClass_0(unittest.TestCase):
         self.assertEqual(self.model.society.stat['edge']['friend'], 1)
         self.assertEqual(self.model.society.stat['edge']['neighbor'], 0)
 
-    def test_serialization(self):
-        edges = self.model.society.edges
-        #print(edges)
-        attrs = self.model.society.get_edge_attributes(ids=edges[0])
-        print(attrs)
-        print(self.model.society.serialize())
-
 
 class TestSocietyClass_2(unittest.TestCase):
 
     def setUp(self):
-        self.model = model_2
+        self.model = deepcopy(model_2)
         homes = self.model.infrastructure.homes
         self.model.society.neighbor_radius = 270
         self.model.society.add_agent(home_id=homes[0], id=1)
@@ -61,6 +56,12 @@ class TestSocietyClass_2(unittest.TestCase):
         self.assertEqual(self.model.society.stat['edge']['family'], 1)
         self.assertEqual(self.model.society.stat['edge']['friend'], 1)
         self.assertEqual(self.model.society.stat['edge']['neighbor'], 2)
+
+    def test_serialization(self):
+        society_serialized = self.model.society.serialize()
+        society_new = Society()
+        society_new.deserialize(society_serialized)
+        self.assertDictEqual(society_new.serialize(), society_serialized)
 
 
 if __name__ == "__main__":

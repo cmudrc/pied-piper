@@ -5,8 +5,14 @@ from piperabm.tools.symbols import SYMBOLS
 
 
 class DecisionMaking:
+    """
+    Methods related to agents' decision-making
+    """
 
     def select_top_destination(self, agent_id: int, destinations: list, is_market: bool):
+        """
+        Select top destination
+        """
         result = []
         for node_id in destinations:
             score = self.destination_score(agent_id, destination_id=node_id, is_market=is_market)
@@ -19,13 +25,19 @@ class DecisionMaking:
         top_score = selected_node[1]
         return top_node, top_score
     
-    def destination_score(self, agent_id, destination_id, is_market: bool):
+    def destination_score(self, agent_id, destination_id, is_market: bool) -> float:
+        """
+        Destination score
+        """
         travel_duration = self.estimated_duration(agent_id, destination_id)
-        fuel_food, fuel_water, fuel_energy = self.transportation_fuel(agent_id, duration=travel_duration)
+        fuel_food = self.get_transportation_fuel_rate(id=agent_id, name='food') * travel_duration
+        fuel_water = self.get_transportation_fuel_rate(id=agent_id, name='water') * travel_duration
+        fuel_energy = self.get_transportation_fuel_rate(id=agent_id, name='energy') * travel_duration
+        
         # When the agent has enough fuel
-        if fuel_food <= self.food(id=agent_id) and \
-            fuel_water <= self.water(id=agent_id) and \
-            fuel_energy <= self.energy(id=agent_id):
+        if fuel_food <= self.get_resource(id=agent_id, name='food') and \
+            fuel_water <= self.get_resource(id=agent_id, name='water') and \
+            fuel_energy <= self.get_resource(id=agent_id, name='energy'):
             fuel_value_food = fuel_food * self.food_price
             fuel_value_water = fuel_water * self.water_price
             fuel_value_energy = fuel_energy * self.energy_price
@@ -33,21 +45,29 @@ class DecisionMaking:
         else:
             total_fuel_value = SYMBOLS['inf']
         #print(total_fuel_value)
+        
         # Calculate the value of resources there
         food_there, water_there, energy_there = self.resources_in(node_id=destination_id, is_market=is_market)
         total_value_there = (food_there * self.food_price) + \
                             (water_there * self.water_price) + \
                             (energy_there * self.energy_price)
         #print(total_value_there)
+        
         return total_value_there - total_fuel_value
     
-    def estimated_distance(self, agent_id, destination_id):
+    def estimated_distance(self, agent_id, destination_id) -> float:
+        """
+        Estimated distance between agent and destination
+        """
         return self.infrastructure.heuristic_paths.estimated_distance(
             id_start=self.get_current_node(id=agent_id),
             id_end=destination_id
         )
 
-    def estimated_duration(self, agent_id, destination_id):
+    def estimated_duration(self, agent_id, destination_id) -> float:
+        """
+        Estimated duration of reaching a certain destination
+        """
         estimated_distance = self.estimated_distance(agent_id, destination_id)
         speed = self.get_transportation_speed(id=agent_id)
         return estimated_distance / speed
@@ -65,7 +85,10 @@ class DecisionMaking:
             )
         return result
 
-    def go_and_comeback_and_stay(self, agent_id, destination_id):
+    def go_and_comeback_and_stay(self, agent_id, destination_id) -> None:
+        """
+        A complete daily cycle of choosing and going to a destination, waiting there for trade, and coming back home
+        """
         path = self.path(agent_id, destination_id)
         if path is not None:
             action_queue = self.actions[agent_id]
@@ -93,3 +116,17 @@ class DecisionMaking:
                 duration=stay_length
             )
             action_queue.add(stay)
+
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure.samples import model_1 as model
+
+    model.society.add_agent(
+        home_id=1,
+        id=1
+    )
+    #print(model.society.get_current_node(id=1))
+    #print(model.society.estimated_distance(agent_id=1, destination_id=2))
+    #print(model.society.estimated_duration(agent_id=1, destination_id=2))
+    print(model.society.destination_score(agent_id=1, destination_id=1, is_market=False))

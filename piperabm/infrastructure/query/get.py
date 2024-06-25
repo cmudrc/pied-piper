@@ -26,3 +26,6 @@ class Get(NxGet):
     
     def get_usage_impact(self, ids: list) -> float:
         return self.get_edge_attribute(ids=ids, attribute='usage_impact')
+    
+    def get_resource(self, name: str, id: int) -> float:
+        return self.get_node_attribute(id=id, attribute=name)

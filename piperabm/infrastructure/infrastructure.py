@@ -72,26 +72,6 @@ class Infrastructure(
 if __name__ == "__main__":
     infrastructure = Infrastructure()
     infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 10])
+    infrastructure.bake()
     print(infrastructure)
-
-'''
-    from piperabm.model import Model
-
-    model = Model()
-    #infrastructure = Infrastructure(climate_change_degradation_rate=0.001)
-    model.infrastructure.add_junction(pos=[1.2, 0.8], id=0)
-    model.infrastructure.add_street(pos_1=[0, 0], pos_2=[2, 2], id=1)
-    model.infrastructure.bake()
     #infrastructure.show()
-    data = model.infrastructure.serialize()
-    model_new = Model()
-    model_new.infrastructure.deserialize(data)
-    print(model.infrastructure.serialize() == model_new.infrastructure.serialize())
-
-    
-
-    #edge_ids = model.infrastructure.streets_ids[0]
-    #print(model.infrastructure.adjusted_length(ids=edge_ids))
-    #model.infrastructure.update(duration=100)
-    #print(model.infrastructure.adjusted_length(ids=edge_ids))
-'''

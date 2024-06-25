@@ -41,13 +41,13 @@ class Query(Add, Get, Set):
         water = 0
         energy = 0
         for agent_id in agents:
-            food += self.get_food(id=agent_id)
-            water += self.get_water(id=agent_id)
-            energy += self.get_energy(id=agent_id)
+            food += self.get_resource(id=agent_id, name='food')
+            water += self.get_resource(id=agent_id, name='water')
+            energy += self.get_resource(id=agent_id, name='energy')
         if is_market is True:
-            food += self.infrastructure.get_food(node_id)
-            water += self.infrastructure.get_water(node_id)
-            energy += self.infrastructure.get_energy(node_id)
+            food += self.infrastructure.get_resource(id=node_id, name='food')
+            water += self.infrastructure.get_resource(id=node_id, name='water')
+            energy += self.infrastructure.get_resource(id=node_id, name='energy')
         return food, water, energy
 
     def wealth(self, id: int) -> float:
@@ -55,16 +55,6 @@ class Query(Add, Get, Set):
         Wealth of an agent
         """
         return self.get_balance(id) + self.resources_value(id)
-    '''
-    def pos(self, id: int, value: list = None):
-        """
-        Set and get for position
-        """
-        if value is None:
-            return self.get_pos(id=id)
-        else:
-            self.set_pos(id=id, value=value)
-    '''
 
     def agents_in(self, id: int) -> list:
         """

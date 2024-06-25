@@ -13,4 +13,6 @@ class Set(NxSet):
         self.set_edge_attribute(ids=ids, attribute='usage_impact', value=value)
 
     def set_resource(self, name: str, id: int, value: float):
-        pass
+        if value <= 0:
+            value = 0
+        self.set_node_attribute(id=id, attribute=name, value=value)

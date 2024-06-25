@@ -19,6 +19,7 @@ class Serialize:
         dictionary['water_price'] = self.water_price
         dictionary['energy_price'] = self.energy_price
         dictionary['average_income'] = self.average_income
+        dictionary['neighbor_radius'] = self.neighbor_radius
         dictionary['type'] = self.type
         return dictionary
     
@@ -35,15 +36,13 @@ class Serialize:
         self.water_price = dictionary['water_price']
         self.energy_price = dictionary['energy_price']
         self.average_income = dictionary['average_income']
+        self.neighbor_radius = dictionary['neighbor_radius']
 
 
 if __name__ == "__main__":
     
-    from piperabm.model import Model
+    from piperabm.infrastructure.samples import model_0 as model
 
-    model = Model()
-    model.infrastructure.add_home(pos=[0, 0])
-    model.bake()
-    model.society.generate_agents(num=1)
+    model.society.generate_agents(num=2)
     society_serialized = model.society.serialize()
     print(society_serialized)

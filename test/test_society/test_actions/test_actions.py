@@ -1,10 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.model import Model
 from piperabm.infrastructure.samples import model_1 as model
-#from piperabm.infrastructure.paths import Paths
-from piperabm.society.actions import Move, Stay
 
 
 class TestActions_0(unittest.TestCase):
@@ -15,9 +12,7 @@ class TestActions_0(unittest.TestCase):
         self.id_agent = 0
         self.id_start = 1
         self.id_end = 2
-
-        # Model
-        self.model = model
+        self.model = deepcopy(model)
         self.model.society.add_agent(
             socioeconomic_status=1,
             id=self.id_agent,
@@ -30,65 +25,114 @@ class TestActions_0(unittest.TestCase):
             enough_energy=100,
             balance=100
         )
-        self.model_idle = deepcopy(self.model)  # Agent won't move
-
-        # Action
-        #paths = Paths()
-        #paths.create(infrastructure=self.model.infrastructure)
-        #paths.update()
-        path = self.model.infrastructure.path(self.id_start, self.id_end)
-        action_1 = Stay(duration=DeltaTime(seconds=3))
-        action_2 = Move(path)
-        action_3 = Stay(duration=DeltaTime(seconds=3))
-        agent = self.model.society.get(self.id_agent)
-        agent.queue.add(action_1)
-        agent.queue.add(action_2)
-        agent.queue.add(action_3)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
 
     def test_update(self):
-        street_id = self.model.infrastructure.streets[0]
-        street = self.model.infrastructure.get(street_id)
-        object_start = self.model.infrastructure.get(id=self.id_start)
-        pos_start = object_start.pos
-        object_end = self.model.infrastructure.get(id=self.id_end)
-        pos_end = object_end.pos
-        agent = self.model.society.get(id=self.id_agent)
-        queue = agent.queue
+        street = self.model.infrastructure.streets[0]
+        pos_start = self.model.infrastructure.get_pos(id=self.id_start)
+        pos_end = self.model.infrastructure.get_pos(id=self.id_end)
+        queue = self.model.society.actions[self.id_agent]
+        #print(queue.total_duration) # total_duration = 86400.0 seconds
 
-        # Beginning
+        # Beginning (home)
+        self.assertFalse(queue.done) # queue done
+        self.assertEqual(len(queue.undones), 4) # queue undones
+        self.assertListEqual(
+            self.model.society.get_pos(id=self.id_agent),
+            pos_start
+        ) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            self.id_start
+        ) # current_node
+        food_0 = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertEqual(food_0, 100) # resources food
+        water_0 = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertEqual(water_0, 100) # resources water
+        energy_0 = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertAlmostEqual(energy_0, 100) # resources energy
+        self.assertEqual(self.model.infrastructure.get_usage_impact(ids=street), 0) # usage impact
+
+        # On the way to the destination
+        self.model.run(n=1, report=False, step_size=50) # run
+        self.assertFalse(queue.done) # queue done
+        self.assertEqual(len(queue.undones), 4) # queue undones
+        #print(self.model.society.get_pos(id=self.id_agent)) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            None
+        ) # current_node
+        food_1 = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertLess(food_1, food_0) # resources food
+        water_1 = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertLess(water_1, water_0) # resources water
+        energy_1 = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertLess(energy_1, energy_0) # resources energy
+        self.assertEqual(
+            self.model.infrastructure.get_usage_impact(ids=street),
+            0
+        ) # usage impact
+
+        # Waiting in the destination
+        self.model.run(n=1, report=False, step_size=50) # run
         self.assertFalse(queue.done) # queue done
         self.assertEqual(len(queue.undones), 3) # queue undones
-        self.assertListEqual(agent.pos, pos_start) # pos
-        self.assertEqual(agent.current_node, self.id_start) # current_node
-        self.assertEqual(agent.time_outside.total_seconds(), 0) # time outside
-        self.assertAlmostEqual(agent.resources('food'), 100, places=1) # resources food
-        self.assertAlmostEqual(agent.resources('water'), 100, places=1) # resources water
-        self.assertAlmostEqual(agent.resources('energy'), 100, places=1) # resources energy
-        self.assertEqual(street.degradation, 0) # degradation
-
-        # Middle
-        self.model.run(n=40, report=False) # run
+        #print(self.model.society.get_pos(id=self.id_agent)) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            self.id_end
+        ) # current_node
+        food_2 = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertLess(food_2, food_1) # resources food
+        water_2 = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertLess(water_2, water_1) # resources water
+        energy_2 = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertLess(energy_2, energy_1) # resources energy
+        self.assertEqual(
+            self.model.infrastructure.get_usage_impact(ids=street),
+            1
+        ) # usage impact
+        
+        # On the way to the home
+        self.model.run(n=1, report=False, step_size=28650) # run
         self.assertFalse(queue.done) # queue done
         self.assertEqual(len(queue.undones), 2) # queue undones
-        self.assertEqual(agent.time_outside.total_seconds(), 37) # time outside
-        self.assertAlmostEqual(agent.resources('food'), 60, places=1) # resources food
-        self.assertAlmostEqual(agent.resources('water'), 60, places=1) # resources water
-        self.assertAlmostEqual(agent.resources('energy'), 60, places=1) # resources energy
-        self.assertAlmostEqual(street.degradation, 0.4, places=2) # degradation
-        #print(agent.pos)
+        #print(self.model.society.get_pos(id=self.id_agent)) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            None
+        ) # current_node
+        food_3 = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertLess(food_3, food_2) # resources food
+        water_3 = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertLess(water_3, water_2) # resources water
+        energy_3 = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertLess(energy_3, energy_2) # resources energy
+        self.assertEqual(
+            self.model.infrastructure.get_usage_impact(ids=street),
+            1
+        ) # usage impact
 
-        # Ending
-        self.model.run(n=25, report=False) # run
+        # Ending (home)
+        self.model.run(n=1, report=False, step_size=10000) # run
         self.assertFalse(queue.done) # queue done
         self.assertEqual(len(queue.undones), 1) # queue undones
-        self.assertListEqual(agent.pos, pos_end) # pos
-        self.assertEqual(agent.current_node, self.id_end) # current_node
-        self.assertEqual(agent.time_outside.total_seconds(), 62) # time outside
-        self.assertAlmostEqual(agent.resources('food'), 35, places=1) # resources food ####################
-        self.assertAlmostEqual(agent.resources('water'), 35, places=1) # resources water
-        self.assertAlmostEqual(agent.resources('energy'), 35, places=1) # resources energy
-        self.assertAlmostEqual(street.degradation, 1.65, places=2) # degradation
-        
+        #print(self.model.society.get_pos(id=self.id_agent)) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            self.id_start
+        ) # current_node
+        food_4 = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertLess(food_4, food_3) # resources food
+        water_4 = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertLess(water_4, water_3) # resources water
+        energy_4 = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertLess(energy_4, energy_3) # resources energy
+        self.assertEqual(
+            self.model.infrastructure.get_usage_impact(ids=street),
+            2
+        ) # usage impact
+
 
 class TestActions_1(unittest.TestCase):
     """
@@ -98,89 +142,77 @@ class TestActions_1(unittest.TestCase):
         self.id_agent = 0
         self.id_start = 1
         self.id_end = 2
-
-        # Model
-        step_size = DeltaTime(seconds=1)  # Seconds
-        self.model = Model(
-            infrastructure=deepcopy(infrastructure),
-            step_size=step_size,  # Seconds
+        self.model = deepcopy(model)
+        self.model.society.add_agent(
+            socioeconomic_status=1,
+            id=self.id_agent,
+            home_id=self.id_start,
+            food=0.003,
+            water=0.003,
+            energy=0.003,
+            enough_food=100,
+            enough_water=100,
+            enough_energy=100,
+            balance=100
         )
-        agent = Agent(
-            resources=Matter({
-                'food': 20,
-                'water': 20,
-                'energy': 20
-            }),
-            enough_resources=Matter({
-                'food': 20,
-                'water': 20,
-                'energy': 20
-            })
-        )
-        agent.home = self.id_start
-        self.model.society.add(agent, id=0)
-        self.model_idle = deepcopy(self.model)  # Agent won't move
-
-        # Action
-        paths = Paths()
-        paths.create(infrastructure=self.model.infrastructure)
-        paths.update()
-        path = paths.path(self.id_start, self.id_end)
-        action_1 = Stay(duration=DeltaTime(seconds=3))
-        action_2 = Move(path)
-        action_3 = Stay(duration=DeltaTime(seconds=3))
-        agent = self.model.society.get(self.id_agent)
-        agent.queue.add(action_1)
-        agent.queue.add(action_2)
-        agent.queue.add(action_3)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
 
     def test_update(self):
-        street_id = self.model.infrastructure.streets[0]
-        street = self.model.infrastructure.get(street_id)
-        object_start = self.model.infrastructure.get(id=self.id_start)
-        pos_start = object_start.pos
-        object_end = self.model.infrastructure.get(id=self.id_end)
-        pos_end = object_end.pos # Will never reach
-        agent = self.model.society.get(id=self.id_agent)
-        queue = agent.queue
+        street = self.model.infrastructure.streets[0]
+        pos_start = self.model.infrastructure.get_pos(id=self.id_start)
+        pos_end = self.model.infrastructure.get_pos(id=self.id_end)
+        queue = self.model.society.actions[self.id_agent]
 
-        # Beginning
-        self.assertFalse(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 3) # queue undones
-        self.assertListEqual(agent.pos, pos_start) # pos
-        self.assertEqual(agent.current_node, self.id_start) # current_node
-        self.assertEqual(agent.time_outside.total_seconds(), 0) # time outside
-        self.assertAlmostEqual(agent.resources('food'), 20, places=1) # resources food
-        self.assertAlmostEqual(agent.resources('water'), 20, places=1) # resources water
-        self.assertAlmostEqual(agent.resources('energy'), 20, places=1) # resources energy
-        self.assertTrue(agent.alive)
-        self.assertEqual(street.degradation, 0) # degradation
+        # Alive
+        self.model.run(n=1, report=False, step_size=50) # run
+        self.assertEqual(len(queue.undones), 4) # queue undones
+        self.assertTrue(self.model.society.get_alive(id=self.id_agent)) # agent alive
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            None
+        ) # current_node
 
-        # Middle
-        self.model.run(n=40, report=False) # run
-        self.assertFalse(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 2) # queue undones
-        pos_death = agent.pos
-        self.assertEqual(agent.time_outside.total_seconds(), 17) # time outside
-        self.assertAlmostEqual(agent.resources('food'), 0, places=1) # resources food
-        self.assertAlmostEqual(agent.resources('water'), 0, places=1) # resources water
-        self.assertAlmostEqual(agent.resources('energy'), 0, places=1) # resources energy
-        self.assertFalse(agent.alive)
-        self.assertAlmostEqual(street.degradation, 0.4, places=2) # degradation
+        # Dead
+        self.model.run(n=1, report=False, step_size=50) # run
+        self.assertEqual(len(queue.undones), 4) # queue undones
+        self.assertFalse(self.model.society.get_alive(id=self.id_agent)) # agent alive
+        pos_dead = self.model.society.get_pos(id=self.id_agent) # pos
+        self.assertNotEqual(pos_dead, pos_start) # pos
+        self.assertNotEqual(pos_dead, pos_end) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            None
+        ) # current_node
+        food_dead = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertEqual(food_dead, 0) # resources food
+        water_dead = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertNotEqual(water_dead, 0) # resources water
+        energy_dead = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertNotEqual(energy_dead, 0) # resources energy
 
-        # Ending
-        self.model.run(n=25, report=False) # run
-        self.assertFalse(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 2) # queue undones
-        self.assertListEqual(agent.pos, pos_death) # pos
-        self.assertEqual(agent.current_node, None) # current_node
-        self.assertEqual(agent.time_outside.total_seconds(), 17) # time outside
-        self.assertAlmostEqual(agent.resources('food'), 0, places=1) # resources food
-        self.assertAlmostEqual(agent.resources('water'), 0, places=1) # resources water
-        self.assertAlmostEqual(agent.resources('energy'), 0, places=1) # resources energy
-        self.assertFalse(agent.alive)
-        self.assertAlmostEqual(street.degradation, 0.65, places=2) # degradation
-    
+        # Dead (continued)
+        self.model.run(n=1, report=False, step_size=1000) # run
+        self.assertEqual(len(queue.undones), 4) # queue undones
+        self.assertFalse(self.model.society.get_alive(id=self.id_agent)) # agent alive
+        self.assertListEqual(
+            self.model.society.get_pos(id=self.id_agent),
+            pos_dead
+        ) # pos
+        self.assertEqual(
+            self.model.society.get_current_node(id=self.id_agent),
+            None
+        ) # current_node
+        food_dead_continued = self.model.society.get_resource(id=self.id_agent, name='food')
+        self.assertEqual(food_dead_continued, 0) # resources food
+        water_dead_continued = self.model.society.get_resource(id=self.id_agent, name='water')
+        self.assertEqual(water_dead_continued, water_dead) # resources water
+        energy_dead_continued = self.model.society.get_resource(id=self.id_agent, name='energy')
+        self.assertEqual(energy_dead_continued, energy_dead) # resources energy
+        self.assertEqual(
+            self.model.infrastructure.get_usage_impact(ids=street),
+            0
+        ) # usage impact
+
 
 if __name__ == "__main__":
     unittest.main()
