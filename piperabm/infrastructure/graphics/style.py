@@ -1,11 +1,14 @@
-FONT_SIZE = 6
+from piperabm.model.graphics.style import *
 
-NODE_ITEM_DEFAULT_RADIUS = 2
+
+node_radius = DEFAULT_NODE_RADIUS
+font_size = DEFAULT_FONT_SIZE
+
 
 infrastructure_node_style = {
     "home": {
         "color": "b",    
-    "radius": NODE_ITEM_DEFAULT_RADIUS,
+    "radius": node_radius,
     },
     "junction": {
         "color": "k",
@@ -13,7 +16,7 @@ infrastructure_node_style = {
     },
     "market": {
         "color": "g",
-        "radius": NODE_ITEM_DEFAULT_RADIUS * 10,
+        "radius": node_radius * 10,
     }
 }
 
@@ -27,7 +30,7 @@ infrastructure_edge_style = {
 }
 
 infrastructure_style = {
-    "font": FONT_SIZE,
+    "font": font_size,
     "node": infrastructure_node_style,
     "edge": infrastructure_edge_style,
 }

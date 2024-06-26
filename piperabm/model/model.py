@@ -1,6 +1,7 @@
 from piperabm.model.serialize import Serialize
 from piperabm.model.file import File
 from piperabm.model.update import Update
+from piperabm.model.graphics import Graphics
 from piperabm.infrastructure import Infrastructure
 from piperabm.society import Society
 
@@ -8,7 +9,8 @@ from piperabm.society import Society
 class Model(
     Serialize,
     File,
-    Update
+    Update,
+    Graphics
 ):
     """
     Main class of simulation
@@ -48,8 +50,8 @@ class Model(
         )
         if save is True:
             self.save(state='infrastructure')
-
     
+
 if __name__ == "__main__":
 
     from piperabm.model import Model

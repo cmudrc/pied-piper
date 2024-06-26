@@ -69,5 +69,8 @@ edges = model.infrastructure.random_edges(percent=imperfection_percentage)
 model.infrastructure.impact(edges=edges)
 
 
+random.seed(None)
+
+
 if __name__ == "__main__":
     model.infrastructure.show()

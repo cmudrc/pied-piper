@@ -36,9 +36,12 @@ class Add:
         id: int = None,
         name: str = '',
         socioeconomic_status: float = 1,
-        food: float = 0,
-        water: float = 0,
-        energy: float = 0,
+        food: float = 10,
+        water: float = 10,
+        energy: float = 10,
+        enough_food: float = None,
+        enough_water: float = None,
+        enough_energy: float = None,
         balance: float = 0
     ):
         """
@@ -54,6 +57,9 @@ class Add:
             homes_id = self.infrastructure.homes
             home_id = random.choice(homes_id)
         pos = self.infrastructure.get_pos(id=home_id)
+        if enough_food is None: enough_food = deepcopy(food)
+        if enough_water is None: enough_water = deepcopy(water)
+        if enough_energy is None: enough_energy = deepcopy(energy)
         self.G.add_node(
             id,
             name=name,
@@ -69,9 +75,9 @@ class Add:
             idle_food_rate=idle_food_rate,
             idle_water_rate=idle_water_rate,
             idle_energy_rate=idle_energy_rate,
-            enough_food=deepcopy(food),
-            enough_water=deepcopy(water),
-            enough_energy=deepcopy(energy),
+            enough_food=enough_food,
+            enough_water=enough_water,
+            enough_energy=enough_energy,
             balance=balance,
             alive=True,
             speed=speed,
@@ -80,12 +86,12 @@ class Add:
             transportation_energy_rate=transportation_energy_rate,
             max_time_outside=max_time_outside
         )
-        # Add family
+        # Add family relationship
         family_members = self.agents_from(home_id=home_id)
         for member in family_members:
             if member != id:
                 self.add_family(id_1=id, id_2=member)
-        # Add neighbor
+        # Add neighbor relationship
         neighbor_homes = self.infrastructure.nodes_closer_than(
             id=home_id,
             search_radius=self.neighbor_radius,

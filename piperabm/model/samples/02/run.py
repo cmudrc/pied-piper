@@ -1,22 +1,25 @@
 import os
 
-from piperabm.infrastructure.samples import model_1 as model
+import piperabm as pa
+from piperabm.infrastructure.samples import model_2 as model
 
 
-model.path = os.path.dirname(os.path.realpath(__file__))
+path = os.path.dirname(os.path.realpath(__file__))
+name = 'model'
+
+# Setup
+model.path = path
+model.name = name
+model.society.neighbor_radius = 270
 model.society.generate_agents(
     num=10,
+    gini_index=0.45,
     average_balance=100
 )
-agents = model.society.agents
-nonjunctions = model.infrastructure.nonjunctions
-#print(model.society.estimated_duration(agent_id=agents[0], destination_id=markets[0]))
-#model.save_initial()
-#for agent in agents:
-#    for node in nonjunctions:
-#        model.society.estimated_distance(agent, node)
-#print(nonjunctions)
-#print(model.society.estimated_distance(agents[0], 0))
-print(model.infrastructure.heuristic_paths.serialize())
-#model.run(n=1, save=False, report=True, step_size=1)
-#print(model.society.serialize())
+
+# Run
+model.run(n=48, save=True, resume=False, report=True, step_size=4*3600)
+
+# Measure
+measurement = pa.Measurement(path, name=name)
+measurement.measure(resume=False, report=True)

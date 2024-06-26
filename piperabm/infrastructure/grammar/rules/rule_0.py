@@ -16,7 +16,7 @@ class Rule0:
         result = False
         edge_constraint = True
         if self.infrastructure.has_edge(ids=[node_id, other_node_id]):
-            if self.infrastructure.edge_type(ids=[node_id, other_node_id]) == "neighborhood_access":
+            if self.infrastructure.get_edge_type(ids=[node_id, other_node_id]) == "neighborhood_access":
                 edge_constraint = False
         if edge_constraint is True:
             distance = ds.point_to_point(

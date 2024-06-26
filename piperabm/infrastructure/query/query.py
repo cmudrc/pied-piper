@@ -90,10 +90,10 @@ class Query(Add, Get, Set):
             self.remove_edge(ids=ids)
             id_1 = ids[0]
             id_2 = ids[1]
-            if self.node_type(id=id_1) == 'junction' and \
+            if self.get_node_type(id=id_1) == 'junction' and \
                 self.is_isolate(id=id_1):
                 self.remove_node(id=id_1)
-            if self.node_type(id=id_2) == 'junction' and \
+            if self.get_node_type(id=id_2) == 'junction' and \
                 self.is_isolate(id=id_2):
                 self.remove_node(id=id_2)
 

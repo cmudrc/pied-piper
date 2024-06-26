@@ -8,35 +8,71 @@ class Get(NxGet):
     
     def get_pos(self, id: int):
         """
-        Get node position
+        Get node position value
         """
         return [self.get_node_attribute(id, 'x', None), self.get_node_attribute(id, 'y', None)]
     
     def get_node_type(self, id: int) -> str:
+        """
+        Get node *type* value
+        """
         return self.get_node_attribute(id=id, attribute='type')
 
     def get_edge_type(self, ids: list) -> str:
+        """
+        Get edge *type* value
+        """
         return self.get_edge_attribute(ids=ids, attribute='type')
     
-    def get_resource(self, name: str, id: int) -> float:
+    def get_node_name(self, id: int) -> str:
+        """
+        Get node *name* value
+        """
+        return self.get_node_attribute(id=id, attribute='name')
+    
+    def get_edge_name(self, ids: list) -> str:
+        """
+        Get edge *name* value
+        """
+        return self.get_edge_attribute(ids=ids, attribute='name')
+    
+    def get_resource(self, id: int, name: str) -> float:
+        """
+        Get agent *resource* value
+        """
         return self.get_node_attribute(id=id, attribute=name)
     
-    def get_enough_resource(self, name: str, id: int) -> float:
+    def get_enough_resource(self, id: int, name: str) -> float:
+        """
+        Get agent *enough_resource* value
+        """
         attribute = 'enough_' + name
         return self.get_node_attribute(id=id, attribute=attribute)
     
-    def get_idle_fuel_rate(self, name: str, id: int) -> float:
+    def get_idle_fuel_rate(self, id: int, name: str) -> float:
+        """
+        Get agent *idle_fuel_rate* value
+        """
         attribute = 'idle_' + name + '_rate'
         return self.get_node_attribute(id=id, attribute=attribute)
 
-    def get_transportation_fuel_rate(self, name: str, id: int) -> float:
+    def get_transportation_fuel_rate(self, id: int, name: str) -> float:
+        """
+        Get agent *transportation_fuel_rate* value
+        """
         attribute = 'transportation_' + name + '_rate'
         return self.get_node_attribute(id=id, attribute=attribute)
 
     def get_transportation_speed(self, id: int) -> float:
+        """
+        Get agent *transportation_speed* value
+        """
         return self.get_node_attribute(id=id, attribute='speed')
 
     def get_alive(self, id: str) -> bool:
+        """
+        Get agent *alive* value
+        """
         return self.get_node_attribute(id=id, attribute='alive')
     
     def get_socioeconomic_status(self, id: str) -> bool:
