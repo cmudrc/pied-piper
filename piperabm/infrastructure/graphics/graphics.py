@@ -9,13 +9,18 @@ class Graphics:
     Handle graphics
     """
 
-    def to_fig(
+    def fig(
             self,
-            ax
+            clf: bool = False
         ):
         """
         Add infrastructure elements to plt fig ax
         """
+        if clf is True:
+            plt.clf()
+        ax = plt.gca()
+        ax.set_aspect("equal")
+
         # Nodes
         pos_dict = {}
         node_color_list = []
@@ -55,13 +60,13 @@ class Graphics:
             edge_color=edge_color_list,
             ax=ax
         )
+        return plt.gcf()
 
     def show(self):
         """
         Show infrastructure elements
         """
-        fig, ax = plt.subplots()
-        self.to_fig(ax)
+        fig = self.fig()
         plt.show()
 
 

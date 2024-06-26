@@ -9,14 +9,19 @@ class Graphics:
     Handle graphics
     """
 
-    def to_fig(
+    def fig(
             self,
-            ax,
-            relationships=False
+            relationships: bool = False,
+            clf: bool = False
         ):
         """
         Add society elements to plt fig ax
         """
+        if clf is True:
+            plt.clf()
+        ax = plt.gca()
+        ax.set_aspect("equal")
+
         # Nodes
         pos_dict = {}
         node_color_list = []
@@ -66,13 +71,13 @@ class Graphics:
             edge_color=edge_color_list,
             ax=ax
         )
+        return plt.gcf()
 
     def show(self, relationships=True):
         """
         Show society elements
         """
-        fig, ax = plt.subplots()
-        self.to_fig(ax, relationships)
+        fig = self.fig(relationships=relationships)
         plt.show()
 
 
