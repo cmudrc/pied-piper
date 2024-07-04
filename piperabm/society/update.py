@@ -84,7 +84,7 @@ if __name__ == "__main__":
     model = Model()
     model.infrastructure.add_home(pos=[0, 0])
     model.bake()
-    model.society.generate_agents(num=1)
+    model.society.generate(num=1)
     print(f"deads: {len(model.society.deads)}")
     model.society.update(1000000)
     print(f"deads: {len(model.society.deads)}")

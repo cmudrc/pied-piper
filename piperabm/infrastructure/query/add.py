@@ -1,4 +1,4 @@
-import uuid
+import numpy as np
 from copy import deepcopy
 
 from piperabm.tools.coordinate import distance as ds
@@ -23,9 +23,9 @@ class Add:
 
     def new_id(self):
         """
-        Generate new unique and radnom id
+        Generate new unique random id
         """
-        return uuid.uuid4().int
+        return int(np.random.randint(low=0, high=np.iinfo(np.int64).max, dtype=np.int64))
 
     def add_junction(
         self,

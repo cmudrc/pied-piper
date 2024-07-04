@@ -1,3 +1,5 @@
+import numpy as np
+
 from piperabm.model.serialize import Serialize
 from piperabm.model.file import File
 from piperabm.model.update import Update
@@ -21,7 +23,8 @@ class Model(
     def __init__(
         self,
         name: str = 'model',
-        path=None
+        path=None,
+        seed=None
     ):
         super().__init__()
         self.time = 0
@@ -32,6 +35,11 @@ class Model(
         self.society.model = self # Binding
         self.name = name
         self.path = path # File saving
+        self.set_seed(seed=seed)
+
+    def set_seed(self, seed: int = None):
+        self.seed = seed
+        np.random.seed(seed)
 
     def bake(
             self,
@@ -50,6 +58,14 @@ class Model(
         )
         if save is True:
             self.save(state='infrastructure')
+
+    '''
+    def __eq__(self, other):
+        if isinstance(other, dict):
+            return self.serialize() == other
+        else:
+            return self.serialize() == other.serialize()
+    '''
     
 
 if __name__ == "__main__":

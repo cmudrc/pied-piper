@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Serialize:
     """
     Serialization methods
@@ -7,21 +10,72 @@ class Serialize:
         """
         Serialize
         """
-        dictionary = {}
-        dictionary['time'] = self.time
-        dictionary['step'] = self.step
-        dictionary['infrastructure'] = self.infrastructure.serialize()
-        dictionary['society'] = self.society.serialize()
-        dictionary['name'] = self.name
-        dictionary['type'] = self.type
-        return dictionary
+        data = {}
+        data['time'] = self.time
+        data['step'] = self.step
+        data['infrastructure'] = self.infrastructure.serialize()
+        data['society'] = self.society.serialize()
+        data['name'] = self.name
+        data['seed'] = self.seed
+        data['state'] = self.serialize_state()
+        data['type'] = self.type
+        return data
     
-    def deserialize(self, dictionary: dict) -> None:
+    def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        self.time = dictionary['time']
-        self.step = dictionary['step']
-        self.infrastructure.deserialize(dictionary['infrastructure'])
-        self.society.deserialize(dictionary['society'])
-        self.name = dictionary['name']
+        self.time = data['time']
+        self.step = data['step']
+        self.infrastructure.deserialize(data['infrastructure'])
+        self.society.deserialize(data['society'])
+        self.set_seed(data['seed'])
+        #self.seed = data['seed']
+        #np.random.seed(self.seed)
+        self.deserialize_state(state=data['state'])
+        #np.random.set_state(data['state'])
+        self.name = data['name']
+
+    def serialize_state(self):
+        """
+        Serialize numpy random generator state
+        """
+        state = np.random.get_state()
+        return [
+            state[0],
+            state[1].tolist(),  # Convert numpy array to list
+            state[2],
+            state[3],
+            state[4]
+        ]
+    
+    def deserialize_state(self, state):
+        """
+        Deserialize numpy random generator state
+        """
+        restored_state = (
+            state[0],
+            np.array(state[1], dtype=np.uint32),  # Convert list back to numpy array
+            state[2],
+            state[3],
+            state[4]
+        )
+        np.random.set_state(restored_state)
+
+
+if __name__ == "__main__":
+
+    import piperabm as pa
+
+    model = pa.Model(seed=1)
+    #print(model.infrastructure.new_id())
+    #print(model.infrastructure.new_id())
+    data = model.serialize()
+
+    print(data)
+
+    model_new = pa.Model()
+    model_new.deserialize(data)
+    #print(model_new.infrastructure.new_id())
+    #print(model_new.infrastructure.new_id())
+    #print(model_new.seed)

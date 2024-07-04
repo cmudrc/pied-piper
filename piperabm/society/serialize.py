@@ -43,6 +43,7 @@ if __name__ == "__main__":
     
     from piperabm.infrastructure.samples import model_0 as model
 
-    model.society.generate_agents(num=2)
+    model.set_seed(1)
+    model.society.generate(num=2)
     society_serialized = model.society.serialize()
     print(society_serialized)

@@ -1,6 +1,7 @@
 import networkx as nx
 
 from piperabm.infrastructure.query import Query
+from piperabm.infrastructure.generate import Generate
 from piperabm.infrastructure.degradation import Degradation
 from piperabm.infrastructure.path import Path
 from piperabm.infrastructure.update import Update
@@ -13,6 +14,7 @@ from piperabm.infrastructure.heuristic_paths import HeuristicPaths
 
 class Infrastructure(
     Query,
+    Generate,
     Degradation,
     Path,
     Update,

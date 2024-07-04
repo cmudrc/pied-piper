@@ -1,4 +1,5 @@
-import random
+#import random
+import numpy as np
 from copy import deepcopy
 
 from piperabm.tools.gini import gini
@@ -9,7 +10,7 @@ class Generate:
     Generate agents
     """
 
-    def generate_agents(
+    def generate(
             self,
             num: int = 1,
             gini_index: float = 0,
@@ -28,7 +29,7 @@ class Generate:
         )
         homes_id = self.infrastructure.homes
         for socioeconomic_status in socioeconomic_status_values:
-            home_id = random.choice(homes_id)
+            home_id = int(np.random.choice(homes_id))
             food = average_food * socioeconomic_status
             water = average_water * socioeconomic_status
             energy = average_energy * socioeconomic_status
@@ -50,10 +51,13 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure.samples import model_0 as model
 
-    model.society.generate_agents(
+
+    model.set_seed(2)
+    model.society.generate(
         gini_index=0.45,
         num=2,
         average_balance=1000
     )
     print(model.society.gini_index)
+    print(model.society.serialize())
     
