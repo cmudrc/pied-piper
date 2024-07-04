@@ -1,0 +1,1 @@
+from .multi_resource_solver import solver
