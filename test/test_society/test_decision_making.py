@@ -1,7 +1,9 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.infrastructure.samples import model_0, model_1, model_2
+from piperabm.infrastructure.samples.infrastructure_0 import model as model_0
+from piperabm.infrastructure.samples.infrastructure_1 import model as model_1
+from piperabm.infrastructure.samples.infrastructure_2 import model as model_2
 
 
 class TestActions_0(unittest.TestCase):

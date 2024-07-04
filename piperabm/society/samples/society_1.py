@@ -1,6 +1,7 @@
-from piperabm.infrastructure.samples import model_1 as model
+from piperabm.infrastructure.samples.infrastructure_1 import model
 
 
+model.set_seed(2)
 model.society.average_income = 1
 model.society.add_agent(
     id=1,
@@ -14,6 +15,7 @@ model.society.add_agent(
     enough_energy=100,
     balance=1000
 )
+model.set_seed(None)
 
 
 if __name__ == "__main__":

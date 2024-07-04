@@ -6,6 +6,7 @@ import piperabm as pa
 
 
 model = pa.Model()
+model.set_seed(2)
 model.infrastructure.add_street(pos_1=[0, 0], pos_2=[-60, 40], name='road')
 model.infrastructure.add_home(pos=[5, 0], id=1, name='home')
 model.infrastructure.add_market(
@@ -17,6 +18,7 @@ model.infrastructure.add_market(
     energy=100,
 )
 model.infrastructure.bake()
+model.set_seed(None)
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ import piperabm as pa
 
 """ Model """
 model = pa.Model(seed=2)
+model.set_seed(2)
 model.infrastructure.generate(
     homes_num=10,
     x_grid_size=15,
@@ -19,5 +20,4 @@ model.set_seed(None)
 
 
 if __name__ == "__main__":
-    #print(model.infrastructure.serialize())
     model.infrastructure.show()
