@@ -1,25 +1,18 @@
 import os
 
 import piperabm as pa
-from piperabm.infrastructure.samples import model_2 as model
+from piperabm.society.samples.society_2 import model
 
-
-path = os.path.dirname(os.path.realpath(__file__))
-name = 'model'
 
 # Setup
+path = os.path.dirname(os.path.realpath(__file__))
 model.path = path
-model.name = name
-model.society.neighbor_radius = 270
-model.society.generate_agents(
-    num=10,
-    gini_index=0.45,
-    average_balance=100
-)
 
 # Run
+print(">>> Running...")
 model.run(n=48, save=True, resume=False, report=True, step_size=4*3600)
 
 # Measure
-measurement = pa.Measurement(path, name=name)
+print(">>> Measuring...")
+measurement = pa.Measurement(path=path)
 measurement.measure(resume=False, report=True)

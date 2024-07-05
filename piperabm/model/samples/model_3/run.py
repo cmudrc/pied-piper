@@ -1,7 +1,7 @@
 import os
 
 import piperabm as pa
-from piperabm.infrastructure.samples import model_2 as model
+from piperabm.infrastructure.samples.infrastructure_3 import model
 
 
 path = os.path.dirname(os.path.realpath(__file__))
@@ -11,7 +11,7 @@ name = 'model'
 model.path = path
 model.name = name
 model.society.neighbor_radius = 270
-model.society.generate_agents(
+model.society.generate(
     num=10,
     gini_index=0.45,
     average_balance=100

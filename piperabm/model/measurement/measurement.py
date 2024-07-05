@@ -11,7 +11,7 @@ class Measurement:
 
     type = "measurement"
 
-    def __init__(self, path=None, name: str = 'measurement'):
+    def __init__(self, path=None, name: str = 'model'):
         self.path = path
         self.name = name
         self.times = []

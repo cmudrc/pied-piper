@@ -9,7 +9,7 @@ model.society.generate(
     average_food=10,
     average_water=10,
     average_energy=10,
-    average_balance=1000
+    average_balance=100
 )
 model.set_seed(None)
 

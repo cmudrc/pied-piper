@@ -1,7 +1,7 @@
 import os
 
 import piperabm as pa
-from piperabm.society.samples.society_1 import model
+from piperabm.society.samples.society_2 import model
 
 
 # Setup
@@ -10,7 +10,7 @@ model.path = path
 
 # Run
 print(">>> Running...")
-model.run(n=500, save=True, resume=False, report=True, step_size=100)
+model.run(n=50, save=True, resume=False, report=True, step_size=10)
 
 # Measure
 print(">>> Measuring...")

@@ -4,7 +4,7 @@ import piperabm as pa
 
 
 path = os.path.dirname(os.path.realpath(__file__))
-measurement = pa.Measurement(path, name='model')
+measurement = pa.Measurement(path=path)
 measurement.load()
 
 
