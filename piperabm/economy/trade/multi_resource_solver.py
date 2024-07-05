@@ -1,37 +1,37 @@
 """
-Solves multi-resources for multiple agents at fixed price
+Solves multi-resources for multiple players at fixed price
 """
 
 from piperabm.economy.trade.single_resource_solver import solver as single_resource_solver
 
 
-def solver(agents, prices):
+def solver(players, prices):
     """
-    Solve the optimal trade between agents
+    Solve the optimal trade between players
     """
 
-    def extract(agents, resource_name):
+    def extract(players, resource_name):
         """
-        Extract the agent info
+        Extract the player info
         """
         result = []
-        for agent in agents:
+        for player in players:
             new = {}
-            new['id'] = agent['id']
-            new['resource'] = agent['resources'][resource_name]
-            new['enough_resource'] = agent['enough_resources'][resource_name]
-            new['balance'] = agent['balance']
+            new['id'] = player['id']
+            new['resource'] = player['resources'][resource_name]
+            new['enough_resource'] = player['enough_resources'][resource_name]
+            new['balance'] = player['balance']
             result.append(new)
         return result
     
-    def update(agents, result, resource_name):
+    def update(players, result, resource_name):
         """
-        Update the agent info
+        Update the player info
         """
-        for i, agent in enumerate(agents):
-            agent['resources'][resource_name] = result[i]['resource']
-            agent['balance'] = result[i]['balance']
-        return agents
+        for i, player in enumerate(players):
+            player['resources'][resource_name] = result[i]['resource']
+            player['balance'] = result[i]['balance']
+        return players
     
     # Sort market for the resources based on size
     market_sizes = {
@@ -39,8 +39,8 @@ def solver(agents, prices):
         'water': 0,
         'energy': 0
     }
-    for agent in agents:
-        resources = agent['resources']
+    for player in players:
+        resources = player['resources']
         for resource_name in resources:
             market_sizes[resource_name] += resources[resource_name]
     for resource_name in market_sizes:
@@ -48,10 +48,10 @@ def solver(agents, prices):
     markets = sorted(market_sizes, key=market_sizes.get, reverse=True)
     #print(markets)
     for resource_name in markets:
-        result = single_resource_solver(agents=extract(agents, resource_name), price=prices[resource_name])
+        result = single_resource_solver(players=extract(players, resource_name), price=prices[resource_name])
         #print(result)
-        agents = update(agents, result, resource_name)
-    return agents
+        players = update(players, result, resource_name)
+    return players
 
 
 if __name__ == "__main__":
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         'water': 12,
         'energy': 8
     }
-    agent_1 = {
+    player_1 = {
         'id': 1,
         'resources': {
             'food': 9,
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         },
         'balance': 100,
     }
-    agent_2 = {
+    player_2 = {
         'id': 2,
         'resources': {
             'food': 12,
@@ -88,7 +88,7 @@ if __name__ == "__main__":
         },
         'balance': 100,
     }
-    agent_3 = {
+    player_3 = {
         'id': 3,
         'resources': {
             'food': 3,
@@ -102,19 +102,19 @@ if __name__ == "__main__":
         },
         'balance': 10,
     }
-    agents = [agent_1, agent_2, agent_3]
+    players = [player_1, player_2, player_3]
 
-    print("Solves multi-resources for multiple agents at fixed price.")
+    print("Solves multi-resources for multiple players at fixed price.")
 
     # Initial
     print(">>> Initial: ")
-    for agent in agents:
-        print(agent['resources'], ', balance:', agent['balance'])
+    for player in players:
+        print(player['resources'], ', balance:', player['balance'])
 
     # Solve
-    agents = solver(agents, prices)
+    players = solver(players, prices)
 
     # Final
     print(">>> Final: ")
-    for agent in agents:
-        print(agent['resources'], ', balance:', agent['balance'])
+    for player in players:
+        print(player['resources'], ', balance:', player['balance'])

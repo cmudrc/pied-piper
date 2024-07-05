@@ -48,7 +48,6 @@ class Update:
             action_queue.update(duration, measure=measure)
 
         # Trade
-        '''
         for market_id in self.infrastructure.markets:
             agents = self.agents_in(id=market_id)
             if len(agents) >= 1:
@@ -57,7 +56,6 @@ class Update:
             agents = self.agents_in(id=home_id)
             if len(agents) >= 2:
                 self.trade(agents=agents)
-        '''
 
         '''
         # Measure accessibility

@@ -1,5 +1,5 @@
 """
-Single home in the middle of nowhere
+A single home standing in the middle of nowhere
 """
 
 import piperabm as pa

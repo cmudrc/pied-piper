@@ -1,5 +1,5 @@
 """
-Solves a single resource for multiple agents at fixed price
+Solves a single resource for multiple players at fixed price
 """
 
 import numpy as np
@@ -8,20 +8,20 @@ from scipy.optimize import minimize
 from piperabm.economy.accessibility import accessibility
 
 
-def solver(agents: list, price: float):
+def solver(players: list, price: float):
     """
-    Solve the optimal trade between agents
+    Solve the optimal trade between players
     """
-    num_agents = len(agents)
-    initial_resources = np.array([agent['resource'] for agent in agents])
-    enough_resources = np.array([agent['enough_resource'] for agent in agents])
-    balances = np.array([agent['balance'] for agent in agents])
+    num_players = len(players)
+    initial_resources = np.array([player['resource'] for player in players])
+    enough_resources = np.array([player['enough_resource'] for player in players])
+    balances = np.array([player['balance'] for player in players])
 
     def objective(resource_allocations):
         """
         Objective function to maximize the product of utility gains
         """
-        utilities = np.array([accessibility(resource_allocations[i], enough_resources[i]) for i in range(num_agents)])
+        utilities = np.array([accessibility(resource_allocations[i], enough_resources[i]) for i in range(num_players)])
         return -np.prod(utilities)  # Minimize the negative for maximization
 
     def resource_conservation(resource_allocations):
@@ -32,7 +32,7 @@ def solver(agents: list, price: float):
 
     def balance_constraints(resource_allocations):
         """
-        Constraint: ensure no agent spends more than they have
+        Constraint: ensure no player spends more than they have
         """
         resource_changes = resource_allocations - initial_resources
         cost = resource_changes * price
@@ -42,11 +42,11 @@ def solver(agents: list, price: float):
     # Constraints
     constraints = [
         {'type': 'eq', 'fun': resource_conservation},  # Resource conservation constraint
-        {'type': 'ineq', 'fun': balance_constraints}   # Balance constraints for each agent
+        {'type': 'ineq', 'fun': balance_constraints}   # Balance constraints for each player
     ]
 
-    # Bounds for each variable (resource allocation cannot be negative and should not exceed the agent's balance converted to resources)
-    bounds = [(0, balances[i] / price + initial_resources[i]) for i in range(num_agents)]
+    # Bounds for each variable (resource allocation cannot be negative and should not exceed the player's balance converted to resources)
+    bounds = [(0, balances[i] / price + initial_resources[i]) for i in range(num_players)]
 
     # Initial guess: start with initial resources
     initial_guess = initial_resources
@@ -57,52 +57,52 @@ def solver(agents: list, price: float):
     # Prepare results
     if result.success:
         final_resources = result.x
-        #final_utilities = [utility(final_resources[i], enough_resources[i]) for i in range(num_agents)]
-        for i, agent in enumerate(agents):
+        #final_utilities = [utility(final_resources[i], enough_resources[i]) for i in range(num_players)]
+        for i, player in enumerate(players):
             final_resource = final_resources[i]
-            agent['balance'] += float((agent['resource'] - final_resource) * price)
-            agent['resource'] = float(final_resource)
+            player['balance'] += float((player['resource'] - final_resource) * price)
+            player['resource'] = float(final_resource)
         status = 'success'
     else:
         status = 'failed'
     #print(status)
-    result = agents
+    result = players
     return result
 
 
 if __name__ == "__main__":
     price = 10
-    agent_1 = {
+    player_1 = {
         'id': 1,
         'resource': 19,
         'enough_resource': 10,
         'balance': 100,
     }
-    agent_2 = {
+    player_2 = {
         'id': 2,
         'resource': 8,
         'enough_resource': 10,
         'balance': 100,
     }
-    agent_3 = {
+    player_3 = {
         'id': 3,
         'resource': 3,
         'enough_resource': 10,
         'balance': 10,
     }
-    agents = [agent_1, agent_2, agent_3]
+    players = [player_1, player_2, player_3]
 
-    print("Solves a single resource for multiple agents at fixed price.")
+    print("Solves a single resource for multiple players at fixed price.")
 
     # Initial
     print(">>> Initial: ")
-    for agent in agents:
-        print(agent)
+    for player in players:
+        print(player)
 
     # Solve
-    agents = solver(agents, price)
+    players = solver(players, price)
 
     # Final
     print(">>> Final: ")
-    for agent in agents:
-        print(agent)
+    for player in players:
+        print(player)

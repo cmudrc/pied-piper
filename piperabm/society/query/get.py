@@ -76,19 +76,37 @@ class Get(NxGet):
         return self.get_node_attribute(id=id, attribute='alive')
     
     def get_socioeconomic_status(self, id: str) -> bool:
+        """
+        Get agent *socioeconomic_status* value
+        """
         return self.get_node_attribute(id=id, attribute='socioeconomic_status')
     
     def get_income(self, id: str) -> float:
+        """
+        Get agent *income* value
+        """
         return self.get_socioeconomic_status(id=id) * self.average_income
     
     def get_current_node(self, id: str) -> int:
+        """
+        Get agent *current_node* value
+        """
         return self.get_node_attribute(id=id, attribute='current_node')
     
     def get_home_id(self, id: str) -> int:
+        """
+        Get agent *home_id* value
+        """
         return self.get_node_attribute(id=id, attribute='home_id')
     
     def get_balance(self, id: int) -> float:
+        """
+        Get agent *balance* value
+        """
         return self.get_node_attribute(id=id, attribute='balance')
     
-    def get_max_time_outside(self, id: int):
+    def get_max_time_outside(self, id: int) -> float:
+        """
+        Get agent *max_time_outside* value
+        """
         return self.get_node_attribute(id=id, attribute='max_time_outside')

@@ -15,15 +15,24 @@ class Set(NxSet):
         self.set_node_attribute(id=id, attribute='x', value=x)
         self.set_node_attribute(id=id, attribute='y', value=y)
 
-    def set_resource(self, name: str, id: int, value: float) -> None:
+    def set_resource(self, id: int, name: str, value: float) -> None:
+        """
+        Set agent *resource* value
+        """
         if value <= 0:
             value = 0
             self.set_node_attribute(id=id, attribute='alive', value=False)
         self.set_node_attribute(id=id, attribute=name, value=value)
 
     def set_current_node(self, id: str, value: int) -> None:
+        """
+        Set agent *current_node* value
+        """
         return self.set_node_attribute(id=id, attribute='current_node', value=value)
     
     def set_balance(self, id: str, value: float) -> None:
+        """
+        Set agent *balance* value
+        """
         return self.set_node_attribute(id=id, attribute='balance', value=value)
     

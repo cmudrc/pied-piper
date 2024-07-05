@@ -1,6 +1,39 @@
 import unittest
 
-from piperabm.model import Model
+from piperabm.society.samples.society_0 import model as model_0
+
+
+class TestTrade_0(unittest.TestCase):
+
+    def setUp(self):
+        self.model = model_0
+        self.model.society.average_income = 0
+        agents = self.model.society.agents
+        wealth_0 = self.model.society.wealth(agents[0])
+        wealth_1 = self.model.society.wealth(agents[1])
+        if wealth_0 < wealth_1:
+            self.id_low = agents[0] # Agent with lower food
+            self.id_high = agents[1]  # Agent with higher food
+        food = self.model.society.get_resource(self.id_low, 'food')
+        self.model.society.set_resource(self.id_low, 'food', value=food/10)
+
+    def test_trade(self):
+        balance_low_initial = self.model.society.get_balance(self.id_low)
+        balance_high_initial = self.model.society.get_balance(self.id_high)
+        food_low_initial = self.model.society.get_resource(self.id_low, 'food')
+        food_high_initial = self.model.society.get_resource(self.id_high, 'food')
+        
+        self.model.update(duration=1)
+        
+        balance_low_final = self.model.society.get_balance(self.id_low)
+        balance_high_final = self.model.society.get_balance(self.id_high)
+        food_low_final = self.model.society.get_resource(self.id_low, 'food')
+        food_high_final = self.model.society.get_resource(self.id_high, 'food')
+
+        self.assertLess(balance_low_final, balance_low_initial)
+        self.assertLess(food_low_initial, food_low_final)
+        self.assertLess(balance_high_initial, balance_high_final)
+        self.assertLess(food_high_final, food_high_initial)
 
 
 '''

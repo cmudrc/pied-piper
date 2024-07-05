@@ -3,6 +3,7 @@ import networkx as nx
 from piperabm.society.query import Query
 from piperabm.society.generate import Generate
 from piperabm.society.decision_making import DecisionMaking
+from piperabm.society.trade import Trade
 from piperabm.society.update import Update
 from piperabm.society.serialize import Serialize
 from piperabm.society.graphics import Graphics
@@ -18,6 +19,7 @@ class Society(
     Query,
     Generate,
     DecisionMaking,
+    Trade,
     Update,
     Serialize,
     Graphics,

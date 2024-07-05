@@ -54,8 +54,21 @@ class Get(NxGet):
         """
         return self.get_edge_attribute(ids=ids, attribute='usage_impact')
     
-    def get_resource(self, name: str, id: int) -> float:
+    def get_resource(self, id: int, name: str) -> float:
         """
-        For market nodes resource
+        Get market *resource* value
         """
         return self.get_node_attribute(id=id, attribute=name)
+    
+    def get_enough_resource(self, id: int, name: str) -> float:
+        """
+        Get market *enough_resource* value
+        """
+        attribute = 'enough_' + name
+        return self.get_node_attribute(id=id, attribute=attribute)
+    
+    def get_balance(self, id: int) -> float:
+        """
+        Get market *balance* value
+        """
+        return self.get_node_attribute(id=id, attribute='balance')
