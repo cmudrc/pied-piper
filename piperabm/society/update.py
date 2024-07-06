@@ -7,30 +7,16 @@ class Update:
         """
         Update the network
         """
-        '''
-        # Measure accessibility (first entry)
-        if measure is True and self.model.accessibility.pristine is True:
-            self.model.accessibility.add_date(self.model.date)
-            self.model.accessibility.pristine = False
-        '''
+        resource_names = ['food', 'water', 'energy']
 
         # Idle resource consumption & income
         for id in self.alives:
-            # Food
-            food = self.get_resource(id=id, name='food')
-            food_rate = self.get_idle_fuel_rate(id=id, name='food')
-            new_food = food - (food_rate * duration)
-            self.set_resource(id=id, name='food', value=new_food)
-            # Water
-            water = self.get_resource(id=id, name='water')
-            water_rate = self.get_idle_fuel_rate(id=id, name='water')
-            new_water = water - (water_rate * duration)
-            self.set_resource(id=id, name='water', value=new_water)
-            # Energy
-            energy = self.get_resource(id=id, name='energy')
-            energy_rate = self.get_idle_fuel_rate(id=id, name='energy')
-            new_energy = energy - (energy_rate * duration)
-            self.set_resource(id=id, name='energy', value=new_energy)
+            # Resources
+            for name in resource_names:
+                resource_value = self.get_resource(id=id, name=name)
+                resource_consumption_rate = self.get_idle_fuel_rate(id=id, name=name)
+                new_resource_value = resource_value - (resource_consumption_rate * duration)
+                self.set_resource(id=id, name=name, value=new_resource_value)
             # Income
             balance = self.get_balance(id)
             income = self.get_income(id)
@@ -51,28 +37,11 @@ class Update:
         for market_id in self.infrastructure.markets:
             agents = self.agents_in(id=market_id)
             if len(agents) >= 1:
-                self.trade(agents=agents, market=market_id)
+                self.trade(agents=agents, market=[market_id])
         for home_id in self.infrastructure.homes:
             agents = self.agents_in(id=home_id)
             if len(agents) >= 2:
                 self.trade(agents=agents)
-
-        '''
-        # Measure accessibility
-        if measure is True:
-            date = self.model.date
-            self.model.accessibility.add_date(date)
-            for id in self.agents:
-                utility_food = self.utility(id, 'food')
-                utility_water = self.utility(id, 'water')
-                utility_energy = self.utility(id, 'energy')
-                utility = {
-                    'food': utility_food,
-                    'water': utility_water,
-                    'energy': utility_energy,
-                }
-                self.model.accessibility.add_utility(id, utility)
-        '''
 
 
 if __name__ == "__main__":

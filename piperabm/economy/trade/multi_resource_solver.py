@@ -62,6 +62,7 @@ if __name__ == "__main__":
     }
     player_1 = {
         'id': 1,
+        'type': 'agent',
         'resources': {
             'food': 9,
             'water': 2,
@@ -76,6 +77,7 @@ if __name__ == "__main__":
     }
     player_2 = {
         'id': 2,
+        'type': 'agent',
         'resources': {
             'food': 12,
             'water': 3,
@@ -90,6 +92,7 @@ if __name__ == "__main__":
     }
     player_3 = {
         'id': 3,
+        'type': 'agent',
         'resources': {
             'food': 3,
             'water': 10,

@@ -74,18 +74,21 @@ if __name__ == "__main__":
     price = 10
     player_1 = {
         'id': 1,
+        'type': 'agent',
         'resource': 19,
         'enough_resource': 10,
         'balance': 100,
     }
     player_2 = {
         'id': 2,
+        'type': 'agent',
         'resource': 8,
         'enough_resource': 10,
         'balance': 100,
     }
     player_3 = {
         'id': 3,
+        'type': 'agent',
         'resource': 3,
         'enough_resource': 10,
         'balance': 10,
