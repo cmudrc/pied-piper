@@ -69,7 +69,7 @@ class Measurement:
         """
         self.travel_distance.add(value=value)
 
-    def measure(self, report=True, resume=True):
+    def measure(self, report=True, resume=False):
         if resume is False:  # Restart the measurement
             file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
             if file.exists() is True:
@@ -130,7 +130,7 @@ class Measurement:
         """
         file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
         data = file.load()
-        self.deserialize(dictionary=data)
+        self.deserialize(data=data)
 
     def serialize(self) -> dict:
         """
@@ -143,13 +143,13 @@ class Measurement:
             'type': self.type,
         }
     
-    def deserialize(self, dictionary: dict) -> None:
+    def deserialize(self, data: dict) -> None:
         """
         Deerialize
         """
-        self.accessibility.deserialize(dictionary['accessibility'])
-        self.travel_distance.deserialize(dictionary['travel_distance'])
-        self.times = dictionary['times']
+        self.accessibility.deserialize(data['accessibility'])
+        self.travel_distance.deserialize(data['travel_distance'])
+        self.times = data['times']
 
 
 if __name__ == "__main__":

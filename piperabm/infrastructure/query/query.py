@@ -1,5 +1,5 @@
 import networkx as nx
-from random import shuffle
+import numpy as np
 
 from piperabm.tools.coordinate import distance as ds
 from piperabm.infrastructure.query.add import Add
@@ -114,7 +114,7 @@ class Query(Add, Get, Set):
             edges_info.append(edge_info)
         remaining_length = (percent / 100) * total_length
         result = []
-        shuffle(edges_info)
+        np.random.shuffle(edges_info)
         for edge_info in edges_info:
             remaining_length -= edge_info['length']
             if remaining_length < 0:

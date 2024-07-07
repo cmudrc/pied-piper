@@ -10,3 +10,4 @@ settings.json
 .DS_Store
 .python-version
 venv/
+examples/

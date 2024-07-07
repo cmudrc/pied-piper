@@ -6,7 +6,6 @@ import piperabm as pa
 
 
 model = pa.Model(seed=2)
-model.set_seed(2)
 model.infrastructure.coeff_usage = 1
 model.infrastructure.coeff_weather = 1
 model.infrastructure.generate(

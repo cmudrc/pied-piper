@@ -165,11 +165,11 @@ class Accessibility:
             'type': self.type
         }
     
-    def deserialize(self, dictionary: dict) -> None:
+    def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        self.values = dictionary['values']
+        self.values = data['values']
 
     
 if __name__ == "__main__":
