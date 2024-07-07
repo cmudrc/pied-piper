@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 from piperabm.society.actions.action import Move, Stay
 from piperabm.tools.symbols import SYMBOLS
@@ -40,7 +40,8 @@ class DecisionMaking:
                     result.append([node_id, score])
             max_score = max(node[1] for node in result)
             top_nodes = [node for node in result if node[1] == max_score]
-            selected_node = random.choice(top_nodes)
+            random_index = np.random.choice(len(top_nodes))
+            selected_node = top_nodes[random_index]
             top_node = selected_node[0]
             top_score = selected_node[1]
         else:
@@ -53,27 +54,30 @@ class DecisionMaking:
         """
         # Calculate the estimated amount of fuel required
         travel_duration = self.estimated_duration(agent_id, destination_id)
-        fuel_food = self.get_transportation_fuel_rate(id=agent_id, name='food') * travel_duration
-        fuel_water = self.get_transportation_fuel_rate(id=agent_id, name='water') * travel_duration
-        fuel_energy = self.get_transportation_fuel_rate(id=agent_id, name='energy') * travel_duration
+        fuel_resources = {}
+        for name in self.resource_names:
+            fuel_resources[name] = self.get_transportation_fuel_rate(id=agent_id, name=name) * travel_duration
 
         # Calculate the value of required fuel
-        if fuel_food <= self.get_resource(id=agent_id, name='food') and \
-            fuel_water <= self.get_resource(id=agent_id, name='water') and \
-            fuel_energy <= self.get_resource(id=agent_id, name='energy'):
-            fuel_value_food = fuel_food * self.food_price
-            fuel_value_water = fuel_water * self.water_price
-            fuel_value_energy = fuel_energy * self.energy_price
-            total_fuel_value = fuel_value_food + fuel_value_water + fuel_value_energy
+        fuel_possible = True
+        for name in self.resource_names:
+            if fuel_resources[name] > self.get_resource(id=agent_id, name=name):
+                fuel_possible = False
+        if fuel_possible is True:
+            total_fuel_value = 0
+            for name in self.resource_names:
+                fuel_value = fuel_resources[name] * self.prices[name]
+                total_fuel_value += fuel_value
         else:
             total_fuel_value = SYMBOLS['inf']
-        
+
         # Calculate the value of resources there
-        food_there, water_there, energy_there = self.resources_in(node_id=destination_id, is_market=is_market)
-        total_value_there = (food_there * self.food_price) + \
-                            (water_there * self.water_price) + \
-                            (energy_there * self.energy_price)
-        
+        resources_there = self.resources_in(node_id=destination_id, is_market=is_market)
+        total_value_there = 0
+        for name in self.resource_names:
+            total_value_there += resources_there[name] * self.prices[name]
+
+        # Calculate score
         score = total_value_there - total_fuel_value
         
         return score
@@ -159,7 +163,7 @@ class DecisionMaking:
 
 if __name__ == "__main__":
 
-    from piperabm.infrastructure.samples import model_1 as model
+    from piperabm.infrastructure.samples.infrastructure_1 import model
 
     agent_id = 0
     home_id = 1
@@ -167,9 +171,6 @@ if __name__ == "__main__":
     model.society.add_agent(
         home_id=home_id,
         id=agent_id,
-        food=10,
-        water=10,
-        energy=10
     )
     print("current node: ", model.society.get_current_node(id=agent_id))
     print("possible destinations: ", model.society.possible_search_destinations(agent_id=agent_id))

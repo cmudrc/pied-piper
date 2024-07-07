@@ -1,10 +1,9 @@
 import unittest
 
 from piperabm.infrastructure import Infrastructure
-from piperabm.infrastructure.grammar import Grammar
 
 
-class TestInfrastructureGrammarClass_0(unittest.TestCase):
+class TestGrammarClass_0(unittest.TestCase):
     """
     Multiple streets
     """
@@ -47,7 +46,7 @@ class TestInfrastructureGrammarClass_0(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_1(unittest.TestCase):
+class TestGrammarClass_1(unittest.TestCase):
     """
     Multiple streets
     """
@@ -78,7 +77,7 @@ class TestInfrastructureGrammarClass_1(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_2(unittest.TestCase):
+class TestGrammarClass_2(unittest.TestCase):
     """
     Two streets close on one end
     """
@@ -98,7 +97,7 @@ class TestInfrastructureGrammarClass_2(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_3(unittest.TestCase):
+class TestGrammarClass_3(unittest.TestCase):
     """
     Two streets close on one end
     """
@@ -118,7 +117,7 @@ class TestInfrastructureGrammarClass_3(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_4(unittest.TestCase):
+class TestGrammarClass_4(unittest.TestCase):
     """
     Two streets close on one end
     """
@@ -138,7 +137,7 @@ class TestInfrastructureGrammarClass_4(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_5(unittest.TestCase):
+class TestGrammarClass_5(unittest.TestCase):
     """
     Nonjunction not near the junction (outer)
     """
@@ -162,7 +161,7 @@ class TestInfrastructureGrammarClass_5(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_6(unittest.TestCase):
+class TestGrammarClass_6(unittest.TestCase):
     """
     Nonjunction not near the junction (inner)
     """
@@ -186,7 +185,7 @@ class TestInfrastructureGrammarClass_6(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_7(unittest.TestCase):
+class TestGrammarClass_7(unittest.TestCase):
     """
     Nonjunction near the junction (x inner)
     """
@@ -210,7 +209,7 @@ class TestInfrastructureGrammarClass_7(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_8(unittest.TestCase):
+class TestGrammarClass_8(unittest.TestCase):
     """
     Nonjunction near the junction (x outer)
     """
@@ -234,7 +233,7 @@ class TestInfrastructureGrammarClass_8(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_9(unittest.TestCase):
+class TestGrammarClass_9(unittest.TestCase):
     """
     Nonjunction on top of junction
     """
@@ -258,7 +257,7 @@ class TestInfrastructureGrammarClass_9(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_10(unittest.TestCase):
+class TestGrammarClass_10(unittest.TestCase):
     """
     Check attributes copying
     """
@@ -295,7 +294,7 @@ class TestInfrastructureGrammarClass_10(unittest.TestCase):
         self.assertTrue(self.infrastructure.baked)
 
 
-class TestInfrastructureGrammarClass_11(unittest.TestCase):
+class TestGrammarClass_11(unittest.TestCase):
     """
     Grid 3x3
     """

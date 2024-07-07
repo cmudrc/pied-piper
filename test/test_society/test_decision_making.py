@@ -6,7 +6,7 @@ from piperabm.infrastructure.samples.infrastructure_1 import model as model_1
 from piperabm.infrastructure.samples.infrastructure_2 import model as model_2
 
 
-class TestActions_0(unittest.TestCase):
+class TestDecisionMakingClass_0(unittest.TestCase):
     """
     Normal run
     """
@@ -18,12 +18,11 @@ class TestActions_0(unittest.TestCase):
             socioeconomic_status=1,
             id=self.id_agent,
             home_id=self.id_home,
-            food=100,
-            water=100,
-            energy=100,
-            enough_food=100,
-            enough_water=100,
-            enough_energy=100,
+            resources={
+                'food': 100,
+                'water': 100,
+                'energy': 100,
+            },
             balance=100
         )
 
@@ -39,7 +38,7 @@ class TestActions_0(unittest.TestCase):
         self.assertEqual(len(queue.undones), 0) # queue undones
 
 
-class TestActions_1(unittest.TestCase):
+class TestDecisionMakingClass_1(unittest.TestCase):
     """
     Normal run
     """
@@ -52,12 +51,11 @@ class TestActions_1(unittest.TestCase):
             socioeconomic_status=1,
             id=self.id_agent,
             home_id=self.id_start,
-            food=100,
-            water=100,
-            energy=100,
-            enough_food=100,
-            enough_water=100,
-            enough_energy=100,
+            resources={
+                'food': 100,
+                'water': 100,
+                'energy': 100,
+            },
             balance=100
         )
 
@@ -73,7 +71,7 @@ class TestActions_1(unittest.TestCase):
         self.assertEqual(len(queue.undones), 4) # queue undones
 
 
-class TestActions_2(unittest.TestCase):
+class TestDecisionMakingClass_2(unittest.TestCase):
     """
     Normal run
     """
@@ -89,12 +87,11 @@ class TestActions_2(unittest.TestCase):
                 socioeconomic_status=1,
                 id=self.id_agents[i],
                 home_id=self.id_homes[i],
-                food=100,
-                water=100,
-                energy=100,
-                enough_food=100,
-                enough_water=100,
-                enough_energy=100,
+                resources={
+                    'food': 100,
+                    'water': 100,
+                    'energy': 100,
+                },
                 balance=100
             )
 

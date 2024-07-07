@@ -72,6 +72,6 @@ class Graphics:
 
 if __name__ == "__main__":
 
-    from piperabm.infrastructure.samples import model_2 as model
+    from piperabm.infrastructure.samples.infrastructure_2 import model
 
     model.infrastructure.show()

@@ -83,6 +83,6 @@ class Graphics:
 
 if __name__ == "__main__":
 
-    from piperabm.society.samples import model_2 as model
+    from piperabm.society.samples.society_2 import model
 
     model.society.show(relationships=['family'])

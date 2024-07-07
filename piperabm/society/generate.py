@@ -1,6 +1,4 @@
-#import random
 import numpy as np
-from copy import deepcopy
 
 from piperabm.tools.gini import gini
 
@@ -48,13 +46,13 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure.samples.infrastructure_0 import model
 
-
     model.set_seed(2)
     model.society.generate(
         gini_index=0.45,
         num=2,
         average_balance=1000
     )
+    model.set_seed(None)
     print(model.society.gini_index)
     print(model.society.serialize())
     

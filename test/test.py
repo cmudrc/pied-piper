@@ -5,20 +5,18 @@ class Test:
     """
     Run tests in batch
     """
-    def __init__(self, TEST_DIR='test'):
-        self.TEST_DIR = TEST_DIR
+    def __init__(self, directory='test'):
+        self.directory = directory
         self.loader = unittest.TestLoader()
         self.runner = unittest.TextTestRunner()
 
     def discover(self, target: str):
         suite = None
-        loader = self.loader
-        TEST_DIR = self.TEST_DIR
         if target == 'all':
-            suite = loader.discover(TEST_DIR)
+            suite = self.loader.discover(self.directory)
         else:
-            pattern = TEST_DIR + '_' + target + '.py'
-            suite = loader.discover(TEST_DIR, pattern)
+            pattern = self.directory + '_' + target + '.py'
+            suite = self.loader.discover(self.directory, pattern)
         return suite
     
     def run(self, target: str = 'all'):
@@ -28,4 +26,4 @@ class Test:
 
 if __name__ == "__main__":
     test = Test()
-    test.run(target='all')
+    test.run('all')

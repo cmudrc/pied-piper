@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.infrastructure.samples.infrastructure_1 import model
 
 
-class TestActions_0(unittest.TestCase):
+class TestActionsClass_0(unittest.TestCase):
     """
     Normal run
     """
@@ -17,12 +17,11 @@ class TestActions_0(unittest.TestCase):
             socioeconomic_status=1,
             id=self.id_agent,
             home_id=self.id_start,
-            food=100,
-            water=100,
-            energy=100,
-            enough_food=100,
-            enough_water=100,
-            enough_energy=100,
+            resources={
+                'food': 100,
+                'water': 100,
+                'energy': 100,
+            },
             balance=100
         )
         self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
@@ -50,7 +49,7 @@ class TestActions_0(unittest.TestCase):
         water_0 = self.model.society.get_resource(id=self.id_agent, name='water')
         self.assertEqual(water_0, 100) # resources water
         energy_0 = self.model.society.get_resource(id=self.id_agent, name='energy')
-        self.assertAlmostEqual(energy_0, 100) # resources energy
+        self.assertEqual(energy_0, 100) # resources energy
         self.assertEqual(self.model.infrastructure.get_usage_impact(ids=street), 0) # usage impact
         acc = self.model.society.accessibility(id=self.id_agent)
         acc_0 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
@@ -149,9 +148,9 @@ class TestActions_0(unittest.TestCase):
         self.assertLess(acc_4, acc_3) # accessibility
 
         #print(acc_0, acc_1, acc_2, acc_3, acc_4)
+        
 
-
-class TestActions_1(unittest.TestCase):
+class TestActionsClass_1(unittest.TestCase):
     """
     Agent dies along the way
     """
@@ -164,12 +163,16 @@ class TestActions_1(unittest.TestCase):
             socioeconomic_status=1,
             id=self.id_agent,
             home_id=self.id_start,
-            food=0.003,
-            water=0.003,
-            energy=0.003,
-            enough_food=100,
-            enough_water=100,
-            enough_energy=100,
+            resources={
+                'food': 0.003,
+                'water': 0.003,
+                'energy': 0.003,
+            },
+            enough_resources={
+                'food': 100,
+                'water': 100,
+                'energy': 100,
+            },
             balance=100
         )
         self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
@@ -240,6 +243,7 @@ class TestActions_1(unittest.TestCase):
         self.assertEqual(acc_dead, acc_dead_continued) # accessibility
 
         #print(acc_0, acc_dead, acc_dead_continued)
+
 
 if __name__ == "__main__":
     unittest.main()

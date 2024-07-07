@@ -83,7 +83,7 @@ class Move(Print):
         """
         last_track = self.tracks[-1]
         return last_track.id_end
-    
+
     @property
     def active_track(self):
         """
@@ -96,7 +96,7 @@ class Move(Print):
                 result = track
                 break
         return result
-    
+
     @property
     def done(self):
         """
@@ -109,7 +109,7 @@ class Move(Print):
                 result = False
                 break
         return result
-    
+
     @property
     def elapsed(self):
         """
@@ -119,7 +119,7 @@ class Move(Print):
         for track in self.tracks:
             result += track.elapsed
         return result
-    
+
     @property
     def remaining(self):
         """
@@ -129,7 +129,7 @@ class Move(Print):
         for track in self.tracks:
             result += track.remaining
         return result
-    
+
     def reverse(self):
         """
         Create a reversed move action
@@ -165,21 +165,21 @@ class Move(Print):
         """
         Serialize
         """
-        dictionary = {}
-        dictionary['type'] = self.type
+        data = {}
+        data['type'] = self.type
         tracks_serialized = []
         for track in self.tracks:
             track_serialized = track.serialize()
             tracks_serialized.append(track_serialized)
-        dictionary['tracks'] = tracks_serialized
-        dictionary['usage'] = self.usage
-        return dictionary
+        data['tracks'] = tracks_serialized
+        data['usage'] = self.usage
+        return data
 
-    def deserialize(self, dictionary: dict) -> None:
+    def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        tracks_serialized = dictionary['tracks']
+        tracks_serialized = data['tracks']
         for track_serialized in tracks_serialized:
             track = Track(
                 action=self,
@@ -188,12 +188,12 @@ class Move(Print):
             )
             track.preprocess(track_serialized)
             self.tracks.append(track)
-        self.usage = dictionary['usage']
+        self.usage = data['usage']
 
 
 if __name__ == "__main__":
 
-    from piperabm.society.samples import model_1 as model
+    from piperabm.society.samples.society_1 import model
 
     agent_id = model.society.agents[0]
     destination_id = 2

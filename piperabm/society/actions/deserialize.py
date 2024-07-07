@@ -14,7 +14,8 @@ def action_deserialize(dictionary, queue):
 
 if __name__ == "__main__":
 
-    from piperabm.society.samples import model_1 as model
+    from piperabm.society.samples.society_1 import model
+
 
     agent_id = model.society.agents[0]
     destination_id = 2

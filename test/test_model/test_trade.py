@@ -1,16 +1,17 @@
 import unittest
+from copy import deepcopy
 
-from piperabm.society.samples.society_0 import model as model_0
+from piperabm.society.samples.society_0 import model
 
 
 class TestTrade_0(unittest.TestCase):
 
     def setUp(self):
-        self.model = model_0
+        self.model = deepcopy(model)
         self.model.society.average_income = 0
         agents = self.model.society.agents
-        wealth_0 = self.model.society.wealth(agents[0])
-        wealth_1 = self.model.society.wealth(agents[1])
+        wealth_0 = self.model.society.wealth(id=agents[0])
+        wealth_1 = self.model.society.wealth(id=agents[1])
         if wealth_0 < wealth_1:
             self.id_low = agents[0] # Agent with lower food
             self.id_high = agents[1]  # Agent with higher food

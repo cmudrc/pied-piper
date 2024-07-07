@@ -38,6 +38,20 @@ class Infrastructure(
         self.heuristic_paths = HeuristicPaths()
 
     @property
+    def resource_names(self) -> list:
+        """
+        Alias
+        """
+        return self.model.resource_names
+    
+    @property
+    def prices(self) -> dict:
+        """
+        Alias
+        """
+        return self.model.prices
+
+    @property
     def baked(self) -> bool:
         """
         Check if the network is fully baked

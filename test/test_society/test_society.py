@@ -19,6 +19,7 @@ class TestSocietyClass_0(unittest.TestCase):
             home_id=self.home_id,
             id=1
         )
+        #print(self.model.society.stat) ######
         self.assertEqual(self.model.society.stat['node']['total'], 1)
         self.assertEqual(self.model.society.stat['edge']['family'], 0)
         self.assertEqual(self.model.society.stat['edge']['friend'], 0)

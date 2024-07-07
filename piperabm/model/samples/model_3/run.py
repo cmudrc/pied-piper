@@ -1,13 +1,15 @@
 import os
+from copy import deepcopy
 
 import piperabm as pa
-from piperabm.infrastructure.samples.infrastructure_3 import model
+from piperabm.infrastructure.samples.infrastructure_3 import model as model_3
 
 
 path = os.path.dirname(os.path.realpath(__file__))
 name = 'model'
 
 # Setup
+model = deepcopy(model_3)
 model.path = path
 model.name = name
 model.society.neighbor_radius = 270

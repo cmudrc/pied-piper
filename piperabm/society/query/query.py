@@ -38,6 +38,17 @@ class Query(Add, Get, Set):
         All resources available in a node
         """
         agents = self.agents_in(id=node_id)
+        result = {}
+        for name in self.resource_names:
+            result[name] = 0
+        for agent_id in agents:
+            for name in self.resource_names:
+                result[name] += self.get_resource(id=agent_id, name=name)
+        if is_market is True:
+            for name in self.resource_names:
+                result[name] += self.infrastructure.get_resource(id=node_id, name=name)
+        return result
+        '''
         food = 0
         water = 0
         energy = 0
@@ -50,7 +61,8 @@ class Query(Add, Get, Set):
             water += self.infrastructure.get_resource(id=node_id, name='water')
             energy += self.infrastructure.get_resource(id=node_id, name='energy')
         return food, water, energy
-
+        '''
+        
     def wealth(self, id: int) -> float:
         """
         Wealth of an agent

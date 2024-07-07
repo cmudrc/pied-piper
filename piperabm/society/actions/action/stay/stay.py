@@ -37,27 +37,27 @@ class Stay(Print):
         """
         Serialize
         """
-        dictionary = {}
-        dictionary['type'] = self.type
-        dictionary['total_duration'] = self.total_duration
-        dictionary['remaining'] = self.remaining
-        dictionary['elapsed'] = self.elapsed
-        dictionary['done'] = self.done
-        return dictionary
+        data = {}
+        data['type'] = self.type
+        data['total_duration'] = self.total_duration
+        data['remaining'] = self.remaining
+        data['elapsed'] = self.elapsed
+        data['done'] = self.done
+        return data
 
-    def deserialize(self, dictionary: dict) -> None:
+    def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        self.total_duration = dictionary['total_duration']
-        self.elapsed = dictionary['elapsed']
-        self.remaining = dictionary['remaining']
-        self.done = dictionary['done'] 
+        self.total_duration = data['total_duration']
+        self.elapsed = data['elapsed']
+        self.remaining = data['remaining']
+        self.done = data['done'] 
 
 
 if __name__ == '__main__':
 
-    from piperabm.society.samples import model_1 as model
+    from piperabm.society.samples.society_1 import model
     from piperabm.society.actions.action import Move
 
     agent_id = 1

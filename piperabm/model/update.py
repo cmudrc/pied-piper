@@ -87,7 +87,7 @@ class Update(Trade):
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)
             if len(agents) >= 1:
-                self.trade(agents=agents, market=[market_id])
+                self.trade(agents=agents, markets=[market_id])
         for home_id in self.infrastructure.homes:  # Agents in home
             agents = self.society.agents_in(id=home_id)
             if len(agents) >= 2:

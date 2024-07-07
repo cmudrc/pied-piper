@@ -109,23 +109,23 @@ class ActionQueue(Print):
         """
         Serialize
         """
-        dictionary = {}
+        data = {}
         library_serialized = []
         for action in self.library:
             action_serialized = action.serialize()
             library_serialized.append(action_serialized)
-        dictionary['library'] = library_serialized
-        dictionary['agent_id'] = self.agent_id
-        dictionary['type'] = self.type
-        return dictionary
+        data['library'] = library_serialized
+        data['agent_id'] = self.agent_id
+        data['type'] = self.type
+        return data
     
-    def deserialize(self, dictionary: dict) -> None:
+    def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        if dictionary['type'] != self.type:
+        if data['type'] != self.type:
             raise ValueError
-        library_serialized = dictionary['library']
+        library_serialized = data['library']
         for action_serialized in library_serialized:
             if 'type' in action_serialized:
                 if action_serialized['type'] == 'move':
@@ -138,7 +138,7 @@ class ActionQueue(Print):
 
 if __name__ == "__main__":
 
-    from piperabm.society.samples import model_1 as model
+    from piperabm.society.samples.society_1 import model
 
     agent_id = model.society.agents[0]
     destination_id = 2

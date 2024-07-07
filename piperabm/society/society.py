@@ -39,17 +39,27 @@ class Society(
 
     @property
     def infrastructure(self):
-        result = None
+        """
+        Alias
+        """
         if self.model is not None:
             result = self.model.infrastructure
+        else:
+            result = None
         return result
     
     @property
-    def resource_names(self):
+    def resource_names(self) -> list:
+        """
+        Alias
+        """
         return self.model.resource_names
     
     @property
-    def prices(self):
+    def prices(self) -> dict:
+        """
+        Alias
+        """
         return self.model.prices
 
     @property

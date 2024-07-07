@@ -70,7 +70,6 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure import Infrastructure
 
-
     infrastructure = Infrastructure()
     infrastructure.generate(
         homes_num=10,

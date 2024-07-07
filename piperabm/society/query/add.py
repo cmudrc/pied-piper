@@ -1,5 +1,4 @@
 import numpy as np
-import random
 from copy import deepcopy
 
 from piperabm.society.actions.action_queue import ActionQueue
@@ -41,11 +40,7 @@ class Add:
             'water': 10,
             'energy': 10,
         },
-        enough_resources: dict = {
-            'food': None,
-            'water': None,
-            'energy': None,
-        },
+        enough_resources: dict = None,
         balance: float = 0
     ):
         """
@@ -59,16 +54,20 @@ class Add:
         self.actions[id].society = self # Binding
         if home_id is None:
             homes_id = self.infrastructure.homes
-            home_id = random.choice(homes_id)
+            home_id = int(np.random.choice(homes_id))
         pos = self.infrastructure.get_pos(id=home_id)
         resource_kwargs = {}
-        for name in self.resource_names:
-            if enough_resources[name] is None:
-                enough_resources[name] = deepcopy(resources[name])
-            resource_kwargs[name] = resources[name]
-            resource_kwargs['enough_'+name] = enough_resources[name]
-            resource_kwargs['idle_'+name+'_rate'] = idle_resource_rates[name]
-            resource_kwargs['transportation_'+name+'_rate'] = transportation_resource_rates[name]
+        if enough_resources is None:
+            enough_resources = {}
+            for resource_name in self.resource_names:
+                enough_resources[resource_name] = None
+        for resource_name in self.resource_names:
+            if enough_resources[resource_name] is None:
+                enough_resources[resource_name] = deepcopy(resources[resource_name])
+            resource_kwargs[resource_name] = resources[resource_name]
+            resource_kwargs['enough_'+resource_name] = enough_resources[resource_name]
+            resource_kwargs['idle_'+resource_name+'_rate'] = idle_resource_rates[resource_name]
+            resource_kwargs['transportation_'+resource_name+'_rate'] = transportation_resource_rates[resource_name]
 
         self.G.add_node(
             id,

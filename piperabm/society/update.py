@@ -7,12 +7,10 @@ class Update:
         """
         Update the network
         """
-        resource_names = ['food', 'water', 'energy']
-
         # Idle resource consumption & income
         for id in self.alives:
             # Resources
-            for name in resource_names:
+            for name in self.resource_names:
                 resource_value = self.get_resource(id=id, name=name)
                 resource_consumption_rate = self.get_idle_fuel_rate(id=id, name=name)
                 new_resource_value = resource_value - (resource_consumption_rate * duration)

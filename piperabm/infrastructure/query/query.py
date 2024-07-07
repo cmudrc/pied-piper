@@ -128,7 +128,7 @@ class Query(Add, Get, Set):
         Remove edge
         """
         if report is True:
-            print(f">>> {self.edge_type(ids=ids)} edge at {self.get_pos(ids[0])} - {self.get_pos(ids[1])} removed.")
+            print(f">>> {self.get_edge_type(ids=ids)} edge at {self.get_pos(ids[0])} - {self.get_pos(ids[1])} removed.")
         self.G.remove_edge(*ids)
 
     def remove_node(self, id: int, report: bool = False):
@@ -136,7 +136,7 @@ class Query(Add, Get, Set):
         Remove node
         """
         if report is True:
-            print(f">>> {self.node_type(id=id)} node at position {self.get_pos(id)} removed.")
+            print(f">>> {self.get_node_type(id=id)} node at position {self.get_pos(id)} removed.")
         self.G.remove_node(id)
     
     def nodes_closer_than(self, id: int, search_radius: float = 0, nodes: list = None, include_self: bool = False):

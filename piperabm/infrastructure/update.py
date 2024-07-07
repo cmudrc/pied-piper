@@ -26,3 +26,11 @@ class Update:
             )
             self.set_edge_attribute(ids=ids, attribute='adjusted_length', value=adjusted_length)
         '''
+
+
+if __name__ == "__main__":
+
+    from piperabm.society.samples.society_1 import model
+
+    model.update(10)
+    model.show()

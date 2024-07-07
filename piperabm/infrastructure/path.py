@@ -28,7 +28,7 @@ class Path:
 
 if __name__ == "__main__":
 
-    from piperabm.infrastructure.samples import model_1 as model
+    from piperabm.infrastructure.samples.infrastructure_1 import model
 
     path = model.infrastructure.path(id_start=1, id_end=2)
     print(path)
