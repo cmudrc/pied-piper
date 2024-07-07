@@ -65,7 +65,7 @@ class Query(Add, Get, Set):
             data['adjusted_length'] = self.calculate_adjusted_length(
                 length=data['length'],
                 usage_impact=data['usage_impact'],
-                weather_impact=data['weather_impact']
+                climate_impact=data['climate_impact']
             )
             self.G.add_edge(
                 new_edge_ids[0],

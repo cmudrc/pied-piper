@@ -3,30 +3,29 @@ class Degradation:
     Manage edge dergradation methods
     """
 
-    def adjustment_factor(self, usage_impact: float, weather_impact: float) -> float:
+    def adjustment_factor(self, usage_impact: float, climate_impact: float) -> float:
         """
         Calculate adjustment factor
         """
-        return 1 + (self.coeff_usage * usage_impact) + (self.coeff_weather * weather_impact)
+        return 1 + (self.coeff_usage * usage_impact) + (self.coeff_weather * climate_impact)
 
     def degradation(self, ids: list) -> float:
         """
         Calculate current degradation (adjustment factor) for an edge
         """
-        usage_impact = self.get_edge_attribute(ids=ids, attribute='usage_impact')
-        weather_impact = self.get_edge_attribute(ids=ids, attribute='weather_impact')
-        return self.adjustment_factor(
-            usage_impact=usage_impact,
-            weather_impact=weather_impact
+        adjustment_factor = self.adjustment_factor(
+            usage_impact=self.get_usage_impact(ids=ids),
+            climate_impact=self.get_climate_impact(ids=ids)
         )
+        return adjustment_factor - 1
 
-    def calculate_adjusted_length(self, length: float, usage_impact: float, weather_impact: float) -> float:
+    def calculate_adjusted_length(self, length: float, usage_impact: float, climate_impact: float) -> float:
         """
         Calculate adjusted length
         """
         return length * self.adjustment_factor(
                     usage_impact=usage_impact,
-                    weather_impact=weather_impact
+                    climate_impact=climate_impact
                 )
 
     def update_adjusted_length(self, ids: list):

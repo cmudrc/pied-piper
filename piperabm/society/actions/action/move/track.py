@@ -219,7 +219,3 @@ class Track(Print):
         dictionary['done'] = self.done
         dictionary['type'] = self.type
         return dictionary
-
-
-if __name__ == '__main__':
-    pass

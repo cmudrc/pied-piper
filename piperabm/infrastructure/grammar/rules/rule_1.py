@@ -53,7 +53,7 @@ class Rule1:
         data_1['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
             length=data_1['length'],
             usage_impact=data_1['usage_impact'],
-            weather_impact=data_1['weather_impact']
+            climate_impact=data_1['climate_impact']
         )
         self.infrastructure.G.add_edge(
             node_id,
@@ -68,7 +68,7 @@ class Rule1:
         data_2['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
             length=data_2['length'],
             usage_impact=data_2['usage_impact'],
-            weather_impact=data_2['weather_impact']
+            climate_impact=data_2['climate_impact']
         )
         self.infrastructure.G.add_edge(
             node_id,

@@ -118,7 +118,7 @@ class Add:
         pos_2: list,
         name: str = '',
         usage_impact: float = 0,
-        weather_impact: float = 0,
+        climate_impact: float = 0,
         report: bool = False
     ):
         """
@@ -131,7 +131,7 @@ class Add:
         adjusted_length = self.calculate_adjusted_length(
             length=length,
             usage_impact=usage_impact,
-            weather_impact=weather_impact
+            climate_impact=climate_impact
         )
         self.G.add_edge(
             id_1,
@@ -140,7 +140,7 @@ class Add:
             length=length,
             adjusted_length=adjusted_length,
             usage_impact=usage_impact,
-            weather_impact=weather_impact,
+            climate_impact=climate_impact,
             type=type,
         )
         self.baked_streets = False
@@ -155,7 +155,7 @@ class Add:
         id_2: list,
         name: str = '',
         usage_impact: float = 0,
-        weather_impact: float = 0,
+        climate_impact: float = 0,
         report: bool = False
     ):
         """
@@ -166,7 +166,7 @@ class Add:
         adjusted_length = self.calculate_adjusted_length(
             length=length,
             usage_impact=usage_impact,
-            weather_impact=weather_impact
+            climate_impact=climate_impact
         )
         self.G.add_edge(
             id_1,
@@ -175,7 +175,7 @@ class Add:
             length=length,
             adjusted_length=adjusted_length,
             usage_impact=usage_impact,
-            weather_impact=weather_impact,
+            climate_impact=climate_impact,
             type=type
         )
         #self.baked_streets = False

@@ -55,7 +55,7 @@ class Stay(Print):
         self.done = data['done'] 
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     from piperabm.society.samples.society_1 import model
     from piperabm.society.actions.action import Move

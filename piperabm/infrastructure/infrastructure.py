@@ -28,11 +28,15 @@ class Infrastructure(
 
     type = 'infrastructure'
 
-    def __init__(self):
+    def __init__(
+            self,
+            coeff_usage: float = 0,
+            coeff_weather: float = 0
+        ):
         self.G = nx.Graph()
         self.model = None # Binding
-        self.coeff_usage = 0
-        self.coeff_weather = 0
+        self.coeff_usage = coeff_usage
+        self.coeff_weather = coeff_weather
         self.baked_streets = True
         self.baked_neighborhood = True
         self.heuristic_paths = HeuristicPaths()

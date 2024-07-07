@@ -77,12 +77,26 @@ class Update(Trade):
         if save is True:
             previous_serialized = deepcopy(self.serialize())
 
-        # Update
+        # General
         self.step += 1
         self.time += duration
-        self.infrastructure.update(duration)
-        self.society.update(duration)
 
+        # Agents movement
+        self.society.update(duration)
+        self.infrastructure.update(duration)
+        '''
+        # Climate impact
+        rate = 0.00001
+        for ids in self.infrastructure.streets:
+            # Update weather impact
+            weather_impact = self.infrastructure.get_edge_attribute(ids=ids, attribute='weather_impact')
+            weather_impact += rate * duration
+            self.infrastructure.set_edge_attribute(ids=ids, attribute='weather_impact', value=weather_impact)
+
+        # Infrastructure degradation
+        for ids in self.infrastructure.streets:
+            self.infrastructure.update_adjusted_length(ids=ids)
+        '''
         # Trade
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)

@@ -10,7 +10,7 @@ class TestDecisionMakingClass_0(unittest.TestCase):
     """
     Normal run
     """
-    def setUp(self):
+    def setUp(self) -> None:
         self.id_agent = 0
         self.id_home = 0
         self.model = deepcopy(model_0)
@@ -42,7 +42,7 @@ class TestDecisionMakingClass_1(unittest.TestCase):
     """
     Normal run
     """
-    def setUp(self):
+    def setUp(self) -> None:
         self.id_agent = 0
         self.id_start = 1
         self.id_end = 2
@@ -75,7 +75,7 @@ class TestDecisionMakingClass_2(unittest.TestCase):
     """
     Normal run
     """
-    def setUp(self):
+    def setUp(self) -> None:
         self.id_agents = [11, 12, 13]
         self.id_homes = [1, 2, 3]
         self.id_start = 1

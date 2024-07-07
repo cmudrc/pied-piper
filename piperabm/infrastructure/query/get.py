@@ -44,15 +44,21 @@ class Get(NxGet):
     
     def get_adjusted_length(self, ids: list) -> float:
         """
-        Get edges adjusted_length
+        Get edges *adjusted_length*
         """
         return self.get_edge_attribute(ids=ids, attribute='adjusted_length')
     
     def get_usage_impact(self, ids: list) -> float:
         """
-        Get edges usage_impact
+        Get edges *usage_impact*
         """
         return self.get_edge_attribute(ids=ids, attribute='usage_impact')
+    
+    def get_climate_impact(self, ids: list) -> float:
+        """
+        Get edges *climate_impact*
+        """
+        return self.get_edge_attribute(ids=ids, attribute='climate_impact')
     
     def get_resource(self, id: int, name: str) -> float:
         """

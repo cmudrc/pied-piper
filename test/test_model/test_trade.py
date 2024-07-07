@@ -6,7 +6,7 @@ from piperabm.society.samples.society_0 import model
 
 class TestTrade_0(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.model = deepcopy(model)
         self.model.society.average_income = 0
         agents = self.model.society.agents

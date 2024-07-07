@@ -8,7 +8,7 @@ class TestActionsClass_0(unittest.TestCase):
     """
     Normal run
     """
-    def setUp(self):
+    def setUp(self) -> None:
         self.id_agent = 0
         self.id_start = 1
         self.id_end = 2
@@ -154,7 +154,7 @@ class TestActionsClass_1(unittest.TestCase):
     """
     Agent dies along the way
     """
-    def setUp(self):
+    def setUp(self) -> None:
         self.id_agent = 0
         self.id_start = 1
         self.id_end = 2

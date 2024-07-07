@@ -9,7 +9,7 @@ from piperabm.infrastructure.samples.infrastructure_2 import model as model_2
 
 class TestSocietyClass_0(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.model = deepcopy(model_0)
         self.home_id = self.model.infrastructure.homes[0]
 
@@ -45,7 +45,7 @@ class TestSocietyClass_0(unittest.TestCase):
 
 class TestSocietyClass_2(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.model = deepcopy(model_2)
         homes = self.model.infrastructure.homes
         self.model.society.neighbor_radius = 270

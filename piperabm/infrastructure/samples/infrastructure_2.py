@@ -7,6 +7,8 @@ import piperabm as pa
 
 model = pa.Model()
 model.set_seed(2)
+model.infrastructure.coeff_usage = 1
+model.infrastructure.coeff_weather = 1
 model.infrastructure.add_market(
     pos=[40, -40],
     name='market',

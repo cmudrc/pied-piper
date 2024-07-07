@@ -11,22 +11,22 @@ class Update:
         rate = 0.00001
         for ids in self.streets:
             # Update weather impact
-            weather_impact = self.get_edge_attribute(ids=ids, attribute='weather_impact')
-            weather_impact += rate * duration
-            self.set_edge_attribute(ids=ids, attribute='weather_impact', value=weather_impact)
+            climate_impact = self.get_climate_impact(ids=ids)
+            climate_impact += rate * duration
+            self.set_climate_impact(ids=ids, value=climate_impact)
             # Update corresponding edge
             self.update_adjusted_length(ids=ids)
-        '''
+    '''
+    def update(self, duration: float):
         # Update adjusted length (streets only)
         for ids in self.streets:
             adjusted_length = self.calculate_adjusted_length(
                 length=self.get_edge_attribute(ids=ids, attribute='length'),
                 usage_impact=self.get_edge_attribute(ids=ids, attribute='usage_impact'),
-                weather_impact=self.get_edge_attribute(ids=ids, attribute='weather_impact')
+                climate_impact=self.get_edge_attribute(ids=ids, attribute='climate_impact')
             )
             self.set_edge_attribute(ids=ids, attribute='adjusted_length', value=adjusted_length)
-        '''
-
+    '''
 
 if __name__ == "__main__":
 
