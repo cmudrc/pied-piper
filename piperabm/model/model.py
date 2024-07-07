@@ -44,11 +44,17 @@ class Model(
         self.set_seed(seed=seed)
 
     def set_seed(self, seed: int = None):
+        """
+        Set random generator seed for result reproducability
+        """
         self.seed = seed
         np.random.seed(seed)
 
     @property
     def resource_names(self):
+        """
+        Return name of resources in the model
+        """
         return list(self.prices.keys())
 
     def bake(

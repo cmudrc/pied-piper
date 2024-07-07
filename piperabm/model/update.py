@@ -6,6 +6,9 @@ from piperabm.tools.delta import Delta
 
 
 class Update(Trade):
+    """
+    Manage running simulation
+    """
 
     def run(
             self,
@@ -186,22 +189,3 @@ class Update(Trade):
             )
             self.append_delta(delta)
             self.save(state='final')
-
-    def apply_delta(self, delta):
-        """
-        Update model by applying a delta
-        """
-        self.deserialize(
-            Delta.apply(
-                old=self.serialize(),
-                delta=delta
-            )
-        )
-
-    def apply_deltas(self):
-        """
-        Update model by applying all deltas
-        """
-        deltas = self.load_deltas()
-        for delta in deltas:
-            self.apply_delta(delta)

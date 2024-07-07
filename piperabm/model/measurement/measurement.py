@@ -99,15 +99,15 @@ class Measurement:
             for id in model.society.agents:
                 # Accessibility
                 self.add_accessibility(
-                    id,
-                    value=model.society.accessibility(id)
+                    id=id,
+                    value=model.society.accessibility(id=id)
                 )
                 # Travel distance
-                previous_pos = previous.society.get_pos(id)
-                current_pos = model.society.get_pos(id)
+                previous_pos = previous.society.get_pos(id=id)
+                current_pos = model.society.get_pos(id=id)
                 travel = ds.point_to_point(
-                    previous_pos,
-                    current_pos
+                    point_1=previous_pos,
+                    point_2=current_pos
                 )
                 total_travel += travel
             self.add_travel_distance(value=total_travel)

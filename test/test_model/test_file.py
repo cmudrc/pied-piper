@@ -37,20 +37,31 @@ class TestFileClass(unittest.TestCase):
     def test_file(self):
         path = os.path.dirname(os.path.realpath(__file__))
         self.model.path = path
-        model_initial = deepcopy(self.model)
+        model_initial = deepcopy(self.model) # Copy of initial state
 
-        self.model.run(n=1, report=False, save=True, step_size=50) # Run
+        self.model.run(n=2, report=False, save=True, step_size=25) # Run
 
         self.assertNotEqual(model_initial.serialize(), self.model.serialize()) # Model changed
+        
+        # Load initial state from file
         new_model = Model(path=path)
         new_model.load_initial()
         self.assertEqual(new_model.serialize(), model_initial.serialize()) # State saving
 
+        # Build final state from deltas
         deltas = new_model.load_deltas()
+        self.assertEqual(len(deltas), 2)
         new_model.apply_delta(deltas[0])
+        new_model.apply_delta(deltas[1])
         self.assertEqual(new_model.serialize(), self.model.serialize()) # Detla
 
-        model_initial.load_final()
+        # Load final state from file
+        final_model = Model(path=path)
+        final_model.load_final()
+        self.assertEqual(final_model.serialize(), self.model.serialize()) # Final
+        
+        # Push model forward until reaching final state
+        model_initial.push(steps=2)
         self.assertEqual(model_initial.serialize(), self.model.serialize()) # Final
 
         filenames = [

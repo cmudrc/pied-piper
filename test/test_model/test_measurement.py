@@ -39,15 +39,27 @@ class TestMeasurementClass(unittest.TestCase):
         self.model.path = path
 
         self.model.run(n=10, report=False, save=True, step_size=40) # Run
+        
         measurement = Measurement(path=path)
+        measurement.measure(report=False)
+
         deltas = self.model.load_deltas()
-        #print(len(deltas))
-        #print(len(measurement.accessibility.values))
+        len_deltas = len(deltas)
+        len_times = len(measurement.times)
+        self.assertEqual(len_deltas + 1, len_times)
+        len_travel_distances = len(measurement.travel_distance.values)
+        self.assertEqual(len_deltas, len_travel_distances)
+        len_accessibilities_0 = len(measurement.accessibility.values[0])
+        self.assertEqual(len_deltas, len_accessibilities_0)
+        measurement.accessibility.show()
+        #print(measurement.accessibility.average())
+        
 
         filenames = [
             'model_final',
             'model_initial',
             'model_simulation',
+            'model_measurement',
         ]
         for filename in filenames:
             file = JsonFile(path=path, filename=filename)
