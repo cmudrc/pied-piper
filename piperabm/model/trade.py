@@ -2,12 +2,15 @@ from piperabm.economy.trade import solver
 
 
 class Trade:
+    """
+    Manage trade between players when updating
+    """
 
     def trade(self, agents: list = [], markets: list = []):
         """
         Trade
         """
-        names = ['food', 'water', 'energy']
+        names = self.resource_names
         players = []
 
         # Load agent players into solver
@@ -15,14 +18,14 @@ class Trade:
             resources = {}
             enough_resources = {}
             for name in names:
-                resources[name] = self.get_resource(id=agent, name=name)
-                enough_resources[name] = self.get_enough_resource(id=agent, name=name)
+                resources[name] = self.society.get_resource(id=agent, name=name)
+                enough_resources[name] = self.society.get_enough_resource(id=agent, name=name)
             player = {
                 'id': agent,
                 'type': 'agent',
                 'resources': resources,
                 'enough_resources': enough_resources,
-                'balance': self.get_balance(id=agent),
+                'balance': self.society.get_balance(id=agent),
             }
             players.append(player)
 
@@ -42,26 +45,20 @@ class Trade:
             }
             players.append(player)
 
-        prices = {
-            'food': self.food_price,
-            'water': self.water_price,
-            'energy': self.energy_price
-        }
-
         # Solve
-        players = solver(players=players, prices=prices)
+        players = solver(players=players, prices=self.prices)
 
         # Update values
         for player in players:
             # Update agent players
             if player['type'] == 'agent':
                 for name in names:
-                    self.set_resource(
+                    self.society.set_resource(
                         id=player['id'],
                         name=name,
                         value=player['resources'][name]
                     )
-                self.set_balance(
+                self.society.set_balance(
                     id=player['id'],
                     value=player['balance']
                 )

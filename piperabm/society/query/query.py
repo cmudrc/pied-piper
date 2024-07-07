@@ -27,10 +27,11 @@ class Query(Add, Get, Set):
         """
         Monetary value of resources that an agent possesses
         """
-        food_value = self.get_resource(id=id, name='food') * self.food_price
-        water_value = self.get_resource(id=id, name='water') * self.water_price
-        energy_value = self.get_resource(id=id, name='energy') * self.energy_price
-        return food_value + water_value + energy_value
+        values = []
+        for name in self.resource_names:
+            value = self.get_resource(id=id, name=name) * self.prices[name]
+            values.append(value)
+        return sum(values)
     
     def resources_in(self, node_id, is_market: bool):
         """

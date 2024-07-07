@@ -24,6 +24,13 @@ class Set(NxSet):
             self.set_node_attribute(id=id, attribute='alive', value=False)
         self.set_node_attribute(id=id, attribute=name, value=value)
 
+    def set_resources(self, id: int, values: dict) -> None:
+        """
+        Set agent resources values
+        """
+        for name in values:
+            self.set_resource(id=id, name=name, value=values[name])
+
     def set_current_node(self, id: str, value: int) -> None:
         """
         Set agent *current_node* value

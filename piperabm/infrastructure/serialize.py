@@ -10,30 +10,30 @@ class Serialize:
         """
         Serialize
         """
-        dictionary = {}
-        dictionary['G'] = nx_serialize(self.G)
-        dictionary['coeff_usage'] = self.coeff_usage
-        dictionary['coeff_weather'] = self.coeff_weather
-        dictionary['baked_streets'] = self.baked_streets
-        dictionary['baked_neighborhood'] = self.baked_neighborhood
-        dictionary['heuristic_paths'] = self.heuristic_paths.serialize()
-        dictionary['type'] = self.type
-        return dictionary
+        data = {}
+        data['G'] = nx_serialize(self.G)
+        data['coeff_usage'] = self.coeff_usage
+        data['coeff_weather'] = self.coeff_weather
+        data['baked_streets'] = self.baked_streets
+        data['baked_neighborhood'] = self.baked_neighborhood
+        data['heuristic_paths'] = self.heuristic_paths.serialize()
+        data['type'] = self.type
+        return data
     
-    def deserialize(self, dictionary):
+    def deserialize(self, data):
         """
         Deserialize
         """
-        self.G = nx_deserialize(dictionary['G'])
-        self.coeff_usage = dictionary['coeff_usage']
-        self.coeff_weather = dictionary['coeff_weather']
-        self.baked_streets = dictionary['baked_streets']
-        self.baked_neighborhood = dictionary['baked_neighborhood']
-        self.heuristic_paths.deserialize(dictionary['heuristic_paths'])
+        self.G = nx_deserialize(data['G'])
+        self.coeff_usage = data['coeff_usage']
+        self.coeff_weather = data['coeff_weather']
+        self.baked_streets = data['baked_streets']
+        self.baked_neighborhood = data['baked_neighborhood']
+        self.heuristic_paths.deserialize(data['heuristic_paths'])
 
 
 if __name__ == "__main__":
 
-    from piperabm.infrastructure.samples import model_0 as model
+    from piperabm.infrastructure.samples.infrastructure_0 import model
 
     print(model.infrastructure.serialize())

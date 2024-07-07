@@ -42,6 +42,15 @@ class Get(NxGet):
         """
         return self.get_node_attribute(id=id, attribute=name)
     
+    def get_resources(self, id: int) -> dict:
+        """
+        Get agent resources value
+        """
+        result = {}
+        for name in self.resource_names:
+            result[name] = self.get_resource(id=id, attribute=name)
+        return result
+    
     def get_enough_resource(self, id: int, name: str) -> float:
         """
         Get agent *enough_resource* value

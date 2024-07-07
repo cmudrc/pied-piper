@@ -1,10 +1,11 @@
 from copy import deepcopy
 
+from piperabm.model.trade import Trade
 from piperabm.tools.json_file import JsonFile
 from piperabm.tools.delta import Delta
 
 
-class Update:
+class Update(Trade):
 
     def run(
             self,
@@ -81,6 +82,23 @@ class Update:
         self.time += duration
         self.infrastructure.update(duration)
         self.society.update(duration)
+
+        # Trade
+        for market_id in self.infrastructure.markets:  # Agents in market
+            agents = self.society.agents_in(id=market_id)
+            if len(agents) >= 1:
+                self.trade(agents=agents, market=[market_id])
+        for home_id in self.infrastructure.homes:  # Agents in home
+            agents = self.society.agents_in(id=home_id)
+            if len(agents) >= 2:
+                self.trade(agents=agents)
+        '''
+        markets = self.infrastructure.markets
+        for home_id in self.infrastructure.homes:  # Agents in home
+            agents = self.society.agents_in(id=home_id)
+            if len(agents) >= 2:
+                self.trade(agents=agents)
+        '''
 
         # Charge Markets (resource influx)
         '''

@@ -16,6 +16,7 @@ class Serialize:
         data['infrastructure'] = self.infrastructure.serialize()
         data['society'] = self.society.serialize()
         data['name'] = self.name
+        data['prices'] = self.prices
         data['seed'] = self.seed
         data['state'] = self.serialize_state()
         data['type'] = self.type
@@ -30,11 +31,9 @@ class Serialize:
         self.infrastructure.deserialize(data['infrastructure'])
         self.society.deserialize(data['society'])
         self.set_seed(data['seed'])
-        #self.seed = data['seed']
-        #np.random.seed(self.seed)
         self.deserialize_state(state=data['state'])
-        #np.random.set_state(data['state'])
         self.name = data['name']
+        self.prices = data['prices']
 
     def serialize_state(self):
         """

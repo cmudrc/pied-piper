@@ -36,12 +36,16 @@ class Add:
         id: int = None,
         name: str = '',
         socioeconomic_status: float = 1,
-        food: float = 10,
-        water: float = 10,
-        energy: float = 10,
-        enough_food: float = None,
-        enough_water: float = None,
-        enough_energy: float = None,
+        resources: dict = {
+            'food': 10,
+            'water': 10,
+            'energy': 10,
+        },
+        enough_resources: dict = {
+            'food': None,
+            'water': None,
+            'energy': None,
+        },
         balance: float = 0
     ):
         """
@@ -57,9 +61,15 @@ class Add:
             homes_id = self.infrastructure.homes
             home_id = random.choice(homes_id)
         pos = self.infrastructure.get_pos(id=home_id)
-        if enough_food is None: enough_food = deepcopy(food)
-        if enough_water is None: enough_water = deepcopy(water)
-        if enough_energy is None: enough_energy = deepcopy(energy)
+        resource_kwargs = {}
+        for name in self.resource_names:
+            if enough_resources[name] is None:
+                enough_resources[name] = deepcopy(resources[name])
+            resource_kwargs[name] = resources[name]
+            resource_kwargs['enough_'+name] = enough_resources[name]
+            resource_kwargs['idle_'+name+'_rate'] = idle_resource_rates[name]
+            resource_kwargs['transportation_'+name+'_rate'] = transportation_resource_rates[name]
+
         self.G.add_node(
             id,
             name=name,
@@ -69,22 +79,11 @@ class Add:
             current_node=deepcopy(home_id),
             x=pos[0],
             y=pos[1],
-            food=food,
-            water=water,
-            energy=energy,
-            idle_food_rate=idle_food_rate,
-            idle_water_rate=idle_water_rate,
-            idle_energy_rate=idle_energy_rate,
-            enough_food=enough_food,
-            enough_water=enough_water,
-            enough_energy=enough_energy,
             balance=balance,
             alive=True,
             speed=speed,
-            transportation_food_rate=transportation_food_rate,
-            transportation_water_rate=transportation_water_rate,
-            transportation_energy_rate=transportation_energy_rate,
-            max_time_outside=max_time_outside
+            max_time_outside=max_time_outside,
+            **resource_kwargs
         )
         # Add family relationship
         family_members = self.agents_from(home_id=home_id)
@@ -103,7 +102,6 @@ class Add:
             for neighbor in neighbors:
                 self.add_neighbor(id_1=id, id_2=neighbor)
         
-
     def add_family(
         self,
         id_1: int,
@@ -158,3 +156,11 @@ class Add:
                 id_2,
                 type=type,
             )
+
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure.samples.infrastructure_0 import model
+
+    model.society.add_agent()
+    print(model.society)
