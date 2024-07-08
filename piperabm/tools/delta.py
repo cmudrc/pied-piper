@@ -30,6 +30,8 @@ class Delta:
                     delta = DeltaDict.create(old, new)
                 elif isinstance(old, list):
                     delta = DeltaList.create(old, new)
+                elif isinstance(old, tuple):
+                    delta = DeltaList.create(old, new)
                 elif old is None:
                     delta = new
                 else:
@@ -62,6 +64,8 @@ class Delta:
                 elif isinstance(old, dict):
                     new = DeltaDict.apply(old, delta)
                 elif isinstance(old, list):
+                    new = DeltaList.apply(old, delta)
+                elif isinstance(old, tuple):
                     new = DeltaList.apply(old, delta)
                 elif old is None:
                     new = deepcopy(delta)
