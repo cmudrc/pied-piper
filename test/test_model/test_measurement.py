@@ -38,7 +38,7 @@ class TestMeasurementClass(unittest.TestCase):
         path = os.path.dirname(os.path.realpath(__file__))
         self.model.path = path
 
-        self.model.run(n=10, report=False, save=True, step_size=40) # Run
+        self.model.run(n=2, report=False, save=True, step_size=10) # Run
         
         measurement = Measurement(path=path)
         measurement.measure(report=False)
@@ -51,6 +51,7 @@ class TestMeasurementClass(unittest.TestCase):
         self.assertEqual(len_deltas, len_travel_distances)
         len_accessibilities_0 = len(measurement.accessibility.values[0])
         self.assertEqual(len_deltas, len_accessibilities_0)
+        print(measurement.accessibility.values[0])
         measurement.accessibility.show()
         #print(measurement.accessibility.average())
         

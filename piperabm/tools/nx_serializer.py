@@ -49,7 +49,8 @@ def nx_serialize(G) -> dict:
     edges_serialized = {}
     if multi is False:
         for u, v, data in G.edges(data=True):
-            edges_serialized[u] = {}
+            if u not in edges_serialized:
+                edges_serialized[u] = {}
             edges_serialized[u][v] = data
     elif multi is True:
         for u, v, key, data in G.edges(keys=True, data=True):
