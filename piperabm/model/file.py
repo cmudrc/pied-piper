@@ -1,3 +1,5 @@
+import os
+
 from piperabm.tools.json_file import JsonFile
 from piperabm.tools.delta import Delta
 
@@ -7,33 +9,48 @@ class File:
     Manages file handling methods of model
     """
 
-    def save(self, state: str = '') -> None:
+    @property
+    def result_directory(self):
+        """
+        Return result directory
+        """
+        if self.path is None:
+            raise ValueError("define path to continue")
+        default = 'result'
+        if self.name == '':
+            name = default
+        else:
+            name = default + '_' + self.name
+        return os.path.join(self.path, name)
+
+    def save(self, name: str) -> None:
         """
         Save model to file
         """
-        name = self.name + '_' + state
+        path = self.result_directory
+        if not os.path.exists(path): # Create result directory if doesn't exist
+            os.makedirs(path)
         data = self.serialize()
-        file = JsonFile(self.path, filename=name)
+        file = JsonFile(path=path, filename=name)
         file.save(data)
 
     def save_initial(self) -> None:
         """
         Save initial state of model to file
         """
-        self.save(state='initial')
+        self.save(name='initial')
 
     def save_final(self) -> None:
         """
         Save final state of model to file
         """
-        self.save(state='final')
+        self.save(name='final')
 
-    def load(self, state: str = '') -> None:
+    def load(self, name: str) -> None:
         """
         Load model from file
         """
-        name = self.name + '_' + state
-        file = JsonFile(self.path, filename=name)
+        file = JsonFile(path=self.result_directory, filename=name)
         data = file.load()
         self.deserialize(data)
 
@@ -41,20 +58,23 @@ class File:
         """
         Load initial state of model from file
         """
-        self.load(state='initial')
+        self.load(name='initial')
 
     def load_final(self) -> None:
         """
         Load final state of model from file
         """
-        self.load(state='final')
+        self.load(name='final')
 
-    def load_deltas(self, _from: int = None, _to: int = None) -> list:
+    def load_deltas(
+            self,
+            _from: int = None,
+            _to: int = None
+        ) -> list:
         """
         Load all detlas from file
         """
-        name = self.name + '_' + 'simulation'
-        deltas_file = JsonFile(self.path, filename=name)
+        deltas_file = JsonFile(path=self.result_directory, filename='simulation')
         deltas = deltas_file.load()
         if _from is None:
             _from = 0
@@ -67,8 +87,7 @@ class File:
         """
         Append the new delta to file
         """
-        name = self.name + '_' + 'simulation'
-        deltas_file = JsonFile(self.path, filename=name)
+        deltas_file = JsonFile(path=self.result_directory, filename='simulation')
         if deltas_file.exists() is False:
             deltas_file.save(data=[])
         deltas_file.append(delta)
@@ -100,3 +119,14 @@ class File:
         current = self.step
         deltas = self.load_deltas(_from=current, _to=current+steps)
         self.apply_deltas(deltas=deltas)
+
+
+if __name__ == "__main__":
+
+    from piperabm.infrastructure.samples.infrastructure_0 import model
+
+    model.path = os.path.dirname(os.path.realpath(__file__))
+    #print(model.result_directory)
+    #model.name = 'MyModel'
+    model.save_initial()
+    model.load_initial()

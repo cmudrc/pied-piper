@@ -1,3 +1,4 @@
+import os
 from copy import deepcopy
 
 from piperabm.model import Model
@@ -11,13 +12,27 @@ class Measurement:
 
     type = "measurement"
 
-    def __init__(self, path=None, name: str = 'model'):
+    def __init__(self, path=None, name: str = ''):
         self.path = path
         self.name = name
         self.times = []
         self.accessibility = Accessibility(measurement=self)
         self.travel_distance = TravelDistance(measurement=self)
         
+    @property
+    def result_directory(self):
+        """
+        Return result directory
+        """
+        if self.path is None:
+            raise ValueError("define path to continue")
+        default = 'result'
+        if self.name == '':
+            name = default
+        else:
+            name = default + '_' + self.name
+        return os.path.join(self.path, name)    
+
     @property
     def len(self) -> int:
         """
@@ -71,9 +86,9 @@ class Measurement:
 
     def measure(self, report=True, resume=False):
         if resume is False:  # Restart the measurement
-            file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
-            if file.exists() is True:
-                file.remove()  # Delete the previous measurement if exists
+            file = JsonFile(path=self.path, filename='measurement')
+            #if file.exists() is True:
+            file.remove()  # Delete the previous measurement if exists
             model = Model(path=self.path, name=self.name)
             model.load_initial()  # Load initial state of model
             self.add_time(model.time)  # First date entry
@@ -121,14 +136,14 @@ class Measurement:
         Save to file
         """
         data = self.serialize()
-        file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
+        file = JsonFile(path=self.result_directory, filename='measurement')
         file.save(data)
     
     def load(self):
         """
         Load to file
         """
-        file = JsonFile(path=self.path, filename=self.name+'_'+'measurement')
+        file = JsonFile(path=self.result_directory, filename='measurement')
         data = file.load()
         self.deserialize(data=data)
 

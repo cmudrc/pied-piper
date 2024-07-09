@@ -44,7 +44,7 @@ class Graphics:
         plt.show()
 
     def animate(self):
-        animation = Animation(path=self.path)
+        animation = Animation(path=self.result_directory)
         self.load_initial()
 
         # First frame
@@ -59,8 +59,7 @@ class Graphics:
             animation.add_figure(fig)
     
         # Render
-        output_file = self.name
-        animation.render(output_file=output_file)
+        animation.render(output_file='animation')
 
 
 if __name__ == "__main__":

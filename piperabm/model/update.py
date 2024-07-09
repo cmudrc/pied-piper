@@ -23,15 +23,16 @@ class Update(Trade):
         """
         # Remove previous save file if exists
         if self.path is not None:
+            path = self.result_directory
             if resume is False:
                 # Remove deltas
-                simulation_file = JsonFile(self.path, self.name + '_' + 'simulation')
+                simulation_file = JsonFile(path, 'simulation')
                 simulation_file.remove()
                 # Remove final state
-                final_file = JsonFile(self.path, self.name + '_' + 'final')
+                final_file = JsonFile(path, 'final')
                 final_file.remove()
                 # Load initial state if exists
-                initial_file = JsonFile(self.path, self.name + '_' + 'initial')
+                initial_file = JsonFile(path, 'initial')
                 if initial_file.exists():
                     self.load_initial()
                 else:
@@ -39,16 +40,16 @@ class Update(Trade):
                         self.save_initial()
             else:
                 # Load final state if exists
-                final_file = JsonFile(self.path, self.name + '_' + 'final')
+                final_file = JsonFile(path, 'final')
                 if final_file.exists() is True:
                     self.load_final()
                 else:
                     # Load initial state if final state doesn't exists
-                    initial_file = JsonFile(self.path, self.name + '_' + 'initial')
+                    initial_file = JsonFile(path, 'initial')
                     if initial_file.exists() is True:
                         self.load_initial()
                         # Apply deltas if exists
-                        simulation_file = JsonFile(self.path, self.name + '_' + 'simulation')
+                        simulation_file = JsonFile(path, 'simulation')
                         if simulation_file.exists() is True:
                             self.apply_deltas()
 
@@ -188,4 +189,4 @@ class Update(Trade):
                 new=current_serialized
             )
             self.append_delta(delta)
-            self.save(state='final')
+            self.save_final()

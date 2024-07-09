@@ -22,7 +22,7 @@ class Model(
 
     def __init__(
         self,
-        name: str = 'model',
+        name: str = '',
         prices: dict = {
                 'food': 1,
                 'water': 1,
