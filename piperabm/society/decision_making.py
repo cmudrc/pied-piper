@@ -128,7 +128,7 @@ class DecisionMaking:
             )
             action_queue.add(move_go)
             # Stay (destination)
-            stay_length = self.get_max_time_outside(id=agent_id) - (2 * move_go.total_duration)
+            stay_length = self.max_time_outside - (2 * move_go.total_duration)
             stay = Stay(
                 action_queue=action_queue,
                 duration=stay_length
@@ -138,7 +138,7 @@ class DecisionMaking:
             move_back = move_go.reverse()
             action_queue.add(move_back) 
             # Stay (home)
-            stay_length = (24 * 60 * 60) - action_queue.total_duration
+            stay_length = self.activity_cycle - action_queue.total_duration
             stay = Stay(
                 action_queue=action_queue,
                 duration=stay_length

@@ -17,7 +17,7 @@ class Generate:
                 'water': 10,
                 'energy': 10,
             },
-            average_balance: float = 0,
+            average_balance: float = 0
         ):
         """
         Generate agents
@@ -28,7 +28,8 @@ class Generate:
             percision=0.03
         )
         homes_id = self.infrastructure.homes
-        for socioeconomic_status in socioeconomic_status_values:
+        for value in socioeconomic_status_values:
+            socioeconomic_status = float(value)
             home_id = int(np.random.choice(homes_id))
             resources = {}
             for name in average_resources:

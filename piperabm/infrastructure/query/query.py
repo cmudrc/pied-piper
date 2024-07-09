@@ -62,10 +62,13 @@ class Query(Add, Get, Set):
                     self.get_pos(new_edge_ids[0]),
                     self.get_pos(new_edge_ids[1])
                 )
-            data['adjusted_length'] = self.calculate_adjusted_length(
-                length=data['length'],
+            adjustment_factor = self.calculate_adjustment_factor(
                 usage_impact=data['usage_impact'],
                 climate_impact=data['climate_impact']
+            )
+            data['adjusted_length'] = self.calculate_adjusted_length(
+                length=data['length'],
+                adjustment_factor=adjustment_factor,
             )
             self.G.add_edge(
                 new_edge_ids[0],

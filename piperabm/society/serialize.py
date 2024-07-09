@@ -20,6 +20,8 @@ class Serialize:
         data['G'] = nx_serialize(self.G)
         data['average_income'] = self.average_income
         data['neighbor_radius'] = self.neighbor_radius
+        data['max_time_outside'] = self.max_time_outside
+        data['activity_cycle'] = self.activity_cycle
         data['type'] = self.type
         return data
     
@@ -37,6 +39,8 @@ class Serialize:
         self.G = nx_deserialize(data['G'])
         self.average_income = data['average_income']
         self.neighbor_radius = data['neighbor_radius']
+        self.max_time_outside = data['max_time_outside']
+        self.activity_cycle = data['activity_cycle']
 
 
 if __name__ == "__main__":

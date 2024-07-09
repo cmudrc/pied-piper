@@ -113,9 +113,3 @@ class Get(NxGet):
         Get agent *balance* value
         """
         return self.get_node_attribute(id=id, attribute='balance')
-    
-    def get_max_time_outside(self, id: int) -> float:
-        """
-        Get agent *max_time_outside* value
-        """
-        return self.get_node_attribute(id=id, attribute='max_time_outside')

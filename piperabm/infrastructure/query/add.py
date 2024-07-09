@@ -128,10 +128,13 @@ class Add:
         id_1 = self.add_junction(pos=pos_1)
         id_2 = self.add_junction(pos=pos_2)
         length = ds.point_to_point(pos_1, pos_2)
-        adjusted_length = self.calculate_adjusted_length(
-            length=length,
+        adjustment_factor = self.calculate_adjustment_factor(
             usage_impact=usage_impact,
             climate_impact=climate_impact
+        )
+        adjusted_length = self.calculate_adjusted_length(
+            length=length,
+            adjustment_factor=adjustment_factor
         )
         self.G.add_edge(
             id_1,
@@ -163,10 +166,13 @@ class Add:
         """
         type = 'neighborhood_access'
         length = ds.point_to_point(self.get_pos(id_1), self.get_pos(id_2))
-        adjusted_length = self.calculate_adjusted_length(
-            length=length,
+        adjustment_factor = self.calculate_adjustment_factor(
             usage_impact=usage_impact,
             climate_impact=climate_impact
+        )
+        adjusted_length = self.calculate_adjusted_length(
+            length=length,
+            adjustment_factor=adjustment_factor
         )
         self.G.add_edge(
             id_1,

@@ -3,40 +3,43 @@ class Degradation:
     Manage edge dergradation methods
     """
 
-    def adjustment_factor(self, usage_impact: float, climate_impact: float) -> float:
+    def calculate_adjustment_factor(self, usage_impact: float, climate_impact: float) -> float:
         """
         Calculate adjustment factor
         """
         return 1 + (self.coeff_usage * usage_impact) + (self.coeff_weather * climate_impact)
-
-    def degradation(self, ids: list) -> float:
+    
+    def adjustment_factor(self, ids: list) -> float:
         """
-        Calculate current degradation (adjustment factor) for an edge
+        Return edge *adjustment_factor*
         """
-        adjustment_factor = self.adjustment_factor(
+        return self.calculate_adjustment_factor(
             usage_impact=self.get_usage_impact(ids=ids),
             climate_impact=self.get_climate_impact(ids=ids)
         )
-        return adjustment_factor - 1
-
-    def calculate_adjusted_length(self, length: float, usage_impact: float, climate_impact: float) -> float:
+    
+    def calculate_adjusted_length(self, length: float, adjustment_factor: float) -> float:
         """
-        Calculate adjusted length
+        Calculate edge *adjusted_length*
         """
-        return length * self.adjustment_factor(
-                    usage_impact=usage_impact,
-                    climate_impact=climate_impact
-                )
-
+        return length * adjustment_factor
+    
+    def adjusted_length(self, ids: list) -> float:
+        """
+        Return edge *adjusted_length*
+        """
+        return self.calculate_adjusted_length(
+            length=self.get_length(ids=ids),
+            adjustment_factor=self.adjustment_factor(ids=ids)
+        )
+    
     def update_adjusted_length(self, ids: list):
         """
-        Update adjusted_length value
+        Update *adjusted_length* value
         """
-        length = self.get_length(ids=ids)
-        adjustment_factor = self.degradation(ids=ids)
-        adjusted_length = length * adjustment_factor
+        adjusted_length = self.adjusted_length(ids=ids)
         self.set_adjusted_length(ids=ids, value=adjusted_length)
-    
+
     def top_degraded_edges(self, percent: float = 0):
         """
         Filter most degradaded edges by their length percentage
@@ -48,7 +51,7 @@ class Degradation:
             length = self.get_edge_attribute(ids=edge_ids, attribute='length')
             edge_info = {
                 'ids': edge_ids,
-                'degradation': self.degradation(id=edge_ids),
+                'degradation': self.adjustment_factor(ids=edge_ids),
                 'length': length
             }
             edges_info.append(edge_info)

@@ -28,4 +28,4 @@ average_resources = {
 }
 average_enough_resources = deepcopy(average_resources)
 
-max_time_outside = 8 * (60 * 60) # hour to seconds
+#max_time_outside = 8 * (60 * 60) # hour to seconds

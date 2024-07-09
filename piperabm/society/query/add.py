@@ -81,15 +81,17 @@ class Add:
             balance=balance,
             alive=True,
             speed=speed,
-            max_time_outside=max_time_outside,
             **resource_kwargs
         )
-        # Add family relationship
+
+        # Add relationship edge(s)
+        # Family
         family_members = self.agents_from(home_id=home_id)
         for member in family_members:
             if member != id:
                 self.add_family(id_1=id, id_2=member)
-        # Add neighbor relationship
+        
+        # Neighbor
         neighbor_homes = self.infrastructure.nodes_closer_than(
             id=home_id,
             search_radius=self.neighbor_radius,

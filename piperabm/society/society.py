@@ -29,13 +29,19 @@ class Society(
     def __init__(
             self,
             average_income: float = 1000,
-            neighbor_radius: float = 0
+            neighbor_radius: float = 0,
+            max_time_outside: float = 8 * (60 * 60), # 8 hours
+            activity_cycle: float = 24 * (60 * 60) # 24 hours
         ):
         self.G = nx.MultiGraph()
         self.model = None # Binding
         self.actions = {}
         self.average_income = average_income
         self.neighbor_radius = neighbor_radius
+        if max_time_outside > activity_cycle:
+            raise ValueError('"max_time_outside" should be less than "activity_cycle"')
+        self.max_time_outside = max_time_outside
+        self.activity_cycle = activity_cycle
 
     @property
     def infrastructure(self):
