@@ -119,6 +119,7 @@ class DecisionMaking:
         """
         path = self.path(agent_id, destination_id)
         if path is not None:
+            critical_stay_length = 0
             action_queue = self.actions[agent_id]
             # Go
             move_go = Move(
@@ -129,6 +130,8 @@ class DecisionMaking:
             action_queue.add(move_go)
             # Stay (destination)
             stay_length = self.max_time_outside - (2 * move_go.total_duration)
+            if stay_length < critical_stay_length:
+                stay_length = critical_stay_length
             stay = Stay(
                 action_queue=action_queue,
                 duration=stay_length
@@ -139,6 +142,8 @@ class DecisionMaking:
             action_queue.add(move_back) 
             # Stay (home)
             stay_length = self.activity_cycle - action_queue.total_duration
+            if stay_length < critical_stay_length:
+                stay_length = critical_stay_length
             stay = Stay(
                 action_queue=action_queue,
                 duration=stay_length
