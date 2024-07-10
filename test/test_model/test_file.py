@@ -1,10 +1,10 @@
 import unittest
 import os
+import shutil
 from copy import deepcopy
 
 from piperabm import Model
 from piperabm.infrastructure.samples.infrastructure_1 import model
-from piperabm.tools.json_file import JsonFile
 
 
 class TestFileClass(unittest.TestCase):
@@ -52,7 +52,6 @@ class TestFileClass(unittest.TestCase):
         # Load final state from file
         final_model = Model(path=path)
         final_model.load_final()
-        #print(final_model.serialize())
         self.assertEqual(final_model.serialize(), self.model.serialize()) # Final
         
         # Push model forward using deltas
@@ -62,14 +61,8 @@ class TestFileClass(unittest.TestCase):
         model_initial.push(steps=1)
         self.assertEqual(new_model_initial.serialize(), model_initial.serialize()) # Final
 
-        filenames = [
-            'model_final',
-            'model_initial',
-            'model_simulation',
-        ]
-        for filename in filenames:
-            file = JsonFile(path=path, filename=filename)
-            file.remove()
+        # Garbage removal
+        shutil.rmtree(os.path.join(path, 'result'))
 
 
 if __name__ == "__main__":

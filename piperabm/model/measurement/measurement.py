@@ -128,7 +128,7 @@ class Measurement:
             self.add_travel_distance(value=total_travel)
             previous = deepcopy(model) # Push previous forward
             if report is True:
-                print(f"Progress: {i / n * 100:.1f}% complete")
+                print(f"Progress: {(i + 1) / n * 100:.1f}% complete")
         self.save()
 
     def save(self):

@@ -77,30 +77,21 @@ class Update(Trade):
         """
         Update model for a single steps
         """
-        # Create current state
+        # Delta
         if save is True:
+            # Create current state
             previous_serialized = deepcopy(self.serialize())
 
         # General
         self.step += 1
         self.time += duration
 
-        # Agents movement
+        # Agents activity impact
         self.society.update(duration)
-        self.infrastructure.update(duration)
-        '''
-        # Climate impact
-        rate = 0.00001
-        for ids in self.infrastructure.streets:
-            # Update weather impact
-            weather_impact = self.infrastructure.get_edge_attribute(ids=ids, attribute='weather_impact')
-            weather_impact += rate * duration
-            self.infrastructure.set_edge_attribute(ids=ids, attribute='weather_impact', value=weather_impact)
 
-        # Infrastructure degradation
-        for ids in self.infrastructure.streets:
-            self.infrastructure.update_adjusted_length(ids=ids)
-        '''
+        # Climate impact
+        self.infrastructure.update(duration)
+
         # Trade
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)
@@ -110,30 +101,16 @@ class Update(Trade):
             agents = self.society.agents_in(id=home_id)
             if len(agents) >= 2:
                 self.trade(agents=agents)
-        '''
-        markets = self.infrastructure.markets
-        for home_id in self.infrastructure.homes:  # Agents in home
-            agents = self.society.agents_in(id=home_id)
-            if len(agents) >= 2:
-                self.trade(agents=agents)
-        '''
 
         # Charge Markets (resource influx)
-        '''
         markets = self.infrastructure.markets
-        #num = len(markets)
-        #food_price = self.society.food_price
-        #water_price = self.society.water_price
-        #energy_price = self.society.energy_price
         for id in markets:
-            enough_food = self.infrastructure.enough_food(id=id)
-            enough_water = self.infrastructure.enough_water(id=id)
-            enough_energy = self.infrastructure.enough_energy(id=id)
-            self.infrastructure.balance(id=id, new_val=0)
-            self.infrastructure.food(id=id, new_val=enough_food)
-            self.infrastructure.water(id=id, new_val=enough_water)
-            self.infrastructure.energy(id=id, new_val=enough_energy)
-        '''
+            # Reset balance
+            self.infrastructure.set_balance(id=id, value=0)
+            # Reset resources
+            for name in self.resource_names:
+                enough_amount = self.infrastructure.get_enough_resource(id=id, name=name)
+                self.infrastructure.set_resource(id=id, name=name, value=enough_amount)
             
         '''
             current_balance = self.infrastructure.balance(id=id)
@@ -181,8 +158,9 @@ class Update(Trade):
                 )
         '''
 
-        # Create new current state and compare to previous one
+        # Delta
         if save is True:
+            # Create new current state and compare it to the previous one
             current_serialized = self.serialize()
             delta = Delta.create(
                 old=previous_serialized,

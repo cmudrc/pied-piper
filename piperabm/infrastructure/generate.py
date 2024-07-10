@@ -13,7 +13,7 @@ class Generate:
         y_grid_size: float = 1,
         x_num: int = 2,
         y_num: int = 2,
-        imperfection_percentage = 10
+        imperfection_percentage: float = 0
     ):
         """
         Generate a grid world model

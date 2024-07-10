@@ -1,5 +1,6 @@
 import unittest
 import os
+import shutil
 from copy import deepcopy
 
 from piperabm.infrastructure.samples.infrastructure_1 import model
@@ -52,15 +53,8 @@ class TestMeasurementClass(unittest.TestCase):
         len_accessibilities_0 = len(measurement.accessibility.values[0])
         self.assertEqual(len_deltas, len_accessibilities_0)
         
-        filenames = [
-            'model_final',
-            'model_initial',
-            'model_simulation',
-            'model_measurement',
-        ]
-        for filename in filenames:
-            file = JsonFile(path=path, filename=filename)
-            file.remove()
+        # Garbage removal
+        shutil.rmtree(os.path.join(path, 'result'))
 
 
 if __name__ == "__main__":
