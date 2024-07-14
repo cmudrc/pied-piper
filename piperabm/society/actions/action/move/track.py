@@ -123,7 +123,7 @@ class Track(Print):
         """
         Alias to access agent transportation speed
         """
-        return self.society.get_transportation_speed(id=self.agent_id)
+        return self.society.speed
 
     @property
     def length(self) -> float:
@@ -178,9 +178,9 @@ class Track(Print):
                 delta_length = ds.point_to_point(pos_old, pos_new)
         # Update fuel consumption
         delta_t = duration - excess_duration
-        fuel_food = self.society.get_transportation_fuel_rate(name='food', id=self.agent_id) * delta_t
-        fuel_water = self.society.get_transportation_fuel_rate(name='water', id=self.agent_id) * delta_t
-        fuel_energy = self.society.get_transportation_fuel_rate(name='energy', id=self.agent_id) * delta_t
+        fuel_food = self.society.transportation_resource_rates['food'] * delta_t
+        fuel_water = self.society.transportation_resource_rates['water'] * delta_t
+        fuel_energy = self.society.transportation_resource_rates['energy'] * delta_t
         new_food = self.society.get_resource(name='food', id=self.agent_id) - fuel_food
         new_water = self.society.get_resource(name='water', id=self.agent_id) - fuel_water
         new_energy = self.society.get_resource(name='energy', id=self.agent_id) - fuel_energy

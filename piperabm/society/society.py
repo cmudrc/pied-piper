@@ -9,6 +9,7 @@ from piperabm.society.graphics import Graphics
 from piperabm.society.stat import Stat
 from piperabm.tools.gini import gini
 from piperabm.economy import accessibility
+from piperabm.society.info import *
 
 
 class Society(
@@ -31,7 +32,10 @@ class Society(
             average_income: float = 1000,
             neighbor_radius: float = 0,
             max_time_outside: float = 8 * (60 * 60), # 8 hours
-            activity_cycle: float = 24 * (60 * 60) # 24 hours
+            activity_cycle: float = 24 * (60 * 60), # 24 hours
+            transportation_resource_rates: dict = transportation_resource_rates,
+            idle_resource_rates: dict = idle_resource_rates,
+            speed: float = speed
         ):
         self.G = nx.MultiGraph()
         self.model = None # Binding
@@ -42,6 +46,9 @@ class Society(
             raise ValueError('"max_time_outside" should be less than "activity_cycle"')
         self.max_time_outside = max_time_outside
         self.activity_cycle = activity_cycle
+        self.idle_resource_rates = idle_resource_rates
+        self.transportation_resource_rates = transportation_resource_rates
+        self.speed = speed
 
     @property
     def infrastructure(self):

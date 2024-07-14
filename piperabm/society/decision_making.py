@@ -56,7 +56,7 @@ class DecisionMaking:
         travel_duration = self.estimated_duration(agent_id, destination_id)
         fuel_resources = {}
         for name in self.resource_names:
-            fuel_resources[name] = self.get_transportation_fuel_rate(id=agent_id, name=name) * travel_duration
+            fuel_resources[name] = self.transportation_resource_rates[name] * travel_duration
 
         # Calculate the value of required fuel
         fuel_possible = True
@@ -96,7 +96,7 @@ class DecisionMaking:
         Estimated duration of reaching a certain destination
         """
         estimated_distance = self.estimated_distance(agent_id, destination_id)
-        speed = self.get_transportation_speed(id=agent_id)
+        speed = self.speed
         return estimated_distance / speed
     
     def path(self, agent_id: int, destination_id: int) -> list:

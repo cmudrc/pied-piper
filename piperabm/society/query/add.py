@@ -40,10 +40,7 @@ class Add:
             'energy': 10,
         },
         enough_resources: dict = None,
-        balance: float = 0,
-        transportation_resource_rates: dict = transportation_resource_rates,
-        idle_resource_rates: dict = idle_resource_rates,
-        speed: float = speed
+        balance: float = 0
     ):
         """
         Add agent node
@@ -68,8 +65,6 @@ class Add:
                 enough_resources[resource_name] = deepcopy(resources[resource_name])
             resource_kwargs[resource_name] = resources[resource_name]
             resource_kwargs['enough_'+resource_name] = enough_resources[resource_name]
-            resource_kwargs['idle_'+resource_name+'_rate'] = idle_resource_rates[resource_name]
-            resource_kwargs['transportation_'+resource_name+'_rate'] = transportation_resource_rates[resource_name]
 
         self.G.add_node(
             id,
@@ -82,7 +77,6 @@ class Add:
             y=float(pos[1]),
             balance=balance,
             alive=True,
-            speed=speed,
             **resource_kwargs
         )
 

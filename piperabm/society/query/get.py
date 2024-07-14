@@ -57,26 +57,6 @@ class Get(NxGet):
         """
         attribute = 'enough_' + name
         return self.get_node_attribute(id=id, attribute=attribute)
-    
-    def get_idle_fuel_rate(self, id: int, name: str) -> float:
-        """
-        Get agent *idle_fuel_rate* value
-        """
-        attribute = 'idle_' + name + '_rate'
-        return self.get_node_attribute(id=id, attribute=attribute)
-
-    def get_transportation_fuel_rate(self, id: int, name: str) -> float:
-        """
-        Get agent *transportation_fuel_rate* value
-        """
-        attribute = 'transportation_' + name + '_rate'
-        return self.get_node_attribute(id=id, attribute=attribute)
-
-    def get_transportation_speed(self, id: int) -> float:
-        """
-        Get agent *transportation_speed* value
-        """
-        return self.get_node_attribute(id=id, attribute='speed')
 
     def get_alive(self, id: str) -> bool:
         """

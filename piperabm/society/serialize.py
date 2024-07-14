@@ -22,6 +22,9 @@ class Serialize:
         data['neighbor_radius'] = self.neighbor_radius
         data['max_time_outside'] = self.max_time_outside
         data['activity_cycle'] = self.activity_cycle
+        data['idle_resource_rates'] = self.idle_resource_rates
+        data['transportation_resource_rates'] = self.transportation_resource_rates
+        data['speed'] = self.speed
         data['type'] = self.type
         return data
     
@@ -41,6 +44,9 @@ class Serialize:
         self.neighbor_radius = data['neighbor_radius']
         self.max_time_outside = data['max_time_outside']
         self.activity_cycle = data['activity_cycle']
+        self.idle_resource_rates = data['idle_resource_rates']
+        self.transportation_resource_rates = data['transportation_resource_rates']
+        self.speed = data['speed']
 
 
 if __name__ == "__main__":

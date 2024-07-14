@@ -12,7 +12,7 @@ class Update:
             # Resources
             for name in self.resource_names:
                 resource_value = self.get_resource(id=id, name=name)
-                resource_consumption_rate = self.get_idle_fuel_rate(id=id, name=name)
+                resource_consumption_rate = self.idle_resource_rates[name]
                 new_resource_value = resource_value - (resource_consumption_rate * duration)
                 self.set_resource(id=id, name=name, value=new_resource_value)
             # Income

@@ -18,10 +18,7 @@ class Generate:
                 'water': 10,
                 'energy': 10,
             },
-            average_balance: float = 0,
-            transportation_resource_rates: dict = transportation_resource_rates,
-            idle_resource_rates: dict = idle_resource_rates,
-            speed: float = speed
+            average_balance: float = 0
         ):
         """
         Generate agents
@@ -43,10 +40,7 @@ class Generate:
                 home_id=home_id,
                 socioeconomic_status=socioeconomic_status,
                 resources=resources,
-                balance=balance,
-                transportation_resource_rates=transportation_resource_rates,
-                idle_resource_rates=idle_resource_rates,
-                speed=speed
+                balance=balance
             )
 
 
