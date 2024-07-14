@@ -1,6 +1,7 @@
 import numpy as np
 
 from piperabm.tools.gini import gini
+from piperabm.society.info import *
 
 
 class Generate:
@@ -17,7 +18,10 @@ class Generate:
                 'water': 10,
                 'energy': 10,
             },
-            average_balance: float = 0
+            average_balance: float = 0,
+            transportation_resource_rates: dict = transportation_resource_rates,
+            idle_resource_rates: dict = idle_resource_rates,
+            speed: float = speed
         ):
         """
         Generate agents
@@ -39,7 +43,10 @@ class Generate:
                 home_id=home_id,
                 socioeconomic_status=socioeconomic_status,
                 resources=resources,
-                balance=balance
+                balance=balance,
+                transportation_resource_rates=transportation_resource_rates,
+                idle_resource_rates=idle_resource_rates,
+                speed=speed
             )
 
 

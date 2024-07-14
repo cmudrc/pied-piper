@@ -80,9 +80,12 @@ class Add:
     def add_market(
         self,
         pos: list,
-        food: float = 0,
-        water: float = 0,
-        energy: float = 0,
+        resources: dict = {
+            'food': 10,
+            'water': 10,
+            'energy': 10,
+        },
+        enough_resources: dict = None,
         id: int = None,
         name: str = '',
         report: bool = False,
@@ -92,20 +95,27 @@ class Add:
         """
         type = 'market'
         id = self.check_id(id)
+        resource_kwargs = {}
+        if enough_resources is None:
+            enough_resources = {}
+            for resource_name in self.resource_names:
+                enough_resources[resource_name] = None
+        for resource_name in self.resource_names:
+            if enough_resources[resource_name] is None:
+                enough_resources[resource_name] = deepcopy(resources[resource_name])
+            resource_kwargs[resource_name] = resources[resource_name]
+            resource_kwargs['enough_'+resource_name] = enough_resources[resource_name]
+        
         self.G.add_node(
             id,
             name=name,
             type=type,
             x=float(pos[0]),
             y=float(pos[1]),
-            food=food,
-            water=water,
-            energy=energy,
-            enough_food=deepcopy(food),
-            enough_water=deepcopy(water),
-            enough_energy=deepcopy(energy),
             balance=0,
+            **resource_kwargs
         )
+
         self.baked_streets = False
         self.baked_neighborhood = False
         if report is True:

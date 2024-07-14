@@ -13,7 +13,13 @@ class Generate:
         y_grid_size: float = 1,
         x_num: int = 2,
         y_num: int = 2,
-        imperfection_percentage: float = 0
+        imperfection_percentage: float = 0,
+        market_pos: list = [0, 0],
+        market_resources: dict = {
+            'food': 10,
+            'water': 10,
+            'energy': 10,
+        }
     ):
         """
         Generate a grid world model
@@ -38,22 +44,20 @@ class Generate:
                 pos_2=[x_size - (x_size / 2), y]
             )
 
-        # Market ##############
+        # Market
         self.add_market(
-            pos=[0, 0],
             name='market',
             id=0,
-            food=100,
-            water=100,
-            energy=100
+            pos=market_pos,
+            resources=market_resources
         )
 
         # Homes
         def generate_random_point(x_range, y_range):
-            x = np.random.uniform(-x_range/2, x_range/2)
-            y = np.random.uniform(-y_range/2, y_range/2)
+            x = float(np.random.uniform(-x_range/2, x_range/2))
+            y = float(np.random.uniform(-y_range/2, y_range/2))
             pos = [x, y]
-            pos = [float(num) for num in pos]  # Convert type from np.float64 to float
+            #pos = [float(num) for num in pos]  # Convert type from np.float64 to float
             return pos
 
         for i in range(homes_num):

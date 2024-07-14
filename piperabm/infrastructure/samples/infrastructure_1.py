@@ -15,9 +15,7 @@ model.infrastructure.add_market(
     pos=[-60, 45],
     id=2,
     name='market',
-    food=100,
-    water=100,
-    energy=100,
+    resources={'food': 100, 'water': 100, 'energy': 100}
 )
 model.infrastructure.bake()
 model.set_seed(None)

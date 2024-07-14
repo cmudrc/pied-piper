@@ -3,7 +3,6 @@ from copy import deepcopy
 
 from piperabm.society.actions.action_queue import ActionQueue
 from piperabm.society.info import *
-from piperabm.tools.symbols import SYMBOLS
 
 
 class Add:
@@ -41,7 +40,10 @@ class Add:
             'energy': 10,
         },
         enough_resources: dict = None,
-        balance: float = 0
+        balance: float = 0,
+        transportation_resource_rates: dict = transportation_resource_rates,
+        idle_resource_rates: dict = idle_resource_rates,
+        speed: float = speed
     ):
         """
         Add agent node
@@ -76,8 +78,8 @@ class Add:
             socioeconomic_status=socioeconomic_status,
             home_id=home_id,
             current_node=deepcopy(home_id),
-            x=pos[0],
-            y=pos[1],
+            x=float(pos[0]),
+            y=float(pos[1]),
             balance=balance,
             alive=True,
             speed=speed,

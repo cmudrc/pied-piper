@@ -13,9 +13,7 @@ model.infrastructure.add_market(
     pos=[40, -40],
     name='market',
     id=0,
-    food=100,
-    water=100,
-    energy=100
+    resources={'food': 100, 'water': 100, 'energy': 100}
 )
 model.infrastructure.add_home(pos=[-60, 40], name='home 1', id=1)
 model.infrastructure.add_home(pos=[200, 20], name='home 2', id=2)
