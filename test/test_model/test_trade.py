@@ -31,6 +31,10 @@ class TestTrade_0(unittest.TestCase):
         food_low_final = self.model.society.get_resource(self.id_low, 'food')
         food_high_final = self.model.society.get_resource(self.id_high, 'food')
 
+        total_food_initial = food_low_initial + food_high_initial
+        total_food_final = food_low_final + food_high_final
+        print(total_food_initial, total_food_final)
+
         self.assertLess(balance_low_final, balance_low_initial)
         self.assertLess(food_low_initial, food_low_final)
         self.assertLess(balance_high_initial, balance_high_final)
