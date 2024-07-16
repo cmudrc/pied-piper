@@ -1,4 +1,6 @@
+import os
 import matplotlib.pyplot as plt
+from copy import deepcopy
 
 from piperabm.tools.average import average as avg
 
@@ -144,17 +146,50 @@ class Accessibility:
         weights = self.measurement.delta_times(_from=_from, _to=_to)
         return avg.arithmetic(values=values, weights=weights)
     
-    def show(self, agents='all', resources='all', _from=None, _to=None):
+    def create_plot(self, agents='all', resources='all', _from=None, _to=None, info=None):
+        """
+        Create plot
+        """
+        fig, ax = plt.subplots()
+        title = "Accessibility"
+        ylabel = deepcopy(title)
+        if info is not None:
+            title += info
+        ax.set_title(title)
+        xs = self.measurement.filter_times(_from=_from, _to=_to)
+        yx = self.__call__(agents=agents, resources=resources, _from=_from, _to=_to)
+        ax.plot(xs, yx, color='blue')
+        ax.set_xlabel("Time")
+        ax.set_ylabel(ylabel)
+        return fig
+
+    def show(self, agents='all', resources='all', _from=None, _to=None, info=None):
         """
         Draw plot
         """
-        plt.title("Accessibility")
-        xs = self.measurement.filter_times(_from=_from, _to=_to)
-        yx = self.__call__(agents=agents, resources=resources, _from=_from, _to=_to)
-        plt.plot(xs, yx, color='blue')
-        plt.xlabel("Time")
-        plt.ylabel("Accessibility")
+        fig = self.create_plot(
+            agents=agents,
+            resources=resources,
+            _from=_from,
+            _to=_to,
+            info=info
+        )
         plt.show()
+
+    def save(self, agents='all', resources='all', _from=None, _to=None, info=None):
+        """
+        Save plot
+        """
+        fig = self.create_plot(
+            agents=agents,
+            resources=resources,
+            _from=_from,
+            _to=_to,
+            info=info
+        )
+        path = self.measurement.result_directory
+        filepath = os.path.join(path, self.type)
+        fig.savefig(filepath)
 
     def serialize(self) -> dict:
         """

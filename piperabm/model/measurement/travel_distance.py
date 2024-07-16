@@ -1,3 +1,5 @@
+import os
+from copy import deepcopy
 import matplotlib.pyplot as plt
 
 
@@ -31,17 +33,46 @@ class TravelDistance:
     def __call__(self, _from=None, _to=None):
         return self.filter(_from=_from, _to=_to)
     
-    def show(self, _from=None, _to=None):
+    def create_plot(self, _from=None, _to=None, info=None):
+        """
+        Create plot
+        """
+        fig, ax = plt.subplots()
+        title = "Travel Distance"
+        ylabel = deepcopy(title)
+        if info is not None:
+            title += info
+        ax.set_title(title)
+        xs = self.measurement.filter_times(_from=_from, _to=_to)
+        yx = self.filter(_from=_from, _to=_to)
+        ax.plot(xs, yx, color='blue')
+        ax.set_xlabel("Time")
+        ax.set_ylabel(ylabel)
+        return fig
+    
+    def show(self, _from=None, _to=None, info=None):
         """
         Draw plot
         """
-        plt.title("Travel Distance")
-        xs = self.measurement.filter_times(_from=_from, _to=_to)
-        yx = self.filter(_from=_from, _to=_to)
-        plt.plot(xs, yx, color='blue')
-        plt.xlabel("Time")
-        plt.ylabel("Travel Distance")
+        fig = self.create_plot(
+            _from=_from,
+            _to=_to,
+            info=info
+        )
         plt.show()
+
+    def save(self, _from=None, _to=None, info=None):
+        """
+        Save plot
+        """
+        fig = self.create_plot(
+            _from=_from,
+            _to=_to,
+            info=info
+        )
+        path = self.measurement.result_directory
+        filepath = os.path.join(path, self.type)
+        fig.savefig(filepath)
 
     def serialize(self) -> dict:
         """
