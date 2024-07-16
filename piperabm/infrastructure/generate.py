@@ -9,48 +9,32 @@ class Generate:
     def generate(
         self,
         homes_num: int = 1,
-        x_grid_size: float = 1,
-        y_grid_size: float = 1,
-        x_num: int = 2,
-        y_num: int = 2,
-        imperfection_percentage: float = 0,
-        market_pos: list = [0, 0],
-        market_resources: dict = {
-            'food': 10,
-            'water': 10,
-            'energy': 10,
-        }
+        grid_size: list = [1, 1],
+        grid_num: list = [2, 2],
+        imperfection_percentage: float = 0
     ):
         """
         Generate a grid world model
         """
 
-        x_size = x_grid_size * (x_num - 1)
-        y_size = y_grid_size * (y_num - 1)
-        x_range = x_grid_size * x_num
-        y_range = y_grid_size * y_num
+        x_size = grid_size[0] * (grid_num[0] - 1)
+        y_size = grid_size[1] * (grid_num[1] - 1)
+        x_range = grid_size[0] * grid_num[0]
+        y_range = grid_size[1] * grid_num[1]
 
         # Streets
-        for i in range(x_num):
-            x = (i * x_grid_size) - (x_size / 2)
+        for i in range(grid_num[0]):
+            x = (i * grid_size[0]) - (x_size / 2)
             self.add_street(
                 pos_1=[x, 0 - (y_size / 2)],
                 pos_2=[x, y_size - (y_size / 2)]
             )
-        for j in range(y_num):
-            y = (j * y_grid_size) - (y_size / 2)
+        for j in range(grid_num[1]):
+            y = (j * grid_size[1]) - (y_size / 2)
             self.add_street(
                 pos_1=[0 - (x_size / 2), y],
                 pos_2=[x_size - (x_size / 2), y]
             )
-
-        # Market
-        self.add_market(
-            name='market',
-            id=0,
-            pos=market_pos,
-            resources=market_resources
-        )
 
         # Homes
         def generate_random_point(x_range, y_range):

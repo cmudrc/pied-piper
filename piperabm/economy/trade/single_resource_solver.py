@@ -13,6 +13,9 @@ def solver(players: list, price: float):
     Solve the optimal trade between players
     """
     num_players = len(players)
+    if num_players == 0:
+        status = 'success'
+        return players
     initial_resources = np.array([player['resource'] for player in players])
     enough_resources = np.array([player['enough_resource'] for player in players])
     balances = np.array([player['balance'] for player in players])
@@ -47,12 +50,26 @@ def solver(players: list, price: float):
 
     # Bounds for each variable (resource allocation cannot be negative and should not exceed the player's balance converted to resources)
     bounds = [(0, balances[i] / price + initial_resources[i]) for i in range(num_players)]
+    
+    # Check for any erroneous bounds and adjust if necessary
+    for i, (lower, upper) in enumerate(bounds):
+        if upper < lower:
+            #print(players[i]['resource'], players[i]['balance'])
+            #print(f"Adjusting bounds for player {i+1}: Initial bounds were ({lower}, {upper}).")
+            bounds[i] = (0, 0)  # Set upper bound to lower to avoid infeasibility
 
     # Initial guess: start with initial resources
     initial_guess = initial_resources
 
     # Optimize
-    result = minimize(objective, initial_guess, method='SLSQP', bounds=bounds, constraints=constraints)
+    result = minimize(
+        objective,
+        initial_guess,
+        method='SLSQP',
+        bounds=bounds,
+        constraints=constraints,
+        options={'disp': False, 'ftol': 1e-9}
+    )
 
     # Prepare results
     if result.success:
@@ -66,8 +83,7 @@ def solver(players: list, price: float):
     else:
         status = 'failed'
     #print(status)
-    result = players
-    return result
+    return players
 
 
 if __name__ == "__main__":

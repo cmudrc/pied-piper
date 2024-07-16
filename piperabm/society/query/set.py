@@ -41,5 +41,7 @@ class Set(NxSet):
         """
         Set agent *balance* value
         """
+        if value < 0:
+            value = 0
         return self.set_node_attribute(id=id, attribute='balance', value=value)
     

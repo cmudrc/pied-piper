@@ -1,6 +1,7 @@
 import unittest
 from copy import deepcopy
 
+from piperabm.model import Model
 from piperabm.infrastructure.samples.infrastructure_0 import model as model_0
 from piperabm.infrastructure.samples.infrastructure_1 import model as model_1
 from piperabm.infrastructure.samples.infrastructure_2 import model as model_2
@@ -100,6 +101,31 @@ class TestDecisionMakingClass_2(unittest.TestCase):
         id_agent = agents[0]
         destinations = self.model.society.possible_search_destinations(agent_id=id_agent)
         self.assertEqual(len(destinations), 1)
+
+class TestDecisionMakingClass_3(unittest.TestCase):
+    """
+    No markets, searching mode
+    """
+    def setUp(self) -> None:
+        self.model = Model(seed=3)
+        point_1 = [0, 0]
+        point_2 = [0, 10]
+        point_3 = [10, 0]
+        point_4 = [10, 10]
+        self.model.infrastructure.add_street(pos_1=point_1, pos_2=point_2)
+        self.model.infrastructure.add_street(pos_1=point_3, pos_2=point_4)
+        self.model.infrastructure.add_home(pos=point_1, id=1)
+        self.model.infrastructure.add_home(pos=point_2, id=2)
+        self.model.infrastructure.add_home(pos=point_3, id=3)
+        self.model.infrastructure.add_home(pos=point_4, id=4)
+        self.model.bake()
+        self.model.society.neighbor_radius = 20 # Everyone is a neighbor
+        self.model.society.generate(num=10, gini_index=0.5)
+
+    def test_possible_search_destinations(self):
+        agents = self.model.society.agents
+        destinations = self.model.society.possible_search_destinations(agent_id=agents[3])
+        self.assertNotEqual(destinations, [])
 
 
 if __name__ == "__main__":

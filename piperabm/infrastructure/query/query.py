@@ -104,6 +104,8 @@ class Query(Add, Get, Set):
         """
         Filter random edges by their length percentage
         """
+        if percent > 100:
+            raise ValueError("enter a value between 0 and 100")
         edges_ids = self.streets
         total_length = 0
         edges_info = []

@@ -16,12 +16,18 @@ class File:
         """
         if self.path is None:
             raise ValueError("define path to continue")
+        '''
         default = 'result'
         if self.name == '':
             name = default
         else:
             name = default + '_' + self.name
         return os.path.join(self.path, name)
+        '''
+        result = os.path.join(self.path, 'result')
+        if self.name != '':
+            result = os.path.join(result, self.name)
+        return result
 
     def save(self, name: str) -> None:
         """
