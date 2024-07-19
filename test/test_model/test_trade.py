@@ -33,7 +33,7 @@ class TestTrade_0(unittest.TestCase):
 
         total_food_initial = food_low_initial + food_high_initial
         total_food_final = food_low_final + food_high_final
-        print(total_food_initial, total_food_final)
+        self.assertAlmostEqual(total_food_initial, total_food_final, places=4)
 
         self.assertLess(balance_low_final, balance_low_initial)
         self.assertLess(food_low_initial, food_low_final)

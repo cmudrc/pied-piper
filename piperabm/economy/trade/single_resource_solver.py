@@ -6,6 +6,7 @@ import numpy as np
 from scipy.optimize import minimize
 
 from piperabm.economy.accessibility import accessibility
+#from piperabm.tools.symbols import SYMBOLS
 
 
 def solver(players: list, price: float):
@@ -49,14 +50,7 @@ def solver(players: list, price: float):
     ]
 
     # Bounds for each variable (resource allocation cannot be negative and should not exceed the player's balance converted to resources)
-    bounds = [(0, balances[i] / price + initial_resources[i]) for i in range(num_players)]
-    
-    # Check for any erroneous bounds and adjust if necessary
-    for i, (lower, upper) in enumerate(bounds):
-        if upper < lower:
-            #print(players[i]['resource'], players[i]['balance'])
-            #print(f"Adjusting bounds for player {i+1}: Initial bounds were ({lower}, {upper}).")
-            bounds[i] = (0, 0)  # Set upper bound to lower to avoid infeasibility
+    bounds = [(0, max(balances[i] / price + initial_resources[i], 0)) for i in range(num_players)]
 
     # Initial guess: start with initial resources
     initial_guess = initial_resources
@@ -68,7 +62,7 @@ def solver(players: list, price: float):
         method='SLSQP',
         bounds=bounds,
         constraints=constraints,
-        options={'disp': False, 'ftol': 1e-9}
+        #options={'disp': False, 'ftol': 1e-9, 'eps': SYMBOLS['eps']}
     )
 
     # Prepare results
