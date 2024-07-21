@@ -26,6 +26,8 @@ class TestPathClass(unittest.TestCase):
         """
         A possible path to itself
         """
+        check = self.model.infrastructure.has_path(id_start=1, id_end=1)
+        self.assertTrue(check)
         path = self.model.infrastructure.path(id_start=1, id_end=1)
         expected_result = [1]
         self.assertListEqual(path, expected_result)
@@ -34,6 +36,8 @@ class TestPathClass(unittest.TestCase):
         """
         A possible path to other home
         """
+        check = self.model.infrastructure.has_path(id_start=1, id_end=2)
+        self.assertTrue(check)
         path = self.model.infrastructure.path(id_start=1, id_end=2)
         expected_result = [1, 8042686386972756495, 478254495130285640, 2]
         self.assertListEqual(path, expected_result)
@@ -42,9 +46,8 @@ class TestPathClass(unittest.TestCase):
         """
         Am impossible path to other home
         """
-        path = self.model.infrastructure.path(id_start=1, id_end=3)
-        expected_result = None
-        self.assertEqual(path, expected_result)
+        check = self.model.infrastructure.has_path(id_start=1, id_end=3)
+        self.assertFalse(check)
 
 
 if __name__ == "__main__":

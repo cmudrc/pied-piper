@@ -1,5 +1,5 @@
 """
-Grid world
+Grid world without access to market
 """
 
 import piperabm as pa
@@ -14,11 +14,6 @@ model.infrastructure.generate(
     grid_num=[6, 6],
     imperfection_percentage=10
 )
-model.infrastructure.add_market(
-    id=0,
-    pos=[0, 0]
-)
-model.bake()
 model.set_seed(None)
 
 

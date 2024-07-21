@@ -6,16 +6,25 @@ class Path:
     Path finding algorythm
     """
 
-    def path(self, id_start: int, id_end: int) -> list:
+    def has_path(self, id_start: int, id_end: int) -> bool:
+        """
+        Rapidly check if there is any path
+        """
+        return nx.has_path(
+            self.G,
+            source=id_start,
+            target=id_end
+        )
+    '''
+    def path(self, id_start: int, id_end: int, safe: bool = True) -> list:
         """
         Path finding algorythm using A_star
         """
         result = None
-        if nx.has_path(
-            self.G,
-            source=id_start,
-            target=id_end
-        ):
+        check = True
+        if safe is True:
+            check = self.has_path(id_start=id_start, id_end=id_end)
+        if check is True:
             result = nx.astar_path(
                 self.G,
                 source=id_start,
@@ -24,6 +33,18 @@ class Path:
                 weight="adjusted_length"
             )
         return result
+    '''
+    def path(self, id_start: int, id_end: int) -> list:
+        """
+        Path finding algorythm using A_star
+        """
+        return nx.astar_path(
+            self.G,
+            source=id_start,
+            target=id_end,
+            heuristic=self.heuristic_paths.estimated_distance,
+            weight="adjusted_length"
+        )
 
 
 if __name__ == "__main__":

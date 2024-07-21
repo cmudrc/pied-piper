@@ -27,28 +27,20 @@ class DecisionMaking:
             neighbors_homes.append(self.get_home_id(id=neighbor))
         result |= set(neighbors_homes)
         return list(result)
-
-    def select_top_destination(self, agent_id: int, destinations: list, is_market: bool):
-        """
-        Select top destination
-        """
-        if len(destinations) > 0:
-            result = []
-            for node_id in destinations:
-                score = self.destination_score(agent_id, destination_id=node_id, is_market=is_market)
-                if score is not None:
-                    result.append([node_id, score])
-            max_score = max(node[1] for node in result)
-            top_nodes = [node for node in result if node[1] == max_score]
-            random_index = np.random.choice(len(top_nodes))
-            selected_node = top_nodes[random_index]
-            top_node = selected_node[0]
-            top_score = selected_node[1]
-        else:
-            top_node, top_score = None, None
-        return top_node, top_score
     
-    def destination_score(self, agent_id, destination_id, is_market: bool) -> float:
+    def select_top_destination(self, destinations_scores: list):
+        """
+        Select the top destination
+        """
+        result = [None, None]
+        if len(destinations_scores) > 0:
+            result = destinations_scores[0]
+            for destination_score in destinations_scores:
+                if destination_score[1] > result[1]:
+                    result = destination_score
+        return result[0]
+    
+    def destination_score(self, agent_id: int, destination_id: int, is_market: bool) -> float:
         """
         Destination score
         """
@@ -98,72 +90,83 @@ class DecisionMaking:
         estimated_distance = self.estimated_distance(agent_id, destination_id)
         speed = self.speed
         return estimated_distance / speed
-    
-    def path(self, agent_id: int, destination_id: int) -> list:
-        """
-        Path finding for agents
-        """
-        result = None
-        if destination_id is not None:
-            id_start = self.get_current_node(id=agent_id)
-            if id_start is not None:
-                result = self.infrastructure.path(
-                    id_start=id_start,
-                    id_end=destination_id
-                )
-        return result
 
     def go_and_comeback_and_stay(self, agent_id: int, destination_id: int) -> None:
         """
         A complete daily cycle of choosing and going to a destination, waiting there for trade, and coming back home
         """
-        path = self.path(agent_id, destination_id)
-        if path is not None:
-            critical_stay_length = 0
-            action_queue = self.actions[agent_id]
-            # Go
-            move_go = Move(
-                action_queue=action_queue,
-                path=path,
-                usage=1
-            )
-            action_queue.add(move_go)
-            # Stay (destination)
-            stay_length = self.max_time_outside - (2 * move_go.total_duration)
-            if stay_length < critical_stay_length:
-                stay_length = critical_stay_length
-            stay = Stay(
-                action_queue=action_queue,
-                duration=stay_length
-            )
-            action_queue.add(stay)
-            # Comeback
-            move_back = move_go.reverse()
-            action_queue.add(move_back) 
-            # Stay (home)
-            stay_length = self.activity_cycle - action_queue.total_duration
-            if stay_length < critical_stay_length:
-                stay_length = critical_stay_length
-            stay = Stay(
-                action_queue=action_queue,
-                duration=stay_length
-            )
-            action_queue.add(stay)
+        path = self.infrastructure.path(
+            id_start=self.get_current_node(id=agent_id),
+            id_end=destination_id
+        )
+        critical_stay_length = 0
+        action_queue = self.actions[agent_id]
+
+        # Go (to the destination)
+        move_go = Move(
+            action_queue=action_queue,
+            path=path,
+            usage=1
+        )
+        action_queue.add(move_go)
+
+        # Stay (at the destination)
+        stay_length = self.max_time_outside - (2 * move_go.total_duration)
+        if stay_length < critical_stay_length:
+            stay_length = critical_stay_length
+        stay = Stay(
+            action_queue=action_queue,
+            duration=stay_length
+        )
+        action_queue.add(stay)
+
+        # Comeback (to the home)
+        move_back = move_go.reverse()
+        action_queue.add(move_back) 
+
+        # Stay (at the home)
+        stay_length = self.activity_cycle - action_queue.total_duration
+        if stay_length < critical_stay_length:
+            stay_length = critical_stay_length
+        stay = Stay(
+            action_queue=action_queue,
+            duration=stay_length
+        )
+
+        action_queue.add(stay)
+
+    def destinations_scores(self, agent_id: int, destinations: list, is_market: bool):
+        """
+        Check path existence and their score
+        """
+        results = []
+        for destination in destinations:
+            path_exists = self.infrastructure.has_path(id_start=self.get_current_node(id=agent_id), id_end=destination)
+            if path_exists is True:
+                score = self.destination_score(agent_id=agent_id, destination_id=destination, is_market=is_market)
+                result = [
+                    destination,
+                    score,
+                ]
+                results.append(result)
+        return results
 
     def decide_destination(self, id: int) -> None:
         """
         Decide the destination
         """
-        markets = self.infrastructure.markets
-        best_destination, _ = self.select_top_destination(agent_id=id, destinations=markets, is_market=True)
+        # Find suitable market
+        destinations = self.infrastructure.markets
+        destinations_scores = self.destinations_scores(agent_id=id, destinations=destinations, is_market=True)
+        best_destination = self.select_top_destination(destinations_scores)
         if best_destination is None:  # When market is not available
             # Possible non-market destinations to search
-            best_destination, _ = self.select_top_destination(
-                agent_id=id,
-                destinations=self.possible_search_destinations(agent_id=id),
-                is_market=False
-            )
-        self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination)
+            destinations = self.possible_search_destinations(agent_id=id)
+            destinations_scores = self.destinations_scores(agent_id=id, destinations=destinations, is_market=False)
+            best_destination = self.select_top_destination(destinations_scores)
+        # Action
+        if best_destination is not None:
+            self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination)
 
 
 if __name__ == "__main__":
@@ -177,10 +180,13 @@ if __name__ == "__main__":
         home_id=home_id,
         id=agent_id,
     )
-    print("current node: ", model.society.get_current_node(id=agent_id))
-    print("possible destinations: ", model.society.possible_search_destinations(agent_id=agent_id))
-    print("estimated distance: ", model.society.estimated_distance(agent_id=agent_id, destination_id=destination_id))
-    print("estimated duration: ", model.society.estimated_duration(agent_id=agent_id, destination_id=destination_id))
-    print("destination score: ", model.society.destination_score(agent_id=agent_id, destination_id=destination_id, is_market=True))
-    print("path: ", model.society.path(agent_id=agent_id, destination_id=destination_id))
 
+    #print("possible destinations: ", model.society.possible_search_destinations(agent_id=agent_id))
+    #print("estimated distance: ", model.society.estimated_distance(agent_id=agent_id, destination_id=destination_id))
+    #print("estimated duration: ", model.society.estimated_duration(agent_id=agent_id, destination_id=destination_id))
+    #print("destination score: ", model.society.destination_score(agent_id=agent_id, destination_id=destination_id, is_market=True))
+
+    destinations_scores = model.society.destinations_scores(agent_id=agent_id, destinations=model.infrastructure.markets, is_market=True)
+    top_destination = model.society.select_top_destination(destinations_scores)
+    print("destinations_scores: ", destinations_scores)
+    print("top destination: ", top_destination)

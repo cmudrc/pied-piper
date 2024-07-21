@@ -1,3 +1,7 @@
+"""
+Grid world without access to market
+"""
+
 from copy import deepcopy
 
 from piperabm.infrastructure.samples.infrastructure_3 import model as model_infrastructure
