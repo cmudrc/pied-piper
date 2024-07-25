@@ -25,6 +25,7 @@ class Serialize:
         data['idle_resource_rates'] = self.idle_resource_rates
         data['transportation_resource_rates'] = self.transportation_resource_rates
         data['speed'] = self.speed
+        data['transportation_degradation'] = self.transportation_degradation
         data['type'] = self.type
         return data
     
@@ -46,6 +47,7 @@ class Serialize:
         self.activity_cycle = data['activity_cycle']
         self.idle_resource_rates = data['idle_resource_rates']
         self.transportation_resource_rates = data['transportation_resource_rates']
+        self.transportation_degradation = data['transportation_degradation']
         self.speed = data['speed']
 
 

@@ -35,7 +35,8 @@ class Society(
             activity_cycle: float = 24 * (60 * 60), # 24 hours
             transportation_resource_rates: dict = transportation_resource_rates,
             idle_resource_rates: dict = idle_resource_rates,
-            speed: float = speed
+            speed: float = speed,
+            transportation_degradation: float = 1,
         ):
         self.G = nx.MultiGraph()
         self.model = None # Binding
@@ -49,6 +50,7 @@ class Society(
         self.idle_resource_rates = idle_resource_rates
         self.transportation_resource_rates = transportation_resource_rates
         self.speed = speed
+        self.transportation_degradation = transportation_degradation
 
     @property
     def infrastructure(self):

@@ -91,7 +91,7 @@ class DecisionMaking:
         speed = self.speed
         return estimated_distance / speed
 
-    def go_and_comeback_and_stay(self, agent_id: int, destination_id: int) -> None:
+    def go_and_comeback_and_stay(self, agent_id: int, destination_id: int, duration: float) -> None:
         """
         A complete daily cycle of choosing and going to a destination, waiting there for trade, and coming back home
         """
@@ -99,14 +99,15 @@ class DecisionMaking:
             id_start=self.get_current_node(id=agent_id),
             id_end=destination_id
         )
-        critical_stay_length = 1 ####
-        action_queue = self.actions[agent_id]
+        critical_stay_length = duration # To ensure trading occurs in the market
+        #action_queue = self.actions[agent_id]
+        action_queue = self.get_action_queue(id=agent_id)
 
         # Go (to the destination)
         move_go = Move(
             action_queue=action_queue,
             path=path,
-            usage=1
+            usage=self.transportation_degradation
         )
         action_queue.add(move_go)
 
@@ -114,11 +115,11 @@ class DecisionMaking:
         stay_length = self.max_time_outside - (2 * move_go.total_duration)
         if stay_length < critical_stay_length:
             stay_length = critical_stay_length
-        stay = Stay(
+        stay_market = Stay(
             action_queue=action_queue,
             duration=stay_length
         )
-        action_queue.add(stay)
+        action_queue.add(stay_market)
 
         # Comeback (to the home)
         move_back = move_go.reverse()
@@ -128,12 +129,11 @@ class DecisionMaking:
         stay_length = self.activity_cycle - action_queue.total_duration
         if stay_length < critical_stay_length:
             stay_length = critical_stay_length
-        stay = Stay(
+        stay_home = Stay(
             action_queue=action_queue,
             duration=stay_length
         )
-
-        action_queue.add(stay)
+        action_queue.add(stay_home)
 
     def destinations_scores(self, agent_id: int, destinations: list, is_market: bool):
         """
@@ -151,7 +151,7 @@ class DecisionMaking:
                 results.append(result)
         return results
 
-    def decide_destination(self, id: int) -> None:
+    def decide_destination(self, id: int, duration: float) -> None:
         """
         Decide the destination
         """
@@ -166,7 +166,7 @@ class DecisionMaking:
             best_destination = self.select_top_destination(destinations_scores)
         # Action
         if best_destination is not None:
-            self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination)
+            self.go_and_comeback_and_stay(agent_id=id, destination_id=best_destination, duration=duration)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,12 @@ class Get(NxGet):
     """
     Get attributes from network elements
     """
+
+    def get_action_queue(self, id: int):
+        """
+        Get agent action queue
+        """
+        return self.actions[id]
     
     def get_pos(self, id: int):
         """
