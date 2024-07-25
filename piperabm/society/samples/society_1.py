@@ -24,5 +24,6 @@ if __name__ == "__main__":
     destination_id = 2
     print(f'estimated_distance: {model.society.estimated_distance(agent_id, destination_id)} meters')
     print(f'estimated_duration: {model.society.estimated_duration(agent_id, destination_id)} seconds')
-    print(f'path: {model.society.path(agent_id, destination_id)}')
+    #print(f'path: {model.society.path(agent_id, destination_id)}')
+    #print(model.society.serialize())
     #model.show()

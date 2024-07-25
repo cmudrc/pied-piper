@@ -11,6 +11,38 @@ class TestSingleResourceSolver_0(unittest.TestCase):
         player_1 = {
             'id': 1,
             'type': 'agent',
+            'resource': 0,
+            'enough_resource': 10,
+            'balance': 200,
+        }
+        player_2 = {
+            'id': 2,
+            'type': 'market',
+            'resource': 100,
+            'enough_resource': 100,
+            'balance': 0,
+        }
+        self.players_initial = [player_1, player_2]
+
+        # Solve
+        self.players_final = solver(deepcopy(self.players_initial), price)
+
+    def test_solve(self):
+        total_resource_initial = self.players_initial[0]['resource'] + self.players_initial[1]['resource']
+        total_resource_final = self.players_final[0]['resource'] + self.players_final[1]['resource']
+        self.assertAlmostEqual(total_resource_initial, total_resource_final, places=12)
+        total_balance_initial = self.players_initial[0]['balance'] + self.players_initial[1]['balance']
+        total_balance_final = self.players_final[0]['balance'] + self.players_final[1]['balance']
+        self.assertAlmostEqual(total_balance_initial, total_balance_final, places=12)
+
+
+class TestSingleResourceSolver_1(unittest.TestCase):
+
+    def setUp(self):
+        price = 10
+        player_1 = {
+            'id': 1,
+            'type': 'agent',
             'resource': 19,
             'enough_resource': 10,
             'balance': 100,

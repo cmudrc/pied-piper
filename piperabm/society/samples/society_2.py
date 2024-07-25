@@ -21,4 +21,5 @@ model.set_seed(None)
 
 if __name__ == "__main__":
     print(model.society)
+    print(model.society.serialize())
     #model.show()

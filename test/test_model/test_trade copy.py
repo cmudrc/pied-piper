@@ -46,144 +46,40 @@ class TestTrade_0(unittest.TestCase):
 
 
 class TestTrade_1(unittest.TestCase):
-    """
-    An agent in market
-    """
 
     def setUp(self):
-        self.model = deepcopy(model_1)
-        self.agent_id = 1
-        self.home_id = 1
-        self.market_id = 2
-        #self.model
-        '''
+        model = Model()
+        point_1 = [0, 0]
+        point_2 = [1000, 0]
+        self.home_id = 0
+        self.market_id = 1
+        model.infrastructure.add_home(pos=point_1, id=self.home_id)
+        model.infrastructure.add_market(
+            pos=point_2,
+            id=self.market_id,
+            food=100,
+            water=100,
+            energy=100
+        )
+        model.infrastructure.add_street(pos_1=point_1, pos_2=point_2)
+        model.bake()
+        self.model = model
+        self.model.society.generate_agents(num=2, gini_index=0)
         self.agents = self.model.society.agents
-        '''
         val = self.model.society.get_resource(
-            id=self.agent_id,
+            id=self.agents[0],
             name='food'
         )
         self.model.society.set_resource(
-            id=self.agent_id,
+            id=self.agents[0],
             name='food',
             value=val/10
         )
-        self.model.prices = {
-            'food': 100,
-            'water': 100,
-            'energy': 100
-        }
-        self.model.society.idle_resource_rates = {
-            'food': 0.0001,
-            'water': 0.0001,
-            'energy': 0.0001
-        }
-        self.model.society.transportation_resource_rates = {
-            'food': 0.0002,
-            'water': 0.0002,
-            'energy': 0.0002,
-        }
-        self.model.society.activity_cycle = 900
-        self.model.society.max_time_outside = 300
         #print(self.model.infrastructure.stat)
         #self.model.infrastructure.show()
 
     
     def test_run(self):
-        #estimated_duration = self.model.society.estimated_duration(self.agent_id, destination_id=self.market_id)
-        #print(estimated_duration)
-
-        balances = []
-        foods = []
-
-        # Agent decides to go to market
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, 1)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=50) # Update
-
-        # Still on his way
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, None)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=50) # Update
-
-        # In the market
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, 2)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=50) # Update
-
-        # In the market
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, 2)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=100) # Update
-
-        # In the way to home
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, None)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=100) # Update
-
-        # At home
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, 1)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=554)
-
-        '''    
-        max_depth = 10000
-        i = 0
-        while i < max_depth:
-            self.model.update(duration=1) # Update
-            i += 1
-            if self.model.society.get_current_node(id=self.agent_id) != 1:
-                break
-        print(i)
-        '''
-
-        # In market
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, None)
-        balance = self.model.society.get_balance(self.agent_id)
-        balances.append(balance)
-        food = self.model.society.get_resource(self.agent_id, 'food')
-        foods.append(food)
-
-        self.model.update(duration=553)
-
-        current_node = self.model.society.get_current_node(id=self.agent_id)
-        #self.assertEqual(current_node, None)
-
-        print(balances)
-        print(foods)
-        #print(self.model.society.get_enough_resource(self.agent_id, 'food'))
-        '''
         self.model.step_size = 100
 
         market_initial = self.model.infrastructure.food(self.market_id)
@@ -226,7 +122,6 @@ class TestTrade_1(unittest.TestCase):
         self.model.run(n=1)
         remaining = self.model.society.actions[self.agents[0]].remaining
         self.assertLess(0, remaining)
-        '''
 
 
 if __name__ == "__main__":

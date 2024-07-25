@@ -99,7 +99,7 @@ class DecisionMaking:
             id_start=self.get_current_node(id=agent_id),
             id_end=destination_id
         )
-        critical_stay_length = 0
+        critical_stay_length = 1 ####
         action_queue = self.actions[agent_id]
 
         # Go (to the destination)

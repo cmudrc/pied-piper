@@ -86,12 +86,6 @@ class Update(Trade):
         self.step += 1
         self.time += duration
 
-        # Agents activity impact
-        self.society.update(duration)
-
-        # Climate impact
-        self.infrastructure.update(duration)
-
         # Trade
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)
@@ -101,6 +95,12 @@ class Update(Trade):
             agents = self.society.agents_in(id=home_id)
             if len(agents) >= 2:
                 self.trade(agents=agents)
+
+        # Agents activity impact
+        self.society.update(duration)
+
+        # Climate impact
+        self.infrastructure.update(duration)
 
         # Charge Markets (resource influx)
         markets = self.infrastructure.markets

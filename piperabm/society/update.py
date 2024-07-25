@@ -24,10 +24,12 @@ class Update:
         # Action update
         for id in self.alives:
             action_queue = self.actions[id]
+
             if action_queue.done is True:
                 action_queue.reset()
                 # Decide
                 self.decide_destination(id=id)
+
             # Execute
             action_queue.update(duration, measure=measure)
 
