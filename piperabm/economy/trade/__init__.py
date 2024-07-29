@@ -1,1 +1,1 @@
-from .multi_resource_solver import solver
+from .trade_solver import MultiResourceTrade

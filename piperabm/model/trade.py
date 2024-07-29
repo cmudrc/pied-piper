@@ -1,4 +1,4 @@
-from piperabm.economy.trade import solver
+from piperabm.economy.trade import MultiResourceTrade
 
 
 class Trade:
@@ -46,7 +46,8 @@ class Trade:
             players.append(player)
 
         # Solve
-        players = solver(players=players, prices=self.prices)
+        transactions = MultiResourceTrade.transactions(players=players, prices=self.prices)
+        players = MultiResourceTrade.apply(players=players, transactions=transactions)
 
         # Update values
         for player in players:
