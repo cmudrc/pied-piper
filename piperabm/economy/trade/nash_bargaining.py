@@ -16,7 +16,10 @@ class NashBargaining:
         num_players = len(players)
 
         if num_players == 0:
-            return players
+            return {
+                'resource': [],
+                'money': []
+            }
         
         def objective(resource_transafers):
             """

@@ -10,7 +10,7 @@ class MultiResourceTrade:
     def resource_names(players: list):
         return players[0]['resources'].keys()
 
-    def balance_allocations(players: list):
+    def balance_allocations(players: list, prices: dict) -> list:
         # Balance allocation
         resource_names = MultiResourceTrade.resource_names(players=players)
         result = []
@@ -26,7 +26,7 @@ class MultiResourceTrade:
             result.append(balance_allocation)
         return result
     
-    def prepare(players, balance_allocations, resource_name):
+    def prepare(players: list, balance_allocations: list, resource_name: str):
         """
         Extract the player info
         """
@@ -39,7 +39,7 @@ class MultiResourceTrade:
             new['balance'] = player['balance'] * balance_allocations[i][resource_name]
             result.append(new)
         return result
-    
+    '''
     def transactions(players: list, prices: dict):
         balance_allocations = MultiResourceTrade.balance_allocations(players)
         resource_names = MultiResourceTrade.resource_names(players=players)
@@ -54,8 +54,44 @@ class MultiResourceTrade:
             all_transactions[resource_name] = transactions
             #players = nb.apply(players, transactions)
         return all_transactions
+    '''
+
+    def sorted_markets(players, prices):
+        """
+        Sorted name of markets based on their size
+        """
+        market_sizes = {}
+        for resource_name in MultiResourceTrade.resource_names(players):
+            market_sizes[resource_name] = 0
+        for player in players:
+            resources = player['resources']
+            for resource_name in resources:
+                market_sizes[resource_name] += resources[resource_name]
+        for resource_name in market_sizes:
+            market_sizes[resource_name] *= prices[resource_name]
+        return sorted(market_sizes, key=market_sizes.get, reverse=True)
     
-    def apply(players, transactions):
+    def transactions(players: list, prices: dict) -> dict:
+        """
+        Calculate the proper transactions
+        """
+        markets = MultiResourceTrade.sorted_markets(players=players, prices=prices)
+        all_transactions = {}
+        for market in markets:
+            balance_allocations = MultiResourceTrade.balance_allocations(players=players, prices=prices)
+            market_players = MultiResourceTrade.prepare(
+                players=players,
+                balance_allocations=balance_allocations,
+                resource_name=market
+            )
+            transactions = nb.transactions(players=market_players, price=prices[market])
+            all_transactions[market] = transactions
+        return all_transactions
+    
+    def apply(players, transactions) -> list:
+        """
+        Apply transactions to players
+        """
         num_players = len(players)
         resource_names = MultiResourceTrade.resource_names(players=players)
         for resource_name in resource_names:
@@ -64,6 +100,34 @@ class MultiResourceTrade:
                 players[i]['balance'] = players[i]['balance'] + resource_transactions['money'][i]
                 players[i]['resources'][resource_name] = players[i]['resources'][resource_name] + resource_transactions['resource'][i]
         return players
+
+    def solve(players: list, prices: dict) -> list:
+        """
+        Solve until convergence
+        """
+        max_itteration = len(players)
+        i = 0
+        while i <= max_itteration:
+        #while True:
+            transactions = MultiResourceTrade.transactions(players=players, prices=prices)
+            if MultiResourceTrade.check_empty(transactions) is True:
+                break
+            else:
+                players = MultiResourceTrade.apply(players=players, transactions=transactions)
+            i += 1
+        return players
+
+    def check_empty(transactions: dict) -> bool:
+        result = None
+        threashold = 0
+        transfers = 0
+        for resource_name in transactions:
+            transfers += sum(transactions[resource_name]['money'])
+        if transfers <= threashold:
+            result = True
+        else:
+            result = False
+        return result
 
 
 if __name__ == "__main__":
@@ -127,8 +191,7 @@ if __name__ == "__main__":
         print(player['resources'], ', balance:', player['balance'])
 
     # Solve
-    transactions = MultiResourceTrade.transactions(players=players, prices=prices)
-    players = MultiResourceTrade.apply(players=players, transactions=transactions)
+    players = MultiResourceTrade.solve(players=players, prices=prices)
 
     # Final
     print("\n" + ">>> " + "Final: ")
