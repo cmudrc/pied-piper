@@ -32,7 +32,7 @@ class TestFileClass(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
 
     def test_file(self):
         self.maxDiff = None

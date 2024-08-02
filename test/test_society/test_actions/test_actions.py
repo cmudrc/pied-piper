@@ -24,7 +24,7 @@ class TestActionsClass_0(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
 
     def test_update(self):
         street = self.model.infrastructure.streets[0]
@@ -175,7 +175,7 @@ class TestActionsClass_1(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
 
     def test_update(self):
         street = self.model.infrastructure.streets[0]

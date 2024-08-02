@@ -51,7 +51,7 @@ class TestDegradationClass_1(unittest.TestCase):
         self.id_agent = self.model.society.agents[0] # Agent
         self.id_start = self.model.society.get_home_id(id=self.id_agent) # Home
         self.id_end = self.model.infrastructure.markets[0] # Market
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
 
     def test_degradation(self):
         street = self.model.infrastructure.streets[0]

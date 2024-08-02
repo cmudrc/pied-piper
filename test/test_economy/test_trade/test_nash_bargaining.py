@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 
-from piperabm.economy.trade.single_resource_solver import solver
+from piperabm.economy.trade.nash_bargaining import NashBargaining as nb
 
 
 class TestSingleResourceSolver_0(unittest.TestCase):
@@ -25,7 +25,9 @@ class TestSingleResourceSolver_0(unittest.TestCase):
         self.players_initial = [player_1, player_2]
 
         # Solve
-        self.players_final = solver(deepcopy(self.players_initial), price)
+        transactions = nb.transactions(self.players_initial, price)
+        self.players_final = nb.apply(deepcopy(self.players_initial), transactions)
+        #self.players_final = nb.(deepcopy(self.players_initial), price)
 
     def test_solve(self):
         total_resource_initial = self.players_initial[0]['resource'] + self.players_initial[1]['resource']
@@ -64,7 +66,8 @@ class TestSingleResourceSolver_1(unittest.TestCase):
         self.players_initial = [player_1, player_2, player_3]
 
         # Solve
-        self.players_final = solver(deepcopy(self.players_initial), price)
+        transactions = nb.transactions(deepcopy(self.players_initial), price)
+        self.players_final = nb.apply(deepcopy(self.players_initial), transactions)
 
     def test_solve(self):
         total_resource_initial = self.players_initial[0]['resource'] + self.players_initial[1]['resource'] + self.players_initial[2]['resource']
@@ -103,22 +106,23 @@ class TestSingleResourceSolver_2(unittest.TestCase):
         self.players_initial = [player_1, player_2, player_3]
 
         # Solve
-        self.players_final = solver(deepcopy(self.players_initial), price)
+        transactions = nb.transactions(self.players_initial, price)
+        self.players_final = nb.apply(deepcopy(self.players_initial), transactions)
 
     def test_solve(self):
         player_1_final_resource = self.players_final[0]['resource']
         player_2_final_resource = self.players_final[1]['resource']
         player_3_final_resource = self.players_final[2]['resource']
-        self.assertEqual(player_1_final_resource, 90)
-        self.assertEqual(player_2_final_resource, 10)
-        self.assertEqual(player_3_final_resource, 10)
+        self.assertAlmostEqual(player_1_final_resource, 90, places=10)
+        self.assertAlmostEqual(player_2_final_resource, 10, places=10)
+        self.assertAlmostEqual(player_3_final_resource, 10, places=10)
 
         player_1_final_balance = self.players_final[0]['balance']
         player_2_final_balance = self.players_final[1]['balance']
         player_3_final_balance = self.players_final[2]['balance']
-        self.assertEqual(player_1_final_balance, 100)
-        self.assertEqual(player_2_final_balance, 80)
-        self.assertEqual(player_3_final_balance, 20)
+        self.assertAlmostEqual(player_1_final_balance, 100, places=10)
+        self.assertAlmostEqual(player_2_final_balance, 80, places=10)
+        self.assertAlmostEqual(player_3_final_balance, 20, places=10)
 
 
 if __name__ == "__main__":

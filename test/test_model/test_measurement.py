@@ -33,7 +33,7 @@ class TestMeasurementClass(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end)
+        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=10)
 
     def test_measurement(self):
         path = os.path.dirname(os.path.realpath(__file__))

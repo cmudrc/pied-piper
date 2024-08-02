@@ -44,7 +44,7 @@ class NashBargaining:
         initial_guess = []
         bounds = []
         for i in range(num_players):
-            need = players[i]['enough_resource'] - players[i]['resource']
+            need = max(0, players[i]['enough_resource'] - players[i]['resource'])
             possible = players[i]['balance'] / price
             upper_bound = min(need, possible)
             lower_bound = -players[i]['resource']
