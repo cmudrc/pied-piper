@@ -23,5 +23,6 @@ players = nb.apply(players, transactions)
 
 
 if __name__ == "__main__":
-    print(transactions)
-    print(players)
+    #print(transactions)
+    for player in players:
+        print(f"resource: {player['resource']}, balance: {player['balance']}")

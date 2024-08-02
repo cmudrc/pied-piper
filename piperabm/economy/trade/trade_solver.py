@@ -22,7 +22,10 @@ class MultiResourceTrade:
                 needs[resource_name] = need
             all_needs = sum(needs.values())
             for resource_name in resource_names:
-                balance_allocation[resource_name] = needs[resource_name] / all_needs
+                if all_needs != 0:
+                    balance_allocation[resource_name] = needs[resource_name] / all_needs
+                else:
+                    balance_allocation[resource_name] = 0
             result.append(balance_allocation)
         return result
     
@@ -110,6 +113,7 @@ class MultiResourceTrade:
         while i <= max_itteration:
         #while True:
             transactions = MultiResourceTrade.transactions(players=players, prices=prices)
+            #print(transactions)
             if MultiResourceTrade.check_empty(transactions) is True:
                 break
             else:

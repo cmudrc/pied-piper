@@ -46,8 +46,9 @@ class Trade:
             players.append(player)
 
         # Solve
-        transactions = MultiResourceTrade.transactions(players=players, prices=self.prices)
-        players = MultiResourceTrade.apply(players=players, transactions=transactions)
+        #transactions = MultiResourceTrade.transactions(players=players, prices=self.prices)
+        #players = MultiResourceTrade.apply(players=players, transactions=transactions)
+        players = MultiResourceTrade.solve(players=players, prices=self.prices)
 
         # Update values
         for player in players:

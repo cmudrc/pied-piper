@@ -3,8 +3,12 @@ Solves a single resource for multiple players at fixed price
 """
 
 from scipy.optimize import minimize
+import warnings
 
 from piperabm.economy.accessibility import accessibility
+
+
+warnings.filterwarnings('ignore', message="Values in x were outside bounds during a minimize step, clipping to bounds")
 
 
 class NashBargaining:
@@ -32,23 +36,29 @@ class NashBargaining:
                 )
                 for i in range(num_players)
             ]
-            #return -sum(accessibilities)
-            result = -1
+            result = 1
             for a in accessibilities:
                 result *= a
-            return result
+            return -result
         
-        initial_guess = [0 for i in range(num_players)]
-        constraints = {'type': 'eq', 'fun': lambda resource_transafers: sum(resource_transafers)}
-        bounds = [          
-                (-players[i]['resource'], min(players[i]['enough_resource'] - players[i]['resource'], players[i]['balance'] / price))
-                for i in range(num_players)
-            ]
+        initial_guess = []
+        bounds = []
+        for i in range(num_players):
+            need = players[i]['enough_resource'] - players[i]['resource']
+            possible = players[i]['balance'] / price
+            upper_bound = min(need, possible)
+            lower_bound = -players[i]['resource']
+            bound = (lower_bound, upper_bound)
+            bounds.append(bound)
+            initial_guess.append((upper_bound + lower_bound) / 2)
+        constraints = [
+            {'type': 'eq', 'fun': lambda resource_transafers: sum(resource_transafers)},
+        ]
         result = minimize(
             objective,
             initial_guess,
+            bounds=bounds,
             constraints=constraints,
-            bounds=bounds
         )
         resource_transfers = [float(resource_transfer) for resource_transfer in result.x]
         money_transfers = [float(-resource_transfer * price) for resource_transfer in resource_transfers]

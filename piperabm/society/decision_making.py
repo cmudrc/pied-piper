@@ -100,7 +100,6 @@ class DecisionMaking:
             id_end=destination_id
         )
         critical_stay_length = duration # To ensure trading occurs in the market
-        #action_queue = self.actions[agent_id]
         action_queue = self.get_action_queue(id=agent_id)
 
         # Go (to the destination)

@@ -1,63 +1,28 @@
-from piperabm.economy.trade.trade_solver import MultiResourceTrade as mrt
+from piperabm.economy.trade.nash_bargaining import NashBargaining as nb
 
 
-prices = {
-    'food': 10,
-    'water': 10,
-    'energy': 10
-}
+price = 10
 player_1 = {
     'id': 1,
-    'type': 'agent',
-    'resources': {
-        'food': 9,
-        'water': 2,
-        'energy': 3
-    },
-    'enough_resources': {
-        'food': 10,
-        'water': 10,
-        'energy': 10
-    },
+    'type': 'market',
+    'resource': 0,
+    'enough_resource': 10,
     'balance': 100,
 }
 player_2 = {
     'id': 2,
     'type': 'agent',
-    'resources': {
-        'food': 10,
-        'water': 3,
-        'energy': 10
-    },
-    'enough_resources': {
-        'food': 10,
-        'water': 10,
-        'energy': 10
-    },
-    'balance': 100,
+    'resource': 100,
+    'enough_resource': 100,
+    'balance': 0,
 }
-player_3 = {
-    'id': 3,
-    'type': 'agent',
-    'resources': {
-        'food': 3,
-        'water': 10,
-        'energy': 7
-    },
-    'enough_resources': {
-        'food': 10,
-        'water': 10,
-        'energy': 10
-    },
-    'balance': 10,
-}
-players = [player_1, player_2, player_3]
+players = [player_1, player_2]
 
-#transactions = mrt.transactions(players, prices)
-#players = nb.apply(players, transactions)
-players = mrt.solve(players=players, prices=prices)
+transactions = nb.transactions(players, price)
+players = nb.apply(players, transactions)
 
 
 if __name__ == "__main__":
     #print(transactions)
-    print(players)
+    for player in players:
+        print(f"resource: {player['resource']}, balance: {player['balance']}")

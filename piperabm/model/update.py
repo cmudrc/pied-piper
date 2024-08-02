@@ -82,10 +82,6 @@ class Update(Trade):
             # Create current state
             previous_serialized = deepcopy(self.serialize())
 
-        # General
-        self.step += 1
-        self.time += duration
-
         # Trade
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)
@@ -111,7 +107,10 @@ class Update(Trade):
             for name in self.resource_names:
                 enough_amount = self.infrastructure.get_enough_resource(id=id, name=name)
                 self.infrastructure.set_resource(id=id, name=name, value=enough_amount)
-            
+
+        # General
+        self.step += 1
+        self.time += duration    
         '''
             current_balance = self.infrastructure.balance(id=id)
             current_food = self.infrastructure.food(id=id)

@@ -198,7 +198,10 @@ if __name__ == "__main__":
     agent_id = model.society.agents[0]
     destination_id = 2
     action_queue = model.society.actions[agent_id]
-    path = model.society.path(agent_id, destination_id)
+    path = model.infrastructure.path(
+        id_start=model.society.get_current_node(id=agent_id),
+        id_end=destination_id
+    )
     move = Move(
         action_queue=action_queue,
         path=path,
@@ -206,6 +209,7 @@ if __name__ == "__main__":
     )
     action_queue.add(move)
     #print(move)
+    print(f"total duration: {move.total_duration}")
 
     street = model.infrastructure.streets[0]
     print(f"usage impact: {model.infrastructure.get_usage_impact(ids=street)}")
