@@ -144,7 +144,12 @@ class Accessibility:
         """
         values = self.__call__(agents=agents, resources=resources, _from=_from, _to=_to)
         weights = self.measurement.delta_times(_from=_from, _to=_to)
-        return avg.arithmetic(values=values, weights=weights)
+        result = avg.arithmetic(values=values, weights=weights)
+        if isinstance(result, float):
+            pass
+        elif isinstance(result, complex):
+            avg = float(result.real)
+        return result
     
     def create_plot(self, agents='all', resources='all', _from=None, _to=None, info=None):
         """

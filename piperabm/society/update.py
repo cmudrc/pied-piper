@@ -28,7 +28,7 @@ class Update:
             if action_queue.done is True:
                 action_queue.reset()
                 # Decide
-                self.decide_destination(id=id, duration=duration)
+                self.decide_destination(agent_id=id, duration=duration)
 
             # Execute
             action_queue.update(duration, measure=measure)

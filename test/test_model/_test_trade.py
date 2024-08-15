@@ -154,7 +154,7 @@ class TestTrade_1(unittest.TestCase):
         food = self.model.society.get_resource(self.agent_id, 'food')
         foods.append(food)
 
-        self.model.update(duration=554)
+        self.model.update(duration=553)
 
         '''    
         max_depth = 10000
