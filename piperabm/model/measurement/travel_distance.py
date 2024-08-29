@@ -2,6 +2,8 @@ import os
 from copy import deepcopy
 import matplotlib.pyplot as plt
 
+from piperabm.tools.average import average as avg
+
 
 class TravelDistance:
     """
@@ -32,6 +34,17 @@ class TravelDistance:
     
     def __call__(self, _from=None, _to=None):
         return self.filter(_from=_from, _to=_to)
+    
+    def average(self, _from=None, _to=None) -> float:
+        """
+        Calculate total average
+        """
+        values = self.__call__(_from=_from, _to=_to)
+        weights = self.measurement.delta_times(_from=_from, _to=_to)
+        result = avg.arithmetic(values=values, weights=weights)
+        if isinstance(result, complex):
+            result = float(result.real)
+        return result
     
     def create_plot(self, _from=None, _to=None, info=None):
         """

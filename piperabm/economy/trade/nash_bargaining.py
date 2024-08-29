@@ -83,14 +83,14 @@ if __name__ == "__main__":
     player_1 = {
         'id': 1,
         'type': 'agent',
-        'resource': 19,
+        'resource': 9,
         'enough_resource': 10,
         'balance': 100,
     }
     player_2 = {
         'id': 2,
         'type': 'agent',
-        'resource': 8,
+        'resource': 6,
         'enough_resource': 10,
         'balance': 100,
     }
