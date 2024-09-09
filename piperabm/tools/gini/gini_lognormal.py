@@ -55,8 +55,10 @@ class GiniLogNormal:
 
 if __name__ == "__main__":
     distribution = GiniLogNormal(
-        gini_index=0.5,
+        gini_index=0.45,
         average=1
     )
+    print(distribution.mu)
+    print(distribution.sigma)
     sample = distribution.rvs(10)
     print(sample)
