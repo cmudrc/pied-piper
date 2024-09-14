@@ -58,7 +58,7 @@ if __name__ == "__main__":
         gini_index=0.45,
         average=1
     )
-    print(distribution.mu)
+    print(distribution.mu, distribution.scale)
     print(distribution.sigma)
     sample = distribution.rvs(10)
     print(sample)
