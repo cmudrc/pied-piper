@@ -23,7 +23,7 @@ def run_model(model):
         n=steps,
         step_size=step_size,
         save=True,
-        save_transactions=True,
+        save_transactions=False,
         resume=False,
         report=True
     )

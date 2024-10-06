@@ -86,14 +86,15 @@ class Update(Trade):
             previous_serialized = deepcopy(self.serialize())
 
         # Trade
+        transactions = []
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)
             if len(agents) >= 1:
-                transactions = self.trade(agents=agents, markets=[market_id])
+                transactions += self.trade(agents=agents, markets=[market_id])
         for home_id in self.infrastructure.homes:  # Agents in home
             agents = self.society.agents_in(id=home_id)
             if len(agents) >= 2:
-                transactions = self.trade(agents=agents)
+                transactions += self.trade(agents=agents)
         #transactions
         for transaction in transactions:
             transaction.append(self.time)
@@ -176,8 +177,6 @@ class Update(Trade):
 
         # Transactions
         if save_transactions is True:
-            if transactions is not None and \
-            len(transactions) > 0:
-                self.append_transactions(transactions)
+            self.append_transactions(transactions)
 
         return transactions
