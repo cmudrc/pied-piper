@@ -1,4 +1,7 @@
+from copy import deepcopy
+
 from piperabm.economy.trade import MultiResourceTrade
+from piperabm.economy.trade.allocation import find_exchanges
 
 
 class Trade:
@@ -47,8 +50,12 @@ class Trade:
 
         # Solve
         #transactions = MultiResourceTrade.transactions(players=players, prices=self.prices)
+        #print(transactions)
         #players = MultiResourceTrade.apply(players=players, transactions=transactions)
+        players_initial = deepcopy(players)
         players = MultiResourceTrade.solve(players=players, prices=self.prices)
+        transactions = find_exchanges(players_initial=players_initial, players_final=players)
+        #print(transactions)
 
         # Update values
         for player in players:
@@ -76,13 +83,32 @@ class Trade:
                     id=player['id'],
                     value=player['balance']
                 )
+        return flatten_transactions(transactions)
+    
 
+def flatten_transactions(transactions):
+    results = []
+    for resource_name in transactions:
+        for transaction in transactions[resource_name]:
+            result = [
+                transaction[0], # from
+                transaction[1], # to
+                transaction[2], # amount
+                resource_name, # resource name
+            ]
+            results.append(result)
+    return results
+    
 
 if __name__ == "__main__":
+
+    import os
     
     from piperabm.society.samples.society_0 import model
 
-
+    
+    model.path = os.path.dirname(os.path.realpath(__file__))
+    print(model.result_directory)
     model.society.average_income = 0
     agents = model.society.agents
 
@@ -93,6 +119,8 @@ if __name__ == "__main__":
         id_high = agents[1]  # Agent with higher food
     food = model.society.get_resource(id_low, 'food')
     model.society.set_resource(id_low, 'food', value=food/10)
+    water = model.society.get_resource(id_low, 'water')
+    model.society.set_resource(id_low, 'water', value=water/5)
 
     print(">>> Initial:")
     for agent in agents:
@@ -102,7 +130,7 @@ if __name__ == "__main__":
         energy = model.society.get_resource(agent, 'energy')
         print(f"{agent} balance: {balance}, food: {food}, water: {water}, energy: {energy}")
 
-    model.update(duration=1)
+    transactions = model.update(duration=1, save_transactions=True)
 
     print(">>> Final:")
     for agent in agents:
@@ -112,3 +140,10 @@ if __name__ == "__main__":
         energy = model.society.get_resource(agent, 'energy')
         print(f"{agent} balance: {balance}, food: {food}, water: {water}, energy: {energy}")
 
+    print("\n" + ">>> " + "Exchanges: ")
+    for transaction in transactions:
+        print(transaction)
+    #for resource_name in transactions:
+     #   print(" -" + resource_name + ":")
+      #  for transaction in transactions[resource_name]:
+       #     print(f"    from: {str(transaction[0])}, to: {str(transaction[1])}, amount: {str(transaction[2])}")

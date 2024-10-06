@@ -15,6 +15,7 @@ class Update(Trade):
             n: int = None,
             step_size: float = 3600,
             save: bool = False,
+            save_transactions: bool = False,
             resume: bool = False,
             report: bool = False
         ):
@@ -59,6 +60,7 @@ class Update(Trade):
                 self.update(
                     duration=step_size,
                     save=save,
+                    save_transactions=save_transactions
                 )
                 if len(self.society.alive_agents) == 0:
                     break
@@ -70,10 +72,11 @@ class Update(Trade):
                     print(f"Progress: {(i + 1) / n * 100:.1f}% complete")
                 self.update(
                     duration=step_size,
-                    save=save
+                    save=save,
+                    save_transactions=save_transactions
                 )
 
-    def update(self, duration: float, save: bool = False):
+    def update(self, duration: float, save: bool = False, save_transactions: bool = False):
         """
         Update model for a single steps
         """
@@ -86,11 +89,14 @@ class Update(Trade):
         for market_id in self.infrastructure.markets:  # Agents in market
             agents = self.society.agents_in(id=market_id)
             if len(agents) >= 1:
-                self.trade(agents=agents, markets=[market_id])
+                transactions = self.trade(agents=agents, markets=[market_id])
         for home_id in self.infrastructure.homes:  # Agents in home
             agents = self.society.agents_in(id=home_id)
             if len(agents) >= 2:
-                self.trade(agents=agents)
+                transactions = self.trade(agents=agents)
+        #transactions
+        for transaction in transactions:
+            transaction.append(self.time)
 
         # Agents activity impact
         self.society.update(duration)
@@ -167,3 +173,11 @@ class Update(Trade):
             )
             self.append_delta(delta)
             self.save_final()
+
+        # Transactions
+        if save_transactions is True:
+            if transactions is not None and \
+            len(transactions) > 0:
+                self.append_transactions(transactions)
+
+        return transactions

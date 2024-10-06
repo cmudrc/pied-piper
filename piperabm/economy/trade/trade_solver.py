@@ -108,10 +108,10 @@ class MultiResourceTrade:
         """
         Solve until convergence
         """
-        max_itteration = len(players)
         i = 0
-        while i <= max_itteration:
-        #while True:
+        #max_itteration = 1
+        max_itteration = len(players) ** 2
+        while i < max_itteration:
             transactions = MultiResourceTrade.transactions(players=players, prices=prices)
             #print(transactions)
             if MultiResourceTrade.check_empty(transactions) is True:
@@ -119,6 +119,10 @@ class MultiResourceTrade:
             else:
                 players = MultiResourceTrade.apply(players=players, transactions=transactions)
             i += 1
+        '''
+        transactions = MultiResourceTrade.transactions(players=players, prices=prices)
+        players = MultiResourceTrade.apply(players=players, transactions=transactions)
+        '''
         return players
 
     def check_empty(transactions: dict) -> bool:

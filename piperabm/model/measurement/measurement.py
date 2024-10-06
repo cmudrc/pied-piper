@@ -4,6 +4,7 @@ from copy import deepcopy
 from piperabm.model import Model
 from piperabm.model.measurement.accessibility import Accessibility
 from piperabm.model.measurement.travel_distance import TravelDistance
+from piperabm.model.measurement.interaction import Interaction
 from piperabm.tools.json_file import JsonFile
 from piperabm.tools.coordinate import distance as ds
 
@@ -18,6 +19,7 @@ class Measurement:
         self.times = []
         self.accessibility = Accessibility(measurement=self)
         self.travel_distance = TravelDistance(measurement=self)
+        #self.interaction = Interaction(measurement=self)
         
     @property
     def result_directory(self):
@@ -81,7 +83,13 @@ class Measurement:
         Add new travel distance value
         """
         self.travel_distance.add(value=value)
-
+    '''
+    def add_interaction(self, id_from: int, id_to: int, resource_name: str, resource_amount: float) -> None:
+        """
+        Add new interaction value
+        """
+        self.interaction.add(id_from=id_from, id_to=id_to, resource_name=resource_name, resource_amount=resource_amount)
+    '''
     def measure(self, report=True, resume=False):
         if resume is False:  # Restart the measurement
             file = JsonFile(path=self.path, filename='measurement')

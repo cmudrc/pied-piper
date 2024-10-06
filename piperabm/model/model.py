@@ -74,14 +74,6 @@ class Model(
         )
         if save is True:
             self.save(state='infrastructure')
-
-    '''
-    def __eq__(self, other):
-        if isinstance(other, dict):
-            return self.serialize() == other
-        else:
-            return self.serialize() == other.serialize()
-    '''
     
 
 if __name__ == "__main__":

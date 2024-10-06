@@ -1,4 +1,5 @@
 import os
+import csv
 
 from piperabm.tools.json_file import JsonFile
 from piperabm.tools.delta import Delta
@@ -117,6 +118,29 @@ class File:
         current = self.step
         deltas = self.load_deltas(_from=current, _to=current+steps)
         self.apply_deltas(deltas=deltas)
+
+    def append_transactions(self, transactions) -> None:
+        """
+        Append the new delta to file
+        """
+        filename = '_transactions' + '.' + 'csv'
+        filepath = os.path.join(self.result_directory + filename)
+        #filepath = os.path.join(self.result_directory, filename)
+        headers = ['from', 'to', 'amount', 'resource']
+
+        if not os.path.exists(filepath):
+            # Create it with headers only
+            with open(filepath, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(headers)
+
+        with open(filepath, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            for transaction in transactions:
+                writer.writerow(transaction)
+        #if deltas_file.exists() is False:
+        #    deltas_file.save(data=[])
+        #deltas_file.append(delta)
 
 
 if __name__ == "__main__":
