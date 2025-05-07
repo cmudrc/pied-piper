@@ -4,11 +4,7 @@
 __pycache__/
 *.egg-info/
 BASEMENT/
-guides/
 .VSCodeCounter/
 settings.json
 .DS_Store
 .python-version
-venv/
-examples/
-run/

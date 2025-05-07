@@ -61,9 +61,7 @@ if __name__ == "__main__":
     infrastructure = Infrastructure()
     infrastructure.generate(
         homes_num=10,
-        x_grid_size=15,
-        y_grid_size=10,
-        x_num=6,
-        y_num=6
+        grid_size=[15, 10],
+        grid_num=[6, 6],
     )
     infrastructure.show()

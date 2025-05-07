@@ -1,7 +1,7 @@
 import os
 import csv
-
 import keepdelta as kd
+
 from piperabm.tools.json_file import JsonFile
 
 
@@ -16,7 +16,7 @@ class File:
         Return result directory
         """
         if self.path is None:
-            raise ValueError("define path to continue")
+            raise ValueError("Define path to continue.")
         result = os.path.join(self.path, 'result')
         if self.name != '':
             result = os.path.join(result, self.name)
@@ -50,6 +50,8 @@ class File:
         Load model from file
         """
         file = JsonFile(path=self.result_directory, filename=name)
+        if file.exists() is False:
+            raise ValueError(f"File {name} doesn't exist in {self.result_directory}")
         data = file.load()
         self.deserialize(data)
 
@@ -123,8 +125,8 @@ class File:
         """
         Append the new delta to file
         """
-        filename = '_transactions' + '.' + 'csv'
-        filepath = os.path.join(self.result_directory + filename)
+        name = 'transactions' + '.' + 'csv'
+        filepath = os.path.join(self.result_directory, name)
         headers = ['from', 'to', 'amount', 'resource']
 
         if not os.path.exists(filepath):

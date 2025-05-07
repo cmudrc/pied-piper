@@ -49,9 +49,6 @@ class Trade:
             players.append(player)
 
         # Solve
-        #transactions = MultiResourceTrade.transactions(players=players, prices=self.prices)
-        #print(transactions)
-        #players = MultiResourceTrade.apply(players=players, transactions=transactions)
         players_initial = deepcopy(players)
         players = MultiResourceTrade.solve(players=players, prices=self.prices)
         transactions = find_exchanges(players_initial=players_initial, players_final=players)

@@ -118,51 +118,6 @@ class Update(Trade):
         # General
         self.step += 1
         self.time += duration    
-        '''
-            current_balance = self.infrastructure.balance(id=id)
-            current_food = self.infrastructure.food(id=id)
-            needed_food = enough_food - current_food
-            if needed_food > 0:
-                needed_food_value = food_price * needed_food
-            else:
-                needed_food_value = 0
-
-            current_water = self.infrastructure.water(id=id)
-            needed_water = enough_water - current_water
-            if needed_water > 0:
-                needed_water_value = water_price * needed_water
-            else:
-                needed_water_value = 0
-            current_energy = self.infrastructure.energy(id=id)
-            
-            needed_energy = enough_energy - current_energy
-            if needed_energy > 0:
-                needed_energy_value = energy_price * needed_energy
-            else:
-                needed_energy_value = 0
-            total_needed = needed_food_value + needed_water_value + needed_energy_value
-            if total_needed > 0:
-                balance_for_food = (needed_food_value / total_needed) * current_balance
-                balance_for_water = (needed_water_value / total_needed) * current_balance
-                balance_for_energy = (needed_energy_value / total_needed) * current_balance
-                get_food = balance_for_food / food_price
-                get_water = balance_for_water / water_price
-                get_energy = balance_for_energy / energy_price
-                actual_get_food = min(get_food, needed_food)
-                actual_get_water = min(get_water, needed_water)
-                actual_get_energy = min(get_energy, needed_energy)
-                self.infrastructure.food(id=id, new_val=current_food+actual_get_food)
-                self.infrastructure.water(id=id, new_val=current_water+actual_get_water)
-                self.infrastructure.energy(id=id, new_val=current_energy+actual_get_energy)
-                self.infrastructure.balance(
-                    id=id,
-                    new_val=current_balance-(
-                        actual_get_food*food_price + \
-                        actual_get_water*water_price + \
-                        actual_get_energy*energy_price
-                    )
-                )
-        '''
 
         # Delta
         if save is True:
