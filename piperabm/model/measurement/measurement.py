@@ -4,7 +4,7 @@ from copy import deepcopy
 from piperabm.model import Model
 from piperabm.model.measurement.accessibility import Accessibility
 from piperabm.model.measurement.travel_distance import TravelDistance
-from piperabm.model.measurement.interaction import Interaction
+#from piperabm.model.measurement.interaction import Interaction
 from piperabm.tools.json_file import JsonFile
 from piperabm.tools.coordinate import distance as ds
 

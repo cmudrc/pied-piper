@@ -1,8 +1,8 @@
 from copy import deepcopy
+import keepdelta as kd
 
 from piperabm.model.trade import Trade
 from piperabm.tools.json_file import JsonFile
-from piperabm.tools.delta import Delta
 
 
 class Update(Trade):
@@ -168,7 +168,7 @@ class Update(Trade):
         if save is True:
             # Create new current state and compare it to the previous one
             current_serialized = self.serialize()
-            delta = Delta.create(
+            delta = kd.create(
                 old=previous_serialized,
                 new=current_serialized
             )

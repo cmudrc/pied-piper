@@ -1,8 +1,8 @@
 import os
 import csv
 
+import keepdelta as kd
 from piperabm.tools.json_file import JsonFile
-from piperabm.tools.delta import Delta
 
 
 class File:
@@ -96,7 +96,7 @@ class File:
         Update model by applying a delta
         """
         self.deserialize(
-            Delta.apply(
+            kd.apply(
                 old=self.serialize(),
                 delta=delta
             )
@@ -125,7 +125,6 @@ class File:
         """
         filename = '_transactions' + '.' + 'csv'
         filepath = os.path.join(self.result_directory + filename)
-        #filepath = os.path.join(self.result_directory, filename)
         headers = ['from', 'to', 'amount', 'resource']
 
         if not os.path.exists(filepath):
@@ -148,7 +147,5 @@ if __name__ == "__main__":
     from piperabm.infrastructure.samples.infrastructure_0 import model
 
     model.path = os.path.dirname(os.path.realpath(__file__))
-    #print(model.result_directory)
-    #model.name = 'MyModel'
     model.save_initial()
     model.load_initial()
