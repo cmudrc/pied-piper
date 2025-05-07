@@ -7,12 +7,14 @@ household_sizes = [1, 5, 10] # Agents/Homes
 impact_types = ['critical', 'random']
 impact_levels = [5, 15, 25]
 repetitions = 3 # How many times to repeat each experiment
+steps = 1000
 '''
 populations = [10, 15] # Agents
 household_sizes = [1, 5] # Agents/Homes
 impact_types = ['critical', 'random']
 impact_levels = [5, 15]
 repetitions = 2 # How many times to repeat each experiment
+steps = 10
 '''
 impacts = [None] + [[impact_type, level] for impact_type in impact_types for level in impact_levels]
 
@@ -38,8 +40,6 @@ market_resource_factor = 10 # market average times agents average
 
 
 # Setup
-#steps = 1000
-steps = 10
 step_size = 2 * 3600 # seconds
 
 

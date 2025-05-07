@@ -11,3 +11,4 @@ settings.json
 .python-version
 venv/
 examples/
+run/

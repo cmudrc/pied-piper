@@ -31,7 +31,7 @@ class Measurement:
         result = os.path.join(self.path, 'result')
         if self.name != '':
             result = os.path.join(result, self.name)
-        return result   
+        return result
 
     @property
     def len(self) -> int:
@@ -150,6 +150,8 @@ class Measurement:
         Load to file
         """
         file = JsonFile(path=self.result_directory, filename='measurement')
+        if file.exists() is False:
+            raise ValueError("File not found:\n" + file.filepath)
         data = file.load()
         self.deserialize(data=data)
 
