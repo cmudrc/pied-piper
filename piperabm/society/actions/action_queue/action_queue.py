@@ -8,7 +8,7 @@ class ActionQueue(Print):
     Action queue to manage the to-do list
     """
 
-    type = 'queue'
+    type = "queue"
 
     def __init__(
             self,
@@ -46,7 +46,7 @@ class ActionQueue(Print):
         undone_actions = []
         for action in reversed(self.library):
             if action.done:
-                break  # Stop the iteration if an action is done, as per the list's structure.
+                break  # Stop the iteration if an action is done, as per the list"s structure.
             undone_actions.append(action)
         return list(reversed(undone_actions))
     
@@ -114,23 +114,23 @@ class ActionQueue(Print):
         for action in self.library:
             action_serialized = action.serialize()
             library_serialized.append(action_serialized)
-        data['library'] = library_serialized
-        data['agent_id'] = self.agent_id
-        data['type'] = self.type
+        data["library"] = library_serialized
+        data["agent_id"] = self.agent_id
+        data["type"] = self.type
         return data
     
     def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        if data['type'] != self.type:
+        if data["type"] != self.type:
             raise ValueError
-        library_serialized = data['library']
+        library_serialized = data["library"]
         for action_serialized in library_serialized:
-            if 'type' in action_serialized:
-                if action_serialized['type'] == 'move':
+            if "type" in action_serialized:
+                if action_serialized["type"] == "move":
                     action = Move(action_queue=self)
-                elif action_serialized['type'] == 'stay':
+                elif action_serialized["type"] == "stay":
                     action = Stay(action_queue=self)
                 action.deserialize(action_serialized)
                 self.library.append(action)
@@ -142,16 +142,42 @@ if __name__ == "__main__":
 
     agent_id = model.society.agents[0]
     destination_id = 2
-    model.society.go_and_comeback_and_stay(agent_id=agent_id, destination_id=destination_id)
-    #print(model.society.actions[agent_id])
+    action_queue = model.society.actions[agent_id]
+    path = model.infrastructure.path(
+        id_start=model.society.get_current_node(id=agent_id),
+        id_end=destination_id
+    )
+    move = Move(
+        action_queue=action_queue,
+        path=path,
+        usage=1
+    )
+
+    agent_id = model.society.agents[0]
+    destination_id = 2
+    action_queue = model.society.actions[agent_id]
+    model.society.go_and_comeback_and_stay(
+        action_queue=action_queue,
+        move_go=move,
+        stay_length=100,
+    )
     
+    #print(model.society.actions[agent_id])
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+
     model.update(duration=30)
+
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+
     model.update(duration=30)
+
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
-    model.update(duration=28700)
+
+    model.update(duration=120)
+
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
-    model.update(duration=300)
+
+    model.update(duration=60)
+
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     

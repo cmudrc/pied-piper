@@ -15,25 +15,7 @@ class Path:
             source=id_start,
             target=id_end
         )
-    '''
-    def path(self, id_start: int, id_end: int, safe: bool = True) -> list:
-        """
-        Path finding algorythm using A_star
-        """
-        result = None
-        check = True
-        if safe is True:
-            check = self.has_path(id_start=id_start, id_end=id_end)
-        if check is True:
-            result = nx.astar_path(
-                self.G,
-                source=id_start,
-                target=id_end,
-                heuristic=self.heuristic_paths.estimated_distance,
-                weight="adjusted_length"
-            )
-        return result
-    '''
+
     def path(self, id_start: int, id_end: int) -> list:
         """
         Path finding algorythm using A_star
@@ -51,5 +33,8 @@ if __name__ == "__main__":
 
     from piperabm.infrastructure.samples.infrastructure_1 import model
 
+    has_path = model.infrastructure.has_path(id_start=1, id_end=2)
+    print("has path? :", has_path)
+    
     path = model.infrastructure.path(id_start=1, id_end=2)
-    print(path)
+    print("path: ", path)

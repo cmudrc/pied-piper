@@ -7,7 +7,7 @@ class Move(Print):
     Move action
     """
 
-    type = 'move'
+    type = "move"
 
     def __init__(
             self,
@@ -208,14 +208,19 @@ if __name__ == "__main__":
         usage=1
     )
     action_queue.add(move)
-    #print(move)
-    print(f"total duration: {move.total_duration}")
 
+    #print(move)
+
+    print(f"total duration: {move.total_duration}")
     street = model.infrastructure.streets[0]
     print(f"usage impact: {model.infrastructure.get_usage_impact(ids=street)}")
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+    
     model.update(duration=28)
+    
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+    
     model.update(duration=28)
+    
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
     print(f"usage impact: {model.infrastructure.get_usage_impact(ids=street)}")

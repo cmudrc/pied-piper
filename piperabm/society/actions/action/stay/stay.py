@@ -8,7 +8,7 @@ class Stay(Print):
     Stay action
     """
 
-    type = 'stay'
+    type = "stay"
 
     def __init__(self, action_queue, duration: float = 0):
         super().__init__()
@@ -38,21 +38,21 @@ class Stay(Print):
         Serialize
         """
         data = {}
-        data['type'] = self.type
-        data['total_duration'] = self.total_duration
-        data['remaining'] = self.remaining
-        data['elapsed'] = self.elapsed
-        data['done'] = self.done
+        data["type"] = self.type
+        data["total_duration"] = self.total_duration
+        data["remaining"] = self.remaining
+        data["elapsed"] = self.elapsed
+        data["done"] = self.done
         return data
 
     def deserialize(self, data: dict) -> None:
         """
         Deserialize
         """
-        self.total_duration = data['total_duration']
-        self.elapsed = data['elapsed']
-        self.remaining = data['remaining']
-        self.done = data['done'] 
+        self.total_duration = data["total_duration"]
+        self.elapsed = data["elapsed"]
+        self.remaining = data["remaining"]
+        self.done = data["done"] 
 
 
 if __name__ == "__main__":
@@ -70,7 +70,10 @@ if __name__ == "__main__":
     )
     action_queue.add(stay)
 
-    path = model.society.path(agent_id, destination_id)
+    path = model.infrastructure.path(
+        id_start=model.society.get_current_node(id=agent_id),
+        id_end=destination_id
+    )
     move = Move(
         action_queue=action_queue,
         path=path,
@@ -79,7 +82,11 @@ if __name__ == "__main__":
     action_queue.add(move)
 
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+
     model.update(duration=4)
+
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
+
     model.update(duration=14)
+
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")

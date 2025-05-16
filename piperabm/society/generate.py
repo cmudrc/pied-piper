@@ -55,6 +55,7 @@ if __name__ == "__main__":
         average_balance=1000
     )
     model.set_seed(None)
-    print(model.society.gini_index)
-    print(model.society.serialize())
+
+    print("gini index: ", model.society.gini_index)
+    print("society serialized:\n", model.society.serialize())
     

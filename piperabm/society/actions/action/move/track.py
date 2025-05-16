@@ -10,7 +10,7 @@ class Track(Print):
     Move action segments
     """
 
-    type = 'track'
+    type = "track"
 
     def __init__(
         self,
@@ -42,16 +42,16 @@ class Track(Print):
                 self.unit_vector = None
                 self.adjustment_factor = None
         else: # Equivalent of deserialization
-            self.done = kwargs['done']
-            self.elapsed = kwargs['elapsed']
-            self.remaining = kwargs['remaining']
-            self.total_duration = kwargs['total_duration']
-            if kwargs['unit_vector'] is None:
+            self.done = kwargs["done"]
+            self.elapsed = kwargs["elapsed"]
+            self.remaining = kwargs["remaining"]
+            self.total_duration = kwargs["total_duration"]
+            if kwargs["unit_vector"] is None:
                 self.unit_vector = None
                 self.adjustment_factor = None
             else:
-                self.unit_vector = kwargs['unit_vector']
-                self.adjustment_factor = kwargs['adjustment_factor']
+                self.unit_vector = kwargs["unit_vector"]
+                self.adjustment_factor = kwargs["adjustment_factor"]
 
     @property
     def action_queue(self):
@@ -178,15 +178,15 @@ class Track(Print):
                 delta_length = ds.point_to_point(pos_old, pos_new)
         # Update fuel consumption
         delta_t = duration - excess_duration
-        fuel_food = self.society.transportation_resource_rates['food'] * delta_t
-        fuel_water = self.society.transportation_resource_rates['water'] * delta_t
-        fuel_energy = self.society.transportation_resource_rates['energy'] * delta_t
-        new_food = self.society.get_resource(name='food', id=self.agent_id) - fuel_food
-        new_water = self.society.get_resource(name='water', id=self.agent_id) - fuel_water
-        new_energy = self.society.get_resource(name='energy', id=self.agent_id) - fuel_energy
-        self.society.set_resource(name='food', id=self.agent_id, value=new_food)
-        self.society.set_resource(name='water', id=self.agent_id, value=new_water)
-        self.society.set_resource(name='energy', id=self.agent_id, value=new_energy)
+        fuel_food = self.society.transportation_resource_rates["food"] * delta_t
+        fuel_water = self.society.transportation_resource_rates["water"] * delta_t
+        fuel_energy = self.society.transportation_resource_rates["energy"] * delta_t
+        new_food = self.society.get_resource(name="food", id=self.agent_id) - fuel_food
+        new_water = self.society.get_resource(name="water", id=self.agent_id) - fuel_water
+        new_energy = self.society.get_resource(name="energy", id=self.agent_id) - fuel_energy
+        self.society.set_resource(name="food", id=self.agent_id, value=new_food)
+        self.society.set_resource(name="water", id=self.agent_id, value=new_water)
+        self.society.set_resource(name="energy", id=self.agent_id, value=new_energy)
         return excess_duration
     
     def reverse(self):
@@ -206,16 +206,16 @@ class Track(Print):
         Serialize
         """
         dictionary = {}
-        dictionary['id_start'] = self.id_start
-        dictionary['id_end'] = self.id_end
-        dictionary['elapsed'] = self.elapsed
-        dictionary['remaining'] = self.remaining
-        dictionary['total_duration'] = self.total_duration
+        dictionary["id_start"] = self.id_start
+        dictionary["id_end"] = self.id_end
+        dictionary["elapsed"] = self.elapsed
+        dictionary["remaining"] = self.remaining
+        dictionary["total_duration"] = self.total_duration
         if self.unit_vector is not None:
-            dictionary['unit_vector'] = self.unit_vector
+            dictionary["unit_vector"] = self.unit_vector
         else:
-            dictionary['unit_vector'] = None
-        dictionary['adjustment_factor'] = self.adjustment_factor
-        dictionary['done'] = self.done
-        dictionary['type'] = self.type
+            dictionary["unit_vector"] = None
+        dictionary["adjustment_factor"] = self.adjustment_factor
+        dictionary["done"] = self.done
+        dictionary["type"] = self.type
         return dictionary

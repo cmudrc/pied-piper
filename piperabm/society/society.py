@@ -113,4 +113,5 @@ if __name__ == "__main__":
     model.infrastructure.add_home(pos=[0, 0])
     model.bake()
     model.society.generate(num=1)
+
     print(model.society)

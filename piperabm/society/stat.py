@@ -12,15 +12,15 @@ class Stat(Print):
         Return stats of the network
         """
         return {
-            'node': {
-                'alive': len(self.alives),
-                'dead': len(self.deads),
-                'total': len(self.agents),
+            "node": {
+                "alive": len(self.alives),
+                "dead": len(self.deads),
+                "total": len(self.agents),
             },
-            'edge': {
-                'family': len(self.families),
-                'friend': len(self.friends),
-                'neighbor': len(self.neighbors),
+            "edge": {
+                "family": len(self.families),
+                "friend": len(self.friends),
+                "neighbor": len(self.neighbors),
             },
         }
     
@@ -33,4 +33,5 @@ if __name__ == "__main__":
     model.infrastructure.add_home(pos=[0, 0])
     model.bake()
     model.society.generate(num=1)
+
     print(model.society)

@@ -198,5 +198,5 @@ if __name__ == "__main__":
     print("estimated distance: ", model.society.estimated_distance(agent_id=agent_id, destination_id=destination_id))
     print("estimated duration: ", model.society.estimated_duration(agent_id=agent_id, destination_id=destination_id))
     print("destination score: ", model.society.destination_score(agent_id=agent_id, destination_id=destination_id, is_market=True))
-    print("destination id: ", model.society.decide_destination(agent_id=agent_id))
+    print("destination id: ", model.society.decide_destination(agent_id=agent_id, duration=100))
     #print(model.society.get_action_queue(id=agent_id))

@@ -19,5 +19,5 @@ model.set_seed(None)
 
 
 if __name__ == "__main__":
-    print(model.society.gini_index)
+    print("gini index: ", model.society.gini_index)
     #model.show()

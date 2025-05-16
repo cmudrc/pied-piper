@@ -42,6 +42,9 @@ if __name__ == "__main__":
     model.infrastructure.add_home(pos=[0, 0])
     model.bake()
     model.society.generate(num=1)
+
     print(f"deads: {len(model.society.deads)}")
+
     model.society.update(1000000)
+    
     print(f"deads: {len(model.society.deads)}")

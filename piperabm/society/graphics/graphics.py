@@ -85,4 +85,4 @@ if __name__ == "__main__":
 
     from piperabm.society.samples.society_2 import model
 
-    model.society.show(relationships=['family'])
+    model.society.show(relationships=["family"])
