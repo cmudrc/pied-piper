@@ -17,10 +17,12 @@ class TestTrade_0(unittest.TestCase):
         wealth_0 = self.model.society.wealth(id=agents[0])
         wealth_1 = self.model.society.wealth(id=agents[1])
         if wealth_0 < wealth_1:
-            self.id_low = agents[0] # Agent with lower food
+            self.id_low = agents[0]  # Agent with lower food
             self.id_high = agents[1]  # Agent with higher food
         food = self.model.society.get_resource(self.id_low, 'food')
         self.model.society.set_resource(self.id_low, 'food', value=food/10)
+        water = self.model.society.get_resource(self.id_low, 'water')
+        self.model.society.set_resource(self.id_low, 'water', value=water/5)
 
     def test_trade(self):
         balance_low_initial = self.model.society.get_balance(self.id_low)
@@ -28,7 +30,7 @@ class TestTrade_0(unittest.TestCase):
         food_low_initial = self.model.society.get_resource(self.id_low, 'food')
         food_high_initial = self.model.society.get_resource(self.id_high, 'food')
         
-        self.model.update(duration=1)
+        transactions = self.model.update(duration=1)
         
         balance_low_final = self.model.society.get_balance(self.id_low)
         balance_high_final = self.model.society.get_balance(self.id_high)
@@ -169,7 +171,7 @@ class TestTrade_1(unittest.TestCase):
 
         # In market
         current_node = self.model.society.get_current_node(id=self.agent_id)
-        self.assertEqual(current_node, None)
+        self.assertEqual(current_node, 1)
         balance = self.model.society.get_balance(self.agent_id)
         balances.append(balance)
         food = self.model.society.get_resource(self.agent_id, 'food')

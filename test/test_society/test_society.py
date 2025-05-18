@@ -3,7 +3,6 @@ from copy import deepcopy
 
 from piperabm.society import Society
 from piperabm.infrastructure.samples.infrastructure_0 import model as model_0
-#from piperabm.infrastructure.samples.infrastructure_1 import model as model_1
 from piperabm.infrastructure.samples.infrastructure_2 import model as model_2
 
 

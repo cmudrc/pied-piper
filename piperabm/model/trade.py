@@ -99,8 +99,6 @@ def flatten_transactions(transactions):
     
 
 if __name__ == "__main__":
-
-    import os
     
     from piperabm.society.samples.society_0 import model
 
@@ -110,7 +108,7 @@ if __name__ == "__main__":
     wealth_0 = model.society.wealth(agents[0])
     wealth_1 = model.society.wealth(agents[1])
     if wealth_0 < wealth_1:
-        id_low = agents[0] # Agent with lower wealth
+        id_low = agents[0]  # Agent with lower wealth
         id_high = agents[1]  # Agent with higher wealth
     food = model.society.get_resource(id_low, 'food')
     model.society.set_resource(id_low, 'food', value=food/10)
