@@ -1,5 +1,6 @@
 """
-Simple world with one home and one market
+Simple world with one home and one market. There is one agent that starts
+moving to the market. The result is animated.
 """
 import os
 
@@ -7,10 +8,7 @@ import piperabm as pa
 
 
 path = os.path.dirname(os.path.realpath(__file__))
-model = pa.Model(
-    path=path,
-    seed=2
-)
+model = pa.Model(path=path, seed=2)
 
 # Set up the infrastructure
 model.infrastructure.coeff_usage = 1
@@ -21,7 +19,7 @@ model.infrastructure.add_market(
     pos=[-60, 45],
     id=2,
     name='market',
-    resources={'food': 100, 'water': 100, 'energy': 100}
+    resources={'food': 100, 'water': 100, 'energy': 100,}
 )
 model.infrastructure.bake()
 
@@ -33,11 +31,7 @@ model.society.add_agent(
     id=agent_id,
     home_id=home_id,
     socioeconomic_status=1,
-    resources={
-        "food": 1,
-        "water": 1,
-        "energy": 1,
-    },
+    resources={"food": 1, "water": 1, "energy": 1,},
     balance=100
 )
 

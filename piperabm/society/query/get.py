@@ -54,7 +54,7 @@ class Get(NxGet):
         """
         result = {}
         for name in self.resource_names:
-            result[name] = self.get_resource(id=id, attribute=name)
+            result[name] = self.get_resource(id=id, name=name)
         return result
     
     def get_enough_resource(self, id: int, name: str) -> float:
