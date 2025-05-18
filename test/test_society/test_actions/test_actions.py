@@ -2,6 +2,7 @@ import unittest
 from copy import deepcopy
 
 from piperabm.infrastructure.samples.infrastructure_1 import model
+from piperabm.society.actions.action import Move
 
 
 class TestActionsClass_0(unittest.TestCase):
@@ -24,7 +25,18 @@ class TestActionsClass_0(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
+        action_queue = self.model.society.actions[self.id_agent]
+        path = self.model.infrastructure.path(
+            id_start=self.model.society.get_current_node(id=self.id_agent),
+            id_end=self.id_end
+        )
+        move = Move(
+            action_queue=action_queue,
+            path=path,
+            usage=1
+        )
+        #action_queue.add(move)
+        self.model.society.go_and_comeback_and_stay(action_queue=action_queue, move_go=move, stay_length=50)
 
     def test_update(self):
         street = self.model.infrastructure.streets[0]
@@ -104,11 +116,11 @@ class TestActionsClass_0(unittest.TestCase):
         # On the way to the home
         self.model.run(n=1, report=False, step_size=28650) # run
         self.assertFalse(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 2) # queue undones
+        self.assertEqual(len(queue.undones), 1) # queue undones
         #print(self.model.society.get_pos(id=self.id_agent)) # pos
         self.assertEqual(
             self.model.society.get_current_node(id=self.id_agent),
-            None
+            1
         ) # current_node
         food_3 = self.model.society.get_resource(id=self.id_agent, name='food')
         self.assertLess(food_3, food_2) # resources food
@@ -118,7 +130,7 @@ class TestActionsClass_0(unittest.TestCase):
         self.assertLess(energy_3, energy_2) # resources energy
         self.assertEqual(
             self.model.infrastructure.get_usage_impact(ids=street),
-            1
+            2
         ) # usage impact
         acc = self.model.society.accessibility(id=self.id_agent)
         acc_3 = (acc['food'] * acc['water'] * acc['energy']) ** (1 / 3)
@@ -175,7 +187,18 @@ class TestActionsClass_1(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
+        action_queue = self.model.society.actions[self.id_agent]
+        path = self.model.infrastructure.path(
+            id_start=self.model.society.get_current_node(id=self.id_agent),
+            id_end=self.id_end
+        )
+        move = Move(
+            action_queue=action_queue,
+            path=path,
+            usage=1
+        )
+        #action_queue.add(move)
+        self.model.society.go_and_comeback_and_stay(action_queue=action_queue, move_go=move, stay_length=50)
 
     def test_update(self):
         street = self.model.infrastructure.streets[0]

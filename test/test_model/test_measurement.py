@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from piperabm.infrastructure.samples.infrastructure_1 import model
 from piperabm.model import Measurement
-from piperabm.tools.json_file import JsonFile
+from piperabm.society.actions.action import Move
 
 
 class TestMeasurementClass(unittest.TestCase):
@@ -33,7 +33,17 @@ class TestMeasurementClass(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=10)
+        action_queue = self.model.society.actions[self.id_agent]
+        path = self.model.infrastructure.path(
+            id_start=self.model.society.get_current_node(id=self.id_agent),
+            id_end=self.id_end
+        )
+        move = Move(
+            action_queue=action_queue,
+            path=path,
+            usage=1
+        )
+        action_queue.add(move)
 
     def test_measurement(self):
         path = os.path.dirname(os.path.realpath(__file__))

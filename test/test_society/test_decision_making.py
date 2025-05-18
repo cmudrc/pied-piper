@@ -96,11 +96,12 @@ class TestDecisionMakingClass_2(unittest.TestCase):
                 balance=100
             )
 
-    def test_possible_search_destinations(self):
+    def test_preasssumed_destinations(self):
         agents = self.model.society.agents
         id_agent = agents[0]
-        destinations = self.model.society.possible_search_destinations(agent_id=id_agent)
+        destinations = self.model.society.preasssumed_destinations(agent_id=id_agent)
         self.assertEqual(len(destinations), 1)
+
 
 class TestDecisionMakingClass_3(unittest.TestCase):
     """
@@ -122,9 +123,9 @@ class TestDecisionMakingClass_3(unittest.TestCase):
         self.model.society.neighbor_radius = 20 # Everyone is a neighbor
         self.model.society.generate(num=10, gini_index=0.5)
 
-    def test_possible_search_destinations(self):
+    def test_search_destinations(self):
         agents = self.model.society.agents
-        destinations = self.model.society.possible_search_destinations(agent_id=agents[3])
+        destinations = self.model.society.search_destinations(agent_id=agents[3])
         self.assertNotEqual(destinations, [])
 
 

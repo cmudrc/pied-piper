@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from piperabm.infrastructure.samples.infrastructure_1 import model as model_0
 from piperabm.society.samples.society_1 import model as model_1
+from piperabm.society.actions.action import Move
 
 
 class TestDegradationClass_0(unittest.TestCase):
@@ -51,7 +52,17 @@ class TestDegradationClass_1(unittest.TestCase):
         self.id_agent = self.model.society.agents[0] # Agent
         self.id_start = self.model.society.get_home_id(id=self.id_agent) # Home
         self.id_end = self.model.infrastructure.markets[0] # Market
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
+        action_queue = self.model.society.actions[self.id_agent]
+        path = self.model.infrastructure.path(
+            id_start=self.model.society.get_current_node(id=self.id_agent),
+            id_end=self.id_end
+        )
+        move = Move(
+            action_queue=action_queue,
+            path=path,
+            usage=1
+        )
+        action_queue.add(move)
 
     def test_degradation(self):
         street = self.model.infrastructure.streets[0]

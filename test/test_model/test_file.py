@@ -5,6 +5,7 @@ from copy import deepcopy
 
 from piperabm import Model
 from piperabm.infrastructure.samples.infrastructure_1 import model
+from piperabm.society.actions.action import Move
 
 
 class TestFileClass(unittest.TestCase):
@@ -32,7 +33,17 @@ class TestFileClass(unittest.TestCase):
             },
             balance=100
         )
-        self.model.society.go_and_comeback_and_stay(agent_id=self.id_agent, destination_id=self.id_end, duration=50)
+        action_queue = self.model.society.actions[self.id_agent]
+        path = self.model.infrastructure.path(
+            id_start=self.model.society.get_current_node(id=self.id_agent),
+            id_end=self.id_end
+        )
+        move = Move(
+            action_queue=action_queue,
+            path=path,
+            usage=1
+        )
+        action_queue.add(move)
 
     def test_file(self):
         self.maxDiff = None
