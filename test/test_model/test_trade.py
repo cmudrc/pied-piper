@@ -182,8 +182,8 @@ class TestTrade_1(unittest.TestCase):
         current_node = self.model.society.get_current_node(id=self.agent_id)
         #self.assertEqual(current_node, None)
 
-        print(balances)
-        print(foods)
+        #print(balances)
+        #print(foods)
         #print(self.model.society.get_enough_resource(self.agent_id, 'food'))
         '''
         self.model.step_size = 100
