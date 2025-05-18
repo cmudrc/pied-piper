@@ -6,6 +6,13 @@ An Agent-Based Model Framework for simulating society resilience
 
 Named after "Pied Piper of Hamelin," the title character of a legend from the town of Hamelin in Germany
 
-## 0. Introduction
+## Introduction
+
 Whenever environments condition change for species, the living entities start to react to the new new condition. This projects aims at modeling the Alaskan communities that are heavily affected by the global warming.
 
+## Installation
+
+Install the package using pip:
+```sh
+pip install piperabm
+```
