@@ -127,21 +127,16 @@ class File:
         """
         name = 'transactions' + '.' + 'csv'
         filepath = os.path.join(self.result_directory, name)
-        headers = ['from', 'to', 'amount', 'resource']
-
+        headers = ['from', 'to', 'amount', 'resource', 'time']
         if not os.path.exists(filepath):
             # Create it with headers only
             with open(filepath, mode='w', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(headers)
-
         with open(filepath, mode='a', newline='') as file:
             writer = csv.writer(file)
             for transaction in transactions:
                 writer.writerow(transaction)
-        #if deltas_file.exists() is False:
-        #    deltas_file.save(data=[])
-        #deltas_file.append(delta)
 
 
 if __name__ == "__main__":

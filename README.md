@@ -5,11 +5,21 @@
 
 <h3 align="center">
     An Agent-Based Model Framework for simulating society resilience
-    <br>
-    <br>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pied_Piper2.jpg/593px-Pied_Piper2.jpg" alt="KeePied Piper of HamelinpDelta" width="500">
 </h3>
 
+<div align="center">
+
+![Python Version](https://img.shields.io/badge/python-≥3.10-blue)
+[![PyPI Version](https://img.shields.io/pypi/v/piperabm.svg)](https://pypi.org/project/piperabm/)
+[![GitHub](https://img.shields.io/badge/github-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
+[![Coverage Status](https://coveralls.io/repos/github/aslan-ng/keepdelta/badge.svg?branch=main)](https://coveralls.io/github/aslan-ng/keepdelta?branch=main)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
+<h3 align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pied_Piper2.jpg/593px-Pied_Piper2.jpg" alt="KeePied Piper of HamelinpDelta" width="500">
+</h3>
 
 ## Introduction
 
