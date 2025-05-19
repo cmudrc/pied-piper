@@ -1,10 +1,15 @@
-# pied-piper
-An Agent-Based Model Framework for simulating society resilience
+<h1 align="center">
+    <br>
+    Pied Piper
+</h1>
 
+<h3 align="center">
+    An Agent-Based Model Framework for simulating society resilience
+    <br>
+    <br>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pied_Piper2.jpg/593px-Pied_Piper2.jpg" alt="KeePied Piper of HamelinpDelta" width="500">
+</h3>
 
-![Pied Piper of Hamelin](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pied_Piper2.jpg/593px-Pied_Piper2.jpg)
-
-Named after "Pied Piper of Hamelin," the title character of a legend from the town of Hamelin in Germany
 
 ## Introduction
 
