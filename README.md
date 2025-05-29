@@ -16,9 +16,13 @@
 
 </div>
 
-<h3 align="center">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pied_Piper2.jpg/593px-Pied_Piper2.jpg" alt="KeePied Piper of HamelinpDelta" width="500">
-</h3>
+<div align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Pied_Piper2.jpg/593px-Pied_Piper2.jpg" alt="KeePied Piper of HamelinpDelta" width="520">
+    </br>
+    <em>
+        Illustration by Kate Greenaway for Robert Browning's "The Pied Piper of Hamelin"
+    </em>
+</div>
 
 ## Introduction
 
