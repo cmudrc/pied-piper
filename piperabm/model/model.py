@@ -65,7 +65,20 @@ class Model(
             report: bool = False
         ):
         """
-        Bake model
+        Prepare the model for the first simulation step.
+
+        This will generate nodes/edges, and compute any necessary initial calculations.
+
+        Parameters
+        ----------
+        save : bool, default=False
+            If True, immediately serialize the infrastructure state to disk.
+        proximity_radius : float, default=0
+            Radius (in model units) to consider for “nearby” agents.
+        search_radius : float or None, default=None
+            Max distance for pathfinding; if None, uses a model-wide default.
+        report : bool, default=False
+            If True, print a short summary of what was baked.
         """
         self.infrastructure.bake(
             report=report,

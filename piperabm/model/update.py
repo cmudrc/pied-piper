@@ -1,3 +1,13 @@
+"""
+Manage simulation execution: stepping the model forward and handling persistence.
+
+This mix-in provides:
+ - run(): loop over multiple time steps (or until all agents die),
+   with optional save/resume behavior.
+ - update(): perform a single time‐step update, including trading,
+   agent/infrastructure updates, and optional delta‐based serialization.
+"""
+
 from copy import deepcopy
 import keepdelta as kd
 
@@ -8,6 +18,8 @@ from piperabm.tools.json_file import JsonFile
 class Update(Trade):
     """
     Manage running simulation
+
+    Inherits from Trade, so it has access to self.trade(…) for market transactions.
     """
 
     def run(
@@ -20,7 +32,22 @@ class Update(Trade):
             report: bool = False
         ):
         """
-        Run model for multiple steps
+        Run model for multiple steps.
+
+        Parameters
+        ----------
+        n : int or None
+            Number of steps to run. If None, keeps running until no agents remain.
+        step_size : float
+            Time increment for each step (e.g. seconds).
+        save : bool
+            If True, serialize state snapshots and deltas to disk.
+        save_transactions : bool
+            If True, record all transactions to disk.
+        resume : bool
+            If True, attempt to resume from last saved state instead of starting fresh.
+        report : bool
+            If True, print progress percentage for n-step runs.
         """
         # Remove previous save file if exists
         if self.path is not None:
@@ -78,7 +105,16 @@ class Update(Trade):
 
     def update(self, duration: float, save: bool = False, save_transactions: bool = False):
         """
-        Update model for a single steps
+        Update model for a single step.
+
+        Steps performed:
+        1. (If save) snapshot current state for delta comparison.
+        2. Execute trades in each market and household.
+        3. Update agent behaviors and infrastructure effects.
+        4. Reset market balances and refill resources.
+        5. Increment time and step counters.
+        6. (If save) compute & append state delta, save final state.
+        7. (If save_transactions) append transaction list to log.
         """
         # Delta
         if save is True:
