@@ -4,3 +4,4 @@ class DecisionMaking(BaseDM):
     
     def decide(self, agent):
         # custom logic here...
+        pass

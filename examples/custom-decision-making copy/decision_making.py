@@ -1,8 +1,9 @@
+from piperabm.society.decision_making import DecisionMaking as BaseDM
 from piperabm.society.actions.action import Move, Stay
 from piperabm.tools.symbols import SYMBOLS
 
 
-class DecisionMaking:
+class DecisionMaking(BaseDM):
     """
     Methods related to agents' decision-making
     """
@@ -177,24 +178,3 @@ class DecisionMaking:
             duration=stay_length
         )
         action_queue.add(stay_home)
-
-
-if __name__ == "__main__":
-
-    from piperabm.infrastructure.samples.infrastructure_1 import model
-
-    agent_id = 0
-    home_id = 1
-    destination_id = 2
-    model.society.add_agent(
-        home_id=home_id,
-        id=agent_id,
-    )
-
-    print("preassumed destinations: ", model.society.preasssumed_destinations(agent_id=agent_id))
-    print("search destinations: ", model.society.search_destinations(agent_id=agent_id))
-    print("estimated distance: ", model.society.estimated_distance(agent_id=agent_id, destination_id=destination_id))
-    print("estimated duration: ", model.society.estimated_duration(agent_id=agent_id, destination_id=destination_id))
-    print("destination score: ", model.society.destination_score(agent_id=agent_id, destination_id=destination_id, is_market=True))
-    print("destination id: ", model.society.decide_destination(agent_id=agent_id, duration=100))
-    #print(model.society.get_action_queue(id=agent_id))
