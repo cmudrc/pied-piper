@@ -44,40 +44,11 @@ Infrastructure resilience is a critical concern for urban planners, emergency ma
 
 Each agent’s accessibility to resources is assessed at every time step to monitor their well-being and ability to meet their needs. The term accessibility \(A_{i,t,r}\) for agent *i* at time *t* for resource *r* is computed as
 
-$$
-A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_{i}}
-\label{eq:accessibility_i_t_r}
-$$
-
-where \(R_{i,t}\) is the amount of resource *r* that agent *i* possesses at time *t*, and \(R^{\max}_{i}\) is the maximum capacity of resource *r* that agent *i* can have. A value of 1 indicates full accessibility.
-
-To aggregate across the *R* different resources for each agent, we use the geometric mean:
-
-[$$
-A_{i,t} = \left(\prod_{r=1}^R A_{i,t,r}\right)^{\frac{1}{R}}
-$$]{label="eq:accessibility_i_t"}
-
-This ensures that low accessibility in any single resource strongly impacts the overall score—if any \(A_{i,t,r}=0\), then \(A_{i,t}=0\) and the agent is considered dead.
-
-Across all *N* agents at each time step, the community’s average accessibility is
-
-$$
-A_t = \frac{1}{N}\sum_{i=1}^N A_{i,t}
-\label{eq:accessibility_t}
-$$
-
-Finally, a time-weighted overall accessibility over the simulation duration \(T\) is
-
-$$
-A = \frac{\int_{0}^{T} A_t \,\mathrm{d}t}{\int_{0}^{T} A_{\max} \,\mathrm{d}t}
-\label{eq:accessibility_overall}
-$$
-
-where \(A_{\max}=1\) is the maximum possible accessibility.
-
 ## Travel Distance
 
+In the context of agent-based modeling, *traveled distance* serves as a metric for assessing the efficiency and functionality of transportation networks within a simulated environment. This measurement tracks the cumulative distance agents must traverse between various points, e.g. from home to market. 
 
+When this measurement yields a low value, it indicates that the system is operating with high efficiency, allowing agents to traverse shorter distances between points to satisfy their needs. Alternatively, it could signal that various barriers, constraints, or issues are impeding agents’ access to essential network nodes, thus limiting their ability to move freely within the system and reach their goals. This dual interpretation helps in diagnosing the underlying causes of system performance, guiding targeted improvements in urban planning and resource distribution.
 
 # Comparison to Existing Tools
 
