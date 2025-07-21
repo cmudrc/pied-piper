@@ -27,22 +27,46 @@ bibliography: paper.bib
 
 `PiperABM` is an open-source Python library designed to support resilience-based agent modeling on complex infrastructure networks. It provides modular tools for constructing agent-based simulations where individual agents interact over dynamic networks subject to progressive degradation and adaptive decision-making. Built with extensibility in mind, PiperABM leverages a bootstrap architecture that allows users to customize agent behaviors. Core features include dynamic network loading, failure propagation models, accessibility and travel-distance metrics, and visualization utilities. PiperABM is framework-agnostic and integrates seamlessly with common scientific Python ecosystems (NumPy, NetworkX, Matplotlib).
 
-# Statement of need
-
-
-Noorghasemi_KeepDelta_A_Python_2025
-
- by supplying their own `decision_making.py` modules.
+# Statement of Need
 
 Infrastructure resilience is a critical concern for urban planners, emergency managers, and researchers seeking to understand how disruptions (e.g., natural hazards, maintenance backlogs) affect community access to essential services.
 
+# How it works
+
+The **piperabm** framework couples two dynamically interacting networks:
+
+1. **A spatial infrastructure network** that carries physical flows, like roads for mobility and a simplified Food–Energy–Water (FEW) supply chain for basic needs.  
+2. **A social network of autonomous agents** whose daily decisions, movements, and exchanges both depend on and reshape the physical system.
+
+The elements of these networks affect each other during each step of the simulation run, reflecting the intertwined nature of the dynamics. This simulation emulates the day-to-day life of the community, capturing how individuals interact with both infrastructure and each other as they pursue essential activities and respond to ongoing changes in their environment.
+
 ![The computational model emulates the relation between the elements of infrastructure and social networks.](./assets/interconnected.png)
 
+## Infrastructure
 
+The modeling workflow begins by constructing a representation of the city’s civil infrastructure system, hereafter referred to simply as the *infrastructure*.  In the current work this term encompasses the physical assets that underpin service domains most critical to day-to-day community resilience, namely transportation and the Food–Energy–Water (FEW) supply chain. We abstract these assets into a spatial network comprising three classes of location nodes:
 
-## Measurements
+- Junctions: A placeholder in space with physical coordinates as their only attributes, such as where two streets intersect.
+- Homes: Representing agents’ residences, home nodes are where agents belong and reside within the community. These home nodes represent residential locations where agents reside, rest, and engage in family activities.
+- Markets: These nodes represent local supermarkets that act as central hubs for the community’s grocery shopping needs. The market nodes represent a generalized resource‐influx point where essential food and goods enter the system, whether via imported supplies or local subsistence activities
 
-...
+{ I want to say it is possible to load city maps using satelite images and it has capability of converting lat long using mercator. }
+
+## Society
+
+The agents’ decision-making processes in our model are governed by the OODA loop [@Johnson02012023]. This framework, which stands for Observe, Orient, Decide, and Act, is particularly effective in modeling the complex cognitive behaviors of humans, as it encompasses a broad range of cognitive activities [@brehmer_dynamic_nodate].
+
+![The agents’ decision-making processes are modeled by OODA Loop which stands for Observe, Orient, Decide, and Act.](./assets/ooda.png)
+
+User can customize it by supplying their own `decision_making.py` modules.
+
+## Results
+
+The result of simulation, for the matter of storage efficiency, is saved using data differencing [@Noorghasemi_KeepDelta_A_Python_2025]. The transactions between agents are also saved seperately. Is is also possible to generate results below using the integrated funtionalities.
+
+### Animation
+
+When the time step is sufficiently coarse, PiperABM can export an MP4 animation of the evolving infrastructure graph and agent trajectories.  These visualizations provide valuable *face validity*, a quick qualitative check that agents move sensibly, disruptions propagate plausibly, and global patterns match expectations.
 
 ### Accessiblity
 
@@ -85,5 +109,9 @@ When this measurement yields a low value, it indicates that the system is operat
 # Comparison to Existing Tools
 
 PiperABM’s strength lies in its opinionated support for resilience metrics, built-in animation utilities, and its minimal barrier for user-defined agent policies. Unlike Mesa or NetLogo, which require extensive boilerplate or domain-specific scripting, PiperABM users can implement new decision-making modules by inheriting from a common superclass. Compared to Repast, PiperABM remains lightweight and fully Pythonic, benefiting from the broad data science ecosystem without Java dependencies.
+
+# Acknowledgements
+
+This work was supported by the U.S. National Science Foundation (Grant RISE-1927718).
 
 # References
