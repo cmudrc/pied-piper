@@ -8,13 +8,12 @@ sphinx:
 # Use the latest build image
 build:
   os: ubuntu-lts-latest
+  tools:
+    python: "3.13"
   commands:
     - make -C docs html
 
 python:
-  # choose a Python version matching your project
-  version: 3.13
-
   install:
     - requirements: docs/requirements.txt   # install your docs deps
     - path: .                                  # install your package (so autodoc can import)
