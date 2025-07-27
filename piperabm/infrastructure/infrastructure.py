@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.infrastructure
+:synopsis: Core Infrastructure class composing Query, Generate, Degradation, Path, Update, Serialize, Graphics, and Stat mixins.
+"""
 import networkx as nx
 
 from piperabm.infrastructure.query import Query

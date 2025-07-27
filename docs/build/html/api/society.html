@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>piperabm.society.Society &#8212; PiperABM 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="piperabm-society-society">
+<h1>piperabm.society.Society<a class="headerlink" href="#piperabm-society-society" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="piperabm.society.society.Society">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.society.society.</span></span><span class="sig-name descname"><span class="pre">Society</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">average_income</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbor_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time_outside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">28800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity_cycle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">86400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transportation_resource_rates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">1.1574074074074073e-05,</span> <span class="pre">'food':</span> <span class="pre">2.3148148148148147e-05,</span> <span class="pre">'water':</span> <span class="pre">1.1574074074074073e-05}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idle_resource_rates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">2.3148148148148147e-05,</span> <span class="pre">'food':</span> <span class="pre">2.3148148148148147e-05,</span> <span class="pre">'water':</span> <span class="pre">2.3148148148148147e-05}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.3888888888888888</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transportation_degradation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generate</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionMaking</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Serialize</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Graphics</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Stat</span></code></p>
+<p>Represent society network</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.accessibility">
+<span class="sig-name descname"><span class="pre">accessibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.accessibility" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate accessibility for all resources</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.accessibility_resource">
+<span class="sig-name descname"><span class="pre">accessibility_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.accessibility_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate accessibility for certain resource</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.add_agent">
+<span class="sig-name descname"><span class="pre">add_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socioeconomic_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">10,</span> <span class="pre">'food':</span> <span class="pre">10,</span> <span class="pre">'water':</span> <span class="pre">10}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enough_resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">balance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.add_agent" title="Link to this definition">¶</a></dt>
+<dd><p>Add agent node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.add_family">
+<span class="sig-name descname"><span class="pre">add_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.add_family" title="Link to this definition">¶</a></dt>
+<dd><p>Add family edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.add_friend">
+<span class="sig-name descname"><span class="pre">add_friend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.add_friend" title="Link to this definition">¶</a></dt>
+<dd><p>Add friend edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.add_neighbor">
+<span class="sig-name descname"><span class="pre">add_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.add_neighbor" title="Link to this definition">¶</a></dt>
+<dd><p>Add neighbor edge</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.agents">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">agents</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.agents" title="Link to this definition">¶</a></dt>
+<dd><p>Return all agent nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.agents_from">
+<span class="sig-name descname"><span class="pre">agents_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.agents_from" title="Link to this definition">¶</a></dt>
+<dd><p>Return all agents from a certain home (family)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.agents_in">
+<span class="sig-name descname"><span class="pre">agents_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.agents_in" title="Link to this definition">¶</a></dt>
+<dd><p>Return all agents in a certain node</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.alives">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alives</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.alives" title="Link to this definition">¶</a></dt>
+<dd><p>Return all alive agent nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.check_id">
+<span class="sig-name descname"><span class="pre">check_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.check_id" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether id already exists</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.deads">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deads</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.deads" title="Link to this definition">¶</a></dt>
+<dd><p>Return all alive agent nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.decide_destination">
+<span class="sig-name descname"><span class="pre">decide_destination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.decide_destination" title="Link to this definition">¶</a></dt>
+<dd><p>Decide the destination</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.deserialize">
+<span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.deserialize" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.destination_score">
+<span class="sig-name descname"><span class="pre">destination_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_market</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.destination_score" title="Link to this definition">¶</a></dt>
+<dd><p>Destination score</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.edges">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.edges" title="Link to this definition">¶</a></dt>
+<dd><p>Return all edges ids</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.edges_from">
+<span class="sig-name descname"><span class="pre">edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.edges_from" title="Link to this definition">¶</a></dt>
+<dd><p>All edges from a node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.ego">
+<span class="sig-name descname"><span class="pre">ego</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.ego" title="Link to this definition">¶</a></dt>
+<dd><p>Return agent nodes in the ego network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.estimated_distance">
+<span class="sig-name descname"><span class="pre">estimated_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.estimated_distance" title="Link to this definition">¶</a></dt>
+<dd><p>Estimated distance between agent and destination</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.estimated_duration">
+<span class="sig-name descname"><span class="pre">estimated_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.estimated_duration" title="Link to this definition">¶</a></dt>
+<dd><p>Estimated duration of reaching a certain destination</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.families">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">families</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.families" title="Link to this definition">¶</a></dt>
+<dd><p>Return all family edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.fig">
+<span class="sig-name descname"><span class="pre">fig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relationships</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.fig" title="Link to this definition">¶</a></dt>
+<dd><p>Add society elements to plt fig ax</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.friends">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">friends</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.friends" title="Link to this definition">¶</a></dt>
+<dd><p>Return all friend edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gini_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">10,</span> <span class="pre">'food':</span> <span class="pre">10,</span> <span class="pre">'water':</span> <span class="pre">10}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_balance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.generate" title="Link to this definition">¶</a></dt>
+<dd><p>Generate agents</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_action_queue">
+<span class="sig-name descname"><span class="pre">get_action_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.get_action_queue" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent action queue</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_alive">
+<span class="sig-name descname"><span class="pre">get_alive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_alive" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>alive</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_balance">
+<span class="sig-name descname"><span class="pre">get_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_balance" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>balance</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_current_node">
+<span class="sig-name descname"><span class="pre">get_current_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_current_node" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>current_node</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_edge_attribute">
+<span class="sig-name descname"><span class="pre">get_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.get_edge_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Get edge attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_edge_attributes">
+<span class="sig-name descname"><span class="pre">get_edge_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_edge_attributes" title="Link to this definition">¶</a></dt>
+<dd><p>Get all edge attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_edge_name">
+<span class="sig-name descname"><span class="pre">get_edge_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_edge_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get edge <em>name</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_edge_type">
+<span class="sig-name descname"><span class="pre">get_edge_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_edge_type" title="Link to this definition">¶</a></dt>
+<dd><p>Get edge <em>type</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_enough_resource">
+<span class="sig-name descname"><span class="pre">get_enough_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_enough_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>enough_resource</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_home_id">
+<span class="sig-name descname"><span class="pre">get_home_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_home_id" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>home_id</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_income">
+<span class="sig-name descname"><span class="pre">get_income</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_income" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>income</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_node_attribute">
+<span class="sig-name descname"><span class="pre">get_node_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.get_node_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Get node attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_node_attributes">
+<span class="sig-name descname"><span class="pre">get_node_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_node_attributes" title="Link to this definition">¶</a></dt>
+<dd><p>Get all node attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_node_name">
+<span class="sig-name descname"><span class="pre">get_node_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_node_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get node <em>name</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_node_type">
+<span class="sig-name descname"><span class="pre">get_node_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Get node <em>type</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_pos">
+<span class="sig-name descname"><span class="pre">get_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.get_pos" title="Link to this definition">¶</a></dt>
+<dd><p>Get node position value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_resource">
+<span class="sig-name descname"><span class="pre">get_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>resource</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_resources">
+<span class="sig-name descname"><span class="pre">get_resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_resources" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent resources value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.get_socioeconomic_status">
+<span class="sig-name descname"><span class="pre">get_socioeconomic_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.get_socioeconomic_status" title="Link to this definition">¶</a></dt>
+<dd><p>Get agent <em>socioeconomic_status</em> value</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.gini_index">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gini_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#piperabm.society.society.Society.gini_index" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the current gini index of society</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.go_and_comeback_and_stay">
+<span class="sig-name descname"><span class="pre">go_and_comeback_and_stay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_queue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">move_go</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stay_length</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.go_and_comeback_and_stay" title="Link to this definition">¶</a></dt>
+<dd><p>A complete daily cycle of choosing and going to a destination, waiting there for trade, and coming back home</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.has_edge">
+<span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.has_edge" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the network already contains the edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.has_node">
+<span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.has_node" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the network already contains the node</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.infrastructure">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">infrastructure</span></span><a class="headerlink" href="#piperabm.society.society.Society.infrastructure" title="Link to this definition">¶</a></dt>
+<dd><p>Alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.is_home">
+<span class="sig-name descname"><span class="pre">is_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.is_home" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.neighbors">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">neighbors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.neighbors" title="Link to this definition">¶</a></dt>
+<dd><p>Return all friend edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.new_id">
+<span class="sig-name descname"><span class="pre">new_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.new_id" title="Link to this definition">¶</a></dt>
+<dd><p>Generate new unique random id</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.nodes">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.nodes" title="Link to this definition">¶</a></dt>
+<dd><p>Return all nodes id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.preasssumed_destinations">
+<span class="sig-name descname"><span class="pre">preasssumed_destinations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.preasssumed_destinations" title="Link to this definition">¶</a></dt>
+<dd><p>Return preassumed destinations (which are market nodes here)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.prices">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#piperabm.society.society.Society.prices" title="Link to this definition">¶</a></dt>
+<dd><p>Alias</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.resource_names">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.society.society.Society.resource_names" title="Link to this definition">¶</a></dt>
+<dd><p>Alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.resources_in">
+<span class="sig-name descname"><span class="pre">resources_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_market</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.resources_in" title="Link to this definition">¶</a></dt>
+<dd><p>All resources available in a node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.resources_value">
+<span class="sig-name descname"><span class="pre">resources_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.resources_value" title="Link to this definition">¶</a></dt>
+<dd><p>Monetary value of resources that an agent possesses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.search_destinations">
+<span class="sig-name descname"><span class="pre">search_destinations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.search_destinations" title="Link to this definition">¶</a></dt>
+<dd><p>Return possible search destinations which are NOT market nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.serialize" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_balance">
+<span class="sig-name descname"><span class="pre">set_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_balance" title="Link to this definition">¶</a></dt>
+<dd><p>Set agent <em>balance</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_current_node">
+<span class="sig-name descname"><span class="pre">set_current_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_current_node" title="Link to this definition">¶</a></dt>
+<dd><p>Set agent <em>current_node</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_edge_attribute">
+<span class="sig-name descname"><span class="pre">set_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_edge_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Set edge attribute in networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_node_attribute">
+<span class="sig-name descname"><span class="pre">set_node_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_node_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Set node attribute in networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_pos">
+<span class="sig-name descname"><span class="pre">set_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_pos" title="Link to this definition">¶</a></dt>
+<dd><p>Set node position</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_resource">
+<span class="sig-name descname"><span class="pre">set_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Set agent <em>resource</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.set_resources">
+<span class="sig-name descname"><span class="pre">set_resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.set_resources" title="Link to this definition">¶</a></dt>
+<dd><p>Set agent resources values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relationships</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.show" title="Link to this definition">¶</a></dt>
+<dd><p>Show society elements</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.stat">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stat</span></span><a class="headerlink" href="#piperabm.society.society.Society.stat" title="Link to this definition">¶</a></dt>
+<dd><p>Return stats of the network</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'society'</span></em><a class="headerlink" href="#piperabm.society.society.Society.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.society.Society.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.society.society.Society.wealth">
+<span class="sig-name descname"><span class="pre">wealth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.society.society.Society.wealth" title="Link to this definition">¶</a></dt>
+<dd><p>Wealth of an agent</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PiperABM</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="model.html">piperabm.model.Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">piperabm.infrastructure.Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection.latlong_xy</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aslan Noorghasemi, Christopher McComb.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/society.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

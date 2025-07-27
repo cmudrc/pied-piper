@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.query.query
+:synopsis: Query network elements.
+"""
 import networkx as nx
 import numpy as np
 

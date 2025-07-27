@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.query.set
+:synopsis: Set attributes to network elements.
+"""
 from piperabm.tools.nx_query import NxSet
 
 

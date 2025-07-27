@@ -3,16 +3,28 @@ from piperabm.tools.coordinate.projection.latlong_xyz import latlong_xyz, xyz_la
 from piperabm.tools.coordinate import rotate
 
 
+"""
+Coordinate projection utilities converting between geographic (latitude, longitude) and Cartesian (x, y) coordinates.
+
+This module uses 3D rotation and Mercator projection to:
+- Convert latitude/longitude to local x/y (latlong_xy).
+- Convert local x/y back to latitude/longitude (xy_latlong).
+
+"""
+
 EARTH_RADIUS = 6378000 # meters
 
 
 def latlong_xy(latitude_0=0, longitude_0=0, latitude=0, longitude=0):
     """
-    Convert (latitude, logitude) to (x, y).
+    Convert geographic coordinates to Cartesian (x, y) using a Mercator projection around a specified origin.
 
-    :param latitude_0: latitude of the point which will be projected to (x=0, y=0).
-    :param longitude_0: longitude of the point which will be projected to (x=0, y=0).
-    :return: (x, y)
+    :param float latitude_0: Latitude of the projection origin, in degrees.
+    :param float longitude_0: Longitude of the projection origin, in degrees.
+    :param float latitude: Latitude of the point to project, in degrees.
+    :param float longitude: Longitude of the point to project, in degrees.
+    :return: A tuple `(x, y)` of projected coordinates in meters.
+    :rtype: tuple(float, float)
     """
     vector = latlong_xyz(latitude, longitude)
     vector = rotate.z(vector, longitude_0)
@@ -23,11 +35,14 @@ def latlong_xy(latitude_0=0, longitude_0=0, latitude=0, longitude=0):
 
 def xy_latlong(latitude_0=0, longitude_0=0, x=0, y=0):
     """
-    Convert (x, y) to (latitude, logitude).
+    Convert Cartesian (x, y) back to geographic coordinates around a specified origin using the inverse Mercator projection.
 
-    :param latitude_0: latitude of the point which will be projected to (x=0, y=0).
-    :param longitude_0: longitude of the point which will be projected to (x=0, y=0).
-    :return: (latitude, logitude)
+    :param float latitude_0: Latitude of the projection origin, in degrees.
+    :param float longitude_0: Longitude of the projection origin, in degrees.
+    :param float x: X coordinate in meters relative to the projection origin.
+    :param float y: Y coordinate in meters relative to the projection origin.
+    :return: A tuple `(latitude, longitude)` of geographic coordinates in degrees.
+    :rtype: tuple(float, float)
     """
     new_latitude, new_longitude = Mercator.inverse(x, y, radius=EARTH_RADIUS)
     vector = latlong_xyz(new_latitude, new_longitude)

@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.path
+:synopsis: Path finding algorythm for agents.
+"""
 import networkx as nx
 
 

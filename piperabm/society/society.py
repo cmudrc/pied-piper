@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.society.Society
+:synopsis: Core Society class composing Query, Generate, DecisionMaking, Update, Serialize, Graphics, and Stat mixins.
+"""
 import networkx as nx
 
 from piperabm.society.query import Query

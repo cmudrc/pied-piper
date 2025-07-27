@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.stat
+:synopsis: Stats of the infrastructure network.
+"""
 from piperabm.tools.print.stat import Print
 
 

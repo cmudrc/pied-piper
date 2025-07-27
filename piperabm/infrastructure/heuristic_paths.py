@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.heuristic_paths
+:synopsis: A network to capture the Eucledean distance between all nodes.
+"""
 import networkx as nx
 
 from piperabm.tools.coordinate import distance as ds

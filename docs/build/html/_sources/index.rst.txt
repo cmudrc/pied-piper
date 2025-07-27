@@ -14,4 +14,7 @@ documentation for details.
    :maxdepth: 2
 
    api/model
+   api/infrastructure
+   api/society
+   api/latlong_xy
 

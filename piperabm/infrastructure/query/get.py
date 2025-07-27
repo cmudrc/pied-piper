@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.query.get
+:synopsis: Get attributes from network elements.
+"""
 from piperabm.tools.nx_query import NxGet
 
 

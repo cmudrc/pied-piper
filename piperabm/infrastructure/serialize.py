@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.serialize
+:synopsis: Infrastructure serialization mixin providing serialize/deserialize methods for the Infrastructure class.
+"""
 from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 

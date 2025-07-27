@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.graphics.graphics
+:synopsis: Handle graphics.
+"""
 import networkx as nx
 import matplotlib.pyplot as plt
 

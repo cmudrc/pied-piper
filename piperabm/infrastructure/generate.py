@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.generate
+:synopsis: Generate infrastructure based on gridworld map.
+"""
 import numpy as np
 
 

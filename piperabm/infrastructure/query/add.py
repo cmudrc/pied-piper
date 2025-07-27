@@ -1,3 +1,7 @@
+"""
+.. module:: piperabm.infrastructure.query.add
+:synopsis: Add new network elements.
+"""
 import numpy as np
 from copy import deepcopy
 

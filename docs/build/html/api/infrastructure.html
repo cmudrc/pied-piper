@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>piperabm.infrastructure.Infrastructure &#8212; PiperABM 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="piperabm.tools.coordinate.projection.latlong_xy" href="latlong_xy.html" />
+    <link rel="prev" title="piperabm.model.Model" href="model.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="piperabm-infrastructure-infrastructure">
+<h1>piperabm.infrastructure.Infrastructure<a class="headerlink" href="#piperabm-infrastructure-infrastructure" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.infrastructure.infrastructure.</span></span><span class="sig-name descname"><span class="pre">Infrastructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeff_usage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff_weather</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generate</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Degradation</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Serialize</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Graphics</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Stat</span></code></p>
+<p>Represent infrastructure network</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.add_home">
+<span class="sig-name descname"><span class="pre">add_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.add_home" title="Link to this definition">¶</a></dt>
+<dd><p>Add home node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.add_junction">
+<span class="sig-name descname"><span class="pre">add_junction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.add_junction" title="Link to this definition">¶</a></dt>
+<dd><p>Add junction node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.add_market">
+<span class="sig-name descname"><span class="pre">add_market</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">10,</span> <span class="pre">'food':</span> <span class="pre">10,</span> <span class="pre">'water':</span> <span class="pre">10}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enough_resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.add_market" title="Link to this definition">¶</a></dt>
+<dd><p>Add market node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.add_neighborhood_access">
+<span class="sig-name descname"><span class="pre">add_neighborhood_access</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">climate_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.add_neighborhood_access" title="Link to this definition">¶</a></dt>
+<dd><p>Add neighborhood access edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.add_street">
+<span class="sig-name descname"><span class="pre">add_street</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">climate_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.add_street" title="Link to this definition">¶</a></dt>
+<dd><p>Add street edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.adjusted_length">
+<span class="sig-name descname"><span class="pre">adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.adjusted_length" title="Link to this definition">¶</a></dt>
+<dd><p>Return edge <em>adjusted_length</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.adjustment_factor">
+<span class="sig-name descname"><span class="pre">adjustment_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.adjustment_factor" title="Link to this definition">¶</a></dt>
+<dd><p>Return edge <em>adjustment_factor</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.bake">
+<span class="sig-name descname"><span class="pre">bake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proximity_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.bake" title="Link to this definition">¶</a></dt>
+<dd><p>Bake the network using grammar rules</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.baked">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">baked</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.baked" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the network is fully baked</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.calculate_adjusted_length">
+<span class="sig-name descname"><span class="pre">calculate_adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.calculate_adjusted_length" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate edge <em>adjusted_length</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.calculate_adjustment_factor">
+<span class="sig-name descname"><span class="pre">calculate_adjustment_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usage_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">climate_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.calculate_adjustment_factor" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate adjustment factor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.check_id">
+<span class="sig-name descname"><span class="pre">check_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.check_id" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether id already exists</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.deserialize">
+<span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.deserialize" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.edges">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.edges" title="Link to this definition">¶</a></dt>
+<dd><p>Return all edges ids</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.edges_from">
+<span class="sig-name descname"><span class="pre">edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.edges_from" title="Link to this definition">¶</a></dt>
+<dd><p>All edges from a node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.fig">
+<span class="sig-name descname"><span class="pre">fig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.fig" title="Link to this definition">¶</a></dt>
+<dd><p>Add infrastructure elements to plt fig ax</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">homes_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imperfection_percentage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.generate" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a grid world model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_adjusted_length">
+<span class="sig-name descname"><span class="pre">get_adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_adjusted_length" title="Link to this definition">¶</a></dt>
+<dd><p>Get edges <em>adjusted_length</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_balance">
+<span class="sig-name descname"><span class="pre">get_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_balance" title="Link to this definition">¶</a></dt>
+<dd><p>Get market <em>balance</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_climate_impact">
+<span class="sig-name descname"><span class="pre">get_climate_impact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_climate_impact" title="Link to this definition">¶</a></dt>
+<dd><p>Get edges <em>climate_impact</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_edge_attribute">
+<span class="sig-name descname"><span class="pre">get_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_edge_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Get edge attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_edge_attributes">
+<span class="sig-name descname"><span class="pre">get_edge_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_edge_attributes" title="Link to this definition">¶</a></dt>
+<dd><p>Get all edge attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_edge_name">
+<span class="sig-name descname"><span class="pre">get_edge_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_edge_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get edge name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_edge_type">
+<span class="sig-name descname"><span class="pre">get_edge_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_edge_type" title="Link to this definition">¶</a></dt>
+<dd><p>Get edge type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_enough_resource">
+<span class="sig-name descname"><span class="pre">get_enough_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_enough_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Get market <em>enough_resource</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_length">
+<span class="sig-name descname"><span class="pre">get_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_length" title="Link to this definition">¶</a></dt>
+<dd><p>Get edges length</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_node_attribute">
+<span class="sig-name descname"><span class="pre">get_node_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_node_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Get node attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_node_attributes">
+<span class="sig-name descname"><span class="pre">get_node_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_node_attributes" title="Link to this definition">¶</a></dt>
+<dd><p>Get all node attribute from networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_node_name">
+<span class="sig-name descname"><span class="pre">get_node_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_node_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get node name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_node_type">
+<span class="sig-name descname"><span class="pre">get_node_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Get node type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_pos">
+<span class="sig-name descname"><span class="pre">get_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_pos" title="Link to this definition">¶</a></dt>
+<dd><p>Get node position</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_resource">
+<span class="sig-name descname"><span class="pre">get_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Get market <em>resource</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.get_usage_impact">
+<span class="sig-name descname"><span class="pre">get_usage_impact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.get_usage_impact" title="Link to this definition">¶</a></dt>
+<dd><p>Get edges <em>usage_impact</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.has_edge">
+<span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.has_edge" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the network already contains the edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.has_node">
+<span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.has_node" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the network already contains the node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.has_path">
+<span class="sig-name descname"><span class="pre">has_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.has_path" title="Link to this definition">¶</a></dt>
+<dd><p>Rapidly check if there is any path</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.homes">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">homes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.homes" title="Link to this definition">¶</a></dt>
+<dd><p>Return all homes nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.impact">
+<span class="sig-name descname"><span class="pre">impact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.impact" title="Link to this definition">¶</a></dt>
+<dd><p>Impact the network by removing a list of edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.is_isolate">
+<span class="sig-name descname"><span class="pre">is_isolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.is_isolate" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the node is isolated</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.junctions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">junctions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.junctions" title="Link to this definition">¶</a></dt>
+<dd><p>Return all junction nodes</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.markets">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">markets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.markets" title="Link to this definition">¶</a></dt>
+<dd><p>Return all market nodes</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.neighborhood_accesses">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">neighborhood_accesses</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.neighborhood_accesses" title="Link to this definition">¶</a></dt>
+<dd><p>Return all neighborhood access edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.new_id">
+<span class="sig-name descname"><span class="pre">new_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.new_id" title="Link to this definition">¶</a></dt>
+<dd><p>Generate new unique random id</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.nodes">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.nodes" title="Link to this definition">¶</a></dt>
+<dd><p>Return all nodes id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.nodes_closer_than">
+<span class="sig-name descname"><span class="pre">nodes_closer_than</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.nodes_closer_than" title="Link to this definition">¶</a></dt>
+<dd><p>Filter <em>nodes</em> that are within the <em>distance</em> from <em>id</em></p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.nonjunctions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nonjunctions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.nonjunctions" title="Link to this definition">¶</a></dt>
+<dd><p>Return all nonjunction nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.path">
+<span class="sig-name descname"><span class="pre">path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.path" title="Link to this definition">¶</a></dt>
+<dd><p>Path finding algorythm using A_star</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.prices">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.prices" title="Link to this definition">¶</a></dt>
+<dd><p>Alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.random_edges">
+<span class="sig-name descname"><span class="pre">random_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.random_edges" title="Link to this definition">¶</a></dt>
+<dd><p>Filter random edges by their length percentage</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.remove_edge">
+<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.remove_edge" title="Link to this definition">¶</a></dt>
+<dd><p>Remove edge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.remove_node">
+<span class="sig-name descname"><span class="pre">remove_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.remove_node" title="Link to this definition">¶</a></dt>
+<dd><p>Remove node</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.replace_node">
+<span class="sig-name descname"><span class="pre">replace_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.replace_node" title="Link to this definition">¶</a></dt>
+<dd><p>Replace a node with another node</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.resource_names">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.resource_names" title="Link to this definition">¶</a></dt>
+<dd><p>Alias</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.serialize" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_adjusted_length">
+<span class="sig-name descname"><span class="pre">set_adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_adjusted_length" title="Link to this definition">¶</a></dt>
+<dd><p>Set edge <em>adjusted_length</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_balance">
+<span class="sig-name descname"><span class="pre">set_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_balance" title="Link to this definition">¶</a></dt>
+<dd><p>Set market <em>balance</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_climate_impact">
+<span class="sig-name descname"><span class="pre">set_climate_impact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_climate_impact" title="Link to this definition">¶</a></dt>
+<dd><p>Set edge <em>climate_impact</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_edge_attribute">
+<span class="sig-name descname"><span class="pre">set_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_edge_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Set edge attribute in networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_node_attribute">
+<span class="sig-name descname"><span class="pre">set_node_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_node_attribute" title="Link to this definition">¶</a></dt>
+<dd><p>Set node attribute in networkx graph</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_resource">
+<span class="sig-name descname"><span class="pre">set_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Set market <em>resource</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.set_usage_impact">
+<span class="sig-name descname"><span class="pre">set_usage_impact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.set_usage_impact" title="Link to this definition">¶</a></dt>
+<dd><p>Set edge <em>usage_impact</em> value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.show" title="Link to this definition">¶</a></dt>
+<dd><p>Show infrastructure elements</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.stat">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stat</span></span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.stat" title="Link to this definition">¶</a></dt>
+<dd><p>Return stats of the network</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.streets">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.streets" title="Link to this definition">¶</a></dt>
+<dd><p>Return all street edges</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.top_degraded_edges">
+<span class="sig-name descname"><span class="pre">top_degraded_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.top_degraded_edges" title="Link to this definition">¶</a></dt>
+<dd><p>Filter most degradaded edges by their length percentage</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'infrastructure'</span></em><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.infrastructure.Infrastructure.update_adjusted_length">
+<span class="sig-name descname"><span class="pre">update_adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.infrastructure.Infrastructure.update_adjusted_length" title="Link to this definition">¶</a></dt>
+<dd><p>Update <em>adjusted_length</em> value</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PiperABM</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model.html">piperabm.model.Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.infrastructure.Infrastructure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#piperabm.infrastructure.infrastructure.Infrastructure"><code class="docutils literal notranslate"><span class="pre">Infrastructure</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection.latlong_xy</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="model.html" title="previous chapter">piperabm.model.Model</a></li>
+      <li>Next: <a href="latlong_xy.html" title="next chapter">piperabm.tools.coordinate.projection.latlong_xy</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aslan Noorghasemi, Christopher McComb.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/infrastructure.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

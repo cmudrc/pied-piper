@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>piperabm.tools.coordinate.projection.latlong_xy &#8212; PiperABM 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Model" href="model.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-piperabm.tools.coordinate.projection.latlong_xy">
+<span id="piperabm-tools-coordinate-projection-latlong-xy"></span><h1>piperabm.tools.coordinate.projection.latlong_xy<a class="headerlink" href="#module-piperabm.tools.coordinate.projection.latlong_xy" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="piperabm.tools.coordinate.projection.latlong_xy.latlong_xy">
+<span class="sig-prename descclassname"><span class="pre">piperabm.tools.coordinate.projection.latlong_xy.</span></span><span class="sig-name descname"><span class="pre">latlong_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.tools.coordinate.projection.latlong_xy.latlong_xy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert geographic coordinates to Cartesian (x, y) using a Mercator projection around a specified origin.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>latitude_0</strong> (<em>float</em>) – Latitude of the projection origin, in degrees.</p></li>
+<li><p><strong>longitude_0</strong> (<em>float</em>) – Longitude of the projection origin, in degrees.</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – Latitude of the point to project, in degrees.</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – Longitude of the point to project, in degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple <cite>(x, y)</cite> of projected coordinates in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(float, float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="piperabm.tools.coordinate.projection.latlong_xy.xy_latlong">
+<span class="sig-prename descclassname"><span class="pre">piperabm.tools.coordinate.projection.latlong_xy.</span></span><span class="sig-name descname"><span class="pre">xy_latlong</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.tools.coordinate.projection.latlong_xy.xy_latlong" title="Link to this definition">¶</a></dt>
+<dd><p>Convert Cartesian (x, y) back to geographic coordinates around a specified origin using the inverse Mercator projection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>latitude_0</strong> (<em>float</em>) – Latitude of the projection origin, in degrees.</p></li>
+<li><p><strong>longitude_0</strong> (<em>float</em>) – Longitude of the projection origin, in degrees.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – X coordinate in meters relative to the projection origin.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Y coordinate in meters relative to the projection origin.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple <cite>(latitude, longitude)</cite> of geographic coordinates in degrees.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(float, float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PiperABM</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.tools.coordinate.projection.latlong_xy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#piperabm.tools.coordinate.projection.latlong_xy.latlong_xy"><code class="docutils literal notranslate"><span class="pre">latlong_xy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#piperabm.tools.coordinate.projection.latlong_xy.xy_latlong"><code class="docutils literal notranslate"><span class="pre">xy_latlong()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="model.html" title="previous chapter">Model</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aslan Noorghasemi, Christopher McComb.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/latlong_xy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
