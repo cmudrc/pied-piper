@@ -9,6 +9,8 @@ sphinx:
 build:
   os: ubuntu-lts-latest
   image: latest
+  commands:
+    - make -C docs html
 
 python:
   # choose a Python version matching your project
