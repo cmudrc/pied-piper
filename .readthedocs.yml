@@ -8,7 +8,6 @@ sphinx:
 # Use the latest build image
 build:
   os: ubuntu-lts-latest
-  image: latest
   commands:
     - make -C docs html
 
