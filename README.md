@@ -9,6 +9,7 @@
 
 <div align="center">
 
+[![Docs](https://img.shields.io/badge/docs-30363f?logo=read-the-docs&logoColor=white)](https://pied-piper.readthedocs.io/)
 ![Python Version](https://img.shields.io/badge/python-≥3.10-blue)
 [![PyPI Version](https://img.shields.io/pypi/v/piperabm.svg)](https://pypi.org/project/piperabm/)
 [![GitHub](https://img.shields.io/badge/github-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
