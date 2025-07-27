@@ -7,7 +7,7 @@ sphinx:
 
 # Use the latest build image
 build:
-  os: ubuntu-latest
+  os: ubuntu-lts-latest
   image: latest
 
 python:
@@ -15,5 +15,5 @@ python:
   version: 3.13
 
   install:
-    - requirements: docs/requirements-doc.txt   # install your docs deps
+    - requirements: docs/requirements.txt   # install your docs deps
     - path: .                                  # install your package (so autodoc can import)
