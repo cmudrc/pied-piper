@@ -1,19 +1,15 @@
-# .readthedocs.yml
 version: 2
 
-# Tell RTD to use the docs/source folder and your conf.py
 sphinx:
   configuration: docs/source/conf.py
 
-# Use the latest build image
 build:
-  os: ubuntu-lts-latest
+  os: ubuntu-22.04
   tools:
-    python: "3.13"
-  commands:
-    - sphinx-build -b html docs/source "$READTHEDOCS_OUTPUT/html"
+    python: "3.10"
 
 python:
   install:
-    - requirements: docs/requirements.txt   # install your docs deps
-    - path: .                                  # install your package (so autodoc can import)
+    - requirements: docs/requirements.txt
+    - method: pip
+      path: .
