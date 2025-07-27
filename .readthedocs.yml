@@ -11,6 +11,7 @@ build:
   tools:
     python: "3.13"
   commands:
+    - pip install sphinx sphinx-rtd-theme
     - make -C docs html
 
 python:
