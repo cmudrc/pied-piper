@@ -5,9 +5,13 @@ version: 2
 sphinx:
   configuration: docs/source/conf.py
 
+# Use the latest build image
+build:
+  image: latest
+
 python:
   # choose a Python version matching your project
-  version: 3.10
+  version: 3.13
 
   install:
     - requirements: docs/requirements-doc.txt   # install your docs deps
