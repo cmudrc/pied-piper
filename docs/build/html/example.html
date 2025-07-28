@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step-by-Step Usage Guide &#8212; PiperABM 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="piperabm.model" href="api/model.html" />
+    <link rel="prev" title="PiperABM documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="step-by-step-usage-guide">
+<h1>Step-by-Step Usage Guide<a class="headerlink" href="#step-by-step-usage-guide" title="Link to this heading">¶</a></h1>
+<p>This step-by-step usage guide walks through building and running a PiperABM model.
+This guide is designed to help the user to understand the basic steps of</p>
+<section id="step-0-create-the-model">
+<h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
+<p>In this first step, we import the PiperABM package and create a <cite>Model</cite> instance. We provide:</p>
+<ul class="simple">
+<li><p><strong>path</strong>: The directory where simulation files are saved and loaded (using the location of this example file is recommended).</p></li>
+<li><p><strong>seed</strong> (optional): An integer for reproducible random number generation.</p></li>
+<li><p><strong>prices</strong>: A dictionary mapping resource names (e.g., <cite>‘food’</cite>, <cite>‘water’</cite>, <cite>‘energy’</cite>) to their unit costs.</p></li>
+<li><p><strong>name</strong> (optional): A label to distinguish this model and its results when running multiple instances. In single runs, this can left empty.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">prices</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Example Model&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The model instance is now ready to be used in the subsequent steps.</p>
+</section>
+<section id="step-1-build-the-infrastructure">
+<h2>Step 1: Build the Infrastructure<a class="headerlink" href="#step-1-build-the-infrastructure" title="Link to this heading">¶</a></h2>
+<p>Now we will create the infrastructure for our model.
+Once the model instance is created, automatically an instance of <cite>Infrastructure</cite> is created and assigned to <cite>model.infrastructure</cite>. This instance will be used to build the infrastructure.
+Infrastructure elements include:</p>
+<ul class="simple">
+<li><p><strong>Market</strong>: A node where resources are bought and sold. They act as social hubs in the model. The influx of resources to the model only happens through markets.</p></li>
+<li><p><strong>Homes</strong>: Nodes where agents live and belong to.</p></li>
+<li><p><strong>Junctions</strong>: Nodes that connect edges in the network and represent a physical point in the world.</p></li>
+<li><p><strong>Streets</strong>: Edges that are used by agents to move around the simulation world.</p></li>
+<li><p><strong>Neighborhood Access</strong>: Edges that connect homes and markets to the street network, allowing agents to access these nodes.</p></li>
+</ul>
+<p>The nodes are defined by their position in the world (<cite>pos</cite>), whereas edges are defined by their start and ending positions (<cite>pos_1</cite> and <cite>pos_2</cite>). All the elements can have an optional name and are assigned a unique ID automatically, if no unique ID is given manually.</p>
+<p>To build the infrastructure, we can either manually add elements:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># (Option 1) Manually add all elements</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_market</span><span class="p">(</span>
+    <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;market&#39;</span><span class="p">,</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 1&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 2&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 3&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 1&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 2&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 3&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:</p>
+<ul class="simple">
+<li><p><strong>homes_num</strong>: Number of homes to be generated.</p></li>
+<li><p><strong>grid_size</strong>: Size of the grid in meters provided as list of two numbers showing the width and height of the grid.</p></li>
+<li><p><strong>grid_num</strong>: Number of grid cells in the provided as a list of two integers showing number of cells in the width and height of the world.</p></li>
+<li><p><strong>imperfection_percentage</strong>: Percetnage of random imperfections in the world. This is used to create a more realistic world by introducing some randomness in the grid structure. The percentage is calculated based on the length of the removed edges.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># (Option 2) Automatically generate the infrastructure.</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">homes_num</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">grid_size</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>  <span class="c1"># Meters</span>
+    <span class="n">grid_num</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>  <span class="c1"># Meters</span>
+    <span class="n">imperfection_percentage</span><span class="o">=</span><span class="mi">10</span>  <span class="c1"># Percentage of imperfection in the grid</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_market</span><span class="p">(</span>
+    <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;market&#39;</span><span class="p">,</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Before going to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.</p>
+<ul class="simple">
+<li><p><strong>proximity_radius</strong>: The grammar rules use this value to determine how close the elements should be to each other to impact each other, such as getting merged.</p></li>
+<li><p><strong>search_radius</strong> (optional): Home and market nodes need to get connected to the street network. This is done using “Neighborhood access” edges. The grammar rule for this process is computationally expensive therefore setting a search radius can speed up the process specially in large and intricate networks. If set to <cite>None</cite>, all possible elements are network are evaluated.</p></li>
+<li><p><strong>report</strong>: Reports show the steps taken during the baking process, which can be useful for debugging or understanding the model.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span>
+    <span class="n">proximity_radius</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Meters</span>
+    <span class="n">search_radius</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># Meters</span>
+    <span class="n">report</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>When the infrastructure is baked, it is ready to be used. User can visualize the infrastructure using the <cite>show</cite> method, and by printing the infrastructure object directly, they can see a summary of the infrastructure elements.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the infrastructure summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="p">)</span>
+
+<span class="c1"># Visualize the infratructure</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-build-the-society">
+<h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
+</section>
+<section id="step-3-run">
+<h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
+</section>
+<section id="step-4-results">
+<h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PiperABM</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Step-by-Step Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-0-create-the-model">Step 0: Create the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-build-the-infrastructure">Step 1: Build the Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-build-the-society">Step 2: Build the Society</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-run">Step 3: Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-results">Step 4: Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">PiperABM documentation</a></li>
+      <li>Next: <a href="api/model.html" title="next chapter">piperabm.model</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aslan Noorghasemi, Christopher McComb.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/example.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

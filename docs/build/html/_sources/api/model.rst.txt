@@ -1,4 +1,4 @@
-piperabm.model.Model
+piperabm.model
 =====
 
 .. autoclass:: piperabm.Model

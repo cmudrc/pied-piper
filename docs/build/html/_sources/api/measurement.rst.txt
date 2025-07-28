@@ -1,7 +1,7 @@
-piperabm.model
+piperabm.measurement
 =====
 
-.. autoclass:: piperabm.Model
+.. autoclass:: piperabm.Measurement
    :members:
    :exclude-members:
    :undoc-members:

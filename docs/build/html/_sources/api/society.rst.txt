@@ -1,4 +1,4 @@
-piperabm.society.Society
+piperabm.society
 ======================================
 
 .. autoclass:: piperabm.society.society.Society
