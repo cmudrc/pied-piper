@@ -34,14 +34,22 @@
           <div class="body" role="main">
             
   <section id="working-with-satellite-data">
-<h1>Working with Satellite Data<a class="headerlink" href="#working-with-satellite-data" title="Link to this heading">¶</a></h1>
+<span id="id1"></span><h1>Working with Satellite Data<a class="headerlink" href="#working-with-satellite-data" title="Link to this heading">¶</a></h1>
 <p>PiperABM can seamlessly ingest satellite imagery and geospatial datasets to build simulation-ready infrastructure models. Below are guides to help you import, preprocess, and integrate satellite data into your modeling workflows.</p>
 <section id="mercator-projection">
-<h2>Mercator Projection<a class="headerlink" href="#mercator-projection" title="Link to this heading">¶</a></h2>
-<p>As we already saw in the Step 1 section, the PiperABM framework expects x, y coordinates for the positions.</p>
+<span id="id2"></span><h2>Mercator Projection<a class="headerlink" href="#mercator-projection" title="Link to this heading">¶</a></h2>
+<p>As we already saw in the <a class="reference internal" href="step-by-step.html#step-1-build-infrastructure"><span class="std std-ref">Step 1: Build the Infrastructure</span></a> section of the <a class="reference internal" href="step-by-step.html#step-by-step-usage-guide"><span class="std std-ref">Step-by-Step Usage Guide</span></a>, the PiperABM framework expects <cite>x</cite>, <cite>y</cite> coordinates for the positions. However, many satellite datasets and maps provide data in latitude and longitude coordinates. To convert these coordiantes to <cite>x</cite> and <cite>y</cite>, we can use the Mercator projection.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="https://oceanservice.noaa.gov/news/nov18/making-charts-mercator960.jpg"><img alt="Mesh Patch Diagram" src="https://oceanservice.noaa.gov/news/nov18/making-charts-mercator960.jpg" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> The Mercator projection is a cylindrical map projection. Imagine wrapping a piece of paper around a globe to form a cylinder. The map image is what’s projected from the 3D globe onto the 2D surface of the paper. Source: <a class="reference external" href="https://oceanservice.noaa.gov/navigation/making-nautical-charts.html">NOAA</a></span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In this transformation, the reference point is the latitude and longitude of a specific location, which will become the origin <cite>(0, 0)</cite> in the <cite>x</cite>, <cite>y</cite> coordinate system. The Mercator projection, as seen in Figure 1, wrapps the 3D globe and distorts the shapes. The areas closer to the reference point will be more accurate and less distortedm while areas further away will be more distorted. This is important to keep in mind when working with large areas or when the reference point is not centrally located.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.tools.coordinate.projection</span><span class="w"> </span><span class="kn">import</span> <span class="n">latlong_xy</span>
 
-<span class="c1"># Reference points</span>
+<span class="c1"># Reference point</span>
 <span class="n">latitude_0</span> <span class="o">=</span> <span class="mf">40.0520</span>
 <span class="n">longitude_0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">74.0232</span>
 
@@ -54,37 +62,50 @@
 
 <span class="c1"># Convert to x, y coordinates using Mercator projection</span>
 <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">latlong_xy</span><span class="p">(</span><span class="n">latitude_0</span><span class="p">,</span> <span class="n">longitude_0</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">longitude</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">latlong_xy</span><span class="p">(</span>
+        <span class="n">latitude_0</span><span class="p">,</span>
+        <span class="n">longitude_0</span><span class="p">,</span>
+        <span class="n">latitude</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">longitude</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>For further details on how to use the Mercator projection for modeling using PiperABM, refere to this <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/satellite-map">example</a>.</p>
 </section>
 <section id="meshing-residential-areas">
-<h2>Meshing Residential Areas<a class="headerlink" href="#meshing-residential-areas" title="Link to this heading">¶</a></h2>
+<span id="id3"></span><h2>Meshing Residential Areas<a class="headerlink" href="#meshing-residential-areas" title="Link to this heading">¶</a></h2>
 <p>To add home nodes to the model, we already see that we can use the <cite>add_home</cite> method of the <cite>Infrastructure</cite> class. However, it is not always practical to add hundreds or thausand of homes one by one.
 When working with satellite data and maps, we can create mesh patches that represent and cover the residential areas. These patches are then used to generate random points that represent the homes in the model.</p>
-<p>To do so, first, we define the points that form the vertices of the triangles. If the points are in latitude and longitude, convert them to x and y coordinates using the Mercator projection that has been discussed above.
-Then, we create <cite>Triangle</cite> instances for each triangle formed by the points. Finally, we create a <cite>Patch</cite> instance that contains these triangles.
-The <cite>Patch</cite> instance can then be used to generate random points within the defined area.
+<p>To do so, first, we define the points that form the vertices of the triangles (Figure 2(a)). If the points are in latitude and longitude, convert them to <cite>x</cite> and <cite>y</cite> coordinates using the Mercator projection that has been discussed above.
+Then, we create <cite>Triangle</cite> instances for each triangle formed by the points. Finally, we create a <cite>Patch</cite> instance that contains these triangles (Figure 2(b)). The <cite>Patch</cite> instance can then be used to generate random points within the defined area.
 Another capability of the <cite>Triangle</cite> is that it can have a <cite>density</cite> atttribute, defaulting to 1, which controles chance of point generation in the area. This is useful since not all residential areas have the same density of homes.</p>
+<figure class="align-center" id="id6">
+<img alt="Points and Mesh Patch Example" src="_images/Figure_1.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2:</strong> (a) Points are labeled and their coordinates are extracted. These points will either/or be used for defining streets and creationg of homes nodes. (b) The mesh patch is created using the points as the vertices of the triangles. Home nodes will be placed randomly inside this area.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.tools.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">Triangle</span><span class="p">,</span> <span class="n">Patch</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span>
 
-<span class="c1"># First, we define the points that from the vertices of the triangle.</span>
+<span class="c1"># We define the points that from the vertices of the triangle.</span>
+<span class="c1"># Figure 2(a)</span>
 <span class="n">point_1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">point_2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">point_3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
 <span class="o">...</span>
 
-<span class="c1"># Then, we create Triangle instances for each triangle formed by the points.</span>
+<span class="c1"># Then, we create define the triangle formed by the points.</span>
+<span class="c1"># Figure 2(b)</span>
 <span class="n">triangle_1</span> <span class="o">=</span> <span class="n">Triangle</span><span class="p">(</span><span class="n">point_1</span><span class="p">,</span> <span class="n">point_23</span><span class="p">,</span> <span class="n">point_8</span><span class="p">)</span>
 <span class="n">triangle_2</span> <span class="o">=</span> <span class="n">Triangle</span><span class="p">(</span><span class="n">point_3</span><span class="p">,</span> <span class="n">point_43</span><span class="p">,</span> <span class="n">point_5</span><span class="p">)</span>
 <span class="n">triangle_3</span> <span class="o">=</span> <span class="n">Triangle</span><span class="p">(</span><span class="n">point_6</span><span class="p">,</span> <span class="n">point_52</span><span class="p">,</span> <span class="n">ponint_27</span><span class="p">)</span>
 <span class="o">...</span>
 
-<span class="c1"># Finally, we create a Patch instance that containts these triangles.</span>
+<span class="c1"># We create a Patch instance that containts these triangles.</span>
 <span class="n">patch</span> <span class="o">=</span> <span class="n">Patch</span><span class="p">([</span>
     <span class="n">triangle_1</span><span class="p">,</span>
     <span class="n">triangle_2</span><span class="p">,</span>
@@ -93,11 +114,18 @@ Another capability of the <cite>Triangle</cite> is that it can have a <cite>dens
 <span class="p">])</span>
 
 <span class="c1"># We can now generate random points within the defined area.</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>  <span class="c1"># Generate 100 random points within the patched area</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>  <span class="c1"># Generate random points</span>
     <span class="n">point</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">point</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-center" id="id7">
+<img alt="Input Map vs. Modelled Infrastructure" src="_images/Figure_2.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 3:</strong> (a) The input map. (b) The modelled infrastructure with homes, streets, and neighborhood access edges. The homes are randomply placed in residential areas.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For further details on how to use meshing to generate homes in residential areas, refere to this <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/satellite-map">example</a>.</p>
 </section>
 </section>
 

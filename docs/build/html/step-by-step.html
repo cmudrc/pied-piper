@@ -34,11 +34,11 @@
           <div class="body" role="main">
             
   <section id="step-by-step-usage-guide">
-<h1>Step-by-Step Usage Guide<a class="headerlink" href="#step-by-step-usage-guide" title="Link to this heading">¶</a></h1>
+<span id="id1"></span><h1>Step-by-Step Usage Guide<a class="headerlink" href="#step-by-step-usage-guide" title="Link to this heading">¶</a></h1>
 <p>This step-by-step usage guide walks through building and running a PiperABM model.
 This guide is designed to help the user to understand the basic steps of</p>
 <section id="step-0-create-the-model">
-<h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
+<span id="id2"></span><h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
 <p>In this first step, we import the PiperABM package and create a <cite>Model</cite> instance. We provide:</p>
 <ul class="simple">
 <li><p><strong>path</strong>: The directory where simulation files are saved and loaded (using the location of this example file is recommended).</p></li>
@@ -61,7 +61,7 @@ This guide is designed to help the user to understand the basic steps of</p>
 <p>The model instance is now ready to be used in the subsequent steps.</p>
 </section>
 <section id="step-1-build-the-infrastructure">
-<h2>Step 1: Build the Infrastructure<a class="headerlink" href="#step-1-build-the-infrastructure" title="Link to this heading">¶</a></h2>
+<span id="step-1-build-infrastructure"></span><h2>Step 1: Build the Infrastructure<a class="headerlink" href="#step-1-build-the-infrastructure" title="Link to this heading">¶</a></h2>
 <p>Now we will create the infrastructure for our model.
 Once the model instance is created, automatically an instance of <cite>Infrastructure</cite> is created and assigned to <cite>model.infrastructure</cite>. This instance will be used to build the infrastructure.
 Infrastructure elements include:</p>
@@ -112,6 +112,7 @@ Infrastructure elements include:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>For further details on how to load infrastrcuture using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.</p>
 <p>Before going to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.</p>
 <ul class="simple">
 <li><p><strong>proximity_radius</strong>: The grammar rules use this value to determine how close the elements should be to each other to impact each other, such as getting merged.</p></li>
@@ -136,13 +137,14 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 </div>
 </section>
 <section id="step-2-build-the-society">
-<h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
+<span id="step-2-build-society"></span><h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
 </section>
 <section id="step-3-run">
-<h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
+<span id="id3"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
+<p>The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called “initial”.</p>
 </section>
 <section id="step-4-results">
-<h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
+<span id="id4"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 

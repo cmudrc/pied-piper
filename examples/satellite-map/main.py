@@ -10,7 +10,7 @@ latitude_0 = 41.094167
 longitude_0 = -79.682778
 homes_num = 300
 
-model = pa.Model()
+model = pa.Model(seed=2)
 
 # Convert points to XY coordinates
 points_xy = {}

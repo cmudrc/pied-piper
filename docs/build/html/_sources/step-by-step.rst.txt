@@ -1,8 +1,13 @@
+.. _step-by-step-usage-guide:
+
 Step-by-Step Usage Guide
 ========================
 
 This step-by-step usage guide walks through building and running a PiperABM model.
 This guide is designed to help the user to understand the basic steps of 
+
+
+.. _step-0-create-the-model:
 
 Step 0: Create the Model
 --------------------------------
@@ -28,6 +33,8 @@ In this first step, we import the PiperABM package and create a `Model` instance
 
 The model instance is now ready to be used in the subsequent steps.
 
+
+.. _step-1-build-infrastructure:
 
 Step 1: Build the Infrastructure
 --------------------------------
@@ -85,6 +92,8 @@ To build the infrastructure, we can either manually add elements:
         resources={'food': 150, 'water': 220, 'energy': 130}
     )
 
+For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
+
 Before going to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.
 
 - **proximity_radius**: The grammar rules use this value to determine how close the elements should be to each other to impact each other, such as getting merged.
@@ -111,13 +120,22 @@ User can visualize the infrastructure using the `show` method, and by printing t
     model.infrastructure.show()
 
 
+.. _step-2-build-society:
+
 Step 2: Build the Society
 --------------------------------
 
 
+.. _step-3-run:
+
 Step 3: Run
 --------------------------------
 
+The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called "initial".
+
+
+.. _step-4-results:
 
 Step 4: Results
 --------------------------------
+
