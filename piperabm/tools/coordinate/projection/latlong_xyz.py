@@ -3,7 +3,7 @@ import numpy as np
 from piperabm.tools.vector import vector as vc
 
 
-def latlong_xyz(latitude_degree=0, longitude_degree=0, radius=1):
+def latlong_xyz(latitude_degree: float = 0.0, longitude_degree: float = 0.0, radius: float = 1.0):
     """
     Convert geographic coordinates (latitude, longitude) to 3D Cartesian coordinates (x, y, z).
 

@@ -14,7 +14,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="piperabm.model" href="api/model.html" />
+    <link rel="next" title="Working with Satellite Data" href="satellite.html" />
     <link rel="prev" title="PiperABM documentation" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -53,7 +53,7 @@ This guide is designed to help the user to understand the basic steps of</p>
 <span class="n">model</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
     <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
     <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">prices</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="n">prices</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Example Model&quot;</span>
 <span class="p">)</span>
 </pre></div>
@@ -79,7 +79,7 @@ Infrastructure elements include:</p>
     <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">],</span>
     <span class="n">name</span><span class="o">=</span><span class="s1">&#39;market&#39;</span><span class="p">,</span>
     <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">130</span><span class="p">}</span>
 <span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 1&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 2&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -172,6 +172,7 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Step-by-Step Usage Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#step-0-create-the-model">Step 0: Create the Model</a></li>
@@ -181,6 +182,10 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 <li class="toctree-l2"><a class="reference internal" href="#step-4-results">Step 4: Results</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="satellite.html">Working with Satellite Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.measurement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.infrastructure</a></li>
@@ -193,7 +198,7 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">PiperABM documentation</a></li>
-      <li>Next: <a href="api/model.html" title="next chapter">piperabm.model</a></li>
+      <li>Next: <a href="satellite.html" title="next chapter">Working with Satellite Data</a></li>
   </ul></li>
 </ul>
 </div>
@@ -217,7 +222,7 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
-      <a href="_sources/example.rst.txt"
+      <a href="_sources/step-by-step.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -13,8 +13,15 @@ This is the documentation for PiperABM, a Python-based agent-based modeling fram
 
 .. toctree::
    :maxdepth: 2
+   :caption: Usage Guide
 
-   example
+   step-by-step
+   satellite
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API Reference
+      
    api/model
    api/measurement
    api/infrastructure

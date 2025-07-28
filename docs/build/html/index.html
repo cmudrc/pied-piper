@@ -14,7 +14,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Step-by-Step Usage Guide" href="example.html" />
+    <link rel="next" title="Step-by-Step Usage Guide" href="step-by-step.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -36,36 +36,31 @@
 <h1>PiperABM documentation<a class="headerlink" href="#piperabm-documentation" title="Link to this heading">¶</a></h1>
 <p>This is the documentation for PiperABM, a Python-based agent-based modeling framework designed for simulating community resilience.</p>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Step-by-Step Usage Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="example.html#step-0-create-the-model">Step 0: Create the Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example.html#step-1-build-the-infrastructure">Step 1: Build the Infrastructure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example.html#step-2-build-the-society">Step 2: Build the Society</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example.html#step-3-run">Step 3: Run</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example.html#step-4-results">Step 4: Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-by-step.html">Step-by-Step Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="step-by-step.html#step-0-create-the-model">Step 0: Create the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="step-by-step.html#step-1-build-the-infrastructure">Step 1: Build the Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="step-by-step.html#step-2-build-the-society">Step 2: Build the Society</a></li>
+<li class="toctree-l2"><a class="reference internal" href="step-by-step.html#step-3-run">Step 3: Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="step-by-step.html#step-4-results">Step 4: Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/model.html#piperabm.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="satellite.html">Working with Satellite Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="satellite.html#mercator-projection">Mercator Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="satellite.html#meshing-residential-areas">Meshing Residential Areas</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.measurement</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/measurement.html#piperabm.Measurement"><code class="docutils literal notranslate"><span class="pre">Measurement</span></code></a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.infrastructure</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.infrastructure.Infrastructure"><code class="docutils literal notranslate"><span class="pre">Infrastructure</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.society</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/society.html#piperabm.society.society.Society"><code class="docutils literal notranslate"><span class="pre">Society</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/latlong_xy.html">piperabm.tools.coordinate.projection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/latlong_xy.html#piperabm.tools.coordinate.projection.latlong_xy.latlong_xy"><code class="docutils literal notranslate"><span class="pre">latlong_xy()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/latlong_xy.html#piperabm.tools.coordinate.projection.latlong_xy.xy_latlong"><code class="docutils literal notranslate"><span class="pre">xy_latlong()</span></code></a></li>
-</ul>
-</li>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
 </ul>
 </div>
 </section>
@@ -96,8 +91,13 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Step-by-Step Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-by-step.html">Step-by-Step Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="satellite.html">Working with Satellite Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.measurement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.infrastructure</a></li>
@@ -109,7 +109,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="example.html" title="next chapter">Step-by-Step Usage Guide</a></li>
+      <li>Next: <a href="step-by-step.html" title="next chapter">Step-by-Step Usage Guide</a></li>
   </ul></li>
 </ul>
 </div>

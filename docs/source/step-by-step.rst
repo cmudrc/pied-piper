@@ -22,7 +22,7 @@ In this first step, we import the PiperABM package and create a `Model` instance
     model = pa.Model(
         path=path,
         seed=2,
-        prices={'food': 1,'water': 1,'energy': 1},
+        prices={'food': 15, 'water': 2, 'energy': 8},
         name="Example Model"
     )
 
@@ -52,7 +52,7 @@ To build the infrastructure, we can either manually add elements:
         pos=[40, -40],
         name='market',
         id=0,
-        resources={'food': 100, 'water': 100, 'energy': 100}
+        resources={'food': 150, 'water': 220, 'energy': 130}
     )
     model.infrastructure.add_home(pos=[-60, 40], name='home 1', id=1)
     model.infrastructure.add_home(pos=[200, 20], name='home 2', id=2)
@@ -82,7 +82,7 @@ To build the infrastructure, we can either manually add elements:
         pos=[0, 0],
         name='market',
         id=0,
-        resources={'food': 100, 'water': 100, 'energy': 100}
+        resources={'food': 150, 'water': 220, 'energy': 130}
     )
 
 Before going to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.
@@ -99,7 +99,8 @@ Before going to the next step, we need to "bake" the infrastructure. The process
         report=True
     )
 
-When the infrastructure is baked, it is ready to be used. User can visualize the infrastructure using the `show` method, and by printing the infrastructure object directly, they can see a summary of the infrastructure elements.
+When the infrastructure is baked, it is ready to be used
+User can visualize the infrastructure using the `show` method, and by printing the infrastructure object directly, they can see a summary of the infrastructure elements.
 
 .. code-block:: python
 

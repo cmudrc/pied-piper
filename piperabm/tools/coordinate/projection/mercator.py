@@ -4,7 +4,11 @@ import numpy as np
 class Mercator:   
 
     @staticmethod
-    def project(latitude_degree=0, longitude_degree=0, radius=1):
+    def project(
+        latitude_degree: float = 0.0,
+        longitude_degree: float = 0.0,
+        radius: float = 1.0
+    ):
         """
         Project using Mercator formula to cartesian coordinates.
         """
@@ -15,7 +19,11 @@ class Mercator:
         return x, y
     
     @staticmethod
-    def inverse(x=0, y=0, radius=1):
+    def inverse(
+        x: float = 0.0,
+        y: float = 0.0,
+        radius: float = 1.0
+    ):
         """
         Inverse project from Cartesian coordinates to (latitude, longitude) in degrees.
         """

@@ -15,7 +15,12 @@ This module uses 3D rotation and Mercator projection to:
 EARTH_RADIUS = 6378000 # meters
 
 
-def latlong_xy(latitude_0=0, longitude_0=0, latitude=0, longitude=0):
+def latlong_xy(
+        latitude_0: float = 0.0,
+        longitude_0: float = 0.0,
+        latitude: float = 0.0,
+        longitude: float = 0.0
+    ) -> tuple[float, float]:
     """
     Convert geographic coordinates to Cartesian (x, y) using a Mercator projection around a specified origin.
 
@@ -33,7 +38,12 @@ def latlong_xy(latitude_0=0, longitude_0=0, latitude=0, longitude=0):
     x, y = Mercator.project(new_latitude, new_longitude, radius=EARTH_RADIUS)
     return x, y
 
-def xy_latlong(latitude_0=0, longitude_0=0, x=0, y=0):
+def xy_latlong(
+        latitude_0: float = 0.0,
+        longitude_0: float = 0.0,
+        x: float = 0.0,
+        y: float = 0.0
+    ) -> tuple[float, float]:
     """
     Convert Cartesian (x, y) back to geographic coordinates around a specified origin using the inverse Mercator projection.
 
