@@ -39,8 +39,8 @@ The [`run.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic
 The [`measure.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/measure.py) file creates an instance of `Measurement` class and do the measurements using the saved files. This will result in [`measurement.json`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/result/measurement.json) in the [`result`](https://github.com/cmudrc/pied-piper/tree/main/examples/automatic-creation/result) folder that can be used for loading the meareuments later.
 Finaly, [`result.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/result.py) file loades the measurements and visualizes them as follows:
 
-![Accessibility](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/accessibility.png?raw=true)  
+![Accessibility](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/result/accessibility.png?raw=true)  
 *Agents resource accessibility scores over time*
 
-![Travel Distance](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/travel_distance.png?raw=true)  
+![Travel Distance](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/result/travel_distance.png?raw=true)  
 *Total travel distances of agents vs. time*

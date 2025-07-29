@@ -85,7 +85,7 @@ To build the infrastructure, we can either manually add elements:
    :alt: An example of manually defined infrastrcuture
    :align: center
 
-   **Figure 1:** An example of manually defined infrastructure, after the baking process.
+   **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is borrowed from `this <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
 
 ...  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:
 
