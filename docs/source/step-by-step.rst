@@ -111,7 +111,7 @@ To build the infrastructure, we can either manually add elements:
         resources={'food': 150, 'water': 220, 'energy': 130}
     )
 
-.. figure:: _static/step-by-step/step_1_automatic.png
+.. figure:: _static/step-by-step/step_1_manual.png
    :alt: An example of automatically generated infrastrcuture
    :align: center
 

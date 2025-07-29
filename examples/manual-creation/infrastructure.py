@@ -1,7 +1,8 @@
-import piperabm as pa
+from model import model
 
 
-model = pa.Model()
+# Step 1: Build the Infrastructure
+# Link: https://pied-piper.readthedocs.io/latest/step-by-step.html#step-1-build-the-infrastructure
 model.infrastructure.add_home(pos=[-60, 40], name='home 1', id=1)
 model.infrastructure.add_home(pos=[200, 20], name='home 2', id=2)
 model.infrastructure.add_home(pos=[100, -180], name='home 3', id=3)
