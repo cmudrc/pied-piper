@@ -24,7 +24,7 @@ The [`infrastructure.py`](https://github.com/cmudrc/pied-piper/blob/main/example
 
 ## [Step 2: Build the Society](https://pied-piper.readthedocs.io/latest/step-by-step.html#step-2-build-the-society)
 
-The [`society.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/society.py) file imports the `Model` instance from [`infrastructure.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/infrastructure.py) file and adds an automatically generated society to it. If this file is executed individually, the following figure will be shown.
+The [`society.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/society.py) file imports the `Model` instance from [`infrastructure.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/infrastructure.py) file and adds an automatically generated society to it. If this file is executed individually, the information about the society network is shown.
 
 ## [Step 3: Run](https://pied-piper.readthedocs.io/latest/step-by-step.html#step-3-run)
 

@@ -52,7 +52,7 @@ class Rule1:
         )
         adjustment_factor = self.infrastructure.calculate_adjustment_factor(
             usage_impact=data_1['usage_impact'],
-            climate_impact=data_1['climate_impact']
+            age_impact=data_1['age_impact']
         )
         data_1['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
             length=data_1['length'],
@@ -70,7 +70,7 @@ class Rule1:
         )
         adjustment_factor = self.infrastructure.calculate_adjustment_factor(
             usage_impact=data_1['usage_impact'],
-            climate_impact=data_1['climate_impact']
+            age_impact=data_1['age_impact']
         )
         data_2['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
             length=data_2['length'],

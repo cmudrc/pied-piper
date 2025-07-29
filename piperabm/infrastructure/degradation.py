@@ -3,11 +3,11 @@ class Degradation:
     Manage edge dergradation methods
     """
 
-    def calculate_adjustment_factor(self, usage_impact: float, climate_impact: float) -> float:
+    def calculate_adjustment_factor(self, usage_impact: float, age_impact: float) -> float:
         """
         Calculate adjustment factor
         """
-        return 1 + (self.coeff_usage * usage_impact) + (self.coeff_weather * climate_impact)
+        return 1 + (self.coeff_usage * usage_impact) + (self.coeff_age * age_impact)
     
     def adjustment_factor(self, ids: list) -> float:
         """
@@ -15,7 +15,7 @@ class Degradation:
         """
         return self.calculate_adjustment_factor(
             usage_impact=self.get_usage_impact(ids=ids),
-            climate_impact=self.get_climate_impact(ids=ids)
+            age_impact=self.get_age_impact(ids=ids)
         )
     
     def calculate_adjusted_length(self, length: float, adjustment_factor: float) -> float:

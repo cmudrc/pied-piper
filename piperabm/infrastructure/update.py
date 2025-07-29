@@ -11,13 +11,13 @@ class Update:
         """
         Update the network
         """
-        # Update degradation from climate change (streets only)
+        # Update degradation from age change (streets only)
         rate = 0.00001
         for ids in self.streets:
-            # Update weather impact
-            climate_impact = self.get_climate_impact(ids=ids)
-            climate_impact += rate * duration
-            self.set_climate_impact(ids=ids, value=climate_impact)
+            # Update age impact
+            age_impact = self.get_age_impact(ids=ids)
+            age_impact += rate * duration
+            self.set_age_impact(ids=ids, value=age_impact)
             # Update corresponding edge
             self.update_adjusted_length(ids=ids)
 

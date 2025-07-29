@@ -132,7 +132,7 @@ class Add:
         pos_2: list,
         name: str = '',
         usage_impact: float = 0,
-        climate_impact: float = 0,
+        age_impact: float = 0,
         report: bool = False
     ):
         """
@@ -144,7 +144,7 @@ class Add:
         length = ds.point_to_point(pos_1, pos_2)
         adjustment_factor = self.calculate_adjustment_factor(
             usage_impact=usage_impact,
-            climate_impact=climate_impact
+            age_impact=age_impact
         )
         adjusted_length = self.calculate_adjusted_length(
             length=length,
@@ -157,7 +157,7 @@ class Add:
             length=length,
             adjusted_length=adjusted_length,
             usage_impact=usage_impact,
-            climate_impact=climate_impact,
+            age_impact=age_impact,
             type=type,
         )
         self.baked_streets = False
@@ -172,7 +172,7 @@ class Add:
         id_2: list,
         name: str = '',
         usage_impact: float = 0,
-        climate_impact: float = 0,
+        age_impact: float = 0,
         report: bool = False
     ):
         """
@@ -182,7 +182,7 @@ class Add:
         length = ds.point_to_point(self.get_pos(id_1), self.get_pos(id_2))
         adjustment_factor = self.calculate_adjustment_factor(
             usage_impact=usage_impact,
-            climate_impact=climate_impact
+            age_impact=age_impact
         )
         adjusted_length = self.calculate_adjusted_length(
             length=length,
@@ -195,7 +195,7 @@ class Add:
             length=length,
             adjusted_length=adjusted_length,
             usage_impact=usage_impact,
-            climate_impact=climate_impact,
+            age_impact=age_impact,
             type=type
         )
         #self.baked_streets = False

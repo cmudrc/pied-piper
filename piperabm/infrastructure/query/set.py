@@ -22,11 +22,11 @@ class Set(NxSet):
         """
         self.set_edge_attribute(ids=ids, attribute='usage_impact', value=value)
 
-    def set_climate_impact(self, ids: list, value: float) -> None:
+    def set_age_impact(self, ids: list, value: float) -> None:
         """
-        Set edge *climate_impact* value
+        Set edge *age_impact* value
         """
-        self.set_edge_attribute(ids=ids, attribute='climate_impact', value=value)
+        self.set_edge_attribute(ids=ids, attribute='age_impact', value=value)
 
     def set_resource(self, id: int, name: str, value: float) -> None:
         """

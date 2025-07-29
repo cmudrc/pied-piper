@@ -58,11 +58,11 @@ class Get(NxGet):
         """
         return self.get_edge_attribute(ids=ids, attribute='usage_impact')
     
-    def get_climate_impact(self, ids: list) -> float:
+    def get_age_impact(self, ids: list) -> float:
         """
-        Get edges *climate_impact*
+        Get edges *age_impact*
         """
-        return self.get_edge_attribute(ids=ids, attribute='climate_impact')
+        return self.get_edge_attribute(ids=ids, attribute='age_impact')
     
     def get_resource(self, id: int, name: str) -> float:
         """
