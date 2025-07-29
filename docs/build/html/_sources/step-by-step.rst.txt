@@ -115,7 +115,7 @@ To build the infrastructure, we can either manually add elements:
    :alt: An example of automatically generated infrastrcuture
    :align: center
 
-   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed.
+   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `this <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md>`_ example.
 
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 
