@@ -85,7 +85,7 @@ To build the infrastructure, we can either manually add elements:
    :alt: An example of manually defined infrastrcuture
    :align: center
 
-   **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is borrowed from `this <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
+   **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
 
 ...  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:
 
@@ -115,7 +115,7 @@ To build the infrastructure, we can either manually add elements:
    :alt: An example of automatically generated infrastrcuture
    :align: center
 
-   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `this <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md>`_ example.
+   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `Automatic Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md>`_ example.
 
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 
@@ -144,12 +144,71 @@ User can visualize the infrastructure using the `show` method, and by printing t
     # Visualize the infratructure
     model.infrastructure.show()
 
+The infrastructure elements are subject to degradation. There are two types of degradation:
+- **Age**: The age of the element increases over time which causes the element loose efficiency.
+- **Usage**: The more an element is used, the more it degrades.
+
+By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directiry.
+
+.. code-block:: python
+
+    # Print the infrastructure summary
+    ...
+
+
 
 .. _step-2-build-society:
 
 Step 2: Build the Society
 --------------------------------
-...
+In this step, we will create the society for our model.
+Once the model instance is created in step 0, automatically an instance of `Society` is created and assigned to `model.society`. This instance will be used to build the society.
+Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
+- family: The agents that have same home nodes assigned are considered as a family.
+- neighbor: The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
+- friend: This type of relationship is not automatically created and can be added later by the user.
+
+To build the society, we can either manually add agents and their relationships:
+
+.. code-block:: python
+
+    # Option 1: Manually add all elements
+    model.society.neighbor_radius = 500  # Meters
+    homes = model.infrastructure.homes  # Homes id
+    model.society.add_agent(
+        home_id=homes[0],
+        balance=1200,
+        resources={'food': 15, 'water': 12, 'energy': 10},
+    )
+    model.society.add_agent(
+        home_id=homes[1],
+        balance=800,
+        resources={'food': 15, 'water': 12, 'energy': 10},
+    )
+    model.society.add_agent(
+        home_id=homes[1],
+        balance=1100,
+        resources={'food': 15, 'water': 12, 'energy': 10},
+    )
+    model.society.add_agent(
+        home_id=homes[2],
+        balance=900,
+        resources={'food': 15, 'water': 12, 'energy': 10},
+    )
+
+The code above is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
+
+The other method is to automatically generate the society. The generator method creates a society with a given number of agents and other attributes of the society like the Gini index (a measure of inequality), average income, etc.
+
+.. code-block:: python
+    
+    # Option 2: Automatically generate the society.
+    model.society.generate(
+        num=50,
+        gini_index=0.3,
+        average_resources={'food': 10,'water': 10,'energy': 10},
+        average_balance=1000,
+    )
 
 .. _step-3-run:
 

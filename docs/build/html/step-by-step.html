@@ -101,7 +101,7 @@ Infrastructure elements include:</p>
 <figure class="align-center" id="id7">
 <img alt="An example of manually defined infrastrcuture" src="_images/step_1_automatic.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">this</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">Manual Creation</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:</p>
@@ -127,8 +127,11 @@ Infrastructure elements include:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-center">
+<figure class="align-center" id="id8">
 <img alt="An example of automatically generated infrastrcuture" src="_images/step_1_manual.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md">Automatic Creation</a> example.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
 </figure>
 <p>For further details on how to load infrastrcuture using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.</p>
 <p>Before going to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.</p>
@@ -153,10 +156,60 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>The infrastructure elements are subject to degradation. There are two types of degradation:
+- <strong>Age</strong>: The age of the element increases over time which causes the element loose efficiency.
+- <strong>Usage</strong>: The more an element is used, the more it degrades.</p>
+<p>By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a <cite>degradation.py</cite> file in the working directiry.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the infrastructure summary</span>
+<span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="step-2-build-the-society">
 <span id="step-2-build-society"></span><h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
-<p>…</p>
+<p>In this step, we will create the society for our model.
+Once the model instance is created in step 0, automatically an instance of <cite>Society</cite> is created and assigned to <cite>model.society</cite>. This instance will be used to build the society.
+Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
+- family: The agents that have same home nodes assigned are considered as a family.
+- neighbor: The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
+- friend: This type of relationship is not automatically created and can be added later by the user.</p>
+<p>To build the society, we can either manually add agents and their relationships:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Manually add all elements</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">neighbor_radius</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># Meters</span>
+<span class="n">homes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">homes</span>  <span class="c1"># Homes id</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">home_id</span><span class="o">=</span><span class="n">homes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">balance</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">home_id</span><span class="o">=</span><span class="n">homes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">balance</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">home_id</span><span class="o">=</span><span class="n">homes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">balance</span><span class="o">=</span><span class="mi">1100</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span>
+    <span class="n">home_id</span><span class="o">=</span><span class="n">homes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">balance</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The code above is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">Manual Creation</a> example.</p>
+<p>The other method is to automatically generate the society. The generator method creates a society with a given number of agents and other attributes of the society like the Gini index (a measure of inequality), average income, etc.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 2: Automatically generate the society.</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">gini_index</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">average_resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span><span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+    <span class="n">average_balance</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="step-3-run">
 <span id="id5"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
