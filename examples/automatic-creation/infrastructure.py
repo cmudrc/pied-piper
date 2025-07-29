@@ -1,16 +1,8 @@
-import os
-import piperabm as pa
+from model import model
 
-
-# Step 0: Create the Model
-# Link: 
-model = pa.Model(
-    path=os.path.dirname(os.path.realpath(__file__)),
-    seed=10
-)
 
 # Step 1: Build the Infrastructure
-# Link: 
+# Link: https://pied-piper.readthedocs.io/latest/step-by-step.html#step-1-build-the-infrastructure
 model.infrastructure.generate(
     homes_num=20,
     grid_size=[15, 10],  # Meters
