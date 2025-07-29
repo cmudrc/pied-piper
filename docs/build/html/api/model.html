@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>piperabm.model &#8212; PiperABM 0.1.1 documentation</title>
+    <title>piperabm.Model &#8212; PiperABM 0.1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
@@ -14,8 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="piperabm.model" href="measurement.html" />
-    <link rel="prev" title="PiperABM documentation" href="../index.html" />
+    <link rel="next" title="piperabm.measurement" href="measurement.html" />
+    <link rel="prev" title="Working with Satellite Data" href="../satellite.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -34,12 +34,22 @@
           <div class="body" role="main">
             
   <section id="piperabm-model">
-<h1>piperabm.model<a class="headerlink" href="#piperabm-model" title="Link to this heading">¶</a></h1>
+<h1>piperabm.Model<a class="headerlink" href="#piperabm-model" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="piperabm.Model">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">1,</span> <span class="pre">'food':</span> <span class="pre">1,</span> <span class="pre">'water':</span> <span class="pre">1}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">1,</span> <span class="pre">'food':</span> <span class="pre">1,</span> <span class="pre">'water':</span> <span class="pre">1}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Serialize</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Graphics</span></code></p>
 <p>Main class of simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A label to distinguish this model and its results when running multiple instances. In single runs, this can left empty.</p></li>
+<li><p><strong>prices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Mapping of resource names to unit costs. FEWS Nexus framework expects <cite>‘food’</cite>, <cite>‘water’</cite>, <cite>‘energy’</cite>.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for saving/loading simulation.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>optional</em>) – Integer seed for reproducibility.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.Model.animate">
 <span class="sig-name descname"><span class="pre">animate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model.animate" title="Link to this definition">¶</a></dt>
@@ -74,19 +84,16 @@
 <span class="sig-name descname"><span class="pre">bake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proximity_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model.bake" title="Link to this definition">¶</a></dt>
 <dd><p>Prepare the model for the first simulation step.</p>
 <p>This will generate nodes/edges, and compute any necessary initial calculations.</p>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt>save<span class="classifier">bool, default=False</span></dt><dd><p>If True, immediately serialize the infrastructure state to disk.</p>
-</dd>
-<dt>proximity_radius<span class="classifier">float, default=0</span></dt><dd><p>Radius (in model units) to consider for “nearby” agents.</p>
-</dd>
-<dt>search_radius<span class="classifier">float or None, default=None</span></dt><dd><p>Max distance for pathfinding; if None, uses a model-wide default.</p>
-</dd>
-<dt>report<span class="classifier">bool, default=False</span></dt><dd><p>If True, print a short summary of what was baked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If True, immediately serialize the infrastructure state to disk.</p></li>
+<li><p><strong>proximity_radius</strong> (<em>float</em><em>, </em><em>default=0</em>) – Radius (in model units) to consider for “nearby” agents.</p></li>
+<li><p><strong>search_radius</strong> (<em>float</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Max distance for pathfinding; if None, uses a model-wide default.</p></li>
+<li><p><strong>report</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If True, print a short summary of what was baked.</p></li>
+</ul>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
@@ -153,23 +160,18 @@
 <dt class="sig sig-object py" id="piperabm.Model.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_transactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model.run" title="Link to this definition">¶</a></dt>
 <dd><p>Run model for multiple steps.</p>
-<section id="id1">
-<h2>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt>n<span class="classifier">int or None</span></dt><dd><p>Number of steps to run. If None, keeps running until no agents remain.</p>
-</dd>
-<dt>step_size<span class="classifier">float</span></dt><dd><p>Time increment for each step (e.g. seconds).</p>
-</dd>
-<dt>save<span class="classifier">bool</span></dt><dd><p>If True, serialize state snapshots and deltas to disk.</p>
-</dd>
-<dt>save_transactions<span class="classifier">bool</span></dt><dd><p>If True, record all transactions to disk.</p>
-</dd>
-<dt>resume<span class="classifier">bool</span></dt><dd><p>If True, attempt to resume from last saved state instead of starting fresh.</p>
-</dd>
-<dt>report<span class="classifier">bool</span></dt><dd><p>If True, print progress percentage for n-step runs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em><em> or </em><em>None</em>) – Number of steps to run. If None, keeps running until no agents remain.</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) – Time increment for each step (e.g. seconds).</p></li>
+<li><p><strong>save</strong> (<em>bool</em>) – If <cite>True</cite>, serialize state snapshots and deltas to disk.</p></li>
+<li><p><strong>save_transactions</strong> (<em>bool</em>) – If <cite>True</cite>, record all transactions to disk.</p></li>
+<li><p><strong>resume</strong> (<em>bool</em>) – If <cite>True</cite>, attempt to resume from last saved state instead of starting fresh.</p></li>
+<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, print progress for n-step runs.</p></li>
+</ul>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
@@ -269,23 +271,26 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#piperabm.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a></li>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../step-by-step.html">Step-by-Step Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../satellite.html">Working with Satellite Data</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">piperabm.infrastructure.Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.society.Society</a></li>
-<li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection.latlong_xy</a></li>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">piperabm.Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">PiperABM documentation</a></li>
-      <li>Next: <a href="measurement.html" title="next chapter">piperabm.model</a></li>
+      <li>Previous: <a href="../satellite.html" title="previous chapter">Working with Satellite Data</a></li>
+      <li>Next: <a href="measurement.html" title="next chapter">piperabm.measurement</a></li>
   </ul></li>
 </ul>
 </div>

@@ -1,7 +1,7 @@
-piperabm.infrastructure
+piperabm.Infrastructure
 ======================================
 
-.. autoclass:: piperabm.infrastructure.infrastructure.Infrastructure
+.. autoclass:: piperabm.infrastructure.Infrastructure
    :members:
    :undoc-members:
    :inherited-members:

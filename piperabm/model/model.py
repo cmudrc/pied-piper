@@ -16,6 +16,17 @@ class Model(
 ):
     """
     Main class of simulation
+
+    Parameters
+    ----------
+    name : str, optional
+        A label to distinguish this model and its results when running multiple instances. In single runs, this can left empty.
+    prices : dict, optional
+        Mapping of resource names to unit costs. FEWS Nexus framework expects `'food'`, `'water'`, `'energy'`.
+    path : str, optional
+        Directory for saving/loading simulation.
+    seed : int, optional
+        Integer seed for reproducibility.
     """
 
     type = "model"
@@ -29,8 +40,11 @@ class Model(
                 'energy': 1,
             },
         path=None,
-        seed=None
+        seed: int = None
     ):
+        """
+        Initialize the Model.
+        """
         super().__init__()
         self.time = 0
         self.step = 0

@@ -1,7 +1,7 @@
 .. _step-by-step-usage-guide:
 
 Step-by-Step Usage Guide
-========================
+================================
 
 This step-by-step usage guide walks through building and running a PiperABM model.
 This guide is designed to help the user to understand the basic steps of 
@@ -22,12 +22,7 @@ Install the package using pip:
 
 Step 0: Create the Model
 --------------------------------
-In this first step, we import the PiperABM package and create a `Model` instance. We provide:
-
-- **path**: The directory where simulation files are saved and loaded (using the location of this example file is recommended).
-- **seed** (optional): An integer for reproducible random number generation.
-- **prices**: A dictionary mapping resource names (e.g., `'food'`, `'water'`, `'energy'`) to their unit costs.
-- **name** (optional): A label to distinguish this model and its results when running multiple instances. In single runs, this can left empty.
+In this first step, we import the PiperABM package and create a :class:`piperabm.Model` instance and provide the parameters.
 
 .. code-block:: python
 
@@ -50,14 +45,14 @@ The model instance is now ready to be used in the subsequent steps.
 Step 1: Build the Infrastructure
 --------------------------------
 Now we will create the infrastructure for our model.
-Once the model instance is created, automatically an instance of `Infrastructure` is created and assigned to `model.infrastructure`. This instance will be used to build the infrastructure.
+Once the :class:`piperabm.Model` instance is created, automatically an instance of :class:`piperabm.infrastructure.Infrastructure` is created and assigned to `model.infrastructure`. This instance will be used to build the infrastructure.
 Infrastructure elements include:
 
-- **Market**: A node where resources are bought and sold. They act as social hubs in the model. The influx of resources to the model only happens through markets.
-- **Homes**: Nodes where agents live and belong to.
-- **Junctions**: Nodes that connect edges in the network and represent a physical point in the world.
-- **Streets**: Edges that are used by agents to move around the simulation world.
-- **Neighborhood Access**: Edges that connect homes and markets to the street network, allowing agents to access these nodes.
+- **Market**: A node where resources are bought and sold. They act as social hubs in the model. The influx of resources to the model only happens through markets. (for more info, see :meth:`~piperabm.infrastructure.Infrastructure.add_market`)
+- **Homes**: Nodes where agents live and belong to. (for more info, see :meth:`~piperabm.infrastructure.Infrastructure.add_home`)
+- **Junctions**: Nodes that connect edges in the network and represent a physical point in the world. (for more info, see :meth:`~piperabm.infrastructure.Infrastructure.add_junction`)
+- **Streets**: Edges that are used by agents to move around the simulation world. (for more info, see :meth:`~piperabm.infrastructure.Infrastructure.add_street`)
+- **Neighborhood Access**: Edges that connect homes and markets to the street network, allowing agents to access these nodes. (for more info, see :meth:`~piperabm.infrastructure.Infrastructure.add_neighborhood_access`)
 
 The nodes are defined by their position in the world (`pos`), whereas edges are defined by their start and ending positions (`pos_1` and `pos_2`). All the elements can have an optional name and are assigned a unique ID automatically, if no unique ID is given manually.
 
@@ -67,13 +62,41 @@ To build the infrastructure, we can either manually add elements:
     
     # Option 1: Manually add all elements
     # (Figure 1)
-    model.infrastructure.add_home(pos=[-60, 40], name='home 1', id=1)
-    model.infrastructure.add_home(pos=[200, 20], name='home 2', id=2)
-    model.infrastructure.add_home(pos=[100, -180], name='home 3', id=3)
-    model.infrastructure.add_street(pos_1=[-60, 40], pos_2=[0, 0], name='street 1')
-    model.infrastructure.add_street(pos_1=[0, 0], pos_2=[80, 60], name='street 2')
-    model.infrastructure.add_street(pos_1=[80, 60], pos_2=[200, 20], name='street 3')
-    model.infrastructure.add_street(pos_1=[0, 0], pos_2=[100, -180], name='street 4')
+    model.infrastructure.add_home(
+        pos=[-60, 40],
+        name='home 1',
+        id=1
+    )
+    model.infrastructure.add_home(
+        pos=[200, 20],
+        name='home 2',
+        id=2
+    )
+    model.infrastructure.add_home(
+        pos=[100, -180],
+        name='home 3',
+        id=3
+    )
+    model.infrastructure.add_street(
+        pos_1=[-60, 40],
+        pos_2=[0, 0],
+        name='street 1'
+    )
+    model.infrastructure.add_street(
+        pos_1=[0, 0],
+        pos_2=[80, 60],
+        name='street 2'
+    )
+    model.infrastructure.add_street(
+        pos_1=[80, 60],
+        pos_2=[200, 20],
+        name='street 3'
+    )
+    model.infrastructure.add_street(
+        pos_1=[0, 0],
+        pos_2=[100, -180],
+        name='street 4'
+    )
     model.infrastructure.add_market(
         pos=[40, -40],
         name='market',
@@ -81,7 +104,7 @@ To build the infrastructure, we can either manually add elements:
         resources={'food': 150, 'water': 220, 'energy': 130}
     )
 
-.. figure:: _static/step-by-step/step_1_automatic.png
+.. figure:: _static/step-by-step/step_1_manual.png
    :alt: An example of manually defined infrastrcuture
    :align: center
 
@@ -102,7 +125,7 @@ To build the infrastructure, we can either manually add elements:
         homes_num=20,
         grid_size=[15, 10],  # Meters
         grid_num=[6, 6],  # Meters
-        imperfection_percentage=10  # Percentage of imperfection in the grid
+        imperfection_percentage=10  # Percentage of imperfection
     )
     model.infrastructure.add_market(
         pos=[0, 0],
@@ -111,7 +134,7 @@ To build the infrastructure, we can either manually add elements:
         resources={'food': 150, 'water': 220, 'energy': 130}
     )
 
-.. figure:: _static/step-by-step/step_1_manual.png
+.. figure:: _static/step-by-step/step_1_automatic.png
    :alt: An example of automatically generated infrastrcuture
    :align: center
 
@@ -145,8 +168,9 @@ User can visualize the infrastructure using the `show` method, and by printing t
     model.infrastructure.show()
 
 The infrastructure elements are subject to degradation. There are two types of degradation:
-**Age**: The age of the element increases over time which causes the element loose efficiency.
-**Usage**: The more an element is used, the more it degrades.
+
+- **Age**: The age of the element increases over time which causes the element loose efficiency.
+- **Usage**: The more an element is used, the more it degrades.
 
 Each degradable element has a `usage_impact` and `age_impact` attributes that are used to calculate the degradation of the element.
 When edges degrade, they become less efficient, therefore, it will take longer for the agents to travel through them and require more resources to do so. This is equivalent of having longer edges. This is called "adjusted length" and is calculated as follows:
@@ -179,9 +203,10 @@ Step 2: Build the Society
 In this step, we will create the society for our model.
 Once the model instance is created in step 0, automatically an instance of `Society` is created and assigned to `model.society`. This instance will be used to build the society.
 Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
-**family:** The agents that have same home nodes assigned are considered as a family.
-**neighbor:** The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
-**friend:** This type of relationship is not automatically created and can be added later by the user.
+
+- **family:** The agents that have same home nodes assigned are considered as a family.
+- **neighbor:** The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
+- **friend:** This type of relationship is not automatically created and can be added later by the user.
 
 To build the society, we can either manually add agents and their relationships:
 
@@ -231,10 +256,11 @@ Step 3: Run
 --------------------------------
 When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
 The `run` method of the `Model` class is used to run the model. The method takes the following parameters:
-**save:** If set to `True`, the model saves the simulation results.
-**save_transactions:** If set to `True`, the model saves the transactions made by agents.
-**n:** The number of time steps to run the model. If set to `None`, the models runs as long as there are alive agents in the society.
-**step_size:** The size of each time step ins seconds. If set to large values, the model runs faster but the model may not be able to capture some of the interactions.
+
+- **save:** If set to `True`, the model saves the simulation results.
+- **save_transactions:** If set to `True`, the model saves the transactions made by agents.
+- **n:** The number of time steps to run the model. If set to `None`, the models runs as long as there are alive agents in the society.
+- **step_size:** The size of each time step ins seconds. If set to large values, the model runs faster but the model may not be able to capture some of the interactions.
 
 .. code-block:: python
 

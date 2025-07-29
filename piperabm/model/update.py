@@ -41,13 +41,13 @@ class Update(Trade):
         step_size : float
             Time increment for each step (e.g. seconds).
         save : bool
-            If True, serialize state snapshots and deltas to disk.
+            If `True`, serialize state snapshots and deltas to disk.
         save_transactions : bool
-            If True, record all transactions to disk.
+            If `True`, record all transactions to disk.
         resume : bool
-            If True, attempt to resume from last saved state instead of starting fresh.
+            If `True`, attempt to resume from last saved state instead of starting fresh.
         report : bool
-            If True, print progress percentage for n-step runs.
+            If `True`, print progress for n-step runs.
         """
         # Remove previous save file if exists
         if self.path is not None:

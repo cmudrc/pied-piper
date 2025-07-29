@@ -39,7 +39,19 @@ class Add:
         report: bool = False
     ):
         """
-        Add junction node
+        Add junction node.
+        These are the nodes that connect edges in the network and represent a physical point in the world.
+
+        Parameters
+        ----------
+        pos : list
+            A list of [x, y] coordinates showing the position in space.
+        id : int, optional
+            The unique id number. The default is `None`, and if stays `None`, system will automatically assign a new unique id.
+        name : str, optional
+            Optional name of the element.
+        report : bool
+            If `True`, system will report successful creation of this node.
         """
         type = 'junction'
         id = self.check_id(id)
@@ -64,7 +76,19 @@ class Add:
         report: bool = False
     ):
         """
-        Add home node
+        Add home node.
+        These are the nodes where agents live and belong to. Agents from the same home are a family and together they form a household.
+
+        Parameters
+        ----------
+        pos : list
+            A list of [x, y] coordinates showing the position in space.
+        id : int, optional
+            The unique id number. The default is `None`, and if stays `None`, system will automatically assign a new unique id.
+        name : str, optional
+            Optional name of the element.
+        report : bool
+            If `True`, system will report successful creation of this node.
         """
         type = 'home'
         id = self.check_id(id)
@@ -96,6 +120,22 @@ class Add:
     ):
         """
         Add market node
+        These are the nodes where resources are bought and sold. The influx of resources to the model only happens through markets. They also act as social hubs in the model.
+
+        Parameters
+        ----------
+        pos : list
+            A list of [x, y] coordinates showing the position in space.
+        resources: dict
+            A dictionary showing how much of resources does the market have in stock.
+        enough_resources: dict
+            This shows the maximum amount of each resource market can have in stock. The default value is `None`. If stays `None`, system will rewrite it with a dict equal to `resources` dict.
+        id : int, optional
+            The unique id number. The default is `None`, and if stays `None`, system will automatically assign a new unique id.
+        name : str, optional
+            Optional name of the element.
+        report : bool
+            If `True`, system will report successful creation of this node.
         """
         type = 'market'
         id = self.check_id(id)

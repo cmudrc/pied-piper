@@ -1,5 +1,5 @@
-piperabm.model
-=====
+piperabm.Model
+==============
 
 .. autoclass:: piperabm.Model
    :members:
