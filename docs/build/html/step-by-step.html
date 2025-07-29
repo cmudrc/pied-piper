@@ -157,11 +157,26 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 </pre></div>
 </div>
 <p>The infrastructure elements are subject to degradation. There are two types of degradation:
-- <strong>Age</strong>: The age of the element increases over time which causes the element loose efficiency.
-- <strong>Usage</strong>: The more an element is used, the more it degrades.</p>
-<p>By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a <cite>degradation.py</cite> file in the working directiry.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the infrastructure summary</span>
-<span class="o">...</span>
+<strong>Age</strong>: The age of the element increases over time which causes the element loose efficiency.
+<strong>Usage</strong>: The more an element is used, the more it degrades.</p>
+<p>Each degradable element has a <cite>usage_impact</cite> and <cite>age_impact</cite> attributes that are used to calculate the degradation of the element.
+When edges degrade, they become less efficient, therefore, it will take longer for the agents to travel through them and require more resources to do so. This is equivalent of having longer edges. This is called “adjusted length” and is calculated as follows:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjusted</span>\<span class="n">_length</span> <span class="o">=</span> <span class="n">length</span> \<span class="n">times</span> <span class="n">adjustment_factor</span>
+</pre></div>
+</div>
+<p>The adjustement factor is calculate using the <cite>calculate_adjustment_factor</cite> method of the <cite>Degradation</cite> class. This method takes <cite>usage_impact</cite> and <cite>age_impact</cite> of the element, and by combining them with the <cite>coeff_age</cite> and <cite>coeff_usage</cite> attributes, calculates the “adjustement factor”.
+By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a <cite>degradation.py</cite> file in the working directiry:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The file name should be `degradation.py` and it should be in the wokring directiry of the simulation.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.infrastrcuture.degradation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Degradation</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomDegradation</span><span class="p">(</span><span class="n">Degradation</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_adjustment_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usage_impact</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">age_impact</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate adjustment factor using a custom formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeff_usage</span> <span class="o">*</span> <span class="n">usage_impact</span> <span class="o">**</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeff_age</span> <span class="o">*</span> <span class="n">age_impact</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -170,9 +185,9 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 <p>In this step, we will create the society for our model.
 Once the model instance is created in step 0, automatically an instance of <cite>Society</cite> is created and assigned to <cite>model.society</cite>. This instance will be used to build the society.
 Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
-- family: The agents that have same home nodes assigned are considered as a family.
-- neighbor: The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
-- friend: This type of relationship is not automatically created and can be added later by the user.</p>
+<strong>family:</strong> The agents that have same home nodes assigned are considered as a family.
+<strong>neighbor:</strong> The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
+<strong>friend:</strong> This type of relationship is not automatically created and can be added later by the user.</p>
 <p>To build the society, we can either manually add agents and their relationships:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Manually add all elements</span>
 <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">neighbor_radius</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># Meters</span>
@@ -213,6 +228,15 @@ Society elements includes agents (as nodes) and their relationships (as edges). 
 </section>
 <section id="step-3-run">
 <span id="id5"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
+<p>When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
+The <cite>run</cite> method of the <cite>Model</cite> class is used to run the model. The method takes the following parameters:
+<strong>save:</strong> If set to <cite>True</cite>, the model saves the simulation results.
+<strong>save_transactions:</strong> If set to <cite>True</cite>, the model saves the transactions made by agents.
+<strong>n:</strong> The number of time steps to run the model. If set to <cite>None</cite>, the models runs as long as there are alive agents in the society.
+<strong>step_size:</strong> The size of each time step ins seconds. If set to large values, the model runs faster but the model may not be able to capture some of the interactions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_transactions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called “initial”.</p>
 </section>
 <section id="step-4-results">

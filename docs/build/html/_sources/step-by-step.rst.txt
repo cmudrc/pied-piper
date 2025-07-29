@@ -145,15 +145,30 @@ User can visualize the infrastructure using the `show` method, and by printing t
     model.infrastructure.show()
 
 The infrastructure elements are subject to degradation. There are two types of degradation:
-- **Age**: The age of the element increases over time which causes the element loose efficiency.
-- **Usage**: The more an element is used, the more it degrades.
+**Age**: The age of the element increases over time which causes the element loose efficiency.
+**Usage**: The more an element is used, the more it degrades.
 
-By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directiry.
+Each degradable element has a `usage_impact` and `age_impact` attributes that are used to calculate the degradation of the element.
+When edges degrade, they become less efficient, therefore, it will take longer for the agents to travel through them and require more resources to do so. This is equivalent of having longer edges. This is called "adjusted length" and is calculated as follows:
+.. math::
+
+    adjusted\_length = length \times adjustment_factor
+
+The adjustement factor is calculate using the `calculate_adjustment_factor` method of the `Degradation` class. This method takes `usage_impact` and `age_impact` of the element, and by combining them with the `coeff_age` and `coeff_usage` attributes, calculates the "adjustement factor".
+By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directiry:
 
 .. code-block:: python
 
-    # Print the infrastructure summary
-    ...
+    # The file name should be `degradation.py` and it should be in the wokring directiry of the simulation.
+    from piperabm.infrastrcuture.degradation import Degradation
+
+    class CustomDegradation(Degradation):
+
+        def calculate_adjustment_factor(self, usage_impact: float, age_impact: float) -> float:
+            """
+            Calculate adjustment factor using a custom formula.
+            """
+            return 1 + (self.coeff_usage * usage_impact ** 1.2) + (self.coeff_age * age_impact)
 
 
 
@@ -164,9 +179,9 @@ Step 2: Build the Society
 In this step, we will create the society for our model.
 Once the model instance is created in step 0, automatically an instance of `Society` is created and assigned to `model.society`. This instance will be used to build the society.
 Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
-- family: The agents that have same home nodes assigned are considered as a family.
-- neighbor: The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
-- friend: This type of relationship is not automatically created and can be added later by the user.
+**family:** The agents that have same home nodes assigned are considered as a family.
+**neighbor:** The agents that the assigned home nodes are closer than a certain distance are considered as neighbors.
+**friend:** This type of relationship is not automatically created and can be added later by the user.
 
 To build the society, we can either manually add agents and their relationships:
 
@@ -214,6 +229,17 @@ The other method is to automatically generate the society. The generator method 
 
 Step 3: Run
 --------------------------------
+When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
+The `run` method of the `Model` class is used to run the model. The method takes the following parameters:
+**save:** If set to `True`, the model saves the simulation results.
+**save_transactions:** If set to `True`, the model saves the transactions made by agents.
+**n:** The number of time steps to run the model. If set to `None`, the models runs as long as there are alive agents in the society.
+**step_size:** The size of each time step ins seconds. If set to large values, the model runs faster but the model may not be able to capture some of the interactions.
+
+.. code-block:: python
+
+    model.run(save=True, save_transactions=True, n=100, step_size=3600)
+
 The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called "initial".
 
 
