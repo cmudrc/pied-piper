@@ -7,6 +7,17 @@ This step-by-step usage guide walks through building and running a PiperABM mode
 This guide is designed to help the user to understand the basic steps of 
 
 
+.. _installation:
+
+Installation
+--------------------------------
+Install the package using pip:
+
+.. code-block:: bash
+
+    pip install piperabm
+
+
 .. _step-0-create-the-model:
 
 Step 0: Create the Model
@@ -54,13 +65,8 @@ To build the infrastructure, we can either manually add elements:
 
 .. code-block:: python
     
-    # (Option 1) Manually add all elements
-    model.infrastructure.add_market(
-        pos=[40, -40],
-        name='market',
-        id=0,
-        resources={'food': 150, 'water': 220, 'energy': 130}
-    )
+    # Option 1: Manually add all elements
+    # (Figure 1)
     model.infrastructure.add_home(pos=[-60, 40], name='home 1', id=1)
     model.infrastructure.add_home(pos=[200, 20], name='home 2', id=2)
     model.infrastructure.add_home(pos=[100, -180], name='home 3', id=3)
@@ -68,6 +74,18 @@ To build the infrastructure, we can either manually add elements:
     model.infrastructure.add_street(pos_1=[0, 0], pos_2=[80, 60], name='street 2')
     model.infrastructure.add_street(pos_1=[80, 60], pos_2=[200, 20], name='street 3')
     model.infrastructure.add_street(pos_1=[0, 0], pos_2=[100, -180], name='street 4')
+    model.infrastructure.add_market(
+        pos=[40, -40],
+        name='market',
+        id=0,
+        resources={'food': 150, 'water': 220, 'energy': 130}
+    )
+
+.. figure:: _static/step-by-step/step_1_automatic.png
+   :alt: An example of manually defined infrastrcuture
+   :align: center
+
+   **Figure 1:** An example of manually defined infrastructure, after the baking process.
 
 ...  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:
 
@@ -78,9 +96,10 @@ To build the infrastructure, we can either manually add elements:
 
 .. code-block:: python
     
-    # (Option 2) Automatically generate the infrastructure.
+    # Option 2: Automatically generate the infrastructure.
+    # (Figure 2)
     model.infrastructure.generate(
-        homes_num=10,
+        homes_num=20,
         grid_size=[15, 10],  # Meters
         grid_num=[6, 6],  # Meters
         imperfection_percentage=10  # Percentage of imperfection in the grid
@@ -91,6 +110,12 @@ To build the infrastructure, we can either manually add elements:
         id=0,
         resources={'food': 150, 'water': 220, 'energy': 130}
     )
+
+.. figure:: _static/step-by-step/step_1_automatic.png
+   :alt: An example of automatically generated infrastrcuture
+   :align: center
+
+   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed.
 
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 
@@ -124,13 +149,12 @@ User can visualize the infrastructure using the `show` method, and by printing t
 
 Step 2: Build the Society
 --------------------------------
-
+...
 
 .. _step-3-run:
 
 Step 3: Run
 --------------------------------
-
 The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called "initial".
 
 
@@ -138,4 +162,4 @@ The current state of the model at this stage, where everything is loaded are is 
 
 Step 4: Results
 --------------------------------
-
+...

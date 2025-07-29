@@ -1,0 +1,1 @@
+In this example, we demonstrate how to automatically create both infrastructure and society to run a simulation.

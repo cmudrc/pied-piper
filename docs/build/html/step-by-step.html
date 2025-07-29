@@ -37,8 +37,15 @@
 <span id="id1"></span><h1>Step-by-Step Usage Guide<a class="headerlink" href="#step-by-step-usage-guide" title="Link to this heading">¶</a></h1>
 <p>This step-by-step usage guide walks through building and running a PiperABM model.
 This guide is designed to help the user to understand the basic steps of</p>
+<section id="installation">
+<span id="id2"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>Install the package using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>piperabm
+</pre></div>
+</div>
+</section>
 <section id="step-0-create-the-model">
-<span id="id2"></span><h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
+<span id="id3"></span><h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
 <p>In this first step, we import the PiperABM package and create a <cite>Model</cite> instance. We provide:</p>
 <ul class="simple">
 <li><p><strong>path</strong>: The directory where simulation files are saved and loaded (using the location of this example file is recommended).</p></li>
@@ -74,13 +81,8 @@ Infrastructure elements include:</p>
 </ul>
 <p>The nodes are defined by their position in the world (<cite>pos</cite>), whereas edges are defined by their start and ending positions (<cite>pos_1</cite> and <cite>pos_2</cite>). All the elements can have an optional name and are assigned a unique ID automatically, if no unique ID is given manually.</p>
 <p>To build the infrastructure, we can either manually add elements:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># (Option 1) Manually add all elements</span>
-<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_market</span><span class="p">(</span>
-    <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">],</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;market&#39;</span><span class="p">,</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">130</span><span class="p">}</span>
-<span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Manually add all elements</span>
+<span class="c1"># (Figure 1)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 1&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 2&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_home</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;home 3&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -88,8 +90,20 @@ Infrastructure elements include:</p>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 2&#39;</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 3&#39;</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_street</span><span class="p">(</span><span class="n">pos_1</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pos_2</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;street 4&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">add_market</span><span class="p">(</span>
+    <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;market&#39;</span><span class="p">,</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;food&#39;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span> <span class="mi">220</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="mi">130</span><span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-center" id="id6">
+<img alt="An example of manually defined infrastrcuture" src="_images/step_1_automatic.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:</p>
 <ul class="simple">
 <li><p><strong>homes_num</strong>: Number of homes to be generated.</p></li>
@@ -97,9 +111,10 @@ Infrastructure elements include:</p>
 <li><p><strong>grid_num</strong>: Number of grid cells in the provided as a list of two integers showing number of cells in the width and height of the world.</p></li>
 <li><p><strong>imperfection_percentage</strong>: Percetnage of random imperfections in the world. This is used to create a more realistic world by introducing some randomness in the grid structure. The percentage is calculated based on the length of the removed edges.</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># (Option 2) Automatically generate the infrastructure.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 2: Automatically generate the infrastructure.</span>
+<span class="c1"># (Figure 2)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-    <span class="n">homes_num</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">homes_num</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">grid_size</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>  <span class="c1"># Meters</span>
     <span class="n">grid_num</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>  <span class="c1"># Meters</span>
     <span class="n">imperfection_percentage</span><span class="o">=</span><span class="mi">10</span>  <span class="c1"># Percentage of imperfection in the grid</span>
@@ -112,6 +127,12 @@ Infrastructure elements include:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-center" id="id7">
+<img alt="An example of automatically generated infrastrcuture" src="_images/step_1_automatic.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>For further details on how to load infrastrcuture using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.</p>
 <p>Before going to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.</p>
 <ul class="simple">
@@ -138,13 +159,15 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 </section>
 <section id="step-2-build-the-society">
 <span id="step-2-build-society"></span><h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
+<p>…</p>
 </section>
 <section id="step-3-run">
-<span id="id3"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
+<span id="id4"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
 <p>The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called “initial”.</p>
 </section>
 <section id="step-4-results">
-<span id="id4"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
+<span id="id5"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
+<p>…</p>
 </section>
 </section>
 
@@ -177,6 +200,7 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Step-by-Step Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-0-create-the-model">Step 0: Create the Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-1-build-the-infrastructure">Step 1: Build the Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-2-build-the-society">Step 2: Build the Society</a></li>

@@ -1,7 +1,7 @@
 .. _working-with-satellite-data:
 
 Working with Satellite Data
-========================
+================================
 
 PiperABM can seamlessly ingest satellite imagery and geospatial datasets to build simulation-ready infrastructure models. Below are guides to help you import, preprocess, and integrate satellite data into your modeling workflows.
 
@@ -33,7 +33,8 @@ In this transformation, the reference point is the latitude and longitude of a s
     points = [
         [40.7128, -74.0060],
         [40.0522, -74.0240],
-        [40.1234, -74.0567]
+        [40.1234, -74.0567],
+        ...
     ]
 
     # Convert to x, y coordinates using Mercator projection

@@ -40,6 +40,12 @@ class Generate:
                 pos_2=[x_size - (x_size / 2), y]
             )
 
+        self.bake()
+
+        # Random impact
+        edges = self.random_edges(percent=imperfection_percentage)
+        self.impact(edges=edges)
+
         # Homes
         def generate_random_point(x_range, y_range):
             x = float(np.random.uniform(-x_range/2, x_range/2))
@@ -50,12 +56,6 @@ class Generate:
 
         for i in range(homes_num):
             self.add_home(pos=generate_random_point(x_range, y_range))
-
-        self.bake()
-
-        # Random impact
-        edges = self.random_edges(percent=imperfection_percentage)
-        self.impact(edges=edges)
 
 
 if __name__ == "__main__":
