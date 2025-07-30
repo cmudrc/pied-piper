@@ -125,8 +125,7 @@ To build the infrastructure, we can either manually add elements:
    **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `Automatic Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md>`_ example.
 
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
-
-Before going to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
+Before continuing to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
 
 .. code-block:: python
 
@@ -136,7 +135,7 @@ Before going to the next step, we need to "bake" the infrastructure. The process
         report=True
     )
 
-When the infrastructure is baked, it is ready to be used
+When the infrastructure is baked, it is ready to be used.
 User can visualize the infrastructure using the `show` method, and by printing the infrastructure object directly, they can see a summary of the infrastructure elements.
 
 .. code-block:: python
@@ -160,11 +159,11 @@ When edges degrade, they become less efficient, therefore, it will take longer f
     adjusted\_length = length \times adjustment\_factor
 
 The adjustement factor is calculate using the `calculate_adjustment_factor` method of the `Degradation` class. This method takes `usage_impact` and `age_impact` of the element, and by combining them with the `coeff_age` and `coeff_usage` attributes, calculates the "adjustement factor".
-By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directiry:
+By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directory:
 
 .. code-block:: python
 
-    # The file name should be `degradation.py` and it should be in the wokring directiry of the simulation.
+    # The file name should be `degradation.py` and it needs to be located in the wokring directory of the simulation.
     from piperabm.infrastrcuture.degradation import Degradation
 
     class CustomDegradation(Degradation):
@@ -182,7 +181,7 @@ By default, only the street edges are sibject to degradation. However, the user 
 Step 2: Build the Society
 --------------------------------
 In this step, we will create the society for our model.
-Once the model instance is created in step 0, automatically an instance of `Society` is created and assigned to `model.society`. This instance will be used to build the society.
+Once the user create a :class:`piperabm.Model` instance in step 0, the `society` attribute on that instance is automatically set to a fresh :class:`piperabm.society.Society` object. This instance will be used to build the society.
 Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
 
 - **family:** The agents that have same home nodes assigned are considered as a family.
@@ -231,27 +230,44 @@ The other method is to automatically generate the society. The generator method 
         average_balance=1000,
     )
 
+
+
+Agents consume resources both during travel and from their routine activities; should any of their essential resources (food, water, or energy) drop to zero, the agent is considered “dead” and is removed from the simulation, serving as a critical endpoint that reflects a failure to sustain the population under stress.
+
+.. figure:: _static/step-by-step/utility.png
+   :alt: Agents utility function
+   :align: center
+
+   **Figure X:** Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.
+
+
+
 .. _step-3-run:
 
 Step 3: Run
 --------------------------------
-When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
-The `run` method of the `Model` class is used to run the model. The method takes the following parameters:
 
-- **save:** If set to `True`, the model saves the simulation results.
-- **save_transactions:** If set to `True`, the model saves the transactions made by agents.
-- **n:** The number of time steps to run the model. If set to `None`, the models runs as long as there are alive agents in the society.
-- **step_size:** The size of each time step ins seconds. If set to large values, the model runs faster but the model may not be able to capture some of the interactions.
+When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
+During each run step, agents first perform a cost–benefit analysis to choose a destination, initially targeting the nearest market nodes to minimize travel time and resource expenditure . They then navigate through the infrastructure network using the A* algorithm, which finds the shortest path by combining actual travel costs with heuristic estimates . Upon arrival, agents may trade resources either at market nodes or with other agents present; these exchanges are resolved via the Nash Bargaining Solution, which ensures a fair division by maximizing the product of each party’s utility gain over their disagreement points.
+Infrastructure elements will degrade as a result of both aging usage. Agents activity will cause degradation of infrastrcuture elements. This feedback loop means that heavily trafficked routes become progressively slower and more costly to traverse.
+
+.. figure:: _static/step-by-step/interconnected.png
+   :alt: Interconnected nature of infrastructure and society networks
+   :align: center
+
+   **Figure X:** PiperABM models the interconnected nature of infrastructure and society networks.
+
+The :meth:`~piperabm.Model.run` method of the :class:`piperabm.Model` class is used for running the simulation. An example of running the model is as follows:
 
 .. code-block:: python
 
+    # Run the simulation
     model.run(save=True, save_transactions=True, n=100, step_size=3600)
-
-The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called "initial".
 
 
 .. _step-4-results:
 
 Step 4: Results
 --------------------------------
-...
+
+The :class:`piperabm.infrastructure.Infrastructure` class uses a `NetworkX undirected graph <https://networkx.org/documentation/stable/reference/classes/graph.html#graph-undirected-graphs-with-self-loops>`_ as its backend.

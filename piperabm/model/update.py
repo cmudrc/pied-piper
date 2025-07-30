@@ -37,13 +37,13 @@ class Update(Trade):
         Parameters
         ----------
         n : int or None
-            Number of steps to run. If None, keeps running until no agents remain.
+            Number of steps to run the model. If set to `None`, model keeps running until no agents remain alive in the society.
         step_size : float
-            Time increment for each step (e.g. seconds).
+            Time increment for each step (e.g. seconds). If set to large values, the model runs faster but the model may not be able to capture some of the interactions.
         save : bool
-            If `True`, serialize state snapshots and deltas to disk.
+            If `True`, saves the results buy serializing state snapshots and creating deltas and recording them to disk. The initial state of model (named `initial.json`), the final state of the model (named `final.json`) as well as the changes (deltas) during each step (named `simulation.json`) can be found in the `result` folder in the working directory.
         save_transactions : bool
-            If `True`, record all transactions to disk.
+            If `True`, record all transactions to disk. The file will be named `transaction.csv` and will be located in the `result` folder in the working directory.
         resume : bool
             If `True`, attempt to resume from last saved state instead of starting fresh.
         report : bool

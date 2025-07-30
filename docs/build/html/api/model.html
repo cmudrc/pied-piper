@@ -163,10 +163,10 @@ This will generate nodes/edges, and compute any necessary initial calculations t
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em><em> or </em><em>None</em>) – Number of steps to run. If None, keeps running until no agents remain.</p></li>
-<li><p><strong>step_size</strong> (<em>float</em>) – Time increment for each step (e.g. seconds).</p></li>
-<li><p><strong>save</strong> (<em>bool</em>) – If <cite>True</cite>, serialize state snapshots and deltas to disk.</p></li>
-<li><p><strong>save_transactions</strong> (<em>bool</em>) – If <cite>True</cite>, record all transactions to disk.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em> or </em><em>None</em>) – Number of steps to run the model. If set to <cite>None</cite>, model keeps running until no agents remain alive in the society.</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) – Time increment for each step (e.g. seconds). If set to large values, the model runs faster but the model may not be able to capture some of the interactions.</p></li>
+<li><p><strong>save</strong> (<em>bool</em>) – If <cite>True</cite>, saves the results buy serializing state snapshots and creating deltas and recording them to disk. The initial state of model (named <cite>initial.json</cite>), the final state of the model (named <cite>final.json</cite>) as well as the changes (deltas) during each step (named <cite>simulation.json</cite>) can be found in the <cite>result</cite> folder in the working directory.</p></li>
+<li><p><strong>save_transactions</strong> (<em>bool</em>) – If <cite>True</cite>, record all transactions to disk. The file will be named <cite>transaction.csv</cite> and will be located in the <cite>result</cite> folder in the working directory.</p></li>
 <li><p><strong>resume</strong> (<em>bool</em>) – If <cite>True</cite>, attempt to resume from last saved state instead of starting fresh.</p></li>
 <li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, print progress for n-step runs.</p></li>
 </ul>
