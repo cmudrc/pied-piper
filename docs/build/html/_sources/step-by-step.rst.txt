@@ -181,7 +181,7 @@ By default, only the street edges are sibject to degradation. However, the user 
 Step 2: Build the Society
 --------------------------------
 In this step, we will create the society for our model.
-Once the user create a :class:`piperabm.Model` instance in step 0, the `society` attribute on that instance is automatically set to a fresh :class:`piperabm.society.Society` object. This instance will be used to build the society.
+Once the user create a :class:`piperabm.Model` instance in :ref:`Step 0 <step-0-create-the-model>`, the `society` attribute on that instance is automatically set to a fresh :class:`piperabm.society.Society` object. This instance will be used to build the society.
 Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:
 
 - **family:** The agents that have same home nodes assigned are considered as a family.
@@ -230,16 +230,61 @@ The other method is to automatically generate the society. The generator method 
         average_balance=1000,
     )
 
+Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.
 
+.. figure:: _static/step-by-step/ooda.png
+   :alt: OODA loop as the core decision-making framework.
+   :align: center
+
+   **Figure 3:** Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.
 
 Agents consume resources both during travel and from their routine activities; should any of their essential resources (food, water, or energy) drop to zero, the agent is considered “dead” and is removed from the simulation, serving as a critical endpoint that reflects a failure to sustain the population under stress.
 
 .. figure:: _static/step-by-step/utility.png
    :alt: Agents utility function
    :align: center
+   :width: 350
 
-   **Figure X:** Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.
+   **Figure 4:** Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.
 
+Agents decision-making can be customized by creating a file named `decision_making.py` with customized functions that overrides the default behavior in runtime:
+
+.. code-block:: python
+
+    # The file name should be `decision_making.py` and it needs to be located in the wokring directory of the simulation.
+    from piperabm.society.decision_making import DecisionMaking
+
+    class CustomDecisionMaking(DecisionMaking):
+
+        def destination_score(self, agent_id: int, destination_id: int, is_market: bool) -> float:
+            """
+            Destination score
+            """
+            # Calculate the estimated amount of fuel required
+            travel_duration = self.estimated_duration(agent_id, destination_id)
+            fuel_resources = {}
+            for name in self.resource_names:
+                fuel_resources[name] = self.transportation_resource_rates[name] * travel_duration
+            # Calculate the value of required fuel
+            fuel_possible = True
+            for name in self.resource_names:
+                if fuel_resources[name] > self.get_resource(id=agent_id, name=name):
+                    fuel_possible = False
+            if fuel_possible is True:
+                total_fuel_value = 0
+                for name in self.resource_names:
+                    fuel_value = fuel_resources[name] * self.prices[name]
+                    total_fuel_value += fuel_value
+            else:
+                total_fuel_value = SYMBOLS['inf']
+            # Calculate the value of resources there
+            resources_there = self.resources_in(node_id=destination_id, is_market=is_market)
+            total_value_there = 0
+            for name in self.resource_names:
+                total_value_there += resources_there[name] * self.prices[name]
+            # Calculate score
+            score = total_value_there - total_fuel_value
+            return score
 
 
 .. _step-3-run:
@@ -255,14 +300,19 @@ Infrastructure elements will degrade as a result of both aging usage. Agents act
    :alt: Interconnected nature of infrastructure and society networks
    :align: center
 
-   **Figure X:** PiperABM models the interconnected nature of infrastructure and society networks.
+   **Figure 5:** PiperABM models the interconnected nature of infrastructure and society networks.
 
 The :meth:`~piperabm.Model.run` method of the :class:`piperabm.Model` class is used for running the simulation. An example of running the model is as follows:
 
 .. code-block:: python
 
     # Run the simulation
-    model.run(save=True, save_transactions=True, n=100, step_size=3600)
+    model.run(
+        save=True,
+        save_transactions=True,
+        n=100,
+        step_size=3600
+    )
 
 
 .. _step-4-results:
@@ -271,6 +321,7 @@ Step 4: Results
 --------------------------------
 
 When simulation running is done, if the `save` attribute is `True`, the states of model accross the time steps will be saved. (For more information, please refer to :meth:`~piperabm.Model.run`)
+All these files will be located inside `result` folder in the working directory.
 Now, is it possible to create an instance of :class:`piperabm.model.Measurement` to measure the various parameters for the length of simulation. Currently, "accessibility" and "travel distance" are supported. (For more information, please refer to :class:`piperabm.model.measurement.accessibility.Accessibility` and :class:`piperabm.model.measurement.travel_distance.TravelDistance`)
 The measured values will be saved to disk for future reference.
 
@@ -297,6 +348,8 @@ Then, we can access the measurements later:
     measurement.travel_distance.show()
 
 It is also possible to access and filter the values to create customized plots. Please refer to the corresponding documentation.
+
+Transactions are also recorded in a seperate file named `transactions.csv` which records the transactions between two agents or an agent with market node. This is also saved inside the `result` folder in the working directory.
 
 Another way of working with the simulation results is to render animation. This is useful for face-validity but requires setting proper step-size for smooth animation.
 

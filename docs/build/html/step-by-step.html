@@ -188,7 +188,7 @@ By default, only the street edges are sibject to degradation. However, the user 
 <section id="step-2-build-the-society">
 <span id="step-2-build-society"></span><h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
 <p>In this step, we will create the society for our model.
-Once the user create a <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> instance in step 0, the <cite>society</cite> attribute on that instance is automatically set to a fresh <a class="reference internal" href="api/society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.society.Society</span></code></a> object. This instance will be used to build the society.
+Once the user create a <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> instance in <a class="reference internal" href="#step-0-create-the-model"><span class="std std-ref">Step 0</span></a>, the <cite>society</cite> attribute on that instance is automatically set to a fresh <a class="reference internal" href="api/society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.society.Society</span></code></a> object. This instance will be used to build the society.
 Society elements includes agents (as nodes) and their relationships (as edges). There are three types of relationships:</p>
 <ul class="simple">
 <li><p><strong>family:</strong> The agents that have same home nodes assigned are considered as a family.</p></li>
@@ -232,34 +232,85 @@ Society elements includes agents (as nodes) and their relationships (as edges). 
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Agents consume resources both during travel and from their routine activities; should any of their essential resources (food, water, or energy) drop to zero, the agent is considered “dead” and is removed from the simulation, serving as a critical endpoint that reflects a failure to sustain the population under stress.</p>
+<p>Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.</p>
 <figure class="align-center" id="id8">
-<img alt="Agents utility function" src="_images/utility.png" />
+<img alt="OODA loop as the core decision-making framework." src="_images/ooda.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure X:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
+<p>Agents consume resources both during travel and from their routine activities; should any of their essential resources (food, water, or energy) drop to zero, the agent is considered “dead” and is removed from the simulation, serving as a critical endpoint that reflects a failure to sustain the population under stress.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="_images/utility.png"><img alt="Agents utility function" src="_images/utility.png" style="width: 350px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 4:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Agents decision-making can be customized by creating a file named <cite>decision_making.py</cite> with customized functions that overrides the default behavior in runtime:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The file name should be `decision_making.py` and it needs to be located in the wokring directory of the simulation.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.society.decision_making</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionMaking</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomDecisionMaking</span><span class="p">(</span><span class="n">DecisionMaking</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">destination_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">destination_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">is_market</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination score</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the estimated amount of fuel required</span>
+        <span class="n">travel_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimated_duration</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">destination_id</span><span class="p">)</span>
+        <span class="n">fuel_resources</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
+            <span class="n">fuel_resources</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transportation_resource_rates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="n">travel_duration</span>
+        <span class="c1"># Calculate the value of required fuel</span>
+        <span class="n">fuel_possible</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fuel_resources</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">fuel_possible</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">fuel_possible</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">total_fuel_value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
+                <span class="n">fuel_value</span> <span class="o">=</span> <span class="n">fuel_resources</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="n">total_fuel_value</span> <span class="o">+=</span> <span class="n">fuel_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">total_fuel_value</span> <span class="o">=</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="s1">&#39;inf&#39;</span><span class="p">]</span>
+        <span class="c1"># Calculate the value of resources there</span>
+        <span class="n">resources_there</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources_in</span><span class="p">(</span><span class="n">node_id</span><span class="o">=</span><span class="n">destination_id</span><span class="p">,</span> <span class="n">is_market</span><span class="o">=</span><span class="n">is_market</span><span class="p">)</span>
+        <span class="n">total_value_there</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
+            <span class="n">total_value_there</span> <span class="o">+=</span> <span class="n">resources_there</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="c1"># Calculate score</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">total_value_there</span> <span class="o">-</span> <span class="n">total_fuel_value</span>
+        <span class="k">return</span> <span class="n">score</span>
+</pre></div>
+</div>
 </section>
 <section id="step-3-run">
 <span id="id4"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
 <p>When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
 During each run step, agents first perform a cost–benefit analysis to choose a destination, initially targeting the nearest market nodes to minimize travel time and resource expenditure . They then navigate through the infrastructure network using the A* algorithm, which finds the shortest path by combining actual travel costs with heuristic estimates . Upon arrival, agents may trade resources either at market nodes or with other agents present; these exchanges are resolved via the Nash Bargaining Solution, which ensures a fair division by maximizing the product of each party’s utility gain over their disagreement points.
 Infrastructure elements will degrade as a result of both aging usage. Agents activity will cause degradation of infrastrcuture elements. This feedback loop means that heavily trafficked routes become progressively slower and more costly to traverse.</p>
-<figure class="align-center" id="id9">
+<figure class="align-center" id="id10">
 <img alt="Interconnected nature of infrastructure and society networks" src="_images/interconnected.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure X:</strong> PiperABM models the interconnected nature of infrastructure and society networks.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 5:</strong> PiperABM models the interconnected nature of infrastructure and society networks.</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The <a class="reference internal" href="api/model.html#piperabm.Model.run" title="piperabm.Model.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method of the <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> class is used for running the simulation. An example of running the model is as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the simulation</span>
-<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_transactions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">save_transactions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">step_size</span><span class="o">=</span><span class="mi">3600</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="step-4-results">
 <span id="id5"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
 <p>When simulation running is done, if the <cite>save</cite> attribute is <cite>True</cite>, the states of model accross the time steps will be saved. (For more information, please refer to <a class="reference internal" href="api/model.html#piperabm.Model.run" title="piperabm.Model.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>)
+All these files will be located inside <cite>result</cite> folder in the working directory.
 Now, is it possible to create an instance of <a class="reference internal" href="api/measurement.html#piperabm.model.Measurement" title="piperabm.model.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.Measurement</span></code></a> to measure the various parameters for the length of simulation. Currently, “accessibility” and “travel distance” are supported. (For more information, please refer to <a class="reference internal" href="api/measurement.html#piperabm.model.measurement.accessibility.Accessibility" title="piperabm.model.measurement.accessibility.Accessibility"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.measurement.accessibility.Accessibility</span></code></a> and <a class="reference internal" href="api/measurement.html#piperabm.model.measurement.travel_distance.TravelDistance" title="piperabm.model.measurement.travel_distance.TravelDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.measurement.travel_distance.TravelDistance</span></code></a>)
 The measured values will be saved to disk for future reference.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -282,6 +333,7 @@ The measured values will be saved to disk for future reference.</p>
 </pre></div>
 </div>
 <p>It is also possible to access and filter the values to create customized plots. Please refer to the corresponding documentation.</p>
+<p>Transactions are also recorded in a seperate file named <cite>transactions.csv</cite> which records the transactions between two agents or an agent with market node. This is also saved inside the <cite>result</cite> folder in the working directory.</p>
 <p>Another way of working with the simulation results is to render animation. This is useful for face-validity but requires setting proper step-size for smooth animation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
