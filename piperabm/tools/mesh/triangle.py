@@ -2,8 +2,28 @@ import random
 
 
 class Triangle:
+    """
+    Represent a single triangle for meshing purpose.
 
-    def __init__(self, point_1: list, point_2: list, point_3: list, density: float = 1):
+    Parameters
+    ----------
+    point_1 : list
+        `x` and `y` coordinates of the vertice 1.
+    point_2 : list
+        `x` and `y` coordinates of the vertice 1.
+    point_3 : list
+        `x` and `y` coordinates of the vertice 1.
+    density : float, default=1
+        The higher the density is, the higher the chance of containing the point is.
+    """
+
+    def __init__(
+            self,
+            point_1: list,
+            point_2: list,
+            point_3: list,
+            density: float = 1
+        ):
         self.A = point_1
         self.B = point_2
         self.C = point_3
@@ -12,16 +32,16 @@ class Triangle:
     @property
     def area(self):
         """
-        Area of the triangle
+        Calculate the area of the triangle.
         """
         x1, y1 = self.A
         x2, y2 = self.B
         x3, y3 = self.C
         return abs(x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2.0
 
-    def random_point(self):
+    def random_point(self) -> list:
         """
-        Generate a random point inside the triangle using Barycentric coordinates
+        Generate a random point inside the triangle using Barycentric coordinates.
         """
         r1, r2 = random.random(), random.random()
         sqrt_r1 = r1 ** 0.5
@@ -34,7 +54,10 @@ class Triangle:
         return [x, y]
     
     @property
-    def weight(self):
+    def weight(self) -> float:
+        """
+        Both area and density are proportional to the probability of containing a point inside. Therefore, weight is defined as a more suitable parameter for point generation.
+        """
         return self.area * self.density
 
 

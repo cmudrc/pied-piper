@@ -12,7 +12,7 @@ Mercator Projection
 --------------------------------
 As we already saw in the :ref:`Step 1: Build the Infrastructure <step-1-build-infrastructure>` section of the :ref:`Step-by-Step Usage Guide <step-by-step-usage-guide>`, the PiperABM framework expects `x`, `y` coordinates for the positions. However, many satellite datasets and maps provide data in latitude and longitude coordinates. To convert these coordiantes to `x` and `y`, we can use the Mercator projection.
 
-.. figure:: https://oceanservice.noaa.gov/news/nov18/making-charts-mercator960.jpg
+.. figure:: _static/satellite/mercator.jpg
    :alt: Mesh Patch Diagram
    :width: 600px
    :align: center

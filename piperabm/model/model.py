@@ -15,7 +15,7 @@ class Model(
     Graphics
 ):
     """
-    Main class of simulation
+    Main class of simulation.
 
     Parameters
     ----------
