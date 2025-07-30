@@ -4,18 +4,7 @@ Step-by-Step Usage Guide
 ================================
 
 This step-by-step usage guide walks through building and running a PiperABM model.
-This guide is designed to help the user to understand the basic steps of 
-
-
-.. _installation:
-
-Installation
---------------------------------
-Install the package using pip:
-
-.. code-block:: bash
-
-    pip install piperabm
+This guide is designed to help the user to understand the logic and best practices.
 
 
 .. _step-0-create-the-model:
@@ -45,7 +34,7 @@ The model instance is now ready to be used in the subsequent steps.
 Step 1: Build the Infrastructure
 --------------------------------
 Now we will create the infrastructure for our model.
-Once the :class:`piperabm.Model` instance is created, automatically an instance of :class:`piperabm.infrastructure.Infrastructure` is created and assigned to `model.infrastructure`. This instance will be used to build the infrastructure.
+When you create a :class:`piperabm.Model` instance, the `infrastructure` attribute on that instance is automatically set to a fresh :class:`piperabm.infrastructure.Infrastructure` object.
 Infrastructure elements include:
 
 - **Market**: A node where resources are bought and sold. They act as social hubs in the model. The influx of resources to the model only happens through markets. (for more info, see :meth:`~piperabm.infrastructure.Infrastructure.add_market`)
@@ -110,12 +99,7 @@ To build the infrastructure, we can either manually add elements:
 
    **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
 
-...  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:
-
-- **homes_num**: Number of homes to be generated.
-- **grid_size**: Size of the grid in meters provided as list of two numbers showing the width and height of the grid.
-- **grid_num**: Number of grid cells in the provided as a list of two integers showing number of cells in the width and height of the world.
-- **imperfection_percentage**: Percetnage of random imperfections in the world. This is used to create a more realistic world by introducing some randomness in the grid structure. The percentage is calculated based on the length of the removed edges.
+...  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes. For more details, visit :meth:`~piperabm.infrastructure.Infrastructure.generate`.
 
 .. code-block:: python
     
@@ -142,11 +126,7 @@ To build the infrastructure, we can either manually add elements:
 
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 
-Before going to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.
-
-- **proximity_radius**: The grammar rules use this value to determine how close the elements should be to each other to impact each other, such as getting merged.
-- **search_radius** (optional): Home and market nodes need to get connected to the street network. This is done using "Neighborhood access" edges. The grammar rule for this process is computationally expensive therefore setting a search radius can speed up the process specially in large and intricate networks. If set to `None`, all possible elements are network are evaluated.
-- **report**: Reports show the steps taken during the baking process, which can be useful for debugging or understanding the model.
+Before going to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
 
 .. code-block:: python
 
@@ -174,9 +154,10 @@ The infrastructure elements are subject to degradation. There are two types of d
 
 Each degradable element has a `usage_impact` and `age_impact` attributes that are used to calculate the degradation of the element.
 When edges degrade, they become less efficient, therefore, it will take longer for the agents to travel through them and require more resources to do so. This is equivalent of having longer edges. This is called "adjusted length" and is calculated as follows:
+
 .. math::
 
-    adjusted\_length = length \times adjustment_factor
+    adjusted\_length = length \times adjustment\_factor
 
 The adjustement factor is calculate using the `calculate_adjustment_factor` method of the `Degradation` class. This method takes `usage_impact` and `age_impact` of the element, and by combining them with the `coeff_age` and `coeff_usage` attributes, calculates the "adjustement factor".
 By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directiry:

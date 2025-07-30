@@ -12,6 +12,12 @@ PiperABM documentation
 This is the documentation for PiperABM, a Python-based agent-based modeling framework designed for simulating community resilience.
 
 .. toctree::
+   :maxdepth: 1
+   :caption: Installation
+
+   installation
+
+.. toctree::
    :maxdepth: 2
    :caption: Usage Guide
 

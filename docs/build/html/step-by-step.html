@@ -12,10 +12,11 @@
     <script src="_static/documentation_options.js?v=a58bc63e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Working with Satellite Data" href="satellite.html" />
-    <link rel="prev" title="PiperABM documentation" href="index.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -36,16 +37,9 @@
   <section id="step-by-step-usage-guide">
 <span id="id1"></span><h1>Step-by-Step Usage Guide<a class="headerlink" href="#step-by-step-usage-guide" title="Link to this heading">¶</a></h1>
 <p>This step-by-step usage guide walks through building and running a PiperABM model.
-This guide is designed to help the user to understand the basic steps of</p>
-<section id="installation">
-<span id="id2"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
-<p>Install the package using pip:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>piperabm
-</pre></div>
-</div>
-</section>
+This guide is designed to help the user to understand the logic and best practices.</p>
 <section id="step-0-create-the-model">
-<span id="id3"></span><h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
+<span id="id2"></span><h2>Step 0: Create the Model<a class="headerlink" href="#step-0-create-the-model" title="Link to this heading">¶</a></h2>
 <p>In this first step, we import the PiperABM package and create a <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> instance and provide the parameters.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
@@ -64,7 +58,7 @@ This guide is designed to help the user to understand the basic steps of</p>
 <section id="step-1-build-the-infrastructure">
 <span id="step-1-build-infrastructure"></span><h2>Step 1: Build the Infrastructure<a class="headerlink" href="#step-1-build-the-infrastructure" title="Link to this heading">¶</a></h2>
 <p>Now we will create the infrastructure for our model.
-Once the <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> instance is created, automatically an instance of <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.infrastructure.Infrastructure</span></code></a> is created and assigned to <cite>model.infrastructure</cite>. This instance will be used to build the infrastructure.
+When you create a <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> instance, the <cite>infrastructure</cite> attribute on that instance is automatically set to a fresh <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.infrastructure.Infrastructure</span></code></a> object.
 Infrastructure elements include:</p>
 <ul class="simple">
 <li><p><strong>Market</strong>: A node where resources are bought and sold. They act as social hubs in the model. The influx of resources to the model only happens through markets. (for more info, see <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure.add_market" title="piperabm.infrastructure.Infrastructure.add_market"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_market()</span></code></a>)</p></li>
@@ -120,19 +114,13 @@ Infrastructure elements include:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id6">
 <img alt="An example of manually defined infrastrcuture" src="_images/step_1_manual.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">Manual Creation</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">Manual Creation</a> example.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes:</p>
-<ul class="simple">
-<li><p><strong>homes_num</strong>: Number of homes to be generated.</p></li>
-<li><p><strong>grid_size</strong>: Size of the grid in meters provided as list of two numbers showing the width and height of the grid.</p></li>
-<li><p><strong>grid_num</strong>: Number of grid cells in the provided as a list of two integers showing number of cells in the width and height of the world.</p></li>
-<li><p><strong>imperfection_percentage</strong>: Percetnage of random imperfections in the world. This is used to create a more realistic world by introducing some randomness in the grid structure. The percentage is calculated based on the length of the removed edges.</p></li>
-</ul>
+<p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes. For more details, visit <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure.generate" title="piperabm.infrastructure.Infrastructure.generate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 2: Automatically generate the infrastructure.</span>
 <span class="c1"># (Figure 2)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
@@ -149,19 +137,14 @@ Infrastructure elements include:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id7">
 <img alt="An example of automatically generated infrastrcuture" src="_images/step_1_automatic.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md">Automatic Creation</a> example.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md">Automatic Creation</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>For further details on how to load infrastrcuture using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.</p>
-<p>Before going to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network.</p>
-<ul class="simple">
-<li><p><strong>proximity_radius</strong>: The grammar rules use this value to determine how close the elements should be to each other to impact each other, such as getting merged.</p></li>
-<li><p><strong>search_radius</strong> (optional): Home and market nodes need to get connected to the street network. This is done using “Neighborhood access” edges. The grammar rule for this process is computationally expensive therefore setting a search radius can speed up the process specially in large and intricate networks. If set to <cite>None</cite>, all possible elements are network are evaluated.</p></li>
-<li><p><strong>report</strong>: Reports show the steps taken during the baking process, which can be useful for debugging or understanding the model.</p></li>
-</ul>
+<p>Before going to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit <a class="reference internal" href="api/model.html#piperabm.Model.bake" title="piperabm.Model.bake"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bake()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span>
     <span class="n">proximity_radius</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Meters</span>
     <span class="n">search_radius</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># Meters</span>
@@ -184,11 +167,9 @@ User can visualize the infrastructure using the <cite>show</cite> method, and by
 <li><p><strong>Usage</strong>: The more an element is used, the more it degrades.</p></li>
 </ul>
 <p>Each degradable element has a <cite>usage_impact</cite> and <cite>age_impact</cite> attributes that are used to calculate the degradation of the element.
-When edges degrade, they become less efficient, therefore, it will take longer for the agents to travel through them and require more resources to do so. This is equivalent of having longer edges. This is called “adjusted length” and is calculated as follows:
-.. math:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjusted</span>\<span class="n">_length</span> <span class="o">=</span> <span class="n">length</span> \<span class="n">times</span> <span class="n">adjustment_factor</span>
-</pre></div>
-</div>
+When edges degrade, they become less efficient, therefore, it will take longer for the agents to travel through them and require more resources to do so. This is equivalent of having longer edges. This is called “adjusted length” and is calculated as follows:</p>
+<div class="math notranslate nohighlight">
+\[adjusted\_length = length \times adjustment\_factor\]</div>
 <p>The adjustement factor is calculate using the <cite>calculate_adjustment_factor</cite> method of the <cite>Degradation</cite> class. This method takes <cite>usage_impact</cite> and <cite>age_impact</cite> of the element, and by combining them with the <cite>coeff_age</cite> and <cite>coeff_usage</cite> attributes, calculates the “adjustement factor”.
 By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a <cite>degradation.py</cite> file in the working directiry:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The file name should be `degradation.py` and it should be in the wokring directiry of the simulation.</span>
@@ -253,7 +234,7 @@ Society elements includes agents (as nodes) and their relationships (as edges). 
 </div>
 </section>
 <section id="step-3-run">
-<span id="id5"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
+<span id="id4"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
 <p>When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
 The <cite>run</cite> method of the <cite>Model</cite> class is used to run the model. The method takes the following parameters:</p>
 <ul class="simple">
@@ -268,7 +249,7 @@ The <cite>run</cite> method of the <cite>Model</cite> class is used to run the m
 <p>The current state of the model at this stage, where everything is loaded are is ready for running but the run is not started yet, is also called “initial”.</p>
 </section>
 <section id="step-4-results">
-<span id="id6"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
+<span id="id5"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
 <p>…</p>
 </section>
 </section>
@@ -299,10 +280,13 @@ The <cite>run</cite> method of the <cite>Model</cite> class is used to run the m
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Step-by-Step Usage Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-0-create-the-model">Step 0: Create the Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-1-build-the-infrastructure">Step 1: Build the Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-2-build-the-society">Step 2: Build the Society</a></li>
@@ -315,9 +299,9 @@ The <cite>run</cite> method of the <cite>Model</cite> class is used to run the m
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.Measurement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.Society</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
 </ul>
 
@@ -325,7 +309,7 @@ The <cite>run</cite> method of the <cite>Model</cite> class is used to run the m
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">PiperABM documentation</a></li>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
       <li>Next: <a href="satellite.html" title="next chapter">Working with Satellite Data</a></li>
   </ul></li>
 </ul>

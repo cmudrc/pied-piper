@@ -14,8 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="piperabm.society" href="society.html" />
-    <link rel="prev" title="piperabm.measurement" href="measurement.html" />
+    <link rel="next" title="piperabm.Society" href="society.html" />
+    <link rel="prev" title="piperabm.Measurement" href="measurement.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -39,7 +39,15 @@
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.infrastructure.</span></span><span class="sig-name descname"><span class="pre">Infrastructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeff_usage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generate</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Degradation</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Serialize</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Graphics</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Stat</span></code></p>
-<p>Represent infrastructure network</p>
+<p>Represent infrastructure network. Within the object, a <cite>nx.Graph()</cite> instance is used as backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeff_usage</strong> (<em>float</em><em>, </em><em>optional</em>) – This is used to calculate the <cite>adjustment_factor</cite> for the elements and acts as the coefficient for amount of usage the element has received.</p></li>
+<li><p><strong>coeff_age</strong> (<em>float</em><em>, </em><em>optional</em>) – This is used to calculate the <cite>adjustment_factor</cite> for the elements and acts as the coefficient for age of the element.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.add_home">
 <span class="sig-name descname"><span class="pre">add_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.add_home" title="Link to this definition">¶</a></dt>
@@ -51,7 +59,7 @@ These are the nodes where agents live and belong to. Agents from the same home a
 <li><p><strong>pos</strong> (<em>list</em>) – A list of [x, y] coordinates showing the position in space.</p></li>
 <li><p><strong>id</strong> (<em>int</em><em>, </em><em>optional</em>) – The unique id number. The default is <cite>None</cite>, and if stays <cite>None</cite>, system will automatically assign a new unique id.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional name of the element.</p></li>
-<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this node.</p></li>
+<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this element.</p></li>
 </ul>
 </dd>
 </dl>
@@ -68,7 +76,7 @@ These are the nodes that connect edges in the network and represent a physical p
 <li><p><strong>pos</strong> (<em>list</em>) – A list of [x, y] coordinates showing the position in space.</p></li>
 <li><p><strong>id</strong> (<em>int</em><em>, </em><em>optional</em>) – The unique id number. The default is <cite>None</cite>, and if stays <cite>None</cite>, system will automatically assign a new unique id.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional name of the element.</p></li>
-<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this node.</p></li>
+<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this element.</p></li>
 </ul>
 </dd>
 </dl>
@@ -87,7 +95,7 @@ These are the nodes where resources are bought and sold. The influx of resources
 <li><p><strong>enough_resources</strong> (<em>dict</em>) – This shows the maximum amount of each resource market can have in stock. The default value is <cite>None</cite>. If stays <cite>None</cite>, system will rewrite it with a dict equal to <cite>resources</cite> dict.</p></li>
 <li><p><strong>id</strong> (<em>int</em><em>, </em><em>optional</em>) – The unique id number. The default is <cite>None</cite>, and if stays <cite>None</cite>, system will automatically assign a new unique id.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional name of the element.</p></li>
-<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this node.</p></li>
+<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this element.</p></li>
 </ul>
 </dd>
 </dl>
@@ -96,13 +104,37 @@ These are the nodes where resources are bought and sold. The influx of resources
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.add_neighborhood_access">
 <span class="sig-name descname"><span class="pre">add_neighborhood_access</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.add_neighborhood_access" title="Link to this definition">¶</a></dt>
-<dd><p>Add neighborhood access edge</p>
+<dd><p>Add neighborhood access edge. These edges connect homes and markets to the street network, allowing agents to access these nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_1</strong> (<em>list</em>) – A list of [x, y] coordinates showing the position of one of the ends in space.</p></li>
+<li><p><strong>pos_2</strong> (<em>list</em>) – A list of [x, y] coordinates showing the position of the other end in space.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional name of the element.</p></li>
+<li><p><strong>usage_impact</strong> (<em>float</em><em>, </em><em>optional</em>) – The more the element is used, this number will grow. It will be used to calcualte <cite>adjustment_facor</cite> when computing the degradation. The default is 0.</p></li>
+<li><p><strong>age_impact</strong> (<em>float</em><em>, </em><em>optional</em>) – The more the element age, this number will grow. It will be used to calcualte <cite>adjustment_facor</cite> when computing the degradation. The default is 0.</p></li>
+<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this element.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.add_street">
 <span class="sig-name descname"><span class="pre">add_street</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.add_street" title="Link to this definition">¶</a></dt>
-<dd><p>Add street edge</p>
+<dd><p>Add street edge. These edges are used by agents to move around the simulation world.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_1</strong> (<em>list</em>) – A list of [x, y] coordinates showing the position of one of the ends in space.</p></li>
+<li><p><strong>pos_2</strong> (<em>list</em>) – A list of [x, y] coordinates showing the position of the other end in space.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional name of the element.</p></li>
+<li><p><strong>usage_impact</strong> (<em>float</em><em>, </em><em>optional</em>) – The more the element is used, this number will grow. It will be used to calcualte <cite>adjustment_facor</cite> when computing the degradation. The default is 0.</p></li>
+<li><p><strong>age_impact</strong> (<em>float</em><em>, </em><em>optional</em>) – The more the element age, this number will grow. It will be used to calcualte <cite>adjustment_facor</cite> when computing the degradation. The default is 0.</p></li>
+<li><p><strong>report</strong> (<em>bool</em>) – If <cite>True</cite>, system will report successful creation of this element.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -174,7 +206,17 @@ These are the nodes where resources are bought and sold. The influx of resources
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.generate">
 <span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">homes_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imperfection_percentage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Generate a grid world model</p>
+<dd><p>Generate a grid world model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>homes_num</strong> (<em>int</em>) – Number of homes to be generated.</p></li>
+<li><p><strong>grid_size</strong> (<em>list</em>) – Size of the grid in meters provided as list of two numbers showing the width and height of the grid.</p></li>
+<li><p><strong>grid_num</strong> (<em>list</em>) – Number of grid cells in the provided as a list of two integers showing number of cells in the width and height of the world.</p></li>
+<li><p><strong>imperfection_percentage</strong> (<em>float</em><em>, </em><em>optional</em>) – Percetnage of random imperfections in the world. This is used to create a more realistic world by introducing some randomness in the grid structure. The percentage is calculated based on the length of the removed edges. The default is 0%.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -512,6 +554,10 @@ These are the nodes where resources are bought and sold. The influx of resources
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../step-by-step.html">Step-by-Step Usage Guide</a></li>
@@ -520,9 +566,9 @@ These are the nodes where resources are bought and sold. The influx of resources
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="model.html">piperabm.Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.Measurement</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.Society</a></li>
 <li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
 </ul>
 
@@ -530,8 +576,8 @@ These are the nodes where resources are bought and sold. The influx of resources
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="measurement.html" title="previous chapter">piperabm.measurement</a></li>
-      <li>Next: <a href="society.html" title="next chapter">piperabm.society</a></li>
+      <li>Previous: <a href="measurement.html" title="previous chapter">piperabm.Measurement</a></li>
+      <li>Next: <a href="society.html" title="next chapter">piperabm.Society</a></li>
   </ul></li>
 </ul>
 </div>

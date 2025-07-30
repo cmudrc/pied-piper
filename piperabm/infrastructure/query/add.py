@@ -51,7 +51,7 @@ class Add:
         name : str, optional
             Optional name of the element.
         report : bool
-            If `True`, system will report successful creation of this node.
+            If `True`, system will report successful creation of this element.
         """
         type = 'junction'
         id = self.check_id(id)
@@ -88,7 +88,7 @@ class Add:
         name : str, optional
             Optional name of the element.
         report : bool
-            If `True`, system will report successful creation of this node.
+            If `True`, system will report successful creation of this element.
         """
         type = 'home'
         id = self.check_id(id)
@@ -135,7 +135,7 @@ class Add:
         name : str, optional
             Optional name of the element.
         report : bool
-            If `True`, system will report successful creation of this node.
+            If `True`, system will report successful creation of this element.
         """
         type = 'market'
         id = self.check_id(id)
@@ -176,7 +176,22 @@ class Add:
         report: bool = False
     ):
         """
-        Add street edge
+        Add street edge. These edges are used by agents to move around the simulation world.
+
+        Parameters
+        ----------
+        pos_1 : list
+            A list of [x, y] coordinates showing the position of one of the ends in space.
+        pos_2 : list
+            A list of [x, y] coordinates showing the position of the other end in space.
+        name : str, optional
+            Optional name of the element.
+        usage_impact : float, optional
+            The more the element is used, this number will grow. It will be used to calcualte `adjustment_facor` when computing the degradation. The default is 0.
+        age_impact : float, optional
+            The more the element age, this number will grow. It will be used to calcualte `adjustment_facor` when computing the degradation. The default is 0.
+        report : bool
+            If `True`, system will report successful creation of this element.
         """
         type = 'street'
         id_1 = self.add_junction(pos=pos_1)
@@ -216,7 +231,22 @@ class Add:
         report: bool = False
     ):
         """
-        Add neighborhood access edge
+        Add neighborhood access edge. These edges connect homes and markets to the street network, allowing agents to access these nodes.
+
+        Parameters
+        ----------
+        pos_1 : list
+            A list of [x, y] coordinates showing the position of one of the ends in space.
+        pos_2 : list
+            A list of [x, y] coordinates showing the position of the other end in space.
+        name : str, optional
+            Optional name of the element.
+        usage_impact : float, optional
+            The more the element is used, this number will grow. It will be used to calcualte `adjustment_facor` when computing the degradation. The default is 0.
+        age_impact : float, optional
+            The more the element age, this number will grow. It will be used to calcualte `adjustment_facor` when computing the degradation. The default is 0.
+        report : bool
+            If `True`, system will report successful creation of this element.
         """
         type = 'neighborhood_access'
         length = ds.point_to_point(self.get_pos(id_1), self.get_pos(id_2))

@@ -1,7 +1,7 @@
-piperabm.society
+piperabm.Society
 ======================================
 
-.. autoclass:: piperabm.society.society.Society
+.. autoclass:: piperabm.society.Society
    :members:
    :undoc-members:
    :inherited-members:

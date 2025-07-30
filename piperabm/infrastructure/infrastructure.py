@@ -27,7 +27,14 @@ class Infrastructure(
     Stat
 ):
     """
-    Represent infrastructure network
+    Represent infrastructure network. Within the object, a `nx.Graph()` instance is used as backend.
+
+    Parameters
+    ----------
+    coeff_usage : float, optional
+        This is used to calculate the `adjustment_factor` for the elements and acts as the coefficient for amount of usage the element has received.
+    coeff_age : float, optional
+        This is used to calculate the `adjustment_factor` for the elements and acts as the coefficient for age of the element.
     """
 
     type = 'infrastructure'

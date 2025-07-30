@@ -14,7 +14,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="piperabm.measurement" href="measurement.html" />
+    <link rel="next" title="piperabm.Measurement" href="measurement.html" />
     <link rel="prev" title="Working with Satellite Data" href="../satellite.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -82,15 +82,15 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.Model.bake">
 <span class="sig-name descname"><span class="pre">bake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proximity_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model.bake" title="Link to this definition">¶</a></dt>
-<dd><p>Prepare the model for the first simulation step.</p>
-<p>This will generate nodes/edges, and compute any necessary initial calculations.</p>
+<dd><p>Prepare the model for the first simulation step.
+This will generate nodes/edges, and compute any necessary initial calculations to create a physically sensinble network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>save</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If True, immediately serialize the infrastructure state to disk.</p></li>
-<li><p><strong>proximity_radius</strong> (<em>float</em><em>, </em><em>default=0</em>) – Radius (in model units) to consider for “nearby” agents.</p></li>
-<li><p><strong>search_radius</strong> (<em>float</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Max distance for pathfinding; if None, uses a model-wide default.</p></li>
-<li><p><strong>report</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If True, print a short summary of what was baked.</p></li>
+<li><p><strong>proximity_radius</strong> (<em>float</em><em>, </em><em>default=0</em>) – The grammar rules use this value (in model units) to determine how close the elements should be to each other to impact each other, such as getting merged or split.</p></li>
+<li><p><strong>search_radius</strong> (<em>float</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Home and market nodes need to get connected to the street network. This is done using “Neighborhood access” edges. The grammar rule for this process is computationally expensive therefore setting a search radius can speed up the process specially in large and intricate networks. If set to <cite>None</cite>, all possible elements are network are evaluated.</p></li>
+<li><p><strong>report</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <cite>True</cite>, reports the steps taken during the baking process, which can be useful for debugging or understanding the model.</p></li>
 </ul>
 </dd>
 </dl>
@@ -147,7 +147,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="piperabm.Model.resource_names">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_names</span></span><a class="headerlink" href="#piperabm.Model.resource_names" title="Link to this definition">¶</a></dt>
-<dd><p>Return name of resources in the model</p>
+<dd><p>Return name of resources in the model.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -207,7 +207,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.Model.set_seed">
 <span class="sig-name descname"><span class="pre">set_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.Model.set_seed" title="Link to this definition">¶</a></dt>
-<dd><p>Set random generator seed for result reproducability</p>
+<dd><p>Set random generator seed for result reproducability.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -271,6 +271,10 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../step-by-step.html">Step-by-Step Usage Guide</a></li>
@@ -279,9 +283,9 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.Measurement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="infrastructure.html">piperabm.Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.Society</a></li>
 <li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
 </ul>
 
@@ -290,7 +294,7 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../satellite.html" title="previous chapter">Working with Satellite Data</a></li>
-      <li>Next: <a href="measurement.html" title="next chapter">piperabm.measurement</a></li>
+      <li>Next: <a href="measurement.html" title="next chapter">piperabm.Measurement</a></li>
   </ul></li>
 </ul>
 </div>

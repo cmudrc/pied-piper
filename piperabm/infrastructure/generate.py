@@ -18,7 +18,18 @@ class Generate:
         imperfection_percentage: float = 0
     ):
         """
-        Generate a grid world model
+        Generate a grid world model.
+
+        Parameters
+        ----------
+        homes_num : int
+            Number of homes to be generated.
+        grid_size : list
+            Size of the grid in meters provided as list of two numbers showing the width and height of the grid.
+        grid_num : list
+            Number of grid cells in the provided as a list of two integers showing number of cells in the width and height of the world.
+        imperfection_percentage : float, optional
+            Percetnage of random imperfections in the world. This is used to create a more realistic world by introducing some randomness in the grid structure. The percentage is calculated based on the length of the removed edges. The default is 0%.    
         """
 
         x_size = grid_size[0] * (grid_num[0] - 1)

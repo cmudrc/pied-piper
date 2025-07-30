@@ -1,5 +1,5 @@
 piperabm.Model
-==============
+======================================
 
 .. autoclass:: piperabm.Model
    :members:

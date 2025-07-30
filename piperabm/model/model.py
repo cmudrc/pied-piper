@@ -59,7 +59,7 @@ class Model(
 
     def set_seed(self, seed: int = None):
         """
-        Set random generator seed for result reproducability
+        Set random generator seed for result reproducability.
         """
         self.seed = seed
         np.random.seed(seed)
@@ -67,7 +67,7 @@ class Model(
     @property
     def resource_names(self):
         """
-        Return name of resources in the model
+        Return name of resources in the model.
         """
         return list(self.prices.keys())
 
@@ -80,19 +80,18 @@ class Model(
         ):
         """
         Prepare the model for the first simulation step.
-
-        This will generate nodes/edges, and compute any necessary initial calculations.
+        This will generate nodes/edges, and compute any necessary initial calculations to create a physically sensinble network.
 
         Parameters
         ----------
         save : bool, default=False
             If True, immediately serialize the infrastructure state to disk.
         proximity_radius : float, default=0
-            Radius (in model units) to consider for “nearby” agents.
+            The grammar rules use this value (in model units) to determine how close the elements should be to each other to impact each other, such as getting merged or split.
         search_radius : float or None, default=None
-            Max distance for pathfinding; if None, uses a model-wide default.
+            Home and market nodes need to get connected to the street network. This is done using "Neighborhood access" edges. The grammar rule for this process is computationally expensive therefore setting a search radius can speed up the process specially in large and intricate networks. If set to `None`, all possible elements are network are evaluated.
         report : bool, default=False
-            If True, print a short summary of what was baked.
+            If `True`, reports the steps taken during the baking process, which can be useful for debugging or understanding the model.
         """
         self.infrastructure.bake(
             report=report,

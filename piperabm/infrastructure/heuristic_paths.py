@@ -10,7 +10,7 @@ from piperabm.tools.nx_serializer import nx_serialize, nx_deserialize
 
 class HeuristicPaths:
     """
-    A network to capture the Eucledean distance between all nodes
+    A network to capture the Eucledean distance between all nodes.
     """
 
     type = "heuristic paths"

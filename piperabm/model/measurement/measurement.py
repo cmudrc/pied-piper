@@ -10,6 +10,16 @@ from piperabm.tools.coordinate import distance as ds
 
 
 class Measurement:
+    """
+    Class used for result measurements.
+
+    Parameters
+    ----------
+    name : str, optional
+        The label to distinguish this model and its results when running multiple instances. In single runs, this can left empty.
+    path : str, optional
+        Directory for saving/loading simulation results.
+    """
 
     type = "measurement"
 
@@ -168,7 +178,7 @@ class Measurement:
     
     def deserialize(self, data: dict) -> None:
         """
-        Deerialize
+        Deserialize
         """
         self.accessibility.deserialize(data['accessibility'])
         self.travel_distance.deserialize(data['travel_distance'])
