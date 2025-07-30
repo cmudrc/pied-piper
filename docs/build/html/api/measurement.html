@@ -12,6 +12,7 @@
     <script src="../_static/documentation_options.js?v=a58bc63e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="piperabm.Infrastructure" href="infrastructure.html" />
@@ -126,6 +127,283 @@
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.model.measurement.accessibility.</span></span><span class="sig-name descname"><span class="pre">Accessibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manage accessibility measurement</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.add" title="Link to this definition">¶</a></dt>
+<dd><p>Add new accessibility value</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.agents">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">agents</span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.agents" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of agents id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.average">
+<span class="sig-name descname"><span class="pre">average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.average" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate total average.</p>
+<p>For each agent <em>i</em>, time <em>t</em>, and resource <em>r</em>:</p>
+<div class="math notranslate nohighlight">
+\[A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_i}\]</div>
+<p>To aggregate across resources:</p>
+<div class="math notranslate nohighlight">
+\[A_{i,t} = \left(\prod_{r=1}^R A_{i,t,r}\right)^{1/R}\]</div>
+<p>Community average at time <em>t</em>:</p>
+<div class="math notranslate nohighlight">
+\[A_t = \frac{1}{N}\sum_{i=1}^N A_{i,t}\]</div>
+<p>And over the full duration <em>T</em>:</p>
+<div class="math notranslate nohighlight">
+\[A = \frac{\int_0^T A_t\,dt}{\int_0^T A_\max\,dt}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agents</strong> (<em>default='all'</em>) – Accepts either ‘all’, single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.</p></li>
+<li><p><strong>resources</strong> (<em>default='all'</em>) – Accepts either ‘all’, name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.</p></li>
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.create_plot">
+<span class="sig-name descname"><span class="pre">create_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.create_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Create plot for accessibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agents</strong> (<em>default='all'</em>) – Accepts either ‘all’, single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.</p></li>
+<li><p><strong>resources</strong> (<em>default='all'</em>) – Accepts either ‘all’, name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.</p></li>
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.deserialize">
+<span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.deserialize" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the desired entry</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.len">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">len</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.len" title="Link to this definition">¶</a></dt>
+<dd><p>Return total number of entries</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.rearrange">
+<span class="sig-name descname"><span class="pre">rearrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.rearrange" title="Link to this definition">¶</a></dt>
+<dd><p>Return accessibility values for all resources for across agents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agents</strong> (<em>default='all'</em>) – Accepts either ‘all’, single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.</p></li>
+<li><p><strong>resources</strong> (<em>default='all'</em>) – Accepts either ‘all’, name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.</p></li>
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save plot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.serialize" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.show" title="Link to this definition">¶</a></dt>
+<dd><p>Draw plot for accessibility over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agents</strong> (<em>default='all'</em>) – Accepts either ‘all’, single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.</p></li>
+<li><p><strong>resources</strong> (<em>default='all'</em>) – Accepts either ‘all’, name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.</p></li>
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.sum_agents">
+<span class="sig-name descname"><span class="pre">sum_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.sum_agents" title="Link to this definition">¶</a></dt>
+<dd><p>Sum of accessibility for agents.</p>
+<p>For each agent <em>i</em>, time <em>t</em>, and resource <em>r</em>:</p>
+<div class="math notranslate nohighlight">
+\[A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_i}\]</div>
+<p>Community average at time <em>t</em>:</p>
+<div class="math notranslate nohighlight">
+\[A_{t,r} = \frac{1}{N}\sum_{i=1}^N A_{i,t,r}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agents</strong> (<em>default='all'</em>) – Accepts either ‘all’, single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.</p></li>
+<li><p><strong>resources</strong> (<em>default='all'</em>) – Accepts either ‘all’, name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.</p></li>
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.sum_resources">
+<span class="sig-name descname"><span class="pre">sum_resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.sum_resources" title="Link to this definition">¶</a></dt>
+<dd><p>Sum the accessibility to resources.</p>
+<p>For each agent <em>i</em>, time <em>t</em>, and resource <em>r</em>:</p>
+<div class="math notranslate nohighlight">
+\[A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_i}\]</div>
+<p>To aggregate across resources:</p>
+<div class="math notranslate nohighlight">
+\[A_{i,t} = \left(\prod_{r=1}^R A_{i,t,r}\right)^{1/R}\]</div>
+<p>The reason is, if any of the resources reach zero, life will become challenging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agents</strong> (<em>default='all'</em>) – Accepts either ‘all’, single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.</p></li>
+<li><p><strong>resources</strong> (<em>default='all'</em>) – Accepts either ‘all’, name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.</p></li>
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="piperabm.model.measurement.accessibility.Accessibility.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'accessibility'</span></em><a class="headerlink" href="#piperabm.model.measurement.accessibility.Accessibility.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.model.measurement.travel_distance.</span></span><span class="sig-name descname"><span class="pre">TravelDistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manage travel distance measurement</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.add" title="Link to this definition">¶</a></dt>
+<dd><p>Add new travel distance value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.average">
+<span class="sig-name descname"><span class="pre">average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.average" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate total average.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.create_plot">
+<span class="sig-name descname"><span class="pre">create_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.create_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Create plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.deserialize">
+<span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.deserialize" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.filter" title="Link to this definition">¶</a></dt>
+<dd><p>Filter values in a specific range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+<li><p><strong>info</strong> (<em>str</em><em>, </em><em>default=None</em>) – The extra information shown in the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.serialize" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.show" title="Link to this definition">¶</a></dt>
+<dd><p>Draw plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_from</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to start summation. If <cite>None</cite>, the earliest step will be considered.</p></li>
+<li><p><strong>_to</strong> (<em>int</em><em>, </em><em>default=None</em>) – The step number in time to end summation. If <cite>None</cite>, the latest step will be considered.</p></li>
+<li><p><strong>info</strong> (<em>str</em><em>, </em><em>default=None</em>) – The extra information shown in the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="piperabm.model.measurement.travel_distance.TravelDistance.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'travel</span> <span class="pre">distance'</span></em><a class="headerlink" href="#piperabm.model.measurement.travel_distance.TravelDistance.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -169,7 +447,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.Measurement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="infrastructure.html">piperabm.Infrastructure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="society.html">piperabm.Society</a></li>
-<li class="toctree-l1"><a class="reference internal" href="latlong_xy.html">piperabm.tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projection.html">piperabm.tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh.html">piperabm.tools.mesh</a></li>
 </ul>
 
 <div class="relations">

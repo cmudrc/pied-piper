@@ -40,7 +40,18 @@ class Accessibility:
     
     def rearrange(self, agents='all', resources='all', _from=None, _to=None):
         """
-        Return accessibility values for all resources for across agents
+        Return accessibility values for all resources for across agents.
+
+        Parameters
+        ----------
+        agents : default='all'
+            Accepts either 'all', single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.
+        resources : default='all'
+            Accepts either 'all', name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         if agents == 'all':
             ids = self.agents
@@ -95,8 +106,33 @@ class Accessibility:
         return self.measurement.len
 
     def sum_resources(self, agents='all', resources='all', _from=None, _to=None) -> dict:
-        """
-        Sum resources
+        r"""
+        Sum the accessibility to resources.
+
+        For each agent *i*, time *t*, and resource *r*:
+
+        .. math::
+
+            A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_i}
+
+        To aggregate across resources:
+
+        .. math::
+
+            A_{i,t} = \left(\prod_{r=1}^R A_{i,t,r}\right)^{1/R}
+
+        The reason is, if any of the resources reach zero, life will become challenging.
+
+        Parameters
+        ----------
+        agents : default='all'
+            Accepts either 'all', single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.
+        resources : default='all'
+            Accepts either 'all', name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         data = self.rearrange(agents=agents, resources=resources, _from=_from, _to=_to)
         if _from is None:
@@ -117,8 +153,30 @@ class Accessibility:
         return result
     
     def sum_agents(self, agents='all', resources='all', _from=None, _to=None) -> list:
-        """
-        Sum agents
+        r"""
+        Sum of accessibility for agents.
+
+        For each agent *i*, time *t*, and resource *r*:
+
+        .. math::
+
+            A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_i}
+
+        Community average at time *t*:
+
+        .. math::
+            A_{t,r} = \frac{1}{N}\sum_{i=1}^N A_{i,t,r}
+
+        Parameters
+        ----------
+        agents : default='all'
+            Accepts either 'all', single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.
+        resources : default='all'
+            Accepts either 'all', name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         data = self.sum_resources(agents=agents, resources=resources, _from=_from, _to=_to)
         if _from is None:
@@ -139,8 +197,41 @@ class Accessibility:
         return self.sum_agents(agents=agents, resources=resources, _from=_from, _to=_to)
     
     def average(self, agents='all', resources='all', _from=None, _to=None) -> float:
-        """
-        Calculate total average
+        r"""
+        Calculate total average.
+
+        For each agent *i*, time *t*, and resource *r*:
+
+        .. math::
+
+            A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_i}
+    
+        To aggregate across resources:
+
+        .. math::
+
+            A_{i,t} = \left(\prod_{r=1}^R A_{i,t,r}\right)^{1/R}
+
+        Community average at time *t*:
+
+        .. math::
+            A_t = \frac{1}{N}\sum_{i=1}^N A_{i,t}
+            
+        And over the full duration *T*:
+
+        .. math::
+            A = \frac{\int_0^T A_t\,dt}{\int_0^T A_\max\,dt}
+
+        Parameters
+        ----------
+        agents : default='all'
+            Accepts either 'all', single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.
+        resources : default='all'
+            Accepts either 'all', name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         values = self.__call__(agents=agents, resources=resources, _from=_from, _to=_to)
         weights = self.measurement.delta_times(_from=_from, _to=_to)
@@ -151,7 +242,18 @@ class Accessibility:
     
     def create_plot(self, agents='all', resources='all', _from=None, _to=None, info=None):
         """
-        Create plot
+        Create plot for accessibility.
+
+        Parameters
+        ----------
+        agents : default='all'
+            Accepts either 'all', single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.
+        resources : default='all'
+            Accepts either 'all', name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         fig, ax = plt.subplots()
         title = "Accessibility"
@@ -168,7 +270,18 @@ class Accessibility:
 
     def show(self, agents='all', resources='all', _from=None, _to=None, info=None):
         """
-        Draw plot
+        Draw plot for accessibility over time.
+
+        Parameters
+        ----------
+        agents : default='all'
+            Accepts either 'all', single id of an agent, or a list of agents id. These are the agents that their accessibility values will be calulcated as sum.
+        resources : default='all'
+            Accepts either 'all', name of a single resource, or a list of resource names. These are the resources that accessibility to them will be calculated.
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         fig = self.create_plot(
             agents=agents,

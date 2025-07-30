@@ -97,7 +97,7 @@ To build the infrastructure, we can either manually add elements:
    :alt: An example of manually defined infrastrcuture
    :align: center
 
-   **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
+   **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation>`_ example.
 
 ...  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes. For more details, visit :meth:`~piperabm.infrastructure.Infrastructure.generate`.
 
@@ -122,7 +122,7 @@ To build the infrastructure, we can either manually add elements:
    :alt: An example of automatically generated infrastrcuture
    :align: center
 
-   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `Automatic Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md>`_ example.
+   **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `Automatic Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation>`_ example.
 
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 Before continuing to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
@@ -216,7 +216,7 @@ To build the society, we can either manually add agents and their relationships:
         resources={'food': 15, 'water': 12, 'energy': 10},
     )
 
-The code above is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md>`_ example.
+The code above is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation>`_ example.
 
 The other method is to automatically generate the society. The generator method creates a society with a given number of agents and other attributes of the society like the Gini index (a measure of inequality), average income, etc.
 
@@ -270,4 +270,69 @@ The :meth:`~piperabm.Model.run` method of the :class:`piperabm.Model` class is u
 Step 4: Results
 --------------------------------
 
-The :class:`piperabm.infrastructure.Infrastructure` class uses a `NetworkX undirected graph <https://networkx.org/documentation/stable/reference/classes/graph.html#graph-undirected-graphs-with-self-loops>`_ as its backend.
+When simulation running is done, if the `save` attribute is `True`, the states of model accross the time steps will be saved. (For more information, please refer to :meth:`~piperabm.Model.run`)
+Now, is it possible to create an instance of :class:`piperabm.model.Measurement` to measure the various parameters for the length of simulation. Currently, "accessibility" and "travel distance" are supported. (For more information, please refer to :class:`piperabm.model.measurement.accessibility.Accessibility` and :class:`piperabm.model.measurement.travel_distance.TravelDistance`)
+The measured values will be saved to disk for future reference.
+
+.. code-block:: python
+
+    import os
+    import piperabm as pa
+
+    path = os.path.dirname(os.path.realpath(__file__))
+    measurement = pa.Measurement(path=path)
+    measurement.measure()
+
+Then, we can access the measurements later:
+
+.. code-block:: python
+
+    import os
+    import piperabm as pa
+
+    path = os.path.dirname(os.path.realpath(__file__))
+    measurement = pa.Measurement(path=path)
+    measurement.load()
+    measurement.accessibility.show()
+    measurement.travel_distance.show()
+
+It is also possible to access and filter the values to create customized plots. Please refer to the corresponding documentation.
+
+Another way of working with the simulation results is to render animation. This is useful for face-validity but requires setting proper step-size for smooth animation.
+
+.. code-block:: python
+
+    import os
+    import piperabm as pa
+
+    path = os.path.dirname(os.path.realpath(__file__))
+    model = pa.Model(path=path)
+    model.animate()
+
+Moreover, it is possible to load the initial state of model, and push it step by step forward. Any time along the process, it is possible to read the internal values, such as position of agents and the amount of balance they have.
+
+.. code-block:: python
+
+    import os
+    import piperabm as pa
+
+    path = os.path.dirname(os.path.realpath(__file__))
+    model = pa.Model(path=path)
+    model.load_intial()
+    for _ in range(10):
+        model.push()  # Push the model one step forward using the saved information
+        print(model.society.get_balance(id=4153))  # Check the balance for a certain agent
+
+Another useful method is to directly accessing the backend for networks. The :class:`piperabm.infrastructure.Infrastructure` class uses a `NetworkX Undirected Graph <https://networkx.org/documentation/stable/reference/classes/graph.html>`_ as its backend and can be directly accessed as follows:
+
+.. code-block:: python
+
+    # NetworkX undirected graph backend for infrastructure
+    G = model.infrastrcuture.G
+
+The :class:`piperabm.society.Society` class uses a `NetworkX Undirected Multi Graph <https://networkx.org/documentation/stable/reference/classes/multigraph.html>`_ as its backend and can be directly accessed as follows:
+
+.. code-block:: python
+
+    # NetworkX undirected multi graph backend for society
+    G = model.society.G

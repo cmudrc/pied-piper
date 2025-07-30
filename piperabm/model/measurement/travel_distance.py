@@ -18,13 +18,20 @@ class TravelDistance:
 
     def add(self, value: float) -> None:
         """
-        Add new travel distance value
+        Add new travel distance value.
         """
         self.values.append(value)
 
     def filter(self, _from=None, _to=None):
         """
-        Filter values in a specific range
+        Filter values in a specific range.
+
+        Parameters
+        ----------
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         if _from is None:
             _from = 0
@@ -37,7 +44,14 @@ class TravelDistance:
     
     def average(self, _from=None, _to=None) -> float:
         """
-        Calculate total average
+        Calculate total average.
+
+        Parameters
+        ----------
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         values = self.__call__(_from=_from, _to=_to)
         weights = self.measurement.delta_times(_from=_from, _to=_to)
@@ -48,7 +62,14 @@ class TravelDistance:
     
     def create_plot(self, _from=None, _to=None, info=None):
         """
-        Create plot
+        Create plot.
+
+        Parameters
+        ----------
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
         """
         fig, ax = plt.subplots()
         title = "Travel Distance"
@@ -63,9 +84,18 @@ class TravelDistance:
         ax.set_ylabel(ylabel)
         return fig
     
-    def show(self, _from=None, _to=None, info=None):
+    def show(self, _from=None, _to=None, info: str = None):
         """
-        Draw plot
+        Draw plot.
+
+        Parameters
+        ----------
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
+        info: str, default=None
+            The extra information shown in the plot.
         """
         fig = self.create_plot(
             _from=_from,
@@ -76,7 +106,16 @@ class TravelDistance:
 
     def save(self, _from=None, _to=None, info=None):
         """
-        Save plot
+        Save plot.
+    
+        Parameters
+        ----------
+        _from: int, default=None
+            The step number in time to start summation. If `None`, the earliest step will be considered.
+        _to: int, default=None
+            The step number in time to end summation. If `None`, the latest step will be considered.
+        info: str, default=None
+            The extra information shown in the plot.
         """
         fig = self.create_plot(
             _from=_from,
@@ -89,7 +128,7 @@ class TravelDistance:
 
     def serialize(self) -> dict:
         """
-        Serialize
+        Serialize.
         """
         return {
             'values': self.values,
@@ -98,7 +137,7 @@ class TravelDistance:
     
     def deserialize(self, data: dict) -> None:
         """
-        Deserialize
+        Deserialize.
         """
         self.values = data['values']
 

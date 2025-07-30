@@ -2,7 +2,6 @@ import os
 import piperabm as pa
 
 
-
 # Step 4: Results
 # (Animate the result)
 # Link: https://pied-piper.readthedocs.io/latest/step-by-step.html#step-4-results

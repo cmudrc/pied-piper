@@ -117,7 +117,7 @@ Infrastructure elements include:</p>
 <figure class="align-center" id="id6">
 <img alt="An example of manually defined infrastrcuture" src="_images/step_1_manual.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">Manual Creation</a> example.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation">Manual Creation</a> example.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes. For more details, visit <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure.generate" title="piperabm.infrastructure.Infrastructure.generate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate()</span></code></a>.</p>
@@ -140,7 +140,7 @@ Infrastructure elements include:</p>
 <figure class="align-center" id="id7">
 <img alt="An example of automatically generated infrastrcuture" src="_images/step_1_automatic.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation/README.md">Automatic Creation</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation">Automatic Creation</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>For further details on how to load infrastrcuture using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.
@@ -221,7 +221,7 @@ Society elements includes agents (as nodes) and their relationships (as edges). 
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>The code above is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation/README.md">Manual Creation</a> example.</p>
+<p>The code above is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation">Manual Creation</a> example.</p>
 <p>The other method is to automatically generate the society. The generator method creates a society with a given number of agents and other attributes of the society like the Gini index (a measure of inequality), average income, etc.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 2: Automatically generate the society.</span>
 <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
@@ -259,7 +259,60 @@ Infrastructure elements will degrade as a result of both aging usage. Agents act
 </section>
 <section id="step-4-results">
 <span id="id5"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
-<p>The <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.infrastructure.Infrastructure</span></code></a> class uses a <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/graph.html#graph-undirected-graphs-with-self-loops">NetworkX undirected graph</a> as its backend.</p>
+<p>When simulation running is done, if the <cite>save</cite> attribute is <cite>True</cite>, the states of model accross the time steps will be saved. (For more information, please refer to <a class="reference internal" href="api/model.html#piperabm.Model.run" title="piperabm.Model.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>)
+Now, is it possible to create an instance of <a class="reference internal" href="api/measurement.html#piperabm.model.Measurement" title="piperabm.model.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.Measurement</span></code></a> to measure the various parameters for the length of simulation. Currently, “accessibility” and “travel distance” are supported. (For more information, please refer to <a class="reference internal" href="api/measurement.html#piperabm.model.measurement.accessibility.Accessibility" title="piperabm.model.measurement.accessibility.Accessibility"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.measurement.accessibility.Accessibility</span></code></a> and <a class="reference internal" href="api/measurement.html#piperabm.model.measurement.travel_distance.TravelDistance" title="piperabm.model.measurement.travel_distance.TravelDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.measurement.travel_distance.TravelDistance</span></code></a>)
+The measured values will be saved to disk for future reference.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">measurement</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Measurement</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">measurement</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, we can access the measurements later:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">measurement</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Measurement</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">measurement</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="n">measurement</span><span class="o">.</span><span class="n">accessibility</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">measurement</span><span class="o">.</span><span class="n">travel_distance</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is also possible to access and filter the values to create customized plots. Please refer to the corresponding documentation.</p>
+<p>Another way of working with the simulation results is to render animation. This is useful for face-validity but requires setting proper step-size for smooth animation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">animate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Moreover, it is possible to load the initial state of model, and push it step by step forward. Any time along the process, it is possible to read the internal values, such as position of agents and the amount of balance they have.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_intial</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>  <span class="c1"># Push the model one step forward using the saved information</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">4153</span><span class="p">))</span>  <span class="c1"># Check the balance for a certain agent</span>
+</pre></div>
+</div>
+<p>Another useful method is to directly accessing the backend for networks. The <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.infrastructure.Infrastructure</span></code></a> class uses a <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/graph.html">NetworkX Undirected Graph</a> as its backend and can be directly accessed as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NetworkX undirected graph backend for infrastructure</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infrastrcuture</span><span class="o">.</span><span class="n">G</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="api/society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.society.Society</span></code></a> class uses a <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/multigraph.html">NetworkX Undirected Multi Graph</a> as its backend and can be directly accessed as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NetworkX undirected multi graph backend for society</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">G</span>
+</pre></div>
+</div>
 </section>
 </section>
 
