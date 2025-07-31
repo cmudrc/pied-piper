@@ -1,10 +1,12 @@
+# Satellite Map
+
 This example shows how to work with satellite data and maps to create model.
 
-# Running the Example
+## Running the Example
 
 To run this example, execute the [`main.py`](https://github.com/cmudrc/pied-piper/blob/main/examples/satellite-map/main.py) file.
 
-# Understanding the Steps:
+## Understanding the Steps
 
 This example follows the materials already covered in [Working with Satellite Data](https://pied-piper.readthedocs.io/latest/satellite.html).
 
@@ -31,7 +33,7 @@ This file contains a list of triangles that cover the residential areas of the c
 ![Meshed Residential Areas](https://github.com/cmudrc/pied-piper/blob/main/examples/satellite-map/parker,pa-mesh.png?raw=true)  
 *Meshes covering the residential areas on the map*
 
-## Putting Them Together
+### Putting Them Together
 
 As it has been descussed earlier, [Mercator Projection](https://pied-piper.readthedocs.io/latest/satellite.html#mercator-projection) is used when needing to convert latitude and longitude to x, y coordiantes. First, we need to find the reference point, which is in this case, the coodinates of the city. Then, using that reference point and Mercator formula, all we convert all the points to x, y coordinates.
 
