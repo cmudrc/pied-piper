@@ -68,7 +68,7 @@ class Query(Add, Get, Set):
                 )
             adjustment_factor = self.calculate_adjustment_factor(
                 usage_impact=data['usage_impact'],
-                climate_impact=data['climate_impact']
+                age_impact=data['age_impact']
             )
             data['adjusted_length'] = self.calculate_adjusted_length(
                 length=data['length'],
