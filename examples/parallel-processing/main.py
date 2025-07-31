@@ -14,9 +14,9 @@ def create_model(path, population, household_size):
     model = pa.Model(
         path=path,
         seed=2,
-        name=f"{population}_{household_size}"
+        name=f"{population}_{household_size}" # Naming will help distinguishing between them
     )
-    homes_num = round(population/household_size)
+    homes_num = round(population / household_size)
     model.infrastructure.generate(
         homes_num=homes_num,
         grid_num=[3,4],
@@ -30,7 +30,7 @@ def create_model(path, population, household_size):
     )
     return model
 
-# Create multiple models
+# Create multiple model instaces and put them inside a list
 models = []
 for population in populations:
     for household_size in household_sizes:
@@ -42,6 +42,9 @@ for population in populations:
         models.append(model)
     
 def run(model):
+    """
+    Run the input model and save its result
+    """
     model.run(
         n=100,
         step_size=3600*2,
@@ -51,10 +54,12 @@ def run(model):
     )
 
 def main():    
-    # Run them on multiple processors
-    num_processors = os.cpu_count() - 1  # Better to keep one core
+    """
+    Run them on multiple processors
+    """
+    num_processors = os.cpu_count() - 1  # Better to keep one core out
     with multiprocessing.Pool(processes=num_processors) as pool:
-        # Map the models to the processes
+        # Map the model instances to the processes
         pool.map(run, models)
     print("Simulations completed.")
 
