@@ -7,6 +7,8 @@ tags:
   - agent-based model
   - community resillience
   - infrastructure
+  - society
+  - decision-making
 authors:
   - name: Aslan Noorghasemi 
     orcid: 0009-0004-3387-4502
@@ -25,11 +27,11 @@ bibliography: paper.bib
 
 # Summary
 
-`PiperABM` is an open-source Python library designed to support resilience-based agent modeling on complex infrastructure networks. It provides modular tools for constructing agent-based simulations where individual agents interact over dynamic networks subject to progressive degradation and adaptive decision-making. Built with extensibility in mind, PiperABM leverages a bootstrap architecture that allows users to customize agent behaviors. Core features include dynamic network loading, failure propagation models, accessibility and travel-distance metrics, and visualization utilities. PiperABM is framework-agnostic and integrates seamlessly with common scientific Python ecosystems (NumPy, NetworkX, Matplotlib).
+`PiperABM` is an open-source Python library for building resilience-focused agent-based simulations on coupled infrastructure–society networks. Infrastructure (roads, homes, markets) is represented as a spatial graph that can progressively degrade; travel cost grows via an International Roughness Index (IRI)-inspired factor that inflates effective edge length over time, capturing both human wear and environmental stress. Agents decide with a lightweight Observe–Orient–Decide–Act loop and can be extended with custom policies, enabling rapid experimentation with behavioral assumptions. The library ingests real geospatial inputs (latitude/longitude from satellite or map data), projects them with a Mercator projection to a Cartesian grid, and instantiates city layouts directly in the model. Built-in utilities report resource accessibility and traveled distance, and the evolving system can be visualized via integrated animation rendering. PiperABM is a pure-Python, framework-agnostic package that interoperates with the scientific Python ecosystem (e.g., NumPy and Matplotlib), making it easy to embed in scripts and services.
 
 # Statement of Need
 
-Infrastructure resilience is a critical concern for urban planners, emergency managers, and researchers seeking to understand how disruptions (e.g., natural hazards, maintenance backlogs) affect community access to essential services.
+Infrastructure resilience is a critical concern for urban planners and researchers seeking to understand how disruptions (e.g., natural hazards) affect community access to essential services.
 
 # How it works
 
