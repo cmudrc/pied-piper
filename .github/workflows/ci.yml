@@ -7,12 +7,14 @@ on:
         - piperabm/**
         - tests/**
         - .github/workflows/ci.yml
+        - .coveragerc
   pull_request:
     branches: [main]
     paths:
         - piperabm/**
         - tests/**
         - .github/workflows/ci.yml
+        - .coveragerc
 
 jobs:
   test:
