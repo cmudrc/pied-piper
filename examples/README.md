@@ -9,7 +9,7 @@ The world has only one market and one home with one agent living there.
 The agent starts moving to the market.
 The result is animated.
 
-## [Two Agent at Home](https://github.com/cmudrc/pied-piper/tree/main/examples/two-agents-at-home)
+## [Two Agents at Home](https://github.com/cmudrc/pied-piper/tree/main/examples/two-agents-at-home)
 
 This is one the most simple setups. The world contains only one home with two agents living there as family.
 They start with different amount of resources and thus, they eventually share it with each other when the simulation runs.
