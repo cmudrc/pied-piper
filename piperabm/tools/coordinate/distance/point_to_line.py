@@ -40,7 +40,7 @@ def point_to_line(
         if ndarray is True:
             pass
         else:
-            result = list(result)
+            result = [float(x) for x in result]
     else:
         result = vc.magnitude(result)
 
