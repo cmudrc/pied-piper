@@ -40,7 +40,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run --source=keepdelta -m unittest discover -s tests
+          coverage run --source=piperabm -m unittest discover -s tests
           coverage xml
           coverage html
           coverage report  # Print summary to logs
