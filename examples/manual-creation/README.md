@@ -1,4 +1,4 @@
-In this example, we demonstrate how to automatically create both infrastructure and society to run a simulation.
+In this example, we demonstrate how to manually create both infrastructure and society to run a simulation.
 
 # Running the Example
 

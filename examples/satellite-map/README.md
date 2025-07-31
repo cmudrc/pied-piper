@@ -1,4 +1,4 @@
-In this example, we demonstrate how to work with satellite data and maps to create model.
+This example shows how to work with satellite data and maps to create model.
 
 # Running the Example
 

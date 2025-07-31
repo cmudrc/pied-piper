@@ -27,7 +27,7 @@
 
 ## Introduction
 
-Whenever environments condition change for species, the living entities start to react to the new new condition. This projects aims at modeling the Alaskan communities that are heavily affected by the global warming.
+Whenever environments condition change for species, the living entities start to react to the new new condition. This projects aims at modeling the interdependent nature of life between humans and their environment.
 
 ## Installation
 

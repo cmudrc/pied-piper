@@ -1,6 +1,5 @@
 """
-Simple world with one home and one market. There is one agent that starts
-moving to the market. The result is animated.
+In this example, we see how the user can customize degradation behavior of the infrastrcture elements of the model by providing their own `degradation.py` file.
 """
 import os
 
