@@ -38,7 +38,6 @@ class rotate:
 
         return result
     
-
     @staticmethod
     def y(
         vector,
@@ -73,7 +72,6 @@ class rotate:
             result = [float(num) for num in result]  # Convert np.float64 to float explicitly
             
         return result
-
 
     @staticmethod
     def z(
