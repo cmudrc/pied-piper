@@ -16,7 +16,7 @@ class TestGrammarClass_0(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 2)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 3)
         self.assertEqual(stat['edge']['street'], 2)
@@ -27,7 +27,7 @@ class TestGrammarClass_0(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 6)
         self.assertEqual(stat['edge']['street'], 3)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 3)
         self.assertEqual(stat['edge']['street'], 2)
@@ -39,7 +39,7 @@ class TestGrammarClass_0(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 8)
         self.assertEqual(stat['edge']['street'], 4)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 3)
@@ -59,7 +59,7 @@ class TestGrammarClass_1(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 2)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 2)
@@ -70,7 +70,7 @@ class TestGrammarClass_1(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 6)
         self.assertEqual(stat['edge']['street'], 3)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 3)
@@ -90,7 +90,7 @@ class TestGrammarClass_2(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 2)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 3)
@@ -110,7 +110,7 @@ class TestGrammarClass_3(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 2)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 3)
@@ -130,7 +130,7 @@ class TestGrammarClass_4(unittest.TestCase):
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 2)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 4)
         self.assertEqual(stat['edge']['street'], 3)
@@ -152,7 +152,7 @@ class TestGrammarClass_5(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 1)
         self.assertEqual(stat['edge']['street'], 1)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 2)
         self.assertEqual(stat['node']['home'], 1)
@@ -176,7 +176,7 @@ class TestGrammarClass_6(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 1)
         self.assertEqual(stat['edge']['street'], 1)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 3)
         self.assertEqual(stat['node']['home'], 1)
@@ -200,7 +200,7 @@ class TestGrammarClass_7(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 1)
         self.assertEqual(stat['edge']['street'], 1)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 3)
         self.assertEqual(stat['node']['home'], 1)
@@ -224,7 +224,7 @@ class TestGrammarClass_8(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 1)
         self.assertEqual(stat['edge']['street'], 1)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 2)
         self.assertEqual(stat['node']['home'], 1)
@@ -248,7 +248,7 @@ class TestGrammarClass_9(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 1)
         self.assertEqual(stat['edge']['street'], 1)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 2)
         self.assertEqual(stat['node']['home'], 1)
@@ -276,7 +276,7 @@ class TestGrammarClass_10(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 0)
         self.assertEqual(stat['edge']['street'], 1)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 3)
         self.assertEqual(stat['node']['home'], 0)
@@ -313,7 +313,7 @@ class TestGrammarClass_11(unittest.TestCase):
         self.assertEqual(stat['node']['home'], 0)
         self.assertEqual(stat['edge']['street'], 6)
         self.assertEqual(stat['edge']['neighborhood_access'], 0)
-        self.infrastructure.bake(report=False)
+        self.infrastructure.bake(report=False, proximity_radius=1)
         stat = self.infrastructure.stat
         self.assertEqual(stat['node']['junction'], 9)
         self.assertEqual(stat['node']['home'], 0)

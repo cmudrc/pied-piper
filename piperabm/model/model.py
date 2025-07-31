@@ -6,6 +6,7 @@ from piperabm.model.update import Update
 from piperabm.model.graphics import Graphics
 from piperabm.infrastructure import Infrastructure
 from piperabm.society import Society
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Model(
@@ -74,7 +75,7 @@ class Model(
     def bake(
             self,
             save: bool = False,
-            proximity_radius: float = 0,
+            proximity_radius: float = SYMBOLS['eps'],
             search_radius: float = None,
             report: bool = False
         ):

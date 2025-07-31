@@ -23,8 +23,8 @@ class TestDegradationClass_0(unittest.TestCase):
         self.assertEqual(length, adjusted_length_initial) # Adjusted length
         usage_impact_initial = self.model.infrastructure.get_usage_impact(ids=street)
         self.assertEqual(usage_impact_initial, 0) # Usage impact
-        climate_impact_initial = self.model.infrastructure.get_climate_impact(ids=street)
-        self.assertEqual(climate_impact_initial, 0) # Climate impact
+        age_impact_initial = self.model.infrastructure.get_age_impact(ids=street)
+        self.assertEqual(age_impact_initial, 0) # Climate impact
         adjustment_factor_initial = self.model.infrastructure.adjustment_factor(ids=street)
         self.assertEqual(adjustment_factor_initial, 1) # Adjustment factor
 
@@ -36,8 +36,8 @@ class TestDegradationClass_0(unittest.TestCase):
         self.assertLess(adjusted_length_initial, adjusted_length_final) # Adjusted length
         usage_impact_final = self.model.infrastructure.get_usage_impact(ids=street)
         self.assertEqual(usage_impact_final, 0) # Usage impact
-        climate_impact_final = self.model.infrastructure.get_climate_impact(ids=street)
-        self.assertNotEqual(climate_impact_final, 0) # Climate impact
+        age_impact_final = self.model.infrastructure.get_age_impact(ids=street)
+        self.assertNotEqual(age_impact_final, 0) # Age impact
         adjustment_factor_final = self.model.infrastructure.adjustment_factor(ids=street)
         self.assertLess(1, adjustment_factor_final) # Adjustment factor
     
@@ -73,8 +73,8 @@ class TestDegradationClass_1(unittest.TestCase):
         self.assertEqual(length, adjusted_length_initial) # Adjusted length
         usage_impact = self.model.infrastructure.get_usage_impact(ids=street)
         self.assertEqual(usage_impact, 0) # Usage impact
-        climate_impact = self.model.infrastructure.get_climate_impact(ids=street)
-        self.assertEqual(climate_impact, 0) # Climate impact
+        age_impact = self.model.infrastructure.get_age_impact(ids=street)
+        self.assertEqual(age_impact, 0) # Climate impact
 
         # Run
         self.model.update(duration=500)
@@ -84,8 +84,8 @@ class TestDegradationClass_1(unittest.TestCase):
         self.assertLess(adjusted_length_initial, adjusted_length_final) # Adjusted length
         usage_impact = self.model.infrastructure.get_usage_impact(ids=street)
         self.assertEqual(usage_impact, 1) # Usage impact
-        climate_impact = self.model.infrastructure.get_climate_impact(ids=street)
-        self.assertNotEqual(climate_impact, 0) # Climate impact
+        age_impact = self.model.infrastructure.get_age_impact(ids=street)
+        self.assertNotEqual(age_impact, 0) # Climate impact
 
         # Top degraded
         edges = self.model.infrastructure.top_degraded_edges(percent=100)

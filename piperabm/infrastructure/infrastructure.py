@@ -14,6 +14,7 @@ from piperabm.infrastructure.graphics import Graphics
 from piperabm.infrastructure.stat import Stat
 from piperabm.infrastructure.grammar import Grammar
 from piperabm.infrastructure.heuristic_paths import HeuristicPaths
+from piperabm.tools.symbols import SYMBOLS
 
 
 class Infrastructure(
@@ -80,7 +81,7 @@ class Infrastructure(
     def bake(
             self,
             report: bool = False,
-            proximity_radius: float = 1,
+            proximity_radius: float = SYMBOLS['eps'],
             search_radius: float = None
         ):
         """

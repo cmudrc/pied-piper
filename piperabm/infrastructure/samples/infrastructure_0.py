@@ -8,9 +8,9 @@ import piperabm as pa
 model = pa.Model()
 model.set_seed(2)
 model.infrastructure.coeff_usage = 1
-model.infrastructure.coeff_weather = 1
+model.infrastructure.coeff_age = 1
 model.infrastructure.add_home(pos=[0, 0], id=0, name='home')
-model.infrastructure.bake()
+model.bake()
 model.set_seed(None)
 
 
