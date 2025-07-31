@@ -164,7 +164,7 @@ By default, only the street edges are sibject to degradation. However, the user 
 .. code-block:: python
 
     # The file name should be `degradation.py` and it needs to be located in the wokring directory of the simulation.
-    from piperabm.infrastrcuture.degradation import Degradation
+    from piperabm.infrastructure.degradation import Degradation
 
     class CustomDegradation(Degradation):
 
@@ -174,6 +174,7 @@ By default, only the street edges are sibject to degradation. However, the user 
             """
             return 1 + (self.coeff_usage * usage_impact ** 1.2) + (self.coeff_age * age_impact)
 
+For more information about custom degradation, refer to `custom-degradation <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation>`_ example.
 
 
 .. _step-2-build-society:
@@ -285,6 +286,8 @@ Agents decision-making can be customized by creating a file named `decision_maki
             # Calculate score
             score = total_value_there - total_fuel_value
             return score
+
+For more information about custom degradation, refer to `custom-decision-making <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making>`_ example.
 
 
 .. _step-3-run:

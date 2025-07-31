@@ -12,7 +12,7 @@ model = pa.Model(path=path, seed=2)
 
 # Set up the infrastructure
 model.infrastructure.coeff_usage = 1
-model.infrastructure.coeff_weather = 1
+model.infrastructure.coeff_age = 1
 model.infrastructure.add_street(pos_1=[0, 0], pos_2=[-60, 40], name='road')
 model.infrastructure.add_home(pos=[5, 0], id=1, name='home')
 model.infrastructure.add_market(

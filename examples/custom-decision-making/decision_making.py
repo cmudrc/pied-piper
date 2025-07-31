@@ -1,8 +1,8 @@
-from piperabm.society.decision_making import DecisionMaking as BaseDM
+from piperabm.society.decision_making import DecisionMaking
 from piperabm.society.actions.action import Move
 
 
-class DecisionMaking(BaseDM):
+class CustomDecisionMaking(DecisionMaking):
     """
     Methods related to agents' decision-making
     """

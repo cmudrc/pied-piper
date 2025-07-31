@@ -173,7 +173,7 @@ When edges degrade, they become less efficient, therefore, it will take longer f
 <p>The adjustement factor is calculate using the <cite>calculate_adjustment_factor</cite> method of the <cite>Degradation</cite> class. This method takes <cite>usage_impact</cite> and <cite>age_impact</cite> of the element, and by combining them with the <cite>coeff_age</cite> and <cite>coeff_usage</cite> attributes, calculates the “adjustement factor”.
 By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a <cite>degradation.py</cite> file in the working directory:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The file name should be `degradation.py` and it needs to be located in the wokring directory of the simulation.</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.infrastrcuture.degradation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Degradation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.infrastructure.degradation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Degradation</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CustomDegradation</span><span class="p">(</span><span class="n">Degradation</span><span class="p">):</span>
 
@@ -184,6 +184,7 @@ By default, only the street edges are sibject to degradation. However, the user 
         <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeff_usage</span> <span class="o">*</span> <span class="n">usage_impact</span> <span class="o">**</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeff_age</span> <span class="o">*</span> <span class="n">age_impact</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>For more information about custom degradation, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation">custom-degradation</a> example.</p>
 </section>
 <section id="step-2-build-the-society">
 <span id="step-2-build-society"></span><h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
@@ -284,6 +285,7 @@ Society elements includes agents (as nodes) and their relationships (as edges). 
         <span class="k">return</span> <span class="n">score</span>
 </pre></div>
 </div>
+<p>For more information about custom degradation, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making">custom-decision-making</a> example.</p>
 </section>
 <section id="step-3-run">
 <span id="id4"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
