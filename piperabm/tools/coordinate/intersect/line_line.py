@@ -35,7 +35,7 @@ def line_line(
 
     if denominator != 0: # check for parallel lines
         intersection = (numerator / denominator.astype(float)) * delta_line_2 + line_2_point_1
-        intersection = list(intersection)
+        intersection = [float(x) for x in intersection]
 
     return intersection
 
