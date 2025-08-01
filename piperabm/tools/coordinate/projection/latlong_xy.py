@@ -61,8 +61,7 @@ def xy_latlong(
     latitude, longitude = xyz_latlong(vector)
     return latitude, longitude
 
-
-if __name__ == '__main__':
+def _example():  # pragma: no cover
     latitude_0 = 70
     longitude_0 = -150
 
@@ -74,3 +73,7 @@ if __name__ == '__main__':
     
     latitude, longitude = xy_latlong(latitude_0, longitude_0, x, y)
     print(f'latitude, longitude: {latitude}, {longitude}')
+
+
+if __name__ == '__main__':
+    _example()
