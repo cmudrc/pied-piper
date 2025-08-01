@@ -9,10 +9,6 @@ class TestDistance(unittest.TestCase):
         point_2 = [3, 4]
         distance = ds.point_to_point(point_1, point_2)
         self.assertEqual(distance, 5)
-
-    def test_distance_point_to_line(self):
-        point = [0, 0]
-        line_1 = [3, 4]
         
 
 if __name__ == "__main__":

@@ -1,0 +1,39 @@
+import unittest
+from piperabm.tools.coordinate.distance.point_to_line_segment import point_to_line_segment
+
+
+class TestPointToLineSegment(unittest.TestCase):
+
+    def test_point_to_line_segment_magnitude_in(self):
+        point = [0, 0]
+        line_1 = [1, 0]
+        line_2 = [0, 1]
+        distance = point_to_line_segment(point, line_1, line_2)
+        self.assertAlmostEqual(distance, 0.707, places=2)
+
+    def test_point_to_line_segment_vector_in(self):
+        point = [0, 0]
+        line_1 = [1, 0]
+        line_2 = [0, 1]
+        vector = point_to_line_segment(point, line_1, line_2, vector=True, ndarray=False)
+        self.assertAlmostEqual(vector[0], 0.5, places=2)
+        self.assertAlmostEqual(vector[1], 0.5, places=2)
+
+    def test_point_to_line_segment_magnitude_out(self):
+        point = [-1, 2]
+        line_1 = [1, 0]
+        line_2 = [0, 1]
+        distance = point_to_line_segment(point, line_1, line_2)
+        self.assertAlmostEqual(distance, 1.414, places=2)
+
+    def test_point_to_line_segment_vector_out(self):
+        point = [-1, 2]
+        line_1 = [1, 0]
+        line_2 = [0, 1]
+        vector = point_to_line_segment(point, line_1, line_2, vector=True, ndarray=False)
+        self.assertAlmostEqual(vector[0], 1, places=2)
+        self.assertAlmostEqual(vector[1], -1, places=2)
+        
+
+if __name__ == "__main__":
+    unittest.main()
