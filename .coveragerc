@@ -2,6 +2,7 @@
 relative_files = True
 omit =
     **/__init__.py
+    **/examples/**
 
 [report]
 exclude_lines =
