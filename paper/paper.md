@@ -4,6 +4,7 @@ tags:
   - python
   - simulation
   - abm
+  - socio-technical system
   - agent-based model
   - community resilience
   - infrastructure
@@ -31,7 +32,7 @@ _PiperABM_ is an open-source Python library for building agent-based simulations
 
 # Statement of Need
 
-Agent-based models (ABMs) represent systems “from the bottom up” via interacting, heterogeneous agents; macro-level patterns then emerge from local rules and interactions [@epstein1999; @epstein_axtell_1996; @schelling_2006]. Over the past two decades, ABM has matured from theoretical demonstrations to a practical research method supported by accessible tooling and the scientific Python ecosystem [@Mesa_3]. This paradigm is well-suited to **infrastructure and community resilience**, particularly within the Food–Energy–Water (FEW) nexus, where access to essential resources depends on both physical networks and human decisions, and where nonlinear feedbacks, thresholds, and cascades are common [@Xue2024; @Zhang2019; @CansinoLoeza2022].
+Agent-based models (ABMs) represent systems “from the bottom up” via interacting, heterogeneous agents; macro-level patterns then emerge from local rules and interactions [@epstein1999; @epstein_axtell_1996; @schelling_2006]. Over the past two decades, ABM has matured from theoretical demonstrations to a practical research method supported by accessible tooling and the scientific Python ecosystem [@Mesa_3]. This paradigm is well-suited to infrastructure and community resilience, particularly within the Food–Energy–Water (FEW) nexus, where access to essential resources depends on both physical networks and human decisions, and where nonlinear feedbacks, thresholds, and cascades are common [@Xue2024; @Zhang2019; @CansinoLoeza2022].
 
 Resilience studies pose several practical modeling needs that are not well served by ad hoc scripts or purely equation-based approaches:
 
