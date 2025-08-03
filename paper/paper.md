@@ -5,7 +5,7 @@ tags:
   - simulation
   - abm
   - agent-based model
-  - community resillience
+  - community resilience
   - infrastructure
   - society
   - decision-making
@@ -27,90 +27,37 @@ bibliography: paper.bib
 
 # Summary
 
-`PiperABM` is an open-source Python library for building resilience-focused agent-based simulations on coupled infrastructure–society networks. Infrastructure (roads, homes, markets) is represented as a spatial graph that can progressively degrade; travel cost grows via an International Roughness Index (IRI)-inspired factor that inflates effective edge length over time, capturing both human wear and environmental stress. Agents decide with a lightweight Observe–Orient–Decide–Act loop and can be extended with custom policies, enabling rapid experimentation with behavioral assumptions. The library ingests real geospatial inputs (latitude/longitude from satellite or map data), projects them with a Mercator projection to a Cartesian grid, and instantiates city layouts directly in the model. Built-in utilities report resource accessibility and traveled distance, and the evolving system can be visualized via integrated animation rendering. PiperABM is a pure-Python, framework-agnostic package that interoperates with the scientific Python ecosystem (e.g., NumPy and Matplotlib), making it easy to embed in scripts and services.
+`PiperABM` is an open-source Python library for building agent-based simulations that couple human behavior with degrading infrastructure on real geospatial layouts. It provides lightweight primitives for agents with a customizable decision loop, infrastructure with spatial graphs whose effective travel costs evolve, and built-in analysis for accessibility to resources and travel distance, plus optional animation. Because it is implemented with familiar scientific tools like NumPy and NetworkX, researchers can inspect and extend models directly, integrate empirical data, and reuse standard workflows. PiperABM targets resilience questions where people’s choices and infrastructure conditions co-evolve, and it aims to reduce the setup overhead typical of one-off models while remaining flexible enough for diverse hazards, places, and policies.
 
 # Statement of Need
 
-Infrastructure resilience is a critical concern for urban planners and researchers seeking to understand how disruptions (e.g., natural hazards) affect community access to essential services.
+Agent-based models (ABMs) represent systems “from the bottom up” via interacting, heterogeneous agents; macro-level patterns then emerge from local rules and interactions [@epstein1999; @epstein_axtell_1996; schelling_2006]. Over the past two decades, ABM has matured from theoretical demonstrations to a practical research method supported by accessible tooling and the scientific Python ecosystem [@Mesa_3]. This paradigm is well-suited to **infrastructure and community resilience**, particularly within the Food–Energy–Water (FEW) nexus, where access to essential resources depends on both physical networks and human decisions, and where nonlinear feedbacks, thresholds, and cascades are common [@Xue2024; @Zhang2019; @CansinoLoeza2022].
 
-# How it works
+Resilience studies pose several practical modeling needs that are not well served by ad hoc scripts or purely equation-based approaches:
 
-The **piperabm** framework couples two dynamically interacting networks:
+- **Partial service levels and progressive degradation:** Models should represent graded performance (e.g., rougher roads increasing cost/time) rather than only binary failure, reflecting well-studied pavement deterioration processes and performance impacts, e.g., IRI-based assessments [@ASCE_Pavement_Performance_2020; @LlopisCastello2024].
+- **Two-way coupling of behavior and infrastructure:** People adapt routes, priorities, and exchanges as networks evolve; these adaptations, in turn, load and degrade networks. Coupled human–infrastructure ABMs have demonstrated such feedbacks in flood-risk systems and related reviews emphasize capturing co-evolution [@Michaelis2020; @Anshuka2022].
+- **Real geospatial layouts for place-based analysis:** Integrating GIS data (maps/satellite-derived inputs) enables site-specific scenarios and stakeholder communication; recent work in the Python ABM ecosystem formalizes GIS ingestion and spatial operations for ABMs [@MesaGeo2022].
+- **Ensemble experiments and reproducibility:** Parameter sweeps, stochastic replications, and uncertainty and sensitivity analysis require clear, standardized reporting and careful data handling; community guidelines for documenting agent-based models and recent work on calibration and sensitivity analysis support replicable workflows [@GrimmODD2020; @McCulloch2022; @Razavi2021].
+- **Custom metrics and analysis pipelines:** Exposing model state in familiar data structures should facilitate domain metrics—e.g., spatio-temporal accessibility to resources under disruption—as used in recent resilience studies [@Tariverdi2023; @Enderami2024].
 
-1. **A spatial infrastructure network** that carries physical flows, like roads for mobility and a simplified Food–Energy–Water (FEW) supply chain for basic needs.  
-2. **A social network of autonomous agents** whose daily decisions, movements, and exchanges both depend on and reshape the physical system.
-
-The elements of these networks affect each other during each step of the simulation run, reflecting the intertwined nature of the dynamics. This simulation emulates the day-to-day life of the community, capturing how individuals interact with both infrastructure and each other as they pursue essential activities and respond to ongoing changes in their environment.
-
-![The computational model emulates the relation between the elements of infrastructure and social networks.](./assets/interconnected.png)
-
-## Infrastructure
-
-The modeling workflow begins by constructing a representation of the city’s civil infrastructure system, hereafter referred to simply as the *infrastructure*.  In the current work this term encompasses the physical assets that underpin service domains most critical to day-to-day community resilience, namely transportation and the Food–Energy–Water (FEW) supply chain. We abstract these assets into a spatial network comprising three classes of location nodes:
-
-- Junctions: A placeholder in space with physical coordinates as their only attributes, such as where two streets intersect.
-- Homes: Representing agents’ residences, home nodes are where agents belong and reside within the community. These home nodes represent residential locations where agents reside, rest, and engage in family activities.
-- Markets: These nodes represent local supermarkets that act as central hubs for the community’s grocery shopping needs. The market nodes represent a generalized resource‐influx point where essential food and goods enter the system, whether via imported supplies or local subsistence activities
-
-{ I want to say it is possible to load city maps using satelite images and it has capability of converting lat long using mercator. }
-
-## Society
-
-The agents’ decision-making processes in our model are governed by the OODA loop [@Johnson02012023]. This framework, which stands for Observe, Orient, Decide, and Act, is particularly effective in modeling the complex cognitive behaviors of humans, as it encompasses a broad range of cognitive activities [@brehmer_dynamic_nodate].
-
-![The agents’ decision-making processes are modeled by OODA Loop which stands for Observe, Orient, Decide, and Act.](./assets/ooda.png)
-
-User can customize it by supplying their own `decision_making.py` modules.
-
-## Results
-
-The result of simulation, for the matter of storage efficiency, is saved using data differencing [@Noorghasemi_KeepDelta_A_Python_2025]. The transactions between agents are also saved seperately. Is is also possible to generate results below using the integrated funtionalities.
-
-### Animation
-
-When the time step is sufficiently coarse, PiperABM can export an MP4 animation of the evolving infrastructure graph and agent trajectories.  These visualizations provide valuable *face validity*, a quick qualitative check that agents move sensibly, disruptions propagate plausibly, and global patterns match expectations.
-
-### Accessiblity
-
-Each agent’s accessibility to resources is assessed at every time step to monitor their well-being and ability to meet their needs. The term accessibility $A_{i,t,r}$ for agent $i$ at time $t$ for resource $r$ is computed as:
-
-$$
-A_{i,t,r} = \frac{R_{i,t}}{R^{\max}_{i}}
-$$
-
-where $R_{i,t}$ is the amount of resource $r$ that agent $i$ possesses at time $t$, and $R^{\max}_{i}$ is the maximum capacity of resource $r$ that agent $i$ can have. A value of 1 indicates full accessibility.
-
-To aggregate across the *R* different resources for each agent, we use the geometric mean:
-
-$$
-A_{i,t} = \left(\prod_{r=1}^R A_{i,t,r}\right)^{\frac{1}{R}}
-$$
-
-This ensures that low accessibility in any single resource strongly impacts the overall score. If any $A_{i,t,r}=0$, then $A_{i,t}=0$ and the agent is considered dead.
-
-Across all $N$ agents at each time step, the community’s average accessibility is:
-
-$$
-A_t = \frac{1}{N}\sum_{i=1}^N A_{i,t}
-$$
-
-Finally, a time-weighted overall accessibility over the simulation duration $T$ is
-
-$$
-A = \frac{\int_{0}^{T} A_t \,\mathrm{d}t}{\int_{0}^{T} A_{\max} \,\mathrm{d}t}
-$$
-
-where $A_{\max}=1$ is the maximum possible accessibility.
-
-### Travel Distance
-
-In the context of agent-based modeling, *traveled distance* serves as a metric for assessing the efficiency and functionality of transportation networks within a simulated environment. This measurement tracks the cumulative distance agents must traverse between various points, e.g. from home to market. 
-
-When this measurement yields a low value, it indicates that the system is operating with high efficiency, allowing agents to traverse shorter distances between points to satisfy their needs. Alternatively, it could signal that various barriers, constraints, or issues are impeding agents’ access to essential network nodes, thus limiting their ability to move freely within the system and reach their goals. This dual interpretation helps in diagnosing the underlying causes of system performance, guiding targeted improvements in urban planning and resource distribution.
+PiperABM is designed around these requirements. It provides **resilience-aware primitives** in a pure-Python library: continuous degradation that inflates effective travel cost; a succinct, pluggable OODA-style policy interface for agent decision-making; first-class **accessibility** and **travel distance** metrics; and utilities for ingesting map/satellite-derived layouts. Results can be recorded compactly with delta encoding to support large ensembles and reproducibility [@Noorghasemi_KeepDelta_A_Python_2025]. By centering behavior–infrastructure co-evolution while remaining extensible, PiperABM enables researchers to formulate hypotheses, run comparative scenarios, and analyze socio-technical feedbacks without rebuilding simulation scaffolding for each new study.
 
 # Comparison to Existing Tools
 
-PiperABM’s strength lies in its opinionated support for resilience metrics, built-in animation utilities, and its minimal barrier for user-defined agent policies. Unlike Mesa or NetLogo, which require extensive boilerplate or domain-specific scripting, PiperABM users can implement new decision-making modules by inheriting from a common superclass. Compared to Repast, PiperABM remains lightweight and fully Pythonic, benefiting from the broad data science ecosystem without Java dependencies.
+We group related work into two domains: (1) general frameworks intended to be reusable across problems, and (2) purpose-built models created for a single, specific study.
+
+## Domain 1: General frameworks (Python)
+
+`Mesa` is a widely used general-purpose ABM framework that makes it easy to define agents, schedule steps, collect data, and visualize models in the browser—ideal for rapid prototyping and analysis [@Mesa_3]. Trade-off: domain logic is do-it-yourself; researchers typically hand-roll infrastructure degradation, accessibility metrics, and behavior–infrastructure coupling. `InfraRisk` is an infrastructure-centric Python platform for interdependent networks (power, water, transport) with hazard, cascade, recovery, and resilience modules—strong on network physics and restoration [@InfraRisk]. Human decision-making and accessibility-driven behavior are typically added on top, so tight socio-technical feedbacks can be awkward. `Repast4Py` is a Python interface to an HPC engine for distributed/parallel ABMs; models can run across many cores or machines for large studies [@Repast4Py]. It does not provide resilience-specific logic (e.g., continuous degradation, accessibility metrics), which the modeler must supply.
+
+Like Mesa and Repast4Py, PiperABM stays flexible and Pythonic, but it elevates resilience features to first-class concepts: continuous infrastructure degradation (e.g., rougher roads increasing travel cost), built-in accessibility/travel metrics, a lightweight OODA-style policy interface, geospatial ingestion, and optional animation. Unlike InfraRisk’s “network-first with agents layered on,” PiperABM starts from coupled behavior–infrastructure dynamics, making socio-technical feedbacks straightforward to model and analyze.
+
+## Domain 2: Purpose-built, one-off models
+
+Examples include multilayer post-disaster recovery (e.g., Hurricane Harvey) [@Xue2024], RecovUS for household recovery after Sandy [@Moradi2020], storm-induced power-outage restoration with crew dispatch [@Walsh2018], community resilience under tornado hazards [@Aghababaei2025], and flood risk–insurance dynamics [@Dubbelboer2017]. These models capture exactly what they need but are hard to reuse and often re-implement similar scaffolding.
+
+PiperABM offers the custom feel of bespoke models while reducing rework: degradation and accessibility are built in; OODA-style decision logic [@brehmer_dynamic_ooda; Johnson02012023_ooda] is plug-and-play; infrastructure and agents live on an inspectable NetworkX backend; and results can be analyzed with standard Python tools. This makes it easier to adapt a single codebase to new hazards, geographies, and policies—and to compare scenarios consistently.
 
 # Acknowledgements
 
