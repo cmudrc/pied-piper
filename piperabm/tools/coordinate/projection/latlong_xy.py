@@ -12,15 +12,15 @@ This module uses 3D rotation and Mercator projection to:
 
 """
 
-EARTH_RADIUS = 6378000 # meters
+EARTH_RADIUS = 6378000  # meters
 
 
 def latlong_xy(
-        latitude_0: float = 0.0,
-        longitude_0: float = 0.0,
-        latitude: float = 0.0,
-        longitude: float = 0.0
-    ) -> tuple[float, float]:
+    latitude_0: float = 0.0,
+    longitude_0: float = 0.0,
+    latitude: float = 0.0,
+    longitude: float = 0.0,
+) -> tuple[float, float]:
     """
     Convert geographic coordinates to Cartesian (x, y) using a Mercator projection around a specified origin.
 
@@ -38,12 +38,10 @@ def latlong_xy(
     x, y = Mercator.project(new_latitude, new_longitude, radius=EARTH_RADIUS)
     return x, y
 
+
 def xy_latlong(
-        latitude_0: float = 0.0,
-        longitude_0: float = 0.0,
-        x: float = 0.0,
-        y: float = 0.0
-    ) -> tuple[float, float]:
+    latitude_0: float = 0.0, longitude_0: float = 0.0, x: float = 0.0, y: float = 0.0
+) -> tuple[float, float]:
     """
     Convert Cartesian (x, y) back to geographic coordinates around a specified origin using the inverse Mercator projection.
 
@@ -61,6 +59,7 @@ def xy_latlong(
     latitude, longitude = xyz_latlong(vector)
     return latitude, longitude
 
+
 def _example():  # pragma: no cover
     latitude_0 = 70
     longitude_0 = -150
@@ -69,11 +68,11 @@ def _example():  # pragma: no cover
     longitude = longitude_0 + 1
 
     x, y = latlong_xy(latitude_0, longitude_0, latitude, longitude)
-    print(f'x, y: {x}, {y}')
-    
+    print(f"x, y: {x}, {y}")
+
     latitude, longitude = xy_latlong(latitude_0, longitude_0, x, y)
-    print(f'latitude, longitude: {latitude}, {longitude}')
+    print(f"latitude, longitude: {latitude}, {longitude}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _example()

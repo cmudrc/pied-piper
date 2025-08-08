@@ -6,6 +6,6 @@ class average:
 
     def arithmetic(values: list, weights: list = None):
         return arithmetic(values=values, weights=weights)
-    
+
     def geometric(values: list, weights: list = None):
         return geometric(values=values, weights=weights)

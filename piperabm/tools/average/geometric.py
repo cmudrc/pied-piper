@@ -11,16 +11,16 @@ def geometric(values: list, weights: list = None):
     else:
         if len(values) != len(weights):
             raise ValueError("The lengths of values and weights must be the same.")
-        
+
         if any(v <= 0 for v in values):
             raise ValueError("All values must be greater than zero.")
-        
+
         log_values = [math.log(v) * w for v, w in zip(values, weights)]
         total_weight = sum(weights)
-        
+
         if total_weight == 0:
             raise ValueError("The sum of weights must not be zero.")
-        
+
         log_weighted_mean = sum(log_values) / total_weight
         result = math.exp(log_weighted_mean)
     return result

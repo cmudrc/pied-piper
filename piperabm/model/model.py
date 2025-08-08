@@ -9,12 +9,7 @@ from piperabm.society import Society
 from piperabm.tools.symbols import SYMBOLS
 
 
-class Model(
-    Serialize,
-    File,
-    Update,
-    Graphics
-):
+class Model(Serialize, File, Update, Graphics):
     """
     Main class of simulation.
 
@@ -34,14 +29,14 @@ class Model(
 
     def __init__(
         self,
-        name: str = '',
+        name: str = "",
         prices: dict = {
-                'food': 1,
-                'water': 1,
-                'energy': 1,
-            },
+            "food": 1,
+            "water": 1,
+            "energy": 1,
+        },
         path=None,
-        seed: int = None
+        seed: int = None,
     ):
         """
         Initialize the Model.
@@ -50,12 +45,12 @@ class Model(
         self.time = 0
         self.step = 0
         self.infrastructure = Infrastructure()
-        self.infrastructure.model = self # Binding
+        self.infrastructure.model = self  # Binding
         self.society = Society()
-        self.society.model = self # Binding
+        self.society.model = self  # Binding
         self.name = name
         self.prices = prices
-        self.path = path # File saving
+        self.path = path  # File saving
         self.set_seed(seed=seed)
 
     def set_seed(self, seed: int = None):
@@ -73,12 +68,12 @@ class Model(
         return list(self.prices.keys())
 
     def bake(
-            self,
-            save: bool = False,
-            proximity_radius: float = SYMBOLS['eps'],
-            search_radius: float = None,
-            report: bool = False
-        ):
+        self,
+        save: bool = False,
+        proximity_radius: float = SYMBOLS["eps"],
+        search_radius: float = None,
+        report: bool = False,
+    ):
         """
         Prepare the model for the first simulation step.
         This will generate nodes/edges, and compute any necessary initial calculations to create a physically sensinble network.
@@ -97,11 +92,11 @@ class Model(
         self.infrastructure.bake(
             report=report,
             proximity_radius=proximity_radius,
-            search_radius=search_radius
+            search_radius=search_radius,
         )
         if save is True:
-            self.save(state='infrastructure')
-    
+            self.save(state="infrastructure")
+
 
 if __name__ == "__main__":
 

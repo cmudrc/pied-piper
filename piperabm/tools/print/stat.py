@@ -5,7 +5,7 @@ class Print:
         Return print-friendly stats
         """
         stat = self.stat
-        txt = ''
+        txt = ""
         for category in stat:
             for name in stat[category]:
                 txt += f"# {name}: {str(stat[category][name])}" + "\n"

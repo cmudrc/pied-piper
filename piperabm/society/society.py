@@ -2,6 +2,7 @@
 .. module:: piperabm.society.Society
 :synopsis: Core Society class composing Query, Generate, DecisionMaking, Update, Serialize, Graphics, and Stat mixins.
 """
+
 import networkx as nx
 
 from piperabm.society.query import Query
@@ -16,15 +17,7 @@ from piperabm.economy import accessibility
 from piperabm.society.info import *
 
 
-class Society(
-    Query,
-    Generate,
-    DecisionMaking,
-    Update,
-    Serialize,
-    Graphics,
-    Stat
-):
+class Society(Query, Generate, DecisionMaking, Update, Serialize, Graphics, Stat):
     """
     Represent society network
     """
@@ -32,18 +25,18 @@ class Society(
     type = "society"
 
     def __init__(
-            self,
-            average_income: float = 1000,
-            neighbor_radius: float = 0,
-            max_time_outside: float = 8 * (60 * 60), # 8 hours
-            activity_cycle: float = 24 * (60 * 60), # 24 hours
-            transportation_resource_rates: dict = transportation_resource_rates,
-            idle_resource_rates: dict = idle_resource_rates,
-            speed: float = speed,
-            transportation_degradation: float = 1,
-        ):
+        self,
+        average_income: float = 1000,
+        neighbor_radius: float = 0,
+        max_time_outside: float = 8 * (60 * 60),  # 8 hours
+        activity_cycle: float = 24 * (60 * 60),  # 24 hours
+        transportation_resource_rates: dict = transportation_resource_rates,
+        idle_resource_rates: dict = idle_resource_rates,
+        speed: float = speed,
+        transportation_degradation: float = 1,
+    ):
         self.G = nx.MultiGraph()
-        self.model = None # Binding
+        self.model = None  # Binding
         self.actions = {}
         self.average_income = average_income
         self.neighbor_radius = neighbor_radius
@@ -66,14 +59,14 @@ class Society(
         else:
             result = None
         return result
-    
+
     @property
     def resource_names(self) -> list:
         """
         Alias
         """
         return self.model.resource_names
-    
+
     @property
     def prices(self) -> dict:
         """
@@ -98,7 +91,7 @@ class Society(
         amount = self.get_resource(id=id, name=name)
         enough_amount = self.get_enough_resource(id=id, name=name)
         return accessibility(resource=amount, enough_resource=enough_amount)
-    
+
     def accessibility(self, id: int) -> dict:
         """
         Calculate accessibility for all resources
@@ -107,7 +100,7 @@ class Society(
         for name in self.resource_names:
             result[name] = self.accessibility_resource(id=id, name=name)
         return result
-    
+
 
 if __name__ == "__main__":
 

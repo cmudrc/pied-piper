@@ -13,7 +13,9 @@ class Update:
             for name in self.resource_names:
                 resource_value = self.get_resource(id=id, name=name)
                 resource_consumption_rate = self.idle_resource_rates[name]
-                new_resource_value = resource_value - (resource_consumption_rate * duration)
+                new_resource_value = resource_value - (
+                    resource_consumption_rate * duration
+                )
                 self.set_resource(id=id, name=name, value=new_resource_value)
             # Income
             balance = self.get_balance(id)
@@ -46,5 +48,5 @@ if __name__ == "__main__":
     print(f"deads: {len(model.society.deads)}")
 
     model.society.update(1000000)
-    
+
     print(f"deads: {len(model.society.deads)}")

@@ -16,7 +16,7 @@ class TestNXSerializers_Graph(unittest.TestCase):
         self.G.add_edge(1, 2, weight=4)
         self.G.add_edge(2, 3, weight=5)
         self.G.add_edge(1, 3, weight=6)
-  
+
     def test_conversion(self):
         data = nx_serialize(self.G)
         G_new = nx_deserialize(data)
@@ -27,7 +27,7 @@ class TestNXSerializers_Graph(unittest.TestCase):
 
     def test_json(self):
         path = os.path.dirname(os.path.realpath(__file__))
-        file = JsonFile(path=path, filename='G')
+        file = JsonFile(path=path, filename="G")
         data = nx_serialize(self.G)
         file.save(data)
         G_new = nx_deserialize(file.load())
@@ -57,7 +57,7 @@ class TestNXSerializers_DiGraph(unittest.TestCase):
 
     def test_json(self):
         path = os.path.dirname(os.path.realpath(__file__))
-        file = JsonFile(path=path, filename='G')
+        file = JsonFile(path=path, filename="G")
         data = nx_serialize(self.G)
         file.save(data)
         G_new = nx_deserialize(file.load())
@@ -76,7 +76,7 @@ class TestNXSerializers_MultiGraph(unittest.TestCase):
         self.G.add_edge(1, 2, weight=4)
         self.G.add_edge(1, 2, weight=5)
         self.G.add_edge(2, 1, weight=6)
-    
+
     def test_conversion(self):
         data = nx_serialize(self.G)
         G_new = nx_deserialize(data)
@@ -87,7 +87,7 @@ class TestNXSerializers_MultiGraph(unittest.TestCase):
 
     def test_json(self):
         path = os.path.dirname(os.path.realpath(__file__))
-        file = JsonFile(path=path, filename='G')
+        file = JsonFile(path=path, filename="G")
         data = nx_serialize(self.G)
         file.save(data)
         G_new = nx_deserialize(file.load())
@@ -106,7 +106,7 @@ class TestNXSerializers_MultiDiGraph(unittest.TestCase):
         self.G.add_edge(1, 2, weight=4)
         self.G.add_edge(1, 2, weight=5)
         self.G.add_edge(2, 1, weight=6)
-    
+
     def test_conversion(self):
         data = nx_serialize(self.G)
         G_new = nx_deserialize(data)
@@ -117,7 +117,7 @@ class TestNXSerializers_MultiDiGraph(unittest.TestCase):
 
     def test_json(self):
         path = os.path.dirname(os.path.realpath(__file__))
-        file = JsonFile(path=path, filename='G')
+        file = JsonFile(path=path, filename="G")
         data = nx_serialize(self.G)
         file.save(data)
         G_new = nx_deserialize(file.load())

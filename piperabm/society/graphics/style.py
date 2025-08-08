@@ -4,8 +4,8 @@ from piperabm.model.graphics.style import *
 node_radius = DEFAULT_NODE_RADIUS * 2
 font_size = DEFAULT_FONT_SIZE + 2
 
-#FONT_SIZE = 8
-#NODE_ITEM_DEFAULT_RADIUS = 5
+# FONT_SIZE = 8
+# NODE_ITEM_DEFAULT_RADIUS = 5
 
 
 society_node_style = {
@@ -14,7 +14,7 @@ society_node_style = {
             "dead": "r",
             "alive": "magenta",
         },
-        #"shape": "x",
+        # "shape": "x",
         "size": node_radius,
     }
 }

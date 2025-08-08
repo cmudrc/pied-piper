@@ -7,8 +7,8 @@ font_size = DEFAULT_FONT_SIZE
 
 infrastructure_node_style = {
     "home": {
-        "color": "b",    
-    "radius": node_radius,
+        "color": "b",
+        "radius": node_radius,
     },
     "junction": {
         "color": "k",
@@ -17,7 +17,7 @@ infrastructure_node_style = {
     "market": {
         "color": "g",
         "radius": node_radius * 10,
-    }
+    },
 }
 
 infrastructure_edge_style = {

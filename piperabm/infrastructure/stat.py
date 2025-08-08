@@ -2,6 +2,7 @@
 .. module:: piperabm.infrastructure.stat
 :synopsis: Stats of the infrastructure network.
 """
+
 from piperabm.tools.print.stat import Print
 
 
@@ -16,17 +17,17 @@ class Stat(Print):
         Return stats of the network
         """
         return {
-            'node': {
-                'junction': len(self.junctions),
-                'home': len(self.homes),
-                'market': len(self.markets),
+            "node": {
+                "junction": len(self.junctions),
+                "home": len(self.homes),
+                "market": len(self.markets),
             },
-            'edge': {
-                'street': len(self.streets),
-                'neighborhood_access': len(self.neighborhood_accesses),
+            "edge": {
+                "street": len(self.streets),
+                "neighborhood_access": len(self.neighborhood_accesses),
             },
         }
-    
+
 
 if __name__ == "__main__":
 

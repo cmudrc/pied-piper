@@ -4,15 +4,11 @@ from piperabm.tools.vector import vector as vc
 
 
 def point_to_line(
-        point,
-        line_point_1,
-        line_point_2,
-        vector: bool = False,
-        ndarray: bool = False
-    ):
+    point, line_point_1, line_point_2, vector: bool = False, ndarray: bool = False
+):
     """
     Finds the vector connecting a point to a line that has the smallest distance.
-    
+
     :param point: The point (np.ndarray).
     :param line_point_1: First point on the line (np.ndarray).
     :param line_point_2: Second point on the line (np.ndarray).
@@ -47,7 +43,7 @@ def point_to_line(
     return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     point = [3, 4]
     line_point_1 = [0, 0]
     line_point_2 = [2, 0]

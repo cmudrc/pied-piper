@@ -21,10 +21,7 @@ class Rule2:
         other_edge_pos_1 = self.infrastructure.get_pos(other_edge_ids[0])
         other_edge_pos_2 = self.infrastructure.get_pos(other_edge_ids[1])
         intersection = intersect.line_line(
-            edge_pos_1,
-            edge_pos_2,
-            other_edge_pos_1,
-            other_edge_pos_2
+            edge_pos_1, edge_pos_2, other_edge_pos_1, other_edge_pos_2
         )
 
         # Check if the edges are not parallel
@@ -33,31 +30,39 @@ class Rule2:
             distance_2 = ds.point_to_point(intersection, edge_pos_2)
             other_distance_1 = ds.point_to_point(intersection, other_edge_pos_1)
             other_distance_2 = ds.point_to_point(intersection, other_edge_pos_2)
-            length = self.infrastructure.get_edge_attribute(ids=edge_ids, attribute='length')
-            other_length = self.infrastructure.get_edge_attribute(ids=other_edge_ids, attribute='length')
+            length = self.infrastructure.get_edge_attribute(
+                ids=edge_ids, attribute="length"
+            )
+            other_length = self.infrastructure.get_edge_attribute(
+                ids=other_edge_ids, attribute="length"
+            )
 
             # Check if the intersection is inside the segments
-            if distance_1 < length and \
-                distance_2 < length and \
-                other_distance_1 < other_length and \
-                other_distance_2 < other_length:
+            if (
+                distance_1 < length
+                and distance_2 < length
+                and other_distance_1 < other_length
+                and other_distance_2 < other_length
+            ):
 
                 # Check if the intersection is out of the both ends of both edges
-                if distance_1 > self.proximity_radius and \
-                    distance_2 > self.proximity_radius and \
-                    other_distance_1 > self.proximity_radius and \
-                    other_distance_2 > self.proximity_radius:
+                if (
+                    distance_1 > self.proximity_radius
+                    and distance_2 > self.proximity_radius
+                    and other_distance_1 > self.proximity_radius
+                    and other_distance_2 > self.proximity_radius
+                ):
 
                     result = True
-        
+
         return result, intersection
-    
+
     def apply(self, edge_ids, other_edge_ids, intersection, report=False):
         new_node_id = self.infrastructure.add_junction(pos=intersection, report=report)
         rule_1 = Rule1(self.infrastructure, proximity_radius=self.proximity_radius)
         rule_1.apply(node_id=new_node_id, edge_ids=edge_ids, report=report)
-        rule_1.apply(node_id=new_node_id, edge_ids=other_edge_ids, report=report)    
-    
+        rule_1.apply(node_id=new_node_id, edge_ids=other_edge_ids, report=report)
+
     def find(self, report=False):
         anything_happened = False
         edges = self.infrastructure.edges
@@ -71,14 +76,14 @@ class Rule2:
                         self.apply(edge_ids, other_edge_ids, intersection, report)
                         # Inform an activity
                         anything_happened = True
-                # Inform an activity     
+                # Inform an activity
                 if anything_happened is True:
                     break
-            # Inform an activity     
+            # Inform an activity
             if anything_happened is True:
                 break
         return anything_happened
-    
+
 
 if __name__ == "__main__":
 
@@ -87,7 +92,7 @@ if __name__ == "__main__":
     infrastructure = Infrastructure()
     infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 0])
     infrastructure.add_street(pos_1=[5, 5], pos_2=[5, -5])
-    
+
     rule = Rule2(infrastructure, proximity_radius=1)
     rule.find(report=True)
     print(infrastructure)

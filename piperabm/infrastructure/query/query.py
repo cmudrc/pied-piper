@@ -2,6 +2,7 @@
 .. module:: piperabm.infrastructure.query.query
 :synopsis: Query network elements.
 """
+
 import networkx as nx
 import numpy as np
 
@@ -33,7 +34,7 @@ class Query(Add, Get, Set):
         Check if the node is isolated
         """
         return nx.is_isolate(self.G, id)
-    
+
     '''
     def filter_nodes_closer_than(self, id: int, distance: float, nodes: list = None) -> list:
         """
@@ -47,7 +48,7 @@ class Query(Add, Get, Set):
                 result.append(node_id)
         return result
     '''
-        
+
     def replace_node(self, id: int, new_id: int, report: int = False) -> None:
         """
         Replace a node with another node
@@ -62,25 +63,21 @@ class Query(Add, Get, Set):
             else:
                 new_edge_ids = [edge_ids[0], new_id]
             data = self.get_edge_attributes(ids=edge_ids)
-            data['length'] = ds.point_to_point(
-                    self.get_pos(new_edge_ids[0]),
-                    self.get_pos(new_edge_ids[1])
-                )
-            adjustment_factor = self.calculate_adjustment_factor(
-                usage_impact=data['usage_impact'],
-                age_impact=data['age_impact']
+            data["length"] = ds.point_to_point(
+                self.get_pos(new_edge_ids[0]), self.get_pos(new_edge_ids[1])
             )
-            data['adjusted_length'] = self.calculate_adjusted_length(
-                length=data['length'],
+            adjustment_factor = self.calculate_adjustment_factor(
+                usage_impact=data["usage_impact"], age_impact=data["age_impact"]
+            )
+            data["adjusted_length"] = self.calculate_adjusted_length(
+                length=data["length"],
                 adjustment_factor=adjustment_factor,
             )
-            self.G.add_edge(
-                new_edge_ids[0],
-                new_edge_ids[1],
-                **data
-            )
+            self.G.add_edge(new_edge_ids[0], new_edge_ids[1], **data)
             if report is True:
-                print(f">>> {type} edge at positions {self.get_pos(new_edge_ids[0])} - {self.get_pos(new_edge_ids[1])} added.")
+                print(
+                    f">>> {type} edge at positions {self.get_pos(new_edge_ids[0])} - {self.get_pos(new_edge_ids[1])} added."
+                )
             # Remove old edge
             self.remove_edge(ids=edge_ids, report=report)
         # Remove old node
@@ -97,11 +94,9 @@ class Query(Add, Get, Set):
             self.remove_edge(ids=ids)
             id_1 = ids[0]
             id_2 = ids[1]
-            if self.get_node_type(id=id_1) == 'junction' and \
-                self.is_isolate(id=id_1):
+            if self.get_node_type(id=id_1) == "junction" and self.is_isolate(id=id_1):
                 self.remove_node(id=id_1)
-            if self.get_node_type(id=id_2) == 'junction' and \
-                self.is_isolate(id=id_2):
+            if self.get_node_type(id=id_2) == "junction" and self.is_isolate(id=id_2):
                 self.remove_node(id=id_2)
 
     def random_edges(self, percent: float = 0):
@@ -114,30 +109,29 @@ class Query(Add, Get, Set):
         total_length = 0
         edges_info = []
         for edge_ids in edges_ids:
-            length = self.get_edge_attribute(ids=edge_ids, attribute='length')
+            length = self.get_edge_attribute(ids=edge_ids, attribute="length")
             total_length += length
-            edge_info = {
-                'ids': edge_ids,
-                'length': length
-            }
+            edge_info = {"ids": edge_ids, "length": length}
             edges_info.append(edge_info)
         remaining_length = (percent / 100) * total_length
         result = []
         np.random.shuffle(edges_info)
         for edge_info in edges_info:
-            remaining_length -= edge_info['length']
+            remaining_length -= edge_info["length"]
             if remaining_length < 0:
                 break
             else:
-                result.append(edge_info['ids'])
+                result.append(edge_info["ids"])
         return result
-    
+
     def remove_edge(self, ids: list = None, report: bool = False):
         """
         Remove edge
         """
         if report is True:
-            print(f">>> {self.get_edge_type(ids=ids)} edge at {self.get_pos(ids[0])} - {self.get_pos(ids[1])} removed.")
+            print(
+                f">>> {self.get_edge_type(ids=ids)} edge at {self.get_pos(ids[0])} - {self.get_pos(ids[1])} removed."
+            )
         self.G.remove_edge(*ids)
 
     def remove_node(self, id: int, report: bool = False):
@@ -145,10 +139,18 @@ class Query(Add, Get, Set):
         Remove node
         """
         if report is True:
-            print(f">>> {self.get_node_type(id=id)} node at position {self.get_pos(id)} removed.")
+            print(
+                f">>> {self.get_node_type(id=id)} node at position {self.get_pos(id)} removed."
+            )
         self.G.remove_node(id)
-    
-    def nodes_closer_than(self, id: int, search_radius: float = 0, nodes: list = None, include_self: bool = False):
+
+    def nodes_closer_than(
+        self,
+        id: int,
+        search_radius: float = 0,
+        nodes: list = None,
+        include_self: bool = False,
+    ):
         """
         Filter *nodes* that are within the *distance* from *id*
         """
@@ -156,41 +158,53 @@ class Query(Add, Get, Set):
             nodes = self.nodes
         result = []
         for node_id in nodes:
-            if search_radius >= self.heuristic_paths.estimated_distance(id_start=id, id_end=node_id):
+            if search_radius >= self.heuristic_paths.estimated_distance(
+                id_start=id, id_end=node_id
+            ):
                 if include_self is False:
                     if node_id != id:
                         result.append(node_id)
                 else:
                     result.append(node_id)
         return result
-    
+
     @property
     def junctions(self) -> list:
         """
         Return all junction nodes
         """
         try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'junction']
+            return [
+                n
+                for n, attr in self.G.nodes(data=True)
+                if attr.get("type") == "junction"
+            ]
         except:
             return []
-        
+
     @property
     def nonjunctions(self) -> list:
         """
         Return all nonjunction nodes
         """
         try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') != 'junction']
+            return [
+                n
+                for n, attr in self.G.nodes(data=True)
+                if attr.get("type") != "junction"
+            ]
         except:
             return []
-        
+
     @property
     def homes(self) -> list:
         """
         Return all homes nodes
         """
         try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'home']
+            return [
+                n for n, attr in self.G.nodes(data=True) if attr.get("type") == "home"
+            ]
         except:
             return []
 
@@ -200,26 +214,36 @@ class Query(Add, Get, Set):
         Return all market nodes
         """
         try:
-            return [n for n, attr in self.G.nodes(data=True) if attr.get('type') == 'market']
+            return [
+                n for n, attr in self.G.nodes(data=True) if attr.get("type") == "market"
+            ]
         except:
             return []
-    
+
     @property
     def streets(self) -> list:
         """
         Return all street edges
         """
         try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'street']
+            return [
+                (u, v)
+                for u, v, attr in self.G.edges(data=True)
+                if attr.get("type") == "street"
+            ]
         except:
             return []
-    
+
     @property
     def neighborhood_accesses(self) -> list:
         """
         Return all neighborhood access edges
         """
         try:
-            return [(u, v) for u, v, attr in self.G.edges(data=True) if attr.get('type') == 'neighborhood_access']
+            return [
+                (u, v)
+                for u, v, attr in self.G.edges(data=True)
+                if attr.get("type") == "neighborhood_access"
+            ]
         except:
             return []

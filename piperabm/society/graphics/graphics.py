@@ -9,11 +9,7 @@ class Graphics:
     Handle graphics
     """
 
-    def fig(
-            self,
-            relationships: bool = False,
-            clf: bool = False
-        ):
+    def fig(self, relationships: bool = False, clf: bool = False):
         """
         Add society elements to plt fig ax
         """
@@ -34,9 +30,9 @@ class Graphics:
             # Color
             colors = society_style["node"]["agent"]["color"]
             if self.get_alive(id=node_id) is True:
-                color = colors['alive']
+                color = colors["alive"]
             else:
-                color = colors['dead']
+                color = colors["dead"]
             node_color_list.append(color)
             # Size
             size = society_style["node"]["agent"]["size"]
@@ -49,13 +45,14 @@ class Graphics:
         edges = []
         if relationships is not False:
             for u, v, key, data in self.G.edges(keys=True, data=True):
-                type = data['type']
-                if (isinstance(relationships, list) and type in relationships) or \
-                (relationships is True):
+                type = data["type"]
+                if (isinstance(relationships, list) and type in relationships) or (
+                    relationships is True
+                ):
                     # Add edge to list
                     edges.append([u, v, key])
                     # Color
-                    color = society_style['edge'][type]['color']
+                    color = society_style["edge"][type]["color"]
                     edge_color_list.append(color)
 
         # Draw
@@ -66,10 +63,10 @@ class Graphics:
             node_color=node_color_list,
             node_size=node_size_list,
             labels=node_label_dict,
-            font_size=society_style['font'],
+            font_size=society_style["font"],
             edgelist=edges,
             edge_color=edge_color_list,
-            ax=ax
+            ax=ax,
         )
         return plt.gcf()
 

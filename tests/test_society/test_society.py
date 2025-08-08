@@ -14,32 +14,26 @@ class TestSocietyClass_0(unittest.TestCase):
 
     def test_relationships(self):
         # Add agent 1
-        self.model.society.add_agent(
-            home_id=self.home_id,
-            id=1
-        )
-        #print(self.model.society.stat) ######
-        self.assertEqual(self.model.society.stat['node']['total'], 1)
-        self.assertEqual(self.model.society.stat['edge']['family'], 0)
-        self.assertEqual(self.model.society.stat['edge']['friend'], 0)
-        self.assertEqual(self.model.society.stat['edge']['neighbor'], 0)
-        
+        self.model.society.add_agent(home_id=self.home_id, id=1)
+        # print(self.model.society.stat) ######
+        self.assertEqual(self.model.society.stat["node"]["total"], 1)
+        self.assertEqual(self.model.society.stat["edge"]["family"], 0)
+        self.assertEqual(self.model.society.stat["edge"]["friend"], 0)
+        self.assertEqual(self.model.society.stat["edge"]["neighbor"], 0)
+
         # Add agent 2 to the same home
-        self.model.society.add_agent(
-            home_id=self.home_id,
-            id=2
-        )
-        self.assertEqual(self.model.society.stat['node']['total'], 2)
-        self.assertEqual(self.model.society.stat['edge']['family'], 1)
-        self.assertEqual(self.model.society.stat['edge']['friend'], 0)
-        self.assertEqual(self.model.society.stat['edge']['neighbor'], 0)
+        self.model.society.add_agent(home_id=self.home_id, id=2)
+        self.assertEqual(self.model.society.stat["node"]["total"], 2)
+        self.assertEqual(self.model.society.stat["edge"]["family"], 1)
+        self.assertEqual(self.model.society.stat["edge"]["friend"], 0)
+        self.assertEqual(self.model.society.stat["edge"]["neighbor"], 0)
 
         # Family can also be friend
         self.model.society.add_friend(id_1=1, id_2=2)
-        self.assertEqual(self.model.society.stat['node']['total'], 2)
-        self.assertEqual(self.model.society.stat['edge']['family'], 1)
-        self.assertEqual(self.model.society.stat['edge']['friend'], 1)
-        self.assertEqual(self.model.society.stat['edge']['neighbor'], 0)
+        self.assertEqual(self.model.society.stat["node"]["total"], 2)
+        self.assertEqual(self.model.society.stat["edge"]["family"], 1)
+        self.assertEqual(self.model.society.stat["edge"]["friend"], 1)
+        self.assertEqual(self.model.society.stat["edge"]["neighbor"], 0)
 
 
 class TestSocietyClass_2(unittest.TestCase):
@@ -54,10 +48,10 @@ class TestSocietyClass_2(unittest.TestCase):
         self.model.society.add_friend(id_1=2, id_2=3)
 
     def test_relationships(self):
-        self.assertEqual(self.model.society.stat['node']['total'], 3)
-        self.assertEqual(self.model.society.stat['edge']['family'], 1)
-        self.assertEqual(self.model.society.stat['edge']['friend'], 1)
-        self.assertEqual(self.model.society.stat['edge']['neighbor'], 2)
+        self.assertEqual(self.model.society.stat["node"]["total"], 3)
+        self.assertEqual(self.model.society.stat["edge"]["family"], 1)
+        self.assertEqual(self.model.society.stat["edge"]["friend"], 1)
+        self.assertEqual(self.model.society.stat["edge"]["neighbor"], 2)
 
     def test_serialization(self):
         society_serialized = self.model.society.serialize()
