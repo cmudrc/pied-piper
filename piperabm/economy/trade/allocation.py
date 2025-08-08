@@ -23,20 +23,16 @@ def find_exchanges(players_initial, players_final):
             else:
                 sources[resource].append(0)
                 demands[resource].append(diff)
-    #print(sources)
-    #print(demands)
     result = {}
     for resource in resources:
         resource_sources = sources[resource]
         resource_demands = demands[resource]
         transactions = resource_exchange(resource_sources, resource_demands)
-        #result[resource] = transactions
         result[resource] = index_to_id(transactions, players_final)
     return result
 
 def index_to_id(transactions, players):
     result = []
-    #print(transactions[resource])
     for transaction in transactions:
         result.append(
             [
@@ -153,7 +149,7 @@ if __name__ == "__main__":
     for player in players:
         print(player['resources'], ', balance:', player['balance'])
 
-    # Echanges
+    # Exchanges
     print("\n" + ">>> " + "Exchanges: ")
     exchanges = find_exchanges(players_initial=players_initial, players_final=players)
     print(exchanges)
