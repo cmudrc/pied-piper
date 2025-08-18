@@ -1,6 +1,7 @@
 """
 This example generates 1000 points inside a single triangle
 """
+
 import matplotlib.pyplot as plt
 
 from piperabm.tools.mesh import Triangle

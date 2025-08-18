@@ -19,14 +19,16 @@ class Rule1:
         if node_id not in edge_ids:
             distance = ds.point_to_line(
                 point=self.infrastructure.get_pos(node_id),
-                line=[self.infrastructure.get_pos(edge_ids[0]), self.infrastructure.get_pos(edge_ids[1])],
+                line=[
+                    self.infrastructure.get_pos(edge_ids[0]),
+                    self.infrastructure.get_pos(edge_ids[1]),
+                ],
                 segment=True,
-                perpendicular_only=True
+                perpendicular_only=True,
             )
-            if distance is not None and \
-            distance < self.proximity_radius:
+            if distance is not None and distance < self.proximity_radius:
                 result = True
-                '''
+                """
                 distance_1 = ds.point_to_point(
                     point_1=self.infrastructure.get_pos(node_id),
                     point_2=self.infrastructure.get_pos(edge_ids[0])
@@ -38,52 +40,44 @@ class Rule1:
                 if distance_1 > self.proximity_radius and \
                 distance_2 > self.proximity_radius:
                     result = True
-                '''
+                """
         return result
-    
+
     def apply(self, node_id, edge_ids, report=False):
         data = self.infrastructure.get_edge_attributes(ids=edge_ids)
-        #edge_type = self.infrastructure.edge_type(ids=edge_ids)
-        #degradation = self.infrastructure.edge_degradation(ids=edge_ids)
+        # edge_type = self.infrastructure.edge_type(ids=edge_ids)
+        # degradation = self.infrastructure.edge_degradation(ids=edge_ids)
         data_1 = deepcopy(data)
-        data_1['length'] = ds.point_to_point(
+        data_1["length"] = ds.point_to_point(
             self.infrastructure.get_pos(node_id),
-            self.infrastructure.get_pos(edge_ids[0])
+            self.infrastructure.get_pos(edge_ids[0]),
         )
         adjustment_factor = self.infrastructure.calculate_adjustment_factor(
-            usage_impact=data_1['usage_impact'],
-            age_impact=data_1['age_impact']
+            usage_impact=data_1["usage_impact"], age_impact=data_1["age_impact"]
         )
-        data_1['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
-            length=data_1['length'],
-            adjustment_factor=adjustment_factor
+        data_1["adjusted_length"] = self.infrastructure.calculate_adjusted_length(
+            length=data_1["length"], adjustment_factor=adjustment_factor
         )
-        self.infrastructure.G.add_edge(
-            node_id,
-            edge_ids[0],
-            **data_1
-        )
+        self.infrastructure.G.add_edge(node_id, edge_ids[0], **data_1)
         data_2 = deepcopy(data)
-        data_2['length'] = ds.point_to_point(
+        data_2["length"] = ds.point_to_point(
             self.infrastructure.get_pos(node_id),
-            self.infrastructure.get_pos(edge_ids[1])
+            self.infrastructure.get_pos(edge_ids[1]),
         )
         adjustment_factor = self.infrastructure.calculate_adjustment_factor(
-            usage_impact=data_1['usage_impact'],
-            age_impact=data_1['age_impact']
+            usage_impact=data_1["usage_impact"], age_impact=data_1["age_impact"]
         )
-        data_2['adjusted_length'] = self.infrastructure.calculate_adjusted_length(
-            length=data_2['length'],
-            adjustment_factor=adjustment_factor
+        data_2["adjusted_length"] = self.infrastructure.calculate_adjusted_length(
+            length=data_2["length"], adjustment_factor=adjustment_factor
         )
-        self.infrastructure.G.add_edge(
-            node_id,
-            edge_ids[1],
-            **data_2
-        )
+        self.infrastructure.G.add_edge(node_id, edge_ids[1], **data_2)
         if report is True:
-            print(f">>> {data_1['type']} edge at positions {self.infrastructure.get_pos(node_id)} - {self.infrastructure.get_pos(edge_ids[0])} added.")
-            print(f">>> {data_2['type']} edge at positions {self.infrastructure.get_pos(node_id)} - {self.infrastructure.get_pos(edge_ids[1])} added.")
+            print(
+                f">>> {data_1['type']} edge at positions {self.infrastructure.get_pos(node_id)} - {self.infrastructure.get_pos(edge_ids[0])} added."
+            )
+            print(
+                f">>> {data_2['type']} edge at positions {self.infrastructure.get_pos(node_id)} - {self.infrastructure.get_pos(edge_ids[1])} added."
+            )
         self.infrastructure.remove_edge(ids=edge_ids, report=report)
 
     def find(self, report=False):
@@ -98,10 +92,10 @@ class Rule1:
                     self.apply(node_id, edge_ids, report)
                     # Inform an activity
                     anything_happened = True
-                # Inform an activity     
+                # Inform an activity
                 if anything_happened is True:
                     break
-            # Inform an activity     
+            # Inform an activity
             if anything_happened is True:
                 break
         return anything_happened

@@ -10,15 +10,12 @@ class ActionQueue(Print):
 
     type = "queue"
 
-    def __init__(
-            self,
-            agent_id: int = None
-        ):
+    def __init__(self, agent_id: int = None):
         super().__init__()
         self.society = None  # Binding
         self.library = []
         self.agent_id = agent_id
-        
+
     def add(self, *actions):
         """
         Add new action(s) to the queue
@@ -49,7 +46,7 @@ class ActionQueue(Print):
                 break  # Stop the iteration if an action is done, as per the list"s structure.
             undone_actions.append(action)
         return list(reversed(undone_actions))
-    
+
     @property
     def done(self):
         """
@@ -61,7 +58,7 @@ class ActionQueue(Print):
         else:
             result = True
         return result
-    
+
     @property
     def remaining(self):
         """
@@ -73,7 +70,7 @@ class ActionQueue(Print):
             remaining = action.remaining
             total += remaining
         return total
-    
+
     @property
     def elapsed(self):
         """
@@ -84,7 +81,7 @@ class ActionQueue(Print):
             remaining = action.elapsed
             total += remaining
         return total
-    
+
     @property
     def total_duration(self):
         """
@@ -118,7 +115,7 @@ class ActionQueue(Print):
         data["agent_id"] = self.agent_id
         data["type"] = self.type
         return data
-    
+
     def deserialize(self, data: dict) -> None:
         """
         Deserialize
@@ -134,7 +131,7 @@ class ActionQueue(Print):
                     action = Stay(action_queue=self)
                 action.deserialize(action_serialized)
                 self.library.append(action)
-    
+
 
 if __name__ == "__main__":
 
@@ -144,14 +141,9 @@ if __name__ == "__main__":
     destination_id = 2
     action_queue = model.society.actions[agent_id]
     path = model.infrastructure.path(
-        id_start=model.society.get_current_node(id=agent_id),
-        id_end=destination_id
+        id_start=model.society.get_current_node(id=agent_id), id_end=destination_id
     )
-    move = Move(
-        action_queue=action_queue,
-        path=path,
-        usage=1
-    )
+    move = Move(action_queue=action_queue, path=path, usage=1)
 
     agent_id = model.society.agents[0]
     destination_id = 2
@@ -161,8 +153,8 @@ if __name__ == "__main__":
         move_go=move,
         stay_length=100,
     )
-    
-    #print(model.society.actions[agent_id])
+
+    # print(model.society.actions[agent_id])
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
 
     model.update(duration=30)
@@ -180,4 +172,3 @@ if __name__ == "__main__":
     model.update(duration=60)
 
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")
-    

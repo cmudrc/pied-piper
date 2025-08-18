@@ -8,11 +8,7 @@ class Graphics:
     Handle graphics
     """
 
-    def fig(
-            self,
-            relationships=False,
-            clf=True
-        ):
+    def fig(self, relationships=False, clf=True):
         """
         Add model elements to plt fig ax
         """
@@ -22,15 +18,10 @@ class Graphics:
         ax.set_aspect("equal")
 
         # Draw infrastructure
-        fig = self.infrastructure.fig(
-            clf=False
-        )
+        fig = self.infrastructure.fig(clf=False)
 
         # Draw society
-        fig = self.society.fig(
-            relationships=relationships,
-            clf=False
-        )
+        fig = self.society.fig(relationships=relationships, clf=False)
 
         return fig
 
@@ -38,9 +29,7 @@ class Graphics:
         """
         Show model elements
         """
-        fig = self.fig(
-            relationships=relationships
-        )
+        fig = self.fig(relationships=relationships)
         plt.show()
 
     def animate(self):
@@ -57,13 +46,13 @@ class Graphics:
             self.apply_delta(delta)
             fig = self.fig()
             animation.add_figure(fig)
-    
+
         # Render
-        animation.render(output_file='animation')
+        animation.render(output_file="animation")
 
 
 if __name__ == "__main__":
 
     from piperabm.society.samples import model_2 as model
 
-    model.show(relationships=['neighbor'])
+    model.show(relationships=["neighbor"])

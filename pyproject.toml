@@ -11,11 +11,12 @@ include = ["piperabm", "piperabm.*"]
 [project]
 name = "piperabm"
 version = "0.1.1"
-description = "An Agent-Based Model Framework for Python"
+description = "An Agent-Based Model Framework for Simulating Resilience in Python"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
     { name = "Aslan Noorghasemi", email = "aslann@cmu.edu" },
+    { name = "Sierra Hicks", email = "sh2337@cornell.edu" },
     { name = "Christopher McComb", email = "ccm@cmu.edu" },
 ]
 dependencies = [

@@ -21,13 +21,9 @@ if __name__ == "__main__":
     action_queue = model.society.actions[agent_id]
     current_node = model.society.get_current_node(agent_id)
     path = model.infrastructure.path(id_start=current_node, id_end=destination_id)
-    move = Move(
-        action_queue=action_queue,
-        path=path,
-        usage=1
-    )
+    move = Move(action_queue=action_queue, path=path, usage=1)
     action_queue.add(move)
     action_serialized = move.serialize()
     action_deserialized = action_deserialize(action_serialized, action_queue)
-    
+
     print(action_deserialized.serialize() == move.serialize())

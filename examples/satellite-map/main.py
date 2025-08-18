@@ -17,10 +17,7 @@ points_xy = {}
 for id in points:
     point = points[id]
     point_xy = latlong_xy(
-        latitude_0,
-        longitude_0,
-        latitude=point[0],
-        longitude=point[1]
+        latitude_0, longitude_0, latitude=point[0], longitude=point[1]
     )
     points_xy[id] = point_xy
 
@@ -29,10 +26,7 @@ for street in streets:
     for i in range(len(street) - 1):
         point_1 = points_xy[street[i]]
         point_2 = points_xy[street[i + 1]]
-        model.infrastructure.add_street(
-            pos_1=point_1,
-            pos_2=point_2
-        )
+        model.infrastructure.add_street(pos_1=point_1, pos_2=point_2)
 
 # Add homes to the model
 patch = Patch()

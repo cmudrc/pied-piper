@@ -13,4 +13,3 @@ def magnitude(vector) -> float:
 if __name__ == "__main__":
     vector = [3, 4]
     print(magnitude(vector))
-    

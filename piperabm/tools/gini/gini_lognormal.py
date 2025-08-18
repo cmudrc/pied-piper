@@ -2,6 +2,7 @@
 Source:
 https://stats.stackexchange.com/questions/286141/lognormal-parameters-knowing-gdp-per-capita-gini-coefficient-and-quintile-share
 """
+
 import numpy as np
 from scipy.special import erfinv
 from scipy.stats import lognorm
@@ -18,7 +19,7 @@ class GiniLogNormal:
     def __init__(self, gini_index: float = 0, average: float = 1):
         self.average = average
         if gini_index == 0:
-            gini_index = SYMBOLS['eps']
+            gini_index = SYMBOLS["eps"]
         if gini_index < 0 or gini_index > 1:
             raise ValueError
         self.gini = gini_index
@@ -26,15 +27,15 @@ class GiniLogNormal:
     @property
     def sigma(self):
         return 2 * erfinv(self.gini)
-    
+
     @property
     def mu(self):
-        return np.log(self.average) - (self.sigma ** 2) / 2
-    
+        return np.log(self.average) - (self.sigma**2) / 2
+
     @property
     def scale(self):
         return np.exp(self.mu)
-    
+
     def rvs(self, sample_size: int = 1, percision: float = 0.03):
         """
         Generate random sample
@@ -46,7 +47,9 @@ class GiniLogNormal:
             if sample_size == 1:
                 break
             else:
-                result = [float(num) for num in result]  # Convert np.float64 to float explicitly
+                result = [
+                    float(num) for num in result
+                ]  # Convert np.float64 to float explicitly
                 diff = abs(gini_coefficient(result) - self.gini)
                 if diff <= percision:
                     break
@@ -54,10 +57,7 @@ class GiniLogNormal:
 
 
 if __name__ == "__main__":
-    distribution = GiniLogNormal(
-        gini_index=0.45,
-        average=1
-    )
+    distribution = GiniLogNormal(gini_index=0.45, average=1)
     print(distribution.mu, distribution.scale)
     print(distribution.sigma)
     sample = distribution.rvs(10)

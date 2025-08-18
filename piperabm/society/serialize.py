@@ -28,7 +28,7 @@ class Serialize:
         data["transportation_degradation"] = self.transportation_degradation
         data["type"] = self.type
         return data
-    
+
     def deserialize(self, data: dict) -> None:
         """
         Deserialize
@@ -37,7 +37,7 @@ class Serialize:
         self.actions = {}
         for id in actions_serialized:
             action_queue = ActionQueue(id)
-            action_queue.society = self # Binding
+            action_queue.society = self  # Binding
             action_queue.deserialize(actions_serialized[id])
             self.actions[id] = action_queue
         self.G = nx_deserialize(data["G"])
@@ -52,7 +52,7 @@ class Serialize:
 
 
 if __name__ == "__main__":
-    
+
     from piperabm.infrastructure.samples.infrastructure_0 import model
 
     model.set_seed(1)

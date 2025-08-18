@@ -9,10 +9,7 @@ model = pa.Model(seed=2)
 model.infrastructure.coeff_usage = 1
 model.infrastructure.coeff_age = 1
 model.infrastructure.generate(
-    homes_num=10,
-    grid_size=[15, 10],
-    grid_num=[6, 6],
-    imperfection_percentage=10
+    homes_num=10, grid_size=[15, 10], grid_num=[6, 6], imperfection_percentage=10
 )
 model.bake()
 model.set_seed(None)

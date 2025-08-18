@@ -5,7 +5,7 @@ class Stat(Print):
     """
     Stats of the network
     """
-    
+
     @property
     def stat(self):
         """
@@ -23,7 +23,7 @@ class Stat(Print):
                 "neighbor": len(self.neighbors),
             },
         }
-    
+
 
 if __name__ == "__main__":
 

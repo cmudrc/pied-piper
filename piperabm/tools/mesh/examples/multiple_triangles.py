@@ -1,6 +1,7 @@
 """
 This example generates 1000 points inside a two adjacent triangles
 """
+
 import matplotlib.pyplot as plt
 
 from piperabm.tools.mesh import Triangle, Patch

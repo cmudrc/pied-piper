@@ -11,6 +11,7 @@ class TestDecisionMakingClass_0(unittest.TestCase):
     """
     Normal run
     """
+
     def setUp(self) -> None:
         self.id_agent = 0
         self.id_home = 0
@@ -20,29 +21,30 @@ class TestDecisionMakingClass_0(unittest.TestCase):
             id=self.id_agent,
             home_id=self.id_home,
             resources={
-                'food': 100,
-                'water': 100,
-                'energy': 100,
+                "food": 100,
+                "water": 100,
+                "energy": 100,
             },
-            balance=100
+            balance=100,
         )
 
     def test_decide(self):
         # Beginning
         queue = self.model.society.actions[self.id_agent]
-        self.assertTrue(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 0) # queue undones
+        self.assertTrue(queue.done)  # queue done
+        self.assertEqual(len(queue.undones), 0)  # queue undones
 
         # Decide
-        self.model.run(n=1, report=False, step_size=50) # run
-        self.assertTrue(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 0) # queue undones
+        self.model.run(n=1, report=False, step_size=50)  # run
+        self.assertTrue(queue.done)  # queue done
+        self.assertEqual(len(queue.undones), 0)  # queue undones
 
 
 class TestDecisionMakingClass_1(unittest.TestCase):
     """
     Normal run
     """
+
     def setUp(self) -> None:
         self.id_agent = 0
         self.id_start = 1
@@ -53,29 +55,30 @@ class TestDecisionMakingClass_1(unittest.TestCase):
             id=self.id_agent,
             home_id=self.id_start,
             resources={
-                'food': 100,
-                'water': 100,
-                'energy': 100,
+                "food": 100,
+                "water": 100,
+                "energy": 100,
             },
-            balance=100
+            balance=100,
         )
 
     def test_decide(self):
         # Beginning
         queue = self.model.society.actions[self.id_agent]
-        self.assertTrue(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 0) # queue undones
+        self.assertTrue(queue.done)  # queue done
+        self.assertEqual(len(queue.undones), 0)  # queue undones
 
         # Decide
-        self.model.run(n=1, report=False, step_size=50) # run
-        self.assertFalse(queue.done) # queue done
-        self.assertEqual(len(queue.undones), 4) # queue undones
+        self.model.run(n=1, report=False, step_size=50)  # run
+        self.assertFalse(queue.done)  # queue done
+        self.assertEqual(len(queue.undones), 4)  # queue undones
 
 
 class TestDecisionMakingClass_2(unittest.TestCase):
     """
     Normal run
     """
+
     def setUp(self) -> None:
         self.id_agents = [11, 12, 13]
         self.id_homes = [1, 2, 3]
@@ -89,11 +92,11 @@ class TestDecisionMakingClass_2(unittest.TestCase):
                 id=self.id_agents[i],
                 home_id=self.id_homes[i],
                 resources={
-                    'food': 100,
-                    'water': 100,
-                    'energy': 100,
+                    "food": 100,
+                    "water": 100,
+                    "energy": 100,
                 },
-                balance=100
+                balance=100,
             )
 
     def test_preasssumed_destinations(self):
@@ -107,6 +110,7 @@ class TestDecisionMakingClass_3(unittest.TestCase):
     """
     No markets, searching mode
     """
+
     def setUp(self) -> None:
         self.model = Model(seed=3)
         point_1 = [0, 0]
@@ -120,7 +124,7 @@ class TestDecisionMakingClass_3(unittest.TestCase):
         self.model.infrastructure.add_home(pos=point_3, id=3)
         self.model.infrastructure.add_home(pos=point_4, id=4)
         self.model.bake()
-        self.model.society.neighbor_radius = 20 # Everyone is a neighbor
+        self.model.society.neighbor_radius = 20  # Everyone is a neighbor
         self.model.society.generate(num=10, gini_index=0.5)
 
     def test_search_destinations(self):

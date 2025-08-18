@@ -1,7 +1,7 @@
 def arithmetic(values: list, weights: list = None):
     result = None
     if weights is None:
-        #print(values)
+        # print(values)
         result = sum(values) / len(values)
     else:
         if len(values) != len(weights):

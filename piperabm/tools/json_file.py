@@ -21,7 +21,7 @@ class JsonFile:
         Create a string for file name by attaching format
         """
         return filename + "." + format
-    
+
     def save(self, data):
         """
         Save the data to file as json using atomic file writing
@@ -49,10 +49,10 @@ class JsonFile:
             print(f"The file {self.file} was not found.")
         data = JsonFile.convert_keys(data)
         return data
-    
+
     def convert_keys(obj):
         """
-        Recursively converts string keys to integers if possible in any JSON-like structure 
+        Recursively converts string keys to integers if possible in any JSON-like structure
         which may include dictionaries and lists.
         """
         if isinstance(obj, dict):
@@ -62,10 +62,12 @@ class JsonFile:
                 new_obj[new_key] = JsonFile.convert_keys(v)  # Recurse into values
             return new_obj
         elif isinstance(obj, list):
-            return [JsonFile.convert_keys(item) for item in obj]  # Apply recursively to each item in the list
+            return [
+                JsonFile.convert_keys(item) for item in obj
+            ]  # Apply recursively to each item in the list
         else:
             return obj  # Return the item itself if it's neither a dict nor a list
-    
+
     def exists(self):
         """
         Check if the file already exists
@@ -107,4 +109,3 @@ if __name__ == "__main__":
     print("Test: ", data == [{"a": 1}])
 
     file.remove()
-    

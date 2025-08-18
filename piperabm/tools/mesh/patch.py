@@ -28,7 +28,7 @@ class Patch:
         for triangle in self.library:
             result.append(triangle.weight)
         return result
-    
+
     @property
     def indexes(self) -> list:
         """
@@ -38,7 +38,7 @@ class Patch:
         for i in range(len(self.library)):
             result.append(i)
         return result
-    
+
     def random_point(self):
         """
         Generate a random point inside the patch based on the weights.

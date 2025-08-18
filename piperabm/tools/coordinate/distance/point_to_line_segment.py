@@ -4,13 +4,13 @@ from piperabm.tools.vector import vector as vc
 
 
 def point_to_line_segment(
-        point,
-        line_point_1,
-        line_point_2,
-        perpendicular_only: bool = False,
-        vector: bool = False,
-        ndarray: bool = False
-    ):
+    point,
+    line_point_1,
+    line_point_2,
+    perpendicular_only: bool = False,
+    vector: bool = False,
+    ndarray: bool = False,
+):
     result = None
 
     x = point[0]
@@ -44,17 +44,15 @@ def point_to_line_segment(
             xx = x1 + param * C
             yy = y1 + param * D
     elif perpendicular_only is True:
-        if param <= 1 and \
-            param >= 0:
+        if param <= 1 and param >= 0:
             xx = x1 + param * C
             yy = y1 + param * D
-        
-    if xx is not None and \
-        yy is not None:
+
+    if xx is not None and yy is not None:
         dx = xx - x
         dy = yy - y
         result = [dx, dy]
-    
+
     if result is not None:
         if vector is True:
             if ndarray is True:
@@ -71,5 +69,7 @@ if __name__ == "__main__":
     point = [-3, 4]
     line_point_1 = [0, 0]
     line_point_2 = [2, 0]
-    vector = point_to_line_segment(point, line_point_1, line_point_2, perpendicular_only=False)
+    vector = point_to_line_segment(
+        point, line_point_1, line_point_2, perpendicular_only=False
+    )
     print(vector)

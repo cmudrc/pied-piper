@@ -10,7 +10,7 @@ model.path = path
 
 # Run
 print(">>> Running...")
-model.run(n=48, save=True, resume=False, report=True, step_size=4*3600)
+model.run(n=48, save=True, resume=False, report=True, step_size=4 * 3600)
 
 # Measure
 print(">>> Measuring...")

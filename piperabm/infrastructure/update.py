@@ -2,6 +2,8 @@
 .. module:: piperabm.infrastructure.update
 :synopsis: Update the infrastructure network.
 """
+
+
 class Update:
     """
     Update the network

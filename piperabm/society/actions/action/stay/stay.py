@@ -32,7 +32,7 @@ class Stay(Print):
             self.elapsed = self.total_duration
             self.done = True
         return duration
-    
+
     def serialize(self) -> dict:
         """
         Serialize
@@ -52,7 +52,7 @@ class Stay(Print):
         self.total_duration = data["total_duration"]
         self.elapsed = data["elapsed"]
         self.remaining = data["remaining"]
-        self.done = data["done"] 
+        self.done = data["done"]
 
 
 if __name__ == "__main__":
@@ -64,21 +64,13 @@ if __name__ == "__main__":
     destination_id = 2
     action_queue = model.society.actions[agent_id]
 
-    stay = Stay(
-        action_queue=action_queue,
-        duration=5
-    )
+    stay = Stay(action_queue=action_queue, duration=5)
     action_queue.add(stay)
 
     path = model.infrastructure.path(
-        id_start=model.society.get_current_node(id=agent_id),
-        id_end=destination_id
+        id_start=model.society.get_current_node(id=agent_id), id_end=destination_id
     )
-    move = Move(
-        action_queue=action_queue,
-        path=path,
-        usage=1
-    )
+    move = Move(action_queue=action_queue, path=path, usage=1)
     action_queue.add(move)
 
     print(f"time: {model.time}, pos: {model.society.get_pos(agent_id)}")

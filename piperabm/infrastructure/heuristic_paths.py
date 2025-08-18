@@ -2,6 +2,7 @@
 .. module:: piperabm.infrastructure.heuristic_paths
 :synopsis: A network to capture the Eucledean distance between all nodes.
 """
+
 import networkx as nx
 
 from piperabm.tools.coordinate import distance as ds
@@ -23,7 +24,7 @@ class HeuristicPaths:
         Return estimated distance between two nodes
         """
         edge = self.G.edges[id_start, id_end]
-        result = edge['distance']
+        result = edge["distance"]
         return result
 
     def create(self, infrastructure):
@@ -39,25 +40,25 @@ class HeuristicPaths:
                 else:
                     distance = ds.point_to_point(
                         point_1=infrastructure.get_pos(id_1),
-                        point_2=infrastructure.get_pos(id_2)
+                        point_2=infrastructure.get_pos(id_2),
                     )
                 self.G.add_edge(id_1, id_2, distance=distance)
-    
+
     def serialize(self):
         """
         Serialize
         """
         dictionary = {
-            'G': nx_serialize(self.G),
-            'type': self.type,
+            "G": nx_serialize(self.G),
+            "type": self.type,
         }
         return dictionary
-    
+
     def deserialize(self, dictionary):
         """
         Deserialize
         """
-        self.G = nx_deserialize(dictionary['G'])
+        self.G = nx_deserialize(dictionary["G"])
 
     def __str__(self):
         return self.G.__str__()
@@ -74,8 +75,8 @@ if __name__ == "__main__":
     infrastructure.bake()
 
     # Test elements count
-    junctions = infrastructure.stat['node']['junction']
-    homes = infrastructure.stat['node']['home']
+    junctions = infrastructure.stat["node"]["junction"]
+    homes = infrastructure.stat["node"]["home"]
     total_nodes = junctions + homes
     print("Expected nodes: ", total_nodes)
     print("Expected edges: ", (total_nodes + 1) * (total_nodes / 2))

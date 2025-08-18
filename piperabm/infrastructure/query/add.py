@@ -2,6 +2,7 @@
 .. module:: piperabm.infrastructure.query.add
 :synopsis: Add new network elements.
 """
+
 import numpy as np
 from copy import deepcopy
 
@@ -29,14 +30,12 @@ class Add:
         """
         Generate new unique random id
         """
-        return int(np.random.randint(low=0, high=np.iinfo(np.int64).max, dtype=np.int64))
+        return int(
+            np.random.randint(low=0, high=np.iinfo(np.int64).max, dtype=np.int64)
+        )
 
     def add_junction(
-        self,
-        pos: list,
-        id: int = None,
-        name: str = '',
-        report: bool = False
+        self, pos: list, id: int = None, name: str = "", report: bool = False
     ):
         """
         Add junction node.
@@ -53,28 +52,16 @@ class Add:
         report : bool
             If `True`, system will report successful creation of this element.
         """
-        type = 'junction'
+        type = "junction"
         id = self.check_id(id)
-        self.G.add_node(
-            id,
-            name=name,
-            type=type,
-            x=float(pos[0]),
-            y=float(pos[1])
-        )
+        self.G.add_node(id, name=name, type=type, x=float(pos[0]), y=float(pos[1]))
         self.baked_streets = False
         self.baked_neighborhood = False
         if report is True:
             print(f">>> {type} node at position {pos} added.")
         return id
-    
-    def add_home(
-        self,
-        pos: list,
-        id: int = None,
-        name: str = '',
-        report: bool = False
-    ):
+
+    def add_home(self, pos: list, id: int = None, name: str = "", report: bool = False):
         """
         Add home node.
         These are the nodes where agents live and belong to. Agents from the same home are a family and together they form a household.
@@ -90,32 +77,26 @@ class Add:
         report : bool
             If `True`, system will report successful creation of this element.
         """
-        type = 'home'
+        type = "home"
         id = self.check_id(id)
-        self.G.add_node(
-            id,
-            name=name,
-            type=type,
-            x=float(pos[0]),
-            y=float(pos[1])
-        )
+        self.G.add_node(id, name=name, type=type, x=float(pos[0]), y=float(pos[1]))
         self.baked_streets = False
         self.baked_neighborhood = False
         if report is True:
             print(f">>> {type} node at position {pos} added.")
         return id
-    
+
     def add_market(
         self,
         pos: list,
         resources: dict = {
-            'food': 10,
-            'water': 10,
-            'energy': 10,
+            "food": 10,
+            "water": 10,
+            "energy": 10,
         },
         enough_resources: dict = None,
         id: int = None,
-        name: str = '',
+        name: str = "",
         report: bool = False,
     ):
         """
@@ -137,7 +118,7 @@ class Add:
         report : bool
             If `True`, system will report successful creation of this element.
         """
-        type = 'market'
+        type = "market"
         id = self.check_id(id)
         resource_kwargs = {}
         if enough_resources is None:
@@ -148,8 +129,8 @@ class Add:
             if enough_resources[resource_name] is None:
                 enough_resources[resource_name] = deepcopy(resources[resource_name])
             resource_kwargs[resource_name] = resources[resource_name]
-            resource_kwargs['enough_'+resource_name] = enough_resources[resource_name]
-        
+            resource_kwargs["enough_" + resource_name] = enough_resources[resource_name]
+
         self.G.add_node(
             id,
             name=name,
@@ -157,7 +138,7 @@ class Add:
             x=float(pos[0]),
             y=float(pos[1]),
             balance=0,
-            **resource_kwargs
+            **resource_kwargs,
         )
 
         self.baked_streets = False
@@ -170,10 +151,10 @@ class Add:
         self,
         pos_1: list,
         pos_2: list,
-        name: str = '',
+        name: str = "",
         usage_impact: float = 0,
         age_impact: float = 0,
-        report: bool = False
+        report: bool = False,
     ):
         """
         Add street edge. These edges are used by agents to move around the simulation world.
@@ -193,17 +174,15 @@ class Add:
         report : bool
             If `True`, system will report successful creation of this element.
         """
-        type = 'street'
+        type = "street"
         id_1 = self.add_junction(pos=pos_1)
         id_2 = self.add_junction(pos=pos_2)
         length = ds.point_to_point(pos_1, pos_2)
         adjustment_factor = self.calculate_adjustment_factor(
-            usage_impact=usage_impact,
-            age_impact=age_impact
+            usage_impact=usage_impact, age_impact=age_impact
         )
         adjusted_length = self.calculate_adjusted_length(
-            length=length,
-            adjustment_factor=adjustment_factor
+            length=length, adjustment_factor=adjustment_factor
         )
         self.G.add_edge(
             id_1,
@@ -220,15 +199,15 @@ class Add:
         if report is True:
             print(f">>> {type} edge at positions {pos_1}-{pos_2} added.")
         return id
-    
+
     def add_neighborhood_access(
         self,
         id_1: list,
         id_2: list,
-        name: str = '',
+        name: str = "",
         usage_impact: float = 0,
         age_impact: float = 0,
-        report: bool = False
+        report: bool = False,
     ):
         """
         Add neighborhood access edge. These edges connect homes and markets to the street network, allowing agents to access these nodes.
@@ -248,15 +227,13 @@ class Add:
         report : bool
             If `True`, system will report successful creation of this element.
         """
-        type = 'neighborhood_access'
+        type = "neighborhood_access"
         length = ds.point_to_point(self.get_pos(id_1), self.get_pos(id_2))
         adjustment_factor = self.calculate_adjustment_factor(
-            usage_impact=usage_impact,
-            age_impact=age_impact
+            usage_impact=usage_impact, age_impact=age_impact
         )
         adjusted_length = self.calculate_adjusted_length(
-            length=length,
-            adjustment_factor=adjustment_factor
+            length=length, adjustment_factor=adjustment_factor
         )
         self.G.add_edge(
             id_1,
@@ -266,10 +243,12 @@ class Add:
             adjusted_length=adjusted_length,
             usage_impact=usage_impact,
             age_impact=age_impact,
-            type=type
+            type=type,
         )
-        #self.baked_streets = False
+        # self.baked_streets = False
         self.baked_neighborhood = False
         if report is True:
-            print(f">>> {type} edge at positions {self.get_pos(id_1)} - {self.get_pos(id_2)} added.")
+            print(
+                f">>> {type} edge at positions {self.get_pos(id_1)} - {self.get_pos(id_2)} added."
+            )
         return id

@@ -23,14 +23,14 @@ class Update(Trade):
     """
 
     def run(
-            self,
-            n: int = None,
-            step_size: float = 3600,
-            save: bool = False,
-            save_transactions: bool = False,
-            resume: bool = False,
-            report: bool = False
-        ):
+        self,
+        n: int = None,
+        step_size: float = 3600,
+        save: bool = False,
+        save_transactions: bool = False,
+        resume: bool = False,
+        report: bool = False,
+    ):
         """
         Run model for multiple steps.
 
@@ -54,13 +54,13 @@ class Update(Trade):
             path = self.result_directory
             if resume is False:
                 # Remove deltas
-                simulation_file = JsonFile(path, 'simulation')
+                simulation_file = JsonFile(path, "simulation")
                 simulation_file.remove()
                 # Remove final state
-                final_file = JsonFile(path, 'final')
+                final_file = JsonFile(path, "final")
                 final_file.remove()
                 # Load initial state if exists
-                initial_file = JsonFile(path, 'initial')
+                initial_file = JsonFile(path, "initial")
                 if initial_file.exists():
                     self.load_initial()
                 else:
@@ -68,16 +68,16 @@ class Update(Trade):
                         self.save_initial()
             else:
                 # Load final state if exists
-                final_file = JsonFile(path, 'final')
+                final_file = JsonFile(path, "final")
                 if final_file.exists() is True:
                     self.load_final()
                 else:
                     # Load initial state if final state doesn't exists
-                    initial_file = JsonFile(path, 'initial')
+                    initial_file = JsonFile(path, "initial")
                     if initial_file.exists() is True:
                         self.load_initial()
                         # Apply deltas if exists
-                        simulation_file = JsonFile(path, 'simulation')
+                        simulation_file = JsonFile(path, "simulation")
                         if simulation_file.exists() is True:
                             self.apply_deltas()
 
@@ -85,9 +85,7 @@ class Update(Trade):
         if n is None:
             while True:
                 self.update(
-                    duration=step_size,
-                    save=save,
-                    save_transactions=save_transactions
+                    duration=step_size, save=save, save_transactions=save_transactions
                 )
                 if len(self.society.alive_agents) == 0:
                     break
@@ -98,12 +96,12 @@ class Update(Trade):
                 if report is True:
                     print(f"Progress: {(i + 1) / n * 100:.1f}% complete")
                 self.update(
-                    duration=step_size,
-                    save=save,
-                    save_transactions=save_transactions
+                    duration=step_size, save=save, save_transactions=save_transactions
                 )
 
-    def update(self, duration: float, save: bool = False, save_transactions: bool = False):
+    def update(
+        self, duration: float, save: bool = False, save_transactions: bool = False
+    ):
         """
         Update model for a single step.
 
@@ -131,7 +129,7 @@ class Update(Trade):
             agents = self.society.agents_in(id=home_id)
             if len(agents) >= 2:
                 transactions += self.trade(agents=agents)
-        #transactions
+        # transactions
         for transaction in transactions:
             transaction.append(self.time)
 
@@ -148,21 +146,20 @@ class Update(Trade):
             self.infrastructure.set_balance(id=id, value=0)
             # Reset resources
             for name in self.resource_names:
-                enough_amount = self.infrastructure.get_enough_resource(id=id, name=name)
+                enough_amount = self.infrastructure.get_enough_resource(
+                    id=id, name=name
+                )
                 self.infrastructure.set_resource(id=id, name=name, value=enough_amount)
 
         # General
         self.step += 1
-        self.time += duration    
+        self.time += duration
 
         # Delta
         if save is True:
             # Create new current state and compare it to the previous one
             current_serialized = self.serialize()
-            delta = kd.create(
-                old=previous_serialized,
-                new=current_serialized
-            )
+            delta = kd.create(old=previous_serialized, new=current_serialized)
             self.append_delta(delta)
             self.save_final()
 

@@ -8,13 +8,17 @@ model = pa.Model(path=path, seed=2)
 # Set up the infrastructure
 model.infrastructure.coeff_usage = 1
 model.infrastructure.coeff_age = 1
-model.infrastructure.add_street(pos_1=[0, 0], pos_2=[-60, 40], name='road')
-model.infrastructure.add_home(pos=[5, 0], id=1, name='home')
+model.infrastructure.add_street(pos_1=[0, 0], pos_2=[-60, 40], name="road")
+model.infrastructure.add_home(pos=[5, 0], id=1, name="home")
 model.infrastructure.add_market(
     pos=[-60, 45],
     id=2,
-    name='market',
-    resources={'food': 100, 'water': 100, 'energy': 100,}
+    name="market",
+    resources={
+        "food": 100,
+        "water": 100,
+        "energy": 100,
+    },
 )
 model.infrastructure.bake()
 
@@ -26,8 +30,12 @@ model.society.add_agent(
     id=agent_id,
     home_id=home_id,
     socioeconomic_status=1,
-    resources={"food": 1, "water": 1, "energy": 1,},
-    balance=100
+    resources={
+        "food": 1,
+        "water": 1,
+        "energy": 1,
+    },
+    balance=100,
 )
 
 # Run the simulation

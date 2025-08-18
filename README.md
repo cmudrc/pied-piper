@@ -4,7 +4,7 @@
 </h1>
 
 <h3 align="center">
-    An Agent-Based Model Framework for simulating society resilience
+    An Agent-Based Model Framework for Simulating Societal Resilience
 </h3>
 
 <div align="center">
@@ -28,7 +28,7 @@
 
 ## Introduction
 
-Whenever environments condition change for species, the living entities start to react to the new new condition. This projects aims at modeling the interdependent nature of life between humans and their environment.
+Living beings exist in perpetual tension with their environment, continually adapting to changes in their surroundings. This project aims to model the interdependent nature of life between humans and their environment.
 
 ## Installation
 

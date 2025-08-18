@@ -7,6 +7,7 @@ import os, sys, inspect, importlib.util
 # 1) import the “official” DecisionMaking
 from .degradation import Degradation as _BaseDegradation
 
+
 def _discover_local(plugin_name: str):
     # find the folder containing the user's entry-point script
     main_mod = sys.modules.get("__main__")
@@ -27,13 +28,16 @@ def _discover_local(plugin_name: str):
 
     # find any class in that module that subclasses our base
     for obj in vars(mod).values():
-        if (inspect.isclass(obj)
+        if (
+            inspect.isclass(obj)
             and issubclass(obj, _BaseDegradation)
-            and obj is not _BaseDegradation):
+            and obj is not _BaseDegradation
+        ):
             return obj
 
     # fallback if nothing suitable was found
     return _BaseDegradation
+
 
 # 2) override the name in our package
 Degradation = _discover_local("degradation")

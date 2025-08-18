@@ -7,14 +7,13 @@ class Grammar:
     """
 
     def __init__(
-            self,
-            infrastructure,
-            proximity_radius: float = 1,
-            search_radius: float = None,
-        ):
+        self,
+        infrastructure,
+        proximity_radius: float = 1,
+        search_radius: float = None,
+    ):
         self.infrastructure = infrastructure
-        if search_radius is not None and \
-        search_radius < proximity_radius:
+        if search_radius is not None and search_radius < proximity_radius:
             print("search radius should be bigger than proximity radius")
             raise ValueError
         self.search_radius = search_radius
@@ -56,7 +55,7 @@ class Grammar:
                 i = 0  # reset the loop
             else:
                 i += 1  # move to the next grammar
-            if i == len(rules): # Done
+            if i == len(rules):  # Done
                 break
 
     def apply_neighborhood_grammar(self, report=False):
@@ -68,7 +67,11 @@ class Grammar:
         """
 
         rules = [
-            Rule3(self.infrastructure, proximity_radius=self.proximity_radius, search_radius=self.search_radius),
+            Rule3(
+                self.infrastructure,
+                proximity_radius=self.proximity_radius,
+                search_radius=self.search_radius,
+            ),
         ]
 
         i = 0
@@ -79,7 +82,7 @@ class Grammar:
                 i = 0  # reset the loop
             else:
                 i += 1  # move to the next grammar
-            if i == len(rules): # Done
+            if i == len(rules):  # Done
                 break
 
 

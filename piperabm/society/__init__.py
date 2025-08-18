@@ -7,6 +7,7 @@ import os, sys, inspect, importlib.util
 # 1) import the “official” DecisionMaking
 from .decision_making import DecisionMaking as _BaseDecisionMaking
 
+
 def _discover_local(plugin_name: str):
     # find the folder containing the user's entry-point script
     main_mod = sys.modules.get("__main__")
@@ -27,13 +28,16 @@ def _discover_local(plugin_name: str):
 
     # find any class in that module that subclasses our base
     for obj in vars(mod).values():
-        if (inspect.isclass(obj)
+        if (
+            inspect.isclass(obj)
             and issubclass(obj, _BaseDecisionMaking)
-            and obj is not _BaseDecisionMaking):
+            and obj is not _BaseDecisionMaking
+        ):
             return obj
 
     # fallback if nothing suitable was found
     return _BaseDecisionMaking
+
 
 # 2) override the name in our package
 DecisionMaking = _discover_local("decision_making")

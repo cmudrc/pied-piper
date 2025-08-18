@@ -5,7 +5,7 @@ def line_line(
     line_1_point_1: list,
     line_1_point_2: list,
     line_2_point_1: list,
-    line_2_point_2: list
+    line_2_point_2: list,
 ):
     """
     Calculate intersecting point between two line segments
@@ -17,7 +17,7 @@ def line_line(
         b[0] = -a[1]
         b[1] = a[0]
         return b
-    
+
     intersection = None
 
     line_1_point_1 = np.array(line_1_point_1)
@@ -33,8 +33,10 @@ def line_line(
     denominator = np.dot(delta_line_1_perp, delta_line_2)
     numerator = np.dot(delta_line_1_perp, delta_p)
 
-    if denominator != 0: # check for parallel lines
-        intersection = (numerator / denominator.astype(float)) * delta_line_2 + line_2_point_1
+    if denominator != 0:  # check for parallel lines
+        intersection = (
+            numerator / denominator.astype(float)
+        ) * delta_line_2 + line_2_point_1
         intersection = [float(x) for x in intersection]
 
     return intersection
