@@ -71,6 +71,6 @@ PiperABM offers the custom feel of bespoke models while reducing rework: degrada
 
 # Acknowledgements
 
-This work was supported by the U.S. National Science Foundation (Grant RISE-1927718).
+This work was supported by the U.S. National Science Foundation through Grant RISE-1927718. Any opinions, findings, conclusions, or recommendations expressed in this article are those of the authors and do not necessarily reflect the views of the sponsors.
 
 # References
