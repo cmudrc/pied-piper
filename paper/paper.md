@@ -15,6 +15,9 @@ authors:
     orcid: 0009-0004-3387-4502
     affiliation: '1'
     corresponding: true
+  - name: Sierra Hicks
+    orcid: 0009-0008-6787-4243
+    affiliation: '2'
   - name: Christopher McComb
     orcid: 0000-0002-5024-7701
     affiliation: '1'
@@ -22,6 +25,9 @@ affiliations:
   - index: 1
     name: Department of Mechanical Engineering, Carnegie Mellon University, USA
     ror: 05x2bcf33
+  - index: 2
+    name: Department of Natural Resources and the Environment, Cornell University, USA
+    ror: 05bnh6r87
 date: 1 April 2025 ####
 bibliography: paper.bib
 ---
