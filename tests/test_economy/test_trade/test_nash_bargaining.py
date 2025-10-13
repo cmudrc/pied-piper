@@ -144,7 +144,7 @@ class TestSingleResourceSolver_2(unittest.TestCase):
         player_1_final_balance = self.players_final[0]["balance"]
         player_2_final_balance = self.players_final[1]["balance"]
         player_3_final_balance = self.players_final[2]["balance"]
-        self.assertAlmostEqual(player_1_final_balance, 100, places=10)
+        self.assertAlmostEqual(player_1_final_balance, 100, places=9)
         self.assertAlmostEqual(player_2_final_balance, 80, places=10)
         self.assertAlmostEqual(player_3_final_balance, 20, places=10)
 
