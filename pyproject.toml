@@ -10,7 +10,7 @@ include = ["piperabm", "piperabm.*"]
 
 [project]
 name = "piperabm"
-version = "0.1.1"
+version = "0.1.2"
 description = "An Agent-Based Model Framework for Simulating Resilience in Python"
 readme = "README.md"
 license = {text = "MIT"}
@@ -21,10 +21,10 @@ authors = [
 ]
 dependencies = [
     "keepdelta==0.2.0",
-    "matplotlib==3.10.1",
-    "networkx==3.4.2",
-    "numpy==2.2.5",
-    "scipy==1.15.2",
+    "matplotlib",
+    "networkx",
+    "numpy",
+    "scipy",
 ]
 requires-python = ">=3.10"
 classifiers = [
