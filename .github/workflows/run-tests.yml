@@ -50,4 +50,4 @@ jobs:
         pip install -e .
   
     - name: Run tests
-      run: python tests/tests.py
+      run: python tests.py

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Contributing &#8212; PiperABM 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="piperabm.tools.mesh" href="api/mesh.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">¶</a></h1>
+<p>We welcome contributions to PiperABM, including small bug fixes, documentation improvements, and extensions to existing model components. The project is structured to make targeted, modular contributions straightforward.</p>
+<section id="repository-structure">
+<h2>Repository structure<a class="headerlink" href="#repository-structure" title="Link to this heading">¶</a></h2>
+<p>The core source code lives in the <code class="docutils literal notranslate"><span class="pre">piperabm/</span></code> directory and is organized by domain:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">piperabm/economy/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">piperabm/infrastructure/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">piperabm/model/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">piperabm/society/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">piperabm/tools/</span></code></p></li>
+</ul>
+<p>Each submodule is designed to be as self-contained as possible, allowing contributors to modify or extend a single component without affecting the rest of the codebase.</p>
+</section>
+<section id="where-to-make-changes">
+<h2>Where to make changes<a class="headerlink" href="#where-to-make-changes" title="Link to this heading">¶</a></h2>
+<p>Common contribution tasks map to the following locations:</p>
+<ul class="simple">
+<li><p><strong>Fix or improve documentation text</strong>
+Edit the corresponding <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files in <code class="docutils literal notranslate"><span class="pre">docs/source/</span></code>.</p></li>
+<li><p><strong>Improve or extend API documentation</strong>
+Edit or add docstrings directly in the relevant files under <code class="docutils literal notranslate"><span class="pre">piperabm/</span></code>.
+API documentation is automatically generated from in-code docstrings using Sphinx.</p></li>
+<li><p><strong>Modify or add core functionality</strong>
+Make changes in the appropriate submodule under <code class="docutils literal notranslate"><span class="pre">piperabm/</span></code> and add or update the corresponding unit tests.</p></li>
+<li><p><strong>Add examples or tutorials</strong>
+Place new examples in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory or add tutorial-style documentation under <code class="docutils literal notranslate"><span class="pre">docs/source/</span></code>.</p></li>
+</ul>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
+<p>PiperABM uses automated unit tests to ensure correctness and maintainability.</p>
+<ul>
+<li><p><strong>Run the full test suite</strong> from the project root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tests.py
+</pre></div>
+</div>
+</li>
+<li><p><strong>Test organization</strong></p>
+<p>Tests are organized to mirror the source structure:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">piperabm/&lt;module&gt;/</span></code> → <code class="docutils literal notranslate"><span class="pre">tests/test_&lt;module&gt;/</span></code></p></li>
+</ul>
+<p>Each test file can be run independently to test its corresponding module in isolation.</p>
+</li>
+</ul>
+<p>When adding new features or modifying existing behavior, contributors are encouraged to include appropriate unit tests.</p>
+</section>
+<section id="building-the-documentation-locally">
+<h2>Building the documentation locally<a class="headerlink" href="#building-the-documentation-locally" title="Link to this heading">¶</a></h2>
+<p>PiperABM documentation is built using the Sphinx engine. API documentation is generated automatically from in-code docstrings, while conceptual guides and tutorials are maintained as standalone <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files in <code class="docutils literal notranslate"><span class="pre">docs/source/</span></code>.</p>
+<p>To build the documentation locally:</p>
+<ol class="arabic">
+<li><p>Install the documentation dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p>From the <code class="docutils literal notranslate"><span class="pre">docs/</span></code> directory, build the HTML documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>html
+</pre></div>
+</div>
+<p>On Windows, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make.bat<span class="w"> </span>html
+</pre></div>
+</div>
+</li>
+<li><p>Open the generated documentation in a browser:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docs/build/html/index.html
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This allows contributors to verify documentation formatting, API references, and tutorial content before submitting changes.</p>
+</section>
+<section id="development-workflow">
+<h2>Development workflow<a class="headerlink" href="#development-workflow" title="Link to this heading">¶</a></h2>
+<p>A typical contribution workflow is:</p>
+<ol class="arabic simple">
+<li><p>Identify the relevant module or documentation file.</p></li>
+<li><p>Make a focused change.</p></li>
+<li><p>Run the test suite using <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">tests.py</span></code>.</p></li>
+<li><p>Build the documentation locally if documentation or docstrings were modified.</p></li>
+<li><p>Submit a pull request describing the change.</p></li>
+</ol>
+<p>New features should include docstrings and, where appropriate, unit tests to ensure they are included in the documentation and test coverage.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PiperABM</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="step-by-step.html">Step-by-Step Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="satellite.html">Working with Satellite Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.Measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.Society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/projection.html">piperabm.tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/mesh.html">piperabm.tools.mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api/mesh.html" title="previous chapter">piperabm.tools.mesh</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aslan Noorghasemi, Christopher McComb.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/contributing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

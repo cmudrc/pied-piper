@@ -35,3 +35,8 @@ This is the documentation for PiperABM, a Python-based agent-based modeling fram
    api/projection
    api/mesh
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Contributing
+
+   contributing
