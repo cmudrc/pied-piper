@@ -9,12 +9,12 @@
 
 <div align="center">
 
-[![Docs](https://img.shields.io/badge/docs-30363f?logo=read-the-docs&logoColor=white)](https://pied-piper.readthedocs.io/)
-![Python Version](https://img.shields.io/badge/python-≥3.10-blue)
+[![Documentation](https://img.shields.io/badge/Documentation-30363f?logo=read-the-docs&logoColor=white)](https://pied-piper.readthedocs.io/)
+![Python Version](https://img.shields.io/badge/Python-≥3.10-blue)
 [![PyPI Version](https://img.shields.io/pypi/v/piperabm.svg)](https://pypi.org/project/piperabm/)
-[![GitHub](https://img.shields.io/badge/github-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
+[![GitHub](https://img.shields.io/badge/GitHub-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
 [![Coverage Status](https://coveralls.io/repos/github/cmudrc/pied-piper/badge.svg?branch=main)](https://coveralls.io/github/cmudrc/pied-piper?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
 
@@ -29,6 +29,11 @@
 ## Introduction
 
 Living beings exist in perpetual tension with their environment, continually adapting to changes in their surroundings. This project aims to model the interdependent nature of life between humans and their environment.
+
+## Documentation
+
+Full documentation, including installation instructions, usage guides, API reference, examples, and contributor guidelines, is available at:
+**[PiperABM Documentation (ReadTheDocs)](https://pied-piper.readthedocs.io)**
 
 ## Installation
 
