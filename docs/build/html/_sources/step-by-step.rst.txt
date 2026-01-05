@@ -139,6 +139,20 @@ To build the infrastructure, we can either manually add elements:
 For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 Before continuing to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
 
+.. note::
+
+   **Infrastructure lifecycle (build → bake → use)**
+
+   Infrastructure construction and execution are intentionally separated in PiperABM.
+
+   - Before baking, users may freely add or modify infrastructure elements.
+   - Calling :meth:`~piperabm.Model.bake` finalizes the infrastructure by applying
+     graph-grammar and geometric rules to produce a physically consistent network.
+   - Operations that rely on a finalized network (e.g., adding agents or running the model)
+     require the infrastructure to be baked and will raise a ``ModelNotBakedError`` otherwise.
+   - Any structural change to the infrastructure after baking automatically invalidates
+     the baked state and requires re-baking.
+
 .. code-block:: python
 
     model.infrastructure.bake(

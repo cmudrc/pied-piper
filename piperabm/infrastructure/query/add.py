@@ -6,6 +6,7 @@
 import numpy as np
 from copy import deepcopy
 
+from piperabm.resource import Resource
 from piperabm.tools.coordinate import distance as ds
 
 
@@ -87,12 +88,8 @@ class Add:
     def add_market(
         self,
         pos: list,
-        resources: dict = {
-            "food": 10,
-            "water": 10,
-            "energy": 10,
-        },
-        enough_resources: dict = None,
+        resources: dict | Resource = Resource(),
+        enough_resources: dict | Resource | None = None,
         id: int = None,
         name: str = "",
         report: bool = False,
@@ -105,10 +102,17 @@ class Add:
         ----------
         pos : list
             A list of [x, y] coordinates showing the position in space.
-        resources: dict
-            A dictionary showing how much of resources does the market have in stock.
-        enough_resources: dict
-            This shows the maximum amount of each resource market can have in stock. The default value is `None`. If stays `None`, system will rewrite it with a dict equal to `resources` dict.
+        resources : dict or Resource, optional
+            Initial resource stock of the market. This can be provided either as a plain
+            dictionary (e.g., ``{'food': 100, 'water': 100, 'energy': 100}``) or as a
+            :class:`piperabm.Resource` instance. If a ``Resource`` object is provided,
+            it is converted internally to a dictionary before being attached to the
+            underlying graph representation. If not specified, default resource values
+            are used.
+        enough_resources : dict or Resource or None, optional
+            Maximum stock capacity for each resource. If provided as a ``Resource`` object,
+            it is converted internally to a dictionary. If ``None``, the system initializes
+            this value to match the initial ``resources`` levels.
         id : int, optional
             The unique id number. The default is `None`, and if stays `None`, system will automatically assign a new unique id.
         name : str, optional
@@ -118,6 +122,10 @@ class Add:
         """
         type = "market"
         id = self.check_id(id)
+        if isinstance(resources, Resource):
+            resources = resources.serialize()
+        if isinstance(enough_resources, Resource):
+            enough_resources = enough_resources.serialize()
         resource_kwargs = {}
         if enough_resources is None:
             enough_resources = {}

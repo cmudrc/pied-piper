@@ -1,4 +1,4 @@
-piperabm.tools.mesh
+tools.mesh
 ======================================
 
 .. automodule:: piperabm.tools.mesh.triangle

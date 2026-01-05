@@ -1,4 +1,4 @@
-piperabm.Infrastructure
+Infrastructure
 ======================================
 
 .. autoclass:: piperabm.infrastructure.Infrastructure

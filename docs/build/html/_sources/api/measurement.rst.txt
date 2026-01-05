@@ -1,4 +1,4 @@
-piperabm.Measurement
+Measurement
 ======================================
 
 .. autoclass:: piperabm.model.Measurement

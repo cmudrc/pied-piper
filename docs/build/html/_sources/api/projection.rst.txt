@@ -1,4 +1,4 @@
-piperabm.tools.coordinate.projection
+tools.coordinate.projection
 ======================================
 
 .. automodule:: piperabm.tools.coordinate.projection.latlong_xy

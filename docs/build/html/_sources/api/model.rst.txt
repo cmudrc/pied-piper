@@ -1,4 +1,4 @@
-piperabm.Model
+Model
 ======================================
 
 .. autoclass:: piperabm.Model

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>piperabm.Society &#8212; PiperABM 0.1.1 documentation</title>
+    <title>Society &#8212; PiperABM 0.1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
@@ -14,8 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="piperabm.tools.coordinate.projection" href="projection.html" />
-    <link rel="prev" title="piperabm.Infrastructure" href="infrastructure.html" />
+    <link rel="next" title="Resource" href="resource.html" />
+    <link rel="prev" title="Infrastructure" href="infrastructure.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,8 +33,8 @@
 
           <div class="body" role="main">
             
-  <section id="piperabm-society">
-<h1>piperabm.Society<a class="headerlink" href="#piperabm-society" title="Link to this heading">¶</a></h1>
+  <section id="society">
+<h1>Society<a class="headerlink" href="#society" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="piperabm.society.Society">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.society.</span></span><span class="sig-name descname"><span class="pre">Society</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">average_income</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbor_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time_outside</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">28800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity_cycle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">86400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transportation_resource_rates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">1.1574074074074073e-05,</span> <span class="pre">'food':</span> <span class="pre">2.3148148148148147e-05,</span> <span class="pre">'water':</span> <span class="pre">1.1574074074074073e-05}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idle_resource_rates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">2.3148148148148147e-05,</span> <span class="pre">'food':</span> <span class="pre">2.3148148148148147e-05,</span> <span class="pre">'water':</span> <span class="pre">2.3148148148148147e-05}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.3888888888888888</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transportation_degradation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.Society" title="Link to this definition">¶</a></dt>
@@ -54,26 +54,161 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.society.Society.add_agent">
-<span class="sig-name descname"><span class="pre">add_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socioeconomic_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'energy':</span> <span class="pre">10,</span> <span class="pre">'food':</span> <span class="pre">10,</span> <span class="pre">'water':</span> <span class="pre">10}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enough_resources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">balance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.Society.add_agent" title="Link to this definition">¶</a></dt>
-<dd><p>Add agent node</p>
+<span class="sig-name descname"><span class="pre">add_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home_id:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socioeconomic_status:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources:</span> <span class="pre">dict</span> <span class="pre">|</span> <span class="pre">~piperabm.resource.Resource</span> <span class="pre">=</span> <span class="pre">&lt;piperabm.resource.Resource</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enough_resources:</span> <span class="pre">dict</span> <span class="pre">|</span> <span class="pre">~piperabm.resource.Resource</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">balance:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.Society.add_agent" title="Link to this definition">¶</a></dt>
+<dd><p>Add an agent node to the society network.</p>
+<p>Agents are represented as nodes in the society graph. Each agent is assigned to
+a home node in the infrastructure and initialized with resources and a balance.
+When an agent is added, family and neighbor relationships may be created
+automatically based on the agent’s home assignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>home_id</strong> (<em>int</em><em>, </em><em>optional</em>) – ID of the home node that the agent belongs to. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a home is chosen
+at random from existing infrastructure homes.</p></li>
+<li><p><strong>id</strong> (<em>int</em><em>, </em><em>optional</em>) – Unique identifier of the agent node. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a unique ID is automatically
+generated. If the provided ID already exists, a new unique ID is generated
+instead (the existing agent is not overwritten).</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional human-readable name for the agent.</p></li>
+<li><p><strong>socioeconomic_status</strong> (<em>float</em><em>, </em><em>optional</em>) – Socioeconomic status of the agent (used by the decision-making and/or
+behavior models). Defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>resources</strong> (<em>dict</em><em> or </em><a class="reference internal" href="resource.html#piperabm.resource.Resource" title="piperabm.resource.Resource"><em>Resource</em></a><em>, </em><em>optional</em>) – Initial resource inventory for the agent. This can be provided either as a
+dictionary (e.g., <code class="docutils literal notranslate"><span class="pre">{'food':</span> <span class="pre">10,</span> <span class="pre">'water':</span> <span class="pre">10,</span> <span class="pre">'energy':</span> <span class="pre">10}</span></code>) or as a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Resource</span></code> instance. If a <code class="docutils literal notranslate"><span class="pre">Resource</span></code> object is provided,
+it is converted internally to a dictionary before being attached to the
+underlying graph representation.</p></li>
+<li><p><strong>enough_resources</strong> (<em>dict</em><em> or </em><a class="reference internal" href="resource.html#piperabm.resource.Resource" title="piperabm.resource.Resource"><em>Resource</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – The per-resource “enough” thresholds used by the agent’s satisfaction/utility
+model. If provided as a <code class="docutils literal notranslate"><span class="pre">Resource</span></code> object, it is converted internally to a
+dictionary. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the system initializes the threshold for each
+resource to match the corresponding initial <code class="docutils literal notranslate"><span class="pre">resources</span></code> value.</p></li>
+<li><p><strong>balance</strong> (<em>float</em><em>, </em><em>optional</em>) – Initial monetary balance of the agent. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the newly added agent node.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ModelNotBakedError</strong> – If the infrastructure has not been baked. Agents require a finalized
+    infrastructure network (via <a class="reference internal" href="model.html#piperabm.Model.bake" title="piperabm.Model.bake"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bake()</span></code></a>) to ensure
+    physically consistent routing and access edges.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Internally, agent state (including resources and thresholds) is stored as plain
+attributes on the NetworkX society graph. The <code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Resource</span></code> class
+is provided as an optional convenience wrapper for validation/readability and
+does not change the internal representation.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.society.Society.add_family">
 <span class="sig-name descname"><span class="pre">add_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.Society.add_family" title="Link to this definition">¶</a></dt>
-<dd><p>Add family edge</p>
+<dd><p>Add a family relationship edge between two agents.</p>
+<p>A family relationship is created automatically when two distinct agents are
+assigned to the same home. This method adds a <code class="docutils literal notranslate"><span class="pre">family</span></code>-typed edge between
+the two agent nodes in the society graph, provided that both agents share
+the same <code class="docutils literal notranslate"><span class="pre">home_id</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_1</strong> (<em>int</em>) – ID of the first agent.</p></li>
+<li><p><strong>id_2</strong> (<em>int</em>) – ID of the second agent.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>A family edge is only added if <code class="docutils literal notranslate"><span class="pre">id_1</span></code> and <code class="docutils literal notranslate"><span class="pre">id_2</span></code> are different agents
+and both are associated with the same home node.</p></li>
+<li><p>The edge is stored in the underlying NetworkX multi-graph with
+<code class="docutils literal notranslate"><span class="pre">type='family'</span></code> and includes the shared <code class="docutils literal notranslate"><span class="pre">home_id</span></code> as an edge attribute.</p></li>
+<li><p>If the agents do not share the same home, no edge is added and the method
+exits silently.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#piperabm.society.Society.add_neighbor" title="piperabm.society.Society.add_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_neighbor</span></code></a></dt><dd><p>Add a neighbor relationship between agents in nearby homes.</p>
+</dd>
+<dt><a class="reference internal" href="#piperabm.society.Society.add_friend" title="piperabm.society.Society.add_friend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_friend</span></code></a></dt><dd><p>Add a user-defined friendship relationship between agents.</p>
+</dd>
+</dl>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.society.Society.add_friend">
 <span class="sig-name descname"><span class="pre">add_friend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.Society.add_friend" title="Link to this definition">¶</a></dt>
-<dd><p>Add friend edge</p>
+<dd><p>Add a friendship relationship edge between two agents.</p>
+<p>A friendship relationship represents an explicit, user-defined social tie
+between two agents. Unlike family or neighbor relationships, friendship
+edges are not created automatically and must be added explicitly by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_1</strong> (<em>int</em>) – ID of the first agent.</p></li>
+<li><p><strong>id_2</strong> (<em>int</em>) – ID of the second agent.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Friendship edges are stored in the underlying NetworkX multi-graph with
+<code class="docutils literal notranslate"><span class="pre">type='friend'</span></code> as an edge attribute.</p></li>
+<li><p>No structural constraints are enforced: the agents do not need to share
+the same home or be geographically close.</p></li>
+<li><p>This method does not prevent duplicate friendship edges from being added;
+multiple friendship edges between the same pair of agents may exist.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#piperabm.society.Society.add_family" title="piperabm.society.Society.add_family"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_family</span></code></a></dt><dd><p>Add a family relationship between agents sharing the same home.</p>
+</dd>
+<dt><a class="reference internal" href="#piperabm.society.Society.add_neighbor" title="piperabm.society.Society.add_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_neighbor</span></code></a></dt><dd><p>Add a neighbor relationship between agents in nearby homes.</p>
+</dd>
+</dl>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="piperabm.society.Society.add_neighbor">
 <span class="sig-name descname"><span class="pre">add_neighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.society.Society.add_neighbor" title="Link to this definition">¶</a></dt>
-<dd><p>Add neighbor edge</p>
+<dd><p>Add a neighbor relationship edge between two agents.</p>
+<p>A neighbor relationship represents spatial proximity between agents whose
+assigned home nodes are distinct but located within a specified neighborhood
+radius. This method adds a <code class="docutils literal notranslate"><span class="pre">neighbor</span></code>-typed edge between two agents if they
+are not members of the same household.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_1</strong> (<em>int</em>) – ID of the first agent.</p></li>
+<li><p><strong>id_2</strong> (<em>int</em>) – ID of the second agent.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>A neighbor edge is only added if <code class="docutils literal notranslate"><span class="pre">id_1</span></code> and <code class="docutils literal notranslate"><span class="pre">id_2</span></code> are different agents
+and their associated <code class="docutils literal notranslate"><span class="pre">home_id</span></code> values are not equal.</p></li>
+<li><p>Neighbor relationships are typically created automatically during agent
+initialization based on spatial proximity between home nodes.</p></li>
+<li><p>The edge is stored in the underlying NetworkX multi-graph with
+<code class="docutils literal notranslate"><span class="pre">type='neighbor'</span></code> as an edge attribute.</p></li>
+<li><p>If the agents share the same home, no edge is added and the method exits
+silently.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#piperabm.society.Society.add_family" title="piperabm.society.Society.add_family"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_family</span></code></a></dt><dd><p>Add a family relationship between agents sharing the same home.</p>
+</dd>
+<dt><a class="reference internal" href="#piperabm.society.Society.add_friend" title="piperabm.society.Society.add_friend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_friend</span></code></a></dt><dd><p>Add a user-defined friendship relationship between agents.</p>
+</dd>
+</dl>
+</div>
 </dd></dl>
 
 <dl class="py property">
@@ -505,12 +640,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="model.html">piperabm.Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="measurement.html">piperabm.Measurement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">piperabm.Infrastructure</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">piperabm.Society</a></li>
-<li class="toctree-l1"><a class="reference internal" href="projection.html">piperabm.tools.coordinate.projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mesh.html">piperabm.tools.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measurement.html">Measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">Infrastructure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource.html">Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projection.html">tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh.html">tools.mesh</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
@@ -521,8 +657,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="infrastructure.html" title="previous chapter">piperabm.Infrastructure</a></li>
-      <li>Next: <a href="projection.html" title="next chapter">piperabm.tools.coordinate.projection</a></li>
+      <li>Previous: <a href="infrastructure.html" title="previous chapter">Infrastructure</a></li>
+      <li>Next: <a href="resource.html" title="next chapter">Resource</a></li>
   </ul></li>
 </ul>
 </div>
