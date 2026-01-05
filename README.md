@@ -61,10 +61,15 @@ It has been tested and verified to work with Python versions **3.10** to **3.13*
 
 ## Contributing
 
-Contributions are welcome! Feel free to:
-* Report issues.
-* Submit feature requests.
-* Create pull requests.
+Contributions are welcome, including bug fixes, documentation improvements, and extensions to existing model components.
+
+Please see the full contributor guide in the documentation:
+[Contributing Guide](https://pied-piper.readthedocs.io/latest/contributing.html)
+
+This guide explains:
+- Where to make changes in the codebase
+- How tests are organized and run
+- How to build the documentation locally
 
 ## License
 
