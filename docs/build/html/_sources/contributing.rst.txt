@@ -55,6 +55,25 @@ PiperABM uses automated unit tests to ensure correctness and maintainability.
 
 When adding new features or modifying existing behavior, contributors are encouraged to include appropriate unit tests.
 
+Examples and tutorials
+----------------------
+
+The ``examples/`` directory contains runnable, self-contained examples that demonstrate different modeling workflows and extension patterns in PiperABM.
+
+A curated overview of all available examples, along with brief descriptions and links, is provided in:
+
+- ``examples/README.md``
+
+Examples cover a range of use cases, including minimal single-agent setups, multi-agent interactions, automatic and manual model creation, customization of decision-making and degradation behavior, satellite-based maps, and parallel execution of multiple scenarios.
+
+Each example directory typically contains Python scripts defining the model, infrastructure, and society, along with a local ``README.md`` explaining how to run the example and what it demonstrates.
+
+Contributors adding new examples are encouraged to:
+- Place them in a new or existing subdirectory under ``examples/``
+- Keep examples self-contained and runnable
+- Add an entry to ``examples/README.md`` describing the new example
+- Include a short ``README.md`` explaining the purpose and usage of the example
+
 Building the documentation locally
 ----------------------------------
 

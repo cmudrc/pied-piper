@@ -81,6 +81,21 @@ Place new examples in the <code class="docutils literal notranslate"><span class
 </ul>
 <p>When adding new features or modifying existing behavior, contributors are encouraged to include appropriate unit tests.</p>
 </section>
+<section id="examples-and-tutorials">
+<h2>Examples and tutorials<a class="headerlink" href="#examples-and-tutorials" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory contains runnable, self-contained examples that demonstrate different modeling workflows and extension patterns in PiperABM.</p>
+<p>A curated overview of all available examples, along with brief descriptions and links, is provided in:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">examples/README.md</span></code></p></li>
+</ul>
+<p>Examples cover a range of use cases, including minimal single-agent setups, multi-agent interactions, automatic and manual model creation, customization of decision-making and degradation behavior, satellite-based maps, and parallel execution of multiple scenarios.</p>
+<p>Each example directory typically contains Python scripts defining the model, infrastructure, and society, along with a local <code class="docutils literal notranslate"><span class="pre">README.md</span></code> explaining how to run the example and what it demonstrates.</p>
+<p>Contributors adding new examples are encouraged to:
+- Place them in a new or existing subdirectory under <code class="docutils literal notranslate"><span class="pre">examples/</span></code>
+- Keep examples self-contained and runnable
+- Add an entry to <code class="docutils literal notranslate"><span class="pre">examples/README.md</span></code> describing the new example
+- Include a short <code class="docutils literal notranslate"><span class="pre">README.md</span></code> explaining the purpose and usage of the example</p>
+</section>
 <section id="building-the-documentation-locally">
 <h2>Building the documentation locally<a class="headerlink" href="#building-the-documentation-locally" title="Link to this heading">¶</a></h2>
 <p>PiperABM documentation is built using the Sphinx engine. API documentation is generated automatically from in-code docstrings, while conceptual guides and tutorials are maintained as standalone <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files in <code class="docutils literal notranslate"><span class="pre">docs/source/</span></code>.</p>
