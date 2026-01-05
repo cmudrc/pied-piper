@@ -16,10 +16,8 @@ class Add:
         """
         if id is None:
             id = self.new_id()
-        else:
-            if id in self.agents:
-                id = self.new_id()
-                print("id already exists. replaced with new id.")
+        while id in self.agents:
+            id = self.new_id()
         return id
 
     def new_id(self) -> int:
@@ -100,6 +98,7 @@ class Add:
             neighbors = self.agents_from(home_id=neighbor_home_id)
             for neighbor in neighbors:
                 self.add_neighbor(id_1=id, id_2=neighbor)
+        return id
 
     def add_family(self, id_1: int, id_2: int):
         """

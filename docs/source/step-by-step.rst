@@ -45,6 +45,18 @@ Infrastructure elements include:
 
 The nodes are defined by their position in the world (`pos`), whereas edges are defined by their start and ending positions (`pos_1` and `pos_2`). All the elements can have an optional name and are assigned a unique ID automatically, if no unique ID is given manually.
 
+.. note::
+
+   **ID handling policy**
+
+   IDs for infrastructure elements (homes, markets, junctions, streets) are optional.
+   If no ID is provided, PiperABM automatically assigns a unique identifier.
+
+   If a user-provided ID already exists, PiperABM will **not overwrite** the existing
+   element; instead, a new unique ID is generated automatically. This behavior avoids
+   accidental collisions during rapid prototyping, while still allowing explicit,
+   human-readable IDs (e.g., small integers) for testing and debugging.
+
 To build the infrastructure, we can either manually add elements:
 
 .. code-block:: python
@@ -218,6 +230,13 @@ To build the society, we can either manually add agents and their relationships:
     )
 
 The code above is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation>`_ example.
+
+.. note::
+
+   **ID handling policy**
+
+   Agent IDs follow the same handling policy as infrastructure elements:
+   IDs are optional, automatically generated if omitted, and guaranteed to be unique.
 
 The other method is to automatically generate the society. The generator method creates a society with a given number of agents and other attributes of the society like the Gini index (a measure of inequality), average income, etc.
 

@@ -20,10 +20,8 @@ class Add:
         """
         if id is None:
             id = self.new_id()
-        else:
-            if id in self.nodes:
-                id = self.new_id()
-                print("id already exists. replaced with new id.")
+        while id in self.agents:
+            id = self.new_id()
         return id
 
     def new_id(self):

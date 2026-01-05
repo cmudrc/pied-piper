@@ -68,6 +68,16 @@ Infrastructure elements include:</p>
 <li><p><strong>Neighborhood Access</strong>: Edges that connect homes and markets to the street network, allowing agents to access these nodes. (for more info, see <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure.add_neighborhood_access" title="piperabm.infrastructure.Infrastructure.add_neighborhood_access"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_neighborhood_access()</span></code></a>)</p></li>
 </ul>
 <p>The nodes are defined by their position in the world (<cite>pos</cite>), whereas edges are defined by their start and ending positions (<cite>pos_1</cite> and <cite>pos_2</cite>). All the elements can have an optional name and are assigned a unique ID automatically, if no unique ID is given manually.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>ID handling policy</strong></p>
+<p>IDs for infrastructure elements (homes, markets, junctions, streets) are optional.
+If no ID is provided, PiperABM automatically assigns a unique identifier.</p>
+<p>If a user-provided ID already exists, PiperABM will <strong>not overwrite</strong> the existing
+element; instead, a new unique ID is generated automatically. This behavior avoids
+accidental collisions during rapid prototyping, while still allowing explicit,
+human-readable IDs (e.g., small integers) for testing and debugging.</p>
+</div>
 <p>To build the infrastructure, we can either manually add elements:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Manually add all elements</span>
 <span class="c1"># (Figure 1)</span>
@@ -223,6 +233,12 @@ Society elements includes agents (as nodes) and their relationships (as edges). 
 </pre></div>
 </div>
 <p>The code above is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation">Manual Creation</a> example.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>ID handling policy</strong></p>
+<p>Agent IDs follow the same handling policy as infrastructure elements:
+IDs are optional, automatically generated if omitted, and guaranteed to be unique.</p>
+</div>
 <p>The other method is to automatically generate the society. The generator method creates a society with a given number of agents and other attributes of the society like the Gini index (a measure of inequality), average income, etc.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 2: Automatically generate the society.</span>
 <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
