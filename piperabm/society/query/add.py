@@ -1,6 +1,7 @@
 import numpy as np
 from copy import deepcopy
 
+from piperabm.exceptions import ModelNotBakedError
 from piperabm.society.actions.action_queue import ActionQueue
 from piperabm.society.info import *
 
@@ -46,7 +47,7 @@ class Add:
         Add agent node
         """
         if self.infrastructure.baked is False:
-            raise ValueError("Model is not baked.")
+            raise ModelNotBakedError("Model is not baked.")
         type = "agent"
         id = self.check_id(id)
         self.actions[id] = ActionQueue(agent_id=id)

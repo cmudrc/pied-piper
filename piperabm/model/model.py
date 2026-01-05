@@ -97,6 +97,13 @@ class Model(Serialize, File, Update, Graphics):
         if save is True:
             self.save(state="infrastructure")
 
+    @property
+    def baked(self):
+        """
+        Return whether the model is baked or not.
+        """
+        return self.infrastructure.baked
+
 
 if __name__ == "__main__":
 

@@ -20,7 +20,7 @@ class Add:
         """
         if id is None:
             id = self.new_id()
-        while id in self.agents:
+        while id in self.nodes:
             id = self.new_id()
         return id
 
