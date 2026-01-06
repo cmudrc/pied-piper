@@ -106,7 +106,7 @@ To build the infrastructure, we can either manually add elements:
     )
 
 .. figure:: _static/step-by-step/step_1_manual.png
-   :alt: An example of manually defined infrastrcuture
+   :alt: An example of manually defined infrastructure
    :align: center
 
    **Figure 1:** An example of manually defined infrastructure, after the baking process. The figure is from `Manual Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation>`_ example.
@@ -131,12 +131,12 @@ To build the infrastructure, we can either manually add elements:
     )
 
 .. figure:: _static/step-by-step/step_1_automatic.png
-   :alt: An example of automatically generated infrastrcuture
+   :alt: An example of automatically generated infrastructure
    :align: center
 
    **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `Automatic Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation>`_ example.
 
-For further details on how to load infrastrcuture using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
+For further details on how to load infrastructure using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
 Before continuing to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
 
 .. note::
@@ -330,7 +330,7 @@ Step 3: Run
 
 When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
 During each run step, agents first perform a cost–benefit analysis to choose a destination, initially targeting the nearest market nodes to minimize travel time and resource expenditure . They then navigate through the infrastructure network using the A* algorithm, which finds the shortest path by combining actual travel costs with heuristic estimates . Upon arrival, agents may trade resources either at market nodes or with other agents present; these exchanges are resolved via the Nash Bargaining Solution, which ensures a fair division by maximizing the product of each party’s utility gain over their disagreement points.
-Infrastructure elements will degrade as a result of both aging usage. Agents activity will cause degradation of infrastrcuture elements. This feedback loop means that heavily trafficked routes become progressively slower and more costly to traverse.
+Infrastructure elements will degrade as a result of both aging usage. Agents activity will cause degradation of infrastructure elements. This feedback loop means that heavily trafficked routes become progressively slower and more costly to traverse.
 
 .. figure:: _static/step-by-step/interconnected.png
    :alt: Interconnected nature of infrastructure and society networks
