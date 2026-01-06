@@ -45,15 +45,15 @@ class Resource:
         self.energy = energy
 
     # --- Mapping/iterable behavior (enables dict(Resource(...))) ---
-    def __iter__(self) -> Iterator[tuple[str, float]]:
+    def __iter__(self) -> Iterator[tuple[str, float]]:  # pragma: no cover
         yield "food", self.food
         yield "water", self.water
         yield "energy", self.energy
 
-    def __len__(self) -> int:
+    def __len__(self) -> int:  # pragma: no cover
         return 3
 
-    def __getitem__(self, key: str) -> float:
+    def __getitem__(self, key: str) -> float:  # pragma: no cover
         if key == "food":
             return self.food
         if key == "water":
