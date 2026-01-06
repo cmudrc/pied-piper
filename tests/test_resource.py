@@ -89,6 +89,20 @@ class TestResource(unittest.TestCase):
         }
         self.assertDictEqual(dict(resource), expected_dict)
 
+    def test_len(self):
+        self.assertEqual(self.resource.__len__(), 3)
+
+    def test_getitem(self):
+        self.assertEqual(self.resource.__getitem__("food"), self.resource_dict["food"])
+        self.assertEqual(self.resource.__getitem__("water"), self.resource_dict["water"])
+        self.assertEqual(self.resource.__getitem__("energy"), self.resource_dict["energy"])
+
+    def test_iter(self):
+        self.assertEqual(
+            list(iter(self.resource)),
+            [("food", 10), ("water", 20), ("energy", 30)],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
