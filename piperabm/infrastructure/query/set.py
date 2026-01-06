@@ -4,6 +4,7 @@
 """
 
 from piperabm.tools.nx_query import NxSet
+from piperabm.resource import Resource
 
 
 class Set(NxSet):
@@ -36,6 +37,19 @@ class Set(NxSet):
         if value <= 0:
             value = 0
         self.set_node_attribute(id=id, attribute=name, value=value)
+
+    def set_resources(self, id: int, values: dict | Resource) -> None:
+        """
+        Set agent resources values.
+        """
+        if isinstance(values, Resource):
+            values = dict(values)
+            for name in values:
+                # Delete the key if the value is 0
+                if values[name] == 0:
+                    del values[name]
+        for name in values:
+            self.set_resource(id=id, name=name, value=values[name])
 
     def set_balance(self, id: int, value: float) -> None:
         """

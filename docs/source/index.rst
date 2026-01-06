@@ -32,6 +32,7 @@ This is the documentation for PiperABM, a Python-based agent-based modeling fram
    api/measurement
    api/infrastructure
    api/society
+   api/backend
    api/resource
    api/projection
    api/mesh

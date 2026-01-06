@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Backends &#8212; PiperABM 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Resource" href="resource.html" />
+    <link rel="prev" title="Society" href="society.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="backends">
+<h1>Backends<a class="headerlink" href="#backends" title="Link to this heading">¶</a></h1>
+<p>PiperABM stores model state directly on NetworkX graphs for interoperability and
+custom analysis.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Infrastructure</span></code></a> uses a NetworkX undirected graph (<code class="docutils literal notranslate"><span class="pre">Graph</span></code>)
+accessible via <code class="docutils literal notranslate"><span class="pre">model.infrastructure.G</span></code>.</p></li>
+<li><p><a class="reference internal" href="society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">Society</span></code></a> uses a NetworkX undirected multigraph (<code class="docutils literal notranslate"><span class="pre">MultiGraph</span></code>)
+accessible via <code class="docutils literal notranslate"><span class="pre">model.society.G</span></code>.</p></li>
+</ul>
+<p>Node and edge attributes are stored directly on these graphs. This enables
+tight integration with the NetworkX ecosystem and supports bulk / vectorized
+workflows. Direct graph manipulation bypasses validation performed by the
+high-level API and is therefore intended for advanced users.</p>
+<section id="example-validated-api-vs-direct-graph-access">
+<h2>Example: validated API vs direct graph access<a class="headerlink" href="#example-validated-api-vs-direct-graph-access" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Safe, validated API</span>
+<span class="n">food</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="s2">&quot;food&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">set_resource</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="s2">&quot;food&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">food</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Advanced usage: direct graph access (bypasses validation)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">G</span>
+<span class="n">food</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">agent_id</span><span class="p">][</span><span class="s2">&quot;food&quot;</span><span class="p">]</span>
+<span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">agent_id</span><span class="p">][</span><span class="s2">&quot;food&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">food</span> <span class="o">/</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</section>
+<section id="bulk-updates-example">
+<h2>Bulk updates (example)<a class="headerlink" href="#bulk-updates-example" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">G</span>
+<span class="k">for</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;agent&quot;</span> <span class="ow">and</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alive&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;food&quot;</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">0.9</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PiperABM</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../step-by-step.html">Step-by-Step Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../satellite.html">Working with Satellite Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="measurement.html">Measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="society.html">Society</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource.html">Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projection.html">tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh.html">tools.mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="society.html" title="previous chapter">Society</a></li>
+      <li>Next: <a href="resource.html" title="next chapter">Resource</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Aslan Noorghasemi, Christopher McComb.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/backend.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

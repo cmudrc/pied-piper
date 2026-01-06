@@ -4,6 +4,7 @@
 """
 
 from piperabm.tools.nx_query import NxGet
+from piperabm.resource import Resource
 
 
 class Get(NxGet):
@@ -68,11 +69,25 @@ class Get(NxGet):
         """
         return self.get_edge_attribute(ids=ids, attribute="age_impact")
 
-    def get_resource(self, id: int, name: str) -> float:
+    def get_resource(self, id: int, name: str, object=False) -> float | Resource:
         """
-        Get market *resource* value
+        Get market *resource* value. If object is False, return a float, otherwise return a Resource object.
         """
-        return self.get_node_attribute(id=id, attribute=name)
+        value = self.get_node_attribute(id=id, attribute=name)
+        if object is True:
+            return Resource(**{name: value})
+        return value
+
+    def get_resources(self, id: int, object=False) -> dict | Resource:
+        """
+        Get market resources value. If object is False, return a dict, otherwise return a Resource object.
+        """
+        result = {}
+        for name in self.resource_names:
+            result[name] = self.get_resource(id=id, name=name)
+        if object is False:
+            return Resource(**result)
+        return result
 
     def get_enough_resource(self, id: int, name: str) -> float:
         """
