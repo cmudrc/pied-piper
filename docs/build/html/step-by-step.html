@@ -124,10 +124,10 @@ human-readable IDs (e.g., small integers) for testing and debugging.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id5">
 <img alt="An example of manually defined infrastrcuture" src="_images/step_1_manual.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation">Manual Creation</a> example.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation">Manual Creation</a> example.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>…  or use the methods to automatically generate the infrastructure. The generator method creates a gridworld for streets and randomlly distribute homes. It does NOT create market nodes. For more details, visit <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure.generate" title="piperabm.infrastructure.Infrastructure.generate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate()</span></code></a>.</p>
@@ -147,10 +147,10 @@ human-readable IDs (e.g., small integers) for testing and debugging.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id6">
 <img alt="An example of automatically generated infrastrcuture" src="_images/step_1_automatic.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation">Automatic Creation</a> example.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation">Automatic Creation</a> example.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>For further details on how to load infrastrcuture using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.
@@ -264,18 +264,18 @@ IDs are optional, automatically generated if omitted, and guaranteed to be uniqu
 </pre></div>
 </div>
 <p>Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id7">
 <img alt="OODA loop as the core decision-making framework." src="_images/ooda.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 3:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 3:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Agents consume resources both during travel and from their routine activities; should any of their essential resources (food, water, or energy) drop to zero, the agent is considered “dead” and is removed from the simulation, serving as a critical endpoint that reflects a failure to sustain the population under stress.</p>
-<figure class="align-center" id="id9">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="_images/utility.png"><img alt="Agents utility function" src="_images/utility.png" style="width: 350px;" />
 </a>
 <figcaption>
-<p><span class="caption-text"><strong>Figure 4:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 4:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Agents decision-making can be customized by creating a file named <cite>decision_making.py</cite> with customized functions that overrides the default behavior in runtime:</p>
@@ -322,10 +322,10 @@ IDs are optional, automatically generated if omitted, and guaranteed to be uniqu
 <p>When the model runs, the agents use infrastructure to interact with each other and the environment to gain access to resources. The model runs in descrete time steps, where each step represents a unit of time.
 During each run step, agents first perform a cost–benefit analysis to choose a destination, initially targeting the nearest market nodes to minimize travel time and resource expenditure . They then navigate through the infrastructure network using the A* algorithm, which finds the shortest path by combining actual travel costs with heuristic estimates . Upon arrival, agents may trade resources either at market nodes or with other agents present; these exchanges are resolved via the Nash Bargaining Solution, which ensures a fair division by maximizing the product of each party’s utility gain over their disagreement points.
 Infrastructure elements will degrade as a result of both aging usage. Agents activity will cause degradation of infrastrcuture elements. This feedback loop means that heavily trafficked routes become progressively slower and more costly to traverse.</p>
-<figure class="align-center" id="id10">
+<figure class="align-center" id="id9">
 <img alt="Interconnected nature of infrastructure and society networks" src="_images/interconnected.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure 5:</strong> PiperABM models the interconnected nature of infrastructure and society networks.</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
+<p><span class="caption-text"><strong>Figure 5:</strong> PiperABM models the interconnected nature of infrastructure and society networks.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The <a class="reference internal" href="api/model.html#piperabm.Model.run" title="piperabm.Model.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method of the <a class="reference internal" href="api/model.html#piperabm.Model" title="piperabm.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.Model</span></code></a> class is used for running the simulation. An example of running the model is as follows:</p>
@@ -340,11 +340,18 @@ Infrastructure elements will degrade as a result of both aging usage. Agents act
 </div>
 </section>
 <section id="step-4-results">
-<span id="id5"></span><h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
-<p>When simulation running is done, if the <cite>save</cite> attribute is <cite>True</cite>, the states of model accross the time steps will be saved. (For more information, please refer to <a class="reference internal" href="api/model.html#piperabm.Model.run" title="piperabm.Model.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>)
-All these files will be located inside <cite>result</cite> folder in the working directory.
-Now, is it possible to create an instance of <a class="reference internal" href="api/measurement.html#piperabm.model.Measurement" title="piperabm.model.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.Measurement</span></code></a> to measure the various parameters for the length of simulation. Currently, “accessibility” and “travel distance” are supported. (For more information, please refer to <a class="reference internal" href="api/measurement.html#piperabm.model.measurement.accessibility.Accessibility" title="piperabm.model.measurement.accessibility.Accessibility"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.measurement.accessibility.Accessibility</span></code></a> and <a class="reference internal" href="api/measurement.html#piperabm.model.measurement.travel_distance.TravelDistance" title="piperabm.model.measurement.travel_distance.TravelDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.model.measurement.travel_distance.TravelDistance</span></code></a>)
-The measured values will be saved to disk for future reference.</p>
+<h2>Step 4: Results<a class="headerlink" href="#step-4-results" title="Link to this heading">¶</a></h2>
+<p>When a simulation finishes, if <code class="docutils literal notranslate"><span class="pre">save=True</span></code> the model writes the run outputs to the
+<code class="docutils literal notranslate"><span class="pre">result</span></code> directory in the working directory (see <a class="reference internal" href="api/model.html#piperabm.Model.run" title="piperabm.Model.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>).</p>
+<p>PiperABM saves results in a form that supports <strong>both reproducibility and fast post-hoc analysis</strong>:
+an initial model state (stored as NetworkX graphs) plus a sequence of per-step <strong>deltas</strong> that record
+how the state changes over time. These saved deltas can be replayed step-by-step without rerunning
+the full simulation logic, and they are also used by the measurement pipeline.</p>
+<section id="post-hoc-measurements">
+<h3>Post-hoc measurements<a class="headerlink" href="#post-hoc-measurements" title="Link to this heading">¶</a></h3>
+<p>Measurements are intentionally decoupled from simulation execution. Using the saved deltas, the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code> interface can compute model-level metrics after the run completes
+(e.g., accessibility and travel distance) and store them to disk for later inspection.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 
@@ -353,7 +360,7 @@ The measured values will be saved to disk for future reference.</p>
 <span class="n">measurement</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Then, we can access the measurements later:</p>
+<p>To load and visualize the computed measurements later:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 
@@ -364,9 +371,16 @@ The measured values will be saved to disk for future reference.</p>
 <span class="n">measurement</span><span class="o">.</span><span class="n">travel_distance</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>It is also possible to access and filter the values to create customized plots. Please refer to the corresponding documentation.</p>
-<p>Transactions are also recorded in a seperate file named <cite>transactions.csv</cite> which records the transactions between two agents or an agent with market node. This is also saved inside the <cite>result</cite> folder in the working directory.</p>
-<p>Another way of working with the simulation results is to render animation. This is useful for face-validity but requires setting proper step-size for smooth animation.</p>
+</section>
+<section id="transactions">
+<h3>Transactions<a class="headerlink" href="#transactions" title="Link to this heading">¶</a></h3>
+<p>If enabled, transactions are recorded in a separate <code class="docutils literal notranslate"><span class="pre">transactions.csv</span></code> file in the <code class="docutils literal notranslate"><span class="pre">result</span></code> folder,
+capturing exchanges between agents and/or markets.</p>
+</section>
+<section id="visualization-animation">
+<h3>Visualization (animation)<a class="headerlink" href="#visualization-animation" title="Link to this heading">¶</a></h3>
+<p>Animation is useful for exploratory visualization and face-validity checks. It replays the saved run
+data using an appropriate step-size.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 
@@ -375,28 +389,33 @@ The measured values will be saved to disk for future reference.</p>
 <span class="n">model</span><span class="o">.</span><span class="n">animate</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Moreover, it is possible to load the initial state of model, and push it step by step forward. Any time along the process, it is possible to read the internal values, such as position of agents and the amount of balance they have.</p>
+</section>
+<section id="deterministic-replay-and-state-inspection">
+<h3>Deterministic replay and state inspection<a class="headerlink" href="#deterministic-replay-and-state-inspection" title="Link to this heading">¶</a></h3>
+<p>You can load the saved initial state and advance the model one step at a time using the saved deltas.
+This enables efficient inspection of internal state at arbitrary time steps without rerunning the full
+simulation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">piperabm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_intial</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_initial</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>  <span class="c1"># Push the model one step forward using the saved information</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">4153</span><span class="p">))</span>  <span class="c1"># Check the balance for a certain agent</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">4153</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Another useful method is to directly accessing the backend for networks. The <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.infrastructure.Infrastructure</span></code></a> class uses a <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/graph.html">NetworkX Undirected Graph</a> as its backend and can be directly accessed as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NetworkX undirected graph backend for infrastructure</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infrastrcuture</span><span class="o">.</span><span class="n">G</span>
+</section>
+<section id="raw-graph-access-networkx">
+<h3>Raw graph access (NetworkX)<a class="headerlink" href="#raw-graph-access-networkx" title="Link to this heading">¶</a></h3>
+<p>Both infrastructure and society are stored as NetworkX graphs and can be accessed directly for custom
+analysis and integration with the NetworkX ecosystem.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">G_infra</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">G</span>
+<span class="n">G_soc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">G</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.society.Society</span></code></a> class uses a <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/multigraph.html">NetworkX Undirected Multi Graph</a> as its backend and can be directly accessed as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NetworkX undirected multi graph backend for society</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">G</span>
-</pre></div>
-</div>
+</section>
 </section>
 </section>
 
@@ -444,12 +463,13 @@ The measured values will be saved to disk for future reference.</p>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/model.html">piperabm.Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">piperabm.Measurement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">piperabm.Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/society.html">piperabm.Society</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/projection.html">piperabm.tools.coordinate.projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/mesh.html">piperabm.tools.mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/measurement.html">Measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/society.html">Society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/resource.html">Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/projection.html">tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/mesh.html">tools.mesh</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>

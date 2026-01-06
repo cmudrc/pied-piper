@@ -13,6 +13,17 @@ class TestResource(unittest.TestCase):
 
     def test_resource_addition(self):
         other_resource_dict = {"food": 10, "water": 20, "energy": 30}
+        other_resource = Resource(**other_resource_dict)
+        resource = self.resource + other_resource
+        expected_dict = {
+            "food": self.resource_dict["food"] + other_resource_dict["food"],
+            "water": self.resource_dict["water"] + other_resource_dict["water"],
+            "energy": self.resource_dict["energy"] + other_resource_dict["energy"],
+        }
+        self.assertDictEqual(dict(resource), expected_dict)
+
+    def test_resource_addition_dict(self):
+        other_resource_dict = {"food": 10, "water": 20, "energy": 30}
         resource = self.resource + other_resource_dict
         expected_dict = {
             "food": self.resource_dict["food"] + other_resource_dict["food"],
@@ -22,6 +33,17 @@ class TestResource(unittest.TestCase):
         self.assertDictEqual(dict(resource), expected_dict)
 
     def test_resource_subtraction(self):
+        other_resource_dict = {"food": 10, "water": 20, "energy": 30}
+        other_resource = Resource(**other_resource_dict)
+        resource = self.resource - other_resource
+        expected_dict = {
+            "food": self.resource_dict["food"] - other_resource_dict["food"],
+            "water": self.resource_dict["water"] - other_resource_dict["water"],
+            "energy": self.resource_dict["energy"] - other_resource_dict["energy"],
+        }
+        self.assertDictEqual(dict(resource), expected_dict)
+
+    def test_resource_subtraction_dict(self):
         other_resource_dict = {"food": 10, "water": 20, "energy": 30}
         resource = self.resource - other_resource_dict
         expected_dict = {
@@ -40,12 +62,30 @@ class TestResource(unittest.TestCase):
         }
         self.assertDictEqual(dict(resource), expected_dict)
 
+    def test_resource_multiplication_dict(self):
+        resource = self.resource * {"food": 2}
+        expected_dict = {
+            "food": self.resource_dict["food"] * 2,
+            "water": self.resource_dict["water"] * 1,
+            "energy": self.resource_dict["energy"] * 1,
+        }
+        self.assertDictEqual(dict(resource), expected_dict)
+
     def test_resource_division(self):
         resource = self.resource / 2
         expected_dict = {
             "food": self.resource_dict["food"] / 2,
             "water": self.resource_dict["water"] / 2,
             "energy": self.resource_dict["energy"] / 2,
+        }
+        self.assertDictEqual(dict(resource), expected_dict)
+
+    def test_resource_division_dict(self):
+        resource = self.resource / {"food": 2}
+        expected_dict = {
+            "food": self.resource_dict["food"] / 2,
+            "water": self.resource_dict["water"] / 1,
+            "energy": self.resource_dict["energy"] / 1,
         }
         self.assertDictEqual(dict(resource), expected_dict)
 

@@ -351,15 +351,23 @@ The :meth:`~piperabm.Model.run` method of the :class:`piperabm.Model` class is u
     )
 
 
-.. _step-4-results:
-
 Step 4: Results
 --------------------------------
 
-When simulation running is done, if the `save` attribute is `True`, the states of model accross the time steps will be saved. (For more information, please refer to :meth:`~piperabm.Model.run`)
-All these files will be located inside `result` folder in the working directory.
-Now, is it possible to create an instance of :class:`piperabm.model.Measurement` to measure the various parameters for the length of simulation. Currently, "accessibility" and "travel distance" are supported. (For more information, please refer to :class:`piperabm.model.measurement.accessibility.Accessibility` and :class:`piperabm.model.measurement.travel_distance.TravelDistance`)
-The measured values will be saved to disk for future reference.
+When a simulation finishes, if ``save=True`` the model writes the run outputs to the
+``result`` directory in the working directory (see :meth:`~piperabm.Model.run`).
+
+PiperABM saves results in a form that supports **both reproducibility and fast post-hoc analysis**:
+an initial model state (stored as NetworkX graphs) plus a sequence of per-step **deltas** that record
+how the state changes over time. These saved deltas can be replayed step-by-step without rerunning
+the full simulation logic, and they are also used by the measurement pipeline.
+
+Post-hoc measurements
+^^^^^^^^^^^^^^^^^^^^^
+
+Measurements are intentionally decoupled from simulation execution. Using the saved deltas, the
+:class:`~piperabm.Measurement` interface can compute model-level metrics after the run completes
+(e.g., accessibility and travel distance) and store them to disk for later inspection.
 
 .. code-block:: python
 
@@ -370,7 +378,7 @@ The measured values will be saved to disk for future reference.
     measurement = pa.Measurement(path=path)
     measurement.measure()
 
-Then, we can access the measurements later:
+To load and visualize the computed measurements later:
 
 .. code-block:: python
 
@@ -383,11 +391,17 @@ Then, we can access the measurements later:
     measurement.accessibility.show()
     measurement.travel_distance.show()
 
-It is also possible to access and filter the values to create customized plots. Please refer to the corresponding documentation.
+Transactions
+^^^^^^^^^^^^
 
-Transactions are also recorded in a seperate file named `transactions.csv` which records the transactions between two agents or an agent with market node. This is also saved inside the `result` folder in the working directory.
+If enabled, transactions are recorded in a separate ``transactions.csv`` file in the ``result`` folder,
+capturing exchanges between agents and/or markets.
 
-Another way of working with the simulation results is to render animation. This is useful for face-validity but requires setting proper step-size for smooth animation.
+Visualization (animation)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Animation is useful for exploratory visualization and face-validity checks. It replays the saved run
+data using an appropriate step-size.
 
 .. code-block:: python
 
@@ -398,7 +412,12 @@ Another way of working with the simulation results is to render animation. This 
     model = pa.Model(path=path)
     model.animate()
 
-Moreover, it is possible to load the initial state of model, and push it step by step forward. Any time along the process, it is possible to read the internal values, such as position of agents and the amount of balance they have.
+Deterministic replay and state inspection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can load the saved initial state and advance the model one step at a time using the saved deltas.
+This enables efficient inspection of internal state at arbitrary time steps without rerunning the full
+simulation.
 
 .. code-block:: python
 
@@ -407,21 +426,18 @@ Moreover, it is possible to load the initial state of model, and push it step by
 
     path = os.path.dirname(os.path.realpath(__file__))
     model = pa.Model(path=path)
-    model.load_intial()
+    model.load_initial()
     for _ in range(10):
-        model.push()  # Push the model one step forward using the saved information
-        print(model.society.get_balance(id=4153))  # Check the balance for a certain agent
+        model.push()
+        print(model.society.get_balance(id=4153))
 
-Another useful method is to directly accessing the backend for networks. The :class:`piperabm.infrastructure.Infrastructure` class uses a `NetworkX Undirected Graph <https://networkx.org/documentation/stable/reference/classes/graph.html>`_ as its backend and can be directly accessed as follows:
+Raw graph access (NetworkX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: python
-
-    # NetworkX undirected graph backend for infrastructure
-    G = model.infrastrcuture.G
-
-The :class:`piperabm.society.Society` class uses a `NetworkX Undirected Multi Graph <https://networkx.org/documentation/stable/reference/classes/multigraph.html>`_ as its backend and can be directly accessed as follows:
+Both infrastructure and society are stored as NetworkX graphs and can be accessed directly for custom
+analysis and integration with the NetworkX ecosystem.
 
 .. code-block:: python
 
-    # NetworkX undirected multi graph backend for society
-    G = model.society.G
+    G_infra = model.infrastructure.G
+    G_soc = model.society.G
