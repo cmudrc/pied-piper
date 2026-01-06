@@ -202,6 +202,16 @@ By default, only the street edges are sibject to degradation. However, the user 
 
 For more information about custom degradation, refer to `custom-degradation <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation>`_ example.
 
+.. note::
+
+    **Advanced customization**
+
+    Advanced users may also modify or extend the default degradation implementation
+    directly in the PiperABM source code (see
+    ``piperabm/infrastructure/degradation.py``).
+    The working-directory override mechanism (via a local ``degradation.py`` file)
+    provides a user-facing alternative that avoids modifying the library source code.
+
 
 .. _step-2-build-society:
 
@@ -320,7 +330,17 @@ Agents decision-making can be customized by creating a file named `decision_maki
             score = total_value_there - total_fuel_value
             return score
 
-For more information about custom degradation, refer to `custom-decision-making <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making>`_ example.
+For more information about custom decision-making, refer to `custom-decision-making <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making>`_ example.
+
+.. note::
+
+    **Advanced customization**
+
+    Advanced users may also modify or extend the default decision-making implementation
+    directly in the PiperABM source code (see
+    ``piperabm/society/decision_making.py``).
+    The working-directory override mechanism (via a local ``decision_making.py`` file)
+    provides a user-facing alternative that avoids modifying the library source code.
 
 
 .. _step-3-run:
@@ -441,3 +461,12 @@ analysis and integration with the NetworkX ecosystem.
 
     G_infra = model.infrastructure.G
     G_soc = model.society.G
+
+.. tip::
+
+   **Which result workflow should I use?**
+
+   - Use ``Measurement`` for aggregate metrics across the run.
+   - Use ``model.push()`` for step-by-step debugging and state inspection.
+   - Use ``model.animate()`` for qualitative visualization / face-validity checks.
+   - Use ``model.infrastructure.G`` / ``model.society.G`` for custom NetworkX-based analysis.

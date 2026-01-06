@@ -209,6 +209,15 @@ By default, only the street edges are sibject to degradation. However, the user 
 </pre></div>
 </div>
 <p>For more information about custom degradation, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation">custom-degradation</a> example.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Advanced customization</strong></p>
+<p>Advanced users may also modify or extend the default degradation implementation
+directly in the PiperABM source code (see
+<code class="docutils literal notranslate"><span class="pre">piperabm/infrastructure/degradation.py</span></code>).
+The working-directory override mechanism (via a local <code class="docutils literal notranslate"><span class="pre">degradation.py</span></code> file)
+provides a user-facing alternative that avoids modifying the library source code.</p>
+</div>
 </section>
 <section id="step-2-build-the-society">
 <span id="step-2-build-society"></span><h2>Step 2: Build the Society<a class="headerlink" href="#step-2-build-the-society" title="Link to this heading">¶</a></h2>
@@ -315,7 +324,16 @@ IDs are optional, automatically generated if omitted, and guaranteed to be uniqu
         <span class="k">return</span> <span class="n">score</span>
 </pre></div>
 </div>
-<p>For more information about custom degradation, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making">custom-decision-making</a> example.</p>
+<p>For more information about custom decision-making, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making">custom-decision-making</a> example.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Advanced customization</strong></p>
+<p>Advanced users may also modify or extend the default decision-making implementation
+directly in the PiperABM source code (see
+<code class="docutils literal notranslate"><span class="pre">piperabm/society/decision_making.py</span></code>).
+The working-directory override mechanism (via a local <code class="docutils literal notranslate"><span class="pre">decision_making.py</span></code> file)
+provides a user-facing alternative that avoids modifying the library source code.</p>
+</div>
 </section>
 <section id="step-3-run">
 <span id="id4"></span><h2>Step 3: Run<a class="headerlink" href="#step-3-run" title="Link to this heading">¶</a></h2>
@@ -414,6 +432,16 @@ analysis and integration with the NetworkX ecosystem.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">G_infra</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">G</span>
 <span class="n">G_soc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">G</span>
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Which result workflow should I use?</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">Measurement</span></code> for aggregate metrics across the run.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">model.push()</span></code> for step-by-step debugging and state inspection.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">model.animate()</span></code> for qualitative visualization / face-validity checks.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">model.infrastructure.G</span></code> / <code class="docutils literal notranslate"><span class="pre">model.society.G</span></code> for custom NetworkX-based analysis.</p></li>
+</ul>
 </div>
 </section>
 </section>
