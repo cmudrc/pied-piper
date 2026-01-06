@@ -137,6 +137,7 @@ To build the infrastructure, we can either manually add elements:
    **Figure 2:** An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from `Automatic Creation <https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation>`_ example.
 
 For further details on how to load infrastructure using satellite data and maps, refer to the :ref:`Working with Satellite Data <working-with-satellite-data>`.
+Resources may be provided as plain dictionaries (default) or as instances of the optional Resource helper class; see the API reference for details.
 Before continuing to the next step, we need to "bake" the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit :meth:`~piperabm.Model.bake`.
 
 .. note::
@@ -274,6 +275,7 @@ The other method is to automatically generate the society. The generator method 
         average_balance=1000,
     )
 
+Resources may be provided as plain dictionaries (default) or as instances of the optional Resource helper class; see the API reference for details.
 Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.
 
 .. figure:: _static/step-by-step/ooda.png

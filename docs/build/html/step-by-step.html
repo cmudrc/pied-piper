@@ -154,6 +154,7 @@ human-readable IDs (e.g., small integers) for testing and debugging.</p>
 </figcaption>
 </figure>
 <p>For further details on how to load infrastructure using satellite data and maps, refer to the <a class="reference internal" href="satellite.html#working-with-satellite-data"><span class="std std-ref">Working with Satellite Data</span></a>.
+Resources may be provided as plain dictionaries (default) or as instances of the optional Resource helper class; see the API reference for details.
 Before continuing to the next step, we need to “bake” the infrastructure. The process of baking finalizes the infrastructure setup that involves applying certain graph grammars to create a physically sensinble network. For more information, please visit <a class="reference internal" href="api/model.html#piperabm.Model.bake" title="piperabm.Model.bake"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bake()</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -272,7 +273,8 @@ IDs are optional, automatically generated if omitted, and guaranteed to be uniqu
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.</p>
+<p>Resources may be provided as plain dictionaries (default) or as instances of the optional Resource helper class; see the API reference for details.
+Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.</p>
 <figure class="align-center" id="id7">
 <img alt="OODA loop as the core decision-making framework." src="_images/ooda.png" />
 <figcaption>

@@ -35,10 +35,31 @@
             
   <section id="resource">
 <h1>Resource<a class="headerlink" href="#resource" title="Link to this heading">¶</a></h1>
-<p>The <a class="reference internal" href="#piperabm.resource.Resource" title="piperabm.resource.Resource"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.resource.Resource</span></code></a> class provides a lightweight container
-for resource quantities (food, water, energy) with validation and arithmetic
+<p>Resources may be provided as plain dictionaries (default) or as instances of the optional <a class="reference internal" href="#piperabm.resource.Resource" title="piperabm.resource.Resource"><code class="xref py py-class docutils literal notranslate"><span class="pre">piperabm.resource.Resource</span></code></a> helper class.
+This class provides a lightweight container for resource quantities (food, water, energy) with validation and arithmetic
 support. It is an optional convenience wrapper; internally, PiperABM stores
 resources as plain dictionaries attached to NetworkX graph nodes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.resource</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resource</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span><span class="n">resources</span><span class="o">=</span><span class="n">Resource</span><span class="p">(</span><span class="n">food</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">water</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1"># An alternative to:</span>
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">add_agent</span><span class="p">(</span><span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;food&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;water&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrive resources as a Resource object</span>
+<span class="n">resources</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_resources</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Retrive resources as a dictionary</span>
+<span class="n">resources</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_resources</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since the Resource class supports arithmetic operations, it can be used to easily manipulate resource quantities.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrive resources as a Resource object</span>
+<span class="n">resources</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">get_resources</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">resources</span> <span class="o">=*</span> <span class="mi">2</span>  <span class="c1"># Multiply all resource quantities by 2</span>
+<span class="n">resources</span> <span class="o">=+</span> <span class="n">Resource</span><span class="p">(</span><span class="n">food</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Add 1 unit of food</span>
+<span class="n">resources</span> <span class="o">=-</span> <span class="p">{</span><span class="s2">&quot;water&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>  <span class="c1"># Subtract 1 unit of water</span>
+</pre></div>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="piperabm.resource.Resource">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.resource.</span></span><span class="sig-name descname"><span class="pre">Resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">food</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.resource.Resource" title="Link to this definition">¶</a></dt>
