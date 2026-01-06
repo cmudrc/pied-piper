@@ -11,6 +11,13 @@ PiperABM documentation
 
 This is the documentation for PiperABM, a Python-based agent-based modeling framework designed for simulating community resilience.
 
+.. figure:: https://raw.githubusercontent.com/cmudrc/pied-piper/refs/heads/main/assets/960px-Pied_Piper2.jpg
+   :align: center
+   :alt: Illustration of the Pied Piper of Hamelin
+   :class: main-figure
+   
+   Illustration by Kate Greenaway, originally published in Robert Browning’s *The Pied Piper of Hamelin*.
+
 .. toctree::
    :maxdepth: 1
    :caption: Installation
