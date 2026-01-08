@@ -18,7 +18,8 @@ class CustomDegradation(Degradation):
         return (
             1 + (self.infrastructure.coeff_usage * usage_impact) + (self.infrastructure.coeff_age * (age_impact ** 2))
         )
-        
+
+...
 model.infrastructure.set_degradation(CustomDegradation)
 ```
 

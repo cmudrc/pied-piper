@@ -38,7 +38,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">piperabm.infrastructure.</span></span><span class="sig-name descname"><span class="pre">Infrastructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeff_usage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generate</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Degradation</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Serialize</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Graphics</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Stat</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generate</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Serialize</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Graphics</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Stat</span></code></p>
 <p>Represent infrastructure network. Within the object, a <cite>nx.Graph()</cite> instance is used as backend.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -145,18 +145,6 @@ this value to match the initial <code class="docutils literal notranslate"><span
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.adjusted_length">
-<span class="sig-name descname"><span class="pre">adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.adjusted_length" title="Link to this definition">¶</a></dt>
-<dd><p>Return edge <em>adjusted_length</em></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.adjustment_factor">
-<span class="sig-name descname"><span class="pre">adjustment_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.adjustment_factor" title="Link to this definition">¶</a></dt>
-<dd><p>Return edge <em>adjustment_factor</em></p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.bake">
 <span class="sig-name descname"><span class="pre">bake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proximity_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.220446049250313e-16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.bake" title="Link to this definition">¶</a></dt>
 <dd><p>Bake the network using grammar rules</p>
@@ -166,18 +154,6 @@ this value to match the initial <code class="docutils literal notranslate"><span
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.baked">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">baked</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.baked" title="Link to this definition">¶</a></dt>
 <dd><p>Check if the network is fully baked</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.calculate_adjusted_length">
-<span class="sig-name descname"><span class="pre">calculate_adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustment_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.calculate_adjusted_length" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate edge <em>adjusted_length</em></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.calculate_adjustment_factor">
-<span class="sig-name descname"><span class="pre">calculate_adjustment_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usage_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_impact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.calculate_adjustment_factor" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate adjustment factor</p>
 </dd></dl>
 
 <dl class="py method">
@@ -473,6 +449,12 @@ this value to match the initial <code class="docutils literal notranslate"><span
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.set_degradation">
+<span class="sig-name descname"><span class="pre">set_degradation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.set_degradation" title="Link to this definition">¶</a></dt>
+<dd><p>Set the degradation class to use for this infrastructure. The class must be a subclass of Degradation.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.set_edge_attribute">
 <span class="sig-name descname"><span class="pre">set_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.set_edge_attribute" title="Link to this definition">¶</a></dt>
 <dd><p>Set edge attribute in networkx graph</p>
@@ -520,12 +502,6 @@ this value to match the initial <code class="docutils literal notranslate"><span
 <dd><p>Return all street edges</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.top_degraded_edges">
-<span class="sig-name descname"><span class="pre">top_degraded_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.top_degraded_edges" title="Link to this definition">¶</a></dt>
-<dd><p>Filter most degradaded edges by their length percentage</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.type">
 <span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'infrastructure'</span></em><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.type" title="Link to this definition">¶</a></dt>
@@ -535,12 +511,6 @@ this value to match the initial <code class="docutils literal notranslate"><span
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.update" title="Link to this definition">¶</a></dt>
 <dd><p>Update the network</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.update_adjusted_length">
-<span class="sig-name descname"><span class="pre">update_adjusted_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.update_adjusted_length" title="Link to this definition">¶</a></dt>
-<dd><p>Update <em>adjusted_length</em> value</p>
 </dd></dl>
 
 </dd></dl>

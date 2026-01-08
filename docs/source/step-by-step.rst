@@ -186,20 +186,27 @@ When edges degrade, they become less efficient, therefore, it will take longer f
     adjusted\_length = length \times adjustment\_factor
 
 The adjustement factor is calculate using the `calculate_adjustment_factor` method of the `Degradation` class. This method takes `usage_impact` and `age_impact` of the element, and by combining them with the `coeff_age` and `coeff_usage` attributes, calculates the "adjustement factor".
-By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a `degradation.py` file in the working directory:
+By default, only the street edges are subject to degradation. However, the user can customize the degradation process by subclassing
+:class:`~piperabm.infrastructure.degradation.Degradation` and explicitly
+injecting it into the infrastructure via :meth:`~piperabm.infrastructure.Infrastructure.set_degradation`:
 
 .. code-block:: python
 
-    # The file name should be `degradation.py` and it needs to be located in the wokring directory of the simulation.
     from piperabm.infrastructure.degradation import Degradation
 
     class CustomDegradation(Degradation):
 
-        def calculate_adjustment_factor(self, usage_impact: float, age_impact: float) -> float:
+        def calculate_adjustment_factor(
+            self, usage_impact: float, age_impact: float
+        ) -> float:
             """
             Calculate adjustment factor using a custom formula.
             """
-            return 1 + (self.coeff_usage * usage_impact ** 1.2) + (self.coeff_age * age_impact)
+            return (
+                1 + (self.infrastructure.coeff_usage * usage_impact) + (self.infrastructure.coeff_age * (age_impact ** 2))
+            )
+
+    model.infrastructure.set_degradation(CustomDegradation)
 
 For more information about custom degradation, refer to `custom-degradation <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation>`_ example.
 
@@ -210,7 +217,7 @@ For more information about custom degradation, refer to `custom-degradation <htt
     Advanced users may also modify or extend the default degradation implementation
     directly in the PiperABM source code (see
     ``piperabm/infrastructure/degradation.py``).
-    The working-directory override mechanism (via a local ``degradation.py`` file)
+    The working-directory override mechanism 
     provides a user-facing alternative that avoids modifying the library source code.
 
 
@@ -293,7 +300,9 @@ Agents consume resources both during travel and from their routine activities; s
 
    **Figure 4:** Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.
 
-Agents decision-making can be customized by creating a file named `decision_making.py` with customized functions that overrides the default behavior in runtime:
+Agents decision-making can be customized by subclassing
+:class:`~piperabm.society.decision_making.DecisionMaking` and explicitly injecting it
+into the society via :meth:`~piperabm.society.Society.set_decision_making`:
 
 .. code-block:: python
 
@@ -302,35 +311,9 @@ Agents decision-making can be customized by creating a file named `decision_maki
 
     class CustomDecisionMaking(DecisionMaking):
 
-        def destination_score(self, agent_id: int, destination_id: int, is_market: bool) -> float:
-            """
-            Destination score
-            """
-            # Calculate the estimated amount of fuel required
-            travel_duration = self.estimated_duration(agent_id, destination_id)
-            fuel_resources = {}
-            for name in self.resource_names:
-                fuel_resources[name] = self.transportation_resource_rates[name] * travel_duration
-            # Calculate the value of required fuel
-            fuel_possible = True
-            for name in self.resource_names:
-                if fuel_resources[name] > self.get_resource(id=agent_id, name=name):
-                    fuel_possible = False
-            if fuel_possible is True:
-                total_fuel_value = 0
-                for name in self.resource_names:
-                    fuel_value = fuel_resources[name] * self.prices[name]
-                    total_fuel_value += fuel_value
-            else:
-                total_fuel_value = SYMBOLS['inf']
-            # Calculate the value of resources there
-            resources_there = self.resources_in(node_id=destination_id, is_market=is_market)
-            total_value_there = 0
-            for name in self.resource_names:
-                total_value_there += resources_there[name] * self.prices[name]
-            # Calculate score
-            score = total_value_there - total_fuel_value
-            return score
+        ...
+    
+    model.society.set_decision_making(CustomDecisionMaking)
 
 For more information about custom decision-making, refer to `custom-decision-making <https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making>`_ example.
 
@@ -341,7 +324,7 @@ For more information about custom decision-making, refer to `custom-decision-mak
     Advanced users may also modify or extend the default decision-making implementation
     directly in the PiperABM source code (see
     ``piperabm/society/decision_making.py``).
-    The working-directory override mechanism (via a local ``decision_making.py`` file)
+    The working-directory override mechanism 
     provides a user-facing alternative that avoids modifying the library source code.
 
 

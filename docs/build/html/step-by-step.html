@@ -196,17 +196,24 @@ When edges degrade, they become less efficient, therefore, it will take longer f
 <div class="math notranslate nohighlight">
 \[adjusted\_length = length \times adjustment\_factor\]</div>
 <p>The adjustement factor is calculate using the <cite>calculate_adjustment_factor</cite> method of the <cite>Degradation</cite> class. This method takes <cite>usage_impact</cite> and <cite>age_impact</cite> of the element, and by combining them with the <cite>coeff_age</cite> and <cite>coeff_usage</cite> attributes, calculates the “adjustement factor”.
-By default, only the street edges are sibject to degradation. However, the user can customize the degradation process by creating a <cite>degradation.py</cite> file in the working directory:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The file name should be `degradation.py` and it needs to be located in the wokring directory of the simulation.</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.infrastructure.degradation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Degradation</span>
+By default, only the street edges are subject to degradation. However, the user can customize the degradation process by subclassing
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Degradation</span></code> and explicitly
+injecting it into the infrastructure via <a class="reference internal" href="api/infrastructure.html#piperabm.infrastructure.Infrastructure.set_degradation" title="piperabm.infrastructure.Infrastructure.set_degradation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_degradation()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.infrastructure.degradation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Degradation</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CustomDegradation</span><span class="p">(</span><span class="n">Degradation</span><span class="p">):</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_adjustment_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">usage_impact</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">age_impact</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_adjustment_factor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">usage_impact</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">age_impact</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate adjustment factor using a custom formula.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeff_usage</span> <span class="o">*</span> <span class="n">usage_impact</span> <span class="o">**</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeff_age</span> <span class="o">*</span> <span class="n">age_impact</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">coeff_usage</span> <span class="o">*</span> <span class="n">usage_impact</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">coeff_age</span> <span class="o">*</span> <span class="p">(</span><span class="n">age_impact</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">infrastructure</span><span class="o">.</span><span class="n">set_degradation</span><span class="p">(</span><span class="n">CustomDegradation</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For more information about custom degradation, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation">custom-degradation</a> example.</p>
@@ -216,7 +223,7 @@ By default, only the street edges are sibject to degradation. However, the user 
 <p>Advanced users may also modify or extend the default degradation implementation
 directly in the PiperABM source code (see
 <code class="docutils literal notranslate"><span class="pre">piperabm/infrastructure/degradation.py</span></code>).
-The working-directory override mechanism (via a local <code class="docutils literal notranslate"><span class="pre">degradation.py</span></code> file)
+The working-directory override mechanism
 provides a user-facing alternative that avoids modifying the library source code.</p>
 </div>
 </section>
@@ -289,41 +296,17 @@ Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the d
 <p><span class="caption-text"><strong>Figure 4:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>Agents decision-making can be customized by creating a file named <cite>decision_making.py</cite> with customized functions that overrides the default behavior in runtime:</p>
+<p>Agents decision-making can be customized by subclassing
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionMaking</span></code> and explicitly injecting it
+into the society via <a class="reference internal" href="api/society.html#piperabm.society.Society.set_decision_making" title="piperabm.society.Society.set_decision_making"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_decision_making()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The file name should be `decision_making.py` and it needs to be located in the wokring directory of the simulation.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">piperabm.society.decision_making</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionMaking</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CustomDecisionMaking</span><span class="p">(</span><span class="n">DecisionMaking</span><span class="p">):</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">destination_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">destination_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">is_market</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Destination score</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Calculate the estimated amount of fuel required</span>
-        <span class="n">travel_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimated_duration</span><span class="p">(</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">destination_id</span><span class="p">)</span>
-        <span class="n">fuel_resources</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
-            <span class="n">fuel_resources</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transportation_resource_rates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="n">travel_duration</span>
-        <span class="c1"># Calculate the value of required fuel</span>
-        <span class="n">fuel_possible</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">fuel_resources</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">agent_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
-                <span class="n">fuel_possible</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">fuel_possible</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">total_fuel_value</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
-                <span class="n">fuel_value</span> <span class="o">=</span> <span class="n">fuel_resources</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-                <span class="n">total_fuel_value</span> <span class="o">+=</span> <span class="n">fuel_value</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">total_fuel_value</span> <span class="o">=</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="s1">&#39;inf&#39;</span><span class="p">]</span>
-        <span class="c1"># Calculate the value of resources there</span>
-        <span class="n">resources_there</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources_in</span><span class="p">(</span><span class="n">node_id</span><span class="o">=</span><span class="n">destination_id</span><span class="p">,</span> <span class="n">is_market</span><span class="o">=</span><span class="n">is_market</span><span class="p">)</span>
-        <span class="n">total_value_there</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_names</span><span class="p">:</span>
-            <span class="n">total_value_there</span> <span class="o">+=</span> <span class="n">resources_there</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-        <span class="c1"># Calculate score</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">total_value_there</span> <span class="o">-</span> <span class="n">total_fuel_value</span>
-        <span class="k">return</span> <span class="n">score</span>
+    <span class="o">...</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">society</span><span class="o">.</span><span class="n">set_decision_making</span><span class="p">(</span><span class="n">CustomDecisionMaking</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For more information about custom decision-making, refer to <a class="reference external" href="https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making">custom-decision-making</a> example.</p>
@@ -333,7 +316,7 @@ Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the d
 <p>Advanced users may also modify or extend the default decision-making implementation
 directly in the PiperABM source code (see
 <code class="docutils literal notranslate"><span class="pre">piperabm/society/decision_making.py</span></code>).
-The working-directory override mechanism (via a local <code class="docutils literal notranslate"><span class="pre">decision_making.py</span></code> file)
+The working-directory override mechanism
 provides a user-facing alternative that avoids modifying the library source code.</p>
 </div>
 </section>
