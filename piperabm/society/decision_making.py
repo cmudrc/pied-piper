@@ -12,10 +12,10 @@ class DecisionMaking:
         Return preassumed destinations (which are market nodes here)
         """
         result = []
-        nodes = self.infrastructure.markets
+        nodes = self.society.infrastructure.markets
         for node in nodes:
-            path_exists = self.infrastructure.has_path(
-                id_start=self.get_current_node(id=agent_id), id_end=node
+            path_exists = self.society.infrastructure.has_path(
+                id_start=self.society.get_current_node(id=agent_id), id_end=node
             )
             if path_exists is True:
                 result.append(
@@ -35,21 +35,21 @@ class DecisionMaking:
         result = []
         nodes = set()
         # Friends
-        friends = self.ego(id=agent_id, type="friend")
+        friends = self.society.ego(id=agent_id, type="friend")
         friends_homes = []
         for friend in friends:
-            friends_homes.append(self.get_home_id(id=friend))
+            friends_homes.append(self.society.get_home_id(id=friend))
         nodes |= set(friends_homes)
         # Neighbors
-        neighbors = self.ego(id=agent_id, type="neighbor")
+        neighbors = self.society.ego(id=agent_id, type="neighbor")
         neighbors_homes = []
         for neighbor in neighbors:
-            neighbors_homes.append(self.get_home_id(id=neighbor))
+            neighbors_homes.append(self.society.get_home_id(id=neighbor))
         nodes |= set(neighbors_homes)
         nodes = list(nodes)
         for node in nodes:
-            path_exists = self.infrastructure.has_path(
-                id_start=self.get_current_node(id=agent_id), id_end=node
+            path_exists = self.society.infrastructure.has_path(
+                id_start=self.society.get_current_node(id=agent_id), id_end=node
             )
             if path_exists is True:
                 result.append(
@@ -71,27 +71,27 @@ class DecisionMaking:
         # Calculate the estimated amount of fuel required
         travel_duration = self.estimated_duration(agent_id, destination_id)
         fuel_resources = {}
-        for name in self.resource_names:
+        for name in self.society.resource_names:
             fuel_resources[name] = (
-                self.transportation_resource_rates[name] * travel_duration
+                self.society.transportation_resource_rates[name] * travel_duration
             )
         # Calculate the value of required fuel
         fuel_possible = True
-        for name in self.resource_names:
-            if fuel_resources[name] > self.get_resource(id=agent_id, name=name):
+        for name in self.society.resource_names:
+            if fuel_resources[name] > self.society.get_resource(id=agent_id, name=name):
                 fuel_possible = False
         if fuel_possible is True:
             total_fuel_value = 0
-            for name in self.resource_names:
-                fuel_value = fuel_resources[name] * self.prices[name]
+            for name in self.society.resource_names:
+                fuel_value = fuel_resources[name] * self.society.prices[name]
                 total_fuel_value += fuel_value
         else:
             total_fuel_value = SYMBOLS["inf"]
         # Calculate the value of resources there
-        resources_there = self.resources_in(node_id=destination_id, is_market=is_market)
+        resources_there = self.society.resources_in(node_id=destination_id, is_market=is_market)
         total_value_there = 0
-        for name in self.resource_names:
-            total_value_there += resources_there[name] * self.prices[name]
+        for name in self.society.resource_names:
+            total_value_there += resources_there[name] * self.society.prices[name]
         # Calculate score
         score = total_value_there - total_fuel_value
         return score
@@ -100,8 +100,8 @@ class DecisionMaking:
         """
         Estimated distance between agent and destination
         """
-        return self.infrastructure.heuristic_paths.estimated_distance(
-            id_start=self.get_current_node(id=agent_id), id_end=destination_id
+        return self.society.infrastructure.heuristic_paths.estimated_distance(
+            id_start=self.society.get_current_node(id=agent_id), id_end=destination_id
         )
 
     def estimated_duration(self, agent_id, destination_id) -> float:
@@ -109,7 +109,7 @@ class DecisionMaking:
         Estimated duration of reaching a certain destination
         """
         estimated_distance = self.estimated_distance(agent_id, destination_id)
-        speed = self.speed
+        speed = self.society.speed
         return estimated_distance / speed
 
     def decide_destination(self, agent_id: int, duration: float) -> None:
@@ -118,22 +118,22 @@ class DecisionMaking:
         """
         destination_id = None
         critical_stay_length = duration
-        action_queue = self.get_action_queue(id=agent_id)
+        action_queue = self.society.get_action_queue(id=agent_id)
         # Find suitable market
         destinations = self.preasssumed_destinations(agent_id=agent_id)
         destinations = sorted(destinations, key=lambda x: x["score"], reverse=True)
         suitable_destination_found = False
         for destination in destinations:
-            path = self.infrastructure.path(
-                id_start=self.get_current_node(id=agent_id), id_end=destination["id"]
+            path = self.society.infrastructure.path(
+                id_start=self.society.get_current_node(id=agent_id), id_end=destination["id"]
             )
             move_go = Move(
                 action_queue=action_queue,
                 path=path,
-                usage=self.transportation_degradation,
+                usage=self.society.transportation_degradation,
             )
             # Stay (at the destination)
-            stay_length = self.max_time_outside - (2 * move_go.total_duration)
+            stay_length = self.society.max_time_outside - (2 * move_go.total_duration)
             if stay_length > critical_stay_length:
                 suitable_destination_found = True
                 destination_id = destination["id"]
@@ -144,17 +144,17 @@ class DecisionMaking:
             destinations = self.search_destinations(agent_id=agent_id)
             destinations = sorted(destinations, key=lambda x: x["score"], reverse=True)
             for destination in destinations:
-                path = self.infrastructure.path(
-                    id_start=self.get_current_node(id=agent_id),
+                path = self.society.infrastructure.path(
+                    id_start=self.society.get_current_node(id=agent_id),
                     id_end=destination["id"],
                 )
                 move_go = Move(
                     action_queue=action_queue,
                     path=path,
-                    usage=self.transportation_degradation,
+                    usage=self.society.transportation_degradation,
                 )
                 # Stay (at the destination)
-                stay_length = self.max_time_outside - (2 * move_go.total_duration)
+                stay_length = self.society.max_time_outside - (2 * move_go.total_duration)
                 if stay_length > critical_stay_length:
                     suitable_destination_found = True
                     destination_id = destination["id"]
@@ -178,7 +178,7 @@ class DecisionMaking:
         move_back = move_go.reverse()
         action_queue.add(move_back)
         # Stay
-        stay_length = self.activity_cycle - action_queue.total_duration
+        stay_length = self.society.activity_cycle - action_queue.total_duration
         stay_home = Stay(action_queue=action_queue, duration=stay_length)
         action_queue.add(stay_home)
 

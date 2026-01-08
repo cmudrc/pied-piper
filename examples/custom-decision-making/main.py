@@ -1,5 +1,6 @@
 import os
 import piperabm as pa
+from decision_making import CustomDecisionMaking
 
 
 path = os.path.dirname(os.path.realpath(__file__))
@@ -23,6 +24,7 @@ model.infrastructure.add_market(
 model.infrastructure.bake()
 
 # Set up the society
+model.society.set_decision_making(CustomDecisionMaking)  # Set the custom decision-making class
 model.society.average_income = 1
 agent_id = 1
 home_id = model.infrastructure.homes[0]

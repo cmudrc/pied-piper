@@ -19,7 +19,7 @@ from piperabm.tools.symbols import SYMBOLS
 
 
 class Infrastructure(
-    Query, Generate, Degradation, Path, Update, Serialize, Graphics, Stat
+    Query, Generate, Path, Update, Serialize, Graphics, Stat
 ):
     """
     Represent infrastructure network. Within the object, a `nx.Graph()` instance is used as backend.
@@ -42,6 +42,29 @@ class Infrastructure(
         self.baked_streets = True
         self.baked_neighborhood = True
         self.heuristic_paths = HeuristicPaths()
+
+        # Bootstraping for Degradation
+        self._degradation = Degradation()
+        self._degradation.infrastructure = self
+
+    def __getattr__(self, name):
+        """
+        Forward unknown attributes to the degradation module, if it exists.
+        """
+        dm = object.__getattribute__(self, "_degradation")
+        if hasattr(dm, name):
+            return getattr(dm, name)
+        raise AttributeError(name)
+
+    def set_degradation(self, cls):
+        """
+        Set the degradation class to use for this infrastructure. The class must be a subclass of Degradation.
+        """
+        if not issubclass(cls, Degradation):
+            raise TypeError("Must subclass Degradation")
+
+        self._degradation = cls()
+        self._degradation.infrastructure = self
 
     @property
     def resource_names(self) -> list:

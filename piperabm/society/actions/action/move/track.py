@@ -178,7 +178,7 @@ class Track(Print):
             new_usage_impact = usage_impact + delta
             self.set_usage_impact(value=new_usage_impact)
             # Update adjusted_length
-            # self.infrastructure.update_adjusted_length(ids=self.edge_ids)
+            #self.infrastructure.update_adjusted_length(ids=self.edge_ids)
             if measure is True:
                 pos_new = deepcopy(self.pos())
                 delta_length = ds.point_to_point(pos_old, pos_new)

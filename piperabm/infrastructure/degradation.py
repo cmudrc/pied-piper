@@ -9,15 +9,15 @@ class Degradation:
         """
         Calculate adjustment factor
         """
-        return 1 + (self.coeff_usage * usage_impact) + (self.coeff_age * age_impact)
+        return 1 + (self.infrastructure.coeff_usage * usage_impact) + (self.infrastructure.coeff_age * age_impact)
 
     def adjustment_factor(self, ids: list) -> float:
         """
         Return edge *adjustment_factor*
         """
         return self.calculate_adjustment_factor(
-            usage_impact=self.get_usage_impact(ids=ids),
-            age_impact=self.get_age_impact(ids=ids),
+            usage_impact=self.infrastructure.get_usage_impact(ids=ids),
+            age_impact=self.infrastructure.get_age_impact(ids=ids),
         )
 
     def calculate_adjusted_length(
@@ -33,7 +33,7 @@ class Degradation:
         Return edge *adjusted_length*
         """
         return self.calculate_adjusted_length(
-            length=self.get_length(ids=ids),
+            length=self.infrastructure.get_length(ids=ids),
             adjustment_factor=self.adjustment_factor(ids=ids),
         )
 
@@ -42,7 +42,7 @@ class Degradation:
         Update *adjusted_length* value
         """
         adjusted_length = self.adjusted_length(ids=ids)
-        self.set_adjusted_length(ids=ids, value=adjusted_length)
+        self.infrastructure.set_adjusted_length(ids=ids, value=adjusted_length)
 
     def top_degraded_edges(self, percent: float = 0):
         """
@@ -50,11 +50,11 @@ class Degradation:
         """
         if percent > 100:
             raise ValueError("enter a value between 0 and 100")
-        edges_ids = self.streets
+        edges_ids = self.infrastructure.streets
         total_length = 0
         edges_info = []
         for edge_ids in edges_ids:
-            length = self.get_edge_attribute(ids=edge_ids, attribute="length")
+            length = self.infrastructure.get_edge_attribute(ids=edge_ids, attribute="length")
             edge_info = {
                 "ids": edge_ids,
                 "degradation": self.adjustment_factor(ids=edge_ids),

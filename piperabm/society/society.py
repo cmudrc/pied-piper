@@ -17,7 +17,7 @@ from piperabm.economy import accessibility
 from piperabm.society.info import *
 
 
-class Society(Query, Generate, DecisionMaking, Update, Serialize, Graphics, Stat):
+class Society(Query, Generate, Update, Serialize, Graphics, Stat):
     """
     Represent society network
     """
@@ -48,6 +48,28 @@ class Society(Query, Generate, DecisionMaking, Update, Serialize, Graphics, Stat
         self.transportation_resource_rates = transportation_resource_rates
         self.speed = speed
         self.transportation_degradation = transportation_degradation
+        # Bootstraping for DecisionMaking
+        self._decision_making = DecisionMaking()
+        self._decision_making.society = self
+
+    def __getattr__(self, name):
+        """
+        Forward unknown attributes to the decision making module, if it exists.
+        """
+        dm = object.__getattribute__(self, "_decision_making")
+        if hasattr(dm, name):
+            return getattr(dm, name)
+        raise AttributeError(name)
+    
+    def set_decision_making(self, cls):
+        """
+        Set the decision making class to use for this society. The class must be a subclass of DecisionMaking.
+        """
+        if not issubclass(cls, DecisionMaking):
+            raise TypeError("Must subclass DecisionMaking")
+
+        self._decision_making = cls()
+        self._decision_making.society = self
 
     @property
     def infrastructure(self):
