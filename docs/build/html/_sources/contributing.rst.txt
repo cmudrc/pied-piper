@@ -119,3 +119,33 @@ A typical contribution workflow is:
 5. Submit a pull request describing the change.
 
 New features should include docstrings and, where appropriate, unit tests to ensure they are included in the documentation and test coverage.
+
+Versioning and releases
+-----------------------
+
+When preparing a new release, please ensure that the project version number is updated consistently across the codebase and documentation.
+
+The following files must be updated to match the new version:
+
+- ``piperabm/__init__.py``  
+  Update the ``__version__`` variable:
+
+  .. code-block:: python
+
+     __version__ = "0.1.2"
+
+- ``pyproject.toml``  
+  Update the project version:
+
+  .. code-block:: toml
+
+     version = "0.1.2"
+
+- ``docs/source/conf.py``  
+  Update the documentation release string:
+
+  .. code-block:: python
+
+     release = "0.1.2"
+
+Keeping these values in sync ensures that the installed package, published metadata, and generated documentation all report the same version number.

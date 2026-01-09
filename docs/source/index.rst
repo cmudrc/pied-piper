@@ -6,7 +6,7 @@
    `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
    documentation for details.
 
-PiperABM documentation
+PiperABM Documentation
 ======================
 
 This is the documentation for PiperABM, a Python-based agent-based modeling framework designed for simulating community resilience.

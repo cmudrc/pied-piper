@@ -1,4 +1,5 @@
 Sphinx==8.2.3
+furo==2025.12.19
 sphinx-rtd-theme
 sphinxcontrib-applehelp==2.0.0
 sphinxcontrib-devhelp==2.0.0
