@@ -42,26 +42,31 @@ class TestMeasurementClass(unittest.TestCase):
         move = Move(action_queue=action_queue, path=path, usage=1)
         action_queue.add(move)
 
-    def test_measurement(self):
-        path = os.path.dirname(os.path.realpath(__file__))
-        self.model.path = path
+        # Build measurement object
+        self.file_path = os.path.dirname(os.path.realpath(__file__))
+        self.model.path = self.file_path
 
         self.model.run(n=2, report=False, save=True, step_size=10)  # Run
 
-        measurement = Measurement(path=path)
-        measurement.measure(report=False)
+        self.measurement = Measurement(path=self.file_path)
+        self.measurement.measure(report=False)
 
+    def tearDown(self):
+        shutil.rmtree(os.path.join(self.file_path, "result"))
+
+    def test_measurement(self):
         deltas = self.model.load_deltas()
         len_deltas = len(deltas)
-        len_times = len(measurement.times)
+        len_times = len(self.measurement.times)
         self.assertEqual(len_deltas + 1, len_times)
-        len_travel_distances = len(measurement.travel_distance.values)
+        len_travel_distances = len(self.measurement.travel_distance.values)
         self.assertEqual(len_deltas, len_travel_distances)
-        len_accessibilities_0 = len(measurement.accessibility.values[0])
+        len_accessibilities_0 = len(self.measurement.accessibility.values[0])
         self.assertEqual(len_deltas, len_accessibilities_0)
 
-        # Garbage removal
-        shutil.rmtree(os.path.join(path, "result"))
+    def test_sum_agents(self):
+        result = self.measurement.accessibility.sum_agents()
+        self.assertAlmostEqual(sum(result), 0, places=2)
 
 
 if __name__ == "__main__":
