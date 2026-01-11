@@ -13,8 +13,10 @@
 ![Python Version](https://img.shields.io/badge/Python-≥3.10-blue)
 [![PyPI Version](https://img.shields.io/pypi/v/piperabm.svg)](https://pypi.org/project/piperabm/)
 [![GitHub](https://img.shields.io/badge/GitHub-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
-[![Coverage Status](https://coveralls.io/repos/github/cmudrc/pied-piper/badge.svg?branch=main)](https://coveralls.io/github/cmudrc/pied-piper?branch=main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![Coverage Status](https://coveralls.io/repos/github/cmudrc/pied-piper/badge.svg?branch=main)](https://coveralls.io/github/cmudrc/pied-piper?branch=main)
+[![status](https://joss.theoj.org/papers/482e67b36285c6a9e5c00b15cc26607f/status.svg)](https://joss.theoj.org/papers/482e67b36285c6a9e5c00b15cc26607f)
 
 </div>
 
