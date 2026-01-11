@@ -42,6 +42,8 @@ Install the package using pip:
 ```sh
 pip install piperabm
 ```
+For advanced installation options, including animation support,
+see the [Installation guide](https://pied-piper.readthedocs.io/latest/usage/installation.html).
 
 ## Usage
 
@@ -59,7 +61,10 @@ model.society.generate(num=2, gini_index=0.4, average_balance=1000)
 model.run(n=100, step_size=60)
 ```
 
-For more usage examples, refer to the [`examples`](https://github.com/cmudrc/pied-piper/tree/main/examples) folder in the project repository.
+For a guided walkthrough, see the
+[step-by-step usage guide](https://pied-piper.readthedocs.io/latest/usage/step-by-step.html),
+and for additional examples, refer to the
+[examples](https://github.com/cmudrc/pied-piper/tree/main/examples) folder in the repository.
 
 ## Supported Python Versions
 
