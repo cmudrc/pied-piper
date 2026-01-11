@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Resource" href="resource.html"><link rel="prev" title="Society" href="society.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Model" href="../api/model.html"><link rel="prev" title="Working with Satellite Data" href="satellite.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>Backends - PiperABM 0.1.2 documentation</title>
@@ -190,29 +190,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../step-by-step.html">Step-by-Step Usage Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../satellite.html">Working with Satellite Data</a></li>
+  <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-by-step.html">Step-by-Step Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="satellite.html">Working with Satellite Data</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Backends</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="measurement.html">Measurement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="society.html">Society</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Backends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resource.html">Resource</a></li>
-<li class="toctree-l1"><a class="reference internal" href="projection.html">tools.coordinate.projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mesh.html">tools.mesh</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/model.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/measurement.html">Measurement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/infrastructure.html">Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/society.html">Society</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/resource.html">Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/projection.html">tools.coordinate.projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/mesh.html">tools.mesh</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/contributing.html">Contributing</a></li>
 </ul>
 
 </div>
@@ -233,7 +230,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/api/backend.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/usage/backend.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -256,9 +253,9 @@
 <p>PiperABM stores model state directly on NetworkX graphs for interoperability and
 custom analysis.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Infrastructure</span></code></a> uses a NetworkX undirected graph (<code class="docutils literal notranslate"><span class="pre">Graph</span></code>)
+<li><p><a class="reference internal" href="../api/infrastructure.html#piperabm.infrastructure.Infrastructure" title="piperabm.infrastructure.Infrastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Infrastructure</span></code></a> uses a NetworkX undirected graph (<code class="docutils literal notranslate"><span class="pre">Graph</span></code>)
 accessible via <code class="docutils literal notranslate"><span class="pre">model.infrastructure.G</span></code>.</p></li>
-<li><p><a class="reference internal" href="society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">Society</span></code></a> uses a NetworkX undirected multigraph (<code class="docutils literal notranslate"><span class="pre">MultiGraph</span></code>)
+<li><p><a class="reference internal" href="../api/society.html#piperabm.society.Society" title="piperabm.society.Society"><code class="xref py py-class docutils literal notranslate"><span class="pre">Society</span></code></a> uses a NetworkX undirected multigraph (<code class="docutils literal notranslate"><span class="pre">MultiGraph</span></code>)
 accessible via <code class="docutils literal notranslate"><span class="pre">model.society.G</span></code>.</p></li>
 </ul>
 <p>Node and edge attributes are stored directly on these graphs. This enables
@@ -295,23 +292,23 @@ high-level API and is therefore intended for advanced users.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="resource.html">
+          <a class="next-page" href="../api/model.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Resource</div>
+                <div class="title">Model</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="society.html">
+          <a class="prev-page" href="satellite.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Society</div>
+                <div class="title">Working with Satellite Data</div>
                 
               </div>
             </a>

@@ -28,11 +28,11 @@ This example shows how to work with satellite data and maps to create model.
 
 ## [Custom Degradation](https://github.com/cmudrc/pied-piper/tree/main/examples/custom-degradation)
 
-In this example, we see how the user can customize degradation behavior of the infrastrcture elements of the model by providing their own `degradation.py` file.
+In this example, we see how the user can customize degradation behavior of the infrastrcture elements of the model by providing a custom degradation class.
 
 ## [Custom Decision-Making](https://github.com/cmudrc/pied-piper/tree/main/examples/custom-decision-making)
 
-In this example, we see how the user can customize decision-making behavior of the agents in the model by providing their own `decision_making.py` file.
+In this example, we see how the user can customize decision-making behavior of the agents in the model by providing a custom decision making class.
 
 ## [Parallel Processing](https://github.com/cmudrc/pied-piper/tree/main/examples/parallel-processing)
 

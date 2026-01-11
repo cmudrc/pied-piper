@@ -132,20 +132,20 @@ The following files must be updated to match the new version:
 
   .. code-block:: python
 
-     __version__ = "0.1.2"
+     __version__ = "x.x.x"
 
 - ``pyproject.toml``  
   Update the project version:
 
   .. code-block:: toml
 
-     version = "0.1.2"
+     version = "x.x.x"
 
 - ``docs/source/conf.py``  
   Update the documentation release string:
 
   .. code-block:: python
 
-     release = "0.1.2"
+     release = "x.x.x"
 
 Keeping these values in sync ensures that the installed package, published metadata, and generated documentation all report the same version number.
