@@ -8,6 +8,14 @@ Install the package using pip:
 
     pip install piperabm
 
+Python version requirements
+---------------------------
+
+PiperABM is tested and officially supported on **Python 3.10 through 3.13**.
+
+While the package may work on older Python versions with compatible dependencies,
+these environments are not tested and are not officially supported.
+
 Optional dependencies
 ---------------------
 
