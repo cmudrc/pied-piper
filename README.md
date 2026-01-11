@@ -11,11 +11,10 @@
 
 [![Documentation](https://img.shields.io/badge/Documentation-30363f?logo=read-the-docs&logoColor=white)](https://pied-piper.readthedocs.io/)
 ![Python Version](https://img.shields.io/badge/Python-≥3.10-blue)
-[![PyPI Version](https://img.shields.io/pypi/v/piperabm.svg)](https://pypi.org/project/piperabm/)
+[![PyPI Version](https://img.shields.io/pypi/v/piperabm?label=PyPI)](https://pypi.org/project/piperabm/)
 [![GitHub](https://img.shields.io/badge/GitHub-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-[![Coverage Status](https://coveralls.io/repos/github/cmudrc/pied-piper/badge.svg?branch=main)](https://coveralls.io/github/cmudrc/pied-piper?branch=main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)<br>
+[![Coverage](https://img.shields.io/coveralls/github/cmudrc/pied-piper/main?label=Coverage)](https://coveralls.io/github/cmudrc/pied-piper?branch=main)
 [![status](https://joss.theoj.org/papers/482e67b36285c6a9e5c00b15cc26607f/status.svg)](https://joss.theoj.org/papers/482e67b36285c6a9e5c00b15cc26607f)
 
 </div>
@@ -35,7 +34,7 @@ Living beings exist in perpetual tension with their environment, continually ada
 ## Documentation
 
 Full documentation, including installation instructions, usage guides, API reference, examples, and contributor guidelines, is available at:
-**[PiperABM Documentation (ReadTheDocs)](https://pied-piper.readthedocs.io)**
+**[PiperABM Documentation](https://pied-piper.readthedocs.io)**
 
 ## Installation
 
