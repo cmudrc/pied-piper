@@ -3,7 +3,6 @@
 *.pyc
 __pycache__/
 *.egg-info/
-BASEMENT/
 .VSCodeCounter/
 settings.json
 .DS_Store
