@@ -48,6 +48,9 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install -e .
+
+    - name: Check syntax across package
+      run: python -m compileall -q piperabm
   
     - name: Run tests
       run: python tests.py
