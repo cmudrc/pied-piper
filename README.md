@@ -10,7 +10,7 @@
 <div align="center">
 
 [![Documentation](https://img.shields.io/badge/Documentation-30363f?logo=read-the-docs&logoColor=white)](https://pied-piper.readthedocs.io/)
-![Python Version](https://img.shields.io/badge/Python-≥3.10-blue)
+![Python Version](https://img.shields.io/badge/Python-≥3.11-blue)
 [![PyPI Version](https://img.shields.io/pypi/v/piperabm?label=PyPI)](https://pypi.org/project/piperabm/)
 [![GitHub](https://img.shields.io/badge/GitHub-30363f?logo=github&logoColor=white)](https://github.com/cmudrc/pied-piper)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)<br>
@@ -68,7 +68,7 @@ and for additional examples, refer to the
 
 ## Supported Python Versions
 
-It has been tested and verified to work with Python versions **3.10** to **3.13**. While it is expected to work with older versions of Python (given compatible dependency versions), these environments have not been tested and are not officially supported.
+It has been tested and verified to work with Python versions **3.11** to **3.13**. While it is expected to work with older versions of Python (given compatible dependency versions), these environments have not been tested and are not officially supported.
 
 ## Contributing
 

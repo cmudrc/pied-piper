@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Backends" href="backend.html"><link rel="prev" title="Step-by-Step Usage Guide" href="step-by-step.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>Working with Satellite Data - PiperABM 0.1.2 documentation</title>
+        <title>Working with Satellite Data - PiperABM 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">PiperABM 0.1.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">PiperABM 0.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">PiperABM 0.1.2 documentation</span>
+  <span class="sidebar-brand-text">PiperABM 0.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -255,7 +255,7 @@
 <span id="id2"></span><h2>Mercator Projection<a class="headerlink" href="#mercator-projection" title="Link to this heading">¶</a></h2>
 <p>As we already saw in the <a class="reference internal" href="step-by-step.html#step-1-build-infrastructure"><span class="std std-ref">Step 1: Build the Infrastructure</span></a> section of the <a class="reference internal" href="step-by-step.html#step-by-step-usage-guide"><span class="std std-ref">Step-by-Step Usage Guide</span></a>, the PiperABM framework expects <cite>x</cite>, <cite>y</cite> coordinates for the positions. However, many satellite datasets and maps provide data in latitude and longitude coordinates. To convert these coordiantes to <cite>x</cite> and <cite>y</cite>, we can use the Mercator projection.</p>
 <figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="usage/_static/satellite/mercator.jpg"><img alt="Mesh Patch Diagram" src="usage/_static/satellite/mercator.jpg" style="width: 600px;" />
+<a class="reference internal image-reference" href="../_images/mercator.jpg"><img alt="Mesh Patch Diagram" src="../_images/mercator.jpg" style="width: 600px;" />
 </a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> The Mercator projection is a cylindrical map projection. Imagine wrapping a piece of paper around a globe to form a cylinder. The map image is what’s projected from the 3D globe onto the 2D surface of the paper. Source: <a class="reference external" href="https://oceanservice.noaa.gov/navigation/making-nautical-charts.html">NOAA</a></span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
@@ -297,7 +297,7 @@ When working with satellite data and maps, we can create mesh patches that repre
 Then, we create <cite>Triangle</cite> instances for each triangle formed by the points. Finally, we create a <cite>Patch</cite> instance that contains these triangles (Figure 2(b)). The <cite>Patch</cite> instance can then be used to generate random points within the defined area.
 Another capability of the <cite>Triangle</cite> is that it can have a <cite>density</cite> atttribute, defaulting to 1, which controles chance of point generation in the area. This is useful since not all residential areas have the same density of homes.</p>
 <figure class="align-center" id="id6">
-<img alt="Points and Mesh Patch Example" src="usage/_static/satellite/Figure_1.png" />
+<img alt="Points and Mesh Patch Example" src="../_images/Figure_1.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 2:</strong> (a) Points are labeled and their coordinates are extracted. These points will either/or be used for defining streets and creationg of homes nodes. (b) The mesh patch is created using the points as the vertices of the triangles. Home nodes will be placed randomly inside this area.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
@@ -336,7 +336,7 @@ Another capability of the <cite>Triangle</cite> is that it can have a <cite>dens
 </pre></div>
 </div>
 <figure class="align-center" id="id7">
-<img alt="Input Map vs. Modelled Infrastructure" src="usage/_static/satellite/Figure_2.png" />
+<img alt="Input Map vs. Modelled Infrastructure" src="../_images/Figure_2.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 3:</strong> (a) The input map. (b) The modelled infrastructure with homes, streets, and neighborhood access edges. The homes are randomply placed in residential areas.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
@@ -414,7 +414,7 @@ Another capability of the <cite>Triangle</cite> is that it can have a <cite>dens
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=92734c54"></script>
+</div><script src="../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

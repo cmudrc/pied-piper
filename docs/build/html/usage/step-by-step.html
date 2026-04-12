@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Working with Satellite Data" href="satellite.html"><link rel="prev" title="Installation" href="installation.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>Step-by-Step Usage Guide - PiperABM 0.1.2 documentation</title>
+        <title>Step-by-Step Usage Guide - PiperABM 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">PiperABM 0.1.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">PiperABM 0.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">PiperABM 0.1.2 documentation</span>
+  <span class="sidebar-brand-text">PiperABM 0.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -339,7 +339,7 @@ human-readable IDs (e.g., small integers) for testing and debugging.</p>
 </pre></div>
 </div>
 <figure class="align-center" id="id5">
-<img alt="An example of manually defined infrastructure" src="usage/_static/step-by-step/step_1_manual.png" />
+<img alt="An example of manually defined infrastructure" src="../_images/step_1_manual.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 1:</strong> An example of manually defined infrastructure, after the baking process. The figure is from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/manual-creation">Manual Creation</a> example.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
 </figcaption>
@@ -362,7 +362,7 @@ human-readable IDs (e.g., small integers) for testing and debugging.</p>
 </pre></div>
 </div>
 <figure class="align-center" id="id6">
-<img alt="An example of automatically generated infrastructure" src="usage/_static/step-by-step/step_1_automatic.png" />
+<img alt="An example of automatically generated infrastructure" src="../_images/step_1_automatic.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 2:</strong> An example of automatically generated infrastructure, after the baking process. The grid is created with some imperfections, and a market node is added to the center of the environment and the homes are randomly placed. The figure is borrowed from <a class="reference external" href="https://github.com/cmudrc/pied-piper/blob/main/examples/automatic-creation">Automatic Creation</a> example.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
@@ -499,14 +499,14 @@ IDs are optional, automatically generated if omitted, and guaranteed to be uniqu
 <p>Resources may be provided as plain dictionaries (default) or as instances of the optional Resource helper class; see the API reference for details.
 Agents use OODA loop, which stands for Observe, Orient, Decide, and Act as the decision-making framework. Agents observe themselves, others, and their environment, and then analyze that information using their values. The result of this decision-making a set of action, that, once executed, will impact the agents and their environment. This loop continues as long as the agetns are alive.</p>
 <figure class="align-center" id="id7">
-<img alt="OODA loop as the core decision-making framework." src="usage/_static/step-by-step/ooda.png" />
+<img alt="OODA loop as the core decision-making framework." src="../_images/ooda.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 3:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Agents consume resources both during travel and from their routine activities; should any of their essential resources (food, water, or energy) drop to zero, the agent is considered “dead” and is removed from the simulation, serving as a critical endpoint that reflects a failure to sustain the population under stress.</p>
 <figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="usage/_static/step-by-step/utility.png"><img alt="Agents utility function" src="usage/_static/step-by-step/utility.png" style="width: 350px;" />
+<a class="reference internal image-reference" href="../_images/utility.png"><img alt="Agents utility function" src="../_images/utility.png" style="width: 350px;" />
 </a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure 4:</strong> Agents’ satisfaction exhibits diminishing returns, plateauing once their resource inventories surpass a predefined “enough” threshold.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
@@ -542,7 +542,7 @@ provides a user-facing alternative that avoids modifying the library source code
 During each run step, agents first perform a cost–benefit analysis to choose a destination, initially targeting the nearest market nodes to minimize travel time and resource expenditure . They then navigate through the infrastructure network using the A* algorithm, which finds the shortest path by combining actual travel costs with heuristic estimates . Upon arrival, agents may trade resources either at market nodes or with other agents present; these exchanges are resolved via the Nash Bargaining Solution, which ensures a fair division by maximizing the product of each party’s utility gain over their disagreement points.
 Infrastructure elements will degrade as a result of both aging usage. Agents activity will cause degradation of infrastructure elements. This feedback loop means that heavily trafficked routes become progressively slower and more costly to traverse.</p>
 <figure class="align-center" id="id9">
-<img alt="Interconnected nature of infrastructure and society networks" src="usage/_static/step-by-step/interconnected.png" />
+<img alt="Interconnected nature of infrastructure and society networks" src="../_images/interconnected.png" />
 <figcaption>
 <p><span class="caption-text"><strong>Figure 5:</strong> PiperABM models the interconnected nature of infrastructure and society networks.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
 </figcaption>
@@ -727,7 +727,7 @@ analysis and integration with the NetworkX ecosystem.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=92734c54"></script>
+</div><script src="../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -3,3 +3,4 @@ matplotlib
 networkx
 numpy
 scipy
+Sphinx
