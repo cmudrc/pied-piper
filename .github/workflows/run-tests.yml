@@ -50,6 +50,9 @@ jobs:
 
     - name: Check syntax across package
       run: python -m compileall -q piperabm
+
+    - name: Smoke test import
+      run: python -c "import piperabm"
   
     - name: Run tests
       run: python tests.py
