@@ -10,7 +10,7 @@ include = ["piperabm", "piperabm.*"]
 
 [project]
 name = "piperabm"
-version = "0.2.2"
+version = "0.2.3"
 description = "An Agent-Based Model Framework for Simulating Resilience in Python"
 readme = "README.md"
 license = {text = "MIT"}
