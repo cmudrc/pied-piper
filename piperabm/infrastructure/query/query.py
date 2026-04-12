@@ -7,6 +7,7 @@ import networkx as nx
 import numpy as np
 
 from piperabm.tools.coordinate import distance as ds
+from piperabm.tools.vector import vector as vc
 from piperabm.infrastructure.query.add import Add
 from piperabm.infrastructure.query.get import Get
 from piperabm.infrastructure.query.set import Set
@@ -34,20 +35,6 @@ class Query(Add, Get, Set):
         Check if the node is isolated
         """
         return nx.is_isolate(self.G, id)
-
-    '''
-    def filter_nodes_closer_than(self, id: int, distance: float, nodes: list = None) -> list:
-        """
-        Filter *nodes* that are within the *distance* from *id*
-        """
-        result = []
-        if nodes is None:
-            nodes = self.nodes
-        for node_id in nodes:
-            if distance >= self.heuristic_paths.estimated_distance(id_start=id, id_end=node_id):
-                result.append(node_id)
-        return result
-    '''
 
     def replace_node(self, id: int, new_id: int, report: int = False) -> None:
         """
@@ -166,6 +153,43 @@ class Query(Add, Get, Set):
                         result.append(node_id)
                 else:
                     result.append(node_id)
+        return result
+    
+    def edges_closer_than(
+        self,
+        pos: list,
+        max_distance: float = 0,
+        edges_ids: list = None,
+    ) -> list:
+        """
+        Filter *edges_ids* that are within *max_distance* from *pos*.
+
+        Distance is computed from the point to the edge segment. If no candidate
+        edges are provided, all edges in the graph are considered.
+        """
+        if edges_ids is None:
+            edges_ids = self.edges
+
+        result = []
+        for edge_ids in edges_ids:
+            pos_1 = self.get_pos(edge_ids[0])
+            pos_2 = self.get_pos(edge_ids[1])
+
+            distance_vector = ds.point_to_line(
+                point=pos,
+                line=[pos_1, pos_2],
+                segment=True,
+                vector=True,
+                perpendicular_only=False,
+            )
+
+            if distance_vector is None:
+                continue
+
+            distance = vc.magnitude(distance_vector)
+            if distance <= max_distance:
+                result.append(edge_ids)
+
         return result
 
     @property

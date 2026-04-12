@@ -158,7 +158,7 @@ Before continuing to the next step, we need to "bake" the infrastructure. The pr
 
     model.infrastructure.bake(
         proximity_radius=5,  # Meters
-        search_radius=200,  # Meters
+        search_radius=500,  # Meters
         report=True
     )
 
@@ -170,7 +170,7 @@ User can visualize the infrastructure using the `show` method, and by printing t
     # Print the infrastructure summary
     print(model.infrastructure)
 
-    # Visualize the infratructure
+    # Visualize the infrastructure
     model.infrastructure.show()
 
 The infrastructure elements are subject to degradation. There are two types of degradation:

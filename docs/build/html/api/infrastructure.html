@@ -390,6 +390,14 @@ this value to match the initial <code class="docutils literal notranslate"><span
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.edges_closer_than">
+<span class="sig-name descname"><span class="pre">edges_closer_than</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.edges_closer_than" title="Link to this definition">¶</a></dt>
+<dd><p>Filter <em>edges_ids</em> that are within <em>max_distance</em> from <em>pos</em>.</p>
+<p>Distance is computed from the point to the edge segment. If no candidate
+edges are provided, all edges in the graph are considered.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="piperabm.infrastructure.Infrastructure.edges_from">
 <span class="sig-name descname"><span class="pre">edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#piperabm.infrastructure.Infrastructure.edges_from" title="Link to this definition">¶</a></dt>
 <dd><p>All edges from a node</p>
@@ -799,6 +807,7 @@ this value to match the initial <code class="docutils literal notranslate"><span
 <li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.check_id"><code class="docutils literal notranslate"><span class="pre">Infrastructure.check_id()</span></code></a></li>
 <li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.deserialize"><code class="docutils literal notranslate"><span class="pre">Infrastructure.deserialize()</span></code></a></li>
 <li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.edges"><code class="docutils literal notranslate"><span class="pre">Infrastructure.edges</span></code></a></li>
+<li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.edges_closer_than"><code class="docutils literal notranslate"><span class="pre">Infrastructure.edges_closer_than()</span></code></a></li>
 <li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.edges_from"><code class="docutils literal notranslate"><span class="pre">Infrastructure.edges_from()</span></code></a></li>
 <li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.fig"><code class="docutils literal notranslate"><span class="pre">Infrastructure.fig()</span></code></a></li>
 <li><a class="reference internal" href="#piperabm.infrastructure.Infrastructure.generate"><code class="docutils literal notranslate"><span class="pre">Infrastructure.generate()</span></code></a></li>

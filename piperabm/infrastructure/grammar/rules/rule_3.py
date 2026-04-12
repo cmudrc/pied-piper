@@ -95,6 +95,10 @@ class Rule3:
                 possible_target_info = possible_top_node_info
             distances_info.append(possible_target_info)
 
+        # No candidate targets found
+        if not distances_info:
+            return
+
         # Top target info
         target_info = None
         for possible_target_info in distances_info:
@@ -145,6 +149,6 @@ if __name__ == "__main__":
     infrastructure.add_street(pos_1=[0, 0], pos_2=[10, 0])
     infrastructure.add_home(pos=[5, 4], id=1)
 
-    rule = Rule3(infrastructure, proximity_radius=1, search_radius=None)
+    rule = Rule3(infrastructure, proximity_radius=1, search_radius=100)
     rule.find(report=True)
     print(infrastructure)
