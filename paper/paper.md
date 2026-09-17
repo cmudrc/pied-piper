@@ -52,20 +52,6 @@ PiperABM is built to address these needs and reduce the setup effort required fo
 
 Intended users are researchers and practitioners in infrastructure and community resilience, including urban planners, policymakers, and decision‑makers who need transparent, reproducible, place‑based simulations.
 
-# Model Overview
-
-PiperABM couples infrastructure and society networks represented as NetworkX graphs, with their interactions summarized in \autoref{fig:overview}. Infrastructure nodes represent homes, markets, and junctions; edges represent streets and access connections from homes and markets to streets. Spatial layouts can be constructed manually or imported from map data.
-
-![PiperABM overview: Infrastructure locations and social relationships shape agents’ travel and resource exchanges.](./assets/interconnected.png){#fig:overview}
-
-Society nodes represent individual agents, with family, neighbor, and friendship ties as edges. Family ties connect agents assigned to the same home. Agents have a home assignment, current location, monetary balance, socioeconomic status, resource inventories, and sufficiency thresholds, with food, water, and energy as the default resources. Home assignments and agent locations link the two networks. Markets hold resource inventories, while social ties identify friends’ and neighbors’ homes as potential destinations.
-
-The baseline decision mechanism follows OODA-style logic: observing, orienting, deciding, and acting [@brehmer_dynamic_ooda; @Johnson02012023_ooda]. When an agent’s queued actions finish, it selects a new destination, considering markets first and socially connected homes if no suitable market is found. Destinations are ranked by resource value minus estimated travel resource costs, with travel-time constraints determining feasibility. Agents queue travel, a stay at the destination, a return home, and rest. At each simulation step, the model coordinates resource exchanges among agents at the same home or with markets where agents are present, using a cooperative, centralized Nash bargaining formulation [@nash_bargaining_1950]. Market inventories are replenished each step.
-
-Agents consume resources while staying and traveling, and travel accumulates usage on infrastructure edges. With degradation enabled, usage and aging increase streets’ effective lengths, which determine A* routing costs [@foead_systematic_2021] and travel duration. Infrastructure conditions therefore affect subsequent routes and feasible destinations, while agent movement contributes to further degradation.
-
-Outputs include travel distance and resource accessibility, measured as inventory relative to a sufficiency threshold and capped at one. KeepDelta can store human-readable changes in model state [@Noorghasemi_KeepDelta_A_Python_2025], and optional animation supports face-validity assessment. Researchers can replace the baseline decision and degradation rules through user-defined extensions.
-
 # Comparison to Existing Tools
 
 We group related work into two domains: (1) General frameworks intended to be reusable across problems, and (2) Purpose-built models created for a single, specific study.
@@ -81,6 +67,20 @@ Like Mesa and Repast4Py, PiperABM stays flexible and Pythonic, but it elevates r
 Examples include multilayer post-disaster recovery (e.g., Hurricane Harvey) [@Xue2024], RecovUS for household recovery after Sandy [@Moradi2020], storm-induced power-outage restoration with crew dispatch [@Walsh2018], community resilience under tornado hazards [@Aghababaei2025], and flood risk–insurance dynamics [@Dubbelboer2017]. These models capture exactly what they need but are hard to reuse and often re-implement similar scaffolding.
 
 PiperABM offers the custom feel of bespoke models while reducing rework: degradation and accessibility are built in; OODA-style decision logic is plug-and-play; infrastructure and agents live on an inspectable NetworkX backend; and results can be analyzed with standard Python tools. This makes it easier to adapt a single codebase to new hazards, geographies, and policies, and to compare scenarios consistently.
+
+# Model Overview
+
+PiperABM couples infrastructure and society networks represented as NetworkX graphs, with their interactions summarized in \autoref{fig:overview}. Infrastructure nodes represent homes, markets, and junctions; edges represent streets and access connections from homes and markets to streets. Spatial layouts can be constructed manually or imported from map data.
+
+![PiperABM overview: Infrastructure locations and social relationships shape agents’ travel and resource exchanges.](./assets/interconnected.png){#fig:overview}
+
+Society nodes represent individual agents, with family, neighbor, and friendship ties as edges. Family ties connect agents assigned to the same home. Agents have a home assignment, current location, monetary balance, socioeconomic status, resource inventories, and sufficiency thresholds, with food, water, and energy as the default resources. Home assignments and agent locations link the two networks. Markets hold resource inventories, while social ties identify friends’ and neighbors’ homes as potential destinations.
+
+The baseline decision mechanism follows OODA-style logic: observing, orienting, deciding, and acting [@brehmer_dynamic_ooda; @Johnson02012023_ooda]. When an agent’s queued actions finish, it selects a new destination, considering markets first and socially connected homes if no suitable market is found. Destinations are ranked by resource value minus estimated travel resource costs, with travel-time constraints determining feasibility. Agents queue travel, a stay at the destination, a return home, and rest. At each simulation step, the model coordinates resource exchanges among agents at the same home or with markets where agents are present, using a cooperative, centralized Nash bargaining formulation [@nash_bargaining_1950]. Market inventories are replenished each step.
+
+Agents consume resources while staying and traveling, and travel accumulates usage on infrastructure edges. With degradation enabled, usage and aging increase streets’ effective lengths, which determine A* routing costs [@foead_systematic_2021] and travel duration. Infrastructure conditions therefore affect subsequent routes and feasible destinations, while agent movement contributes to further degradation.
+
+Outputs include travel distance and resource accessibility, measured as inventory relative to a sufficiency threshold and capped at one. KeepDelta can store human-readable changes in model state [@Noorghasemi_KeepDelta_A_Python_2025], and optional animation supports face-validity assessment. Researchers can replace the baseline decision and degradation rules through user-defined extensions.
 
 # Acknowledgements
 
